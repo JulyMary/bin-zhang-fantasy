@@ -1,0 +1,118 @@
+﻿<AddIn  xmlns="clr-namespace:Fantasy.AddInFramework;assembly=Fantasy.Base"
+        xmlns:s="clr-namespace:Fantasy.Studio;assembly=Fantasy.Studio"
+        xmlns:sc="clr-namespace:Fantasy.Studio.Codons;assembly=Fantasy.Studio"
+        xmlns:ss="clr-namespace:Fantasy.Studio.Services;assembly=Fantasy.Studio"
+        xmlns:swl="clr-namespace:Fantasy.Studio.Workbench.Layout;assembly=Fantasy.Studio"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:i="clr-namespace:System.Windows.Media.Imaging;assembly=PresentationCore"
+        xmlns:sp="clr-namespace:Fantasy.Studio.Properties;assembly=Fantasy.Studio"
+        xmlns:ad="clr-namespace:Fantasy.Adaption;assembly=Fantasy.Base"
+        xmlns:sd="clr-namespace:Fantasy.Studio.Descriptor;assembly=Fantasy.Studio"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Author="Bin Zhang" Description="Fantasy Studio AddIn" Name="Studio" Version="1.0">
+
+       
+    <Extension Path="fantasy/adaption">
+        <Adapter ID="TypeDescriptor">
+            <Adapter.Factory>
+                <sd:AdapterFactory/>
+            </Adapter.Factory>
+            <x:Type TypeName="sys:Object" />
+        </Adapter>
+        <Adapter ID="ToString">
+            <Adapter.Factory>
+                <ad:StringAdapterFactory/>
+            </Adapter.Factory>
+            <x:Type TypeName="sys:Object"/>
+        </Adapter>
+        <Adapter ID="InputCommand">
+            <Adapter.Factory>
+                <sc:InputCommandAdapterFactory/>
+            </Adapter.Factory>
+            <x:Type TypeName="ICommand"/>
+        </Adapter>
+    </Extension>
+
+    <Extension Path="fantasy/services">
+        <Object ID="adapterManager">
+            <ad:DefaultAdapterManager />
+        </Object>
+        <Object ID="registerAdaption">
+            <RegisterAdaptionService/>
+        </Object>
+                
+        <Object ID="monitorSelection">
+            <ss:WPFMonitorSelectionService/>
+        </Object>
+        <Object ID="menuservice">
+            <ss:DefaultMenuService/>
+        </Object> 
+        <Object ID="messagebox">
+            <ss:DefaultMessageBoxService />
+        </Object>
+        <Object ID="workbench">
+            <s:DefaultWorkbench/>
+        </Object>
+    </Extension>
+    <Extension Path="fantasy/startup">
+        <Object ID="loadWorkBenchLayout">
+            <swl:LoadAvalonLayoutCommand/>
+        </Object>
+        <Object ID="RunApp" >
+            <s:RunAppCommand/>
+        </Object>
+        <Object ID="saveSetting">
+            <s:SaveSettingCommand/>
+        </Object>
+    </Extension>
+    
+    <Extension Path="fantasy/applicationsettings">
+        <Object ID="fantasyStudio" Instance="{x:Static sp:Settings.Default}"></Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/typedescriptors">
+        
+    </Extension>
+
+    <Extension Path="fantasy/studio/enums">
+        
+    </Extension>
+    
+    <Extension Path="fantasy/studio/workbench/mainmenu">
+        <sc:Button ID="file" Text="File">
+            <sc:Button ID="Open" Text="Open" Icon="/Fantasy.Studio;component/images/OpenFolder.png"/>
+            <sc:Button ID="SEP1" Text="-" />
+            <sc:Button ID="Close" Text="Close"/>
+        </sc:Button>
+    </Extension>
+    <Extension Path="fantasy/studio/workbench/toolbars">
+        <sc:ToolBar ID="standard" Text="Standard" >
+            <sc:Button ID="Open" Text="Open" Icon="/Fantasy.Studio;component/images/OpenFolder.png"/>
+            <sc:Button ID="SEP1" Text="-" />
+            <sc:Button ID="Close" Text="Close"/>
+            <sc:Button ID="Save" Text="Save" Command="Save" Icon="/Fantasy.Studio;component/images/save.ico" />
+        </sc:ToolBar>
+    </Extension>
+    <Extension Path="fantasy/studio/workbench/toolbartemplates">
+        <Object ID="default">
+            <sc:DefaultToolBarDataTemplateSelector/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/toolbartray/contextmenu">
+        <sc:ButtonBuilder ID="toggleButtons">
+            <sc:ToggleToolBarButtonBuilder/>
+        </sc:ButtonBuilder>
+    </Extension>
+
+    <Extension Path="fantasy/studio/workbench/pads">
+        <Object ID="properties">
+            <s:PropertiesPad/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/documents/builders">
+        
+    </Extension>
+</AddIn>

@@ -1,0 +1,69 @@
+﻿<ToolBar x:Class="Fantasy.Studio.Controls.DefaultTooBar"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:b="clr-namespace:Fantasy.Windows;assembly=Fantasy.Base"
+            xmlns:vm="clr-namespace:Fantasy.Studio.Codons"
+            xmlns:s="clr-namespace:Fantasy.Studio"
+            xmlns:p="clr-namespace:Fantasy.Studio.Properties"
+            xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+            mc:Ignorable="d"  Band="{Binding Setting.Band, Mode=TwoWay}" BandIndex="{Binding Setting.BandIndex, Mode=TwoWay}" 
+         Visibility="{Binding Setting.Visible, Converter={x:Static b:VisibilityConverter.Collapsed }, Mode=TwoWay}" ItemsSource="{Binding ChildItems}"
+         ItemTemplateSelector="{DynamicResource selector}"
+             >
+    <ToolBar.Resources>
+        <s:AddInDataTemplateSelector x:Key="selector" Path="fantasy/studio/workbench/toolbartemplates" />
+        
+        <DataTemplate x:Key="seperator">
+            <Separator Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"></Separator>
+        </DataTemplate>
+        <StackPanel Orientation="Horizontal" x:Key="buttonContent" x:Shared="false" >
+            <Image Source="{Binding Icon}" Visibility="{Binding HasIcon, Converter={x:Static b:VisibilityConverter.Collapsed}}">
+                <Image.Style>
+                    <Style>
+                        <Setter Property="Image.MaxWidth" Value="16"/>
+                        <Setter Property="Image.MaxHeight" Value="16"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding  Path=ToolBarSettings.SmallIcon, Source={x:Static p:Settings.Default}}" Value="false">
+                                <Setter Property="Image.MaxHeight" Value="32"/>
+                                <Setter Property="Image.MinWidth" Value="32"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            <TextBlock Text="{Binding Text}">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=ToolBarSettings.ShowText, Source={x:Static p:Settings.Default}}" Value="true">
+                                <Setter Property="TextBlock.Visibility" Value="Visible"/> 
+                            </DataTrigger>
+                             <DataTrigger Binding="{Binding HasIcon, diag:PresentationTraceSources.TraceLevel=High}" Value="False">
+                                <Setter Property="Visibility" Value="Visible"/> 
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+        <DataTemplate x:Key="button">
+            <Button CommandParameter="{Binding Owner}"  Command="{Binding Command}" Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}"
+                    Content="{DynamicResource buttonContent}">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button"/>
+                </Button.Style>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key="toggleButton">
+            <ToggleButton Command="{Binding Command}" Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}" IsChecked="{Binding IsChecked, Mode=OneWay}"
+                          Content="{DynamicResource buttonContent}">
+                <ToggleButton.Style>
+                    <Style BasedOn="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" TargetType="ToggleButton"/>
+                </ToggleButton.Style>
+            </ToggleButton>
+        </DataTemplate>
+    </ToolBar.Resources>
+</ToolBar>

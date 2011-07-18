@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FEEDE1C2-C196-4A85-98A3-A5547C4A8D93}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fantasy.BusinessEngine</RootNamespace>
+    <AssemblyName>Fantasy.BusinessEngine</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\External\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessClass.cs" />
+    <Compile Include="BusinessDataType.cs" />
+    <Compile Include="BusinessEntity.cs" />
+    <Compile Include="BusinessEnum.cs" />
+    <Compile Include="BusinessEnumValue.cs" />
+    <Compile Include="BusinessPackage.cs" />
+    <Compile Include="BusinessProperty.cs" />
+    <Compile Include="Collections\IObservableList.cs" />
+    <Compile Include="Collections\IObservableSet.cs" />
+    <Compile Include="Collections\ObservableAdapterCollection.cs" />
+    <Compile Include="Collections\ObservableList.cs" />
+    <Compile Include="Collections\PersistentGenericObservableBag.cs" />
+    <Compile Include="Events\DefaultEntityCreateHandler.cs" />
+    <Compile Include="Events\DefaultEntityDeletedHandler.cs" />
+    <Compile Include="Events\DefaultEntityDeletingHandler.cs" />
+    <Compile Include="Events\DefaultEntityInsertedHandler.cs" />
+    <Compile Include="Events\DefaultEntityInsertingHandler.cs" />
+    <Compile Include="Events\DefaultEntityLoadHandle.cs" />
+    <Compile Include="Events\DefaultEntityUpdatedHandler.cs" />
+    <Compile Include="Events\DefaultEntityUpdatingHandler.cs" />
+    <Compile Include="Events\EntityCreateEventListener.cs" />
+    <Compile Include="Events\MonitorEntityPropertyChangeHandler.cs" />
+    <Compile Include="Events\NHPreDeleteEventListener.cs" />
+    <Compile Include="Events\EntityCancelEventArgs.cs" />
+    <Compile Include="Events\EntityEventArgs.cs" />
+    <Compile Include="Events\EntityPropertyChangedEventArgs.cs" />
+    <Compile Include="EntityState.cs" />
+    <Compile Include="IBusinessEntity.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="Events\IEntityCancelEventHandler.cs" />
+    <Compile Include="Events\IEntityEventHandler.cs" />
+    <Compile Include="Events\IEntityPropertyChangedEventHandler.cs" />
+    <Compile Include="Events\IEntityPropertyChangingEventHandler.cs" />
+    <Compile Include="INamedBusinessEntity.cs" />
+    <Compile Include="Maps\BusinessClassMap.cs" />
+    <Compile Include="Maps\BusinessDataTypeMap.cs" />
+    <Compile Include="Maps\BusinessEntityMap.cs" />
+    <Compile Include="Maps\BusinessEnumMap.cs" />
+    <Compile Include="Maps\BusinessEnumValueMap.cs" />
+    <Compile Include="Maps\BusinessPackageMap.cs" />
+    <Compile Include="Events\NHPostLoadEventListener.cs" />
+    <Compile Include="Events\NHPostDeleteEventListener.cs" />
+    <Compile Include="Events\NHPostInsertEventListener.cs" />
+    <Compile Include="Events\NHPostUpdateEventListener.cs" />
+    <Compile Include="Events\NHPreInsertEventListener.cs" />
+    <Compile Include="Events\EntityPropertyChangingEventArgs.cs" />
+    <Compile Include="Events\NHPreUpdateEventListener.cs" />
+    <Compile Include="Maps\BusinessPropertyMap.cs" />
+    <Compile Include="Services\DebugConnectionStringProvider.cs" />
+    <Compile Include="Services\IConnectionStringProvider.cs" />
+    <Compile Include="Services\IEntityService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DefaultEntityService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fantasy.Base\Fantasy.Base.csproj">
+      <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
+      <Name>Fantasy.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fantasy.BusinessEngine.addin.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Codons\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

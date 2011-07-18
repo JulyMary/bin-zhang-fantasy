@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClickView.XSerialization.ArrayXConverter" Collapsed="true">
+    <Position X="12" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>ArrayXConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XMemberAttribute" Collapsed="true">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAgAAAAAAAAAAAAAAAAQAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XElementAttribute" Collapsed="true">
+    <Position X="0.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XAttributeAttribute" Collapsed="true">
+    <Position X="2.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XArrayAttribute" Collapsed="true">
+    <Position X="5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XArrayItemAttribute" Collapsed="true">
+    <Position X="12.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAIAAAAQIAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XSerializableAttribute" Collapsed="true">
+    <Position X="11" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAABAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XConverterAttribute" Collapsed="true">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XPrefixAttribute" Collapsed="true">
+    <Position X="9.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Attributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.EnumXConverter" Collapsed="true">
+    <Position X="13.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>EnumXConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.ObjectXConverter" Collapsed="true">
+    <Position X="13.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>ObjectXConverter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XException" Collapsed="true">
+    <Position X="11" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XHelper" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAAAAAAAAAAAAAAAAIIAAAAQAoAAAAAAAAAgDAIAA=</HashCode>
+      <FileName>XHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XTypeMap" Collapsed="true">
+    <Position X="6.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUAgIgAICAABgADJAAIAAAgIAAAgQAAIAgSwAAAAQA=</HashCode>
+      <FileName>XMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XSerializer" Collapsed="true">
+    <Position X="9.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACBAAAAAAEAAgAAAAAA=</HashCode>
+      <FileName>XSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.Properties.Resources" Collapsed="true">
+    <Position X="12.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAACBEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XMemberMap" Collapsed="true">
+    <Position X="2.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XAttributeMap" Collapsed="true">
+    <Position X="0.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XElementMap" Collapsed="true">
+    <Position X="2.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.XSerialization.XArrayMap" Collapsed="true">
+    <Position X="5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="ClickView.XSerialization.XPrefix" Collapsed="true">
+    <Position X="12.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>XPrefix.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="ClickView.XSerialization.IXCollectionSerializer" Collapsed="true">
+    <Position X="7.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IXCollectionSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.XSerialization.IXSerializable" Collapsed="true">
+    <Position X="9.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IXSerializable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

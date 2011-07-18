@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5FDF97CF-CBFC-40E0-892B-9C192E7A4CC8}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fantasy.Studio</RootNamespace>
+    <AssemblyName>Fantasy.Studio</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accessibility">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="AvalonDock, Version=1.2.2691.0, Culture=neutral, PublicKeyToken=85a1e0ada7ec13e4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="AvalonDock.Themes">
+      <HintPath>..\External\AvalonDock.Themes.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>..\External\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Codons\InputCommandAdapter.cs" />
+    <Compile Include="Codons\InputCommandAdapterFactory.cs" />
+    <Compile Include="AddInCommandBinding.cs" />
+    <Compile Include="AddInDataTemplateSelector.cs" />
+    <Compile Include="Codons\ButtonBuilder.cs" />
+    <Compile Include="Codons\ButtonSourceCollections.cs" />
+    <Compile Include="Codons\CommandBinding.cs" />
+    <Compile Include="Controls\DefaultTooBar.xaml.cs">
+      <DependentUpon>DefaultTooBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Codons\DefaultToolBarDataTemplateSelector.cs" />
+    <Compile Include="Codons\Enum.cs" />
+    <Compile Include="Codons\EnumField.cs" />
+    <Compile Include="Codons\PropertyDescriptor.cs" />
+    <Compile Include="Codons\ToolBarSettings.cs" />
+    <Compile Include="Codons\ToolBar.cs" />
+    <Compile Include="Codons\ToolBarModel.cs" />
+    <Compile Include="Codons\ToggleToolBarButtonBuilder.cs" />
+    <Compile Include="Codons\TypeDescriptor.cs" />
+    <Compile Include="Controls\GridViewColumnLayoutSetting.cs" />
+    <Compile Include="Controls\GridViewLayoutSetting.cs" />
+    <Compile Include="Descriptor\AbstractListTypeEditor.cs" />
+    <Compile Include="Descriptor\AdapterFactory.cs" />
+    <Compile Include="Descriptor\BooleanConverter.cs" />
+    <Compile Include="Descriptor\BooleanTypeEditor.cs" />
+    <Compile Include="Descriptor\CustomPropertyDescriptor.cs" />
+    <Compile Include="Descriptor\CustomTypeDescriptor.cs" />
+    <Compile Include="Descriptor\EnumConverter.cs" />
+    <Compile Include="Descriptor\EnumTypeEditor.cs" />
+    <Compile Include="Descriptor\IDefaultValueProvider.cs" />
+    <Compile Include="Descriptor\IGetAction.cs" />
+    <Compile Include="Descriptor\ISetAction.cs" />
+    <Compile Include="Descriptor\PasswordConverter.cs" />
+    <Compile Include="Descriptor\PasswordTypeEditor.cs" />
+    <Compile Include="Descriptor\PasswordTypeEditorControl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Descriptor\PasswordTypeEditorControl.Designer.cs">
+      <DependentUpon>PasswordTypeEditorControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentTarget.cs" />
+    <Compile Include="EditingState.cs" />
+    <Compile Include="IEditingViewBuilder.cs" />
+    <Compile Include="IEditingViewContent.cs" />
+    <Compile Include="IWorkbenchLayout.cs" />
+    <Compile Include="IWorkbenchWindow.cs" />
+    <Compile Include="ICommandData.cs" />
+    <Compile Include="ICommandExtension.cs" />
+    <Compile Include="PropertiesPad.xaml.cs">
+      <DependentUpon>PropertiesPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.settings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.settings.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SaveSettingCommand.cs" />
+    <Compile Include="Controls\DefaultContextMenu.xaml.cs">
+      <DependentUpon>DefaultContextMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\DefaultMenuService.cs" />
+    <Compile Include="IButtonBuilder.cs" />
+    <Compile Include="Codons\Button.cs" />
+    <Compile Include="Codons\ButtonModel.cs" />
+    <Compile Include="DefaultWorkbench.xaml.cs">
+      <DependentUpon>DefaultWorkbench.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\DefaultMessageBoxService.cs" />
+    <Compile Include="Services\IEditingService.cs" />
+    <Compile Include="Services\IMenuService.cs" />
+    <Compile Include="IPadContent.cs" />
+    <Compile Include="IUpdateStatus.cs" />
+    <Compile Include="IViewContent.cs" />
+    <Compile Include="IWorkbench.cs" />
+    <Compile Include="PadCollection.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="RunAppCommand.cs" />
+    <Compile Include="Services\IMessageBoxService.cs" />
+    <Compile Include="Services\IMonitorSelectionService.cs" />
+    <Compile Include="Services\ISelectionServiceEx.cs" />
+    <Compile Include="Controls\MainMenu.xaml.cs">
+      <DependentUpon>MainMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Codons\ButtonBarModel.cs" />
+    <Compile Include="Services\SelectionService.cs" />
+    <Compile Include="Services\WPFMonitorSelectionService.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="ViewCollection.cs" />
+    <Compile Include="ViewContentEventArgs.cs" />
+    <Compile Include="WindowStateSetting.cs" />
+    <Compile Include="Workbench.Layout\AvalonLayout.xaml.cs">
+      <DependentUpon>AvalonLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Workbench.Layout\LoadAvalonLayoutCommand.cs" />
+    <Compile Include="Workbench.Layout\WorkbenchWindow.xaml.cs">
+      <DependentUpon>WorkbenchWindow.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Descriptor\PasswordTypeEditorControl.resx">
+      <DependentUpon>PasswordTypeEditorControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>none</Generator>
+      <SubType>Designer</SubType>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Properties\Settings.settings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Settings.settings.cs</LastGenOutput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fantasy.Base\Fantasy.Base.csproj">
+      <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
+      <Name>Fantasy.Base</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Fantasy.Wrokbench.addin.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="images\save.ico" />
+    <Resource Include="images\Properties.ico" />
+    <Resource Include="images\fantasy.ico" />
+    <Resource Include="images\OpenFolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\DefaultTooBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DefaultWorkbench.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertiesPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\DefaultContextMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Workbench.Layout\AvalonLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Workbench.Layout\WorkbenchWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Adaption\" />
+    <Folder Include="Conditions\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
