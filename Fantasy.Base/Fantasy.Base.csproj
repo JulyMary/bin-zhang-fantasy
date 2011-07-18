@@ -143,6 +143,7 @@
     <Compile Include="Adaption\StringAdapterFactory.cs" />
     <Compile Include="AddIns\AddIn.cs" />
     <Compile Include="AddIns\AddInException.cs" />
+    <Compile Include="AddIns\AddInParser.cs" />
     <Compile Include="AddIns\AddInTree.cs" />
     <Compile Include="AddIns\And.cs" />
     <Compile Include="AddIns\CodonBase.cs" />
@@ -204,7 +205,6 @@
     <Compile Include="ServiceModel\ICommand.cs" />
     <Compile Include="ServiceModel\ILogger.cs" />
     <Compile Include="ServiceModel\IMessageService.cs" />
-    <Compile Include="ServiceModel\IObjectWithSite.cs" />
     <Compile Include="ServiceModel\IService.cs" />
     <Compile Include="ServiceModel\LogConsoleService.cs" />
     <Compile Include="ServiceModel\LogDebugService.cs" />

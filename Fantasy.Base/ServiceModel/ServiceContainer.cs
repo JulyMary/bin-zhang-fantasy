@@ -52,7 +52,7 @@ namespace Fantasy.ServiceModel
 
                     if (logger != null)
                     {
-                        logger.LogMessage("Services", "Service {0} initialized", o.GetType().FullName);  
+                        logger.SafeLogMessage("Services", "Service {0} initialized", o.GetType().FullName);  
                     }
                 }
             }
@@ -105,7 +105,7 @@ namespace Fantasy.ServiceModel
                 {
                     if (logger != null)
                     {
-                        logger.LogMessage("Services", "Service {0} uninitialized", o.GetType().FullName);
+                        logger.SafeLogMessage("Services", "Service {0} uninitialized", o.GetType().FullName);
                     }
                     ((IService)o).UninitializeService();
                     

@@ -6,6 +6,7 @@ using Fantasy.Properties;
 using System.Windows.Markup;
 using System.IO;
 using Fantasy.IO;
+using System.Xml;
 
 namespace Fantasy.AddIns
 {
@@ -145,7 +146,9 @@ namespace Fantasy.AddIns
                 AddIn addIn = null;
                 try
                 {
-                    addIn = (AddIn)XamlReader.Load(fs);
+                    AddInParser parser = new AddInParser();
+                    XmlReader reader = XmlReader.Create(fs);
+                    addIn = parser.Parse(reader);
                 }
                 finally
                 {

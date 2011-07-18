@@ -16,9 +16,6 @@ namespace Fantasy.Configuration
     {
 
         private static XElement Root;
-
-
-
         private static string _location = null;
         public static string Location
         {
@@ -27,7 +24,7 @@ namespace Fantasy.Configuration
                 if (_location == null)
                 {
 
-                    _location = ConfigurationManager.AppSettings["clickviewSettingsFile"];
+                    _location = ConfigurationManager.AppSettings["fantasySettingsFile"];
                     string cfg = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
                     if (string.IsNullOrEmpty(_location))
                     {
@@ -87,13 +84,22 @@ namespace Fantasy.Configuration
                 Root.Add(newSettings);
             }
 
+            if (_updating == 0)
+            {
+                SaveRoot();
+            };
+
+        }
+
+        private static void SaveRoot()
+        {
             XmlWriter writer = XmlWriter.Create(Location, _xmlWriterSettings);
             try
             {
                 StringWriter sw = new StringWriter();
 
                 Root.Save(sw, SaveOptions.OmitDuplicateNamespaces);
-               
+
                 string xml = sw.GetStringBuilder().ToString();
 
                 XElement savingData = XElement.Parse(xml, LoadOptions.None);
@@ -104,17 +110,25 @@ namespace Fantasy.Configuration
             {
                 writer.Close();
             }
-
         }
+
+        private static int _updating = 0; 
 
         public static void BeginUpdate()
         {
-            throw new NotImplementedException();
+            _updating++;
         }
 
         public static void EndUpdate()
         {
-            throw new NotImplementedException();
+            if (_updating > 0)
+            {
+                _updating--;
+                if (_updating == 0)
+                {
+                    SaveRoot();
+                }
+            }
         }
     }
 }

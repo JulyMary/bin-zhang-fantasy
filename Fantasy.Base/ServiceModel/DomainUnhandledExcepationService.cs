@@ -24,23 +24,21 @@ namespace Fantasy.ServiceModel
                 if (this.Site != null)
                 {
                     ILogger logger = this.Site.GetService<ILogger>();
-                    if (logger != null)
-                    {
-
+                    
                         if (error != null)
                         {
-                            logger.LogError("Domain", error, "An unhandled CLR  exception is throwed by current domain.");
+                            logger.SafeLogError("Domain", error, "An unhandled CLR  exception is throwed by current domain.");
                         }
                         else
                         {
-                            logger.LogError("Domain", "An unhandled none CLR  exception is throwed by current domain. exception object : {0}", e.ExceptionObject.ToString());
+                            logger.SafeLogError("Domain", "An unhandled none CLR  exception is throwed by current domain. exception object : {0}", e.ExceptionObject.ToString());
                         }
 
                         if (e.IsTerminating)
                         {
                             logger.LogError("Domain", "CLR is terminating.");
                         }
-                    }
+                    
                 }
             }
         }

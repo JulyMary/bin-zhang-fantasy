@@ -6,6 +6,7 @@ using System.Reflection;
 using Fantasy.IO;
 using Fantasy.AddIns;
 using Fantasy.ServiceModel;
+using Fantasy;
 
 namespace FantasyDeveloper
 {
