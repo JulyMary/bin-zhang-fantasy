@@ -28,7 +28,14 @@ namespace Fantasy.Studio
             InitializeComponent();
         }
 
-        public IServiceProvider Site { get; set; }
+        private IServiceProvider _site;
+
+        public IServiceProvider Site
+        {
+            get { return _site; }
+            set { _site = value; }
+        }
+
 
         public virtual void InitializeService()
         {

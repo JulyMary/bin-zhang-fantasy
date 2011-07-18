@@ -1,4 +1,4 @@
-﻿<AddIn  xmlns="clr-namespace:Fantasy.AddInFramework;assembly=Fantasy.Base"
+﻿<AddIn  xmlns="clr-namespace:Fantasy.AddIns;assembly=Fantasy.Base"
         xmlns:s="clr-namespace:Fantasy.BusinessEngine.Services;assembly=Fantasy.BusinessEngine"
         xmlns:bee="clr-namespace:Fantasy.BusinessEngine.Events;assembly=Fantasy.BusinessEngine"
         Author="Bin Zhang" Description="Fantasy Business Engine AddIn" Name="Business Engine" Version="1.0">

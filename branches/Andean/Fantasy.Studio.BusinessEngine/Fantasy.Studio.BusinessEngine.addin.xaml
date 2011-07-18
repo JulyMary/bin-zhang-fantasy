@@ -1,4 +1,4 @@
-﻿<AddIn  xmlns="clr-namespace:Fantasy.AddInFramework;assembly=Fantasy.Base"
+﻿<AddIn  xmlns="clr-namespace:Fantasy.AddIns;assembly=Fantasy.Base"
         xmlns:be="clr-namespace:Fantasy.BusinessEngine;assembly=Fantasy.BusinessEngine"
         xmlns:sbe="clr-namespace:Fantasy.Studio.BusinessEngine;assembly=Fantasy.Studio.BusinessEngine"
         xmlns:sc="clr-namespace:Fantasy.Studio.Codons;assembly=Fantasy.Studio"
