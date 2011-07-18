@@ -1,0 +1,81 @@
+﻿<AddIn  xmlns="clr-namespace:Fantasy.AddInFramework;assembly=Fantasy.Base"
+        xmlns:s="clr-namespace:Fantasy.BusinessEngine.Services;assembly=Fantasy.BusinessEngine"
+        xmlns:bee="clr-namespace:Fantasy.BusinessEngine.Events;assembly=Fantasy.BusinessEngine"
+        Author="Bin Zhang" Description="Fantasy Business Engine AddIn" Name="Business Engine" Version="1.0">
+    
+    <Extension Path="fantasy/services">
+        <Object ID="connectionstring">
+            <s:DebugConnectionStringProvider/>
+        </Object>
+        <Object ID="nhprovider" InsertAfter="registerAdaption">
+            <s:DefaultEntityService/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/nhibernate/assemblies">
+       
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/create">
+        <Object ID="monitorpropertychange">
+            <bee:MonitorEntityPropertyChangeHandler/>
+        </Object>
+        <Object ID="defaultcreatehandler">
+            <bee:DefaultEntityCreateHandler/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/propertychanging">
+        
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/propertychanged">
+
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/load">
+        <Object ID="defaultLoadAndCreate">
+            <bee:MonitorEntityPropertyChangeHandler/>
+        </Object>
+        <Object ID="defaultloadhandler">
+            <bee:DefaultEntityLoadHandle/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/inserting">
+        <Object ID="defaultinsertinghandler">
+            <bee:DefaultEntityInsertingHandler />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/inserted">
+        <Object ID="defaultinsertedhandler">
+            <bee:DefaultEntityInsertedHandler />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/updating">
+        <Object ID="defaultupdatinghandler">
+            <bee:DefaultEntityUpdatingHandler />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/updated">
+        <Object ID="defaultupdatedhandler">
+            <bee:DefaultEntityUpdatedHandler />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/deleting">
+        <Object ID="defaultdeletinghandler">
+            <bee:DefaultEntityDeletingHandler/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/deleted">
+        <Object ID="defaultdeletedhandler">
+            <bee:DefaultEntityDeletedHandler/>
+        </Object>
+    </Extension>
+
+</AddIn>

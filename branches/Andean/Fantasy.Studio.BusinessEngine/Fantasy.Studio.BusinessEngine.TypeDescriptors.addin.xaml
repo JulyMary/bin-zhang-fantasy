@@ -1,0 +1,65 @@
+﻿<a:AddIn  xmlns:a="clr-namespace:Fantasy.AddInFramework;assembly=Fantasy.Base"
+        xmlns:be="clr-namespace:Fantasy.BusinessEngine;assembly=Fantasy.BusinessEngine"
+        xmlns:sbe="clr-namespace:Fantasy.Studio.BusinessEngine;assembly=Fantasy.Studio.BusinessEngine"
+        xmlns="clr-namespace:Fantasy.Studio.Codons;assembly=Fantasy.Studio"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sbec="clr-namespace:Fantasy.Studio.BusinessEngine.Conditions;assembly=Fantasy.Studio.BusinessEngine"
+        Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
+    <a:Extension Path="fantasy/studio/typedescriptors">
+        <TypeDescriptor ID="businessPackage" TargetType="{x:Type be:BusinessPackage}">
+            <TypeDescriptor.Conditional>
+                <a:Not Action="Disable">
+                    <sbec:IsSystemEntity />
+                </a:Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="BuildAsAssembly" Name="BuildAsAssembly" Caption="Build As Assembly" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
+        </TypeDescriptor>
+        <TypeDescriptor ID="PackageTreeViewItem" TargetType="{x:Type sbe:PackageTreeViewItem}">
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General"/>
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General"/>
+        </TypeDescriptor>
+        <TypeDescriptor ID="ClassFolderTreeViewItem" TargetType="{x:Type sbe:ClassFolderTreeViewItem}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+        </TypeDescriptor>
+
+        <TypeDescriptor ID="ClassTreeViewItem" TargetType="{x:Type sbe:ClassTreeViewItem}">
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General"/>
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General"/>
+        </TypeDescriptor>
+
+
+        <TypeDescriptor ID="businessclass" TargetType="{x:Type be:BusinessClass}">
+            <TypeDescriptor.Conditional>
+                <a:Not Action="Disable">
+                    <sbec:IsSystemEntity />
+                </a:Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="ParentClass" Name="ParentClass" Caption="Parent Class" Category="General" />
+            <PropertyDescriptor ID="TableName" Name="TableName" Caption="Table Name" Category="Database" />
+            <PropertyDescriptor ID="TableSchema" Name="TableSchema" Caption="Table Schema" Category="Database" />
+            <PropertyDescriptor ID="TableSpace" Name="TableSpace" Caption="Table Space" Category="Database" />
+        </TypeDescriptor>
+    </a:Extension>
+</a:AddIn>

@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="Fantasy.Studio.BusinessEngine.PropertyEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:l="clr-namespace:Fantasy.Studio.Controls;assembly=Fantasy.Studio" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ToolBarTray Name="ToolBarTray" Grid.RowSpan="1" />
+        <ListView Grid.Row="1" ItemsSource="{Binding Properties}" l:GridViewLayout.ColumnId="CodeNameColumn" >
+            <ListView.View>
+                <GridView AllowsColumnReorder="true" x:Name="PropertyGridView">
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" l:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>
+                    <GridViewColumn Header="Code Name" DisplayMemberBinding="{Binding CodeName}" l:GridViewLayout.ColumnId="CodeNameColumn" />
+                    <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding DataType}"  l:GridViewLayout.ColumnId="DataTypeColumn" />
+                    <GridViewColumn Header="Field Name" DisplayMemberBinding="{Binding FieldName}"  l:GridViewLayout.ColumnId="FieldNameColumn" />
+                    <GridViewColumn Header="Length" DisplayMemberBinding="{Binding Length}"  l:GridViewLayout.ColumnId="LengthColumn"/>
+                    <GridViewColumn Header="Precision" DisplayMemberBinding="{Binding Precision}"  l:GridViewLayout.ColumnId="PrecisionColumn" />
+                    <GridViewColumn Header="Nullable" DisplayMemberBinding="{Binding IsNullable}"  l:GridViewLayout.ColumnId="NullableColumn" />
+                    <GridViewColumn Header="Calculated" DisplayMemberBinding="{Binding IsCalculated}"  l:GridViewLayout.ColumnId="CalculatedColumn" />
+                    <GridViewColumn Header="Default Value" DisplayMemberBinding="{Binding DefaultValue}"  l:GridViewLayout.ColumnId="DefaultValueColumn" />
+                </GridView>
+            </ListView.View>
+        </ListView>    
+    </Grid>
+</UserControl>

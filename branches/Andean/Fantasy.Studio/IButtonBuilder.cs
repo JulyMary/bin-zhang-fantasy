@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Input;
+using Fantasy.AddIns;
+using Fantasy.Studio.Codons;
+
+namespace Fantasy.Studio
+{
+    public interface IButtonBuilder
+    {
+        ButtonModel[] Build(object caller);
+    }
+}

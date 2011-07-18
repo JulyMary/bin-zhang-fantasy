@@ -1,0 +1,101 @@
+﻿<AddIn  xmlns="clr-namespace:Fantasy.AddInFramework;assembly=Fantasy.Base"
+        xmlns:be="clr-namespace:Fantasy.BusinessEngine;assembly=Fantasy.BusinessEngine"
+        xmlns:sbe="clr-namespace:Fantasy.Studio.BusinessEngine;assembly=Fantasy.Studio.BusinessEngine"
+        xmlns:sc="clr-namespace:Fantasy.Studio.Codons;assembly=Fantasy.Studio"
+        xmlns:sp="clr-namespace:Fantasy.Studio.BusinessEngine.Properties;assembly=Fantasy.Studio.BusinessEngine"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+        Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
+
+
+    <Extension Path="fantasy/applicationsettings">
+        <Object ID="businessengine" Instance="{x:Static sp:Settings.Default}"/>
+    </Extension>
+
+
+    <Extension Path="fantasy/studio/workbench/pads">
+        <Object ID="documents">
+            <sbe:DocumentPad/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/package/childprovider">
+        <Object ID="childPackages" >
+            <sbe:ChildPackageProvider/>
+        </Object>
+        <Object ID="classes">
+            <sbe:PackageClassesProvider/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
+        <sc:Button ID="AddPackage" Text="Add Package" CommandType="{x:Type sbe:AddPackageCommand}" />
+        <sc:Button ID="EditPackage" Text="Open" CommandType="{x:Type sbe:EditPackageCommand}"/>
+        <sc:Button ID="Remove" Text="Remove"></sc:Button>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/packageeditor/panels">
+        <ObjectBuilder ID="General" Type="{x:Type sbe:PropertyGridEditor}"/>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
+
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classeditor/panels">
+        <ObjectBuilder ID="General" Type="{x:Type sbe:PropertyGridEditor}"/>
+        <ObjectBuilder ID="Properties" Type="{x:Type sbe:PropertyEditor}" />
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
+        
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
+
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
+        <sc:CommandBinding ID="Save" Command="Save" Handler="{x:Type sbe:SaveEntityEditingViewContentCommand}">
+            <sc:CommandBinding.Conditional>
+                    <OwnerState State="Dirty"/>
+            </sc:CommandBinding.Conditional>
+        </sc:CommandBinding>
+    </Extension>
+    
+    
+    <Extension Path="fantasy/studio/documents/builders">
+        <Object ID="packageeditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessPackage }" />
+            </Object.Conditional>
+            <sbe:PackageViewBuilder/>
+        </Object>
+        <Object ID="classeditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessClass}" />
+            </Object.Conditional>
+            <sbe:ClassViewBuilder />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classeditor/commandbindings">
+        <sc:CommandBinding ID="Save" Command="Save" Handler="{x:Type sbe:SaveEntityEditingViewContentCommand}">
+            <sc:CommandBinding.Conditional>
+                <OwnerState State="Dirty"/>
+            </sc:CommandBinding.Conditional>
+        </sc:CommandBinding>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/propertyeditor/commandbindings">
+        
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/toolbars">
+        <sc:ToolBar ID="Default" Text="Default">
+            <sc:Button ID="addProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" 
+                       Text="Add Property" 
+                       CommandType="{x:Type sbe:PropertyEditorAddPropertyCommand}" />
+            
+            <sc:Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico"/>
+        </sc:ToolBar>
+    </Extension>
+</AddIn>

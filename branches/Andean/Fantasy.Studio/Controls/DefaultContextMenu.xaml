@@ -1,0 +1,40 @@
+﻿<ContextMenu x:Class="Fantasy.Studio.Controls.DefaultContextMenu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Fantasy.Studio.Codons"
+             xmlns:b="clr-namespace:Fantasy.Windows;assembly=Fantasy.Base"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" ItemsSource="{Binding ChildItems}">
+    <ContextMenu.Resources>
+        <Image MaxWidth="16" MaxHeight="16" Source="{Binding Icon}" x:Key="img" x:Shared="false"/>
+    </ContextMenu.Resources>
+    <ContextMenu.ItemContainerStyle>
+        <Style TargetType="{x:Type MenuItem}">
+            <Setter Property="MenuItem.CommandParameter" Value="{Binding Owner}"/>
+            <Setter Property="Header" Value="{Binding Text}"/>
+            <Setter Property="ItemsSource" Value="{Binding ChildItems}"/>
+            <Setter Property="Command" Value="{Binding Command}" />
+            <Setter Property="Visibility" Value="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed}}" />
+            <Setter Property="IsCheckable" Value="{Binding IsCheckable, Mode=OneWay}" />
+            <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=OneWay}" />
+           
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding HasIcon}" Value="true">
+                    <Setter Property="Icon" Value="{DynamicResource img}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Text}" Value="-">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <Separator/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ContextMenu.ItemContainerStyle>
+    
+</ContextMenu>

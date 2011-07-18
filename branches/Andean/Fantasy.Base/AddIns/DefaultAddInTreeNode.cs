@@ -1,0 +1,193 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Collections;
+using Fantasy.Properties;
+
+namespace Fantasy.AddIns
+{
+    public class DefaultAddInTreeNode : IAddInTreeNode
+    {
+
+        public DefaultAddInTreeNode()
+        {
+            this.ChildNodes.Inserted += new EventHandler<CollectionEventArgs<DefaultAddInTreeNode>>(ChildNodes_Inserted);
+        }
+
+        void ChildNodes_Inserted(object sender, CollectionEventArgs<DefaultAddInTreeNode> e)
+        {
+            _sortedChildNodes = null;
+        }
+        public string ID { get; set; }
+
+        private DefaultAddInTreeNode[] _sortedChildNodes = null;
+
+        #region IAddInTreeNode Members
+
+        public DefaultAddInTreeNode FindChild(string ID)
+        {
+            return _childNodes.FirstOrDefault(c => c.ID == ID);
+        }
+
+        public DefaultAddInTreeNode Parent { get; set; }
+
+        public string FullPath
+        {
+            get
+            {
+                if (Parent != null)
+                {
+                    return Parent.FullPath + "/" + this.ID;
+                }
+                else
+                {
+                    return this.ID;
+                }
+            }
+        }
+
+
+
+        private Collection<DefaultAddInTreeNode> _childNodes = new Collection<DefaultAddInTreeNode>();
+        public Collection<DefaultAddInTreeNode> ChildNodes
+        {
+            get { return _childNodes; }
+        }
+
+        IAddInTreeNode[] IAddInTreeNode.ChildNodes
+        {
+            get
+            {
+                return _childNodes.ToArray();
+            }
+        }
+
+        public ICodon Codon
+        {
+            get;
+            set;
+        }
+
+        public ConditionCollection Condition
+        {
+            get;
+            set;
+        }
+
+        public ConditionFailedAction GetCurrentConditionFailedAction(object caller)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable BuildChildItems(object caller)
+        {
+            if (this._sortedChildNodes == null)
+            {
+                this.CreateSortedChildItems();
+            }
+            foreach (DefaultAddInTreeNode childNode in this._sortedChildNodes)
+            {
+                if (childNode.Codon.HandleCondition || childNode.Condition.GetCurrentConditionFailedAction(caller) == ConditionFailedAction.Nothing)
+                {
+                    IEnumerable subItems = childNode.BuildChildItems(caller);
+                    object rs = childNode.Codon.BuildItem(caller, subItems, childNode.Condition);
+                    if (rs != null)
+                    {
+                        yield return rs;
+                    }
+                }
+
+            }
+
+        }
+
+        private void CreateSortedChildItems()
+        {
+            Dictionary<DefaultAddInTreeNode, List<string>> afters = this.CreateAllAfters();
+            Dictionary<DefaultAddInTreeNode, int> order = new Dictionary<DefaultAddInTreeNode, int>();
+            foreach (DefaultAddInTreeNode node in this.ChildNodes)
+            {
+                EvaluateOrder(afters, order, node);
+            }
+
+            this._sortedChildNodes = this.ChildNodes.OrderBy(n => order.GetValueOrDefault(n, 0)).ToArray();
+        }
+
+        private int EvaluateOrder(Dictionary<DefaultAddInTreeNode, List<string>> afters, Dictionary<DefaultAddInTreeNode, int> order, DefaultAddInTreeNode node)
+        {
+           
+            if (order.ContainsKey(node))
+            {
+                int rs = order[node];
+                if (rs < 0)
+                {
+                    throw new AddInException(string.Format(Resources.AddInTreePathRecursiveOrderText, node.FullPath));
+                }
+                else
+                {
+                    return rs;
+                }
+            }
+            else
+            {
+                
+                order.Add(node, -1);
+                int rs = 0;
+                List<int> afterOrders = new List<int>();
+                foreach (string id in afters[node])
+                {
+                    DefaultAddInTreeNode n = this.FindChild(id);
+                    if(n != null)
+                    {
+                        afterOrders.Add(EvaluateOrder(afters, order, n));
+                    }
+                }
+
+                if (afterOrders.Count > 0)
+                {
+                    rs = afterOrders.Max() + 1;
+                }
+                return rs;
+            }
+        }
+
+        private Dictionary<DefaultAddInTreeNode, List<string>> CreateAllAfters()
+        {
+            Dictionary<DefaultAddInTreeNode, List<string>> rs = new Dictionary<DefaultAddInTreeNode, List<string>>();
+            foreach (DefaultAddInTreeNode node in this.ChildNodes)
+            {
+                rs.Add(node, new List<string>());
+            }
+            foreach (DefaultAddInTreeNode node in this.ChildNodes)
+            {
+                foreach (string before in node.InsertBefore)
+                {
+                    DefaultAddInTreeNode beforeNode = this.FindChild(before);
+                    if (beforeNode != null)
+                    {
+                        List<string> afters = rs[beforeNode];
+                        afters.Add(node.ID);
+                    }
+                }
+            }
+            return rs;
+        }
+
+        public IEnumerable<T> BuildChildItems<T>(object caller)
+        {
+            foreach (T item in this.BuildChildItems(caller))
+            {
+                yield return item;
+            }
+        }
+
+        public AddIn AddIn { get; set; }
+
+        public string[] InsertBefore { get; set; }
+
+        public string[] InsertAfter { get; set; }
+
+        #endregion
+    }
+}

@@ -1,0 +1,18 @@
+﻿<UserControl   x:Class="Fantasy.Studio.PropertiesPad"
+               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:my="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration" 
+             xmlns:win="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"  
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel LastChildFill="True">
+        <ToolBarTray Name="toolBarTray" DockPanel.Dock="Top">
+        </ToolBarTray>
+        <ComboBox Name="CandidateComboBox"  DockPanel.Dock="Top" ItemsSource="{Binding SelectableObjects}"/>
+        <my:WindowsFormsHost >
+            <win:PropertyGrid x:Name="PropertyGrid" Dock="Fill"/>
+        </my:WindowsFormsHost>
+    </DockPanel>
+</UserControl>
