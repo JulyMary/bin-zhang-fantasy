@@ -7,9 +7,7 @@
         Author="Bin Zhang" Description="Fantasy Studio AddIn" Name="Studio" Version="1.0">
     <Extension Path="fantasy/services">
         <Object ID="test">
-                <ObjectBuilder>
-                        <Or/>
-                </ObjectBuilder>
+            <Or/>
         </Object>
     </Extension>
   

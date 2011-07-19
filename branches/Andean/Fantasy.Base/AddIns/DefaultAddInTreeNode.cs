@@ -80,7 +80,7 @@ namespace Fantasy.AddIns
             throw new NotImplementedException();
         }
 
-        public IEnumerable BuildChildItems(object caller)
+        public IEnumerable BuildChildItems(object caller, IServiceProvider site)
         {
             if (this._sortedChildNodes == null)
             {
@@ -90,10 +90,14 @@ namespace Fantasy.AddIns
             {
                 if (childNode.Codon.HandleCondition || childNode.Condition.GetCurrentConditionFailedAction(caller) == ConditionFailedAction.Nothing)
                 {
-                    IEnumerable subItems = childNode.BuildChildItems(caller);
+                    IEnumerable subItems = childNode.BuildChildItems(caller, site);
                     object rs = childNode.Codon.BuildItem(caller, subItems, childNode.Condition);
                     if (rs != null)
                     {
+                        if (rs is IObjectWithSite)
+                        {
+                            ((IObjectWithSite)rs).Site = site;
+                        }
                         yield return rs;
                     }
                 }
@@ -174,9 +178,9 @@ namespace Fantasy.AddIns
             return rs;
         }
 
-        public IEnumerable<T> BuildChildItems<T>(object caller)
+        public IEnumerable<T> BuildChildItems<T>(object caller, IServiceProvider site)
         {
-            foreach (T item in this.BuildChildItems(caller))
+            foreach (T item in this.BuildChildItems(caller, site))
             {
                 yield return item;
             }

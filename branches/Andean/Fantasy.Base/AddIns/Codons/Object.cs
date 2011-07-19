@@ -7,17 +7,52 @@ using System.Windows;
 
 namespace Fantasy.AddIns
 {
-    [ContentProperty("Instance")]
-    public class Object : CodonBase
+    [System.Windows.Markup.ContentProperty("Template")]
+    public class Object : ObjectBuilder, ICodon
     {
-        public ObjectBuilder Instance { get; set; }
-        // Using a DependencyProperty as the backing store for Instance.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty InstanceProperty =
-            DependencyProperty.Register("Instance", typeof(object), typeof(Object), new PropertyMetadata(null));
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        #region ICodon Members
+
+        public ICondition Conditional
         {
-            return Instance != null ? Instance.Build() : null;
+            get;
+            set;
         }
+
+        public bool HandleCondition
+        {
+            get { return false; }
+        }
+
+        public string ID
+        {
+            get;
+            set;
+        }
+
+        public string InsertAfter
+        {
+            get;
+            set;
+        }
+
+        public string InsertBefore
+        {
+            get;
+            set;
+        }
+
+        public object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        {
+            return base.Build();
+        }
+
+        private IList<ICodon> _codons = new List<ICodon>();
+        IList<ICodon> ICodon.Codons
+        {
+            get { return _codons; }
+        }
+
+        #endregion
     }
 }

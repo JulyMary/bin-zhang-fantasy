@@ -9,34 +9,22 @@
 
 
     <Extension Path="fantasy/applicationsettings">
-        <Object ID="businessengine">
-            <ObjectBuilder>
-                <x:Static Member="sp:Settings.Default" />
-            </ObjectBuilder>
-        </Object>
+        <Object ID="businessengine" Template="{x:Static sp:Settings.Default}"/>
     </Extension>
 
 
     <Extension Path="fantasy/studio/workbench/pads">
         <Object ID="documents">
-            <ObjectBuilder>
-                <sbe:DocumentPad/>
-            </ObjectBuilder>
+            <sbe:DocumentPad/>
         </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/package/childprovider">
         <Object ID="childPackages" >
-            <ObjectBuilder>
-                <sbe:ChildPackageProvider/>
-            </ObjectBuilder>
-            
+            <sbe:ChildPackageProvider/>
         </Object>
         <Object ID="classes">
-            <ObjectBuilder>
-                <sbe:PackageClassesProvider/>
-            </ObjectBuilder>
-           
+            <sbe:PackageClassesProvider/>
         </Object>
     </Extension>
 
@@ -47,7 +35,9 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/panels">
-       
+        <Object ID="General" >
+            <sbe:PropertyGridEditor/>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
@@ -55,17 +45,12 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classeditor/panels">
-        <Object ID="General">
-            <ObjectBuilder >
-                <sbe:PropertyGridEditor />
-            </ObjectBuilder>
+        <Object ID="General" >
+            <sbe:PropertyGridEditor/>
         </Object>
-        <Object ID="Properties">
-            <ObjectBuilder >
-                <sbe:PropertyEditor />
-            </ObjectBuilder>
+        <Object ID="Properties" >
+            <sbe:PropertyEditor/>
         </Object>
-       
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
@@ -82,23 +67,20 @@
             </sc:CommandBinding.Conditional>
         </sc:CommandBinding>
     </Extension>
-
+    
+    
     <Extension Path="fantasy/studio/documents/builders">
         <Object ID="packageeditor">
             <Object.Conditional>
                 <IsTypeOf Type="{x:Type be:BusinessPackage }" />
             </Object.Conditional>
-            <ObjectBuilder>
-                <sbe:PackageViewBuilder/>
-            </ObjectBuilder>
+            <sbe:PackageViewBuilder/>
         </Object>
         <Object ID="classeditor">
             <Object.Conditional>
                 <IsTypeOf Type="{x:Type be:BusinessClass}" />
             </Object.Conditional>
-            <ObjectBuilder>
-                <sbe:ClassViewBuilder />
-            </ObjectBuilder>
+            <sbe:ClassViewBuilder />
         </Object>
     </Extension>
 
