@@ -14,7 +14,7 @@ namespace Fantasy.AddIns
         {
             CurrentInstance = this;
         }
-        public object Build()
+        public virtual object Build()
         {
             XamlReader xr = this.XamlNodes.GetReader();
             XamlObjectWriter xow = new XamlObjectWriter(xr.SchemaContext);
@@ -26,7 +26,7 @@ namespace Fantasy.AddIns
             return xow.Result;
         }
 
-        public object Template { get; set; }
+        public virtual object Template { get; set; }
 
         internal XamlNodeList XamlNodes { get; set; }
 

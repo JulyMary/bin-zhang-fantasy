@@ -13,14 +13,10 @@ namespace Fantasy.AddIns
         public AddIn Parse(XmlReader reader)
         {
 
-            XamlObjectWriterSettings settings = new XamlObjectWriterSettings();
-            settings.XamlSetValueHandler = (sender, e) =>
-                {
-                    Debug.WriteLine("{0} : {1}", e.Member.Name, e.Value); 
-                };
-          
-            XamlXmlReader xxr = new XamlXmlReader(reader);
-            XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext, settings);
+
+            XamlXmlReaderSettings settings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
+            XamlXmlReader xxr = new XamlXmlReader(reader, settings);
+            XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext);
 
             ParseCommon(xxr, xow);
 
@@ -33,8 +29,8 @@ namespace Fantasy.AddIns
         {
             while (reader.Read())
             {
-                writer.WriteNode(reader); 
-                if (reader.NodeType == XamlNodeType.StartObject && reader.Type != null && reader.Type.UnderlyingType == typeof(ObjectBuilder))
+                writer.WriteNode(reader);
+                if (reader.NodeType == XamlNodeType.StartObject && reader.Type != null && reader.Type.UnderlyingType.IsSubclassOf(typeof(ObjectBuilder)))
                 {
                     this.ParseBuilder(reader, writer);
                 }
@@ -45,13 +41,23 @@ namespace Fantasy.AddIns
         {
             while(reader.Read())
             {
-                writer.WriteNode(reader); 
+                int deep = 0;
+                writer.WriteNode(reader);
+                
                 if (reader.NodeType == XamlNodeType.StartMember)
                 {
-                    this.ParseBuilderContent(reader);
+                    deep ++;
+                    if(reader.Member.Name == "Template")
+                    {
+                        this.ParseBuilderContent(reader);
+                    }
 
                 }
-                else if (reader.NodeType == XamlNodeType.EndObject)
+                else if(reader.NodeType == XamlNodeType.EndMember) 
+                {
+                    deep--;
+                }
+                else if (reader.NodeType == XamlNodeType.EndObject && deep == 0)
                 {
                     return;
                 }
