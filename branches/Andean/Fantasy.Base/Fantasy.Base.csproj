@@ -149,7 +149,6 @@
     <Compile Include="AddIns\CodonBase.cs" />
     <Compile Include="AddIns\Codons\Adapter.cs" />
     <Compile Include="AddIns\Codons\Assembly.cs" />
-    <Compile Include="AddIns\Codons\ObjectBuilder.cs" />
     <Compile Include="AddIns\Codons\RegisterAdaptionService.cs" />
     <Compile Include="AddIns\ConditionBase.cs" />
     <Compile Include="AddIns\ConditionCollection.cs" />
@@ -166,6 +165,7 @@
     <Compile Include="AddIns\IStateObject.cs" />
     <Compile Include="AddIns\Not.cs" />
     <Compile Include="AddIns\Codons\Object.cs" />
+    <Compile Include="AddIns\ObjectBuilder.cs" />
     <Compile Include="AddIns\Or.cs" />
     <Compile Include="Collection\Collection.cs" />
     <Compile Include="Collection\CollectionExtensions.cs" />

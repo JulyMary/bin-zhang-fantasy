@@ -142,17 +142,18 @@ namespace Fantasy.AddIns
             AddInTree.Tree = new DefaultAddInTree();
             foreach (string file in addInFiles)
             {
-                FileStream fs = LongPathFile.Open(file, FileMode.Open, FileAccess.Read);
+                //FileStream fs = LongPathFile.Open(file, FileMode.Open, FileAccess.Read);
+                XmlReader reader = XmlReader.Create(file);
                 AddIn addIn = null;
                 try
                 {
                     AddInParser parser = new AddInParser();
-                    XmlReader reader = XmlReader.Create(fs);
+                   
                     addIn = parser.Parse(reader);
                 }
                 finally
                 {
-                    fs.Close();
+                    reader.Close();
                 }
                 AddInTree.Tree.InsertAddIn(addIn);
             }

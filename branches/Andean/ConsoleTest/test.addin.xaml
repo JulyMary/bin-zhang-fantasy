@@ -1,0 +1,16 @@
+﻿<AddIn  xmlns="clr-namespace:Fantasy.AddIns;assembly=Fantasy.Base"
+        xmlns:sm="clr-namespace:Fantasy.ServiceModel;assembly=Fantasy.Base"
+        
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+
+        Author="Bin Zhang" Description="Fantasy Studio AddIn" Name="Studio" Version="1.0">
+    <Extension Path="fantasy/services">
+        <Object ID="test">
+                <ObjectBuilder>
+                        <Or/>
+                </ObjectBuilder>
+        </Object>
+    </Extension>
+  
+</AddIn>
