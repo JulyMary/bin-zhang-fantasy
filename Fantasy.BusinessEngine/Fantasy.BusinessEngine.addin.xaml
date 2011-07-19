@@ -5,10 +5,16 @@
     
     <Extension Path="fantasy/services">
         <Object ID="connectionstring">
-            <s:DebugConnectionStringProvider/>
+            <ObjectBuilder>
+                <s:DebugConnectionStringProvider/>
+            </ObjectBuilder>
+            
         </Object>
         <Object ID="nhprovider" InsertAfter="registerAdaption">
-            <s:DefaultEntityService/>
+            <ObjectBuilder>
+                <s:DefaultEntityService/>
+            </ObjectBuilder>
+           
         </Object>
     </Extension>
 
@@ -18,10 +24,16 @@
 
     <Extension Path="fantasy/businessengine/entityhandlers/create">
         <Object ID="monitorpropertychange">
-            <bee:MonitorEntityPropertyChangeHandler/>
+            <ObjectBuilder>
+                <bee:MonitorEntityPropertyChangeHandler/>
+            </ObjectBuilder>
+            
         </Object>
         <Object ID="defaultcreatehandler">
-            <bee:DefaultEntityCreateHandler/>
+            <ObjectBuilder>
+                <bee:DefaultEntityCreateHandler/>
+            </ObjectBuilder>
+            
         </Object>
     </Extension>
 
@@ -35,46 +47,69 @@
 
     <Extension Path="fantasy/businessengine/entityhandlers/load">
         <Object ID="defaultLoadAndCreate">
-            <bee:MonitorEntityPropertyChangeHandler/>
+            <ObjectBuilder>
+                <bee:MonitorEntityPropertyChangeHandler/>
+            </ObjectBuilder>
+            
         </Object>
         <Object ID="defaultloadhandler">
-            <bee:DefaultEntityLoadHandle/>
+            <ObjectBuilder>
+                <bee:DefaultEntityLoadHandle/>
+            </ObjectBuilder>
+            
         </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/inserting">
         <Object ID="defaultinsertinghandler">
-            <bee:DefaultEntityInsertingHandler />
+            <ObjectBuilder>
+                <bee:DefaultEntityInsertingHandler /> 
+            </ObjectBuilder>
+           
         </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/inserted">
         <Object ID="defaultinsertedhandler">
-            <bee:DefaultEntityInsertedHandler />
+            <ObjectBuilder>
+                <bee:DefaultEntityInsertedHandler />
+            </ObjectBuilder>
         </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/updating">
         <Object ID="defaultupdatinghandler">
-            <bee:DefaultEntityUpdatingHandler />
+            <ObjectBuilder>
+                <bee:DefaultEntityUpdatingHandler />
+            </ObjectBuilder>
+            
         </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/updated">
         <Object ID="defaultupdatedhandler">
-            <bee:DefaultEntityUpdatedHandler />
+            <ObjectBuilder>
+                <bee:DefaultEntityUpdatedHandler />
+            </ObjectBuilder>
+              
         </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/deleting">
         <Object ID="defaultdeletinghandler">
-            <bee:DefaultEntityDeletingHandler/>
+            <ObjectBuilder>
+                <bee:DefaultEntityDeletingHandler/>
+            </ObjectBuilder>
+           
         </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/deleted">
         <Object ID="defaultdeletedhandler">
-            <bee:DefaultEntityDeletedHandler/>
+            <ObjectBuilder>
+                <bee:DefaultEntityDeletedHandler/>
+            </ObjectBuilder>
+           
         </Object>
     </Extension>
 

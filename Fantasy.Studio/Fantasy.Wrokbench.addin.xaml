@@ -36,39 +36,65 @@
 
     <Extension Path="fantasy/services">
         <Object ID="adapterManager">
-            <ad:DefaultAdapterManager />
+            <ObjectBuilder>
+                <ad:DefaultAdapterManager />
+            </ObjectBuilder>
+            
         </Object>
         <Object ID="registerAdaption">
-            <RegisterAdaptionService/>
+            <ObjectBuilder>
+                <RegisterAdaptionService/>
+            </ObjectBuilder>
         </Object>
                 
         <Object ID="monitorSelection">
-            <ss:WPFMonitorSelectionService/>
+            <ObjectBuilder>
+                <ss:WPFMonitorSelectionService/>
+            </ObjectBuilder>
         </Object>
         <Object ID="menuservice">
-            <ss:DefaultMenuService/>
+            <ObjectBuilder>
+                <ss:DefaultMenuService/>
+            </ObjectBuilder>
         </Object> 
         <Object ID="messagebox">
-            <ss:DefaultMessageBoxService />
+            <ObjectBuilder>
+                <ss:DefaultMessageBoxService />
+            </ObjectBuilder>
         </Object>
         <Object ID="workbench">
-            <s:DefaultWorkbench/>
+            <ObjectBuilder>
+                <s:DefaultWorkbench/>
+            </ObjectBuilder>
+            
         </Object>
     </Extension>
     <Extension Path="fantasy/startup">
         <Object ID="loadWorkBenchLayout">
-            <swl:LoadAvalonLayoutCommand/>
+            <ObjectBuilder>
+                <swl:LoadAvalonLayoutCommand/>
+            </ObjectBuilder>
+            
         </Object>
         <Object ID="RunApp" >
-            <s:RunAppCommand/>
+            <ObjectBuilder>
+                <s:RunAppCommand/>
+            </ObjectBuilder>
         </Object>
         <Object ID="saveSetting">
-            <s:SaveSettingCommand/>
+            <ObjectBuilder>
+                <s:SaveSettingCommand/> 
+            </ObjectBuilder>
+           
         </Object>
     </Extension>
     
     <Extension Path="fantasy/applicationsettings">
-        <Object ID="fantasyStudio" Instance="{x:Static sp:Settings.Default}"></Object>
+        <Object ID="fantasyStudio">
+            <ObjectBuilder>
+                <x:Static Member="sp:Settings.Default" />
+            </ObjectBuilder>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/typedescriptors">
@@ -96,7 +122,9 @@
     </Extension>
     <Extension Path="fantasy/studio/workbench/toolbartemplates">
         <Object ID="default">
-            <sc:DefaultToolBarDataTemplateSelector/>
+            <ObjectBuilder>
+                <sc:DefaultToolBarDataTemplateSelector/>
+            </ObjectBuilder>
         </Object>
     </Extension>
 
@@ -108,7 +136,9 @@
 
     <Extension Path="fantasy/studio/workbench/pads">
         <Object ID="properties">
-            <s:PropertiesPad/>
+            <ObjectBuilder>
+                <s:PropertiesPad/>
+            </ObjectBuilder>
         </Object>
     </Extension>
 
