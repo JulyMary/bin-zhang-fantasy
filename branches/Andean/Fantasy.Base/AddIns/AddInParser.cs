@@ -6,6 +6,7 @@ using System.Xml;
 using System.Xaml;
 using System.Diagnostics;
 
+
 namespace Fantasy.AddIns
 {
     public class AddInParser
@@ -13,15 +14,18 @@ namespace Fantasy.AddIns
         public AddIn Parse(XmlReader reader)
         {
 
-
+            _namespaces.Clear();
+            _namespaces.Push(new List<NamespaceDeclaration>());
             XamlXmlReaderSettings settings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
             XamlXmlReader xxr = new XamlXmlReader(reader, settings);
             XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext);
             ParseCommon(xxr, xow);
+            //_namespaces.Pop();
             return (AddIn)xow.Result;
 
         }
 
+        private Stack<List<NamespaceDeclaration>> _namespaces = new Stack<List<NamespaceDeclaration>>();
 
         private void ParseCommon(XamlXmlReader reader, XamlObjectWriter writer)
         {
@@ -63,28 +67,44 @@ namespace Fantasy.AddIns
                 
             }
         }
-
-        private static bool Read(XamlXmlReader reader)
+        int i = 0;
+        //int j = 0;
+        private  bool Read(XamlXmlReader reader)
         {
             bool rs = reader.Read();
+            
             if (rs)
             {
+               
+                //Debug.WriteLine(reader.NodeType);
                 switch (reader.NodeType)
                 {
+                    case XamlNodeType.EndMember:
+                    case XamlNodeType.EndObject:
 
-
+                        if (this._namespaces.Count > 0)
+                        {
+                            this._namespaces.Pop();
+                        }
+                         
+                        break;
                     case XamlNodeType.StartMember:
-                        Debug.WriteLine("{0} : {1}", reader.NodeType, reader.Member.Name);
-                        break;
                     case XamlNodeType.StartObject:
-                        Debug.WriteLine("{0} : {1}", reader.NodeType, reader.Type.UnderlyingType);
+                        
+                        i++;
+                      
+                       // Debug.WriteLine("{0} : {1} : {2}", reader.NodeType, reader.NodeType == XamlNodeType.StartMember ? (object)reader.Member.Name : (object)reader.Type.UnderlyingType, i);
+                        this._namespaces.Push(new List<NamespaceDeclaration>());
+                       
                         break;
-                    case XamlNodeType.Value:
-                        Debug.WriteLine("{0} : {1}", reader.NodeType, reader.Value);
+                    case XamlNodeType.NamespaceDeclaration:
+                        List<NamespaceDeclaration> frame = this._namespaces.Peek();
+                        frame.Add(new NamespaceDeclaration(reader.Namespace.Namespace, reader.Namespace.Prefix));
                         break;
-                    default:
-                        Debug.WriteLine(reader.NodeType);
+                   default:
+                        //Debug.WriteLine(reader.NodeType);
                         break;
+                    
                 }
             }
             return rs;
@@ -97,6 +117,15 @@ namespace Fantasy.AddIns
             int deep = 0;
             XamlNodeList nodes = new XamlNodeList(reader.SchemaContext);
             XamlWriter writer = nodes.Writer;
+
+            var namespaces = from frame in this._namespaces.ToArray().Reverse()
+                        from ns in frame
+                        select ns;
+            foreach (NamespaceDeclaration ns in namespaces)
+            {
+                writer.WriteNamespace(ns);
+            }
+
             while(Read(reader)) 
             {
                 if (reader.NodeType == XamlNodeType.StartObject)

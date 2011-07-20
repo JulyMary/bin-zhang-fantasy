@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Fantasy.AddIns;
 using System.Xml;
+using System.Xaml;
+using System.Diagnostics;
 
 namespace ConsoleTest
 {
@@ -18,6 +20,12 @@ namespace ConsoleTest
 
             DefaultAddInTree.Initialize(new string[] { "test.addin.xaml" });
             object[] rs = AddInTree.Tree.GetTreeNode("fantasy/services").BuildChildItems<object>(null).ToArray();
+
+            //XamlXmlReader reader = new XamlXmlReader("test.addin.xaml");
+            //while (reader.Read())
+            //{
+
+            //}
 
         }
     }

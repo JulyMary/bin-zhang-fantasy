@@ -17,13 +17,16 @@ namespace Fantasy.AddIns
         public virtual object Build()
         {
             XamlReader xr = this.XamlNodes.GetReader();
-            XamlObjectWriter xow = new XamlObjectWriter(xr.SchemaContext);
-            while (xr.Read())
-            {
-                xow.WriteNode(xr);
-            }
-            xr.Close();
+
+            //object rs = System.Windows.Markup.XamlReader.Load(xr);
+            //string[] ns = xr.SchemaContext.GetAllXamlNamespaces().ToArray();
+            //XamlSchemaContext context = new XamlSchemaContext(xr.SchemaContext.ReferenceAssemblies);
+            XamlObjectWriter xow = new XamlObjectWriter(System.Windows.Markup.XamlReader.GetWpfSchemaContext());
+
+            XamlServices.Transform(xr, xow, true);
+
             return xow.Result;
+            //return rs;
         }
 
         public virtual object Template { get; set; }

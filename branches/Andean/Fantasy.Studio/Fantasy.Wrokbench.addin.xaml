@@ -12,7 +12,11 @@
         xmlns:sd="clr-namespace:Fantasy.Studio.Descriptor;assembly=Fantasy.Studio"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Author="Bin Zhang" Description="Fantasy Studio AddIn" Name="Studio" Version="1.0">
-       
+    <Extension Path="fantasy/applicationsettings">
+        <Object ID="fantasyStudio" Template="{x:Static sp:Settings.Default}">
+            
+        </Object>
+    </Extension>
     <Extension Path="fantasy/adaption">
         <Adapter ID="TypeDescriptor">
             <Adapter.Factory>
@@ -41,7 +45,9 @@
         <Object ID="registerAdaption">
             <RegisterAdaptionService/>
         </Object>
-                
+        <Object ID="CommandService">
+            <ss:RoutedCommandService />
+        </Object>        
         <Object ID="monitorSelection">
             <ss:WPFMonitorSelectionService/>
         </Object>
@@ -67,8 +73,11 @@
         </Object>
     </Extension>
     
-    <Extension Path="fantasy/applicationsettings">
-        <Object ID="fantasyStudio" Template="{x:Static sp:Settings.Default}"></Object>
+   
+
+
+    <Extension Path="fantasy/studio/routedcommands">
+
     </Extension>
 
     <Extension Path="fantasy/studio/typedescriptors">
@@ -91,6 +100,7 @@
             <sc:Button ID="Open" Text="Open" Icon="/Fantasy.Studio;component/images/OpenFolder.png"/>
             <sc:Button ID="SEP1" Text="-" />
             <sc:Button ID="Close" Text="Close"/>
+            <sc:Button ID="stanly" Text="Stanly"/>
             <sc:Button ID="Save" Text="Save" Command="Save" Icon="/Fantasy.Studio;component/images/save.ico" />
         </sc:ToolBar>
     </Extension>
