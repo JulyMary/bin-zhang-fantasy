@@ -216,6 +216,7 @@
     <Compile Include="ServiceModel\TaskBarProgressMonitorService.cs" />
     <Compile Include="ServiceModel\TextLogFileService.cs" />
     <Compile Include="ServiceModel\WCFExceptionHandler.cs" />
+    <Compile Include="System.Reflection\AccessPrivateWrapper.cs" />
     <Compile Include="System.Threading\ThreadExtension.cs" />
     <Compile Include="System.Threading\ThreadFactory.cs" />
     <Compile Include="System.Threading\ThreadTaskScheduler.cs" />

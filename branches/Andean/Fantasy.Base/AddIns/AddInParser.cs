@@ -17,9 +17,7 @@ namespace Fantasy.AddIns
             XamlXmlReaderSettings settings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
             XamlXmlReader xxr = new XamlXmlReader(reader, settings);
             XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext);
-
             ParseCommon(xxr, xow);
-
             return (AddIn)xow.Result;
 
         }
@@ -27,7 +25,7 @@ namespace Fantasy.AddIns
 
         private void ParseCommon(XamlXmlReader reader, XamlObjectWriter writer)
         {
-            while (reader.Read())
+            while (Read(reader))
             {
                 writer.WriteNode(reader);
                 if (reader.NodeType == XamlNodeType.StartObject && reader.Type != null && reader.Type.UnderlyingType.IsSubclassOf(typeof(ObjectBuilder)))
@@ -39,9 +37,10 @@ namespace Fantasy.AddIns
 
         private void ParseBuilder(XamlXmlReader reader, XamlObjectWriter writer)
         {
-            while(reader.Read())
+            int deep = 0;
+            while (Read(reader))
             {
-                int deep = 0;
+                
                 writer.WriteNode(reader);
                 
                 if (reader.NodeType == XamlNodeType.StartMember)
@@ -65,6 +64,32 @@ namespace Fantasy.AddIns
             }
         }
 
+        private static bool Read(XamlXmlReader reader)
+        {
+            bool rs = reader.Read();
+            if (rs)
+            {
+                switch (reader.NodeType)
+                {
+
+
+                    case XamlNodeType.StartMember:
+                        Debug.WriteLine("{0} : {1}", reader.NodeType, reader.Member.Name);
+                        break;
+                    case XamlNodeType.StartObject:
+                        Debug.WriteLine("{0} : {1}", reader.NodeType, reader.Type.UnderlyingType);
+                        break;
+                    case XamlNodeType.Value:
+                        Debug.WriteLine("{0} : {1}", reader.NodeType, reader.Value);
+                        break;
+                    default:
+                        Debug.WriteLine(reader.NodeType);
+                        break;
+                }
+            }
+            return rs;
+        }
+
 
 
         private void ParseBuilderContent(XamlXmlReader reader)
@@ -72,7 +97,7 @@ namespace Fantasy.AddIns
             int deep = 0;
             XamlNodeList nodes = new XamlNodeList(reader.SchemaContext);
             XamlWriter writer = nodes.Writer;
-            while(reader.Read()) 
+            while(Read(reader)) 
             {
                 if (reader.NodeType == XamlNodeType.StartObject)
                 {
