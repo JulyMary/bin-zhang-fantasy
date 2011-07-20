@@ -153,6 +153,7 @@
     <Compile Include="RunAppCommand.cs" />
     <Compile Include="Services\IMessageBoxService.cs" />
     <Compile Include="Services\IMonitorSelectionService.cs" />
+    <Compile Include="Services\IRoutedCommandService.cs" />
     <Compile Include="Services\ISelectionServiceEx.cs" />
     <Compile Include="Controls\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>

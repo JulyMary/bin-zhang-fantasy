@@ -1,13 +1,14 @@
 ﻿<AddIn  xmlns="clr-namespace:Fantasy.AddIns;assembly=Fantasy.Base"
         xmlns:sm="clr-namespace:Fantasy.ServiceModel;assembly=Fantasy.Base"
+        xmlns:s="clr-namespace:ConsoleTest.Properties;assembly=ConsoleTest" 
         
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
         Author="Bin Zhang" Description="Fantasy Studio AddIn" Name="Studio" Version="1.0">
     <Extension Path="fantasy/services">
-        <Object ID="test">
-            <Or/>
+        <Object ID="test" Template="{x:Static s:Settings.Default}">
+           
         </Object>
     </Extension>
   
