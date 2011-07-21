@@ -13,13 +13,13 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            //AddInParser parser = new AddInParser();
-            //XmlReader reader = XmlReader.Create("test.addin.xaml");
-            //AddIn addIn = parser.Parse(reader);
-            //reader.Close();
+            AddInParser parser = new AddInParser();
+            XmlReader reader = XmlReader.Create("test.addin.xaml");
+            AddIn addIn = parser.Parse(reader);
+            reader.Close();
 
-            DefaultAddInTree.Initialize(new string[] { "test.addin.xaml" });
-            object[] rs = AddInTree.Tree.GetTreeNode("fantasy/services").BuildChildItems<object>(null).ToArray();
+            //DefaultAddInTree.Initialize(new string[] { "test.addin.xaml" });
+            //object[] rs = AddInTree.Tree.GetTreeNode("fantasy/services").BuildChildItems<object>(null).ToArray();
 
             //XamlXmlReader reader = new XamlXmlReader("test.addin.xaml");
             //while (reader.Read())

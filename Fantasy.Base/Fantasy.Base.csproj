@@ -167,6 +167,7 @@
     <Compile Include="AddIns\Codons\Object.cs" />
     <Compile Include="AddIns\ObjectBuilder.cs" />
     <Compile Include="AddIns\Or.cs" />
+    <Compile Include="AddIns\TemplateAttribute.cs" />
     <Compile Include="Collection\Collection.cs" />
     <Compile Include="Collection\CollectionExtensions.cs" />
     <Compile Include="Collection\UnionedObservableCollection.cs" />

@@ -7,33 +7,25 @@ using System.Xaml;
 
 namespace Fantasy.AddIns
 {
-    [System.Windows.Markup.ContentProperty("Template")]
+  
     public class ObjectBuilder
     {
-        public ObjectBuilder()
+        public ObjectBuilder(XamlNodeList nodes)
         {
-            CurrentInstance = this;
+            this.XamlNodes = nodes;
         }
         public virtual object Build()
         {
             XamlReader xr = this.XamlNodes.GetReader();
-
-            //object rs = System.Windows.Markup.XamlReader.Load(xr);
-            //string[] ns = xr.SchemaContext.GetAllXamlNamespaces().ToArray();
-            //XamlSchemaContext context = new XamlSchemaContext(xr.SchemaContext.ReferenceAssemblies);
-            XamlObjectWriter xow = new XamlObjectWriter(System.Windows.Markup.XamlReader.GetWpfSchemaContext());
-
-            XamlServices.Transform(xr, xow, true);
-
-            return xow.Result;
-            //return rs;
+            object rs = System.Windows.Markup.XamlReader.Load(xr);
+            xr.Close();
+            return rs;
+            
         }
 
-        public virtual object Template { get; set; }
+     
 
-        internal XamlNodeList XamlNodes { get; set; }
+        public XamlNodeList XamlNodes { get; private set; }
 
-        [ThreadStatic]
-        internal static ObjectBuilder CurrentInstance;
     }
 }

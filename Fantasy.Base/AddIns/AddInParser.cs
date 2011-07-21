@@ -5,153 +5,194 @@ using System.Text;
 using System.Xml;
 using System.Xaml;
 using System.Diagnostics;
+using System.Reflection;
 
 
 namespace Fantasy.AddIns
 {
     public class AddInParser
     {
+
+
+
         public AddIn Parse(XmlReader reader)
         {
+            
+           
+            XamlXmlReaderSettings readerSettings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
+            XamlXmlReader xxr = new XamlXmlReader(reader, readerSettings);
+            XamlObjectWriterSettings writerSettings = new XamlObjectWriterSettings()
+            {
+                AfterPropertiesHandler = new EventHandler<XamlObjectEventArgs>((o, e) =>
+                {
+                    _currentInstance.Pop();
+                }),
+                BeforePropertiesHandler = new EventHandler<XamlObjectEventArgs>((o, e) =>
+                {
+                    
+                    _currentInstance.Push(e.Instance); 
+                })
+            };
 
-            _namespaces.Clear();
-            _namespaces.Push(new List<NamespaceDeclaration>());
-            XamlXmlReaderSettings settings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
-            XamlXmlReader xxr = new XamlXmlReader(reader, settings);
-            XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext);
-            ParseCommon(xxr, xow);
-            //_namespaces.Pop();
+            XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext, writerSettings );
+
+            ParseObject(xxr, xow);
+           
             return (AddIn)xow.Result;
 
         }
 
         private Stack<List<NamespaceDeclaration>> _namespaces = new Stack<List<NamespaceDeclaration>>();
 
-        private void ParseCommon(XamlXmlReader reader, XamlObjectWriter writer)
+        private Stack<object> _currentInstance = new Stack<object>();
+
+        private void ParseSub(XamlReader reader, XamlObjectWriter writer)
         {
+            Read(reader);
+           
+            Write(reader, writer);
+            ParseObject(reader, writer);
             while (Read(reader))
             {
-                writer.WriteNode(reader);
-                if (reader.NodeType == XamlNodeType.StartObject && reader.Type != null && reader.Type.UnderlyingType.IsSubclassOf(typeof(ObjectBuilder)))
-                {
-                    this.ParseBuilder(reader, writer);
-                }
+                Write(reader, writer);
             }
         }
 
-        private void ParseBuilder(XamlXmlReader reader, XamlObjectWriter writer)
+        private static void Write(XamlReader reader, XamlObjectWriter writer)
         {
-            int deep = 0;
-            while (Read(reader))
+            if (reader.NodeType == XamlNodeType.StartObject)
             {
-                
-                writer.WriteNode(reader);
-                
-                if (reader.NodeType == XamlNodeType.StartMember)
-                {
-                    deep ++;
-                    if(reader.Member.Name == "Template")
-                    {
-                        this.ParseBuilderContent(reader);
-                    }
-
-                }
-                else if(reader.NodeType == XamlNodeType.EndMember) 
-                {
-                    deep--;
-                }
-                else if (reader.NodeType == XamlNodeType.EndObject && deep == 0)
-                {
-                    return;
-                }
-                
+                Debug.WriteLine(String.Format("{0} : {1} ", reader.NodeType, reader.Type.UnderlyingType));
             }
+            else if (reader.NodeType == XamlNodeType.StartMember)
+            {
+
+                Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Member.Name));
+            }
+            else if (reader.NodeType == XamlNodeType.Value)
+            {
+                Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Value));
+            }
+            else
+            {
+                Debug.WriteLine(reader.NodeType);
+            }
+            writer.WriteNode(reader);
         }
-        int i = 0;
-        //int j = 0;
-        private  bool Read(XamlXmlReader reader)
+
+        private void ParseObject(XamlReader reader, XamlObjectWriter writer)
         {
-            bool rs = reader.Read();
-            
-            if (rs)
+            _namespaces.Push(new List<NamespaceDeclaration>());
+            reader.Read();
+           
+            while (!reader.IsEof)
             {
                
-                //Debug.WriteLine(reader.NodeType);
-                switch (reader.NodeType)
+               
+                if (reader.NodeType == XamlNodeType.StartObject || reader.NodeType == XamlNodeType.GetObject)
                 {
-                    case XamlNodeType.EndMember:
-                    case XamlNodeType.EndObject:
+                    XamlReader subreader = reader.ReadSubtree();
+                    ParseSub(subreader, writer);
 
-                        if (this._namespaces.Count > 0)
-                        {
-                            this._namespaces.Pop();
-                        }
-                         
-                        break;
-                    case XamlNodeType.StartMember:
-                    case XamlNodeType.StartObject:
-                        
-                        i++;
-                      
-                       // Debug.WriteLine("{0} : {1} : {2}", reader.NodeType, reader.NodeType == XamlNodeType.StartMember ? (object)reader.Member.Name : (object)reader.Type.UnderlyingType, i);
-                        this._namespaces.Push(new List<NamespaceDeclaration>());
-                       
-                        break;
-                    case XamlNodeType.NamespaceDeclaration:
+                }
+                else if (reader.NodeType == XamlNodeType.StartMember)
+                {
+
+                    TemplateAttribute tempAttr = null;
+                    if (reader.Member.UnderlyingMember != null)
+                    {
+                        tempAttr = reader.Member.UnderlyingMember.GetCustomAttributes<TemplateAttribute>(true).FirstOrDefault();
+                    }
+
+                    XamlReader subreader = reader.ReadSubtree();
+
+                    if (tempAttr != null)
+                    {
+                        ParseBuilderMember(subreader, writer, tempAttr);
+                    }
+                    else
+                    {
+                        ParseSub(subreader, writer);
+                    }
+                }
+                else
+                {
+                    if (reader.NodeType == XamlNodeType.NamespaceDeclaration)
+                    {
                         List<NamespaceDeclaration> frame = this._namespaces.Peek();
                         frame.Add(new NamespaceDeclaration(reader.Namespace.Namespace, reader.Namespace.Prefix));
-                        break;
-                   default:
-                        //Debug.WriteLine(reader.NodeType);
-                        break;
-                    
+                      
+                   
+                    }
+                    Write(reader, writer);
+                    reader.Read();
                 }
             }
-            return rs;
+            _namespaces.Pop();
         }
 
-
-
-        private void ParseBuilderContent(XamlXmlReader reader)
+        private void ParseBuilderMember(XamlReader reader, XamlObjectWriter writer, TemplateAttribute tempAttr)
         {
-            int deep = 0;
+            Read(reader);
+
+            Write(reader, writer);
+            Read(reader);
+            if (reader.NodeType == XamlNodeType.StartObject || reader.NodeType == XamlNodeType.GetObject)
+            {
+                XamlReader subreader = reader.ReadSubtree();
+
+                ParseBuilder(subreader, tempAttr);
+            }
+            while (!reader.IsEof)
+            {
+                Write(reader, writer);
+                Read(reader);
+            }
+        }
+
+        private void ParseBuilder(XamlReader reader, TemplateAttribute tempAttr)
+        {
             XamlNodeList nodes = new XamlNodeList(reader.SchemaContext);
             XamlWriter writer = nodes.Writer;
 
             var namespaces = from frame in this._namespaces.ToArray().Reverse()
-                        from ns in frame
-                        select ns;
+                             from ns in frame
+                             select ns;
             foreach (NamespaceDeclaration ns in namespaces)
             {
                 writer.WriteNamespace(ns);
             }
 
-            while(Read(reader)) 
+            while (Read(reader))
             {
-                if (reader.NodeType == XamlNodeType.StartObject)
-                {
-                    deep++;
-                }
-                else if (reader.NodeType == XamlNodeType.EndObject)
-                {
-                    deep--;
-                }
                 writer.WriteNode(reader);
-
-
-                if (deep == 0)
-                {
-                    break;
-                }
-
             }
 
             writer.Close();
 
-            ObjectBuilder.CurrentInstance.XamlNodes = nodes;
-            ObjectBuilder.CurrentInstance = null;
+            ObjectBuilder builder = new ObjectBuilder(nodes);
+
+            object current = _currentInstance.Peek();
+ 
+            Type t = current.GetType();
+
+            MemberInfo mi = t.GetMember(tempAttr.BuildMember, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty | BindingFlags.SetProperty | BindingFlags.GetField | BindingFlags.SetField | BindingFlags.Instance).First();
+            if (mi.MemberType == MemberTypes.Field)
+            {
+                ((FieldInfo)mi).SetValue(current, builder);
+            }
+            else
+            {
+                ((PropertyInfo)mi).SetValue(current, builder, null); 
+            }
         }
 
-       
+        private bool Read(XamlReader reader)
+        {
+            bool rs = reader.Read();
+
+            return rs;
+        }
+
     }
 }
