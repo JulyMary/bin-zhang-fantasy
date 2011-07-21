@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace Fantasy.Studio.Codons
 {
-    public class ButtonModel : NotifyPropertyChangedObject, IUpdateStatus
+    public class ButtonModel : NotifyPropertyChangedObject, IUpdateStatus, IObjectWithSite
     {
         public ButtonModel ()
 	    {
@@ -174,6 +174,30 @@ namespace Fantasy.Studio.Codons
                 {
                     child.Update(caller);
                 }
+            }
+        }
+
+        #endregion
+
+        #region IObjectWithSite Members
+
+        private IServiceProvider _site = null;
+        public IServiceProvider Site
+        {
+            get
+            {
+                return _site;
+            }
+            set
+            {
+                _site = value;
+
+                IObjectWithSite cmd = this.Command as IObjectWithSite;
+                if (cmd != null && cmd.Site == null)
+                {
+                    cmd.Site = value;
+                }
+               
             }
         }
 

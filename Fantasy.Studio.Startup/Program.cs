@@ -24,12 +24,8 @@ namespace FantasyDeveloper
             IEnumerable<object> services = AddInTree.Tree.GetTreeNode("fantasy/services").BuildChildItems<object>(null);
             ServiceManager.Services.InitializeServices(services.ToArray());
 
-            foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/startup").BuildChildItems<ICommand>(null))
+            foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/startup").BuildChildItems<ICommand>(null, ServiceManager.Services))
             {
-                if (command is IObjectWithSite)
-                {
-                    ((IObjectWithSite)command).Site = ServiceManager.Services;
-                }
                 command.Execute(null);
             }
 

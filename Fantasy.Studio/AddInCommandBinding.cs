@@ -7,7 +7,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.Studio
 {
-    class AddInCommandBinding : CommandBinding
+    class AddInCommandBinding : CommandBinding, IObjectWithSite
     {
         public AddInCommandBinding()
         {
@@ -51,5 +51,27 @@ namespace Fantasy.Studio
 
         public object Handler { get; set; }
 
+
+        #region IObjectWithSite Members
+
+        private IServiceProvider _site;
+        public IServiceProvider Site
+        {
+            get
+            {
+                return _site;
+            }
+            set
+            {
+                _site = value;
+                IObjectWithSite handler = this.Handler as IObjectWithSite;
+                if (handler != null)
+                {
+                    handler.Site = value;
+                }
+            }
+        }
+
+        #endregion
     }
 }

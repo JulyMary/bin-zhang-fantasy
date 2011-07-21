@@ -10,22 +10,22 @@ namespace Fantasy.AddIns
   
     public class ObjectBuilder
     {
-        public ObjectBuilder(XamlNodeList nodes)
+        internal ObjectBuilder(XamlNodeList xamlNodes)
         {
-            this.XamlNodes = nodes;
+            this._xamlNodes = xamlNodes;
         }
-        public virtual object Build()
+        public T Build<T>()
         {
-            XamlReader xr = this.XamlNodes.GetReader();
-            object rs = System.Windows.Markup.XamlReader.Load(xr);
+            XamlReader xr = this._xamlNodes.GetReader();
+            XamlObjectWriter writer = new XamlObjectWriter(xr.SchemaContext);
+
+
+            XamlServices.Transform(xr, writer, true);
             xr.Close();
-            return rs;
+            return (T)writer.Result;
             
         }
-
-     
-
-        public XamlNodeList XamlNodes { get; private set; }
+        private XamlNodeList _xamlNodes;
 
     }
 }

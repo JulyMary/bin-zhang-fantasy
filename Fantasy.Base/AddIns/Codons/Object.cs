@@ -17,7 +17,7 @@ namespace Fantasy.AddIns
 
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
         {
-            return _builder.Build();
+            return _builder.Build<object>();
         }
     }
 }
