@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine
     /// <summary>
     /// Interaction logic for EntityEditingViewContent.xaml
     /// </summary>
-    public abstract partial class EntityEditingViewContent : UserControl, IViewContent, IEditingViewContent
+    public abstract partial class EntityEditingViewContent : UserControl, IViewContent, IEditingViewContent, IObjectWithSite
     {
         public EntityEditingViewContent()
         {
@@ -46,12 +46,12 @@ namespace Fantasy.Studio.BusinessEngine
             _model = new EntityEditingViewContentModel();
             if (this.EditingPanelPath != null)
             {
-                _model.EditingPanels.AddRange(AddInTree.Tree.GetTreeNode(this.EditingPanelPath).BuildChildItems<IEntityEditingPanel>(this));
+                _model.EditingPanels.AddRange(AddInTree.Tree.GetTreeNode(this.EditingPanelPath).BuildChildItems<IEntityEditingPanel>(this,this._services));
             }
 
             if (this.CommandBindingPath != null)
             {
-                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode(this.CommandBindingPath).BuildChildItems(this))
+                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode(this.CommandBindingPath).BuildChildItems(this, this._services))
                 {
                     this.CommandBindings.Add(cb);
                 }
@@ -222,6 +222,22 @@ namespace Fantasy.Studio.BusinessEngine
             get { return this.DirtyState; }
         }
 
-       
+
+
+        #region IObjectWithSite Members
+        private IServiceProvider _services;
+        IServiceProvider IObjectWithSite.Site
+        {
+            get
+            {
+                return _services;
+            }
+            set
+            {
+                _services = value;
+            }
+        }
+
+        #endregion
     }
 }

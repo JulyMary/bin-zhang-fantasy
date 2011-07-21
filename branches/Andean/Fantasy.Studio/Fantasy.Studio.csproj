@@ -73,6 +73,7 @@
     <Compile Include="Codons\ButtonBuilder.cs" />
     <Compile Include="Codons\ButtonSourceCollections.cs" />
     <Compile Include="Codons\CommandBinding.cs" />
+    <Compile Include="Codons\RoutedUICommand.cs" />
     <Compile Include="CommandExtension.cs" />
     <Compile Include="Controls\DefaultTooBar.xaml.cs">
       <DependentUpon>DefaultTooBar.xaml</DependentUpon>

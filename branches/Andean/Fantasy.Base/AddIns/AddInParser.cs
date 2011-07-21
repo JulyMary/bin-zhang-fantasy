@@ -152,6 +152,7 @@ namespace Fantasy.AddIns
 
         private void ParseBuilder(XamlReader reader, TemplateAttribute tempAttr)
         {
+           
             XamlNodeList nodes = new XamlNodeList(reader.SchemaContext);
             XamlWriter writer = nodes.Writer;
 

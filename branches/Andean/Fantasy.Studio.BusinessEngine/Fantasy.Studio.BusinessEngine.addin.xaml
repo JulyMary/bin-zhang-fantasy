@@ -11,8 +11,7 @@
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sp:Settings.Default}"/>
     </Extension>
-
-
+    
     <Extension Path="fantasy/studio/workbench/pads">
         <Object ID="documents">
             <sbe:DocumentPad/>
@@ -29,8 +28,10 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
-        <sc:Button ID="AddPackage" Text="Add Package" CommandType="{x:Type sbe:AddPackageCommand}" />
-        <sc:Button ID="EditPackage" Text="Open" CommandType="{x:Type sbe:EditPackageCommand}"/>
+        <sc:Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}">
+          
+        </sc:Button>
+        <sc:Button ID="EditPackage" Text="Open" Command="{New sbe:EditPackageCommand}"/>
         <sc:Button ID="Remove" Text="Remove"></sc:Button>
     </Extension>
 
@@ -61,7 +62,7 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
-        <sc:CommandBinding ID="Save" Command="Save" Handler="{x:Type sbe:SaveEntityEditingViewContentCommand}">
+        <sc:CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}">
             <sc:CommandBinding.Conditional>
                     <OwnerState State="Dirty"/>
             </sc:CommandBinding.Conditional>
@@ -85,7 +86,7 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classeditor/commandbindings">
-        <sc:CommandBinding ID="Save" Command="Save" Handler="{x:Type sbe:SaveEntityEditingViewContentCommand}">
+        <sc:CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}">
             <sc:CommandBinding.Conditional>
                 <OwnerState State="Dirty"/>
             </sc:CommandBinding.Conditional>
@@ -99,8 +100,7 @@
         <sc:ToolBar ID="Default" Text="Default">
             <sc:Button ID="addProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" 
                        Text="Add Property" 
-                       CommandType="{x:Type sbe:PropertyEditorAddPropertyCommand}" />
-            
+                       Command="{New sbe:PropertyEditorAddPropertyCommand}" />
             <sc:Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico"/>
         </sc:ToolBar>
     </Extension>

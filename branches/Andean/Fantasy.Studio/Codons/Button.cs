@@ -12,6 +12,7 @@ using Fantasy.Adaption;
 namespace Fantasy.Studio.Codons
 {
    
+
     public class Button : CodonBase
     {
         public Button()
@@ -30,17 +31,7 @@ namespace Fantasy.Studio.Codons
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
         {
 
-            System.Windows.Input.ICommand command = null;
-            
-            if (this.Command != null)
-            {
-                command = this.Command;
-            }
-            else if (this.CommandType != null)
-            {
-                object cmd = Activator.CreateInstance(this.CommandType);
-                command = ServiceManager.Services.GetRequiredService<IAdapterManager>().GetAdapter<System.Windows.Input.ICommand>(cmd);
-            }
+            System.Windows.Input.ICommand command = this._commandBuilder != null ? this._commandBuilder.Build<System.Windows.Input.ICommand>() : null;
 
             ButtonModel rs = new ButtonModel() { Owner = owner, Icon = this.Icon, Text = this.Text, Conditions=condition, IsCheckable=this.Togglable, Command=command };
             List<object> childCollections = new List<object>();
@@ -82,23 +73,9 @@ namespace Fantasy.Studio.Codons
 
         public string Text { get; set; }
 
-        private Type  _commandType;
-        public Type CommandType
-        {
-            get { return _commandType; }
-            set 
-            {
-                if (value == null || typeof(System.Windows.Input.ICommand).IsAssignableFrom(value) || typeof(ICommand).IsAssignableFrom(value))  
-                {
-                    _commandType = value;
-                }
-                else
-                {
-                    throw new AddInException(string.Format(Resources.ButtonCommandIsNotICommandText, typeof(System.Windows.Input.ICommand).FullName, typeof(ICommand).FullName));
-                }
-            }
-        }
+        private ObjectBuilder _commandBuilder = null;
 
+        [Template("_commandBuilder")]
         public System.Windows.Input.ICommand Command { get; set; }
         
         public bool Togglable { get; set; }

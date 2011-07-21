@@ -13,9 +13,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Author="Bin Zhang" Description="Fantasy Studio AddIn" Name="Studio" Version="1.0">
     <Extension Path="fantasy/applicationsettings">
-        <Object ID="fantasyStudio" Template="{x:Static sp:Settings.Default}">
-            
-        </Object>
+        <Object ID="fantasyStudio" Template="{x:Static sp:Settings.Default}" />
     </Extension>
     <Extension Path="fantasy/adaption">
         <Adapter ID="TypeDescriptor">
@@ -77,7 +75,7 @@
 
 
     <Extension Path="fantasy/studio/routedcommands">
-
+        <sc:RoutedUICommand ID="Test" Name="Test" Text="Text" />
     </Extension>
 
     <Extension Path="fantasy/studio/typedescriptors">
@@ -100,7 +98,6 @@
             <sc:Button ID="Open" Text="Open" Icon="/Fantasy.Studio;component/images/OpenFolder.png"/>
             <sc:Button ID="SEP1" Text="-" />
             <sc:Button ID="Close" Text="Close"/>
-            <sc:Button ID="stanly" Text="Stanly"/>
             <sc:Button ID="Save" Text="Save" Command="Save" Icon="/Fantasy.Studio;component/images/save.ico" />
         </sc:ToolBar>
     </Extension>
