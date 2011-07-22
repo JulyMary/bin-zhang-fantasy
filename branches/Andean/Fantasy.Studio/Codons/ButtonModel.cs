@@ -21,7 +21,6 @@ namespace Fantasy.Studio.Codons
 
         public ConditionCollection Conditions { get; set; }
 
-
         public object Owner { get; set; }
 
 
@@ -202,5 +201,7 @@ namespace Fantasy.Studio.Codons
         }
 
         #endregion
+
+        public object CommandParameter { get; set; }
     }
 }

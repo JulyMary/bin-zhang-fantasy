@@ -44,20 +44,21 @@ namespace Fantasy.Studio
             this._messageBox = this.Site.GetRequiredService<IMessageBoxService>();
 
             IMenuService menuSvc = this.Site.GetRequiredService<IMenuService>();
-            UIElement menu = menuSvc.CreateMainMenu("fantasy/studio/workbench/mainmenu", this);
+            UIElement menu = menuSvc.CreateMainMenu("fantasy/studio/workbench/mainmenu", this, this.Site);
             this.MainMenuTray.Child = menu;
-            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/workbench/toolbars").BuildChildItems(this))
+            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/workbench/toolbars").BuildChildItems(this, this.Site))
             {
                 this.ToolBarTray.ToolBars.Add(bar);
             }
 
-            ContextMenu ctx = menuSvc.CreateContextMenu("fantasy/studio/toolbartray/contextmenu", this.ToolBarTray);
+            //TODO: change contextmenu commands' target element
+            ContextMenu ctx = menuSvc.CreateContextMenu("fantasy/studio/toolbartray/contextmenu", this.ToolBarTray, this.Site);
             this.ToolBarTray.ContextMenu = ctx;
             if (menu is FrameworkElement)
             {
                 ((FrameworkElement)menu).ContextMenu = ctx;
             }
-            foreach (IPadContent pad in AddInTree.Tree.GetTreeNode("fantasy/studio/workbench/pads").BuildChildItems(this))
+            foreach (IPadContent pad in AddInTree.Tree.GetTreeNode("fantasy/studio/workbench/pads").BuildChildItems(this, this.Site))
             {
                 this.Pads.Add(pad);
             }

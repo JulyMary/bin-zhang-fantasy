@@ -33,7 +33,7 @@ namespace Fantasy.Studio.Codons
 
             System.Windows.Input.ICommand command = this._commandBuilder != null ? this._commandBuilder.Build<System.Windows.Input.ICommand>() : null;
 
-            ButtonModel rs = new ButtonModel() { Owner = owner, Icon = this.Icon, Text = this.Text, Conditions=condition, IsCheckable=this.Togglable, Command=command };
+            ButtonModel rs = new ButtonModel() { Owner = owner, Icon = this.Icon, Text = this.Text, Conditions=condition, IsCheckable=this.Togglable, Command=command, CommandParameter = this.CommandParameter ?? owner };
             List<object> childCollections = new List<object>();
             foreach (object o in subItems)
             {
@@ -63,11 +63,7 @@ namespace Fantasy.Studio.Codons
             }
             rs.Update(owner);
             return rs;
-            
-         
         }
-
-
 
         public object Icon { get; set; }
 
@@ -79,5 +75,7 @@ namespace Fantasy.Studio.Codons
         public System.Windows.Input.ICommand Command { get; set; }
         
         public bool Togglable { get; set; }
+
+        public object CommandParameter { get; set; }
     }
 }

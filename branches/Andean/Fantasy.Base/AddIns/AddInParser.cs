@@ -7,29 +7,42 @@ using System.Xaml;
 using System.Diagnostics;
 using System.Reflection;
 
+using Fantasy.IO;
+
 
 namespace Fantasy.AddIns
 {
     public class AddInParser
     {
-
-
-
         public AddIn Parse(XmlReader reader)
         {
-            
-           
             XamlXmlReaderSettings readerSettings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
+            string baseDir = LongPath.GetDirectoryName(reader.BaseURI);
             XamlXmlReader xxr = new XamlXmlReader(reader, readerSettings);
             XamlObjectWriterSettings writerSettings = new XamlObjectWriterSettings()
             {
                 AfterPropertiesHandler = new EventHandler<XamlObjectEventArgs>((o, e) =>
                 {
-                    _currentInstance.Pop();
+                    object obj = _currentInstance.Pop();
+                    if (obj is Assembly)
+                    {
+                        Assembly asm = (Assembly)obj;
+                        if (!string.IsNullOrEmpty(asm.Name))
+                        {
+#pragma warning disable 0618
+                            System.Reflection.Assembly.LoadWithPartialName(asm.Name);
+#pragma warning restore 0618
+                        }
+                        else if (!string.IsNullOrEmpty(asm.Path))
+                        {
+                            string file = LongPath.Combine(baseDir, asm.Path);
+                            System.Reflection.Assembly.LoadFrom(file);
+                        }
+
+                    }
                 }),
                 BeforePropertiesHandler = new EventHandler<XamlObjectEventArgs>((o, e) =>
                 {
-                    
                     _currentInstance.Push(e.Instance); 
                 })
             };

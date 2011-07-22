@@ -10,7 +10,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.Studio.Descriptor
 {
-	public class AdapterFactory  : IAdapterFactory
+	public class TypeDescriptorAdapterFactory  : ObjectWithSite, IAdapterFactory
 	{
 		private static readonly string plugInTreePath = "fantasy/studio/typedescriptors";
 

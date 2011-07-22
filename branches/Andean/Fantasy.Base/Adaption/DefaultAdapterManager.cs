@@ -9,7 +9,7 @@ namespace Fantasy.Adaption
 
 
 	/// <summary>See <see cref="IAdapterManager"/></summary>
-	public class DefaultAdapterManager: IAdapterManager 
+	public class DefaultAdapterManager: ObjectWithSite, IAdapterManager 
 	{
 
 		///<summary>Key is an adaptee type, value is a list of factories for the adaptee type.</summary>
@@ -166,6 +166,12 @@ namespace Fantasy.Adaption
 		/// <summary>See <see cref="IAdapterManager.RegisterFactory"/></summary>
 		public void RegisterFactory(IAdapterFactory factory, Type adapteeType) 
 		{
+            if (factory is IObjectWithSite)
+            {
+                ((IObjectWithSite)factory).Site = this.Site;
+            }
+
+
 			if (null == adapteeType)
 			{
 				adapteeType = typeof(void);
@@ -176,6 +182,10 @@ namespace Fantasy.Adaption
 				list = new List<IAdapterFactory>();
 				this._AdapteeFactories.Add(adapteeType, list);
 			}
+
+
+
+
 			list.Add(factory);
 		}
 

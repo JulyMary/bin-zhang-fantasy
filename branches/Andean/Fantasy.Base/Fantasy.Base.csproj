@@ -146,10 +146,10 @@
     <Compile Include="AddIns\AddInParser.cs" />
     <Compile Include="AddIns\AddInTree.cs" />
     <Compile Include="AddIns\And.cs" />
+    <Compile Include="AddIns\Assembly.cs" />
     <Compile Include="AddIns\CodonBase.cs" />
     <Compile Include="AddIns\Codons\Adapter.cs" />
-    <Compile Include="AddIns\Codons\Assembly.cs" />
-    <Compile Include="AddIns\Codons\RegisterAdaptionService.cs" />
+    <Compile Include="AddIns\Services\RegisterAdaptionService.cs" />
     <Compile Include="AddIns\ConditionBase.cs" />
     <Compile Include="AddIns\ConditionCollection.cs" />
     <Compile Include="AddIns\ConditionFailedAction.cs" />
@@ -270,6 +270,7 @@
     <Compile Include="System.Xml.Linq\XNodeExtension.cs" />
     <Compile Include="Windows\NotifyPropertyChangedObject.cs" />
     <Compile Include="Windows\VisibilityConverter.cs" />
+    <Compile Include="XamlNamespaces.cs" />
     <Compile Include="XSerialization\Attributes.cs" />
     <Compile Include="XSerialization\IXCollectionSerializer.cs" />
     <Compile Include="XSerialization\IXSerializable.cs" />

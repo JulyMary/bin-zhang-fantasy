@@ -140,23 +140,49 @@ namespace Fantasy.AddIns
         public static void Initialize(IEnumerable<string> addInFiles)
         {
             AddInTree.Tree = new DefaultAddInTree();
-            foreach (string file in addInFiles)
+
+            List<string> parsingList = new List<string>(addInFiles);
+            List<string> retryList = new List<string>();
+
+
+            while (parsingList.Count > 0)
             {
-                //FileStream fs = LongPathFile.Open(file, FileMode.Open, FileAccess.Read);
-                XmlReader reader = XmlReader.Create(file);
-                AddIn addIn = null;
-                try
+
+                List<Exception> errors = new List<Exception>();
+                foreach (string file in addInFiles)
                 {
-                    AddInParser parser = new AddInParser();
-                   
-                    addIn = parser.Parse(reader);
+                    //FileStream fs = LongPathFile.Open(file, FileMode.Open, FileAccess.Read);
+                    XmlReader reader = XmlReader.Create(file);
+                    AddIn addIn = null;
+                    try
+                    {
+                        AddInParser parser = new AddInParser();
+
+                        addIn = parser.Parse(reader);
+                        AddInTree.Tree.InsertAddIn(addIn);
+                    }
+                    catch(Exception error)
+                    {
+                        errors.Add(error);
+                        retryList.Add(file);
+                    }
+                    finally
+                    {
+                        reader.Close();
+                    }
+                    
                 }
-                finally
+
+                if (retryList.Count > 0 && retryList.Count == parsingList.Count)
                 {
-                    reader.Close();
+                    throw new AggregateException(errors);
                 }
-                AddInTree.Tree.InsertAddIn(addIn);
+
+                parsingList = new List<string>(retryList);
+                retryList = new List<string>();
             }
+
+           
         }
 
     }

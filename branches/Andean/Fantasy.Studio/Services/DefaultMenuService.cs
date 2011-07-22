@@ -16,10 +16,10 @@ namespace Fantasy.Studio.Services
     {
         #region IMenuService Members
 
-        public UIElement CreateMainMenu(string path, object owner)
+        public UIElement CreateMainMenu(string path, object owner, IServiceProvider services)
         {
             MainMenu rs = new MainMenu();
-            IEnumerable<object> items = AddInTree.Tree.GetTreeNode(path).BuildChildItems<object>(owner);
+            IEnumerable<object> items = AddInTree.Tree.GetTreeNode(path).BuildChildItems<object>(owner, services);
             ButtonBarModel model = new ButtonBarModel(items);
             rs.DataContext = model;
             CommandManager.RequerySuggested += delegate(object sender, EventArgs e)
@@ -29,16 +29,14 @@ namespace Fantasy.Studio.Services
             return rs;
         }
 
-        public ContextMenu CreateContextMenu(string path, object owner)
+        public ContextMenu CreateContextMenu(string path, object owner, IServiceProvider services)
         {
             DefaultContextMenu rs = new DefaultContextMenu();
-            IEnumerable<object> items = AddInTree.Tree.GetTreeNode(path).BuildChildItems<object>(owner);
+            IEnumerable<object> items = AddInTree.Tree.GetTreeNode(path).BuildChildItems<object>(owner, services);
             ButtonBarModel model = new ButtonBarModel(items);
             rs.DataContext = model;
             rs.Opened += delegate(object sender, RoutedEventArgs e)
             {
-
-
 
                 model.Update(owner);
 
