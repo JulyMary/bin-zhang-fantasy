@@ -9,7 +9,7 @@ namespace Fantasy.Studio.Services
 {
     public interface IMenuService
     {
-        UIElement CreateMainMenu(string path, object owner);
-        ContextMenu CreateContextMenu(string path, object owner);
+        UIElement CreateMainMenu(string path, object owner, IServiceProvider services);
+        ContextMenu CreateContextMenu(string path, object owner, IServiceProvider services);
     }
 }

@@ -1,16 +1,17 @@
-﻿<a:AddIn  xmlns:a="clr-namespace:Fantasy.AddIns;assembly=Fantasy.Base"
-        xmlns:be="clr-namespace:Fantasy.BusinessEngine;assembly=Fantasy.BusinessEngine"
-        xmlns:sbe="clr-namespace:Fantasy.Studio.BusinessEngine;assembly=Fantasy.Studio.BusinessEngine"
-        xmlns="clr-namespace:Fantasy.Studio.Codons;assembly=Fantasy.Studio"
+﻿<AddIn   xmlns="urn:schema-fantasy:xaml"
+        xmlns:be="urn:schema-fantasy:business-engine"
+        xmlns:sbe="urn:schema-fantasy:studio-business-engine"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:sbec="clr-namespace:Fantasy.Studio.BusinessEngine.Conditions;assembly=Fantasy.Studio.BusinessEngine"
         Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
-    <a:Extension Path="fantasy/studio/typedescriptors">
+    <AddIn.Import>
+        <Assembly Name="Fantasy.Studio.BusinessEngine"/>
+    </AddIn.Import>
+    <Extension Path="fantasy/studio/typedescriptors">
         <TypeDescriptor ID="businessPackage" TargetType="{x:Type be:BusinessPackage}">
             <TypeDescriptor.Conditional>
-                <a:Not Action="Disable">
-                    <sbec:IsSystemEntity />
-                </a:Not>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
             </TypeDescriptor.Conditional>
             <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
@@ -41,12 +42,11 @@
             <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General"/>
         </TypeDescriptor>
 
-
         <TypeDescriptor ID="businessclass" TargetType="{x:Type be:BusinessClass}">
             <TypeDescriptor.Conditional>
-                <a:Not Action="Disable">
-                    <sbec:IsSystemEntity />
-                </a:Not>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
             </TypeDescriptor.Conditional>
             <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
@@ -61,5 +61,5 @@
             <PropertyDescriptor ID="TableSchema" Name="TableSchema" Caption="Table Schema" Category="Database" />
             <PropertyDescriptor ID="TableSpace" Name="TableSpace" Caption="Table Space" Category="Database" />
         </TypeDescriptor>
-    </a:Extension>
-</a:AddIn>
+    </Extension>
+</AddIn>

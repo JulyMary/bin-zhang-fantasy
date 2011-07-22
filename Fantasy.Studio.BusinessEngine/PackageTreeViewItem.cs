@@ -134,7 +134,7 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 if (this._contextMenu == null)
                 {
-                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/package/contextmenu", this._package);
+                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/package/contextmenu", this._package, null);
                 }
 
                 return _contextMenu;

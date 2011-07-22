@@ -11,7 +11,7 @@ using Fantasy.Windows;
 
 namespace Fantasy.Studio.Codons
 {
-    public class ButtonBarModel : NotifyPropertyChangedObject, IUpdateStatus
+    public class ButtonBarModel : NotifyPropertyChangedObject, IUpdateStatus, IObjectWithSite
     {
         public ButtonBarModel(IEnumerable subItems)
         {
@@ -85,6 +85,18 @@ namespace Fantasy.Studio.Codons
                 {
                     child.Update(caller);
                 }
+            }
+        }
+
+        public IServiceProvider Site{ get; set;}
+
+        public System.Windows.IInputElement CommandTarget
+        {
+            get
+            {
+                ICommandTargetProvider provider = this.Site.GetService<ICommandTargetProvider>();
+                return provider != null ? provider.CommandTarget : null;
+               
             }
         }
     }

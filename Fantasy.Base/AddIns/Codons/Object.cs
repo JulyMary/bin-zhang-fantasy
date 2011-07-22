@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Markup;
 using System.Windows;
 
-namespace Fantasy.AddIns
+namespace Fantasy.AddIns.Codons
 {
     [System.Windows.Markup.ContentProperty("Template")]
     public class Object : CodonBase, ICodon

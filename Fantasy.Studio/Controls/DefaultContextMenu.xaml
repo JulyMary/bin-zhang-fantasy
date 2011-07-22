@@ -12,10 +12,11 @@
     </ContextMenu.Resources>
     <ContextMenu.ItemContainerStyle>
         <Style TargetType="{x:Type MenuItem}">
-            <Setter Property="MenuItem.CommandParameter" Value="{Binding Owner}"/>
+            <Setter Property="CommandParameter" Value="{Binding Owner}"/>
             <Setter Property="Header" Value="{Binding Text}"/>
             <Setter Property="ItemsSource" Value="{Binding ChildItems}"/>
             <Setter Property="Command" Value="{Binding Command}" />
+            <Setter Property="CommandTarget" Value="{Binding CommandTarget}" />
             <Setter Property="Visibility" Value="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed}}" />
             <Setter Property="IsCheckable" Value="{Binding IsCheckable, Mode=OneWay}" />
             <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=OneWay}" />

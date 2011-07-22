@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fantasy.AddIns
+namespace Fantasy.AddIns.Conditions
 {
     public class IsTypeOf : ConditionBase
     {

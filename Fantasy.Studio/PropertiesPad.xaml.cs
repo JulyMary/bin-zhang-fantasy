@@ -21,7 +21,7 @@ namespace Fantasy.Studio
     /// <summary>
     /// Interaction logic for PropertiesPad.xaml
     /// </summary>
-    public partial class PropertiesPad : UserControl, IPadContent
+    public partial class PropertiesPad : UserControl, IPadContent, IObjectWithSite
     {
         public PropertiesPad()
         {
@@ -105,5 +105,8 @@ namespace Fantasy.Studio
         }
 
         #endregion
+
+        [Browsable(false)] 
+        public IServiceProvider Site { get; set; }
     }
 }

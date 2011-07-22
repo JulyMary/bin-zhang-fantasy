@@ -75,6 +75,8 @@
     <Compile Include="Codons\CommandBinding.cs" />
     <Compile Include="Codons\RoutedUICommand.cs" />
     <Compile Include="CommandExtension.cs" />
+    <Compile Include="CommandParameter.cs" />
+    <Compile Include="CommandTargetProvider.cs" />
     <Compile Include="Controls\DefaultTooBar.xaml.cs">
       <DependentUpon>DefaultTooBar.xaml</DependentUpon>
     </Compile>
@@ -90,7 +92,7 @@
     <Compile Include="Controls\GridViewColumnLayoutSetting.cs" />
     <Compile Include="Controls\GridViewLayoutSetting.cs" />
     <Compile Include="Descriptor\AbstractListTypeEditor.cs" />
-    <Compile Include="Descriptor\AdapterFactory.cs" />
+    <Compile Include="Descriptor\TypeDescriptorAdapterFactory.cs" />
     <Compile Include="Descriptor\BooleanConverter.cs" />
     <Compile Include="Descriptor\BooleanTypeEditor.cs" />
     <Compile Include="Descriptor\CustomPropertyDescriptor.cs" />
@@ -110,6 +112,7 @@
     </Compile>
     <Compile Include="DocumentTarget.cs" />
     <Compile Include="EditingState.cs" />
+    <Compile Include="ICommandTarget.cs" />
     <Compile Include="IEditingViewBuilder.cs" />
     <Compile Include="IEditingViewContent.cs" />
     <Compile Include="IWorkbenchLayout.cs" />
@@ -174,6 +177,7 @@
     <Compile Include="Workbench.Layout\WorkbenchWindow.xaml.cs">
       <DependentUpon>WorkbenchWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Descriptor\PasswordTypeEditorControl.resx">
       <DependentUpon>PasswordTypeEditorControl.cs</DependentUpon>
     </EmbeddedResource>

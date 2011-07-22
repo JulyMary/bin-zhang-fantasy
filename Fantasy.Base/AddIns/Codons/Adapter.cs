@@ -5,7 +5,7 @@ using System.Text;
 using Fantasy.Adaption;
 using System.Windows.Markup;
 
-namespace Fantasy.AddIns
+namespace Fantasy.AddIns.Codons
 {
     [ContentProperty("Adaptees")]
     public class Adapter : CodonBase

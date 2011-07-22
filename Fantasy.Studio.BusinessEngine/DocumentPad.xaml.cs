@@ -14,13 +14,14 @@ using System.Windows.Shapes;
 using Fantasy.Studio.Services;
 using Fantasy.ServiceModel;
 using System.ComponentModel.Design;
+using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine
 {
     /// <summary>
     /// Interaction logic for PackagePad.xaml
     /// </summary>
-    public partial class DocumentPad : UserControl, IPadContent
+    public partial class DocumentPad : UserControl, IPadContent, IObjectWithSite
     {
         public DocumentPad()
         {
@@ -126,7 +127,8 @@ namespace Fantasy.Studio.BusinessEngine
             return FindTreeViewItem(VisualTreeHelper.GetParent(source));
         }
 
-       
+        [Browsable(false)]
+        public IServiceProvider Site { get; set; }
 
        
     }

@@ -14,6 +14,7 @@ namespace Fantasy.AddIns
         {
             this.SetValue(ResourcesProperty, new ResourceDictionary());
             this.SetValue(ExtensionsProperty, new List<Extension>());
+            this.SetValue(ImportProperty, new List<Assembly>());
         }
        
         public string Name
@@ -48,6 +49,13 @@ namespace Fantasy.AddIns
             set { SetValue(VersionProperty, value); }
         }
 
+       // private IList<Assembly> _import = new List<Assembly>();
+        public IList<Assembly> Import
+        {
+            get { return (IList<Assembly>)GetValue(ImportProperty.DependencyProperty); }
+        }
+      
+
         public IList<Extension> Extensions
         {
             get { return (IList<Extension>)GetValue(ExtensionsProperty.DependencyProperty); }
@@ -60,6 +68,9 @@ namespace Fantasy.AddIns
         // Using a DependencyProperty as the backing store for Extensions.  This enables animation, styling, binding, etc...
         public static readonly DependencyPropertyKey ExtensionsProperty =
             DependencyProperty.RegisterReadOnly("Extensions", typeof(IList<Extension>), typeof(AddIn), new PropertyMetadata(new List<Extension>()));
+
+        public static readonly DependencyPropertyKey ImportProperty =
+    DependencyProperty.RegisterReadOnly("Import", typeof(IList<Assembly>), typeof(AddIn), new PropertyMetadata(new List<Assembly>()));
 
 
         // Using a DependencyProperty as the backing store for Version.  This enables animation, styling, binding, etc...
