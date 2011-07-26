@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Fantasy.AddIns;
+using System.Reflection;
 
 namespace Fantasy.Studio
 {
@@ -17,14 +18,10 @@ namespace Fantasy.Studio
 
         void AddInCommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (this.Handler is System.Windows.Input.ICommand)
-            {
-                ((System.Windows.Input.ICommand)Handler).Execute(e.Parameter);
-            }
-            else
-            {
-                ((Fantasy.ServiceModel.ICommand)Handler).Execute(this.Owner);
-            }
+
+           object args = Invoker.Invoke(this.ParameterSource == ParameterSource.Owner ? this.Owner : e.Parameter, this.ParameterMember);
+           Handler.Execute(args);
+          
         }
 
         void AddInCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -32,14 +29,8 @@ namespace Fantasy.Studio
             bool can = false;
             if (this.Condition.GetCurrentConditionFailedAction(this.Owner) == ConditionFailedAction.Nothing)
             {
-                if (Handler is System.Windows.Input.ICommand)
-                {
-                    can = ((System.Windows.Input.ICommand)Handler).CanExecute(e.Parameter);
-                }
-                else
-                {
-                    can = true;
-                }
+                object args = Invoker.Invoke(this.ParameterSource == ParameterSource.Owner ? this.Owner : e.Parameter, this.ParameterMember);
+                can = Handler.CanExecute(args);
             }
 
             e.CanExecute = can;
@@ -49,7 +40,9 @@ namespace Fantasy.Studio
 
         public ConditionCollection Condition { get; set; }
 
-        public object Handler { get; set; }
+        public System.Windows.Input.ICommand Handler { get; set; }
+
+        public ParameterSource ParameterSource { get; set; }
 
 
         #region IObjectWithSite Members
@@ -73,5 +66,7 @@ namespace Fantasy.Studio
         }
 
         #endregion
+
+        public string ParameterMember { get; set; }
     }
 }

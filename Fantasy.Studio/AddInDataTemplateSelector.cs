@@ -9,13 +9,16 @@ namespace Fantasy.Studio
 {
     public class AddInDataTemplateSelector : DataTemplateSelector
     {
-        
 
-       
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
             System.Windows.DataTemplate rs = null;
-            foreach (DataTemplateSelector chain in AddInTree.Tree.GetTreeNode(this.Path).BuildChildItems(this.Owner))
+            IServiceProvider site = null;
+            if (this.Owner is IObjectWithSite)
+            {
+                site = ((IObjectWithSite)this.Owner).Site;
+            }
+            foreach (DataTemplateSelector chain in AddInTree.Tree.GetTreeNode(this.Path).BuildChildItems(this.Owner, site))
             {
                 rs = chain.SelectTemplate(item, container);
                 if (rs != null)

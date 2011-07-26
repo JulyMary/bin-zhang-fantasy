@@ -7,7 +7,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class ChildPackageProvider : IPackageChildrenProvider
+    public class ChildPackageProvider : ObjectWithSite, IPackageChildrenProvider
     {
 
         #region IPackageChildrenProvider Members
@@ -15,7 +15,7 @@ namespace Fantasy.Studio.BusinessEngine
         public IEnumerable<IDocumentTreeViewItem> GetItems(BusinessPackage package)
         {
             return new ObservableAdapterCollection<IDocumentTreeViewItem>(package.ChildPackages,
-                p => new PackageTreeViewItem((BusinessPackage)p));
+                p => new PackageTreeViewItem((BusinessPackage)p) { Site = this.Site });
         }
 
         #endregion

@@ -32,7 +32,7 @@ namespace Fantasy.Studio.Descriptor
 				{
 
                     _codons = new List<Fantasy.Studio.Codons.TypeDescriptor>(
-                        AddInTree.Tree.GetTreeNode(plugInTreePath).BuildChildItems<Fantasy.Studio.Codons.TypeDescriptor>(null));
+                        AddInTree.Tree.GetTreeNode(plugInTreePath).BuildChildItems<Fantasy.Studio.Codons.TypeDescriptor>(this, this.Site));
 				}
 
                 foreach (Fantasy.Studio.Codons.TypeDescriptor c in _codons)

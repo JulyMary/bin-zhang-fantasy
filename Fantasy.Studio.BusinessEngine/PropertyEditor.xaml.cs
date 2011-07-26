@@ -22,28 +22,25 @@ namespace Fantasy.Studio.BusinessEngine
     /// <summary>
     /// Interaction logic for BusinessPropertyEditor.xaml
     /// </summary>
-    public partial class PropertyEditor : UserControl, IEntityEditingPanel
+    public partial class PropertyEditor : UserControl, IEntityEditingPanel, IObjectWithSite
     {
         public PropertyEditor()
         {
             InitializeComponent();
-            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/toolbars").BuildChildItems(this))
-            {
-                this.ToolBarTray.ToolBars.Add(bar);
-            }
-
-            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/propertyeditor/commandbindings").BuildChildItems(this))
-            {
-                this.CommandBindings.Add(cb);
-            }
+           
         }
+
+        public IServiceProvider Site { get; set; }
 
         private SelectionService _selectionService = new SelectionService(null);
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            IMonitorSelectionService monitor = ServiceManager.Services.GetRequiredService<IMonitorSelectionService>();
-            monitor.CurrentSelectionService = _selectionService;
+            if (this.Site != null)
+            {
+                IMonitorSelectionService monitor = this.Site.GetRequiredService<IMonitorSelectionService>();
+                monitor.CurrentSelectionService = _selectionService;
+            }
             base.OnGotKeyboardFocus(e);
         }
 
@@ -51,8 +48,22 @@ namespace Fantasy.Studio.BusinessEngine
 
         #region IEntityEditingPanel Members
 
+        public void Initialize()
+        {
+            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/toolbars").BuildChildItems(this, this.Site))
+            {
+                this.ToolBarTray.ToolBars.Add(bar);
+            }
+
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/propertyeditor/commandbindings").BuildChildItems(this, this.Site))
+            {
+                this.CommandBindings.Add(cb);
+            }
+        }
+
         public void Load(IBusinessEntity entity)
         {
+
             this.Entity = (BusinessClass)entity; 
             this.DataContext = entity;
             foreach (BusinessProperty prop in this.Entity.Properties)

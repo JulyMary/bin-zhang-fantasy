@@ -28,9 +28,10 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
-        <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}">
+        <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner" ParameterMember="Package">
+           
         </Button>
-        <Button ID="EditPackage" Text="Open" Command="{New sbe:EditPackageCommand}"/>
+        <Button ID="EditPackage" Text="Open" Command="{New sbe:EditPackageCommand}"  ParameterSource="Owner" ParameterMember="Package"/>
         <Button ID="Remove" Text="Remove"/>
     </Extension>
 

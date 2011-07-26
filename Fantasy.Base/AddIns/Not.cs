@@ -9,11 +9,11 @@ namespace Fantasy.AddIns
     [ContentProperty("Condition")]
     public class Not : ConditionBase
     {
-        public override bool IsValid(object caller)
+        public override bool IsValid(object args)
         {
             if (Condition != null)
             {
-                return !Condition.IsValid(caller);
+                return !ConditionBase.IsValidWithMember(Condition, args);
             }
             else
             {

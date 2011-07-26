@@ -8,7 +8,7 @@ using System.Windows.Forms.Design;
 
 namespace Fantasy.Studio.Descriptor
 {
-	public class EnumTypeEditor : UITypeEditor
+	public class EnumTypeEditor : UITypeEditor, IObjectWithSite
 	{
 		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
 		{
@@ -18,15 +18,17 @@ namespace Fantasy.Studio.Descriptor
 		public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 		{
 			IWindowsFormsEditorService edSvc = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            IObjectWithSite ws = context.Instance as IObjectWithSite;
+            IServiceProvider site = ws != null ? ws.Site : null;
 			if (edSvc != null)
 			{
 				if (Attribute.IsDefined(value.GetType(), typeof(FlagsAttribute)))
 				{
-					return EditFlagsValue(edSvc, value);
+					return EditFlagsValue(edSvc, value, site);
 				}
 				else
 				{
-					return EditEnumValue(edSvc, value);
+					return EditEnumValue(edSvc, value, site);
 				}
 			}
 			else
@@ -37,14 +39,14 @@ namespace Fantasy.Studio.Descriptor
 
 		}
 
-		private object EditFlagsValue(IWindowsFormsEditorService edSvc, object value)
+		private object EditFlagsValue(IWindowsFormsEditorService edSvc, object value, IServiceProvider services)
 		{
 			ListView ctrl = new ListView();
 			ctrl.CheckBoxes = true;
 			ctrl.View = View.List;
 			ctrl.Dock = DockStyle.Fill;
 			ctrl.BorderStyle = BorderStyle.None;
-			EnumConverter convert = new EnumConverter(value.GetType());
+            EnumConverter convert = new EnumConverter(value.GetType()) { Site = services };
 			foreach (Enum en in Enum.GetValues(value.GetType()))
 			{
 				if (EnumToInt(en) != 0)
@@ -77,12 +79,12 @@ namespace Fantasy.Studio.Descriptor
 		}
 
 
-		private object EditEnumValue(IWindowsFormsEditorService edSvc, object value)
+		private object EditEnumValue(IWindowsFormsEditorService edSvc, object value, IServiceProvider services)
 		{
 			ListBox ctrl = new ListBox();
 			ctrl.BorderStyle = BorderStyle.None;
 			ctrl.Dock = DockStyle.Fill;
-			EnumConverter convert = new EnumConverter();
+            EnumConverter convert = new EnumConverter(value.GetType()) { Site = services };
 			foreach (Enum en in Enum.GetValues(value.GetType()))
 			{
 				ctrl.Items.Add(new EnumWrapper(en, convert.ConvertToString(en)));
@@ -127,5 +129,15 @@ namespace Fantasy.Studio.Descriptor
 				return m_caption;
 			}
 		}
-	}
+
+        #region IObjectWithSite Members
+
+        public IServiceProvider Site
+        {
+            get;
+            set;
+        }
+
+        #endregion
+    }
 }

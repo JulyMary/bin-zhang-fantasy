@@ -7,7 +7,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class PackageViewBuilder : IEditingViewBuilder
+    public class PackageViewBuilder : ObjectWithSite, IEditingViewBuilder
     {
 
 
@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public IEditingViewContent CreateView(object data)
         {
-            return new PackageEditor();
+            return new PackageEditor() { Site = this.Site };
         }
 
         #endregion

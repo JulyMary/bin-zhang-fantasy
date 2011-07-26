@@ -5,31 +5,30 @@ using System.ComponentModel;
 using System.Globalization;
 using Codons = Fantasy.Studio.Codons;
 using Fantasy.AddIns;
+using Fantasy.ServiceModel;
 
 namespace Fantasy.Studio.Descriptor
 {
-	public class EnumConverter : TypeConverter
+	public class EnumConverter : TypeConverter, IObjectWithSite
 	{
 
-		public EnumConverter()
-		{
-		}
+		
 
 		public EnumConverter(Type enumType)
 		{
-			_enumType = enumType;
+            this._enumType = enumType;
 		}
 
-		private Type _enumType; 
+        private Type _enumType;
 
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
-			return sourceType == _enumType;
+            return _enumType == sourceType;
 		}
 
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
-			foreach (Codons.Enum codon in AddInTree.Tree.GetTreeNode("fantasy/studio/enums").BuildChildItems(value))
+			foreach (Codons.Enum codon in AddInTree.Tree.GetTreeNode("fantasy/studio/enums").BuildChildItems(value, this.Site))
 			{
 				if (codon.TargetType == _enumType)
 				{
@@ -47,7 +46,7 @@ namespace Fantasy.Studio.Descriptor
 
 		public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
 		{
-            foreach (Codons.Enum codon in AddInTree.Tree.GetTreeNode("fantasy/studio/enums").BuildChildItems(value))
+            foreach (Codons.Enum codon in AddInTree.Tree.GetTreeNode("fantasy/studio/enums").BuildChildItems(value, this.Site))
 			{
 				if (codon.TargetType == value.GetType())
 				{
@@ -57,5 +56,15 @@ namespace Fantasy.Studio.Descriptor
 
 			return new System.ComponentModel.EnumConverter(value.GetType()).ConvertToString(value);
 		}
-	}
+
+        #region IObjectWithSite Members
+
+        public IServiceProvider Site
+        {
+            get;
+            set;
+        }
+
+        #endregion
+    }
 }

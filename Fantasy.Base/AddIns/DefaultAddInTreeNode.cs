@@ -91,7 +91,7 @@ namespace Fantasy.AddIns
                 if (childNode.Codon.HandleCondition || childNode.Condition.GetCurrentConditionFailedAction(caller) == ConditionFailedAction.Nothing)
                 {
                     IEnumerable subItems = childNode.BuildChildItems(caller, site);
-                    object rs = childNode.Codon.BuildItem(caller, subItems, childNode.Condition);
+                    object rs = childNode.Codon.BuildItem(caller, subItems, childNode.Condition, site);
                     if (rs != null)
                     {
                         if (rs is IObjectWithSite)

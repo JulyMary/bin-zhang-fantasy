@@ -10,9 +10,9 @@ namespace Fantasy.AddIns.Codons
     [ContentProperty("Adaptees")]
     public class Adapter : CodonBase
     {
-       
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             return this;
         }

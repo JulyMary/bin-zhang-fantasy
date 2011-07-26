@@ -9,10 +9,10 @@ namespace Fantasy.AddIns.Conditions
     {
         public string State { get; set; }
 
-     
-        public override bool IsValid(object caller)
+
+        public override bool IsValid(object args)
         {
-            IStateObject owner = (IStateObject)caller;
+            IStateObject owner = (IStateObject)args;
             Type t = owner.State.GetType();
             object state = Enum.Parse(t, this.State, true); 
             if (t.IsDefined(typeof(FlagsAttribute), false))

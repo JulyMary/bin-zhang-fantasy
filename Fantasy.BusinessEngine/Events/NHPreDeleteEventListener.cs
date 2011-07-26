@@ -7,7 +7,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine.Events
 {
-    class NHPreDeleteEventListener : IPreDeleteEventListener
+    class NHPreDeleteEventListener : ObjectWithSite, IPreDeleteEventListener
     {
         #region IPreUpdateEventListener Members
         private IAddInTreeNode _treeNode = null;
@@ -22,7 +22,7 @@ namespace Fantasy.BusinessEngine.Events
                     _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/deleting");
                 }
                 EntityCancelEventArgs e = new EntityCancelEventArgs((IEntity)@event.Entity);
-                foreach (IEntityCancelEventHandler handler in _treeNode.BuildChildItems(@event.Entity))
+                foreach (IEntityCancelEventHandler handler in _treeNode.BuildChildItems(@event.Entity,this.Site ))
                 {
                     handler.Execute(e);
                     if (e.Cancel)

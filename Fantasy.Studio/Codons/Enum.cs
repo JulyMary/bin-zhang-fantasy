@@ -18,7 +18,7 @@ namespace Fantasy.Studio.Codons
             set;
         }
 
-		public override object BuildItem(object owner, IEnumerable subItems, ConditionCollection conditions)
+        public override object BuildItem(object owner, IEnumerable subItems, ConditionCollection conditions, IServiceProvider services)
 		{
 
 			_fileds.Clear();

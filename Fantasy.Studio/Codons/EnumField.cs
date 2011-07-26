@@ -10,7 +10,7 @@ namespace Fantasy.Studio.Codons
     public class EnumField : CodonBase
     {
 
-        public override object BuildItem(object owner, IEnumerable subItems, ConditionCollection conditions)
+        public override object BuildItem(object owner, IEnumerable subItems, ConditionCollection conditions, IServiceProvider services)
         {
             return this;
         }

@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class ClassTreeViewItem : NotifyPropertyChangedObject, IDocumentTreeViewItem
+    public class ClassTreeViewItem : NotifyPropertyChangedObject, IObjectWithSite, IDocumentTreeViewItem
     {
         public ClassTreeViewItem(BusinessClass @class)
         {
@@ -99,7 +99,7 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 if (this._contextMenu == null)
                 {
-                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/class/contextmenu", this.Class, null);
+                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/class/contextmenu", this, this.Site);
                 }
 
                 return _contextMenu;
@@ -118,6 +118,8 @@ namespace Fantasy.Studio.BusinessEngine
             
             documentService.OpenView(this.Class); 
         }
+
+        public IServiceProvider Site { get; set; }
 
         #endregion
     }

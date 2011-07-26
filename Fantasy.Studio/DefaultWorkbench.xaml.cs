@@ -28,12 +28,11 @@ namespace Fantasy.Studio
             InitializeComponent();
         }
 
-        private IServiceProvider _site;
 
         public IServiceProvider Site
         {
-            get { return _site; }
-            set { _site = value; }
+            get;
+            set;
         }
 
 
@@ -360,7 +359,7 @@ namespace Fantasy.Studio
             if (rs == null)
             {
 
-                foreach (IEditingViewBuilder builder in AddInTree.Tree.GetTreeNode("fantasy/studio/documents/builders").BuildChildItems(data))
+                foreach (IEditingViewBuilder builder in AddInTree.Tree.GetTreeNode("fantasy/studio/documents/builders").BuildChildItems(data, this.Site))
                 {
                     rs = builder.CreateView(data);
                     rs.Load(data);

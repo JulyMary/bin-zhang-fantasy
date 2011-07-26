@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Reflection;
 
 namespace Fantasy.AddIns
 {
@@ -18,7 +19,23 @@ namespace Fantasy.AddIns
         public static readonly DependencyProperty ActionProperty =
             DependencyProperty.Register("Action", typeof(ConditionFailedAction), typeof(ConditionBase), new PropertyMetadata(ConditionFailedAction.Exclude));
 
-        public abstract bool IsValid(object caller);
-      
+        public abstract bool IsValid(object args);
+
+
+        #region ICondition Members
+
+        public string Member
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
+        public static bool IsValidWithMember(ICondition condition, object owner)
+        {
+            object args = Invoker.Invoke(owner, condition.Member);
+            return condition.IsValid(args);
+        }
     }
 }

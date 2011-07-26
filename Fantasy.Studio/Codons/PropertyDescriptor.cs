@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace Fantasy.Studio.Codons
 {
-    public class PropertyDescriptor : CodonBase
+    public class PropertyDescriptor : CodonBase, IObjectWithSite 
     {
         public PropertyDescriptor()
         {
@@ -18,7 +18,24 @@ namespace Fantasy.Studio.Codons
 
         }
 
-        public override object BuildItem(object owner, IEnumerable subItems, ConditionCollection conditions)
+
+        public IServiceProvider Site
+        {
+            get;
+            set;
+        }
+
+        private void TrySetSite(object obj)
+        {
+            if (obj is IObjectWithSite)
+            {
+                ((IObjectWithSite)obj).Site = this.Site;
+            }
+        }
+
+        private bool _inited = false;
+
+        public override object BuildItem(object owner, IEnumerable subItems, ConditionCollection conditions, IServiceProvider services)
         {
             _conditions = conditions;
             return this;
@@ -27,6 +44,15 @@ namespace Fantasy.Studio.Codons
 
         public CustomPropertyDescriptor CreateDescriptor(object obj)
         {
+            if (!_inited)
+            {
+                this.TrySetSite(this.Editor);
+                this.TrySetSite(this.Get);
+                this.TrySetSite(this.Set);
+                this.TrySetSite(this.Converter);
+                this.TrySetSite(this.DefaultValueProvider);
+            }
+
             ConditionFailedAction action = _conditions.GetCurrentConditionFailedAction(obj);
 
             bool browsable = this.Browsable && action != ConditionFailedAction.Exclude;
@@ -35,10 +61,8 @@ namespace Fantasy.Studio.Codons
 
             string caption = this.Caption ?? this.Name;
 
-            object editor = this.Editor != null ? Activator.CreateInstance(this.Editor) : null; ;
-
             return new CustomPropertyDescriptor(this.Name, caption, this.Category, this.Description,
-                browsable, readOnly, this.Type, this.Get, this.Set, editor, this.Converter, this.CanResetValue, this.DefaultValueProvider);
+                browsable, readOnly, this.Type, this.Get, this.Set, this.Editor, this.Converter, this.CanResetValue, this.DefaultValueProvider, this.Site);
         }
 
         private ConditionCollection _conditions;
@@ -51,7 +75,7 @@ namespace Fantasy.Studio.Codons
 
         public TypeConverter Converter {get;set;}
 
-        public Type Editor  {get;set;}
+        public object Editor  {get;set;}
 
         public bool ReadOnly { get; set; }
 

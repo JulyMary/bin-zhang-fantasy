@@ -7,7 +7,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine.Events
 {
-    class NHPostLoadEventListener : IPostLoadEventListener 
+    class NHPostLoadEventListener : ObjectWithSite, IPostLoadEventListener 
     {
 
         IAddInTreeNode _treeNode;
@@ -24,7 +24,7 @@ namespace Fantasy.BusinessEngine.Events
                 }
 
                 EntityEventArgs e = new EntityEventArgs(entity);
-                foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity))
+                foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site ))
                 {
                     handler.Execute(e);
                 }
