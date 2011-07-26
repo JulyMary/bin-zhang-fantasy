@@ -20,7 +20,7 @@ namespace Fantasy.AddIns
 
         string InsertBefore { get; }
 
-        object BuildItem(object owner, IEnumerable subItems, ConditionCollection condition);
+        object BuildItem(object owner, IEnumerable subItems, ConditionCollection condition, IServiceProvider services);
 
         IList<ICodon> Codons { get;}
     }

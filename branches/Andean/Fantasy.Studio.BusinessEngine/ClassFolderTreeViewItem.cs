@@ -14,7 +14,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class ClassFolderTreeViewItem : IDocumentTreeViewItem
+    public class ClassFolderTreeViewItem : ObjectWithSite, IDocumentTreeViewItem
     {
         private Fantasy.BusinessEngine.BusinessPackage _package;
 
@@ -62,7 +62,7 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 if (this._contextMenu == null)
                 {
-                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/classfolder/contextmenu", this._package, null);
+                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/classfolder/contextmenu", this, this.Site);
                 }
 
                 return _contextMenu;

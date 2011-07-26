@@ -7,7 +7,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine.Events
 {
-    class NHPreInsertEventListener : IPreInsertEventListener
+    class NHPreInsertEventListener : ObjectWithSite, IPreInsertEventListener
     {
         #region IPreInsertEventListener Members
         IAddInTreeNode _treeNode;
@@ -21,7 +21,7 @@ namespace Fantasy.BusinessEngine.Events
                     _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/inserting");
                 }
                 EntityCancelEventArgs e = new EntityCancelEventArgs((IEntity)@event.Entity);
-                foreach (IEntityCancelEventHandler handler in _treeNode.BuildChildItems(@event.Entity))
+                foreach (IEntityCancelEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
                 {
                     handler.Execute(e);
                     if (e.Cancel)

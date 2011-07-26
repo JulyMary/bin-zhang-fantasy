@@ -7,11 +7,11 @@ using Fantasy.ServiceModel;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class ClassViewBuilder : IEditingViewBuilder
+    public class ClassViewBuilder : ObjectWithSite, IEditingViewBuilder
     {
         public IEditingViewContent CreateView(object data)
         {
-            return new ClassEditor();
+            return new ClassEditor() { Site = this.Site };
         }
     }
 }

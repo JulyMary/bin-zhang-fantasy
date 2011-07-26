@@ -15,7 +15,7 @@ namespace Fantasy.AddIns.Codons
         [Template("_builder")]
         public object Template { get; set; }
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             return _builder.Build<object>();
         }

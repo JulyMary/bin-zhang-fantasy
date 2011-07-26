@@ -7,9 +7,11 @@ using System.Reflection;
 
 namespace Fantasy.Studio.Descriptor
 {
-    public class CustomPropertyDescriptor : PropertyDescriptor
+    public class CustomPropertyDescriptor : PropertyDescriptor, IObjectWithSite 
     {
         private CustomTypeDescriptor _owner;
+
+        public IServiceProvider Site { get; set; }
 
         public CustomTypeDescriptor Owner
         {
@@ -19,10 +21,11 @@ namespace Fantasy.Studio.Descriptor
 
         public CustomPropertyDescriptor(string name, string displayName, string category, string description,
              bool browsable, bool readOnly, Type propertyType, IGetAction get, ISetAction set,
-             object editor, TypeConverter converter, bool canResetValue, IDefaultValueProvider defaultValueProvider)
+             object editor, TypeConverter converter, bool canResetValue, IDefaultValueProvider defaultValueProvider, IServiceProvider site)
             :
             base(name, new Attribute[0])
         {
+            this.Site = site;
             _displayName = displayName;
             _category = category;
             _description = description;
@@ -36,6 +39,8 @@ namespace Fantasy.Studio.Descriptor
             _canResetValue = canResetValue;
             _defaultValueProvider = defaultValueProvider;
         }
+
+
 
         public override Type ComponentType
         {

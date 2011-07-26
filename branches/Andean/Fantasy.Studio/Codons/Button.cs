@@ -8,6 +8,8 @@ using w = System.Windows;
 using Fantasy.Studio.Properties;
 using Fantasy.ServiceModel;
 using Fantasy.Adaption;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace Fantasy.Studio.Codons
 {
@@ -18,6 +20,7 @@ namespace Fantasy.Studio.Codons
         public Button()
         {
             this.Togglable = false;
+            this.ParameterSource = ParameterSource.Parameter;
         }
 
         public override bool HandleCondition
@@ -28,12 +31,19 @@ namespace Fantasy.Studio.Codons
             }
         }
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
 
-            System.Windows.Input.ICommand command = this._commandBuilder != null ? this._commandBuilder.Build<System.Windows.Input.ICommand>() : null;
+            System.Windows.Input.ICommand command = null;
+            if (this._commandBuilder != null)
+            {
+                services.GetRequiredService<IAdapterManager>().GetAdapter<w.Input.ICommand>(this._commandBuilder.Build<object>());
+            }
+            
 
-            ButtonModel rs = new ButtonModel() { Owner = owner, Icon = this.Icon, Text = this.Text, Conditions=condition, IsCheckable=this.Togglable, Command=command, CommandParameter = this.CommandParameter ?? owner };
+            ButtonModel rs = new ButtonModel() { Owner = owner, Icon = this.Icon, Text = this.Text, Conditions=condition, IsCheckable=this.Togglable, Command=command};
+            rs.CommandParameter =  Invoker.Invoke(this.ParameterSource == ParameterSource.Owner ? owner : this.CommandParameter, this.ParameterMember);
+
             List<object> childCollections = new List<object>();
             foreach (object o in subItems)
             {
@@ -77,5 +87,9 @@ namespace Fantasy.Studio.Codons
         public bool Togglable { get; set; }
 
         public object CommandParameter { get; set; }
+
+        public ParameterSource ParameterSource { get; set; }
+
+        public string ParameterMember { get; set; }
     }
 }

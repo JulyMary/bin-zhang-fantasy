@@ -6,7 +6,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine.Events
 {
-    public class MonitorEntityPropertyChangeHandler : IEntityEventHandler
+    public class MonitorEntityPropertyChangeHandler : ObjectWithSite, IEntityEventHandler
     {
 
         #region IEntityEventHandler Members
@@ -25,7 +25,7 @@ namespace Fantasy.BusinessEngine.Events
             {
                 this._changingTreeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/propertychanging");
             }
-            foreach (IEntityPropertyChangingEventHandler handler in _changingTreeNode.BuildChildItems(e.Entity))
+            foreach (IEntityPropertyChangingEventHandler handler in _changingTreeNode.BuildChildItems(e.Entity, this.Site))
             {
                 handler.Execute(e);
             }
@@ -40,7 +40,7 @@ namespace Fantasy.BusinessEngine.Events
             {
                 _changedTreeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/propertychanged");
             }
-            foreach (IEntityPropertyChangedEventHandler handler in _changedTreeNode.BuildChildItems(e.Entity))
+            foreach (IEntityPropertyChangedEventHandler handler in _changedTreeNode.BuildChildItems(e.Entity, this.Site))
             {
                 handler.Execute(e);
             }

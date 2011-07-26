@@ -19,7 +19,7 @@ namespace Fantasy.Studio.Descriptor
 	/// normally used to query an object's properties.
 	/// </summary>
 
-	public class CustomTypeDescriptor : ICustomTypeDescriptor
+	public class CustomTypeDescriptor : ObjectWithSite, ICustomTypeDescriptor
 	{
 
 		

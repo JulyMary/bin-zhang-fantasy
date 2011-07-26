@@ -79,8 +79,8 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Initialize()
         {
-            this._selectionService = new SelectionService(ServiceManager.Services);
-            DocumentPadModel model = new DocumentPadModel();
+            this._selectionService = new SelectionService(this.Site);
+            DocumentPadModel model = new DocumentPadModel() {Site = this.Site};
             this.DataContext = model;
         }
 

@@ -7,7 +7,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine.Events
 {
-    class NHPostDeleteEventListener : IPostDeleteEventListener
+    class NHPostDeleteEventListener : ObjectWithSite, IPostDeleteEventListener
     {
         #region IPostDeleteEventListener Members
         IAddInTreeNode _treeNode;
@@ -26,7 +26,7 @@ namespace Fantasy.BusinessEngine.Events
                 entity.EntityState = EntityState.Deleted;
                 EntityEventArgs e = new EntityEventArgs(entity);
 
-                foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity))
+                foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
                 {
                     handler.Execute(e);
                 }

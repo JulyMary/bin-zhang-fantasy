@@ -75,7 +75,7 @@
     <Compile Include="Codons\CommandBinding.cs" />
     <Compile Include="Codons\RoutedUICommand.cs" />
     <Compile Include="CommandExtension.cs" />
-    <Compile Include="CommandParameter.cs" />
+    <Compile Include="ParameterSource.cs" />
     <Compile Include="CommandTargetProvider.cs" />
     <Compile Include="Controls\DefaultTooBar.xaml.cs">
       <DependentUpon>DefaultTooBar.xaml</DependentUpon>

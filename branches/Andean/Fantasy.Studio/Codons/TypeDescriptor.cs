@@ -9,13 +9,15 @@ using Fantasy.Studio.Descriptor;
 
 namespace Fantasy.Studio.Codons
 {
-    public class TypeDescriptor : CodonBase
+    public class TypeDescriptor : CodonBase, IObjectWithSite
     {
         public Type TargetType { get; set; }
 
-        public Type Editor { get; set; }
+        public object Editor { get; set; }
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public IServiceProvider Site { get; set; }
+
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             this._conditions = condition;
             this._propertyCodons.AddRange(subItems.Cast<PropertyDescriptor>());
@@ -37,7 +39,7 @@ namespace Fantasy.Studio.Codons
                 return null;
             }
 
-            Fantasy.Studio.Descriptor.CustomTypeDescriptor rs = new Fantasy.Studio.Descriptor.CustomTypeDescriptor(obj);
+            Fantasy.Studio.Descriptor.CustomTypeDescriptor rs = new Fantasy.Studio.Descriptor.CustomTypeDescriptor(obj) {Site = this.Site };
             foreach (Codons.PropertyDescriptor propCodon in _propertyCodons)
             {
                 CustomPropertyDescriptor prop = propCodon.CreateDescriptor(obj);
@@ -50,7 +52,11 @@ namespace Fantasy.Studio.Codons
 
             if (Editor != null && _conditions.GetCurrentConditionFailedAction(obj) == ConditionFailedAction.Nothing)
             {
-                rs.Editor = Editor;
+                rs.Editor = this.Editor;
+                if (rs.Editor is IObjectWithSite)
+                {
+                    ((IObjectWithSite)rs.Editor).Site = this.Site;
+                }
             }
 
             return rs;

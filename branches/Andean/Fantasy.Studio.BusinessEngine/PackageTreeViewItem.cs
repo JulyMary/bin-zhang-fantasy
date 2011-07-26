@@ -16,15 +16,15 @@ using System.Windows.Controls;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class PackageTreeViewItem : NotifyPropertyChangedObject, IDocumentTreeViewItem
+    public class PackageTreeViewItem : NotifyPropertyChangedObject, IObjectWithSite, IDocumentTreeViewItem
     {
-        private BusinessPackage _package;
+        public BusinessPackage Package {get;private set;}
 
         private bool _childLoaded = false;
         public PackageTreeViewItem(BusinessPackage package)
         {
-            this._package = package;
-            this._package.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(PackagePropertyChanged);
+            this.Package = package;
+            this.Package.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(PackagePropertyChanged);
         }
 
         void PackagePropertyChanged(object sender, Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs e)
@@ -37,14 +37,14 @@ namespace Fantasy.Studio.BusinessEngine
 
         public string Name
         {
-            get { return _package.Name; }
+            get { return Package.Name; }
         }
 
         public Guid Id
         {
             get
             {
-                return _package.Id;
+                return Package.Id;
             }
         }
 
@@ -52,7 +52,7 @@ namespace Fantasy.Studio.BusinessEngine
         {
             get
             {
-                return _package.FullName;
+                return Package.FullName;
             }
         }
 
@@ -60,7 +60,7 @@ namespace Fantasy.Studio.BusinessEngine
         {
             get
             {
-                return _package.CodeName;
+                return Package.CodeName;
             }
         }
 
@@ -68,7 +68,7 @@ namespace Fantasy.Studio.BusinessEngine
         {
             get
             {
-                return _package.FullCodeName;
+                return Package.FullCodeName;
             }
         }
 
@@ -95,9 +95,9 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 if (!_childLoaded)
                 {
-                    foreach(IPackageChildrenProvider provider in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/documentpad/package/childprovider").BuildChildItems<IPackageChildrenProvider>(this._package))
+                    foreach(IPackageChildrenProvider provider in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/documentpad/package/childprovider").BuildChildItems<IPackageChildrenProvider>(this.Package, this.Site))
                     {
-                        this._children.Union(provider.GetItems(this._package) );
+                        this._children.Union(provider.GetItems(this.Package) );
                     }
                     this._childLoaded = true;
                 }
@@ -110,9 +110,9 @@ namespace Fantasy.Studio.BusinessEngine
         {
 
             this._children.Clear();
-            foreach (IPackageChildrenProvider provider in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/documentpad/package/childprovider").BuildChildItems<IPackageChildrenProvider>(this._package))
+            foreach (IPackageChildrenProvider provider in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/documentpad/package/childprovider").BuildChildItems<IPackageChildrenProvider>(this.Package, this.Site))
             {
-                this._children.Union(provider.GetItems(this._package));
+                this._children.Union(provider.GetItems(this.Package));
             }
             this._childLoaded = true;
         }
@@ -120,8 +120,8 @@ namespace Fantasy.Studio.BusinessEngine
         public void Open()
         {
             IEditingService documentService = ServiceManager.Services.GetRequiredService<IEditingService>();
-            
-            documentService.OpenView(this._package); 
+
+            documentService.OpenView(this.Package); 
         }
 
         #region IDocumentTreeViewItem Members
@@ -134,7 +134,7 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 if (this._contextMenu == null)
                 {
-                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/package/contextmenu", this._package, null);
+                    this._contextMenu = ServiceManager.Services.GetRequiredService<IMenuService>().CreateContextMenu("fantasy/studio/businessengine/documentpad/package/contextmenu", this, this.Site);
                 }
 
                 return _contextMenu;
@@ -142,5 +142,8 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
         #endregion
+
+
+        public IServiceProvider Site { get; set; }
     }
 }

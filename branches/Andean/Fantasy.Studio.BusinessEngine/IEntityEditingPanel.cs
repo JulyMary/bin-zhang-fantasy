@@ -10,6 +10,8 @@ namespace Fantasy.Studio.BusinessEngine
 {
     public interface IEntityEditingPanel
     {
+        void Initialize();
+
         void Load(IBusinessEntity entity);
 
         EditingState DirtyState { get;}

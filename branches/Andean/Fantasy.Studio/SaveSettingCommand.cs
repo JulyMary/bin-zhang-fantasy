@@ -8,14 +8,14 @@ using Fantasy.AddIns;
 
 namespace Fantasy.Studio
 {
-    public class SaveSettingCommand : ICommand
+    public class SaveSettingCommand : ObjectWithSite, ICommand
     {
         #region ICommand Members
 
         public object Execute(object caller)
         {
             SettingStorage.BeginUpdate();
-            foreach (SettingsBase settings in AddInTree.Tree.GetTreeNode("fantasy/applicationsettings").BuildChildItems(null))
+            foreach (SettingsBase settings in AddInTree.Tree.GetTreeNode("fantasy/applicationsettings").BuildChildItems(null, this.Site))
             {
                 settings.Save();
             }

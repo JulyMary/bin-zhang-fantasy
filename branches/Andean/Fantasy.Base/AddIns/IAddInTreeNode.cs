@@ -16,9 +16,9 @@ namespace Fantasy.AddIns
 
         ConditionFailedAction GetCurrentConditionFailedAction(object caller);
 
-        IEnumerable BuildChildItems(object caller, IServiceProvider site = null);
+        IEnumerable BuildChildItems(object caller, IServiceProvider site );
 
-        IEnumerable<T> BuildChildItems<T>(object caller, IServiceProvider site = null);
+        IEnumerable<T> BuildChildItems<T>(object caller, IServiceProvider site);
 
         
     }

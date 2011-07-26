@@ -22,7 +22,7 @@ namespace Fantasy.AddIns
             ConditionFailedAction action = ConditionFailedAction.Nothing;
             foreach (ICondition condition in this)
             {
-                if (!condition.IsValid(caller))
+                if (!ConditionBase.IsValidWithMember(condition, caller))
                 {
                     switch (condition.Action)
                     {

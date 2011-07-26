@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.AddIns;
+using Fantasy.Adaption;
 
 namespace Fantasy.Studio.Codons
 {
     public class CommandBinding : CodonBase
     {
+        public CommandBinding()
+        {
+            this.ParameterSource = ParameterSource.Parameter;
+        }
 
         public System.Windows.Input.ICommand Command { get; set; }
 
@@ -15,13 +20,15 @@ namespace Fantasy.Studio.Codons
         [Template("_handlerBuilder")]
         public object Handler { get; set; }
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
-            AddInCommandBinding rs = new AddInCommandBinding() { Command = Command, Condition = condition, Owner = owner};
+            AddInCommandBinding rs = new AddInCommandBinding() { Command = this.Command, Condition = condition, Owner = owner, ParameterSource = ParameterSource};
+
             if (this._handlerBuilder != null)
             {
-                rs.Handler = this._handlerBuilder.Build<object>();
+                rs.Handler = services.GetRequiredService<IAdapterManager>().GetAdapter<System.Windows.Input.ICommand>(this._handlerBuilder.Build<object>());
             }
+
 
             return rs;
         }
@@ -33,6 +40,9 @@ namespace Fantasy.Studio.Codons
                 return true;
             }
         }
+
+        public ParameterSource ParameterSource { get; set; }
+      
 
 
     }

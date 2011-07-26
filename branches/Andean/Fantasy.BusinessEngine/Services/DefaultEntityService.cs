@@ -23,7 +23,7 @@ namespace Fantasy.BusinessEngine.Services
             MappingConfiguration mc = new MappingConfiguration(logger);
             mc.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly());
 
-            foreach (Assembly asm in AddIns.AddInTree.Tree.GetTreeNode("fantasy/nhibernate/assemblies").BuildChildItems(this))
+            foreach (Assembly asm in AddIns.AddInTree.Tree.GetTreeNode("fantasy/nhibernate/assemblies").BuildChildItems(this, this.Site))
             {
                 mc.FluentMappings.AddFromAssembly(asm);
             }

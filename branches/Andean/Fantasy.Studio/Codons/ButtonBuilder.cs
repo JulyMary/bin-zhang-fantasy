@@ -10,7 +10,7 @@ namespace Fantasy.Studio.Codons
     [ContentProperty("Instance")]
     public class ButtonBuilder : CodonBase
     {
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             ButtonSourceCollections rs = new ButtonSourceCollections() { Builder = this.Instance, Conditions = condition };
             rs.Update(owner);

@@ -20,7 +20,7 @@ namespace Fantasy.AddIns
 
        
        
-        public abstract object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition);
+        public abstract object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services);
 
     
         public ICondition Conditional

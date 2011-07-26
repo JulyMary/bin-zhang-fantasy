@@ -8,7 +8,7 @@ namespace Fantasy.Studio.Codons
 {
     public class RoutedUICommand : CodonBase
     {
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             if (command == null)
             {

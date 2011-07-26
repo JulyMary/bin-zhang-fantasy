@@ -21,7 +21,7 @@ namespace Fantasy.Studio.Codons
 
         public string Text { get; set; }
 
-        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition)
+        public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             DefaultTooBar rs = new DefaultTooBar() { Caption = this.Text };
             ToolBarModel model = new ToolBarModel(subItems, this.ID) { Conditions = condition, Text=Text };

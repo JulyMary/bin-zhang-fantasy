@@ -23,13 +23,15 @@ namespace Fantasy.Studio.BusinessEngine
     /// <summary>
     /// Interaction logic for PropertyGridEditor.xaml
     /// </summary>
-    public partial class PropertyGridEditor : UserControl, IEntityEditingPanel
+    public partial class PropertyGridEditor : UserControl, IEntityEditingPanel, IObjectWithSite
     {
         public PropertyGridEditor()
         {
             InitializeComponent();
             this.Title = Properties.Resources.PropertyGridEditorDefaultTitle;
         }
+
+        public IServiceProvider Site { get; set; }
 
 
         private SelectionService _selection = new SelectionService(null);
@@ -39,8 +41,11 @@ namespace Fantasy.Studio.BusinessEngine
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnGotKeyboardFocus(e);
-            IMonitorSelectionService monitor = ServiceManager.Services.GetRequiredService<IMonitorSelectionService>();
-            monitor.CurrentSelectionService = this._selection;
+            if (this.Site != null)
+            {
+                IMonitorSelectionService monitor = this.Site.GetRequiredService<IMonitorSelectionService>();
+                monitor.CurrentSelectionService = this._selection;
+            }
         }
 
 
@@ -50,14 +55,14 @@ namespace Fantasy.Studio.BusinessEngine
         {
             this._entity = data;
             this._entity.EntityStateChanged += new EventHandler(EntityStateChanged);
-            object descriptor = ServiceManager.Services.GetRequiredService<IAdapterManager>().GetAdapter(this._entity, typeof(ICustomTypeDescriptor));
+            object descriptor = this.Site.GetRequiredService<IAdapterManager>().GetAdapter(this._entity, typeof(ICustomTypeDescriptor));
             this.propertyGrid.SelectedObject = descriptor;
             this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty; 
         }
 
         void EntityStateChanged(object sender, EventArgs e)
         {
-            object descriptor = ServiceManager.Services.GetRequiredService<IAdapterManager>().GetAdapter(this._entity, typeof(ICustomTypeDescriptor));
+            object descriptor = this.Site.GetRequiredService<IAdapterManager>().GetAdapter(this._entity, typeof(ICustomTypeDescriptor));
             this.propertyGrid.SelectedObject = descriptor;
             this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty; 
             CommandManager.InvalidateRequerySuggested();
@@ -90,7 +95,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Save()
         {
-            ISession session = ServiceManager.Services.GetRequiredService<IEntityService>().DefaultSession;
+            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
             session.SaveOrUpdate(this._entity);
         }
 
@@ -108,6 +113,15 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
         public void Closed()
+        {
+            
+        }
+
+        #endregion
+
+        #region IEntityEditingPanel Members
+
+        public void Initialize()
         {
             
         }

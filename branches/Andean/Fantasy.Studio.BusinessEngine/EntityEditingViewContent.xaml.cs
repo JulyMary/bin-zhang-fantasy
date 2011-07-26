@@ -46,12 +46,12 @@ namespace Fantasy.Studio.BusinessEngine
             _model = new EntityEditingViewContentModel();
             if (this.EditingPanelPath != null)
             {
-                _model.EditingPanels.AddRange(AddInTree.Tree.GetTreeNode(this.EditingPanelPath).BuildChildItems<IEntityEditingPanel>(this,this._services));
+                _model.EditingPanels.AddRange(AddInTree.Tree.GetTreeNode(this.EditingPanelPath).BuildChildItems<IEntityEditingPanel>(this,this.Site));
             }
 
             if (this.CommandBindingPath != null)
             {
-                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode(this.CommandBindingPath).BuildChildItems(this, this._services))
+                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode(this.CommandBindingPath).BuildChildItems(this, this.Site))
                 {
                     this.CommandBindings.Add(cb);
                 }
@@ -59,6 +59,7 @@ namespace Fantasy.Studio.BusinessEngine
 
             foreach (IEntityEditingPanel panel in _model.EditingPanels)
             {
+                panel.Initialize();
                 panel.Load(entity);
 
                 TabItem item = new TabItem() { Header = panel.Title, Content = panel.Content };
@@ -224,20 +225,9 @@ namespace Fantasy.Studio.BusinessEngine
 
 
 
-        #region IObjectWithSite Members
-        private IServiceProvider _services;
-        IServiceProvider IObjectWithSite.Site
-        {
-            get
-            {
-                return _services;
-            }
-            set
-            {
-                _services = value;
-            }
-        }
+       
+        public IServiceProvider Site { get; set; }
 
-        #endregion
+        
     }
 }
