@@ -73,7 +73,6 @@
     <Compile Include="ClassEditor.cs" />
     <Compile Include="ClassFolderTreeViewItem.cs" />
     <Compile Include="ClassTreeViewItem.cs" />
-    <Compile Include="ClassViewBuilder.cs" />
     <Compile Include="Conditions\IsSystemEntity.cs" />
     <Compile Include="EditPackageCommand.cs" />
     <Compile Include="EntityEditingViewContent.xaml.cs">
@@ -83,7 +82,6 @@
     <Compile Include="IEntityEditingPanel.cs" />
     <Compile Include="PackageClassesProvider.cs" />
     <Compile Include="PackageEditor.cs" />
-    <Compile Include="PackageViewBuilder.cs" />
     <Compile Include="ChildPackageProvider.cs" />
     <Compile Include="IDocumentTreeViewItem.cs" />
     <Compile Include="IPackageChildrenProvider.cs" />

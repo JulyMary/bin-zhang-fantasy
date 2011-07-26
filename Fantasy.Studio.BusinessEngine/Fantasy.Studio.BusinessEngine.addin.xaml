@@ -69,18 +69,18 @@
         </CommandBinding>
     </Extension>
 
-    <Extension Path="fantasy/studio/documents/builders">
+    <Extension Path="fantasy/studio/documents/views">
         <Object ID="packageeditor">
             <Object.Conditional>
                 <IsTypeOf Type="{x:Type be:BusinessPackage }" />
             </Object.Conditional>
-            <sbe:PackageViewBuilder/>
+            <sbe:PackageEditor/>
         </Object>
         <Object ID="classeditor">
             <Object.Conditional>
                 <IsTypeOf Type="{x:Type be:BusinessClass}" />
             </Object.Conditional>
-            <sbe:ClassViewBuilder />
+            <sbe:ClassEditor />
         </Object>
     </Extension>
 
