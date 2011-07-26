@@ -38,7 +38,7 @@ namespace Fantasy.Studio
 
         public virtual void InitializeService()
         {
-          
+
 
             this._messageBox = this.Site.GetRequiredService<IMessageBoxService>();
 
@@ -77,7 +77,7 @@ namespace Fantasy.Studio
         {
             base.OnClosing(e);
 
-            e.Cancel = ! this.CloseAllViews();
+            e.Cancel = !this.CloseAllViews();
 
             if (!e.Cancel && this.Layout != null)
             {
@@ -109,7 +109,7 @@ namespace Fantasy.Studio
         private PadCollection _pads = new PadCollection();
         public PadCollection Pads
         {
-            get { return _pads;  }
+            get { return _pads; }
         }
 
         #region IWorkbench Members
@@ -202,7 +202,7 @@ namespace Fantasy.Studio
             this.OnActiveWorkbenchWindowChanged(e);
         }
 
-      
+
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
@@ -222,7 +222,7 @@ namespace Fantasy.Studio
             get { return this._layout != null ? this._layout.ActiveWorkbenchwindow : null; }
         }
 
-       
+
 
         public void ShowView(IViewContent content)
         {
@@ -237,10 +237,10 @@ namespace Fantasy.Studio
                 content.WorkbenchWindow.Closed += (sender, e) => { this.WorkbenchWindowClosed(content); };
                 this.OnViewOpened(new ViewContentEventArgs(content));
             }
-           
+
         }
 
-       
+
 
         public void ShowPad(IPadContent content)
         {
@@ -306,12 +306,12 @@ namespace Fantasy.Studio
                 this._closingAllViews = true;
                 try
                 {
-                    var query = from v in this.Views where (v is IEditingViewContent) && ((IEditingViewContent)v).DirtyState == EditingState.Dirty  select (IEditingViewContent)v;
+                    var query = from v in this.Views where (v is IEditingViewContent) && ((IEditingViewContent)v).DirtyState == EditingState.Dirty select (IEditingViewContent)v;
                     IEditingViewContent[] dirties = query.ToArray();
                     if (dirties.Length > 0)
                     {
                         string text = "\n" + string.Join("\n", dirties.Select(v => v.Title));
-                       
+
 
                         switch (_messageBox.Show(string.Format(Properties.Resources.SaveChangesText, text), button: MessageBoxButton.YesNoCancel, defaultResult: MessageBoxResult.Yes))
                         {
@@ -343,7 +343,7 @@ namespace Fantasy.Studio
                     this._closingAllViews = false;
                 }
                 this.OnActiveWorkbenchWindowChanged(EventArgs.Empty);
-                
+
             }
             return rs;
         }
@@ -358,19 +358,14 @@ namespace Fantasy.Studio
             rs = (IEditingViewContent)query.SingleOrDefault();
             if (rs == null)
             {
-
-                foreach (IEditingViewBuilder builder in AddInTree.Tree.GetTreeNode("fantasy/studio/documents/builders").BuildChildItems(data, this.Site))
+                rs = AddInTree.Tree.GetTreeNode("fantasy/studio/documents/views").BuildChildItems<IEditingViewContent>(data, this.Site).FirstOrDefault();
+                if (rs != null)
                 {
-                    rs = builder.CreateView(data);
                     rs.Load(data);
-                    if (rs != null)
+                    this.ShowView(rs);
+                    if (rs.WorkbenchWindow != null)
                     {
-                        this.ShowView(rs);
-                        if (rs.WorkbenchWindow != null)
-                        {
-                            rs.WorkbenchWindow.Closing += new System.ComponentModel.CancelEventHandler(WorkbenchWindowClosing);
-                        }
-                        break;
+                        rs.WorkbenchWindow.Closing += new System.ComponentModel.CancelEventHandler(WorkbenchWindowClosing);
                     }
                 }
             }
@@ -382,7 +377,7 @@ namespace Fantasy.Studio
         private void WorkbenchWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             IEditingViewContent content = (IEditingViewContent)((IWorkbenchWindow)sender).ViewContent;
-            if (content.DirtyState == EditingState.Dirty  && !this._closingAllViews)
+            if (content.DirtyState == EditingState.Dirty && !this._closingAllViews)
             {
                 string text = "\n" + content.Title;
                 switch (_messageBox.Show(string.Format(Properties.Resources.SaveChangesText, text), button: MessageBoxButton.YesNoCancel, defaultResult: MessageBoxResult.Yes))
