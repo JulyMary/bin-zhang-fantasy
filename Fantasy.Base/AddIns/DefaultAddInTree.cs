@@ -93,7 +93,7 @@ namespace Fantasy.AddIns
             }
             else
             {
-                throw new AddInException(string.Format(node.FullPath, addIn.Name, node.AddIn.Name));
+                throw new AddInException(string.Format(Resources.DuplicatedCodonText, node.FullPath, addIn.Name, node.AddIn.Name));
             }
 
             if (codon.Conditional != null)
@@ -149,7 +149,7 @@ namespace Fantasy.AddIns
             {
 
                 List<Exception> errors = new List<Exception>();
-                foreach (string file in addInFiles)
+                foreach (string file in parsingList)
                 {
                     //FileStream fs = LongPathFile.Open(file, FileMode.Open, FileAccess.Read);
                     XmlReader reader = XmlReader.Create(file);

@@ -98,7 +98,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="PropertyEditorAddPropertyCommand.cs" />
+    <Compile Include="AddPropertyCommand.cs" />
     <Compile Include="PropertyEditorModel.cs" />
     <Compile Include="PropertyGridEditor.xaml.cs">
       <DependentUpon>PropertyGridEditor.xaml</DependentUpon>

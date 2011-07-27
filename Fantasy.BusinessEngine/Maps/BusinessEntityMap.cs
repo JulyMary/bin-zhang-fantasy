@@ -10,7 +10,7 @@ namespace Fantasy.BusinessEngine.Maps
     {
         public BusinessEntityMap()
         {
-            this.Id(x => x.Id).GeneratedBy.Guid();
+            this.Id(x => x.Id);
             this.Version(x => x.ModificationTime).CustomType<DateTime>().Not.Nullable();
             this.Map(x => x.CreationTime).Not.Nullable();
             this.Map(x => x.IsSystem).Not.Nullable();

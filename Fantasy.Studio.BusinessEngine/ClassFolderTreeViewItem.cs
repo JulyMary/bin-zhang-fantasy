@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public ClassFolderTreeViewItem(Fantasy.BusinessEngine.BusinessPackage package)
         {
-            // TODO: Complete member initialization
+           
             this._package = package;
             this._childItems = new ObservableAdapterCollection<IDocumentTreeViewItem>(package.Classes, c => new ClassTreeViewItem((BusinessClass)c));
           

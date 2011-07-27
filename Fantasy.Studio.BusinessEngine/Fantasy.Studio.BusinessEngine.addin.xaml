@@ -11,7 +11,11 @@
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}"/>
     </Extension>
-    
+
+    <Extension Path="fantasy/studio/routedcommands">
+        <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
+    </Extension>
+
     <Extension Path="fantasy/studio/workbench/pads">
         <Object ID="documents">
             <sbe:DocumentPad/>
@@ -93,13 +97,18 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/propertyeditor/commandbindings">
-        
+        <CommandBinding ID="AddProperty" Command="{Command Name=AddBusinessProperty}" Handler="{New sbe:AddPropertyCommand}" ParameterSource="Owner" ParameterMember="Class">
+            <CommandBinding.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity Member="Class" />
+                </Not>
+            </CommandBinding.Conditional>
+        </CommandBinding>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/toolbars">
         <ToolBar ID="Default" Text="Default">
             <Button ID="addProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" 
-                       Text="Add Property" 
-                       Command="{New sbe:PropertyEditorAddPropertyCommand}" />
+                    Command="{Command Name=AddBusinessProperty}" />
             <Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico"/>
         </ToolBar>
     </Extension>

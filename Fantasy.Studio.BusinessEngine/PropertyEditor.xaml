@@ -5,14 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:l="clr-namespace:Fantasy.Studio.Controls;assembly=Fantasy.Studio" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
-    <Grid>
+             d:DesignHeight="300" d:DesignWidth="600" FocusManager.IsFocusScope="true" FocusManager.FocusedElement="{Binding ElementName=propertyListView}"
+             >
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ToolBarTray Name="ToolBarTray" Grid.RowSpan="1" />
-        <ListView Grid.Row="1" ItemsSource="{Binding Properties}" l:GridViewLayout.ColumnId="CodeNameColumn" >
+        <ToolBarTray Name="ToolBarTray" Grid.Row="0" Grid.RowSpan="1" />
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=Class.Properties}" l:GridViewLayout.ColumnId="CodeNameColumn" Name="propertyListView" SelectionChanged="propertyListView_SelectionChanged">
             <ListView.View>
                 <GridView AllowsColumnReorder="true" x:Name="PropertyGridView">
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" l:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>

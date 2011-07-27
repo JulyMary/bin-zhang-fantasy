@@ -67,7 +67,7 @@
     </Extension>
    
     <Extension Path="fantasy/studio/routedcommands">
-        <RoutedUICommand ID="Test" Name="Test" Text="Text" />
+       
     </Extension>
 
     <Extension Path="fantasy/studio/typedescriptors">

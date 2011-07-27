@@ -75,6 +75,7 @@
     <Compile Include="Codons\CommandBinding.cs" />
     <Compile Include="Codons\RoutedUICommand.cs" />
     <Compile Include="CommandExtension.cs" />
+    <Compile Include="Controls\AutoGrayImage.cs" />
     <Compile Include="ParameterSource.cs" />
     <Compile Include="CommandTargetProvider.cs" />
     <Compile Include="Controls\DefaultTooBar.xaml.cs">

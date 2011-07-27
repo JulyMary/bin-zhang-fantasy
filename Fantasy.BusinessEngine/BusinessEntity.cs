@@ -12,8 +12,7 @@ namespace Fantasy.BusinessEngine
     {
         public BusinessEntity()
         {
-            //this.Id = Guid.NewGuid();
-            this.CreationTime = DateTime.Now;
+
         }
 
         private  Dictionary<string, object> _values = new Dictionary<string, object>();
@@ -257,6 +256,8 @@ namespace Fantasy.BusinessEngine
 
         void IEntity.OnCreate(EventArgs e)
         {
+            this.Id = Guid.NewGuid();
+            this.CreationTime = DateTime.Now;
             this.OnCreate(e);
         }
 

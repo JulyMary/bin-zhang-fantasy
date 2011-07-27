@@ -16,6 +16,8 @@ using Fantasy.Studio.Controls;
 using Fantasy.AddIns;
 using Fantasy.Studio.Services;
 using Fantasy.ServiceModel;
+using System.ComponentModel.Design;
+using NHibernate;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -32,7 +34,9 @@ namespace Fantasy.Studio.BusinessEngine
 
         public IServiceProvider Site { get; set; }
 
-        private SelectionService _selectionService = new SelectionService(null);
+        private ISelectionService _selectionService = new SelectionService(null);
+
+        private PropertyEditorModel _model;
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
@@ -44,29 +48,31 @@ namespace Fantasy.Studio.BusinessEngine
             base.OnGotKeyboardFocus(e);
         }
 
-        public BusinessClass Entity { get; private set; }
-
+       
         #region IEntityEditingPanel Members
 
         public void Initialize()
         {
-            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/toolbars").BuildChildItems(this, this.Site))
-            {
-                this.ToolBarTray.ToolBars.Add(bar);
-            }
-
-            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/propertyeditor/commandbindings").BuildChildItems(this, this.Site))
-            {
-                this.CommandBindings.Add(cb);
-            }
+            
         }
 
         public void Load(IBusinessEntity entity)
         {
+            this._model = new PropertyEditorModel((BusinessClass)entity);
 
-            this.Entity = (BusinessClass)entity; 
-            this.DataContext = entity;
-            foreach (BusinessProperty prop in this.Entity.Properties)
+            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/toolbars").BuildChildItems(this._model, this.Site))
+            {
+                this.ToolBarTray.ToolBars.Add(bar);
+            }
+
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/propertyeditor/commandbindings").BuildChildItems(this._model, this.Site))
+            {
+                this.CommandBindings.Add(cb);
+            }
+
+            
+            this.DataContext = this._model;
+            foreach (BusinessProperty prop in this._model.Class.Properties)
             {
                 this.HandlePropertyEvents(prop);
             }
@@ -78,12 +84,37 @@ namespace Fantasy.Studio.BusinessEngine
 
         private void HandlePropertyEvents(BusinessProperty prop)
         {
-            
+            prop.EntityStateChanged += new EventHandler(PropertyStateChanged); 
         }
 
+        void PropertyStateChanged(object sender, EventArgs e)
+        {
+            this.DirtyState =  EditingState.Dirty;
+            BusinessProperty prop = (BusinessProperty)sender;
+            if(prop.EntityState == EntityState.Deleted)
+            {
+                RemovePropertyEvents(prop);
+            }
+        }
+
+        private void RemovePropertyEvents(BusinessProperty prop)
+        {
+            prop.EntityStateChanged -= new EventHandler(PropertyStateChanged); 
+        }
+
+
+        private EditingState _dirtyState = EditingState.Clean;
         public EditingState DirtyState
         {
-            get { return EditingState.Clean; }
+            get { return _dirtyState; }
+            private set
+            {
+                if (this._dirtyState != value)
+                {
+                    this._dirtyState = value;
+                    this.OnDirtyStateChanged(EventArgs.Empty);
+                }
+            }
         }
 
 
@@ -100,7 +131,11 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Save()
         {
-            
+            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            foreach (BusinessProperty prop in this._model.Class.Properties)
+            {
+                session.SaveOrUpdate(prop);
+            }
         }
 
         UIElement IEntityEditingPanel.Content
@@ -127,9 +162,27 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Closed()
         {
+            foreach (BusinessProperty prop in this._model.Class.Properties)
+            {
+                this.RemovePropertyEvents(prop);
+            }
             Properties.Settings.Default.PropertyEditorGridViewLayout = this._propertyGridLayout;
         }
 
         #endregion
+
+        private void propertyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this._selectionService.SetSelectedComponents(this.propertyListView.SelectedItems);
+            foreach (BusinessProperty property in e.RemovedItems)
+            {
+                this._model.Selected.Remove(property);
+            }
+            foreach (BusinessProperty property in e.AddedItems)
+            {
+                this._model.Selected.Add(property);
+            }
+           
+        }
     }
 }

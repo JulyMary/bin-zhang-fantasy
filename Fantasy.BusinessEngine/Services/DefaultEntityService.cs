@@ -31,15 +31,16 @@ namespace Fantasy.BusinessEngine.Services
             mc.Apply(this._configuration);
 
 
-            this._configuration.EventListeners.PostLoadEventListeners = new IPostLoadEventListener[] { new NHPostLoadEventListener(), new DefaultPostLoadEventListener() };
-            this._configuration.EventListeners.PreInsertEventListeners = new IPreInsertEventListener[] { new NHPreInsertEventListener()};
-            this._configuration.EventListeners.PostInsertEventListeners = new IPostInsertEventListener[] { new NHPostInsertEventListener() };
-            this._configuration.EventListeners.PreUpdateEventListeners = new IPreUpdateEventListener[] {new NHPreUpdateEventListener()};
-            this._configuration.EventListeners.PostUpdateEventListeners = new IPostUpdateEventListener[] { new NHPostUpdateEventListener() };
-            this._configuration.EventListeners.PreDeleteEventListeners = new IPreDeleteEventListener[] { new NHPreDeleteEventListener() };
-            this._configuration.EventListeners.PostDeleteEventListeners = new IPostDeleteEventListener[] { new NHPostDeleteEventListener() };  
+            this._configuration.EventListeners.PostLoadEventListeners = new IPostLoadEventListener[] { new NHPostLoadEventListener() {Site=this.Site},
+                new DefaultPostLoadEventListener() };
+            this._configuration.EventListeners.PreInsertEventListeners = new IPreInsertEventListener[] { new NHPreInsertEventListener() {Site=this.Site}};
+            this._configuration.EventListeners.PostInsertEventListeners = new IPostInsertEventListener[] { new NHPostInsertEventListener() { Site = this.Site } };
+            this._configuration.EventListeners.PreUpdateEventListeners = new IPreUpdateEventListener[] { new NHPreUpdateEventListener() { Site = this.Site } };
+            this._configuration.EventListeners.PostUpdateEventListeners = new IPostUpdateEventListener[] { new NHPostUpdateEventListener() { Site = this.Site } };
+            this._configuration.EventListeners.PreDeleteEventListeners = new IPreDeleteEventListener[] { new NHPreDeleteEventListener() { Site = this.Site } };
+            this._configuration.EventListeners.PostDeleteEventListeners = new IPostDeleteEventListener[] { new NHPostDeleteEventListener() { Site = this.Site } };
 
-            this._createListener = new EntityCreateEventListener();
+            this._createListener = new EntityCreateEventListener() { Site = this.Site };
 
             
             this._sessionFactory = this._configuration.BuildSessionFactory();
@@ -93,7 +94,7 @@ namespace Fantasy.BusinessEngine.Services
         {
             T rs = Activator.CreateInstance<T>();
             IEntity entity = (IEntity)rs;
-
+            this._createListener.OnCreate(entity);
             return rs;
         }
 

@@ -50,7 +50,7 @@ namespace Fantasy.Studio
                 this.ToolBarTray.ToolBars.Add(bar);
             }
 
-            //TODO: change contextmenu commands' target element
+            
             ContextMenu ctx = menuSvc.CreateContextMenu("fantasy/studio/toolbartray/contextmenu", this.ToolBarTray, this.Site);
             this.ToolBarTray.ContextMenu = ctx;
             if (menu is FrameworkElement)

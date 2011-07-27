@@ -23,6 +23,8 @@ namespace Fantasy.Studio.Services
                 this._commands.Add(command.Name, command); 
             }
 
+            CommandExtension.DefferSetValues(this);
+
             base.InitializeService();
         }
 
