@@ -12,7 +12,7 @@ namespace Fantasy.Studio.Codons
         {
             if (command == null)
             {
-                command = new System.Windows.Input.RoutedUICommand(this.Text, this.Name, this.GetType()); 
+                command = new System.Windows.Input.RoutedUICommand(this.Text, this.ID, this.GetType()); 
             }
 
             return command;
@@ -21,8 +21,6 @@ namespace Fantasy.Studio.Codons
         private System.Windows.Input.RoutedUICommand command = null;
 
         public string Text { get; set; }
-
-        public string Name { get; set; }
 
 
     }

@@ -144,4 +144,7 @@
   <data name="CannotFindPathInAddInTreeText" xml:space="preserve">
     <value>Cannot find AddIn tree path {0}.</value>
   </data>
+  <data name="DuplicatedCodonText" xml:space="preserve">
+    <value>Duplicated codon {0} in add {1} and {2}.</value>
+  </data>
 </root>

@@ -3,40 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine;
+using System.Collections.ObjectModel;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    class PropertyEditorModel
+    public class PropertyEditorModel
     {
-        public BusinessClass Class { get; set; }
+        public PropertyEditorModel(BusinessClass @class)
+        {
+            this.Class = @class;
+        }
 
-        private BusinessProperty _selected;
+        public BusinessClass Class { get; private set; }
 
-        public BusinessProperty Selected
+        private ObservableCollection<BusinessProperty> _selected = new ObservableCollection<BusinessProperty>();
+
+        public IList<BusinessProperty> Selected 
         {
             get { return _selected; }
-            set 
-            {
-                if (_selected != null)
-                {
-                    _selected = value;
-                    this.OnSelectedChanged(EventArgs.Empty);
-                }
-            }
         }
 
-        public event EventHandler SelectedChanged;
-
-        protected virtual void OnSelectedChanged(EventArgs e)
-        {
-            if (this.SelectedChanged != null)
-            {
-                this.SelectedChanged(this, e);
-            }
-        }
-
-
-        
-        
     }
 }

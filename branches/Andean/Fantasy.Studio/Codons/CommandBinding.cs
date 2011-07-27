@@ -22,7 +22,7 @@ namespace Fantasy.Studio.Codons
 
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
-            AddInCommandBinding rs = new AddInCommandBinding() { Command = this.Command, Condition = condition, Owner = owner, ParameterSource = ParameterSource};
+            AddInCommandBinding rs = new AddInCommandBinding() { Command = this.Command, Condition = condition, Owner = owner, ParameterSource = ParameterSource, ParameterMember=this.ParameterMember};
 
             if (this._handlerBuilder != null)
             {
@@ -42,6 +42,8 @@ namespace Fantasy.Studio.Codons
         }
 
         public ParameterSource ParameterSource { get; set; }
+
+        public string ParameterMember { get; set; }
       
 
 

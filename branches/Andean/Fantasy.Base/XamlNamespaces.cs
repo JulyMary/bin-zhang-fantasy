@@ -10,6 +10,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.AddIns.Conditions")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.ServiceModel")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.AddIns.Services")]
+[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Windows")]
 
 internal class XamlNamespaces
 {

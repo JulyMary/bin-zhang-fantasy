@@ -37,7 +37,7 @@ namespace Fantasy.Studio.Codons
             System.Windows.Input.ICommand command = null;
             if (this._commandBuilder != null)
             {
-                services.GetRequiredService<IAdapterManager>().GetAdapter<w.Input.ICommand>(this._commandBuilder.Build<object>());
+                command = services.GetRequiredService<IAdapterManager>().GetAdapter<w.Input.ICommand>(this._commandBuilder.Build<object>());
             }
             
 

@@ -6,7 +6,7 @@ using Fantasy.ServiceModel;
 
 namespace Fantasy.Studio.Codons
 {
-    public class InputCommandAdapter : System.Windows.Input.ICommand 
+    public class InputCommandAdapter : IObjectWithSite, System.Windows.Input.ICommand 
     {
         public InputCommandAdapter(ICommand command)
         {
@@ -28,6 +28,28 @@ namespace Fantasy.Studio.Codons
         public void Execute(object parameter)
         {
             this._command.Execute(parameter);
+        }
+
+        #endregion
+
+
+
+        #region IObjectWithSite Members
+        private IServiceProvider _site = null;
+        public IServiceProvider Site
+        {
+            get
+            {
+                return _site;
+            }
+            set
+            {
+                _site = value;
+                if (this._command is IObjectWithSite)
+                {
+                    ((IObjectWithSite)_command).Site = value;
+                }
+            }
         }
 
         #endregion

@@ -7,6 +7,7 @@
             xmlns:vm="clr-namespace:Fantasy.Studio.Codons"
             xmlns:s="clr-namespace:Fantasy.Studio"
             xmlns:p="clr-namespace:Fantasy.Studio.Properties"
+            xmlns:c="clr-namespace:Fantasy.Studio.Controls" 
             xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
             mc:Ignorable="d"  Band="{Binding Setting.Band, Mode=TwoWay}" BandIndex="{Binding Setting.BandIndex, Mode=TwoWay}" 
          Visibility="{Binding Setting.Visible, Converter={x:Static b:VisibilityConverter.Collapsed }, Mode=TwoWay}" ItemsSource="{Binding ChildItems}"
@@ -19,9 +20,10 @@
             <Separator Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"></Separator>
         </DataTemplate>
         <StackPanel Orientation="Horizontal" x:Key="buttonContent" x:Shared="false" >
-            <Image Source="{Binding Icon}" Visibility="{Binding HasIcon, Converter={x:Static b:VisibilityConverter.Collapsed}}">
+            <c:AutoGrayImage IsEnabled="False" Visibility="{Binding HasIcon, Converter={x:Static b:VisibilityConverter.Collapsed}}">
                 <Image.Style>
                     <Style>
+                        <Setter Property="Image.Source" Value="{Binding Icon}" />
                         <Setter Property="Image.MaxWidth" Value="16"/>
                         <Setter Property="Image.MaxHeight" Value="16"/>
                         <Style.Triggers>
@@ -32,7 +34,7 @@
                         </Style.Triggers>
                     </Style>
                 </Image.Style>
-            </Image>
+            </c:AutoGrayImage>
             <TextBlock Text="{Binding Text}">
                 <TextBlock.Style>
                     <Style TargetType="TextBlock">
