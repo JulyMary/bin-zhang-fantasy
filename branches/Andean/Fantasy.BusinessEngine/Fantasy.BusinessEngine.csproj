@@ -101,6 +101,8 @@
     <Compile Include="Events\NHPreUpdateEventListener.cs" />
     <Compile Include="Maps\BusinessPropertyMap.cs" />
     <Compile Include="Services\DebugConnectionStringProvider.cs" />
+    <Compile Include="Services\DefaultBusinessDataTypeRepository.cs" />
+    <Compile Include="Services\IBusinessDataTypeRepository.cs" />
     <Compile Include="Services\IConnectionStringProvider.cs" />
     <Compile Include="Services\IEntityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

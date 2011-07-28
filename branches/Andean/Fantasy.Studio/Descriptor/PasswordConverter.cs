@@ -4,7 +4,7 @@ using System.Text;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace Fantasy.RichClient.Framework.Descriptor
+namespace Fantasy.Studio.Descriptor
 {
 	public class PasswordConverter : TypeConverter
 	{

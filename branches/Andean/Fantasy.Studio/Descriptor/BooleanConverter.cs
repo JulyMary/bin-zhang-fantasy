@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using Fantasy.Studio.Properties;
 
-namespace Fantasy.RichClient.Framework.Descriptor
+namespace Fantasy.Studio.Descriptor
 {
 	public class BooleanConverter : TypeConverter
 	{

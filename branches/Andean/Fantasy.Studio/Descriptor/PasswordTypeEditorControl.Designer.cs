@@ -1,4 +1,4 @@
-namespace Fantasy.RichClient.Framework.Descriptor
+namespace Fantasy.Studio.Descriptor
 {
 	partial class PasswordTypeEditorControl
 	{

@@ -81,7 +81,10 @@
             <PropertyDescriptor ID="IsNullable" Name="IsNullable" Caption="Is Nullable" Category="Data" />
             <PropertyDescriptor ID="DefaultValue" Name="DefaultValue" Caption="Default Value" Category="Data" />
             <PropertyDescriptor ID="IsCalculated" Name="IsCalculated" Caption="Is Calculated" Category="Data" />
-            <!-- TODO: Add Property Type -->
+            <PropertyDescriptor ID="Type" Name="Type" Caption="Type" Category="General" Converter="{New sbe:BusinessDataTypeConverter}" 
+                                Set="{New sbe:BusinessPropertyDataTypeAccessor}" Get="{New sbe:BusinessPropertyDataTypeAccessor}"
+                                Editor="{New sbe:BusinessPropertyTypeEditor}" Type="{x:Type be:IBusinessEntity}"/>
+           
             
         </TypeDescriptor>
     </Extension>

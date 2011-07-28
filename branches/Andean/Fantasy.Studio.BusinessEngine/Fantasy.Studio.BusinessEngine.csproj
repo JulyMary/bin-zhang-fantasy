@@ -61,7 +61,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddPackageCommand.cs" />
-    <Compile Include="BusinessEntityCommands.cs" />
+    <Compile Include="InvokerMemberConverter.cs" />
+    <Compile Include="PropertyUtils\BusinessDataTypePikcerModel.cs" />
+    <Compile Include="PropertyUtils\BusinessDataTypePicker.xaml.cs">
+      <DependentUpon>BusinessDataTypePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyUtils\BusinessPropertyDataTypeAccessor.cs" />
+    <Compile Include="PropertyUtils\BusinessPropertyTypeEditor.cs" />
+    <Compile Include="PropertyUtils\BusinessDataTypeConverter.cs" />
+    <Compile Include="PropertyUtils\PackageChildrenConverter.cs" />
     <Compile Include="Properties\Settings.settings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -137,8 +145,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\type.png" />
     <Resource Include="images\minus.ico" />
     <Resource Include="images\plus.ico" />
+    <Page Include="PropertyUtils\BusinessDataTypePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PropertyEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

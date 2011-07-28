@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Drawing.Design;
 using System.Windows.Forms.Design;
 
-namespace Fantasy.RichClient.Framework.Descriptor
+namespace Fantasy.Studio.Descriptor
 {
 
 	public class PasswordTypeEditor : UITypeEditor
