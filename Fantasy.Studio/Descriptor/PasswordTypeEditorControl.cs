@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-namespace Fantasy.RichClient.Framework.Descriptor
+namespace Fantasy.Studio.Descriptor
 {
 	internal partial class PasswordTypeEditorControl : Form
 	{

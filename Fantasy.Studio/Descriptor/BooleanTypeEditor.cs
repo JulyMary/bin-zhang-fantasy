@@ -8,7 +8,7 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
-namespace Fantasy.RichClient.Framework.Descriptor
+namespace Fantasy.Studio.Descriptor
 {
 	public class BooleanTypeEditor : UITypeEditor
 	{
@@ -26,8 +26,8 @@ namespace Fantasy.RichClient.Framework.Descriptor
 				ctrl.Dock = DockStyle.Fill;
 				ctrl.BorderStyle = BorderStyle.None;
 				
-				ctrl.Items.Add(Fantasy.RichClient.Framework.Descriptor.BooleanConverter.FalseText);
-				ctrl.Items.Add(Fantasy.RichClient.Framework.Descriptor.BooleanConverter.TrueText);
+				ctrl.Items.Add(Fantasy.Studio.Descriptor.BooleanConverter.FalseText);
+				ctrl.Items.Add(Fantasy.Studio.Descriptor.BooleanConverter.TrueText);
 				ctrl.SelectedIndex = (bool)value ? 1 : 0;
 				ctrl.Click += new EventHandler(ListBox_DoubleClick);
 				ctrl.Tag = edSvc;

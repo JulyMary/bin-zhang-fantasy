@@ -14,6 +14,9 @@ namespace Fantasy.Studio.Descriptor
 
 		
 
+
+
+
 		public EnumConverter(Type enumType)
 		{
             this._enumType = enumType;

@@ -13,6 +13,9 @@
         <Object ID="nhprovider" InsertAfter="registerAdaption">
             <be:DefaultEntityService/>
         </Object>
+        <Object ID="BusinessDataTypeRepository">
+            <be:DefaultBusinessDataTypeRepository/>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/nhibernate/assemblies">

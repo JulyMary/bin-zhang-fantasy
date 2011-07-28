@@ -66,5 +66,26 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("DefaultPrecision", value);
             }
         }
+
+
+        public virtual bool IsEnum
+        {
+            get
+            {
+                return this.Id == EnumId;
+            }
+        }
+
+        public virtual bool IsBusinessClass
+        {
+            get
+            {
+                return this.Id == BusinessClassId; 
+            }
+        }
+
+        public static readonly Guid EnumId = new Guid("f1e72c1d-2432-4da6-82d6-aa2ddeda84ed");
+
+        public static readonly Guid BusinessClassId = new Guid("24473090-539e-4c13-be25-46e6f0dd9051");
     }
 }
