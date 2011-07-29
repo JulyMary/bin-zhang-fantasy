@@ -16,9 +16,11 @@ namespace Fantasy.Studio.BusinessEngine
         {
             get
             {
-                foreach (BusinessDataType dt in this.Site.GetRequiredService<IBusinessDataTypeRepository>().All)
+
+                IBusinessDataTypeRepository rep = this.Site.GetRequiredService<IBusinessDataTypeRepository>();
+                foreach (BusinessDataType dt in rep.All)
                 {
-                    if (!dt.IsBusinessClass && !dt.IsEnum)
+                    if (dt != rep.Class && dt != rep.Enum)
                     {
                         yield return dt;
                     }

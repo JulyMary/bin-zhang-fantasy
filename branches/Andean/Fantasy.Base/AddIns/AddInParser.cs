@@ -71,25 +71,25 @@ namespace Fantasy.AddIns
             }
         }
 
-        private static void Write(XamlReader reader, XamlObjectWriter writer)
+        private void Write(XamlReader reader, XamlObjectWriter writer)
         {
-            if (reader.NodeType == XamlNodeType.StartObject)
-            {
-                Debug.WriteLine(String.Format("{0} : {1} ", reader.NodeType, reader.Type.UnderlyingType));
-            }
-            else if (reader.NodeType == XamlNodeType.StartMember)
-            {
+            //if (reader.NodeType == XamlNodeType.StartObject)
+            //{
+            //    Debug.WriteLine(String.Format("{0} : {1} ", reader.NodeType, reader.Type.UnderlyingType));
+            //}
+            //else if (reader.NodeType == XamlNodeType.StartMember)
+            //{
 
-                Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Member.Name));
-            }
-            else if (reader.NodeType == XamlNodeType.Value)
-            {
-                Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Value));
-            }
-            else
-            {
-                Debug.WriteLine(reader.NodeType);
-            }
+            //    Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Member.Name));
+            //}
+            //else if (reader.NodeType == XamlNodeType.Value)
+            //{
+            //    Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Value));
+            //}
+            //else
+            //{
+            //    Debug.WriteLine(reader.NodeType);
+            //}
             writer.WriteNode(reader);
         }
 

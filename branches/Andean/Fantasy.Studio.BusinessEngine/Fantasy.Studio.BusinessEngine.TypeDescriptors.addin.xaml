@@ -72,7 +72,7 @@
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
-            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:BusinessPropertyNameSetAction}"/>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
             <PropertyDescriptor ID="FieldName" Name="FieldName" Caption="Field Name" Category="Data"/>
             <PropertyDescriptor ID="FieldType" Name="FieldType" Caption="Field Type" Category="Data"/>

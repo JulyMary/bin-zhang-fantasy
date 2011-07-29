@@ -21,11 +21,11 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 return null; 
             }
-            else if (prop.DataType.IsBusinessClass)
+            else if (prop.DataType.Id == BusinessDataType.WellknownIds.Class)
             {
                 return prop.DataClassType; 
             }
-            else if (prop.DataType.IsEnum)
+            else if (prop.DataType.Id == BusinessDataType.WellknownIds.Enum)
             {
                 return prop.DataEnumType;
             }
@@ -49,18 +49,33 @@ namespace Fantasy.Studio.BusinessEngine
                 prop.DataType = rep.Class;
                 prop.DataClassType = (BusinessClass)entity;
                 prop.DataEnumType = null;
+                prop.FieldType = rep.Guid.DefaultDatabaseType;
+                prop.Length = rep.Guid.DefaultLength;
+                prop.Precision = rep.Guid.DefaultPrecision; 
+
             }
-            if (entity is BusinessEnum)
+            else if (entity is BusinessEnum)
             {
+                BusinessEnum @enum = (BusinessEnum)entity;
+
                 prop.DataType = rep.Enum;
                 prop.DataClassType = null;
-                prop.DataEnumType = (BusinessEnum)entity;
+                prop.DataEnumType = @enum;
+                prop.FieldType = rep.Int32.DefaultDatabaseType;
+                prop.Length = rep.Int32.DefaultLength;
+                prop.Precision = rep.Int32.DefaultPrecision; 
+                
+
             }
             else
             {
                 prop.DataType = (BusinessDataType)entity;
                 prop.DataClassType = null;
                 prop.DataEnumType = null;
+                prop.FieldType = prop.DataType.DefaultDatabaseType;
+                prop.Length = prop.DataType.DefaultLength;
+                prop.Precision = prop.DataType.DefaultPrecision; 
+
             }
         }
 

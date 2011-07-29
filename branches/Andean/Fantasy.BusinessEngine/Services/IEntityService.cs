@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NHibernate;
 
-namespace Fantasy.BusinessEngine
+namespace Fantasy.BusinessEngine.Services
 {
     public interface IEntityService
     {
@@ -18,4 +18,6 @@ namespace Fantasy.BusinessEngine
 
         T CreateEntity<T>() where T : IEntity;
     }
+
+
 }

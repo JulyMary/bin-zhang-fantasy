@@ -23,7 +23,7 @@ namespace Fantasy.Studio.Codons
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             AddInCommandBinding rs = new AddInCommandBinding() { Command = this.Command, Condition = condition, Owner = owner, ParameterSource = ParameterSource, ParameterMember=this.ParameterMember};
-
+            rs.Handler = (System.Windows.Input.ICommand)this.Handler; 
             if (this._handlerBuilder != null)
             {
                 rs.Handler = services.GetRequiredService<IAdapterManager>().GetAdapter<System.Windows.Input.ICommand>(this._handlerBuilder.Build<object>());

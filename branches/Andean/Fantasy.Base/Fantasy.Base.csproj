@@ -227,6 +227,7 @@
     <Compile Include="Utils\UniqueNameGenerator.cs" />
     <Compile Include="System.Reflection\MemberInfoExtension.cs" />
     <Compile Include="System.Xml.Linq\LongPathXNode.cs" />
+    <Compile Include="Windows\EnhancedFocusScope.cs" />
     <Compile Include="Windows\Forms\FolderBrowserDialogEx.cs">
       <SubType>Component</SubType>
     </Compile>

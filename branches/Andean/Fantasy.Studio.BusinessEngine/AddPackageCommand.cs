@@ -8,6 +8,7 @@ using Fantasy.ServiceModel;
 using Fantasy.Studio.Services;
 using Fantasy.Utils;
 using Fantasy.Studio.BusinessEngine.Properties;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
