@@ -78,9 +78,13 @@ namespace Fantasy.Studio.Descriptor
 
         public override object GetValue(object component)
         {
-            object val = _getAction != null ? _getAction.Run(component, Name)
-                : this.PropertyInfo.GetValue(component, null);
-            return val;
+            object rs = null;
+            if (component != null)
+            {
+                rs = _getAction != null ? _getAction.Run(component, Name)
+                    : this.PropertyInfo.GetValue(component, null);
+            }
+            return rs;
 
         }
 

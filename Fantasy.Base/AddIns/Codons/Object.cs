@@ -17,7 +17,7 @@ namespace Fantasy.AddIns.Codons
 
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
-            return _builder.Build<object>();
+            return this._builder != null ? _builder.Build<object>() : this.Template;
         }
     }
 }

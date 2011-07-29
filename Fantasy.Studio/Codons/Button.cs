@@ -34,7 +34,7 @@ namespace Fantasy.Studio.Codons
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
 
-            System.Windows.Input.ICommand command = null;
+            System.Windows.Input.ICommand command = this.Command;
             if (this._commandBuilder != null)
             {
                 command = services.GetRequiredService<IAdapterManager>().GetAdapter<w.Input.ICommand>(this._commandBuilder.Build<object>());

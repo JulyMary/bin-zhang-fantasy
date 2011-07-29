@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine;
 using NHibernate;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {

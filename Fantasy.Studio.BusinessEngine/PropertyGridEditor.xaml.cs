@@ -17,6 +17,7 @@ using Fantasy.Adaption;
 using Fantasy.ServiceModel;
 using NHibernate;
 using Fantasy.Studio.Services;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -95,8 +96,23 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Save()
         {
+            
+
             ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
-            session.SaveOrUpdate(this._entity);
+
+            session.BeginUpdate();
+            try
+            {
+
+                session.SaveOrUpdate(this._entity);
+                session.EndUpdate(true);
+            }
+            catch
+            {
+                session.EndUpdate(false);
+                throw;
+            }
+            this.DirtyState = EditingState.Clean;
         }
 
         public new UIElement Content

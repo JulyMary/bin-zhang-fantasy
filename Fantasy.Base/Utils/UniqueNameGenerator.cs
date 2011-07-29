@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Fantasy.Utils
 {
@@ -19,6 +20,13 @@ namespace Fantasy.Utils
                 
             }
             
+        }
+
+        private static Regex codeRegex = new Regex(@"[^_\d\w]");
+
+        public static string GetCodeName(string name)
+        {
+            return codeRegex.Replace(name, string.Empty);
         }
     }
 }

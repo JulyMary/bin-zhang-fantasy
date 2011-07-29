@@ -40,8 +40,13 @@ namespace Fantasy.Studio.BusinessEngine
             ((BusinessDataTypePikcerModel)this.DataContext).SelectedItem = (IBusinessEntity)e.NewValue;
         }
 
-        
+        private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (this.OkButton.IsEnabled)
+            {
+                this.DialogResult = true;
+            }
+        }
 
-        
     }
 }

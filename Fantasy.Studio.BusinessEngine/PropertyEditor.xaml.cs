@@ -18,6 +18,8 @@ using Fantasy.Studio.Services;
 using Fantasy.ServiceModel;
 using System.ComponentModel.Design;
 using NHibernate;
+using Fantasy.BusinessEngine.Services;
+using System.Collections.Specialized;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -60,6 +62,8 @@ namespace Fantasy.Studio.BusinessEngine
         {
             this._model = new PropertyEditorModel((BusinessClass)entity);
 
+            this._model.Class.Properties.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PropertiesChanged);
+
             foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/toolbars").BuildChildItems(this._model, this.Site))
             {
                 this.ToolBarTray.ToolBars.Add(bar);
@@ -80,6 +84,11 @@ namespace Fantasy.Studio.BusinessEngine
             
             Properties.Settings.Default.PropertyEditorGridViewLayout.LoadLayout(this.PropertyGridView);
 
+        }
+
+        void PropertiesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this.DirtyState = EditingState.Dirty;
         }
 
         private void HandlePropertyEvents(BusinessProperty prop)
@@ -132,10 +141,23 @@ namespace Fantasy.Studio.BusinessEngine
         public void Save()
         {
             ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
-            foreach (BusinessProperty prop in this._model.Class.Properties)
+
+            session.BeginUpdate();
+            try
             {
-                session.SaveOrUpdate(prop);
+
+                foreach (BusinessProperty prop in this._model.Class.Properties)
+                {
+                    session.SaveOrUpdate(prop);
+                }
+                session.EndUpdate(true);
             }
+            catch
+            {
+                session.EndUpdate(false);
+                throw;
+            }
+            
         }
 
         UIElement IEntityEditingPanel.Content
@@ -162,6 +184,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Closed()
         {
+            this._model.Class.Properties.CollectionChanged -= new NotifyCollectionChangedEventHandler(this.PropertiesChanged);
             foreach (BusinessProperty prop in this._model.Class.Properties)
             {
                 this.RemovePropertyEvents(prop);

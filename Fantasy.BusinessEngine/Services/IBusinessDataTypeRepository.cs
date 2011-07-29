@@ -9,17 +9,45 @@ namespace Fantasy.BusinessEngine.Services
     {
         BusinessDataType[] All{get;}
 
+        BusinessDataType Binary { get; }
+
+        BusinessDataType Boolean { get; }
+
+        BusinessDataType Byte { get; }
+
+        BusinessDataType DateTime { get; }
+
+        BusinessDataType DateTimeOffset { get; }
+
+        BusinessDataType Decimal { get; }
+
+        BusinessDataType Double { get; }
+
+        BusinessDataType Float { get; }
+
+        BusinessDataType Guid { get; }
+
+        BusinessDataType Int16 { get; }
+
+        BusinessDataType Int32 { get; }
+
+        BusinessDataType Int64 { get; }
+
+        BusinessDataType UInt16 { get; }
+
+        BusinessDataType UInt32 { get; }
+
+        BusinessDataType UInt64 { get; }
+
+        BusinessDataType String { get; }
+
+        BusinessDataType Text { get; }
+
+        BusinessDataType Bitmap { get; }
+
         BusinessDataType Enum { get; }
 
         BusinessDataType Class { get; }
-
-        //BusinessDataType Int { get; }
-
-        //BusinessDataType String { get; }
-
-        //BusinessDataType Text { get; }
-
-
 
     }
 }

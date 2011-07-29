@@ -6,19 +6,34 @@ using NHibernate;
 using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine;
 using Fantasy.AddIns;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class SaveEntityEditingViewContentCommand : ICommand
+    public class SaveEntityEditingViewContentCommand : ObjectWithSite, ICommand
     {
         #region ICommand Members
 
         public object Execute(object caller)
         {
+            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+
             EntityEditingViewContent vwr = (EntityEditingViewContent)caller;
-            vwr.Save();
-            ISession session = ServiceManager.Services.GetRequiredService<IEntityService>().DefaultSession;
-            session.Flush();
+            session.BeginUpdate();
+            try
+            {
+
+                vwr.Save();
+                session.EndUpdate(true);
+            }
+            catch
+            {
+                session.EndUpdate(false);
+                throw;
+            }
+            
+
+            
             return null;
         }
 

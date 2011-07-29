@@ -67,6 +67,8 @@
       <DependentUpon>BusinessDataTypePicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="PropertyUtils\BusinessPropertyDataTypeAccessor.cs" />
+    <Compile Include="PropertyUtils\BusinessPropertyDataTypeConverter.cs" />
+    <Compile Include="PropertyUtils\BusinessPropertyNameSetActions.cs" />
     <Compile Include="PropertyUtils\BusinessPropertyTypeEditor.cs" />
     <Compile Include="PropertyUtils\BusinessDataTypeConverter.cs" />
     <Compile Include="PropertyUtils\PackageChildrenConverter.cs" />
