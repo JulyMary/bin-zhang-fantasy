@@ -99,16 +99,20 @@ namespace Fantasy.BusinessEngine
                 this.PropertyChanged(this, e);
             }
 
+            OnNotifyPropertyChangedPropertyChanged(e.PropertyName);
+        }
+
+        protected void OnNotifyPropertyChangedPropertyChanged(string propertyName)
+        {
             if (this._propertyChanged != null)
             {
-                this._propertyChanged(this, new PropertyChangedEventArgs(e.PropertyName));
+                this._propertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
-        private event PropertyChangedEventHandler _propertyChanged;
+        protected event PropertyChangedEventHandler _propertyChanged;
 
         public virtual event EventHandler<EntityPropertyChangedEventArgs> PropertyChanged;
-
 
         void IEntity.OnPropertyChanged(EntityPropertyChangedEventArgs e)
         {

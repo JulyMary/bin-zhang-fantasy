@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="PropertyUtils\BusinessPropertyDataTypeAccessor.cs" />
     <Compile Include="PropertyUtils\BusinessPropertyDataTypeConverter.cs" />
+    <Compile Include="PropertyUtils\BusinessPropertyFieldTypeEditor.cs" />
     <Compile Include="PropertyUtils\BusinessPropertyNameSetActions.cs" />
     <Compile Include="PropertyUtils\BusinessPropertyTypeEditor.cs" />
     <Compile Include="PropertyUtils\BusinessDataTypeConverter.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="PropertyGridEditor.xaml.cs">
       <DependentUpon>PropertyGridEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RemovePropertyCommand.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">

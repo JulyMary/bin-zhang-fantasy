@@ -157,6 +157,7 @@ namespace Fantasy.Studio.BusinessEngine
                 session.EndUpdate(false);
                 throw;
             }
+            this.DirtyState = EditingState.Clean;
             
         }
 

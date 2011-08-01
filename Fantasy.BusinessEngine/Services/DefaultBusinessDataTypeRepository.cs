@@ -39,6 +39,7 @@ namespace Fantasy.BusinessEngine.Services
             this.Enum = _all.Single(t => t.Id == BusinessDataType.WellknownIds.Enum);
             this.Class = _all.Single(t => t.Id == BusinessDataType.WellknownIds.Class);
             base.InitializeService();
+            
         }
        
         BusinessDataType[] _all;

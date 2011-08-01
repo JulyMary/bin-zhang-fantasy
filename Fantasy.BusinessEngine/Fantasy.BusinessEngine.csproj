@@ -105,9 +105,12 @@
     <Compile Include="Services\EntityServiceExtension.cs" />
     <Compile Include="Services\IBusinessDataTypeRepository.cs" />
     <Compile Include="Services\IConnectionStringProvider.cs" />
+    <Compile Include="Services\IDDLService.cs" />
     <Compile Include="Services\IEntityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DefaultEntityService.cs" />
+    <Compile Include="Services\ISequenceService.cs" />
+    <Compile Include="Services\WellknownSequences.cs" />
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
   <ItemGroup>

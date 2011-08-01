@@ -11,6 +11,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.Workbench.Layout")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.Properties")]
+[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.Conditions")]
 
 internal class XamlNamespaces
 {

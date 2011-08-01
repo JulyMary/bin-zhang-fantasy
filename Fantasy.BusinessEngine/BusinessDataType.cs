@@ -110,6 +110,7 @@ namespace Fantasy.BusinessEngine
             public static readonly Guid Enum = new Guid("f1e72c1d-2432-4da6-82d6-aa2ddeda84ed");
 
             public static readonly Guid Class = new Guid("24473090-539e-4c13-be25-46e6f0dd9051");
+            
         }
 
     }

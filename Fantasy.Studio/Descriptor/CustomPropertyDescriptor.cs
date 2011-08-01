@@ -90,7 +90,6 @@ namespace Fantasy.Studio.Descriptor
 
         private PropertyInfo _propertyInfo = null;
         private PropertyInfo PropertyInfo
-
         {
             get
             {
@@ -108,7 +107,6 @@ namespace Fantasy.Studio.Descriptor
                     {
                         throw new PropertNotFoundException(_owner.Component.GetType(), Name);
                     }
-
 
                 }
 
