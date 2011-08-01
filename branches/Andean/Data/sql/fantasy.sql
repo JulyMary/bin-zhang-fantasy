@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     13/05/2011 10:12:26 AM                       */
+/* Created on:     1/08/2011 5:02:07 PM                         */
 /*==============================================================*/
 
 
@@ -393,6 +393,7 @@ create table BUSINESSPROPERTY (
    ISNULLABLE           bit                  not null,
    DEFAULTVALUE         varchar(64)          null,
    SCRIPTOPTIONS        int                  null,
+   "ORDER"              int                  not null,
    ISCALCULATED         bit                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,

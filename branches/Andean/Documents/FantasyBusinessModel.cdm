@@ -1278,7 +1278,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o23">
 <a:CreationDate>1303453568</a:CreationDate>
 <a:ModificationDate>1303464070</a:ModificationDate>
-<a:Rect>((-16911,-29680), (14092,-27485))</a:Rect>
+<a:Rect>((-16911,-29755), (14092,-27410))</a:Rect>
 <a:ListOfPoints>((-16911,-28560),(-2561,-28560),(-2561,-28508),(14092,-28508))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4627</a:ArrowStyle>
@@ -1377,7 +1377,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o37">
 <a:CreationDate>1303454118</a:CreationDate>
 <a:ModificationDate>1303464015</a:ModificationDate>
-<a:Rect>((36198,-28649), (45422,-26702))</a:Rect>
+<a:Rect>((36198,-28649), (45422,-26627))</a:Rect>
 <a:ListOfPoints>((36198,-27849),(45422,-27849))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4627</a:ArrowStyle>
@@ -1437,7 +1437,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o45">
 <a:CreationDate>1303454454</a:CreationDate>
 <a:ModificationDate>1303464070</a:ModificationDate>
-<a:Rect>((26099,-28827), (36272,-26880))</a:Rect>
+<a:Rect>((26099,-28827), (36272,-26805))</a:Rect>
 <a:ListOfPoints>((36272,-28027),(26099,-28027))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4371</a:ArrowStyle>
@@ -1521,7 +1521,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o54">
 <a:CreationDate>1303463842</a:CreationDate>
 <a:ModificationDate>1303464070</a:ModificationDate>
-<a:Rect>((-12436,-31364), (13489,-29418))</a:Rect>
+<a:Rect>((-12436,-31439), (13489,-29374))</a:Rect>
 <a:ListOfPoints>((-12436,-30524),(-2561,-30524),(-2561,-29912),(13489,-29912))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4371</a:ArrowStyle>
@@ -1581,7 +1581,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o62">
 <a:CreationDate>1303466285</a:CreationDate>
 <a:ModificationDate>1303466285</a:ModificationDate>
-<a:Rect>((-43836,-28338), (-24923,-26118))</a:Rect>
+<a:Rect>((-43836,-28413), (-24923,-26043))</a:Rect>
 <a:ListOfPoints>((-24923,-27265),(-43836,-27265))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4627</a:ArrowStyle>
@@ -1602,7 +1602,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o64">
 <a:CreationDate>1303466287</a:CreationDate>
 <a:ModificationDate>1303466287</a:ModificationDate>
-<a:Rect>((-41886,-31887), (-23698,-29667))</a:Rect>
+<a:Rect>((-41886,-31962), (-23698,-29592))</a:Rect>
 <a:ListOfPoints>((-23698,-30814),(-41886,-30814))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4627</a:ArrowStyle>
@@ -1623,7 +1623,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:InheritanceRootLinkSymbol Id="o66">
 <a:CreationDate>1304597314</a:CreationDate>
 <a:ModificationDate>1304597314</a:ModificationDate>
-<a:Rect>((16758,-55691), (17758,-50516))</a:Rect>
+<a:Rect>((14446,-55691), (20070,-50516))</a:Rect>
 <a:ListOfPoints>((17258,-55691),(17258,-50516))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
@@ -1643,8 +1643,8 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:InheritanceLinkSymbol Id="o70">
 <a:CreationDate>1304597314</a:CreationDate>
 <a:ModificationDate>1304597314</a:ModificationDate>
-<a:Rect>((17257,-60866), (17273,-55691))</a:Rect>
-<a:ListOfPoints>((17273,-60866),(17257,-55691))</a:ListOfPoints>
+<a:Rect>((17257,-60866), (17261,-55691))</a:Rect>
+<a:ListOfPoints>((17261,-60866),(17257,-55691))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
 <a:LineColor>16744576</a:LineColor>
@@ -1662,7 +1662,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:RelationshipSymbol Id="o73">
 <a:CreationDate>1304598176</a:CreationDate>
 <a:ModificationDate>1304598176</a:ModificationDate>
-<a:Rect>((-24253,-62490), (17145,-29687))</a:Rect>
+<a:Rect>((-24253,-62565), (17145,-29687))</a:Rect>
 <a:ListOfPoints>((17145,-61344),(-22003,-61344),(-22003,-29687))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>4882</a:ArrowStyle>
@@ -1683,7 +1683,7 @@ NAMA 0 新宋体,8,N</a:FontList>
 <o:InheritanceRootLinkSymbol Id="o75">
 <a:CreationDate>1304852450</a:CreationDate>
 <a:ModificationDate>1304852450</a:ModificationDate>
-<a:Rect>((22088,-49500), (29850,-49050))</a:Rect>
+<a:Rect>((22088,-49500), (30152,-48128))</a:Rect>
 <a:ListOfPoints>((29850,-49275),(22088,-49275))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>1</a:ArrowStyle>
@@ -4316,7 +4316,7 @@ LABL 0 新宋体,8,N</a:FontList>
 <a:Creator>Bin</a:Creator>
 <a:ModificationDate>1303463968</a:ModificationDate>
 <a:Modifier>Bin</a:Modifier>
-<a:TargetModelURL>file:///D|/Fantasy/Documents/FANTASYBUSINESSMODELMSSQL.pdm</a:TargetModelURL>
+<a:TargetModelURL>file:///D|/Fantasy/Andean/Documents/FANTASYBUSINESSMODELMSSQL.pdm</a:TargetModelURL>
 <a:TargetModelID>69C411EC-1293-4547-8298-00DDC7A9C9A5</a:TargetModelID>
 <a:TargetModelClassID>CDE44E21-9669-11D1-9914-006097355D9B</a:TargetModelClassID>
 <c:SessionShortcuts>
