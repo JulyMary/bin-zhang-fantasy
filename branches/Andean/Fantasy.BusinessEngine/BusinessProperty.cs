@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace Fantasy.BusinessEngine
 {
@@ -54,8 +55,64 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("DataType", value);
+               
+                
             }
         }
+
+        public virtual event EventHandler DataTypeNameChanged;
+
+        protected virtual void OnDataTypeNameChanged(EventArgs e)
+        {
+            if (this.DataTypeNameChanged != null)
+            {
+                this.DataTypeNameChanged(this, e);
+            }
+        }
+
+        protected override void OnPropertyChanged(Events.EntityPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            switch (e.PropertyName)
+            {
+                case "DataType":
+                case "DataClassType":
+                case "DataEnumType":
+                    OnNotifyPropertyChangedPropertyChanged("DataTypeName");
+                    break;
+            }
+            
+        }
+
+        public virtual string DataTypeName
+        {
+            get
+            {
+                if (this.DataType != null)
+                {
+                    if (this.DataType.Id == BusinessDataType.WellknownIds.Class && this.DataClassType != null)
+                    {
+                        return this.DataClassType.FullName;
+                    }
+                    else if (this.DataType.Id == BusinessDataType.WellknownIds.Enum && this.DataEnumType != null)
+                    {
+                        return this.DataEnumType.FullName;
+                    }
+                    else
+                    {
+                        return this.DataType.Name;
+                    }
+
+                }
+                else
+                {
+                    return null;
+                }
+
+            }
+        }
+       
+       
 
         public virtual BusinessClass DataClassType
         {
@@ -66,6 +123,7 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("DataClassType", value);
+               
             }
         }
 
@@ -78,6 +136,7 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("DataEnumType", value);
+               
             }
         }
 

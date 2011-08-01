@@ -214,6 +214,7 @@ namespace Fantasy.Studio.BusinessEngine
                     panel.Save();
                 }
             }
+            //this.EvalDirtyState();
         }
 
         #endregion

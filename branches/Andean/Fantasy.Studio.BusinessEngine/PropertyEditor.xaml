@@ -22,8 +22,9 @@
                 <GridView AllowsColumnReorder="true" x:Name="PropertyGridView">
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" f:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>
                     <GridViewColumn Header="Code Name" DisplayMemberBinding="{Binding CodeName}" f:GridViewLayout.ColumnId="CodeNameColumn" />
-                    <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding Converter={StaticResource dataTypeConverter}}"  f:GridViewLayout.ColumnId="DataTypeColumn" />
+                    <GridViewColumn Header="Data Type" DisplayMemberBinding="{Binding DataTypeName}"  f:GridViewLayout.ColumnId="DataTypeColumn" />
                     <GridViewColumn Header="Field Name" DisplayMemberBinding="{Binding FieldName}"  f:GridViewLayout.ColumnId="FieldNameColumn" />
+                    <GridViewColumn Header="Field Type" DisplayMemberBinding="{Binding FieldType}"  f:GridViewLayout.ColumnId="FieldNameColumn" />
                     <GridViewColumn Header="Length" DisplayMemberBinding="{Binding Length}"  f:GridViewLayout.ColumnId="LengthColumn"/>
                     <GridViewColumn Header="Precision" DisplayMemberBinding="{Binding Precision}"  f:GridViewLayout.ColumnId="PrecisionColumn" />
                     <GridViewColumn Header="Nullable" DisplayMemberBinding="{Binding IsNullable}"  f:GridViewLayout.ColumnId="NullableColumn" />

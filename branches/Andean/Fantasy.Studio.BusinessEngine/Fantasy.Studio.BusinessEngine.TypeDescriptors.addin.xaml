@@ -75,7 +75,7 @@
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:BusinessPropertyNameSetAction}"/>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
             <PropertyDescriptor ID="FieldName" Name="FieldName" Caption="Field Name" Category="Data"/>
-            <PropertyDescriptor ID="FieldType" Name="FieldType" Caption="Field Type" Category="Data"/>
+            <PropertyDescriptor ID="FieldType" Name="FieldType" Caption="Field Type" Category="Data" Editor="{New sbe:BusinessPropertyFieldTypeEditor}"/>
             <PropertyDescriptor ID="Length" Name="Length" Caption="Length" Category="Data" />
             <PropertyDescriptor ID="Precision" Name="Precision" Caption="Precision" Category="Data" />
             <PropertyDescriptor ID="IsNullable" Name="IsNullable" Caption="Is Nullable" Category="Data" />

@@ -93,15 +93,63 @@ namespace Fantasy.Studio
 
         private void SetSelection()
         {
+            if (this.PropertyGrid.SelectedObjects != null)
+            {
+                foreach (object o in this.PropertyGrid.SelectedObjects)
+                {
+                    INotifyPropertyChanged np;
+                    if (o is Fantasy.Studio.Descriptor.CustomTypeDescriptor)
+                    {
+                        np = ((Fantasy.Studio.Descriptor.CustomTypeDescriptor)o).Component as INotifyPropertyChanged;
+                    }
+
+                    else
+                    {
+                        np = o as INotifyPropertyChanged;
+                    }
+                    
+                    if (np != null)
+                    {
+                        np.PropertyChanged -= new PropertyChangedEventHandler(SelctedObjectPropertyChanged);
+                    }
+                }
+            }
+
             if (this._monitorSelectionService.CurrentSelectionService != null)
             {
                 object[] selected = this._monitorSelectionService.CurrentSelectionService.GetSelectedComponents().Cast<object>().Select(o => _adapterManager.GetAdapter(o, typeof(ICustomTypeDescriptor))).ToArray();
+
                 this.PropertyGrid.SelectedObjects = selected;
             }
             else
             {
                 this.PropertyGrid.SelectedObjects = null;
             }
+
+            if (this.PropertyGrid.SelectedObjects != null)
+            {
+                foreach (object o in this.PropertyGrid.SelectedObjects)
+                {
+                    INotifyPropertyChanged np;
+                    if (o is Fantasy.Studio.Descriptor.CustomTypeDescriptor)
+                    {
+                        np = ((Fantasy.Studio.Descriptor.CustomTypeDescriptor)o).Component as INotifyPropertyChanged;
+                    }
+                    else
+                    {
+                        np = o as INotifyPropertyChanged;
+                    }
+                    if (np != null)
+                    {
+                        np.PropertyChanged += new PropertyChangedEventHandler(SelctedObjectPropertyChanged);
+                    }
+                }
+            }
+        }
+
+        void SelctedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            this.PropertyGrid.Refresh();
         }
 
         #endregion

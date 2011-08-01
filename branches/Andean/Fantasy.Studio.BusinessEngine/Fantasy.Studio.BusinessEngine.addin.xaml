@@ -14,6 +14,7 @@
 
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
+        <RoutedUICommand ID="RemoveBusinessProperty" Text="Remove Property" />
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/pads">
@@ -104,12 +105,22 @@
                 </Not>
             </CommandBinding.Conditional>
         </CommandBinding>
+        <CommandBinding ID="RemoveProperty" Command="{Command Name=RemoveBusinessProperty}" Handler="{New sbe:RemovePropertyCommand}" ParameterSource="Owner" ParameterMember="Selected">
+            <CommandBinding.Conditional>
+                <And>
+                    <Not>
+                        <sbe:IsSystemEntity Member="Selected"/>
+                    </Not>
+                    <SelectionCount Count="+" />
+                </And>
+            </CommandBinding.Conditional>
+        </CommandBinding>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/toolbars">
         <ToolBar ID="Default" Text="Default">
             <Button ID="addProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" 
                     Command="{Command Name=AddBusinessProperty}" />
-            <Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico"/>
+            <Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico" Command="{Command Name=RemoveBusinessProperty}"/>
         </ToolBar>
     </Extension>
 </AddIn>

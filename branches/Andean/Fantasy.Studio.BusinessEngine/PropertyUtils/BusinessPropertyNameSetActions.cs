@@ -15,19 +15,22 @@ namespace Fantasy.Studio.BusinessEngine
         public void Run(object component, string propertyName, object value)
         {
             BusinessProperty property = component as BusinessProperty;
-            string name = UniqueNameGenerator.GetCodeName((string)value);
+            string name = (string)value;
             if (property != null)
             {
-                string cname = UniqueNameGenerator.GetCodeName(property.Name);
-                if (property.CodeName == cname)
-                {
-                    property.CodeName = name;
-                }
-                if (property.FieldName == cname)
-                {
-                    property.FieldName = name;
-                }
+               
+                string ocname = UniqueNameGenerator.GetCodeName(property.Name);
                 property.Name = name;
+                string cname = UniqueNameGenerator.GetCodeName(name);
+                if (property.CodeName == ocname)
+                {
+                    property.CodeName = cname;
+                }
+                if (property.FieldName == ocname)
+                {
+                    property.FieldName = cname;
+                }
+                
             }
 
         }

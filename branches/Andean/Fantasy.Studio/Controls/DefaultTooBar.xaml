@@ -20,7 +20,7 @@
             <Separator Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"></Separator>
         </DataTemplate>
         <StackPanel Orientation="Horizontal" x:Key="buttonContent" x:Shared="false" >
-            <c:AutoGrayImage IsEnabled="False" Visibility="{Binding HasIcon, Converter={x:Static b:VisibilityConverter.Collapsed}}">
+            <c:AutoGrayImage IsEnabled="{Binding IsEnabled, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ButtonBase}}" Visibility="{Binding HasIcon, Converter={x:Static b:VisibilityConverter.Collapsed}}">
                 <Image.Style>
                     <Style>
                         <Setter Property="Image.Source" Value="{Binding Icon}" />

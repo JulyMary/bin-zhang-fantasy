@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class PropertyEditorModel
+    class PropertyEditorModel
     {
         public PropertyEditorModel(BusinessClass @class)
         {
@@ -22,6 +22,9 @@ namespace Fantasy.Studio.BusinessEngine
         {
             get { return _selected; }
         }
+
+
+      
 
     }
 }

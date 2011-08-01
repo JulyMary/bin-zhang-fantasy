@@ -28,9 +28,10 @@ namespace Fantasy.Studio.Descriptor
 		/// </summary>
 		public CustomTypeDescriptor(object value)
 		{
-			_component = value;
+            this._component = value;
 		}
 
+       
 
 		private object _component;
 
@@ -41,6 +42,7 @@ namespace Fantasy.Studio.Descriptor
 				return _component;
 			}
 		}
+
 
         private string _defaultProperty = null;
 
