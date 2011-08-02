@@ -38,7 +38,7 @@
         <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner" ParameterMember="Package">
            
         </Button>
-        <Button ID="EditPackage" Text="Open" Command="{New sbe:EditPackageCommand}"  ParameterSource="Owner" ParameterMember="Package"/>
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" ParameterMember="Package"/>
         <Button ID="Remove" Text="Remove"/>
     </Extension>
 
@@ -62,9 +62,11 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
-        
+        <Button ID="AddClass" Text="Add Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" ParameterMember="Package" />
+  
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" ParameterMember="Class"/>
 
     </Extension>
 

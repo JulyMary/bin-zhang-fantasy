@@ -9,7 +9,7 @@ using Fantasy.Studio.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class EditPackageCommand : ICommand
+    public class OpenEntityViewCommand : ObjectWithSite, ICommand
     {
         #region ICommand Members
 
@@ -24,10 +24,10 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void Execute(object parameter)
         {
-            BusinessPackage package = (BusinessPackage)parameter;
-            IEditingService documentService = Fantasy.ServiceModel.ServiceManager.Services.GetRequiredService<IEditingService>();
+            
+            IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
            
-            documentService.OpenView(package); 
+            documentService.OpenView(parameter); 
         }
 
         #endregion

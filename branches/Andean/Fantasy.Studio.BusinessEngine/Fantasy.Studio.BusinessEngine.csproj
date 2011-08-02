@@ -60,6 +60,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddClassCommand.cs" />
     <Compile Include="AddPackageCommand.cs" />
     <Compile Include="ClassUtils\BusinessClassSchemaEditor.cs" />
     <Compile Include="ClassUtils\BusinessClassTableSpaceEditor.cs" />
@@ -89,7 +90,7 @@
     <Compile Include="ClassFolderTreeViewItem.cs" />
     <Compile Include="ClassTreeViewItem.cs" />
     <Compile Include="Conditions\IsSystemEntity.cs" />
-    <Compile Include="EditPackageCommand.cs" />
+    <Compile Include="OpenEntityViewCommand.cs" />
     <Compile Include="EntityEditingViewContent.xaml.cs">
       <DependentUpon>EntityEditingViewContent.xaml</DependentUpon>
     </Compile>
