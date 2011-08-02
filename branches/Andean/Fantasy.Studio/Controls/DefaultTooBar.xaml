@@ -52,7 +52,7 @@
             </TextBlock>
         </StackPanel>
         <DataTemplate x:Key="button">
-            <Button Focusable="False" CommandParameter="{Binding Owner}"  Command="{Binding Command}" Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}"
+            <Button Focusable="False" CommandParameter="{Binding CommandParameter}"  Command="{Binding Command}" Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}"
                     Content="{DynamicResource buttonContent}">
                 <Button.Style>
                     <Style BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" TargetType="Button"/>
@@ -60,7 +60,7 @@
             </Button>
         </DataTemplate>
         <DataTemplate x:Key="toggleButton">
-            <ToggleButton Focusable="False" Command="{Binding Command}" Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}" IsChecked="{Binding IsChecked, Mode=OneWay}"
+            <ToggleButton Focusable="False" Command="{Binding CommandParameter}" Visibility="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed }}" IsChecked="{Binding IsChecked, Mode=OneWay}"
                           Content="{DynamicResource buttonContent}">
                 <ToggleButton.Style>
                     <Style BasedOn="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" TargetType="ToggleButton"/>

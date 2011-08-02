@@ -11,7 +11,7 @@
     </Menu.Resources>
     <Menu.ItemContainerStyle>
         <Style TargetType="{x:Type MenuItem}">
-            <Setter Property="CommandParameter" Value="{Binding Owner}"/>
+            <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
             <Setter Property="Header" Value="{Binding Text}"/>
             <Setter Property="ItemsSource" Value="{Binding ChildItems}"/>
             <Setter Property="Command" Value="{Binding Command}" />
