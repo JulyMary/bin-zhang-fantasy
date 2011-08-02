@@ -181,6 +181,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>sample.settings</DependentUpon>
     </Compile>
+    <Compile Include="System.Data\DbCommandExtension.cs" />
     <Compile Include="IObjectWithSite.cs" />
     <Compile Include="IO\CopyProgressRoutineHelper.cs" />
     <Compile Include="IO\Interop\NativeMethods.cs" />

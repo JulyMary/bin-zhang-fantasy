@@ -296,6 +296,8 @@ namespace Fantasy.BusinessEngine
         }
 
 
+
+
         void IEntity.OnInserted(EventArgs e)
         {
             this.OnInserted(e);

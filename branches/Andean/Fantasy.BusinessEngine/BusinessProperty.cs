@@ -223,5 +223,69 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("IsCalculated", value);
             }
         }
+
+        public virtual long Order
+        {
+            get
+            {
+                return (long)this.GetValue("Order", 0L);
+            }
+            set
+            {
+                this.SetValue("Order", value);
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.PreviousState = BusinessEngine.EntityState.Clean;
+        }
+
+        public override EntityState EntityState
+        {
+            get
+            {
+                return base.EntityState;
+            }
+            protected set
+            {
+
+                if (this.EntityState == BusinessEngine.EntityState.Clean && value == BusinessEngine.EntityState.Dirty || value == BusinessEngine.EntityState.Deleted)
+                {
+                    this.PreviousState = BusinessEngine.EntityState.Clean;
+                }
+                base.EntityState = value;
+            }
+        }
+
+
+        private EntityState _previousState = EntityState.New;
+        public virtual EntityState PreviousState
+        {
+            get
+            {
+                return _previousState;
+            }
+            set
+            {
+                this._previousState = value;
+                this._previousValues.Clear();
+                foreach (KeyValuePair<string, object> kv in this.Values)
+                {
+                    this._previousValues.Add(kv.Key, kv.Value);
+                }
+            }
+        }
+
+        public virtual T GetPreviousValue<T>(string propertyName, T defaultValue = default(T))
+        {
+            return (T)this._previousValues.GetValueOrDefault(propertyName, defaultValue);
+        }
+
+
+        private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
+
+       
     }
 }

@@ -15,6 +15,8 @@
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
         <RoutedUICommand ID="RemoveBusinessProperty" Text="Remove Property" />
+        <RoutedUICommand ID="MoveUp" Text="Move Up" />
+        <RoutedUICommand ID="MoveDown" Text="Move Down" />
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/pads">
@@ -90,7 +92,7 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classeditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
+        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveBusinessClassViewContentCommand}" ParameterSource="Owner">
             <CommandBinding.Conditional>
                 <OwnerState State="Dirty"/>
             </CommandBinding.Conditional>
@@ -115,12 +117,16 @@
                 </And>
             </CommandBinding.Conditional>
         </CommandBinding>
+        <CommandBinding ID="MoveUp" Command="{Command Name=MoveUp}" Handler="{New sbe:PropertyMoveUpCommand}" ParameterSource="Owner" />
+        <CommandBinding ID="MoveDown" Command="{Command Name=MoveDown}" Handler="{New sbe:PropertyMoveDownCommand}" ParameterSource="Owner" />
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/toolbars">
         <ToolBar ID="Default" Text="Default">
             <Button ID="addProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" 
                     Command="{Command Name=AddBusinessProperty}" />
             <Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico" Command="{Command Name=RemoveBusinessProperty}"/>
+            <Button ID="MoveUp" Command="{Command Name=MoveUp}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
+            <Button ID="MoveDown" Command="{Command Name=MoveDown}" Icon="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico"/>
         </ToolBar>
     </Extension>
 </AddIn>

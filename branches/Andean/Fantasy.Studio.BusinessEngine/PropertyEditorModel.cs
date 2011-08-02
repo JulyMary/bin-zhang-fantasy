@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine;
 using System.Collections.ObjectModel;
+using Fantasy.Collection;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -22,9 +23,5 @@ namespace Fantasy.Studio.BusinessEngine
         {
             get { return _selected; }
         }
-
-
-      
-
     }
 }

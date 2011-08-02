@@ -28,7 +28,7 @@ namespace Fantasy.BusinessEngine.MSSQL
         private long ExecuteCommand(string sql)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.DefaultSession.Connection.CreateCommand())
+            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
             {
                 cmd.CommandText = sql;
                 return (long)cmd.ExecuteScalar();
