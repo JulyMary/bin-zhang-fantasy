@@ -9,6 +9,11 @@ namespace Fantasy.BusinessEngine.Services
     {
         string[] DataTypes {get;}
 
+        string[] Schemas { get; }
+
+        string[] TableSpaces { get; }
+
+        void CreateClassTable(BusinessClass @class);
 
     }
 }

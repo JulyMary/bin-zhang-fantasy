@@ -25,7 +25,7 @@ namespace Fantasy.BusinessEngine.Collections
         public void Add(T item)
         {
             base.Add(item);
-            this.OnItemAdded(item);
+            this.OnItemAdded(item, this.Count - 1);
         }
 
         public new void Clear()
@@ -55,6 +55,25 @@ namespace Fantasy.BusinessEngine.Collections
             return rs;
         }
 
+        public new T this[int index]
+        {
+            get
+            {
+                return (T)base[index];
+            }
+            set
+            {
+
+                object old = this[index];
+                if (!Object.Equals(old, value))
+                {
+                    base[index] = value;
+                    this.OnItemReplaced(value, old);
+
+                }
+            }
+        }
+
         public new void RemoveAt(int index)
         {
             T item = (T)this[index];
@@ -72,9 +91,9 @@ namespace Fantasy.BusinessEngine.Collections
         /// added to the end of the collection.
         /// </summary>
         /// <param name="item">Item added to the collection.</param>
-        protected void OnItemAdded(T item)
+        protected void OnItemAdded(T item, int index)
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Add, item, this.Count - 1));
@@ -88,7 +107,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// </summary>
         protected void OnCollectionReset()
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Reset));
@@ -103,7 +122,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// <param name="item">Item inserted into the collection.</param>
         protected void OnItemInserted(int index, T item)
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Add, item, index));
@@ -118,7 +137,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// <param name="index">Index the item has been removed from.</param>
         protected void OnItemRemoved(T item, int index)
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Remove, item, index));
@@ -131,28 +150,41 @@ namespace Fantasy.BusinessEngine.Collections
 
         int IList<T>.IndexOf(T item)
         {
-            throw new NotImplementedException();
+            return base.IndexOf(item);
         }
 
         void IList<T>.Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            this.Insert(index, item);
+            
         }
 
         void IList<T>.RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            T item = (T)this[index];
+            this.RemoveAt(index);
+           
         }
 
         T IList<T>.this[int index]
         {
             get
             {
-                throw new NotImplementedException();
+                return (T)this[index];
             }
             set
             {
-                throw new NotImplementedException();
+
+                this[index] = value;
+            }
+        }
+
+        protected virtual void OnItemReplaced(object newItem, object oldItem)
+        {
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
+            {
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
+                    NotifyCollectionChangedAction.Replace, newItem, oldItem));
             }
         }
 
@@ -177,6 +209,55 @@ namespace Fantasy.BusinessEngine.Collections
 
         #endregion
 
-      
+        private bool _blockCollectionChanged = false;
+
+        public void Swap(int x, int y)
+        {
+
+
+
+            int a = Math.Min(x, y);
+            int b = Math.Max(x, y);
+
+            T oa = (T)this[a];
+            T ob = (T)this[b];
+            this._blockCollectionChanged = true;
+            try
+            {
+                this.RemoveAt(b);
+                this.Insert(a, ob);
+            }
+            finally
+            {
+                this._blockCollectionChanged = false;
+            }
+            this.OnItemMoved(ob, a, b);
+
+            int newA = this.IndexOf(oa);
+            if (newA != b)
+            {
+                this._blockCollectionChanged = true;
+                try
+                {
+                    this.RemoveAt(newA);
+                    this.Insert(b, oa);
+                }
+                finally
+                {
+                    this._blockCollectionChanged = false;
+                }
+                this.OnItemMoved(oa, b, newA);
+            }
+
+        }
+
+        protected virtual void OnItemMoved(T item, int index, int oldIndex)
+        {
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
+            {
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
+                    NotifyCollectionChangedAction.Move, item, index, oldIndex));
+            }
+        }
     }
 }

@@ -58,8 +58,8 @@
             <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
             <PropertyDescriptor ID="ParentClass" Name="ParentClass" Caption="Parent Class" Category="General" />
             <PropertyDescriptor ID="TableName" Name="TableName" Caption="Table Name" Category="Database" />
-            <PropertyDescriptor ID="TableSchema" Name="TableSchema" Caption="Table Schema" Category="Database" />
-            <PropertyDescriptor ID="TableSpace" Name="TableSpace" Caption="Table Space" Category="Database" />
+            <PropertyDescriptor ID="TableSchema" Name="TableSchema" Caption="Table Schema" Category="Database" Editor="{New sbe:BusinessClassSchemaEditor}" />
+            <PropertyDescriptor ID="TableSpace" Name="TableSpace" Caption="Table Space" Category="Database" Editor="{New sbe:BusinessClassTableSpaceEditor}" />
         </TypeDescriptor>
 
         <TypeDescriptor ID="BusinessProperty" TargetType="{x:Type be:BusinessProperty}">

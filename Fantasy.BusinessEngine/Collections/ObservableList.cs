@@ -57,6 +57,8 @@ namespace Fantasy.BusinessEngine.Collections
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
+        private bool _blockCollectionChanged = false;
+
         /// <summary>
         /// Fires the <see cref="CollectionChanged"/> event to indicate an item has been 
         /// added to the end of the collection.
@@ -64,7 +66,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// <param name="item">Item added to the collection.</param>
         protected void OnItemAdded(T item)
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Add, item, this.Count - 1));
@@ -78,7 +80,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// </summary>
         protected void OnCollectionReset()
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Reset));
@@ -93,7 +95,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// <param name="item">Item inserted into the collection.</param>
         protected void OnItemInserted(int index, T item)
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Add, item, index));
@@ -108,7 +110,7 @@ namespace Fantasy.BusinessEngine.Collections
         /// <param name="index">Index the item has been removed from.</param>
         protected void OnItemRemoved(T item, int index)
         {
-            if (this.CollectionChanged != null)
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
             {
                 this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
                     NotifyCollectionChangedAction.Remove, item, index));
@@ -171,5 +173,57 @@ namespace Fantasy.BusinessEngine.Collections
         }
 
         #endregion
+
+       
+
+        public void Swap(int x, int y)
+        {
+            
+           
+
+            int a = Math.Min(x, y);
+            int b = Math.Max(x, y);
+
+            T oa = this[a];
+            T ob = this[b];
+            this._blockCollectionChanged = true;
+            try
+            {
+                this.RemoveAt(b);
+                this.Insert(a, ob);
+            }
+            finally
+            {
+                this._blockCollectionChanged = false;
+            }
+            this.OnItemMoved(ob, a, b);
+
+            int newA = this.IndexOf(oa);
+            if (newA != b)
+            {
+                this._blockCollectionChanged = true;
+                try
+                {
+                    this.RemoveAt(newA);
+                    this.Insert(b, oa); 
+                }
+                finally
+                {
+                    this._blockCollectionChanged = false;
+                }
+                this.OnItemMoved(oa, b, newA);
+            }
+           
+        }
+
+        protected virtual void OnItemMoved(T item, int index, int oldIndex)
+        {
+            if (this.CollectionChanged != null && !this._blockCollectionChanged)
+            {
+                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(
+                    NotifyCollectionChangedAction.Move, item, index, oldIndex));
+            }
+        }
+
     }
 }

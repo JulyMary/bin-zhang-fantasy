@@ -8,6 +8,6 @@ namespace Fantasy.BusinessEngine
 
     public enum EntityState
     {
-        New, Clean, Dirty, Deleted, NewDeleted 
+        New, Clean, Dirty, Deleted
     }
 }

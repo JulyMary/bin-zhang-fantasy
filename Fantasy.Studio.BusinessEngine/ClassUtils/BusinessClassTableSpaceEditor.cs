@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing.Design;
-using System.Windows.Forms.Design;
-using System.ComponentModel;
-using System.Windows.Forms;
-using Fantasy.BusinessEngine.Services;
 using Fantasy.Studio.Descriptor;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    class BusinessPropertyFieldTypeEditor : ListBoxDropDownTypeEditor, IObjectWithSite
+    class BusinessClassTableSpaceEditor : ListBoxDropDownTypeEditor, IObjectWithSite
     {
+
 
         public IServiceProvider Site { get; set; }
         protected override object[] Items
@@ -20,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine
             get
             {
                 IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
-                return ddl.DataTypes;
+                return ddl.TableSpaces;
             }
         }
     }

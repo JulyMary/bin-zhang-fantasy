@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NHibernate;
+using Fantasy.BusinessEngine.Services;
 using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine;
-using Fantasy.AddIns;
-using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    class SaveEntityEditingViewContentCommand : ObjectWithSite, ICommand
+    class SaveBusinessClassViewContentCommand : ObjectWithSite, ICommand
     {
         #region ICommand Members
 
@@ -24,6 +23,12 @@ namespace Fantasy.Studio.BusinessEngine
             {
 
                 vwr.Save();
+
+
+                IDDLService dll = this.Site.GetRequiredService<IDDLService>();
+
+                dll.CreateClassTable((BusinessClass)vwr.Entity); 
+
                 session.EndUpdate(true);
             }
             catch
@@ -31,9 +36,9 @@ namespace Fantasy.Studio.BusinessEngine
                 session.EndUpdate(false);
                 throw;
             }
-            
 
-            
+
+
             return null;
         }
 

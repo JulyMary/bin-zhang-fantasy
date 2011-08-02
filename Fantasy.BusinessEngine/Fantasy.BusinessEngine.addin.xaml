@@ -1,6 +1,6 @@
 ﻿<AddIn  xmlns="urn:schema-fantasy:xaml"
         xmlns:be="urn:schema-fantasy:business-engine"
-       
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Author="Bin Zhang" Description="Fantasy Business Engine AddIn" Name="Business Engine" Version="1.0">
     <AddIn.Import>
         <Assembly Name="Fantasy.BusinessEngine" />
@@ -25,6 +25,12 @@
     <Extension Path="fantasy/businessengine/entityhandlers/create">
         <Object ID="monitorpropertychange">
             <be:MonitorEntityPropertyChangeHandler/>
+        </Object>
+        <Object ID="BusinessPropertyCreateOrder">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessProperty}" />
+            </Object.Conditional>
+            <be:BusinessPropertyCreateOrderHandler/>
         </Object>
         <Object ID="defaultcreatehandler">
             <be:DefaultEntityCreateHandler/>

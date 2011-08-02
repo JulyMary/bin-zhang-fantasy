@@ -61,6 +61,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddPackageCommand.cs" />
+    <Compile Include="ClassUtils\BusinessClassSchemaEditor.cs" />
+    <Compile Include="ClassUtils\BusinessClassTableSpaceEditor.cs" />
+    <Compile Include="PropertyMoveDownCommand.cs" />
+    <Compile Include="PropertyMoveUpCommand.cs" />
     <Compile Include="InvokerMemberConverter.cs" />
     <Compile Include="PropertyUtils\BusinessDataTypePikcerModel.cs" />
     <Compile Include="PropertyUtils\BusinessDataTypePicker.xaml.cs">
@@ -115,6 +119,7 @@
       <DependentUpon>PropertyGridEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="RemovePropertyCommand.cs" />
+    <Compile Include="SaveBusinessClassViewContentCommand.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -149,6 +154,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\UpArrowShort_Blue.ico" />
+    <Resource Include="images\DownArrowShort_Blue.ico" />
     <Resource Include="images\type.png" />
     <Resource Include="images\minus.ico" />
     <Resource Include="images\plus.ico" />

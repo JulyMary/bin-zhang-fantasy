@@ -64,6 +64,7 @@
     <Compile Include="Collections\ObservableAdapterCollection.cs" />
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
+    <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
     <Compile Include="Events\DefaultEntityCreateHandler.cs" />
     <Compile Include="Events\DefaultEntityDeletedHandler.cs" />
     <Compile Include="Events\DefaultEntityDeletingHandler.cs" />

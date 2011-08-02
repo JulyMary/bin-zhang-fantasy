@@ -98,9 +98,6 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-
-
-
         public virtual string TableSchema
         {
             get
@@ -138,5 +135,55 @@ namespace Fantasy.BusinessEngine
         }
 
         public static readonly Guid RootClassId = new Guid("bf0aa7f4-588f-4556-963d-33242e649d57");
+
+        private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            this.PreviousState = BusinessEngine.EntityState.Clean;
+        }
+
+       
+
+        public override EntityState EntityState
+        {
+            get
+            {
+                return base.EntityState;
+            }
+            protected set
+            {
+
+                if (this.EntityState == BusinessEngine.EntityState.Clean && value == BusinessEngine.EntityState.Dirty || value == BusinessEngine.EntityState.Deleted)
+                {
+                    this.PreviousState = BusinessEngine.EntityState.Clean;
+                }
+                base.EntityState = value;
+            }
+        }
+
+        private EntityState _previousState = EntityState.New;
+        public virtual EntityState PreviousState
+        {
+            get
+            {
+                return _previousState;
+            }
+            set
+            {
+                this._previousState = value;
+                this._previousValues.Clear();
+                foreach (KeyValuePair<string, object> kv in this.Values)
+                {
+                    this._previousValues.Add(kv.Key, kv.Value);
+                }
+            }
+        }
+
+        public virtual T GetPreviousValue<T>(string propertyName, T defaultValue = default(T))
+        {
+            return (T)this._previousValues.GetValueOrDefault(propertyName, defaultValue);
+        }
     }
 }

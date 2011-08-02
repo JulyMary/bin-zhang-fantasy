@@ -3,11 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NHibernate;
+using System.Data;
 
 namespace Fantasy.BusinessEngine.Services
 {
     public static class EntityServiceExtension
     {
+
+
+        public static IDbCommand CreateCommand(this ISession session)
+        {
+            IDbCommand rs = session.Connection.CreateCommand();
+            if (session.Transaction != null)
+            {
+                session.Transaction.Enlist(rs);
+            }
+            return rs;
+        }
+
 
         private static Dictionary<ISession, int> _updateLevel = new Dictionary<ISession, int>();
 

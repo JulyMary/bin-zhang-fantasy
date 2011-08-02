@@ -19,23 +19,132 @@ namespace Fantasy.BusinessEngine.MSSQL
         private void LoadDataTypes()
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.DefaultSession.Connection.CreateCommand())
+            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
             {
                 cmd.CommandText = "select name from sys.types order by name";
-                List<string> types = new List<string>();
-                using (IDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        types.Add(reader.GetString(0));
-                    }
-                }
-                this.DataTypes = types.ToArray();
+
+                this.DataTypes = cmd.ExecuteList<string>().ToArray();
+
+                cmd.CommandText = "select name from sys.schemas";
+
+                this.Schemas = cmd.ExecuteList<string>().ToArray();
+
+                cmd.CommandText = "select name from sys.filegroups";
+                this.TableSpaces = cmd.ExecuteList<string>().ToArray();
 
             }
         }
 
+
+        private int ExecuteSql(string sql)
+        {
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                return cmd.ExecuteNonQuery();
+            }
+        }
+
         public string[] DataTypes { get; private set; }
-        
+
+        public string[] Schemas { get; private set; }
+
+        public string[] TableSpaces { get; private set; }
+
+
+
+        #region IDDLService Members
+
+
+        public void CreateClassTable(BusinessClass @class)
+        {
+            if (@class.PreviousState == EntityState.New)
+            {
+                if (@class.IsSimple)
+                {
+                    this.CreateSimpleClassTable(@class);
+                }
+                else
+                {
+                    this.CreateStandardClassTable(@class);
+                }
+            }
+            else if (@class.PreviousState == EntityState.Clean)
+            {
+                if (@class.IsSimple)
+                {
+                    this.UpdateSimpleClassTable(@class);
+                }
+                else
+                {
+                    this.UpdateStandardClassTable(@class);
+                }
+            }
+        }
+
+        private void UpdateStandardClassTable(BusinessClass @class)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpdateSimpleClassTable(BusinessClass @class)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CreateStandardClassTable(BusinessClass @class)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.AppendFormat("create table [{0}].[{1}] ( {2} )", @class.TableSchema, @class.TableName, this.GetCreateColumnsDefine(@class));
+            if(! string.IsNullOrEmpty(@class.TableSpace))
+            {
+               sql.AppendFormat(" on [{0}]", @class.TableSpace);    
+            }
+            this.ExecuteSql(sql.ToString());
+        }
+
+        private string GetCreateColumnsDefine(BusinessClass @class)
+        {
+            StringBuilder rs = new StringBuilder();
+            if (!@class.IsSimple)
+            {
+                rs.AppendFormat("[Id] {0} NOT NULL", this.Site.GetRequiredService<IBusinessDataTypeRepository>().Guid.DefaultDatabaseType);
+            }
+            foreach (BusinessProperty prop in @class.Properties)
+            {
+                if (rs.Length > 0)
+                {
+                    rs.Append(", ");
+                }
+                rs.AppendFormat("[{0}] [{1}]", prop.FieldName, prop.FieldType);
+                if (prop.Length > 0)
+                {
+                    if (prop.Precision > 0)
+                    {
+                        rs.AppendFormat(" ({0}, {1})", prop.Length, prop.Precision);
+                    }
+                    else
+                    {
+                        rs.AppendFormat(" ({0})", prop.Length);
+                    }
+                }
+
+                rs.AppendFormat(" {0} NULL", prop.IsNullable ? string.Empty : "NOT");
+            }
+            //TODO: Add Constraint CHECK
+
+            rs.AppendFormat(", CONSTRAINT [PK_{0}] PRIMARY KEY CLUSTERED ([Id] ASC)", @class.TableName);
+
+            return rs.ToString();
+
+        }
+
+        private void CreateSimpleClassTable(BusinessClass @class)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
