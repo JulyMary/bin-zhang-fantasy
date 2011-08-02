@@ -16,13 +16,13 @@ namespace Fantasy.Studio.BusinessEngine
 {
     public class ClassFolderTreeViewItem : ObjectWithSite, IDocumentTreeViewItem
     {
-        private Fantasy.BusinessEngine.BusinessPackage _package;
+        public Fantasy.BusinessEngine.BusinessPackage Package {get;private set;}
 
         public ClassFolderTreeViewItem(Fantasy.BusinessEngine.BusinessPackage package)
         {
            
-            this._package = package;
-            this._childItems = new ObservableAdapterCollection<IDocumentTreeViewItem>(package.Classes, c => new ClassTreeViewItem((BusinessClass)c));
+            this.Package = package;
+            this._childItems = new ObservableAdapterCollection<IDocumentTreeViewItem>(package.Classes, c => new ClassTreeViewItem((BusinessClass)c) { Site = this.Site });
           
         }
 
