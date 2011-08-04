@@ -219,10 +219,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         #endregion
 
-        Enum IStateObject.State
-        {
-            get { return this.DirtyState; }
-        }
+       
 
 
 

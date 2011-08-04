@@ -162,7 +162,6 @@
     <Compile Include="AddIns\IAddInTreeNode.cs" />
     <Compile Include="AddIns\ICodon.cs" />
     <Compile Include="AddIns\ICondition.cs" />
-    <Compile Include="AddIns\IStateObject.cs" />
     <Compile Include="AddIns\NewExtension.cs" />
     <Compile Include="AddIns\Not.cs" />
     <Compile Include="AddIns\Codons\Object.cs" />

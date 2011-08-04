@@ -6,7 +6,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.Studio
 {
-    public interface IEditingViewContent : IViewContent, IStateObject
+    public interface IEditingViewContent : IViewContent
     {
         void Load(object data);
 
