@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Codons\TreeNodeChildProvider.cs" />
     <Compile Include="Codons\InputCommandAdapter.cs" />
     <Compile Include="Codons\InputCommandAdapterFactory.cs" />
     <Compile Include="AddInCommandBinding.cs" />
@@ -74,6 +75,7 @@
     <Compile Include="Codons\ButtonSourceCollections.cs" />
     <Compile Include="Codons\CommandBinding.cs" />
     <Compile Include="Codons\RoutedUICommand.cs" />
+    <Compile Include="Codons\TreeNode.cs" />
     <Compile Include="CommandExtension.cs" />
     <Compile Include="Conditions\SelectionCount.cs" />
     <Compile Include="Controls\AutoGrayImage.cs" />
@@ -169,6 +171,14 @@
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\WPFMonitorSelectionService.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="TreeViewModel\TreeViewItemBuilder.cs" />
+    <Compile Include="TreeViewModel\ExpandableTreeViewModel.cs" />
+    <Compile Include="TreeViewModel\ExtendableTreeView.xaml.cs">
+      <DependentUpon>ExtendableTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TreeViewModel\IChildrenProvider.cs" />
+    <Compile Include="TreeViewModel\IValueProvider.cs" />
+    <Compile Include="TreeViewModel\TreeViewItem.cs" />
     <Compile Include="ViewCollection.cs" />
     <Compile Include="ViewContentEventArgs.cs" />
     <Compile Include="WindowStateSetting.cs" />
@@ -234,6 +244,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\MainMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TreeViewModel\ExtendableTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
