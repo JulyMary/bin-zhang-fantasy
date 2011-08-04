@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
-namespace Fantasy.Studio.TreeViewModel
+namespace Fantasy.AddIns
 {
+    [TypeConverter(typeof(StringValueProviderConverter))]
     public interface IValueProvider
     {
         object Source { get; set; }

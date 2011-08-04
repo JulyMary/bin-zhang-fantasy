@@ -135,6 +135,14 @@ namespace Fantasy.Collection
 
         public void Clear()
         {
+            foreach (object c in this._childCollections)
+            {
+                INotifyCollectionChanged n = c as INotifyCollectionChanged;
+                if (n != null)
+                {
+                    n.CollectionChanged -= new NotifyCollectionChangedEventHandler(ChildCollectionChanged);
+                }
+            }
             this._childCollections.Clear();
             this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
@@ -198,5 +206,8 @@ namespace Fantasy.Collection
         }
 
         #endregion
+
+
+        
     }
 }

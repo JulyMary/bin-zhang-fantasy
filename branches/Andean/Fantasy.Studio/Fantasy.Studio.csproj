@@ -171,13 +171,12 @@
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\WPFMonitorSelectionService.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TreeViewModel\TreeViewItemBuilder.cs" />
-    <Compile Include="TreeViewModel\ExpandableTreeViewModel.cs" />
     <Compile Include="TreeViewModel\ExtendableTreeView.xaml.cs">
       <DependentUpon>ExtendableTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TreeViewModel\TreeViewItemBuilder.cs" />
+    <Compile Include="TreeViewModel\ExtendableTreeViewModel.cs" />
     <Compile Include="TreeViewModel\IChildrenProvider.cs" />
-    <Compile Include="TreeViewModel\IValueProvider.cs" />
     <Compile Include="TreeViewModel\TreeViewItem.cs" />
     <Compile Include="ViewCollection.cs" />
     <Compile Include="ViewContentEventArgs.cs" />
