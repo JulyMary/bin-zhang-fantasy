@@ -10,17 +10,17 @@ using Fantasy.Studio.Services;
 
 namespace Fantasy.Studio.TreeViewModel
 {
-    public class ExpandableTreeViewModel : ObjectWithSite
+    public class ExtendableTreeViewModel : ObjectWithSite
     {
-        public ExpandableTreeViewModel(string path, object owner, IServiceProvider site)
+        public ExtendableTreeViewModel(string path, object owner, IServiceProvider site)
         {
             this.Site = site;
 
             this._itemBuilders = AddInTree.Tree.GetTreeNode(path).BuildChildItems<TreeViewItemBuilder>(owner, site).ToList();
-            this.RootItems = new ObservableCollection<object>();
-            this.RootTreeViewItems = new ObservableCollection<TreeViewItem>();
+            this.Items = new ObservableCollection<object>();
+            this.TreeViewItems = new ObservableCollection<TreeViewItem>();
 
-            this.RootItems.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(RootItems_CollectionChanged);
+            this.Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(RootItems_CollectionChanged);
        
         }
 
@@ -29,36 +29,50 @@ namespace Fantasy.Studio.TreeViewModel
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    this.RootTreeViewItems.Insert(e.NewStartingIndex, this.CreateTreeViewItem(e.NewItems[0]));
+                    this.TreeViewItems.Insert(e.NewStartingIndex, this.CreateTreeViewItem(e.NewItems[0]));
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
                     {
-                        this.RootTreeViewItems.RemoveAt(e.OldStartingIndex);
+                        TreeViewItem item = this.TreeViewItems[e.OldStartingIndex];
+                        item.Dispose();
+                        this.TreeViewItems.RemoveAt(e.OldStartingIndex);
                     }
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    this.RootTreeViewItems.Clear();
+                    foreach (TreeViewItem item in this.TreeViewItems)
+                    {
+                        item.Dispose();
+                    }
+                    this.TreeViewItems.Clear();
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                     {
                         TreeViewItem newNode = this.CreateTreeViewItem(e.NewItems[0]);
-                        this.RootTreeViewItems[e.OldStartingIndex] = newNode; 
+                        this.TreeViewItems[e.OldStartingIndex] = newNode; 
                     }
                     break;
             }
         }
 
-        private TreeViewItem CreateTreeViewItem(object item)
+        internal TreeViewItem CreateTreeViewItem(object item)
         {
             TreeViewItemBuilder builder = this._itemBuilders.First(b => b.Codon.TargetType.IsInstanceOfType(item));
-            TreeViewItem rs = new TreeViewItem();
+            TreeViewItem rs = new TreeViewItem(this);
             rs.Text = builder.Codon._text != null ? builder.Codon._text.Build<IValueProvider>() : builder.Codon.Text;
+            if (rs.Text != null)
+            {
+                rs.Text.Source = item;
+            }
             if (rs.Text is IObjectWithSite)
             {
                 ((IObjectWithSite)rs).Site = this.Site;
             }
 
             rs.Icon = builder.Codon._icon != null ? builder.Codon._text.Build<IValueProvider>() : builder.Codon.Icon;
+            if (rs.Icon != null)
+            {
+                rs.Icon.Source = item;
+            }
             if (rs.Text is IObjectWithSite)
             {
                 ((IObjectWithSite)rs).Site = this.Site;
@@ -77,9 +91,10 @@ namespace Fantasy.Studio.TreeViewModel
 
             foreach (IChildrenProvider provider in builder.ChildProviders)
             {
-                //rs.ChildItems.Union(provider.GetChildren(item));
+                rs.Items.Union(provider.GetChildren(item));
             }
 
+            return rs;
 
             
         }
@@ -106,9 +121,9 @@ namespace Fantasy.Studio.TreeViewModel
 
         private List<TreeViewItemBuilder> _itemBuilders = new List<TreeViewItemBuilder>();
 
-        public ObservableCollection<object> RootItems { get; private set; }
+        public ObservableCollection<object> Items { get; private set; }
 
-        ObservableCollection<TreeViewItem> RootTreeViewItems { get; private set; }
+        internal ObservableCollection<TreeViewItem> TreeViewItems { get; private set; }
 
 
     }

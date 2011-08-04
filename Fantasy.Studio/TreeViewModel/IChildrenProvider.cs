@@ -8,6 +8,6 @@ namespace Fantasy.Studio.TreeViewModel
 {
     public interface IChildrenProvider
     {
-        IEnumerable GetChildren(object parent);
+        IEnumerable<object> GetChildren(object parent);
     }
 }

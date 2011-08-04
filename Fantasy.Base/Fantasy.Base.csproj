@@ -147,8 +147,11 @@
     <Compile Include="AddIns\AddInTree.cs" />
     <Compile Include="AddIns\And.cs" />
     <Compile Include="AddIns\Assembly.cs" />
+    <Compile Include="AddIns\BindingExtension.cs" />
     <Compile Include="AddIns\CodonBase.cs" />
     <Compile Include="AddIns\Codons\Adapter.cs" />
+    <Compile Include="AddIns\IValueProvider.cs" />
+    <Compile Include="AddIns\MemberValueProvider.cs" />
     <Compile Include="AddIns\Services\RegisterAdaptionService.cs" />
     <Compile Include="AddIns\ConditionBase.cs" />
     <Compile Include="AddIns\ConditionCollection.cs" />
@@ -167,6 +170,8 @@
     <Compile Include="AddIns\Codons\Object.cs" />
     <Compile Include="AddIns\ObjectBuilder.cs" />
     <Compile Include="AddIns\Or.cs" />
+    <Compile Include="AddIns\StringValueProvider.cs" />
+    <Compile Include="AddIns\StringValueProviderConverter.cs" />
     <Compile Include="AddIns\TemplateAttribute.cs" />
     <Compile Include="Collection\Collection.cs" />
     <Compile Include="Collection\CollectionExtensions.cs" />
