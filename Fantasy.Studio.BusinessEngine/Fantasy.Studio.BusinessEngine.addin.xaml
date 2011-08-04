@@ -73,7 +73,7 @@
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
         <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
             <CommandBinding.Conditional>
-                    <OwnerState State="Dirty"/>
+                    <OwnerState State="Dirty" StateMember="DirtyState"/>
             </CommandBinding.Conditional>
         </CommandBinding>
     </Extension>
@@ -96,7 +96,7 @@
     <Extension Path="fantasy/studio/businessengine/classeditor/commandbindings">
         <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveBusinessClassViewContentCommand}" ParameterSource="Owner">
             <CommandBinding.Conditional>
-                <OwnerState State="Dirty"/>
+                <OwnerState State="Dirty" StateMember="DirtyState"/>
             </CommandBinding.Conditional>
         </CommandBinding>
     </Extension>
