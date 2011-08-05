@@ -1,0 +1,358 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Syncfusion.Windows.Shared">
+    <!--Office 2010 Silver theme-->
+
+    <!-- UpDownControl Brushes-->
+    <SolidColorBrush x:Key="Office2010SilverUpDownBorderBrush" Color="#FFD4D6D9"/>
+    <SolidColorBrush x:Key="Office2010SilverUpDownBackground" Color="White"/>
+    <SolidColorBrush x:Key="Office2010SilverUpDownForeground" Color="Black"/>
+    <SolidColorBrush x:Key="Office2010SilverUpDownFocusedForeground" Color="Black"/>
+    <SolidColorBrush x:Key="Office2010SilverUpDownFocusedBorderBrush" Color="#FFD4D6D9"/>
+    <SolidColorBrush x:Key="Office2010SilverUpDownFocusedBackground" Color="White"/>
+
+    <!-- RepeatButton Brushes -->
+
+    <LinearGradientBrush x:Key="Office2010SilverPathFillBrush" EndPoint="0.614,0.647" StartPoint="0.129,0.118">
+        <GradientStop Color="#FF757779" Offset="0"/>
+        <GradientStop Color="#FF505153" Offset="1"/>
+    </LinearGradientBrush>
+
+    <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+   
+
+    <!-- Numeric TextBox Brushes-->
+
+    <SolidColorBrush x:Key="Office2010SilverTextBoxBorderBrush" Color="#FFB1C0D6"/>
+    <SolidColorBrush x:Key="Office2010SilverTextboxBackground" Color="#FFEDF5FD"/>
+
+    <SolidColorBrush x:Key="Office2010SilverTextboxForeground" Color="Black"/>
+    <SolidColorBrush x:Key="Office2010SilverWatermarkForeground" Color="#FF000000"/>
+    <SolidColorBrush x:Key="Office2010SilverTextboxMouseOverBorderBrush" Color="#FF99C1E2"/>
+    <SolidColorBrush x:Key="Office2010SilverTextboxFocusedBorderBrush" Color="#FF6DBDD1"/>
+    <SolidColorBrush x:Key="ReadOnlyBackground" Color="#5EC9C9C9"/>
+
+    <LinearGradientBrush x:Key="Office2010SilverToggleButtonBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF6F8FB" Offset="0.252"/>
+        <GradientStop Color="#FFE9ECEF" Offset="0.863"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="Office2010SilverToggleButtonBorderBrush" Color="#FFBBBFC4"/>
+
+    <SolidColorBrush x:Key="Office2010SilverToggleButtonForeground" Color="#FF3B3B3B"/>
+
+    <LinearGradientBrush x:Key="Office2010SilverToggleButtonMouseOverBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFECDB98" Offset="0.043"/>
+        <GradientStop Color="#FFECD37B" Offset="0.351"/>
+        <GradientStop Color="#FFEED885" Offset="0.594"/>
+        <GradientStop Color="#FFF3E7B0" Offset="0.723"/>
+        <GradientStop Color="#FFF6F3D9" Offset="0.969"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverToggleButtonMouseOverBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFDEB745" Offset="0.088"/>
+        <GradientStop Color="#FFE4C538" Offset="0.852"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverToggleButtonPressedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF6C867" Offset="0.043"/>
+        <GradientStop Color="#FFFBD678" Offset="0.049"/>
+        <GradientStop Color="#FFFFE48A" Offset="0.21"/>
+        <GradientStop Color="#FFFEE287" Offset="0.962"/>
+        <GradientStop Color="#FFFAD77A" Offset="0.968"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverToggleButtonPressedBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFC2762B" Offset="0"/>
+        <GradientStop Color="#FFC29E47" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="Office2010SilverToggleButtonPathBackground" Color="#FF586585"/>
+    <SolidColorBrush x:Key="Office2010SilverToggleButtonPathBorderBrush" Color="White"/>
+
+    <!-- Repeat Button Brushes-->
+
+    <LinearGradientBrush x:Key="Office2010SilverRepeatButtonBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF6F8FB" Offset="0.252"/>
+        <GradientStop Color="#FFE9ECEF" Offset="0.863"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="Office2010SilverRepeatButtonBorderBrush" Color="#FFBBBFC4"/>
+
+    <SolidColorBrush x:Key="Office2010SilverRepeatButtonForeground" Color="#FF3B3B3B"/>
+
+    <LinearGradientBrush x:Key="Office2010SilverRepeateButtonMouseOverBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFECDB98" Offset="0.043"/>
+        <GradientStop Color="#FFECD37B" Offset="0.351"/>
+        <GradientStop Color="#FFEED885" Offset="0.594"/>
+        <GradientStop Color="#FFF3E7B0" Offset="0.723"/>
+        <GradientStop Color="#FFF6F3D9" Offset="0.969"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverRepeatButtonMouseOverBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFDEB745" Offset="0.088"/>
+        <GradientStop Color="#FFE4C538" Offset="0.852"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverRepeatButtonPressedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF6C867" Offset="0.043"/>
+        <GradientStop Color="#FFFBD678" Offset="0.049"/>
+        <GradientStop Color="#FFFFE48A" Offset="0.21"/>
+        <GradientStop Color="#FFFEE287" Offset="0.962"/>
+        <GradientStop Color="#FFFAD77A" Offset="0.968"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverRepeatButtonPressedBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFC2762B" Offset="0"/>
+        <GradientStop Color="#FFC29E47" Offset="1"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="Office2010SilverRepeatButtonPathBackground" Color="#FF586585"/>
+    <SolidColorBrush x:Key="Office2010SilverRepeatButtonPathBorderBrush" Color="White"/>
+    <!-- MouseOver and Pressed Brushes -->
+
+    <LinearGradientBrush x:Key="Office2010SilverMouseOverBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF5E193" Offset="0.101"/>
+        <GradientStop Color="#FFF4DA7D" Offset="0.388"/>
+        <GradientStop Color="#FFF4DE8C" Offset="0.784"/>
+        <GradientStop Color="#FFF4E6B2" Offset="0.957"/>
+        <GradientStop Color="#FFF4EBC4" Offset="0.964"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverMouseOverBorderBrush"  EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFE8C24E"/>
+        <GradientStop Color="#FFECCC43" Offset="1"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverPressedBorderBrush" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFC27A2D" Offset="0.113"/>
+        <GradientStop Color="#FFC29A44" Offset="0.887"/>
+    </LinearGradientBrush>
+
+    <LinearGradientBrush x:Key="Office2010SilverPressedBackground" EndPoint="0.5,1" StartPoint="0.5,0">
+        <GradientStop Color="#FFF3C360" Offset="0.038"/>
+        <GradientStop Color="#FFFAD373" Offset="0.045"/>
+        <GradientStop Color="#FFFEDF84" Offset="0.249"/>
+        <GradientStop Color="#FFFEDF84" Offset="0.962"/>
+        <GradientStop Color="#FFF8D375" Offset="0.968"/>
+    </LinearGradientBrush>
+
+
+
+    <Style x:Key="Office2010SilverNumericUpDownDoubleTextBoxStyle"  TargetType="{x:Type local:DoubleTextBox}">
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010SilverTextboxFocusedBorderBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010SilverTextBoxBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource Office2010SilverTextboxBackground}"/>
+        <Setter Property="Foreground" Value="{StaticResource Office2010SilverTextboxForeground}"/>
+        <Setter Property="WatermarkTextForeground" Value="{StaticResource Office2010SilverWatermarkForeground}"/>
+        <Setter Property="PositiveForeground" Value="{StaticResource Office2010SilverTextboxForeground}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate  TargetType="{x:Type local:DoubleTextBox}">
+                    <Grid>
+                        <Border x:Name="Border" Opacity="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid>
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Visibility="{TemplateBinding ContentElementVisibility}"/>
+                                <ContentControl  x:Name="PART_Watermark" Foreground="{TemplateBinding WatermarkTextForeground}" IsTabStop="False" IsHitTestVisible="False" 
+                                                 Background="{TemplateBinding WatermarkBackground}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                                 FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}"
+                                                 Padding="{TemplateBinding Padding}" Visibility="{TemplateBinding WatermarkVisibility}" Content="{TemplateBinding WatermarkText}"
+                                                 Opacity="{TemplateBinding WatermarkOpacity}" ContentTemplate="{TemplateBinding WatermarkTemplate}" Grid.Row="0"/>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="MouseOver_Border" BorderBrush="{StaticResource Office2010SilverTextboxMouseOverBorderBrush}" CornerRadius="{TemplateBinding CornerRadius}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed"/>
+                        <Border x:Name="Focused_Border" BorderBrush="{TemplateBinding FocusedBorderBrush}" CornerRadius="{TemplateBinding CornerRadius}"
+                                BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed"/>
+                        <Border/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <ControlTemplate x:Key="RepeatButtonTemplate" TargetType="{x:Type RepeatButton}">
+        <Border Name="Chrome" 
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="0"                                        
+                                        SnapsToDevicePixels="true">
+            <Border Name="innerBorder" BorderBrush="{TemplateBinding Background}" BorderThickness="0" CornerRadius="0" SnapsToDevicePixels="True">
+
+                <ContentPresenter Margin="{TemplateBinding Padding}"                                                 
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+            </Border>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource Office2010SilverToggleButtonMouseOverBorderBrush}"/>
+                <Setter TargetName="innerBorder" Property="BorderBrush" Value="White"/>
+                <Setter TargetName="innerBorder" Property="BorderThickness" Value="0.5"/>
+                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource Office2010SilverToggleButtonMouseOverBackground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource Office2010SilverRepeatButtonMouseOverBorderBrush}"/>
+                <Setter TargetName="innerBorder" Property="BorderBrush" Value="{StaticResource Office2010SilverRepeatButtonPressedBackground}"/>
+                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource Office2010SilverRepeateButtonMouseOverBackground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="Chrome" Property="Opacity" Value="0.5"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <!-- Repeat Button Style -->
+   <Style x:Key="RepeatButtonStyle"
+           TargetType="{x:Type RepeatButton}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="Background"                                
+                Value="{StaticResource Office2010SilverRepeatButtonBackground}"/>
+        <Setter Property="BorderBrush"
+                Value="{StaticResource Office2010SilverRepeatButtonBorderBrush}"/>
+        <Setter Property="Foreground"
+                Value="{StaticResource Office2010SilverRepeatButtonForeground}"/>
+        <Setter Property="BorderThickness"
+                Value="1"/>
+        <Setter Property="HorizontalContentAlignment"
+                Value="Center"/>
+        <Setter Property="VerticalContentAlignment"
+                Value="Center"/>
+        <Setter Property="Padding"
+                Value="1"/>
+        <Setter Property="Template" Value="{StaticResource RepeatButtonTemplate}"/>
+    </Style>
+    <!-- Style for UpDown -->
+    <Style x:Key="Office2010SilverUpDownStyle"  TargetType="{x:Type local:UpDown}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background" Value="{StaticResource Office2010SilverUpDownBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010SilverUpDownBorderBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource Office2010SilverUpDownForeground}"/>
+        <Setter Property="FocusedBackground" Value="{StaticResource Office2010SilverUpDownFocusedBackground}"/>
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010SilverUpDownFocusedBorderBrush}"/>
+        <Setter Property="FocusedForeground" Value="{StaticResource Office2010SilverUpDownFocusedForeground}"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:UpDown}">
+                    <Border x:Name="Border" SnapsToDevicePixels="True"  CornerRadius="{TemplateBinding CornerRadius}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding UpDownBorderBrush}" Background="{TemplateBinding UpDownBackground}">
+                        <Grid ClipToBounds="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="8*"></ColumnDefinition>
+                                <ColumnDefinition Width="2*">
+                                </ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <local:DoubleTextBox x:Name="SecondBlock" Grid.Column="0" Grid.RowSpan="2"  Cursor="None" HorizontalContentAlignment="Center" BorderBrush="Transparent"
+                                                 VerticalContentAlignment="Center"  Visibility="Collapsed"  BorderThickness="0" 
+                                                 TextAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextAlignment, Mode=TwoWay}"
+                                                 NumberFormat="{TemplateBinding NumberFormatInfo}"
+                                                 HorizontalAlignment="Stretch" Style="{StaticResource Office2010SilverNumericUpDownDoubleTextBoxStyle}" Culture="{TemplateBinding Culture}"
+                                                 ApplyZeroColor="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ApplyZeroColor, Mode=TwoWay}"
+                                                 ApplyNegativeForeground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=EnableNegativeColors, Mode=TwoWay}"
+                                                 Background="{TemplateBinding UpDownBackground}"  PositiveForeground="{TemplateBinding UpDownForeground}"
+                                                 ZeroColor="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ZeroColor, Mode=TwoWay}"
+                                                 />
+
+                            <local:DoubleTextBox x:Name="textBox" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Visibility="Collapsed"
+                                                 TextAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextAlignment, Mode=TwoWay}"
+                                                 BorderThickness="0" 
+                                                 BorderBrush="Transparent" NumberFormat="{TemplateBinding NumberFormatInfo}" Grid.Column="0" Grid.RowSpan="2" 
+                                                 Style="{StaticResource Office2010SilverNumericUpDownDoubleTextBoxStyle}"  Culture="{TemplateBinding Culture}"
+                                                 ApplyZeroColor="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ApplyZeroColor, Mode=TwoWay}"
+                                                 ApplyNegativeForeground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=EnableNegativeColors, Mode=TwoWay}"
+                                                 Background="{TemplateBinding UpDownBackground}"  PositiveForeground="{TemplateBinding UpDownForeground}"
+                                                 ZeroColor="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ZeroColor, Mode=TwoWay}"
+                                                 />
+
+                            <local:DoubleTextBox x:Name="DoubleTextBox" Grid.Column="0" Grid.RowSpan="2" TextAlignment="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextAlignment, Mode=TwoWay}"
+                                                 Background="{TemplateBinding UpDownBackground}"  PositiveForeground="{TemplateBinding UpDownForeground}"
+                                                 CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="0" BorderBrush="Transparent" VerticalAlignment="Stretch" 
+                                                 HorizontalContentAlignment="Center"  HorizontalAlignment="Stretch"  VerticalContentAlignment="Center" 
+                                                 MinValue="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinValue, Mode=TwoWay}"
+                                                 MaxValue="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MaxValue, Mode=TwoWay}" 
+                                                 NumberFormat="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=NumberFormatInfo, Mode=TwoWay}"                                                  
+                                                 UseNullOption="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=UseNullOption, Mode=TwoWay}"
+                                                 NullValue="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=NullValue, Mode=TwoWay}"
+                                                 Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Mode=TwoWay}"
+                                                 Culture="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Culture, Mode=TwoWay}" 
+                                                 Step="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Step, Mode=TwoWay}"
+                                                 ZeroColor="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ZeroColor, Mode=TwoWay}"
+                                                 MaxValidation="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MaxValidation, Mode=TwoWay}"
+                                                 MinValidation="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinValidation, Mode=TwoWay}"
+                                                 MaxValueOnExceedMaxDigit="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MaxValueOnExceedMaxDigit, Mode=TwoWay}"
+                                                 MinValueOnExceedMinDigit="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=MinValueOnExceedMinDigit, Mode=TwoWay}"
+                                                 ApplyZeroColor="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ApplyZeroColor, Mode=TwoWay}"
+                                                 ApplyNegativeForeground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=EnableNegativeColors, Mode=TwoWay}"
+                                                 Style="{StaticResource Office2010SilverNumericUpDownDoubleTextBoxStyle}" />
+
+
+                           <TextBox x:Name="text" Grid.Column="0" Grid.RowSpan="2" Width="{TemplateBinding Width}"
+                                     Height="{TemplateBinding Height}" BorderThickness="0" BorderBrush="Transparent" 
+                                     Foreground="{TemplateBinding UpDownForeground}" 
+                                     Background="{TemplateBinding UpDownBackground}" 
+                                     Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Converter={StaticResource NullToVisibilityConverter},Mode=TwoWay}" 
+                                     Text="{TemplateBinding NullValueText}" HorizontalContentAlignment="Left"
+                                     VerticalContentAlignment="Center"/>
+                            <RepeatButton x:Name="upbutton" IsTabStop="False" Grid.Row="0" Grid.Column="1"  Style="{StaticResource RepeatButtonStyle}" 
+                                          Command="local:UpDown.m_upValue">
+                                <Path Data="F1 M 541.537,173.589L 531.107,173.589L 536.322,167.49L 541.537,173.589 Z " Fill="{StaticResource Office2010SilverPathFillBrush}" HorizontalAlignment="Stretch" Margin="3,2,3,2" Stretch="Uniform" VerticalAlignment="Stretch" Width="Auto" Height="Auto">
+                                </Path>
+                            </RepeatButton>
+                            <RepeatButton x:Name="downbutton" IsTabStop="False" Grid.Row="2" Grid.Column="1" Style="{StaticResource RepeatButtonStyle}"
+                                          Command="local:UpDown.m_downValue">
+                                <Path Data="F1 M 531.107,321.943L 541.537,321.943L 536.322,328.042L 531.107,321.943 Z" Fill="{StaticResource Office2010SilverPathFillBrush}" HorizontalAlignment="Stretch" Height="Auto" Margin="3,2,3,2" Stretch="Uniform" VerticalAlignment="Stretch" Width="Auto">
+                                </Path>
+                            </RepeatButton>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!--<Trigger Property="IsMouseOver" Value="True" SourceName="Border">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource Office2010SilverMouseOverBorderBrush}"/>                                 
+                        </Trigger>-->
+                        <Trigger Property="IsMouseOver" Value="True" SourceName="upbutton">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource  Office2010SilverUpDownBorderBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True" SourceName="downbutton">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource  Office2010SilverUpDownBorderBrush}"/>
+                        </Trigger>
+
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="ApplyZeroColor" Value="False"/>
+                            <Setter Property="EnableNegativeColors" Value="False"/>
+                            <Setter Property="EnableFocusedColors" Value="False"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="True">
+                            <Setter Property="Opacity" Value="1"/>
+                            <Setter Property="ApplyZeroColor" Value="True"/>
+                            <Setter Property="EnableNegativeColors" Value="True"/>
+                            <Setter Property="EnableFocusedColors" Value="True"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource Office2010SilverUpDownStyle}" TargetType="{x:Type local:UpDown}"/>
+
+</ResourceDictionary>

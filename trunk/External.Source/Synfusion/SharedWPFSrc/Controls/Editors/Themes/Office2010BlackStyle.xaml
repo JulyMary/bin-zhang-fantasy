@@ -1,0 +1,307 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:sfshared="clr-namespace:Syncfusion.Windows.Shared"                    
+                    xmlns:local="clr-namespace:Syncfusion.Windows.Tools.Controls"
+                    xmlns:vsm="clr-namespace:Syncfusion.Windows"
+                    xmlns:syncfusion_controls="clr-namespace:Syncfusion.Windows.Controls"
+                    xmlns:calenderIetm="clr-namespace:Syncfusion.Windows.Controls.Primitives"
+                    >
+
+    <SolidColorBrush x:Key="Office2010BlackTextBoxBorderBrush" Color="#FF303030"/>
+    <SolidColorBrush x:Key="Office2010BlackTextBoxBackground" Color="White"/>
+    <SolidColorBrush x:Key="Office2010BlackTextboxForeground" Color="Black"/>
+    <SolidColorBrush x:Key="Office2010BlackWatermarkForeground" Color="#FF000000"/>
+    <SolidColorBrush x:Key="Office2010BlackTextboxMouseOverBorderBrush" Color="Transparent"/>
+
+    <SolidColorBrush x:Key="Office2010BlackTextboxFocusedBorderBrush" Color="#FFEB8900"/>
+
+    <SolidColorBrush x:Key="Office2010BlackReadOnlyBackground" Color="#FFE8E8E8"/>
+    <ContextMenu x:Key="contextmenu">
+        <MenuItem Header="Cut" Command="Cut"/>
+        <MenuItem Header="Copy" Command="Copy"/>
+        <MenuItem Header="Paste" Command="Paste"/>
+    </ContextMenu>
+    <Style x:Key="Office2010BlackIntegerTextBoxStyle" TargetType="{x:Type sfshared:IntegerTextBox}">
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010BlackTextboxFocusedBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource Office2010BlackTextBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010BlackTextBoxBorderBrush}"/>
+        <Setter Property="PositiveForeground" Value="{StaticResource Office2010BlackTextboxForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="WatermarkTextForeground" Value="{StaticResource Office2010BlackWatermarkForeground}"/>
+        <Setter Property="ContextMenu" Value="{StaticResource contextmenu}"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+
+            <Setter.Value>
+                <ControlTemplate  TargetType="{x:Type sfshared:IntegerTextBox}">
+                    <Grid>
+
+                        <Border x:Name="Border" Opacity="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" SnapsToDevicePixels="True">
+                            <Grid>
+
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Visibility="{TemplateBinding ContentElementVisibility}"/>
+
+                                <ContentControl  x:Name="PART_Watermark" Foreground="{TemplateBinding WatermarkTextForeground}"
+                                IsTabStop="False" IsHitTestVisible="False" Background="{TemplateBinding WatermarkBackground}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Visibility="{TemplateBinding WatermarkVisibility}" Content="{TemplateBinding WatermarkText}"
+                                Opacity="{TemplateBinding WatermarkOpacity}" ContentTemplate="{TemplateBinding WatermarkTemplate}" Grid.Row="0"/>
+                            </Grid>
+                        </Border>
+
+                        <Border x:Name="MouseOverBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{StaticResource Office2010BlackTextboxMouseOverBorderBrush}" SnapsToDevicePixels="True"/>
+                        <Border x:Name="FocusBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{TemplateBinding FocusedBorderBrush}" SnapsToDevicePixels="True"/>
+
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource Office2010BlackIntegerTextBoxStyle}" TargetType="{x:Type sfshared:IntegerTextBox}"/>
+
+    <Style x:Key="Office2010BlackDoubleTextBoxStyle" TargetType="{x:Type sfshared:DoubleTextBox}">
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010BlackTextboxFocusedBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource Office2010BlackTextBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010BlackTextBoxBorderBrush}"/>
+        <Setter Property="PositiveForeground" Value="{StaticResource Office2010BlackTextboxForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="WatermarkTextForeground" Value="{StaticResource Office2010BlackWatermarkForeground}"/>
+        <Setter Property="ContextMenu" Value="{StaticResource contextmenu}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type sfshared:DoubleTextBox}">
+                    <Grid>
+                        <Border x:Name="Border" Opacity="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" SnapsToDevicePixels="True">
+                            <Grid>
+
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Visibility="{TemplateBinding ContentElementVisibility}"/>
+
+                                <ContentControl  x:Name="PART_Watermark" Foreground="{TemplateBinding WatermarkTextForeground}"
+                                IsTabStop="False" IsHitTestVisible="False" Background="{TemplateBinding WatermarkBackground}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Visibility="{TemplateBinding WatermarkVisibility}" Content="{TemplateBinding WatermarkText}"
+                                Opacity="{TemplateBinding WatermarkOpacity}" ContentTemplate="{TemplateBinding WatermarkTemplate}" Grid.Row="0"/>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="MouseOverBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{StaticResource Office2010BlackTextboxMouseOverBorderBrush}" SnapsToDevicePixels="True"/>
+                        <Border x:Name="FocusBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{TemplateBinding FocusedBorderBrush}" SnapsToDevicePixels="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+    <Style BasedOn="{StaticResource Office2010BlackDoubleTextBoxStyle}" TargetType="{x:Type sfshared:DoubleTextBox}"/>
+
+    <Style x:Key="Office2010BlackCurrencyTextBoxStyle" TargetType="{x:Type sfshared:CurrencyTextBox}">
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010BlackTextboxFocusedBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource Office2010BlackTextBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010BlackTextBoxBorderBrush}"/>
+        <Setter Property="PositiveForeground" Value="{StaticResource Office2010BlackTextboxForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="WatermarkTextForeground" Value="{StaticResource Office2010BlackWatermarkForeground}"/>
+        <Setter Property="ContextMenu" Value="{StaticResource contextmenu}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type sfshared:CurrencyTextBox}">
+                    <Grid>
+                        <Border x:Name="Border" Opacity="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Visibility="{TemplateBinding ContentElementVisibility}"/>
+
+                                <ContentControl  x:Name="PART_Watermark" Foreground="{TemplateBinding WatermarkTextForeground}"
+                                IsTabStop="False" IsHitTestVisible="False" Background="{TemplateBinding WatermarkBackground}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Visibility="{TemplateBinding WatermarkVisibility}" Content="{TemplateBinding WatermarkText}"
+                                Opacity="{TemplateBinding WatermarkOpacity}" ContentTemplate="{TemplateBinding WatermarkTemplate}" Grid.Row="0"/>
+
+                            </Grid>
+                        </Border>
+                        <Border x:Name="MouseOverBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{StaticResource Office2010BlackTextboxMouseOverBorderBrush}" SnapsToDevicePixels="True"/>
+                        <Border x:Name="FocusBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{TemplateBinding FocusedBorderBrush}" SnapsToDevicePixels="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource Office2010BlackCurrencyTextBoxStyle}" TargetType="{x:Type sfshared:CurrencyTextBox}"/>
+
+    <Style x:Key="Office2010BlackPercentTextBoxStyle" TargetType="{x:Type sfshared:PercentTextBox}">
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010BlackTextboxFocusedBorderBrush}"/>
+        <Setter Property="Background" Value="{StaticResource Office2010BlackTextBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010BlackTextBoxBorderBrush}"/>
+        <Setter Property="PositiveForeground" Value="{StaticResource Office2010BlackTextboxForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="WatermarkTextForeground" Value="{StaticResource Office2010BlackWatermarkForeground}"/>
+        <Setter Property="ContextMenu" Value="{StaticResource contextmenu}"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="ContextMenu" Value="{StaticResource contextmenu}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type sfshared:PercentTextBox}">
+                    <Grid>
+                        <Border x:Name="Border" Opacity="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Visibility="{TemplateBinding ContentElementVisibility}"/>
+
+                                <ContentControl  x:Name="PART_Watermark" Foreground="{TemplateBinding WatermarkTextForeground}"
+                                IsTabStop="False" IsHitTestVisible="False" Background="{TemplateBinding WatermarkBackground}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Visibility="{TemplateBinding WatermarkVisibility}" Content="{TemplateBinding WatermarkText}"
+                                Opacity="{TemplateBinding WatermarkOpacity}" ContentTemplate="{TemplateBinding WatermarkTemplate}" Grid.Row="0"/>
+                                <!--
+{TemplateBinding WatermarkVisibility}
+-->
+                            </Grid>
+                        </Border>
+                        <Border x:Name="MouseOverBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{StaticResource Office2010BlackTextboxMouseOverBorderBrush}" SnapsToDevicePixels="True"/>
+                        <Border x:Name="FocusBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{TemplateBinding FocusedBorderBrush}" SnapsToDevicePixels="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource Office2010BlackPercentTextBoxStyle}" TargetType="{x:Type sfshared:PercentTextBox}"/>
+
+    <Style x:Key="Office2010BlackMaskedTextBoxStyle" TargetType="{x:Type sfshared:MaskedTextBox}">
+        <Setter Property="FocusedBorderBrush" Value="{StaticResource Office2010BlackTextboxFocusedBorderBrush}"/>     
+        <Setter Property="Background" Value="{StaticResource Office2010BlackTextBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Office2010BlackTextBoxBorderBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource Office2010BlackTextboxForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="WatermarkTextForeground" Value="{StaticResource Office2010BlackWatermarkForeground}"/>
+        <Setter Property="ContextMenu" Value="{StaticResource contextmenu}"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type sfshared:MaskedTextBox}">
+                    <Grid>
+                        <Border x:Name="Border" Opacity="1" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="{TemplateBinding CornerRadius}" SnapsToDevicePixels="True">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Visibility="{TemplateBinding ContentElementVisibility}"/>
+
+                                <ContentControl  x:Name="PART_Watermark" Foreground="{TemplateBinding WatermarkTextForeground}"
+                                IsTabStop="False" IsHitTestVisible="False" Background="{TemplateBinding WatermarkBackground}"
+                                FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                FontStretch="{TemplateBinding FontStretch}" FontStyle="{TemplateBinding FontStyle}" FontWeight="{TemplateBinding FontWeight}"
+                                Padding="{TemplateBinding Padding}"
+                                Visibility="{TemplateBinding WatermarkVisibility}" Content="{TemplateBinding WatermarkText}"
+                                Opacity="{TemplateBinding WatermarkOpacity}" ContentTemplate="{TemplateBinding WatermarkTemplate}" Grid.Row="0"/>
+                                <!--
+{TemplateBinding WatermarkVisibility}
+-->
+                            </Grid>
+                        </Border>
+                        <Border x:Name="MouseOverBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{StaticResource Office2010BlackTextboxMouseOverBorderBrush}" SnapsToDevicePixels="True"/>
+                        <Border x:Name="FocusBorder" CornerRadius="{TemplateBinding CornerRadius}" BorderThickness="{TemplateBinding BorderThickness}" Visibility="Collapsed" Opacity="1" BorderBrush="{TemplateBinding FocusedBorderBrush}" SnapsToDevicePixels="True"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="MouseOverBorder" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="FocusBorder" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style BasedOn="{StaticResource Office2010BlackMaskedTextBoxStyle}" TargetType="{x:Type sfshared:MaskedTextBox}"/>
+</ResourceDictionary>
