@@ -12,7 +12,7 @@ using Fantasy.AddIns;
 
 namespace Fantasy.Studio.TreeViewModel
 {
-    class TreeViewItem : IDisposable 
+    public class TreeViewItem : IDisposable, Fantasy.Studio.TreeViewModel.ITreeViewItem 
     {
         public TreeViewItem(ExtendableTreeViewModel model)
         {

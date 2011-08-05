@@ -6,6 +6,7 @@ using System.Windows.Markup;
 
 namespace Fantasy.AddIns
 {
+    [MarkupExtensionReturnType(typeof(IValueProvider))]
     public class BindingExtension : MarkupExtension
     {
         public override object ProvideValue(IServiceProvider serviceProvider)

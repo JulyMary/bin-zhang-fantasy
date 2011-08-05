@@ -23,22 +23,40 @@
         <Object ID="documents">
             <sbe:DocumentPad/>
         </Object>
+        <Object ID="classview">
+            <sbe:ClassViewPad />
+        </Object>
     </Extension>
 
-    <Extension Path="fantasy/studio/businessengine/documentpad/package/childprovider">
-        <Object ID="childPackages" >
-            <sbe:ChildPackageProvider/>
-        </Object>
-        <Object ID="classes">
-            <sbe:PackageClassesProvider/>
-        </Object>
+    <Extension Path="fantasy/studio/businessengine/documentpad/treeview">
+        <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" 
+                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/package/contextmenu">
+            <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
+            <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageClassFolderProvider}"/>
+        </TreeNode>
+        <TreeNode ID="classFolder" TargetType="{x:Type sbe:ClassFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
+                  Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/classfolder/contextmenu" >
+            <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassFolderClassesProvider}" />
+        </TreeNode>
+        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
+                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
+
+        </TreeNode>
     </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classviewpad/treeview">
+        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
+                  Text="{Binding Path=FullName}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
+            <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassChildClassesProvider}" />
+        </TreeNode>
+    </Extension>
+
+
 
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
-        <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner" ParameterMember="Package">
-           
+        <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner">
         </Button>
-        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" ParameterMember="Package"/>
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
         <Button ID="Remove" Text="Remove"/>
     </Extension>
 
@@ -62,18 +80,18 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
-        <Button ID="AddClass" Text="Add Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" ParameterMember="Package" />
-  
+        <Button ID="AddClass" Text="Add Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" ParameterMember="Package"/>
+
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
-        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" ParameterMember="Class"/>
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
 
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
         <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
             <CommandBinding.Conditional>
-                    <OwnerState State="Dirty" StateMember="DirtyState"/>
+                <OwnerState State="Dirty" StateMember="DirtyState"/>
             </CommandBinding.Conditional>
         </CommandBinding>
     </Extension>
@@ -130,5 +148,18 @@
             <Button ID="MoveUp" Command="{Command Name=MoveUp}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
             <Button ID="MoveDown" Command="{Command Name=MoveDown}" Icon="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico"/>
         </ToolBar>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/businessdatatypepicker/treeview">
+        <TreeNode ID="datatype" TargetType="{x:Type be:BusinessDataType}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
+
+        </TreeNode>
+        <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
+            <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
+            <TreeNodeChildProvider ID="classes" Provider="{New sbe:PackageClassesProvider}"/>
+        </TreeNode>
+        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
+
+        </TreeNode>
     </Extension>
 </AddIn>

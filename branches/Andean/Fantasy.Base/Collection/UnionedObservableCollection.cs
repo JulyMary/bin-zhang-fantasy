@@ -25,15 +25,20 @@ namespace Fantasy.Collection
 
         public void Union(IEnumerable<T> child)
         {
+            int newIndex = this.Count;
             this._childCollections.Add(child);
+            
             INotifyCollectionChanged n = child as INotifyCollectionChanged;
             if (n != null)
             {
                 n.CollectionChanged += new NotifyCollectionChangedEventHandler(ChildCollectionChanged);
             }
 
-            NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<T>(child), this.Count);
-            this.OnCollectionChanged(args);
+            if (child.Count() > 0)
+            {
+                NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<T>(child), newIndex);
+                this.OnCollectionChanged(args);
+            }
 
 
         }

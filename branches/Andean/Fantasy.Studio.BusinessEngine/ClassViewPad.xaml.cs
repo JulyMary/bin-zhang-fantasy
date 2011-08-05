@@ -11,10 +11,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Fantasy.Studio.Services;
-using Fantasy.ServiceModel;
-using System.ComponentModel.Design;
 using System.ComponentModel;
+using Fantasy.Studio.Services;
+using System.ComponentModel.Design;
 using Fantasy.Studio.TreeViewModel;
 using Fantasy.Adaption;
 using Fantasy.Studio.Descriptor;
@@ -22,15 +21,14 @@ using Fantasy.Studio.Descriptor;
 namespace Fantasy.Studio.BusinessEngine
 {
     /// <summary>
-    /// Interaction logic for PackagePad.xaml
+    /// Interaction logic for ClassViewPad.xaml
     /// </summary>
-    public partial class DocumentPad : UserControl, IPadContent, IObjectWithSite
+    public partial class ClassViewPad : UserControl, IObjectWithSite, IPadContent
     {
-        public DocumentPad()
+        public ClassViewPad()
         {
             InitializeComponent();
         }
-
 
         private ISelectionService _selectionService = null;
 
@@ -38,7 +36,7 @@ namespace Fantasy.Studio.BusinessEngine
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnGotKeyboardFocus(e);
-            IMonitorSelectionService monitor = ServiceManager.Services.GetRequiredService<IMonitorSelectionService>();
+            IMonitorSelectionService monitor = this.Site.GetRequiredService<IMonitorSelectionService>();
             monitor.CurrentSelectionService = this._selectionService;
         }
 
@@ -54,8 +52,6 @@ namespace Fantasy.Studio.BusinessEngine
                 data = item.DataContext;
             }
 
-            
-
             _selectionService.SetSelectedComponents(new object[] { data }, SelectionTypes.Primary);
         }
 
@@ -66,7 +62,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public string Title
         {
-            get { return Properties.Resources.DocumentPadTitle; }
+            get { return Properties.Resources.ClassViewPadTitle; }
         }
 
         private ImageSource _icon;
@@ -76,7 +72,7 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 if (_icon == null)
                 {
-                    _icon = new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/model.ico", UriKind.Relative));
+                    _icon = new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/class.png", UriKind.Relative));
                 }
                 return _icon;
             }
@@ -91,7 +87,7 @@ namespace Fantasy.Studio.BusinessEngine
         public void Initialize()
         {
             this._selectionService = new SelectionService(this.Site);
-            DocumentPadModel model = new DocumentPadModel() { Site = this.Site };
+            ClassViewPadModel model = new ClassViewPadModel() { Site = this.Site };
             this.DataContext = model;
         }
 
@@ -103,7 +99,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public void BringPadToFront()
         {
-            
+
         }
 
         #endregion
@@ -111,8 +107,7 @@ namespace Fantasy.Studio.BusinessEngine
         [Browsable(false)]
         public IServiceProvider Site { get; set; }
 
-        string IPadContent.Name { get { return "Documents"; } }
+        string IPadContent.Name { get { return "ClassView"; } }
 
-       
     }
 }

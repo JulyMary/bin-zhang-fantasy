@@ -58,6 +58,7 @@ namespace Fantasy.Studio.TreeViewModel
         {
             TreeViewItemBuilder builder = this._itemBuilders.First(b => b.Codon.TargetType.IsInstanceOfType(item));
             TreeViewItem rs = new TreeViewItem(this);
+            rs.DataContext = item;
             rs.Text = builder.Codon._text != null ? builder.Codon._text.Build<IValueProvider>() : builder.Codon.Text;
             if (rs.Text != null)
             {
@@ -107,7 +108,7 @@ namespace Fantasy.Studio.TreeViewModel
                 rs = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<ICommand>(builder.Build<object>());
                 if (rs is IObjectWithSite)
                 {
-                    ((IObjectWithSite)Site).Site = this.Site;
+                    ((IObjectWithSite)rs).Site = this.Site;
                 }
 
             }
@@ -123,7 +124,7 @@ namespace Fantasy.Studio.TreeViewModel
 
         public ObservableCollection<object> Items { get; private set; }
 
-        internal ObservableCollection<TreeViewItem> TreeViewItems { get; private set; }
+        public ObservableCollection<TreeViewItem> TreeViewItems { get; private set; }
 
 
     }

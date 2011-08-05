@@ -3,47 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:be="urn:schema-fantasy:business-engine"
         xmlns:sbe="clr-namespace:Fantasy.Studio.BusinessEngine" 
-        Title="Select Data Type" Height="600" Width="800" ResizeMode="CanMinimize">
+        Title="Select Data Type" Height="600" Width="800" ResizeMode="CanMinimize" xmlns:f="urn:schema-fantasy:xaml">
     <Window.Resources>
         <sbe:PackageChildrenConverter x:Key="PackageChildren" />
     </Window.Resources>
     <Grid>
-        <TreeView Height="508" HorizontalAlignment="Left" Margin="12,12,0,0" Name="treeView" VerticalAlignment="Top" Width="754" ItemsSource="{Binding Items}" 
-                  SelectedItemChanged="TreeView_SelectedItemChanged" VirtualizingStackPanel.IsVirtualizing="True" 
-              VirtualizingStackPanel.VirtualizationMode="Recycling" MouseDoubleClick="treeView_MouseDoubleClick">
-            <TreeView.Resources>
-                <Style TargetType="{x:Type Image}" x:Key="img">
-                    <Setter Property="Width" Value="16px"/>
-                    <Setter Property="Height" Value="16px" />
-                    <Setter Property="Margin" Value="0,0,2,0" />
-                </Style>
-                <DataTemplate DataType="{x:Type be:BusinessDataType}">
-                    <StackPanel Orientation="Horizontal" Margin="2" >
-                        <Image Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" Style="{StaticResource img}"/>
-                        <TextBlock Text="{Binding Name}"/>
-                    </StackPanel>
-                </DataTemplate>
-               
-                <DataTemplate DataType="{x:Type be:BusinessClass}">
-                    <StackPanel Orientation="Horizontal" Margin="2">
-                        <Image Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" Style="{StaticResource img}"/>
-                        <TextBlock Text="{Binding Name}"/>
-                    </StackPanel>
-                </DataTemplate>
-
-                <HierarchicalDataTemplate DataType="{x:Type be:BusinessPackage}" ItemsSource="{Binding Converter={StaticResource  PackageChildren}}">
-                    <StackPanel Orientation="Horizontal" Margin="2">
-                        <Image Source="/Fantasy.Studio.BusinessEngine;component/images/package.png" Style="{StaticResource img}"/>
-                        <TextBlock Text="{Binding Name}"/>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.Resources>
-            <TreeView.ItemContainerStyle>
-                <Style>
-                    <Setter Property="TreeViewItem.IsExpanded" Value="false" />
-                </Style>
-            </TreeView.ItemContainerStyle>
-        </TreeView>
+       
+        <f:ExtendableTreeView DataContext="{Binding TreeViewModel}"  Height="508" HorizontalAlignment="Left" Margin="12,12,0,0" Name="extendableTreeView" VerticalAlignment="Top" Width="754" SelectedItemChanged="extendableTreeView_SelectedItemChanged" MouseDoubleClick="extendableTreeView_MouseDoubleClick" />
         <Button Content="OK" Height="23" HorizontalAlignment="Left" Margin="610,526,0,0" Name="OkButton" VerticalAlignment="Top" Width="75" IsDefault="True" Click="OkButton_Click" IsEnabled="{Binding IsOKEnabled}"   />
         <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="691,526,0,0" Name="CancelButton" VerticalAlignment="Top" Width="75" IsCancel="True" Click="CancelButton_Click" />
     </Grid>
