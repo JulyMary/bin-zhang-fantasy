@@ -85,9 +85,31 @@ namespace Fantasy.BusinessEngine.MSSQL
 
         private void UpdateStandardClassTable(BusinessClass @class)
         {
-            throw new NotImplementedException();
+
+            string alter = string.Format("alter table [{0}].[{1}]", @class.TableSchema, @class.TableName) ;
+
+            foreach (BusinessProperty property in @class.PreviousProperties.Where(p => p.EntityState == EntityState.Deleted))
+            {
+                string sql = string.Format("{0} drop column [{1}] ", alter, property.FieldName);
+                this.ExecuteSql(sql);
+
+            }
+
+            foreach (BusinessProperty property in @class.Properties.Where(p => p.PreviousState == EntityState.New))
+            {
+                string sql = string.Format("{0} add {1}", alter, this.GetColumnDefine(property));
+                this.ExecuteSql(sql);
+            }
+
+            foreach (BusinessProperty property in @class.Properties.Where(p => p.PreviousState == EntityState.Clean))
+            {
+                string sql = string.Format("{0} alter column {1}", alter, this.GetColumnDefine(property));
+                this.ExecuteSql(sql);
+            }
+
         }
 
+      
         private void UpdateSimpleClassTable(BusinessClass @class)
         {
             throw new NotImplementedException();
@@ -102,6 +124,8 @@ namespace Fantasy.BusinessEngine.MSSQL
                sql.AppendFormat(" on [{0}]", @class.TableSpace);    
             }
             this.ExecuteSql(sql.ToString());
+
+
         }
 
         private string GetCreateColumnsDefine(BusinessClass @class)
@@ -117,20 +141,7 @@ namespace Fantasy.BusinessEngine.MSSQL
                 {
                     rs.Append(", ");
                 }
-                rs.AppendFormat("[{0}] [{1}]", prop.FieldName, prop.FieldType);
-                if (prop.Length > 0)
-                {
-                    if (prop.Precision > 0)
-                    {
-                        rs.AppendFormat(" ({0}, {1})", prop.Length, prop.Precision);
-                    }
-                    else
-                    {
-                        rs.AppendFormat(" ({0})", prop.Length);
-                    }
-                }
-
-                rs.AppendFormat(" {0} NULL", prop.IsNullable ? string.Empty : "NOT");
+                rs.Append(GetColumnDefine(prop));
             }
             //TODO: Add Constraint CHECK
 
@@ -138,6 +149,26 @@ namespace Fantasy.BusinessEngine.MSSQL
 
             return rs.ToString();
 
+        }
+
+        private string GetColumnDefine(BusinessProperty prop)
+        {
+            StringBuilder rs = new StringBuilder();
+            rs.AppendFormat("[{0}] [{1}]", prop.FieldName, prop.FieldType);
+            if (prop.Length > 0)
+            {
+                if (prop.Precision > 0)
+                {
+                    rs.AppendFormat(" ({0}, {1})", prop.Length, prop.Precision);
+                }
+                else
+                {
+                    rs.AppendFormat(" ({0})", prop.Length);
+                }
+            }
+
+            rs.AppendFormat(" {0} NULL", prop.IsNullable ? string.Empty : "NOT");
+            return rs.ToString();
         }
 
         private void CreateSimpleClassTable(BusinessClass @class)

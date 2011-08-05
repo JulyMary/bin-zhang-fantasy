@@ -67,6 +67,11 @@
     <Compile Include="ClassFolderClassesProvider.cs" />
     <Compile Include="ClassUtils\BusinessClassSchemaEditor.cs" />
     <Compile Include="ClassUtils\BusinessClassTableSpaceEditor.cs" />
+    <Compile Include="ClassUtils\BusinessClassPicker.xaml.cs">
+      <DependentUpon>BusinessClassPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClassUtils\BusinessClassPikcerModel.cs" />
+    <Compile Include="ClassUtils\BusinessClassTypeEditor.cs" />
     <Compile Include="ClassViewPad.xaml.cs">
       <DependentUpon>ClassViewPad.xaml</DependentUpon>
     </Compile>
@@ -168,6 +173,10 @@
     <Resource Include="images\DownArrowShort_Blue.ico" />
     <Resource Include="images\minus.ico" />
     <Resource Include="images\plus.ico" />
+    <Page Include="ClassUtils\BusinessClassPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ClassViewPad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

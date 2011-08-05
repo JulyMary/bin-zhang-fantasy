@@ -285,7 +285,6 @@ namespace Fantasy.BusinessEngine
 
 
         private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
-
        
     }
 }

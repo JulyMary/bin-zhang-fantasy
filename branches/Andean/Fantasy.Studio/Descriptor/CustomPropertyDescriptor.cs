@@ -194,7 +194,7 @@ namespace Fantasy.Studio.Descriptor
 
         public override object GetEditor(Type editorBaseType)
         {
-            return _editor;
+            return !this.IsReadOnly ? _editor : null ;
         }
 
     }

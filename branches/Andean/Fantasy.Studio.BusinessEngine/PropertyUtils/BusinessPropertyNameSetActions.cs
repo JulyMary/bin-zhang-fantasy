@@ -26,7 +26,7 @@ namespace Fantasy.Studio.BusinessEngine
                 {
                     property.CodeName = cname;
                 }
-                if (property.FieldName == ocname)
+                if (property.EntityState == EntityState.New && property.FieldName == ocname)
                 {
                     property.FieldName = cname;
                 }

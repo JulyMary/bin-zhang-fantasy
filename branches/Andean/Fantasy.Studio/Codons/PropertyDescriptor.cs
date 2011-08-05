@@ -99,8 +99,5 @@ namespace Fantasy.Studio.Codons
 
         public IDefaultValueProvider DefaultValueProvider { get; set; }
 
-       
-
-
     }
 }
