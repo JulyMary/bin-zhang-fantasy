@@ -1,0 +1,594 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <GenerateResourceNeverLockTypeAssemblies>true</GenerateResourceNeverLockTypeAssemblies>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5DC6CFF7-844F-4302-8C09-6F95402B2637}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Syncfusion.Windows.Shared</RootNamespace>
+    <AssemblyName>Syncfusion.Shared.Silverlight</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>false</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SyncfusionFramework4_0;SILVERLIGHT;SyncfusionSLFramework4_0</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup><PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+<DocumentationFile>Syncfusion.Shared.Silverlight.xml</DocumentationFile>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release</OutputPath>
+    <DefineConstants>TRACE;SyncfusionFramework4_0;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-Xml|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\bin\Debug-Xml\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;SyncfusionFramework4_0;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <NoConfig>true</NoConfig>
+    
+  </PropertyGroup><PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release-Xml|AnyCPU' ">
+<DocumentationFile>Syncfusion.Shared.Silverlight.xml</DocumentationFile>
+    <OutputPath>..\bin\Release-Xml\</OutputPath>
+    <DefineConstants>TRACE;SyncfusionFramework4_0;SILVERLIGHT</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoStdLib>true</NoStdLib>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <NoConfig>true</NoConfig>
+    
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Controls, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Data.Input, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Input, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Controls\ContextMenuAdv\Controls\ContextMenuAdv.cs" />
+    <Compile Include="Controls\ContextMenuAdv\Controls\ContextMenuAdvService.cs" />
+    <Compile Include="Controls\ContextMenuAdv\Controls\Enum.cs" />
+    <Compile Include="Controls\ContextMenuAdv\Controls\MenuBase.cs" />
+    <Compile Include="Controls\ContextMenuAdv\Controls\MenuItemAdv.cs" />
+    <Compile Include="Controls\ContextMenuAdv\Controls\SeparatorAdv.cs" />
+    <Compile Include="Controls\DragAndDropManager\DragAndDropManager.cs" />
+    <Compile Include="Controls\DragAndDropManager\DragArrow.cs" />
+    <Compile Include="Controls\DragAndDropManager\DragDecorator.cs" />
+    <Compile Include="Controls\DragAndDropManager\DragDropEventHandler.cs" />
+    <Compile Include="Controls\MenuAdv\MenuAdv.cs" />
+    <Compile Include="Controls\MenuAdv\MenuItemAdv.cs" />
+    <Compile Include="Controls\MenuAdv\MenuItemSeparator.cs" />
+    <Compile Include="Controls\SpellChecker\BadWord.cs" />
+    <Compile Include="Controls\SpellChecker\DictionaryFile.cs" />
+    <Compile Include="Controls\SpellChecker\ISpellEditor.cs" />
+    <Compile Include="Controls\SpellChecker\Permuter.cs" />
+    <Compile Include="Controls\SpellChecker\PhoneticsProcessor.cs" />
+    <Compile Include="Controls\SpellChecker\SpellCheckControl.cs" />
+    <Compile Include="Controls\SpellChecker\SpellCheckDialog\SpellCheckDialog.xaml.cs">
+      <DependentUpon>SpellCheckDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpellChecker\SpellCheckEngine.cs" />
+    <Compile Include="Controls\SpellChecker\Suggestion.cs" />
+    <Compile Include="Controls\SpellChecker\TextBoundary.cs" />
+    <Compile Include="Controls\SpellChecker\UserDictionary.cs" />
+    <Compile Include="Controls\SpellChecker\WordComparer.cs" />
+    <Compile Include="Controls\TileView\AnimationClass.cs" />
+    <Compile Include="Controls\TileView\DragEventArgs.cs" />
+    <Compile Include="Controls\TileView\DraggingClass.cs" />
+    <Compile Include="Controls\TileView\MinimizedOrientation.cs" />
+    <Compile Include="Controls\TileView\TileViewControl.cs" />
+    <Compile Include="Controls\TileView\TileViewItem.cs" />
+    <Compile Include="Controls\TileView\TileViewItemState.cs" />
+    <Compile Include="DefaultStyleKeyRetriever.cs" />
+    <Compile Include="ImplicitStyleManager\BaseMergedStyleDictionary.cs" />
+    <Compile Include="ImplicitStyleManager\FunctionalProgramming.cs" />
+    <Compile Include="ImplicitStyleManager\ImplicitStyleManager.cs" />
+    <Compile Include="ImplicitStyleManager\ImplicitStylesApplyMode.cs" />
+    <Compile Include="ImplicitStyleManager\InvalidResourceException.cs" />
+    <Compile Include="ImplicitStyleManager\MergedStyleResourceDictionary.cs" />
+    <Compile Include="ImplicitStyleManager\ResourceNotFoundException.cs" />
+    <Compile Include="ImplicitStyleManager\VisualTreeExtensions.cs" />
+    <Compile Include="LoadDependentAssemblies.cs" />
+    <Compile Include="MovingElementAnimation.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceParser.cs" />
+    <Compile Include="Resources\ResourceWrapper.cs" />
+    <Compile Include="Resources\SR.cs" />
+    <Compile Include="Resources\Syncfusion.Shared.Silverlight.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Syncfusion.Shared.Silverlight.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SkinManager\SkinColorScheme.cs" />
+    <Compile Include="SkinManager\SkinManager.cs" />
+    <Compile Include="System.Windows.Controls\BrushSelector\BrushEdit.cs" />
+    <Compile Include="System.Windows.Controls\BrushSelector\BrushSelector.cs" />
+    <Compile Include="System.Windows.Controls\BrushSelector\ColorConversions.cs" />
+    <Compile Include="System.Windows.Controls\BrushSelector\GradientCollection.cs" />
+    <Compile Include="System.Windows.Controls\BrushSelector\GradientStops.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Button\Implementation\ButtonAdv.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Converters\MultiLineConverter.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Converters\TextToVisibilityConverter.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Converters\VisibilityToThicknessConverter.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\DropDownButton\Implementation\DropDown.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\DropDownButton\Implementation\DropDownButton.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\DropDownButton\Implementation\DropDownMenugroup.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\DropDownButton\Implementation\DropDownMenuItem.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Interfaces\ICommandSource.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\Interfaces\IButtonAdv.cs" />
+    <Compile Include="System.Windows.Controls\ButtonControls\SplitButton\Implementation\SplitButton.cs" />
+    <Compile Include="System.Windows.Controls\Carousel\Carousel.cs" />
+    <Compile Include="System.Windows.Controls\Carousel\CarouselItem.cs" />
+    <Compile Include="System.Windows.Controls\Carousel\CarouselPanel.cs" />
+    <Compile Include="System.Windows.Controls\Carousel\CarouselPanelHelper.cs" />
+    <Compile Include="System.Windows.Controls\ColorPickerPalette\ColorGroup.cs" />
+    <Compile Include="System.Windows.Controls\ColorPickerPalette\ColorGroupItem.cs" />
+    <Compile Include="System.Windows.Controls\ColorPickerPalette\ColorPickerPalette.cs" />
+    <Compile Include="System.Windows.Controls\ColorPickerPalette\MoreColorsWindow.xaml.cs">
+      <DependentUpon>MoreColorsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="System.Windows.Controls\ColorPickerPalette\PolygonItem.cs" />
+    <Compile Include="Controls\ComboBoxAdv\Implementation\ComboBoxAdv.cs" />
+    <Compile Include="Controls\ComboBoxAdv\Implementation\ComboBoxItemAdv.cs" />
+    <Compile Include="System.Windows.Controls\Common\Extensions.cs" />
+    <Compile Include="System.Windows.Controls\Common\FishEyePanel.cs" />
+    <Compile Include="System.Windows.Controls\Common\InteractionHelper.cs" />
+    <Compile Include="System.Windows.Controls\Common\IUpdateVisualState.cs" />
+    <Compile Include="System.Windows.Controls\Common\TemplateSelector.cs" />
+    <Compile Include="System.Windows.Controls\Common\TypeConverters.cs" />
+    <Compile Include="System.Windows.Controls\Common\VisualStates.cs" />
+    <Compile Include="System.Windows.Controls\Common\VisualTreeExtensions.cs" />
+    <Compile Include="System.Windows.Controls\DateTimeEdit\DateTimeBase.cs" />
+    <Compile Include="System.Windows.Controls\DateTimeEdit\DateTimeEdit.cs" />
+    <Compile Include="System.Windows.Controls\DateTimeEdit\DateTimeHandler.cs" />
+    <Compile Include="System.Windows.Controls\DateTimeEdit\DateTimeProperties.cs" />
+    <Compile Include="System.Windows.Controls\DateTimeEdit\KeyHandler.cs" />
+    <Compile Include="System.Windows.Controls\DockPanel\DockPanel.cs" />
+    <Compile Include="System.Windows.Controls\Editors\Converters\BooleanToVisibilityConverterEx.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\DecimalTypeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\DoubleTypeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\IntTypeConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\TextToDecimalValueConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\TextToDoubleValueConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\TextToPercentValueConverter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Converters\TypeConverters.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\CharecterProperties.cs" />
+    <Compile Include="System.Windows.Controls\Editors\Implementation\CurrencyTextBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\CurrencyValueHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\DelegateCommand.cs" />
+    <Compile Include="System.Windows.Controls\Editors\Implementation\DoubleTextBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\DoubleValueHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\EditorBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\IntegerTextBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\IntegerValueHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\MaskedEditorModel.cs" />
+    <Compile Include="System.Windows.Controls\Editors\Implementation\MaskedTextBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\MaskHandler.cs" />
+    <Compile Include="System.Windows.Controls\Editors\Implementation\PercentTextBox.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Implementation\PercentValueHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Utils\KeyCode.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Utils\_delegates.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\Editors\Utils\_enums.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System.Windows.Controls\EnumerableExtensions.cs" />
+    <Compile Include="System.Windows.Controls\Expander\ExpandDirection.cs" />
+    <Compile Include="System.Windows.Controls\HeaderedContentControl\HeaderedContentControl.cs" />
+    <Compile Include="System.Windows.Controls\NumericUpDown\NumericUpDown.cs" />
+    <Compile Include="System.Windows.Controls\NumericUpDown\NumericUpDownAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\Spinner\ButtonSpinner.cs" />
+    <Compile Include="System.Windows.Controls\Spinner\SpinDirection.cs" />
+    <Compile Include="System.Windows.Controls\Spinner\SpinEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\Spinner\Spinner.cs" />
+    <Compile Include="System.Windows.Controls\Spinner\ValidSpinDirections.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\AutomationPeers\ListTimePickerPopupAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\AutomationPeers\PickerAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\AutomationPeers\RangeTimePickerPopupAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\AutomationPeers\TimePickerAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\AutomationPeers\TimePickerPopupAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\AutomationPeers\TimeUpDownAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\ITimeInput.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\Picker.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\Popups\ItemSelectionHelper.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\Popups\ListTimePickerPopup.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\Popups\RangeTimePickerPopup.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\Popups\TimePickerPopup.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\Popups\TimePickerPopupTemplate.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\PopupTimeSelectionMode.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeCoercionHelper.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeFormat\CustomTimeFormat.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeFormat\ITimeFormat.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeFormat\LongTimeFormat.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeFormat\ShortTimeFormat.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeFormat\TimeFormatConverter.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeGlobalizationInfo.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeParser.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeParserCollection.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeParsers\CatchallTimeParser.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimePicker.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeTypeConverter.cs" />
+    <Compile Include="System.Windows.Controls\TimeInput\TimeUpDown.cs" />
+    <Compile Include="System.Windows.Controls\UpDownBase\UpDownBase.cs" />
+    <Compile Include="System.Windows.Controls\UpDownBase\UpDownBase.Generic.cs" />
+    <Compile Include="System.Windows.Controls\UpDownBase\UpDownBaseAutomationPeer.cs" />
+    <Compile Include="System.Windows.Controls\UpDownBase\UpDownParseErrorEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\UpDownBase\UpDownParsingEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\Window\Implementation\EventHandler\Delegate.cs" />
+    <Compile Include="System.Windows.Controls\Window\Implementation\SizeToDoubleConverter.cs" />
+    <Compile Include="System.Windows.Controls\Window\Implementation\Window.cs" />
+    <Compile Include="Tuple.cs" />
+    <Compile Include="Utils\Converters.cs" />
+    <Compile Include="Utils\ItemContainerGeneratorAdv.cs" />
+    <Compile Include="Utils\SkinTypeAttribute.cs" />
+    <Compile Include="Utils\VisualUtils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <CustomToolNamespace>Syncfusion.Windows.Controls.Properties</CustomToolNamespace>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\ContextMenuAdv\Themes\Blend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\ContextMenu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Office2007Black.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Office2007Blue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Office2007Silver.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Office2010Black.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Office2010Blue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Office2010Silver.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\VS2010.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ContextMenuAdv\Themes\Windows7.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\DragAndDropManager\Themes\DragDecorator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MenuAdv\Themes\MenuAdvResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SpellChecker\SpellCheckDialog\SpellCheckDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\TileView\Themes\TileViewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\BrushSelector\Themes\BrushEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\ButtonControls\Button\Themes\ButtonAdv.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\ButtonControls\DropDownButton\Themes\DropDownButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\ButtonControls\SplitButton\Themes\SplitButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Carousel\Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\ColorPickerPalette\MoreColorsWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\ColorPickerPalette\Themes\ColorPickerPalette.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ComboBoxAdv\Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\DateTimeEdit\Themes\DateTimeEditThemes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\CurrencyTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\DoubleTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\Editors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\IntegerTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\MaskedTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\PercentTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Animation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Blend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Office2007Black.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Office2007Blue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Office2007Silver.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Office2010Black.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Office2010Blue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\Office2010Silver.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.Controls\Editors\Themes\Common.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="System.Windows.Controls\Window\Themes\VS2010.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Syncfusion.Shared.Silverlight.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Syncfusion.Shared.Silverlight.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\CurrencyTextBox.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\DoubleTextBox.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\IntegerTextBox.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\MaskedTextBox.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\PercentTextBox.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Shared\TileViewControl.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Shared\TileViewItem.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Shared\MenuAdv.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\MaskedTextBoxAdv.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\Default_Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\Info.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\ButtonControls\Images\WordArt16.png" />
+    <Resource Include="System.Windows.Controls\ButtonControls\Images\WordArt32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\Error.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\Exclamation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\Question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\Window\Images\MouseMove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\WindowControl.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\ButtonAdv.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\DropDownButtonAdv.Icon.png" />
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\SplitButtonAdv.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\DateTimeEdit.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\Carousel.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Shared\FishEyePanel.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="System.Windows.Controls\BrushSelector\Images\EyeDropGray.png" />
+    <Resource Include="System.Windows.Controls\BrushSelector\Images\eyedropper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\BrushEdit.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\BrushSelector.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\ColorPickerPalette.Icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Controls\SpellChecker\Dictionary\en_us.dic" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Syncfusion.Windows.Tools.Controls\ComboBoxAdv.Icon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
