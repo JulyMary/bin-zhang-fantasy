@@ -136,7 +136,7 @@ namespace Fantasy.BusinessEngine
 
         public static readonly Guid RootClassId = new Guid("bf0aa7f4-588f-4556-963d-33242e649d57");
 
-        private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
+       
 
         protected override void OnLoad(EventArgs e)
         {
@@ -178,9 +178,19 @@ namespace Fantasy.BusinessEngine
                 {
                     this._previousValues.Add(kv.Key, kv.Value);
                 }
+                this._previousProperties = this.Properties.ToArray();
             }
         }
-
+       
+        private BusinessProperty[] _previousProperties = new BusinessProperty[0]; 
+        public virtual BusinessProperty[] PreviousProperties
+        {
+            get
+            {
+                return _previousProperties ;
+            }
+        }
+        private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
         public virtual T GetPreviousValue<T>(string propertyName, T defaultValue = default(T))
         {
             return (T)this._previousValues.GetValueOrDefault(propertyName, defaultValue);

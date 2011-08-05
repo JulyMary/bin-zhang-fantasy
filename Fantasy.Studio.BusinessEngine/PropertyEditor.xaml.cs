@@ -78,6 +78,10 @@ namespace Fantasy.Studio.BusinessEngine
             this.DataContext = this._model;
             foreach (BusinessProperty prop in this._model.Class.Properties)
             {
+                if (prop.EntityState != EntityState.Clean)
+                {
+                    this.DirtyState = EditingState.Dirty;
+                }
                 this.HandlePropertyEvents(prop);
             }
 

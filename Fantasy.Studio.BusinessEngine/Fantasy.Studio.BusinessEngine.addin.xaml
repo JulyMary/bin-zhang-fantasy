@@ -122,7 +122,7 @@
     <Extension Path="fantasy/studio/businessengine/propertyeditor/commandbindings">
         <CommandBinding ID="AddProperty" Command="{Command Name=AddBusinessProperty}" Handler="{New sbe:AddPropertyCommand}" ParameterSource="Owner" ParameterMember="Class">
             <CommandBinding.Conditional>
-                <Not Action="Disable">
+                <Not>
                     <sbe:IsSystemEntity Member="Class" />
                 </Not>
             </CommandBinding.Conditional>
@@ -137,8 +137,21 @@
                 </And>
             </CommandBinding.Conditional>
         </CommandBinding>
-        <CommandBinding ID="MoveUp" Command="{Command Name=MoveUp}" Handler="{New sbe:PropertyMoveUpCommand}" ParameterSource="Owner" />
-        <CommandBinding ID="MoveDown" Command="{Command Name=MoveDown}" Handler="{New sbe:PropertyMoveDownCommand}" ParameterSource="Owner" />
+        <CommandBinding ID="MoveUp" Command="{Command Name=MoveUp}" Handler="{New sbe:PropertyMoveUpCommand}" ParameterSource="Owner" >
+            <CommandBinding.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity Member="Selected"/>
+                </Not>
+            </CommandBinding.Conditional>
+           
+        </CommandBinding>
+        <CommandBinding ID="MoveDown" Command="{Command Name=MoveDown}" Handler="{New sbe:PropertyMoveDownCommand}" ParameterSource="Owner" >
+            <CommandBinding.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity Member="Selected"/>
+                </Not>
+            </CommandBinding.Conditional>
+        </CommandBinding>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/toolbars">
         <ToolBar ID="Default" Text="Default">
@@ -154,6 +167,16 @@
         <TreeNode ID="datatype" TargetType="{x:Type be:BusinessDataType}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
 
         </TreeNode>
+        <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
+            <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
+            <TreeNodeChildProvider ID="classes" Provider="{New sbe:PackageClassesProvider}"/>
+        </TreeNode>
+        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
+
+        </TreeNode>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/businessclasspicker/treeview">
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
             <TreeNodeChildProvider ID="classes" Provider="{New sbe:PackageClassesProvider}"/>

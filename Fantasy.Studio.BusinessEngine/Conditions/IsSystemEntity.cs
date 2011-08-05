@@ -25,11 +25,11 @@ namespace Fantasy.Studio.BusinessEngine.Conditions
                     if (item is IBusinessEntity && ((IBusinessEntity)item).IsSystem)
                     {
                         rs = true;
+                        break;
                     }
                 }
             }
-            //return ((IBusinessEntity)caller).IsSystem;
-            return false;
+            return rs;
         }
     }
 }
