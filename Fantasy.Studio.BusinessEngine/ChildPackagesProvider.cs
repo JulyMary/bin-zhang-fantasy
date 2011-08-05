@@ -7,13 +7,13 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    public class PackageClassesProvider : ObjectWithSite, IChildrenProvider
+    public class ChildPackagesProvider : ObjectWithSite, IChildrenProvider
     {
         #region IChildrenProvider Members
 
         public IEnumerable<object> GetChildren(object parent)
         {
-            return ((BusinessPackage)parent).Classes; 
+            return ((BusinessPackage)parent).ChildPackages;
         }
 
         #endregion

@@ -6,31 +6,36 @@ using Fantasy.Windows;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using NHibernate;
+using Fantasy.Studio.TreeViewModel;
 
 namespace Fantasy.Studio.BusinessEngine
 {
     class BusinessDataTypePikcerModel : NotifyPropertyChangedObject, IObjectWithSite
     {
-
-        public IEnumerable<IBusinessEntity> Items
+        public BusinessDataTypePikcerModel(IServiceProvider site)
         {
-            get
+            this.Site = site;
+            this.TreeViewModel = new ExtendableTreeViewModel("fantasy/studio/businessengine/businessdatatypepicker/treeview", this, site);
+            IBusinessDataTypeRepository dr = this.Site.GetRequiredService<IBusinessDataTypeRepository>();
+            foreach (BusinessDataType t in dr.All)
             {
-
-                IBusinessDataTypeRepository rep = this.Site.GetRequiredService<IBusinessDataTypeRepository>();
-                foreach (BusinessDataType dt in rep.All)
+                if (t != dr.Class && t != dr.Enum)
                 {
-                    if (dt != rep.Class && dt != rep.Enum)
-                    {
-                        yield return dt;
-                    }
+                    this.TreeViewModel.Items.Add(t);
                 }
-
-                IEntityService es = this.Site.GetRequiredService<IEntityService>();
-                ISession session = es.DefaultSession;
-                BusinessPackage root = session.Get<BusinessPackage>(BusinessPackage.RootPackageId);
-                yield return root; 
             }
+
+            BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);
+            this.TreeViewModel.Items.Add(rootPackage);
+        }
+       
+
+
+        public ExtendableTreeViewModel TreeViewModel
+        {
+            get;
+            private set;
+
         }
 
         private IBusinessEntity _selectedItem;

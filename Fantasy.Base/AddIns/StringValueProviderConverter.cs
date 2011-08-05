@@ -8,6 +8,10 @@ namespace Fantasy.AddIns
 {
     public class StringValueProviderConverter : TypeConverter
     {
+        public StringValueProviderConverter()
+        {
+
+        }
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
             return sourceType == typeof(string);

@@ -16,15 +16,22 @@ namespace Fantasy.Studio.BusinessEngine
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-
-            BusinessDataTypePikcerModel model = new BusinessDataTypePikcerModel() { Site = this.Site };
-            BusinessDataTypePicker picker = new BusinessDataTypePicker();
-            picker.DataContext = model;
-            if ((bool)picker.ShowDialog())
+            object rs = value;
+            BusinessDataTypePikcerModel model = new BusinessDataTypePikcerModel(this.Site);
+            try
             {
-                return model.SelectedItem; 
+                BusinessDataTypePicker picker = new BusinessDataTypePicker();
+                picker.DataContext = model;
+                if ((bool)picker.ShowDialog())
+                {
+                    rs = model.SelectedItem;
+                }
             }
-            return value;
+            finally
+            {
+                model.TreeViewModel.Items.Clear();
+            }
+            return rs;
 
 
         }

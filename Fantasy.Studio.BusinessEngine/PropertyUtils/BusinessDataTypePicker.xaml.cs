@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Fantasy.BusinessEngine;
+using Fantasy.Studio.TreeViewModel;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -35,12 +36,16 @@ namespace Fantasy.Studio.BusinessEngine
             this.DialogResult = false;
         }
 
-        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+       
+
+        private void extendableTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ((BusinessDataTypePikcerModel)this.DataContext).SelectedItem = (IBusinessEntity)e.NewValue;
+            ITreeViewItem item = (ITreeViewItem)e.NewValue;
+            IBusinessEntity entity = item != null ? (IBusinessEntity)item.DataContext : null;
+            ((BusinessDataTypePikcerModel)this.DataContext).SelectedItem = entity;
         }
 
-        private void treeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void extendableTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (this.OkButton.IsEnabled)
             {

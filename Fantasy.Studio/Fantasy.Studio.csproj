@@ -79,6 +79,7 @@
     <Compile Include="CommandExtension.cs" />
     <Compile Include="Conditions\SelectionCount.cs" />
     <Compile Include="Controls\AutoGrayImage.cs" />
+    <Compile Include="Descriptor\IReadOnlyAdapter.cs" />
     <Compile Include="Descriptor\ListBoxDropDownTypeEditor.cs" />
     <Compile Include="ParameterSource.cs" />
     <Compile Include="CommandTargetProvider.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="TreeViewModel\ExtendableTreeView.xaml.cs">
       <DependentUpon>ExtendableTreeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TreeViewModel\ITreeViewItem.cs" />
     <Compile Include="TreeViewModel\TreeViewItemBuilder.cs" />
     <Compile Include="TreeViewModel\ExtendableTreeViewModel.cs" />
     <Compile Include="TreeViewModel\IChildrenProvider.cs" />

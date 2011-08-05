@@ -45,7 +45,7 @@ namespace Fantasy.AddIns
                 if (oldValue != null && handler != null)
                 {
                     Type t = oldValue.GetType();
-                    EventInfo ei = t.GetEvent(this._paths[index]);
+                    EventInfo ei = t.GetEvent(this._paths[index] + "Changed");
                     if (ei != null)
                     {
                         ei.RemoveEventHandler(oldValue, handler);
@@ -65,7 +65,7 @@ namespace Fantasy.AddIns
             if (src != null && index < this._paths.Length)
             {
                 Type t = src.GetType();
-                EventInfo ei = t.GetEvent(this._paths[index]);
+                EventInfo ei = t.GetEvent(this._paths[index] + "Changed");
                 if (ei != null)
                 {
                     EventHandler handler = (sender, args)=>

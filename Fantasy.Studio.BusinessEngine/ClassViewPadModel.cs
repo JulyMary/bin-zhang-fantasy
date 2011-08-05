@@ -9,7 +9,7 @@ using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine
 {
-    class DocumentPadModel : ObjectWithSite
+    class ClassViewPadModel : ObjectWithSite
     {
 
         public TreeViewModel.ExtendableTreeViewModel TreeViewModel { get; private set; }
@@ -25,9 +25,9 @@ namespace Fantasy.Studio.BusinessEngine
                 base.Site = value;
                 if (this.Site != null)
                 {
-                    this.TreeViewModel = new TreeViewModel.ExtendableTreeViewModel("fantasy/studio/businessengine/documentpad/treeview", this, this.Site);
-                    BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);
-                    this.TreeViewModel.Items.Add(rootPackage);
+                    this.TreeViewModel = new TreeViewModel.ExtendableTreeViewModel("fantasy/studio/businessengine/classviewpad/treeview", this, this.Site);
+                    BusinessClass rootClass = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessClass>(BusinessClass.RootClassId);
+                    this.TreeViewModel.Items.Add(rootClass);
                 }
             }
         }

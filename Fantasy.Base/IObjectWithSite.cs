@@ -12,6 +12,6 @@ namespace Fantasy
 
     public class ObjectWithSite : IObjectWithSite
     {
-        public IServiceProvider Site { get; set; }
+        public virtual IServiceProvider Site { get; set; }
     }
 }

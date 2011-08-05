@@ -12,32 +12,32 @@ namespace Fantasy.Studio.Codons
     {
         public Type TargetType { get; set; }
 
-        internal ObjectBuilder _text;
+        internal ObjectBuilder _text = null;
         [Template("_text")]
         public IValueProvider Text { get; set; }
 
-        internal ObjectBuilder _icon;
+        internal ObjectBuilder _icon = null;
         [Template("_icon")]
         public IValueProvider Icon { get; set; }
 
-        internal ObjectBuilder _doubleClick;
+        internal ObjectBuilder _doubleClick = null;
         [Template("_doubleClick")]
         public ICommand DoubleClick { get; set; }
 
-        internal ObjectBuilder _selected;
+        internal ObjectBuilder _selected = null;
         [Template("_selected")]
         public ICommand Selected { get; set; }
 
-        internal ObjectBuilder _unselected;
+        internal ObjectBuilder _unselected = null;
         [Template("_unselected")]
         public ICommand Unselected { get; set; }
 
 
-        internal ObjectBuilder _expanded;
+        internal ObjectBuilder _expanded = null;
         [Template("_expanded")]
         public ICommand Expanded { get; set; }
 
-        internal ObjectBuilder _collapsed;
+        internal ObjectBuilder _collapsed = null;
         [Template("_collapsed")]
         public ICommand Collapsed { get; set; }
 
