@@ -76,6 +76,7 @@
       <DependentUpon>ClassViewPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassViewPadModel.cs" />
+    <Compile Include="ClassFolderClassDiagramsProvider.cs" />
     <Compile Include="PackageClassesProvider.cs" />
     <Compile Include="PackageClassFolderProvider.cs" />
     <Compile Include="PropertyMoveDownCommand.cs" />
@@ -169,6 +170,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\ClassDiagram.png" />
     <Resource Include="images\UpArrowShort_Blue.ico" />
     <Resource Include="images\DownArrowShort_Blue.ico" />
     <Resource Include="images\minus.ico" />

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     1/08/2011 5:02:07 PM                         */
+/* Created on:     2011/8/5 22:33:58                            */
 /*==============================================================*/
 
 
@@ -27,6 +27,15 @@ if exists (select 1
            where  id = object_id('BUSINESSCLASS')
             and   type = 'U')
    drop table BUSINESSCLASS
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSCLASSDIAGRAM')
+            and   name  = 'PACKAGECLASSDIAGRAM_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSCLASSDIAGRAM.PACKAGECLASSDIAGRAM_FK
 go
 
 if exists (select 1
@@ -253,12 +262,21 @@ go
 /*==============================================================*/
 create table BUSINESSCLASSDIAGRAM (
    ID                   T_GUID               not null,
-   NAME                 T_NAME               not null,
-   DIAGRAM              text                 null,
+   PACKAGEID            T_GUID               not null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null,
+   NAME                 T_NAME               not null,
+   DIAGRAM              text                 null,
    constraint PK_BUSINESSCLASSDIAGRAM primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: PACKAGECLASSDIAGRAM_FK                                */
+/*==============================================================*/
+create index PACKAGECLASSDIAGRAM_FK on BUSINESSCLASSDIAGRAM (
+PACKAGEID ASC
 )
 go
 
@@ -393,7 +411,7 @@ create table BUSINESSPROPERTY (
    ISNULLABLE           bit                  not null,
    DEFAULTVALUE         varchar(64)          null,
    SCRIPTOPTIONS        int                  null,
-   "ORDER"              int                  not null,
+   DISPLAYORDER         bigint               not null,
    ISCALCULATED         bit                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,

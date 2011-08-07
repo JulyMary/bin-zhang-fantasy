@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessClass.cs" />
+    <Compile Include="BusinessClassDiagram.cs" />
     <Compile Include="BusinessDataType.cs" />
     <Compile Include="BusinessEntity.cs" />
     <Compile Include="BusinessEnum.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Events\IEntityPropertyChangedEventHandler.cs" />
     <Compile Include="Events\IEntityPropertyChangingEventHandler.cs" />
     <Compile Include="INamedBusinessEntity.cs" />
+    <Compile Include="Maps\BusinessClassDiagramMap.cs" />
     <Compile Include="Maps\BusinessClassMap.cs" />
     <Compile Include="Maps\BusinessDataTypeMap.cs" />
     <Compile Include="Maps\BusinessEntityMap.cs" />

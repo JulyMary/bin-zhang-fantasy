@@ -12,6 +12,7 @@ namespace Fantasy.BusinessEngine
         {
             this.ChildPackages = new ObservableList<BusinessPackage>();
             this.Classes = new ObservableList<BusinessClass>();
+            this.ClassDiagrams = new ObservableList<BusinessClassDiagram>();
         }
 
         public virtual string Name
@@ -42,6 +43,8 @@ namespace Fantasy.BusinessEngine
         public virtual IObservableList<BusinessPackage> ChildPackages { get; private set; }
 
         public virtual IObservableList<BusinessClass> Classes { get; private set; }
+
+        public virtual IObservableList<BusinessClassDiagram> ClassDiagrams { get; private set; }
 
         public virtual BusinessPackage ParentPackage
         {
