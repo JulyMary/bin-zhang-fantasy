@@ -36,12 +36,17 @@
         </TreeNode>
         <TreeNode ID="classFolder" TargetType="{x:Type sbe:ClassFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/classfolder/contextmenu" >
+            <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:ClassFolderClassDiagramsProvider}" />
             <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassFolderClassesProvider}" />
         </TreeNode>
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
                   Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
 
         </TreeNode>
+        <TreeNode ID="classDiagram" TargetType="{x:Type be:BusinessClassDiagram}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png" 
+                  Text="{Binding Path=Name}"  >
+            
+        </TreeNode>  
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classviewpad/treeview">

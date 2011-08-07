@@ -123,6 +123,9 @@
   <data name="ClassViewPadTitle" xml:space="preserve">
     <value>Class View</value>
   </data>
+  <data name="DefaultNewBusinessClassDiagramName" xml:space="preserve">
+    <value>Class Diagram</value>
+  </data>
   <data name="DefaultNewBusinessClassName" xml:space="preserve">
     <value>Class</value>
   </data>

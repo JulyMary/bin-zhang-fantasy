@@ -16,6 +16,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.References(x => x.ParentPackage).Column("ParentPackageId");
             this.HasMany(x => x.ChildPackages).CollectionType<ObservableList<BusinessPackage>>().KeyColumn("ParentPackageId").Cascade.All();
             this.HasMany(x => x.Classes).CollectionType<ObservableList<BusinessClass>>().KeyColumn("PackageID").Cascade.All();
+            this.HasMany(x => x.ClassDiagrams).CollectionType<ObservableList<BusinessClassDiagram>>().KeyColumn("PackageID").Cascade.All();
             this.Map(x => x.BuildAsAssembly).Not.Nullable();
         }
     }
