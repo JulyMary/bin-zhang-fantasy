@@ -60,51 +60,50 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddClassCommand.cs" />
-    <Compile Include="AddPackageCommand.cs" />
-    <Compile Include="ChildPackagesProvider.cs" />
-    <Compile Include="ClassChildClassesProvider.cs" />
-    <Compile Include="ClassFolderClassesProvider.cs" />
-    <Compile Include="ClassUtils\BusinessClassSchemaEditor.cs" />
-    <Compile Include="ClassUtils\BusinessClassTableSpaceEditor.cs" />
-    <Compile Include="ClassUtils\BusinessClassPicker.xaml.cs">
+    <Compile Include="ClassEditing\AddClassCommand.cs" />
+    <Compile Include="PackageEditing\AddPackageCommand.cs" />
+    <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
+    <Compile Include="ClassEditing\ClassChildClassesProvider.cs" />
+    <Compile Include="ClassEditing\ClassFolderClassesProvider.cs" />
+    <Compile Include="ClassEditing\BusinessClassSchemaEditor.cs" />
+    <Compile Include="ClassEditing\BusinessClassTableSpaceEditor.cs" />
+    <Compile Include="ClassEditing\BusinessClassPicker.xaml.cs">
       <DependentUpon>BusinessClassPicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClassUtils\BusinessClassPikcerModel.cs" />
-    <Compile Include="ClassUtils\BusinessClassTypeEditor.cs" />
-    <Compile Include="ClassViewPad.xaml.cs">
+    <Compile Include="ClassEditing\BusinessClassPikcerModel.cs" />
+    <Compile Include="ClassEditing\BusinessClassTypeEditor.cs" />
+    <Compile Include="ClassEditing\ClassViewPad.xaml.cs">
       <DependentUpon>ClassViewPad.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClassViewPadModel.cs" />
-    <Compile Include="ClassFolderClassDiagramsProvider.cs" />
-    <Compile Include="PackageClassesProvider.cs" />
-    <Compile Include="PackageClassFolderProvider.cs" />
-    <Compile Include="PropertyMoveDownCommand.cs" />
-    <Compile Include="PropertyMoveUpCommand.cs" />
+    <Compile Include="ClassEditing\ClassViewPadModel.cs" />
+    <Compile Include="ClassDiagramEditing\ClassFolderClassDiagramsProvider.cs" />
+    <Compile Include="ClassEditing\PackageClassesProvider.cs" />
+    <Compile Include="ClassEditing\PackageClassFolderProvider.cs" />
+    <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
+    <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
     <Compile Include="InvokerMemberConverter.cs" />
-    <Compile Include="PropertyUtils\BusinessDataTypePikcerModel.cs" />
-    <Compile Include="PropertyUtils\BusinessDataTypePicker.xaml.cs">
+    <Compile Include="PropertyEditing\BusinessDataTypePikcerModel.cs" />
+    <Compile Include="PropertyEditing\BusinessDataTypePicker.xaml.cs">
       <DependentUpon>BusinessDataTypePicker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PropertyUtils\BusinessPropertyDataTypeAccessor.cs" />
-    <Compile Include="PropertyUtils\BusinessPropertyDataTypeConverter.cs" />
-    <Compile Include="PropertyUtils\BusinessPropertyFieldTypeEditor.cs" />
-    <Compile Include="PropertyUtils\BusinessPropertyNameSetActions.cs" />
-    <Compile Include="PropertyUtils\BusinessPropertyTypeEditor.cs" />
-    <Compile Include="PropertyUtils\BusinessDataTypeConverter.cs" />
-    <Compile Include="PropertyUtils\PackageChildrenConverter.cs" />
+    <Compile Include="PropertyEditing\BusinessPropertyDataTypeAccessor.cs" />
+    <Compile Include="PropertyEditing\BusinessPropertyDataTypeConverter.cs" />
+    <Compile Include="PropertyEditing\BusinessPropertyFieldTypeEditor.cs" />
+    <Compile Include="PropertyEditing\BusinessPropertyNameSetActions.cs" />
+    <Compile Include="PropertyEditing\BusinessPropertyTypeEditor.cs" />
+    <Compile Include="PropertyEditing\BusinessDataTypeConverter.cs" />
     <Compile Include="Properties\Settings.settings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings.settings.tt</DependentUpon>
     </Compile>
-    <Compile Include="PropertyEditor.xaml.cs">
+    <Compile Include="PropertyEditing\PropertyEditor.xaml.cs">
       <DependentUpon>PropertyEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClassEditor.cs" />
-    <Compile Include="ClassFolder.cs" />
+    <Compile Include="ClassEditing\ClassEditor.cs" />
+    <Compile Include="ClassEditing\ClassFolder.cs" />
     <Compile Include="ReadOnlyAdapterFactory.cs" />
-    <Compile Include="ReadOnlyBusinessCalss.cs" />
+    <Compile Include="ClassEditing\ReadOnlyBusinessCalss.cs" />
     <Compile Include="Conditions\IsSystemEntity.cs" />
     <Compile Include="OpenEntityViewCommand.cs" />
     <Compile Include="EntityEditingViewContent.xaml.cs">
@@ -112,14 +111,13 @@
     </Compile>
     <Compile Include="EntityEditingViewContentModel.cs" />
     <Compile Include="IEntityEditingPanel.cs" />
-    <Compile Include="PackageEditor.cs" />
-    <Compile Include="IDocumentTreeViewItem.cs" />
+    <Compile Include="PackageEditing\PackageEditor.cs" />
     <Compile Include="DocumentPad.xaml.cs">
       <DependentUpon>DocumentPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentPadModel.cs" />
-    <Compile Include="ReadOnlyBusinessClassFactory.cs" />
-    <Compile Include="ReadOnlyBusinessPackage.cs" />
+    <Compile Include="ClassEditing\ReadOnlyBusinessClassFactory.cs" />
+    <Compile Include="PackageEditing\ReadOnlyBusinessPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -128,14 +126,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="AddPropertyCommand.cs" />
-    <Compile Include="PropertyEditorModel.cs" />
+    <Compile Include="PropertyEditing\AddPropertyCommand.cs" />
+    <Compile Include="PropertyEditing\PropertyEditorModel.cs" />
     <Compile Include="PropertyGridEditor.xaml.cs">
       <DependentUpon>PropertyGridEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReadOnlyBusinessPackageFactory.cs" />
-    <Compile Include="RemovePropertyCommand.cs" />
-    <Compile Include="SaveBusinessClassViewContentCommand.cs" />
+    <Compile Include="PackageEditing\ReadOnlyBusinessPackageFactory.cs" />
+    <Compile Include="PropertyEditing\RemovePropertyCommand.cs" />
+    <Compile Include="ClassEditing\SaveBusinessClassViewContentCommand.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -175,19 +173,19 @@
     <Resource Include="images\DownArrowShort_Blue.ico" />
     <Resource Include="images\minus.ico" />
     <Resource Include="images\plus.ico" />
-    <Page Include="ClassUtils\BusinessClassPicker.xaml">
+    <Page Include="ClassEditing\BusinessClassPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ClassViewPad.xaml">
+    <Page Include="ClassEditing\ClassViewPad.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PropertyUtils\BusinessDataTypePicker.xaml">
+    <Page Include="PropertyEditing\BusinessDataTypePicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PropertyEditor.xaml">
+    <Page Include="PropertyEditing\PropertyEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
