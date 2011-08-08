@@ -7,6 +7,9 @@ using Fantasy.AddIns;
 using System.Windows.Input;
 using Fantasy.Adaption;
 using Fantasy.Studio.Services;
+using System.Windows;
+using System.Collections.Specialized;
+using Fantasy.Collections;
 
 namespace Fantasy.Studio.TreeViewModel
 {
@@ -18,42 +21,12 @@ namespace Fantasy.Studio.TreeViewModel
 
             this._itemBuilders = AddInTree.Tree.GetTreeNode(path).BuildChildItems<TreeViewItemBuilder>(owner, site).ToList();
             this.Items = new ObservableCollection<object>();
-            this.TreeViewItems = new ObservableCollection<TreeViewItem>();
-
-            this.Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(RootItems_CollectionChanged);
-       
+            this.TreeViewItems = new ObservableAdapterCollection<TreeViewItem>(this.Items, this.CreateTreeViewItem);
+           
+           
+               
         }
-
-        void RootItems_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            switch (e.Action)
-            {
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
-                    this.TreeViewItems.Insert(e.NewStartingIndex, this.CreateTreeViewItem(e.NewItems[0]));
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
-                    {
-                        TreeViewItem item = this.TreeViewItems[e.OldStartingIndex];
-                        item.Dispose();
-                        this.TreeViewItems.RemoveAt(e.OldStartingIndex);
-                    }
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
-                    foreach (TreeViewItem item in this.TreeViewItems)
-                    {
-                        item.Dispose();
-                    }
-                    this.TreeViewItems.Clear();
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    {
-                        TreeViewItem newNode = this.CreateTreeViewItem(e.NewItems[0]);
-                        this.TreeViewItems[e.OldStartingIndex] = newNode; 
-                    }
-                    break;
-            }
-        }
-
+ 
         internal TreeViewItem CreateTreeViewItem(object item)
         {
             TreeViewItemBuilder builder = this._itemBuilders.First(b => b.Codon.TargetType.IsInstanceOfType(item));
@@ -124,8 +97,10 @@ namespace Fantasy.Studio.TreeViewModel
 
         public ObservableCollection<object> Items { get; private set; }
 
-        public ObservableCollection<TreeViewItem> TreeViewItems { get; private set; }
+        public IEnumerable<TreeViewItem> TreeViewItems { get; private set; }
 
 
+
+       
     }
 }

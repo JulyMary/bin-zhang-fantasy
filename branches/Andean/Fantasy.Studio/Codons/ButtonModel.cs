@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace Fantasy.Studio.Codons
 {
-    public class ButtonModel : NotifyPropertyChangedObject, IUpdateStatus, IObjectWithSite
+    public class ButtonModel : NotifyPropertyChangedObject, IUpdateStatus, IObjectWithSite, System.Windows.IWeakEventListener
     {
         public ButtonModel ()
 	    {
@@ -114,9 +114,26 @@ namespace Fantasy.Studio.Codons
             {
                 ICommandData data = this.Command.CommandData();
                 this.IsChecked = object.Equals(true, data.Value);
-                data.PropertyChanged += new PropertyChangedEventHandler(CommandDataChanged);
+                PropertyChangedEventManager.AddListener(data, this, "Value");
             }
         }
+
+       
+
+        bool System.Windows.IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            if (managerType == typeof(PropertyChangedEventManager))
+            {
+                this.CommandDataChanged(sender, (PropertyChangedEventArgs)e);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+      
 
         private void CommandDataChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -203,5 +220,7 @@ namespace Fantasy.Studio.Codons
         #endregion
 
         public object CommandParameter { get; set; }
+
+       
     }
 }

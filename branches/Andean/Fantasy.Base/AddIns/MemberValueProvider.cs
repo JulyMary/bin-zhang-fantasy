@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.ComponentModel;
+using Fantasy.Windows;
 
 namespace Fantasy.AddIns
 {
@@ -40,7 +41,7 @@ namespace Fantasy.AddIns
             if (index < this._paths.Length)
             {
                 object oldValue = this._values[index];
-                Delegate handler = this._handlers[index];
+                object handler = this._handlers[index];
 
                 if (oldValue != null && handler != null)
                 {
@@ -48,11 +49,13 @@ namespace Fantasy.AddIns
                     EventInfo ei = t.GetEvent(this._paths[index] + "Changed");
                     if (ei != null)
                     {
-                        ei.RemoveEventHandler(oldValue, handler);
+
+                        ei.RemoveEventHandler(oldValue, (Delegate)handler);
                     }
                     else
                     {
-                        ((INotifyPropertyChanged)oldValue).PropertyChanged -= (PropertyChangedEventHandler)handler;
+                        PropertyChangedEventManager.RemoveListener((INotifyPropertyChanged)oldValue, (WeakEventListener)handler, this._paths[index]);
+                       
                     }
 
                 }
@@ -77,15 +80,23 @@ namespace Fantasy.AddIns
                 }
                 else if (src is INotifyPropertyChanged)
                 {
-                    PropertyChangedEventHandler handler = (sender, args) =>
+
+                    string propertyName = this._paths[index];
+                    WeakEventListener handler = new WeakEventListener((managerType, sender, e) => {
+                        if (managerType == typeof(PropertyChangedEventManager))
                         {
-                            if (args.PropertyName == this._paths[index])
+                            PropertyChangedEventArgs args = (PropertyChangedEventArgs)e;
+                            if (args.PropertyName == propertyName)
                             {
                                 this.HandleValueChanged(index);
+                                return true;
                             }
+                        }
+                        return false;
+                    });
 
-                        };
-                    ((INotifyPropertyChanged)src).PropertyChanged += handler;
+                    PropertyChangedEventManager.AddListener((INotifyPropertyChanged)src, handler, propertyName);
+
                     this._handlers[index] = handler;
                 }
             }
@@ -98,7 +109,7 @@ namespace Fantasy.AddIns
 
         private string[] _paths;
         private object[] _values;
-        private Delegate[] _handlers;
+        private object[] _handlers;
 
         
 
@@ -116,7 +127,7 @@ namespace Fantasy.AddIns
 
                 _member = value;
                 this._paths = _member != null ? _member.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
-                this._handlers = new Delegate[this._paths.Length];
+                this._handlers = new WeakEventListener[this._paths.Length];
                 this._values = new object[this._paths.Length + 1];
             }
         }
