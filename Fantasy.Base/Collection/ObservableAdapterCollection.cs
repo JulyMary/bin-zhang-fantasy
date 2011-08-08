@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Windows;
 
-namespace Fantasy.BusinessEngine.Collections
+namespace Fantasy.Collections
 {
-    public class ObservableAdapterCollection<T> : IEnumerable<T>, INotifyCollectionChanged
+    public class ObservableAdapterCollection<T> : IEnumerable<T>, INotifyCollectionChanged, IWeakEventListener
     {
 
         private Dictionary<object, T> _adapters = null;
@@ -43,7 +44,12 @@ namespace Fantasy.BusinessEngine.Collections
             if (this._adapters == null)
             {
                 this._adapters = new Dictionary<object, T>();
-                ((INotifyCollectionChanged)this._adaptees).CollectionChanged += new NotifyCollectionChangedEventHandler(AdapteesCollectionChanged);
+
+                INotifyCollectionChanged nc = this._adaptees as INotifyCollectionChanged;
+                if (nc != null)
+                {
+                    CollectionChangedEventManager.AddListener(nc, this);
+                }
             }
 
 
@@ -77,7 +83,18 @@ namespace Fantasy.BusinessEngine.Collections
             return rs;
         }
 
-        void AdapteesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+
+        bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            if (managerType == typeof(CollectionChangedEventManager))
+            {
+                AdapteesCollectionChanged(sender, (NotifyCollectionChangedEventArgs)e);
+                return true;
+            }
+            return false;
+        }
+
+        private void AdapteesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (this.CollectionChanged != null)
             {
@@ -125,5 +142,7 @@ namespace Fantasy.BusinessEngine.Collections
 
 
         #endregion
+
+       
     }
 }

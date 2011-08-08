@@ -3,16 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.Specialized;
+using System.Windows;
 
 
 namespace Fantasy.Collection
 {
-    public class UnionedObservableCollection<T> : INotifyCollectionChanged, ICollection<T>
+    public class UnionedObservableCollection<T> : INotifyCollectionChanged, ICollection<T>, IWeakEventListener
     {
 
         private List<IEnumerable<T>> _childCollections = new List<IEnumerable<T>>();
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+
+       
+
+        bool IWeakEventListener.ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+        {
+            if (managerType == typeof(CollectionChangedEventManager))
+            {
+                this.ChildCollectionChanged(sender, (NotifyCollectionChangedEventArgs)e);
+                return true;
+            }
+            return false;
+        }
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -31,7 +45,7 @@ namespace Fantasy.Collection
             INotifyCollectionChanged n = child as INotifyCollectionChanged;
             if (n != null)
             {
-                n.CollectionChanged += new NotifyCollectionChangedEventHandler(ChildCollectionChanged);
+                CollectionChangedEventManager.AddListener(n, this);
             }
 
             if (child.Count() > 0)
@@ -100,7 +114,7 @@ namespace Fantasy.Collection
                     INotifyCollectionChanged n = child as INotifyCollectionChanged;
                     if (n != null)
                     {
-                        n.CollectionChanged -= new NotifyCollectionChangedEventHandler(ChildCollectionChanged);
+                        CollectionChangedEventManager.RemoveListener(n, this);
                     }
                     this._childCollections.Remove(child);
                     this.OnCollectionChanged(args);
@@ -145,7 +159,7 @@ namespace Fantasy.Collection
                 INotifyCollectionChanged n = c as INotifyCollectionChanged;
                 if (n != null)
                 {
-                    n.CollectionChanged -= new NotifyCollectionChangedEventHandler(ChildCollectionChanged);
+                    CollectionChangedEventManager.RemoveListener(n, this);
                 }
             }
             this._childCollections.Clear();
@@ -211,6 +225,8 @@ namespace Fantasy.Collection
         }
 
         #endregion
+
+
 
 
         

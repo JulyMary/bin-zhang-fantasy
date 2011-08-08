@@ -62,7 +62,6 @@
     <Compile Include="BusinessProperty.cs" />
     <Compile Include="Collections\IObservableList.cs" />
     <Compile Include="Collections\IObservableSet.cs" />
-    <Compile Include="Collections\ObservableAdapterCollection.cs" />
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
