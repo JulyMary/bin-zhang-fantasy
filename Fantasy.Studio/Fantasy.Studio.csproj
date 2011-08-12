@@ -66,19 +66,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\ToolBox.xaml.cs">
+      <DependentUpon>ToolBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ToolBoxView.cs" />
+    <Compile Include="Controls\Views\ListView.cs" />
+    <Compile Include="IToolBoxItemBuilder.cs" />
+    <Compile Include="Codons\ToolBoxItem.cs" />
+    <Compile Include="Codons\ToolBoxItemBuilder.cs" />
+    <Compile Include="Controls\ToolBoxItemModel.cs" />
     <Compile Include="Codons\TreeNodeChildProvider.cs" />
     <Compile Include="Codons\InputCommandAdapter.cs" />
     <Compile Include="Codons\InputCommandAdapterFactory.cs" />
     <Compile Include="AddInCommandBinding.cs" />
     <Compile Include="AddInDataTemplateSelector.cs" />
     <Compile Include="Codons\ButtonBuilder.cs" />
-    <Compile Include="Codons\ButtonSourceCollections.cs" />
+    <Compile Include="Controls\ButtonSourceCollections.cs" />
     <Compile Include="Codons\CommandBinding.cs" />
     <Compile Include="Codons\RoutedUICommand.cs" />
     <Compile Include="Codons\TreeNode.cs" />
     <Compile Include="CommandExtension.cs" />
     <Compile Include="Conditions\SelectionCount.cs" />
     <Compile Include="Controls\AutoGrayImage.cs" />
+    <Compile Include="Controls\IToolBoxItemsProvider.cs" />
+    <Compile Include="Controls\Views\PlainView.cs" />
     <Compile Include="Descriptor\IReadOnlyAdapter.cs" />
     <Compile Include="Descriptor\ListBoxDropDownTypeEditor.cs" />
     <Compile Include="ParameterSource.cs" />
@@ -86,13 +97,13 @@
     <Compile Include="Controls\DefaultTooBar.xaml.cs">
       <DependentUpon>DefaultTooBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Codons\DefaultToolBarDataTemplateSelector.cs" />
+    <Compile Include="Controls\DefaultToolBarDataTemplateSelector.cs" />
     <Compile Include="Codons\Enum.cs" />
     <Compile Include="Codons\EnumField.cs" />
     <Compile Include="Codons\PropertyDescriptor.cs" />
-    <Compile Include="Codons\ToolBarSettings.cs" />
+    <Compile Include="Controls\ToolBarSettings.cs" />
     <Compile Include="Codons\ToolBar.cs" />
-    <Compile Include="Codons\ToolBarModel.cs" />
+    <Compile Include="Controls\ToolBarModel.cs" />
     <Compile Include="Codons\ToggleToolBarButtonBuilder.cs" />
     <Compile Include="Codons\TypeDescriptor.cs" />
     <Compile Include="Controls\GridViewColumnLayoutSetting.cs" />
@@ -139,7 +150,7 @@
     <Compile Include="Services\DefaultMenuService.cs" />
     <Compile Include="IButtonBuilder.cs" />
     <Compile Include="Codons\Button.cs" />
-    <Compile Include="Codons\ButtonModel.cs" />
+    <Compile Include="Controls\ButtonModel.cs" />
     <Compile Include="DefaultWorkbench.xaml.cs">
       <DependentUpon>DefaultWorkbench.xaml</DependentUpon>
     </Compile>
@@ -167,19 +178,23 @@
     <Compile Include="Controls\MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Codons\ButtonBarModel.cs" />
+    <Compile Include="Controls\ButtonBarModel.cs" />
     <Compile Include="Services\RoutedCommandService.cs" />
     <Compile Include="Services\SelectionService.cs" />
     <Compile Include="Services\WPFMonitorSelectionService.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="TreeViewModel\ExtendableTreeView.xaml.cs">
+    <Compile Include="Controls\ToolBoxModel.cs" />
+    <Compile Include="ToolBoxPad.xaml.cs">
+      <DependentUpon>ToolBoxPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ExtendableTreeView.xaml.cs">
       <DependentUpon>ExtendableTreeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TreeViewModel\ITreeViewItem.cs" />
-    <Compile Include="TreeViewModel\TreeViewItemBuilder.cs" />
-    <Compile Include="TreeViewModel\ExtendableTreeViewModel.cs" />
-    <Compile Include="TreeViewModel\IChildrenProvider.cs" />
-    <Compile Include="TreeViewModel\TreeViewItem.cs" />
+    <Compile Include="Controls\ITreeViewItem.cs" />
+    <Compile Include="Controls\TreeViewItemBuilder.cs" />
+    <Compile Include="Controls\ExtendableTreeViewModel.cs" />
+    <Compile Include="Controls\IChildItemsProvider.cs" />
+    <Compile Include="Controls\TreeViewItem.cs" />
     <Compile Include="ViewCollection.cs" />
     <Compile Include="ViewContentEventArgs.cs" />
     <Compile Include="WindowStateSetting.cs" />
@@ -222,6 +237,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\toolbox.png" />
     <Resource Include="images\save.ico" />
     <Resource Include="images\Properties.ico" />
     <Resource Include="images\fantasy.ico" />
@@ -229,6 +245,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\DefaultTooBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ToolBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -248,7 +268,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TreeViewModel\ExtendableTreeView.xaml">
+    <Page Include="themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolBoxPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ExtendableTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

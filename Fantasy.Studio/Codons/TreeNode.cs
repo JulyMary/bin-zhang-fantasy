@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.AddIns;
-using Fantasy.Studio.TreeViewModel;
+using Fantasy.Studio.Controls;
 using System.Windows.Input;
 
 namespace Fantasy.Studio.Codons
@@ -46,7 +46,7 @@ namespace Fantasy.Studio.Codons
 
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
-            TreeViewItemBuilder rs = new TreeViewItemBuilder() { Codon = this, ChildProviders = subItems.Cast<IChildrenProvider>().ToList() };
+            TreeViewItemBuilder rs = new TreeViewItemBuilder() { Codon = this, ChildProviders = subItems.Cast<IChildItemsProvider>().ToList() };
             return rs;
         }
 

@@ -12,7 +12,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.Properties")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.Conditions")]
-[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.TreeViewModel")]
+//[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.TreeViewModel")]
 
 internal class XamlNamespaces
 {

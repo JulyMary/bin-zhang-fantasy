@@ -129,6 +129,12 @@
   <data name="SaveChangesText" xml:space="preserve">
     <value>Save changes to following items?{0}</value>
   </data>
+  <data name="ToolBoxItemDefaultCategory" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="ToolBoxPadTitle" xml:space="preserve">
+    <value>ToolBox</value>
+  </data>
   <data name="TrueText" xml:space="preserve">
     <value>True</value>
   </data>

@@ -109,6 +109,9 @@
         <Object ID="properties">
             <PropertiesPad/>
         </Object>
+        <Object ID="toolbox">
+            <ToolBoxPad />
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/documents/builders">
