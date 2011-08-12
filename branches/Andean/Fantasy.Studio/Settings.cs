@@ -1,6 +1,7 @@
 ﻿using Fantasy.Studio.Codons;
 using System.Configuration;
 using System.Diagnostics;
+using Fantasy.Studio.Controls;
 namespace Fantasy.Studio.Properties {
     
     
@@ -18,7 +19,7 @@ namespace Fantasy.Studio.Properties {
         {
             get
             {
-                ToolBarSettings rs = ((global::Fantasy.Studio.Codons.ToolBarSettings)(this.GetValue("ToolBarSettings")));
+                ToolBarSettings rs = ((global::Fantasy.Studio.Controls.ToolBarSettings)(this.GetValue("ToolBarSettings")));
                 return rs;
             }
            

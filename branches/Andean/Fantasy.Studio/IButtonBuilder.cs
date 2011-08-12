@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Fantasy.AddIns;
-using Fantasy.Studio.Codons;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio
 {

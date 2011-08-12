@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.AddIns;
 using System.Windows.Markup;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio.Codons
 {

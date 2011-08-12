@@ -10,6 +10,7 @@ using Fantasy.ServiceModel;
 using Fantasy.Adaption;
 using System.Reflection;
 using System.ComponentModel;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio.Codons
 {
