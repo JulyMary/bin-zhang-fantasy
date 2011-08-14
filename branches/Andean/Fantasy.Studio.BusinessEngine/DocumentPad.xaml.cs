@@ -15,7 +15,7 @@ using Fantasy.Studio.Services;
 using Fantasy.ServiceModel;
 using System.ComponentModel.Design;
 using System.ComponentModel;
-using Fantasy.Studio.TreeViewModel;
+using Fantasy.Studio.Controls;
 using Fantasy.Adaption;
 using Fantasy.Studio.Descriptor;
 

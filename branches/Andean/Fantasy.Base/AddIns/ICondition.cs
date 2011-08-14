@@ -16,7 +16,7 @@ namespace Fantasy.AddIns
         /// <summary>
         /// Returns true, when the condition is valid otherwise false.
         /// </summary>
-        bool IsValid(object args);
+        bool IsValid(object args, IServiceProvider services);
 
         string Member { get; set; }
     }

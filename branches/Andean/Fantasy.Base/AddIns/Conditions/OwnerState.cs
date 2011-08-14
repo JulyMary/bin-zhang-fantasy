@@ -14,9 +14,9 @@ namespace Fantasy.AddIns.Conditions
         }
         public string State { get; set; }
 
-        
 
-        public override bool IsValid(object owner)
+
+        public override bool IsValid(object owner, IServiceProvider services)
         {
             object currentState = Invoker.Invoke(owner, StateMember);
             Type t = currentState.GetType();

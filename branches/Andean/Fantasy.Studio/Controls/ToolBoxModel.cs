@@ -18,7 +18,7 @@ namespace Fantasy.Studio.Controls
 
         private IEnumerable<ToolBoxItemModel>  _items;
 
-        public IEnumerable<ToolBoxItemModel>  Items
+        public virtual IEnumerable<ToolBoxItemModel>  Items
         {
             get { return _items; }
             set

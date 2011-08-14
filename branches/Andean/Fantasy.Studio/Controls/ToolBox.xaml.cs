@@ -25,6 +25,25 @@ namespace Fantasy.Studio.Controls
             
         }
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (ToolBoxItemModel item in e.RemovedItems)
+            {
+                if (item.Unselected != null && item.Unselected.CanExecute(item.CommandParameter))
+                {
+                    item.Unselected.Execute(item.CommandParameter);
+                }
+            }
+
+            foreach (ToolBoxItemModel item in e.AddedItems)
+            {
+                if (item.Selected != null && item.Selected.CanExecute(item.CommandParameter))
+                {
+                    item.Selected.Execute(item.CommandParameter);
+                }
+            }
+        }
+
         
 
        

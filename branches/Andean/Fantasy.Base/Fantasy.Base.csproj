@@ -179,6 +179,7 @@
     <Compile Include="Collection\UnionedObservableCollection.cs" />
     <Compile Include="Collection\DictionaryExtensions.cs" />
     <Compile Include="Collection\Key.cs" />
+    <Compile Include="IEventHandler.cs" />
     <Compile Include="Windows\WeakEventListener.cs" />
     <Compile Include="CommandArgsHelper.cs" />
     <Compile Include="Configuration\ComparsionHelper.cs" />

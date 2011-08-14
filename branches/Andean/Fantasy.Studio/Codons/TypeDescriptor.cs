@@ -50,7 +50,7 @@ namespace Fantasy.Studio.Codons
                 }
             }
 
-            if (Editor != null && _conditions.GetCurrentConditionFailedAction(obj) == ConditionFailedAction.Nothing)
+            if (Editor != null && _conditions.GetCurrentConditionFailedAction(obj, this.Site) == ConditionFailedAction.Nothing)
             {
                 rs.Editor = this.Editor;
                 if (rs.Editor is IObjectWithSite)

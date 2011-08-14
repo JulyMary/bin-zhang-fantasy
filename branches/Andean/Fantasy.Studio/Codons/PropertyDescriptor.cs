@@ -53,7 +53,7 @@ namespace Fantasy.Studio.Codons
                 this.TrySetSite(this.DefaultValueProvider);
             }
 
-            ConditionFailedAction action = _conditions.GetCurrentConditionFailedAction(obj);
+            ConditionFailedAction action = _conditions.GetCurrentConditionFailedAction(obj, this.Site);
 
             bool browsable = this.Browsable && action != ConditionFailedAction.Exclude;
 

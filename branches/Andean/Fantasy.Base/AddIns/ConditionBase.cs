@@ -19,7 +19,7 @@ namespace Fantasy.AddIns
         public static readonly DependencyProperty ActionProperty =
             DependencyProperty.Register("Action", typeof(ConditionFailedAction), typeof(ConditionBase), new PropertyMetadata(ConditionFailedAction.Exclude));
 
-        public abstract bool IsValid(object args);
+        public abstract bool IsValid(object args, IServiceProvider services);
 
 
         #region ICondition Members
@@ -32,10 +32,10 @@ namespace Fantasy.AddIns
 
         #endregion
 
-        public static bool IsValidWithMember(ICondition condition, object owner)
+        public static bool IsValidWithMember(ICondition condition, object owner, IServiceProvider services)
         {
             object args = Invoker.Invoke(owner, condition.Member);
-            return condition.IsValid(args);
+            return condition.IsValid(args, services);
         }
     }
 }

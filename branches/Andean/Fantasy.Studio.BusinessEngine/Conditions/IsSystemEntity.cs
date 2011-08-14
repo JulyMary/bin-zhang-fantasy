@@ -10,7 +10,7 @@ namespace Fantasy.Studio.BusinessEngine.Conditions
 {
     public class IsSystemEntity : ConditionBase
     {
-        public override bool IsValid(object caller)
+        public override bool IsValid(object caller, IServiceProvider services)
         {
 
             bool rs = false;

@@ -6,8 +6,8 @@ using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio.Codons
 {
-    public interface IToolBoxItemsBuilder
+    public interface IToolBoxItesBuilder
     {
-        IEnumerable<ToolBoxItemModel> BuildItems(object owner); 
+        ToolBoxItemModel[] BuildItems(object owner); 
     }
 }

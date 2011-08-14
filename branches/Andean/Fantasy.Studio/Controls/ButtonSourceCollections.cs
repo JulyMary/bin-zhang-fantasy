@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace Fantasy.Studio.Controls
 {
-    class ButtonSourceCollections : IUpdateStatus
+    class ButtonSourceCollections : ObjectWithSite, IUpdateStatus
     {
 
 
@@ -29,7 +29,7 @@ namespace Fantasy.Studio.Controls
         public void Update(object caller)
         {
             Items.Clear();
-            if (Conditions.GetCurrentConditionFailedAction(caller) == ConditionFailedAction.Nothing)
+            if (Conditions.GetCurrentConditionFailedAction(caller, this.Site) == ConditionFailedAction.Nothing)
             {
                 foreach (ButtonModel bs  in this.Builder.Build(caller))
                 {

@@ -26,7 +26,7 @@
                 </DataTemplate>
             </v:PlainView.ItemTemplate>
         </v:PlainView>
-        
+
         <CollectionViewSource x:Key="items" Source="{Binding Items}">
             <CollectionViewSource.GroupDescriptions>
                 <data:PropertyGroupDescription PropertyName="Category" />
@@ -36,7 +36,7 @@
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
-    <ListView ItemsSource="{Binding Source={StaticResource items}}"  View="{Binding Source={StaticResource listView}}">
+    <ListView ItemsSource="{Binding Source={StaticResource items}}"  View="{StaticResource listView}" SelectionChanged="ListView_SelectionChanged">
         <ListView.GroupStyle>
             <GroupStyle>
                 <GroupStyle.ContainerStyle>

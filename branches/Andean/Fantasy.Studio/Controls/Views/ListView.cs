@@ -11,7 +11,7 @@ namespace Fantasy.Studio.Controls.Views
     {
         public static readonly DependencyProperty
        ItemContainerStyleProperty =
-       ItemsControl.ItemContainerStyleProperty.AddOwner(typeof(PlainView));
+       ItemsControl.ItemContainerStyleProperty.AddOwner(typeof(ListView));
 
         public Style ItemContainerStyle
         {
@@ -20,7 +20,7 @@ namespace Fantasy.Studio.Controls.Views
         }
 
         public static readonly DependencyProperty ItemTemplateProperty =
-            ItemsControl.ItemTemplateProperty.AddOwner(typeof(PlainView));
+            ItemsControl.ItemTemplateProperty.AddOwner(typeof(ListView));
 
         public DataTemplate ItemTemplate
         {
