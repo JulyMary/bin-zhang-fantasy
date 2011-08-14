@@ -88,7 +88,7 @@ namespace Fantasy.AddIns
             }
             foreach (DefaultAddInTreeNode childNode in this._sortedChildNodes)
             {
-                if (childNode.Codon.HandleCondition || childNode.Condition.GetCurrentConditionFailedAction(caller) == ConditionFailedAction.Nothing)
+                if (childNode.Codon.HandleCondition || childNode.Condition.GetCurrentConditionFailedAction(caller, site) == ConditionFailedAction.Nothing)
                 {
                     IEnumerable subItems = childNode.BuildChildItems(caller, site);
                     object rs = childNode.Codon.BuildItem(caller, subItems, childNode.Condition, site);

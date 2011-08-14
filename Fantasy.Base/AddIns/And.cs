@@ -15,13 +15,13 @@ namespace Fantasy.AddIns
             this.SetValue(ConditionsProperty, new List<ICondition>());
         }
 
-        public override bool IsValid(object args)
+        public override bool IsValid(object args, IServiceProvider services)
         {
             if (Conditions != null)
             {
                 foreach (ICondition child in Conditions)
                 {
-                    if (!ConditionBase.IsValidWithMember(child, args))
+                    if (!ConditionBase.IsValidWithMember(child, args, services))
                     {
                         return false;
                     }

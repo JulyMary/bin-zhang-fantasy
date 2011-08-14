@@ -77,7 +77,7 @@ namespace Fantasy.Studio.Controls
         {
             if (this.Conditions != null)
             {
-                this.Visible = this.Conditions.GetCurrentConditionFailedAction(caller) != ConditionFailedAction.Exclude;
+                this.Visible = this.Conditions.GetCurrentConditionFailedAction(caller, this.Site) != ConditionFailedAction.Exclude;
             }
             if (this.Visible)
             {

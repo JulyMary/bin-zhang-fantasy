@@ -39,6 +39,13 @@ namespace Fantasy.Studio.Codons
         [Template("_doDragDrop")]
         public ICommand DoDragDrop { get; set; }
 
+        private ObjectBuilder _commandParameter = null;
+        [Template("_commandParameter")]
+        public object CommandParameter { get; set; }
+
+        private ObjectBuilder _
+
+
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
             ToolBoxItemModel rs = new ToolBoxItemModel()
@@ -46,14 +53,23 @@ namespace Fantasy.Studio.Codons
                  Category = this.Category,
                  Icon=this.Icon,
                  Text = this.Text,
-                 DoubleClick = this.CreateCommand(this._doubleClick, this.DoubleClick, services),
-                 Selected = this.CreateCommand(this._selected, this.Selected, services),
-                 Unselected = this.CreateCommand(this._unselected, this.Unselected, services),
-                 DoDragDrop = this.CreateCommand(this._doDragDrop, this.DoDragDrop, services) 
+                 DoubleClick = this.CreateTemplate(this._doubleClick, this.DoubleClick, services),
+                 Selected = this.CreateTemplate(this._selected, this.Selected, services),
+                 Unselected = this.CreateTemplate(this._unselected, this.Unselected, services),
+                 DoDragDrop = this.CreateTemplate(this._doDragDrop, this.DoDragDrop, services),
+                 
             };
+
+            object cp = this._commandParameter != null ? this._commandParameter.Build<object>() : this.CommandParameter;
+            if (cp is IObjectWithSite)
+            {
+                ((IObjectWithSite)cp).Site = services;
+            }
+
+            return rs;
         }
 
-        private ICommand CreateCommand(ObjectBuilder builder, ICommand command, IServiceProvider services)
+        private ICommand CreateTemplate(ObjectBuilder builder, ICommand command, IServiceProvider services)
         {
             ICommand rs = null;
             if (builder != null)

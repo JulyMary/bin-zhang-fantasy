@@ -183,7 +183,7 @@ namespace Fantasy.Studio.Controls
 
         public void Update(object caller)
         {
-            this.Visible = this.Conditions.GetCurrentConditionFailedAction(caller) != ConditionFailedAction.Exclude;
+            this.Visible = this.Conditions.GetCurrentConditionFailedAction(caller, this.Site) != ConditionFailedAction.Exclude;
             if (this.Visible)
             {
                 foreach(IUpdateStatus child in this.ChildUpdateStatus)

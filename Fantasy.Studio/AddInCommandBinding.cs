@@ -27,7 +27,7 @@ namespace Fantasy.Studio
         void AddInCommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             bool can = false;
-            if (this.Condition.GetCurrentConditionFailedAction(this.Owner) == ConditionFailedAction.Nothing)
+            if (this.Condition.GetCurrentConditionFailedAction(this.Owner, this.Site) == ConditionFailedAction.Nothing)
             {
                 object args = Invoker.Invoke(this.ParameterSource == ParameterSource.Owner ? this.Owner : e.Parameter, this.ParameterMember);
                 can = Handler.CanExecute(args);

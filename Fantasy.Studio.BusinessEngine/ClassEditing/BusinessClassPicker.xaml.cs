@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Fantasy.BusinessEngine;
-using Fantasy.Studio.TreeViewModel;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {

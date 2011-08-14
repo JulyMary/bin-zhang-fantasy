@@ -66,6 +66,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\ActiveWindow.cs" />
     <Compile Include="Controls\ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
     </Compile>
@@ -88,7 +89,6 @@
     <Compile Include="CommandExtension.cs" />
     <Compile Include="Conditions\SelectionCount.cs" />
     <Compile Include="Controls\AutoGrayImage.cs" />
-    <Compile Include="Controls\IToolBoxItemsProvider.cs" />
     <Compile Include="Controls\Views\PlainView.cs" />
     <Compile Include="Descriptor\IReadOnlyAdapter.cs" />
     <Compile Include="Descriptor\ListBoxDropDownTypeEditor.cs" />
@@ -195,6 +195,7 @@
     <Compile Include="Controls\ExtendableTreeViewModel.cs" />
     <Compile Include="Controls\IChildItemsProvider.cs" />
     <Compile Include="Controls\TreeViewItem.cs" />
+    <Compile Include="ToolBoxPadModel.cs" />
     <Compile Include="ViewCollection.cs" />
     <Compile Include="ViewContentEventArgs.cs" />
     <Compile Include="WindowStateSetting.cs" />
@@ -237,6 +238,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\basecursor.png" />
     <Resource Include="images\toolbox.png" />
     <Resource Include="images\save.ico" />
     <Resource Include="images\Properties.ico" />

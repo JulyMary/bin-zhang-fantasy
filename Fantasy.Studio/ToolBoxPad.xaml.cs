@@ -12,13 +12,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio
 {
     /// <summary>
     /// Interaction logic for ToolBoxPad.xaml
     /// </summary>
-    public partial class ToolBoxPad : UserControl, IPadContent
+    public partial class ToolBoxPad : UserControl, IPadContent, IObjectWithSite
     {
         public ToolBoxPad()
         {
@@ -69,14 +70,16 @@ namespace Fantasy.Studio
         [Browsable(false)]
         public IServiceProvider Site { get; set; }
 
+        private ToolBoxPadModel _model;
+
         #region IPadContent Members
 
 
         public void Initialize()
         {
-            
+            this._model = new ToolBoxPadModel(this.Site);
+            this.DataContext = _model;
         }
-
         #endregion
     }
 }

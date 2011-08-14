@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Fantasy.Studio.TreeViewModel;
+using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.PackageEditing
 {
-    public class ChildPackagesProvider : ObjectWithSite, IChildrenProvider
+    public class ChildPackagesProvider : ObjectWithSite, IChildItemsProvider
     {
-        #region IChildrenProvider Members
+        #region IChildItemsProvider Members
 
         public IEnumerable<object> GetChildren(object parent)
         {

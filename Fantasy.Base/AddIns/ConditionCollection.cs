@@ -17,12 +17,12 @@ namespace Fantasy.AddIns
 
         }
 
-        public ConditionFailedAction GetCurrentConditionFailedAction(object caller)
+        public ConditionFailedAction GetCurrentConditionFailedAction(object caller, IServiceProvider services)
         {
             ConditionFailedAction action = ConditionFailedAction.Nothing;
             foreach (ICondition condition in this)
             {
-                if (!ConditionBase.IsValidWithMember(condition, caller))
+                if (!ConditionBase.IsValidWithMember(condition, caller, services))
                 {
                     switch (condition.Action)
                     {

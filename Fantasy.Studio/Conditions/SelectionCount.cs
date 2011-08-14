@@ -11,7 +11,7 @@ namespace Fantasy.Studio.Conditions
 {
     public class SelectionCount : ConditionBase
     {
-        public override bool IsValid(object args)
+        public override bool IsValid(object args, IServiceProvider services)
         {
 
             int selected = 0;

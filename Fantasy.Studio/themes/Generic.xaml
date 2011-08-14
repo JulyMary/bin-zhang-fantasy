@@ -35,7 +35,7 @@
 
     <!--List Default Style for ListView-->
     <Style x:Key="{ComponentResourceKey 
-        TypeInTargetAssembly={x:Type l:PlainView},
+        TypeInTargetAssembly={x:Type l:ListView},
         ResourceId=FantasyListViewDSK}" 
          TargetType="{x:Type ListView}" 
          BasedOn="{StaticResource {x:Type ListBox}}"

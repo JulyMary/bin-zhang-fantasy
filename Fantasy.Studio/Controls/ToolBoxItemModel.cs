@@ -21,5 +21,7 @@ namespace Fantasy.Studio.Controls
         public ICommand Unselected { get; set; }
 
         public ICommand DoDragDrop { get; set; }
+
+        public object CommandParameter { get; set; }
     }
 }

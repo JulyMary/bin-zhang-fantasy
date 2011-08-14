@@ -6,7 +6,7 @@ using Fantasy.Windows;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using NHibernate;
-using Fantasy.Studio.TreeViewModel;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 {
