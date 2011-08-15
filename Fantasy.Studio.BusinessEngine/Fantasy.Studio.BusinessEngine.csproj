@@ -41,6 +41,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\NHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Syncfusion.Diagram.Wpf, Version=9.204.0.138, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Syncfusion.Diagram.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Wpf, Version=9.204.0.138, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Syncfusion.Shared.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -60,6 +68,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramPanel.xaml.cs">
+      <DependentUpon>ClassDiagramPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClassDiagramEditing\ClassDiagramPanelModel.cs" />
+    <Compile Include="ClassDiagramEditing\DragNewBusinessClassData.cs" />
     <Compile Include="ClassEditing\AddClassCommand.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
@@ -173,6 +188,10 @@
     <Resource Include="images\DownArrowShort_Blue.ico" />
     <Resource Include="images\minus.ico" />
     <Resource Include="images\plus.ico" />
+    <Page Include="ClassDiagramEditing\ClassDiagramPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ClassEditing\BusinessClassPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

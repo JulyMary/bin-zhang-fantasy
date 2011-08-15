@@ -31,12 +31,9 @@
             <CollectionViewSource.GroupDescriptions>
                 <data:PropertyGroupDescription PropertyName="Category" />
             </CollectionViewSource.GroupDescriptions>
-            <CollectionViewSource.SortDescriptions>
-                <cm:SortDescription Direction="Ascending" PropertyName="Text" />
-            </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
-    <ListView ItemsSource="{Binding Source={StaticResource items}}"  View="{StaticResource listView}" SelectionChanged="ListView_SelectionChanged">
+    <ListView Name="ListView" ItemsSource="{Binding Source={StaticResource items}}"  View="{StaticResource listView}" SelectionChanged="ListView_SelectionChanged" PreviewMouseLeftButtonDown="ListView_MouseLeftButtonDown" MouseLeftButtonUp="ListView_MouseLeftButtonUp" MouseMove="ListView_MouseMove">
         <ListView.GroupStyle>
             <GroupStyle>
                 <GroupStyle.ContainerStyle>

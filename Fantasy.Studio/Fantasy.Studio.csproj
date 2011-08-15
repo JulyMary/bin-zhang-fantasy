@@ -72,6 +72,8 @@
     </Compile>
     <Compile Include="Controls\ToolBoxView.cs" />
     <Compile Include="Controls\Views\ListView.cs" />
+    <Compile Include="DoDragDropHandler.cs" />
+    <Compile Include="DoDragDropEventArgs.cs" />
     <Compile Include="IToolBoxItemBuilder.cs" />
     <Compile Include="Codons\ToolBoxItem.cs" />
     <Compile Include="Codons\ToolBoxItemBuilder.cs" />
