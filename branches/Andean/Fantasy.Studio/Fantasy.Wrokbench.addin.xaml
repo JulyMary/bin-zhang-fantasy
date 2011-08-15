@@ -115,7 +115,7 @@
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/toolbox/items">
-        <ToolBoxItem ID="Pointer" Category="ClassDiagram" Text="Pointer" Icon="/Fantasy.Studio;component/images/basecursor.png" />
+       
     </Extension>
 
     <Extension Path="fantasy/studio/documents/builders">

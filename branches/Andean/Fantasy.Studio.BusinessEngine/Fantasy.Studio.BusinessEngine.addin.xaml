@@ -44,7 +44,7 @@
 
         </TreeNode>
         <TreeNode ID="classDiagram" TargetType="{x:Type be:BusinessClassDiagram}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png" 
-                  Text="{Binding Path=Name}"  >
+                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"  >
             
         </TreeNode>  
     </Extension>
@@ -55,8 +55,6 @@
             <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassChildClassesProvider}" />
         </TreeNode>
     </Extension>
-
-
 
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
         <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner">
@@ -84,8 +82,23 @@
         </Object>
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/classdiagrameditor/panels">
+        <Object ID="diagram">
+            <sbe:ClassDiagramPanel /> 
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classdiagrameditor/commandbindings">
+        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
+            <CommandBinding.Conditional>
+                <OwnerState State="Dirty" StateMember="DirtyState"/>
+            </CommandBinding.Conditional>
+        </CommandBinding>
+    </Extension>
+
     <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
         <Button ID="AddClass" Text="Add Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" ParameterMember="Package"/>
+        <Button ID="AddClassDiagram" Text="Add Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner" ParameterMember="Package"/>
 
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
@@ -113,6 +126,12 @@
                 <IsTypeOf Type="{x:Type be:BusinessClass}" />
             </Object.Conditional>
             <sbe:ClassEditor />
+        </Object>
+        <Object ID="classdiagrameditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessClassDiagram}" />
+            </Object.Conditional>
+            <sbe:ClassDiagramEditor /> 
         </Object>
     </Extension>
 
@@ -158,6 +177,7 @@
             </CommandBinding.Conditional>
         </CommandBinding>
     </Extension>
+    
     <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/toolbars">
         <ToolBar ID="Default" Text="Default">
             <Button ID="addProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" 
@@ -189,5 +209,15 @@
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
 
         </TreeNode>
+    </Extension>
+
+    <Extension Path="fantasy/studio/workbench/toolbox/items">
+        <ToolBoxItem ID="Pointer" Category="ClassDiagram" Text="Pointer" Icon="/Fantasy.Studio;component/images/basecursor.png" />
+        <ToolBoxItem ID="Class" Category="ClassDiagram" Text="Class" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png">
+            <ToolBoxItem.DoDragDrop>
+                <DoDragDropHandler Data="{x:Static sbe:DragNewBusinessClassData.Value}" AllowedEffects="Copy"   />
+            </ToolBoxItem.DoDragDrop>
+            
+        </ToolBoxItem>
     </Extension>
 </AddIn>

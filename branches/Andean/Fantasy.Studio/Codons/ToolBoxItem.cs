@@ -37,13 +37,11 @@ namespace Fantasy.Studio.Codons
 
         private ObjectBuilder _doDragDrop = null;
         [Template("_doDragDrop")]
-        public ICommand DoDragDrop { get; set; }
+        public IEventHandler<DoDragDropEventArgs> DoDragDrop { get; set; }
 
         private ObjectBuilder _commandParameter = null;
         [Template("_commandParameter")]
         public object CommandParameter { get; set; }
-
-        private ObjectBuilder _
 
 
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
@@ -56,7 +54,7 @@ namespace Fantasy.Studio.Codons
                  DoubleClick = this.CreateTemplate(this._doubleClick, this.DoubleClick, services),
                  Selected = this.CreateTemplate(this._selected, this.Selected, services),
                  Unselected = this.CreateTemplate(this._unselected, this.Unselected, services),
-                 DoDragDrop = this.CreateTemplate(this._doDragDrop, this.DoDragDrop, services),
+                
                  
             };
 
@@ -65,6 +63,15 @@ namespace Fantasy.Studio.Codons
             {
                 ((IObjectWithSite)cp).Site = services;
             }
+
+            IEventHandler<DoDragDropEventArgs>  doDragDrop = this._doDragDrop != null ? services.GetRequiredService<IAdapterManager>().GetAdapter<IEventHandler<DoDragDropEventArgs>>(this._doDragDrop.Build<object>()) : this.DoDragDrop;
+
+            if (doDragDrop is IObjectWithSite)
+            {
+                ((IObjectWithSite)doDragDrop).Site = services;
+            }
+
+            rs.DoDragDrop = doDragDrop;
 
             return rs;
         }
