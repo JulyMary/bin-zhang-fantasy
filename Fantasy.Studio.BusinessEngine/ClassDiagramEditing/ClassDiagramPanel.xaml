@@ -6,9 +6,10 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <sf:DiagramControl DragEnter="DiagramControl_DragEnter">
+        <sf:DiagramControl Model="{Binding DiagramModel}" x:Name="diagramControl">
             <sf:DiagramControl.View>
-                <sf:DiagramView></sf:DiagramView>
+                <sf:DiagramView  IsZoomEnabled="True" Bounds="0,0,1200,1200" Name="diagramView"
+                    DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop"></sf:DiagramView>
             </sf:DiagramControl.View>
         </sf:DiagramControl>
     </Grid>

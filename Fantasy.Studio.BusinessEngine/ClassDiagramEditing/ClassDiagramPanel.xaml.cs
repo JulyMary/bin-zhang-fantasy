@@ -15,6 +15,9 @@ using Fantasy.BusinessEngine;
 using NHibernate;
 using System.ComponentModel;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.AddIns;
+using System.ComponentModel.Design;
+using Fantasy.Studio.Services;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -28,8 +31,51 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             InitializeComponent();
         }
 
+      
+        private IServiceProvider _site;
         [Browsable(false)]
-        public IServiceProvider Site { get; set; }
+        public IServiceProvider Site
+        {
+            get
+            {
+                return _site;
+            }
+            set
+            {
+                _site = value;
+              
+
+            }
+        }
+
+
+        private ClassDiagramPanelModel _model;
+
+
+        private IServiceProvider CreateChildSite()
+        {
+            Fantasy.ServiceModel.ServiceContainer rs = new ServiceModel.ServiceContainer(this.Site);
+            rs.AddService(this._selectionService);
+            rs.AddService(this._model.DiagramModel);
+            rs.AddService(this._model.ViewModel);
+            rs.AddService(this.diagramControl);
+            rs.AddService(this.diagramControl.View);
+            rs.AddService(this._entity);
+
+            return rs;
+        }
+
+        private ISelectionService _selectionService = new SelectionService(null);
+
+        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            if (this.Site != null)
+            {
+                IMonitorSelectionService monitor = this.Site.GetRequiredService<IMonitorSelectionService>();
+                monitor.CurrentSelectionService = _selectionService;
+            }
+            base.OnGotKeyboardFocus(e);
+        }
 
         #region IEntityEditingPanel Members
 
@@ -42,11 +88,19 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
         {
+
+            this._model = new ClassDiagramPanelModel();
+
             this._entity = (BusinessClassDiagram)data;
+
+            //TODO: deserialize diagrammodel from entity
+
+
             this._entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
            
             this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+            this.DataContext = this._model;
         }
 
         void Entity_PropertyChanged(object sender, Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs e)
@@ -91,6 +145,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             session.BeginUpdate();
             try
             {
+                //TODO: serialize diagram model to entity
 
                 session.SaveOrUpdate(this._entity);
                 session.EndUpdate(true);
@@ -126,9 +181,82 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         #endregion
 
-        private void DiagramControl_DragEnter(object sender, DragEventArgs e)
+       
+
+        private void DiagramView_DragEnter(object sender, DragEventArgs e)
         {
-            
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/enterhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void DiagramView_DragOver(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void DiagramView_DragLeave(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/leavehandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void DiagramView_Drop(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/drophandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
         }
     }
 }
