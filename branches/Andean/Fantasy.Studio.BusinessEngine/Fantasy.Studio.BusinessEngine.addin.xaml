@@ -220,4 +220,26 @@
             
         </ToolBoxItem>
     </Extension>
+    
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/enterhandlers">
+        <Object ID="newclass">
+            <sbe:DragNewBusinessClassDataOverHandler/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers">
+        <Object ID="newclass">
+            <sbe:DragNewBusinessClassDataOverHandler/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/leavehandlers">
+
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/drophandlers">
+        <Object ID="newclass">
+            <sbe:DragNewBusinessClassDataDropHandler/>
+        </Object>
+    </Extension>
 </AddIn>

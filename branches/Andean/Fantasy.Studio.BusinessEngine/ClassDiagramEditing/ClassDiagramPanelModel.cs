@@ -8,9 +8,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
     public class ClassDiagramPanelModel
     {
+        public ClassDiagramPanelModel()
+        {
+            this.DiagramModel = new DiagramModel();
+            this.ViewModel = new ClassDiagramViewModel();
+        }
 
-
+        public ClassDiagramViewModel ViewModel { get; private set; }
 
         public DiagramModel DiagramModel { get; private set; } 
+        
     }
 }

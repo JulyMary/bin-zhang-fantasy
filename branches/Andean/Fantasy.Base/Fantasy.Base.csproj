@@ -180,6 +180,7 @@
     <Compile Include="Collection\DictionaryExtensions.cs" />
     <Compile Include="Collection\Key.cs" />
     <Compile Include="IEventHandler.cs" />
+    <Compile Include="ServiceModel\ServiceContainer.cs" />
     <Compile Include="Windows\MouseUtilities.cs" />
     <Compile Include="Windows\VisualExtensions.cs" />
     <Compile Include="Windows\WeakEventListener.cs" />
@@ -222,7 +223,7 @@
     <Compile Include="ServiceModel\LogDebugService.cs" />
     <Compile Include="ServiceModel\LogFileService.cs" />
     <Compile Include="ServiceModel\LogService.cs" />
-    <Compile Include="ServiceModel\ServiceContainer.cs" />
+    <Compile Include="ServiceModel\AutoInitServiceContainer.cs" />
     <Compile Include="ServiceModel\ServiceManager.cs" />
     <Compile Include="ServiceModel\TaskBarProgressMonitor.cs" />
     <Compile Include="ServiceModel\TaskBarProgressMonitorService.cs" />

@@ -22,7 +22,6 @@
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Entity2" BaseType="Model1.Entity1">
-          <Property Type="Int32" Name="Id2" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -53,8 +52,8 @@
     <edmx:Diagrams>
       <Diagram Name="Model1" >
         <EntityTypeShape EntityType="Model1.Entity1" Width="1.5" PointX="3.125" PointY="1.5" Height="1.211080729166667" />
-        <EntityTypeShape EntityType="Model1.Entity2" Width="1.5" PointX="3.125" PointY="4" Height="1.2110807291666665" />
-        <InheritanceConnector EntityType="Model1.Entity2">
+        <EntityTypeShape EntityType="Model1.Entity2" Width="1.5" PointX="3.125" PointY="4" Height="1.0387792968749992" IsExpanded="true" />
+        <InheritanceConnector EntityType="Model1.Entity2" ManuallyRouted="false">
           <ConnectorPoint PointX="3.875" PointY="2.711080729166667" />
           <ConnectorPoint PointX="3.875" PointY="4" />
         </InheritanceConnector>

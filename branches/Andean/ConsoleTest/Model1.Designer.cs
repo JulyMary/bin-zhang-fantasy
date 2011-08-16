@@ -170,41 +170,12 @@ namespace ConsoleTest
         /// Create a new Entity2 object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="id2">Initial value of the Id2 property.</param>
-        public static Entity2 CreateEntity2(global::System.Int32 id, global::System.Int32 id2)
+        public static Entity2 CreateEntity2(global::System.Int32 id)
         {
             Entity2 entity2 = new Entity2();
             entity2.Id = id;
-            entity2.Id2 = id2;
             return entity2;
         }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Id2
-        {
-            get
-            {
-                return _Id2;
-            }
-            set
-            {
-                OnId2Changing(value);
-                ReportPropertyChanging("Id2");
-                _Id2 = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Id2");
-                OnId2Changed();
-            }
-        }
-        private global::System.Int32 _Id2;
-        partial void OnId2Changing(global::System.Int32 value);
-        partial void OnId2Changed();
 
         #endregion
     

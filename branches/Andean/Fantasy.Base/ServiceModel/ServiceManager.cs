@@ -7,7 +7,7 @@ using System.Collections;
 
 namespace Fantasy.ServiceModel
 {
-    public class ServiceManager : ServiceContainer
+    public class ServiceManager : AutoInitServiceContainer
     {
         private ServiceManager()
         {
