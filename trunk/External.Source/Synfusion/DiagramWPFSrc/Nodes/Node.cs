@@ -648,7 +648,7 @@ namespace Syncfusion.Windows.Diagram
 
             if (this.Content is FrameworkElement)
             {
-                (this.Content as FrameworkElement).IsHitTestVisible = false;
+                //(this.Content as FrameworkElement).IsHitTestVisible = false;
             }
             if (!DiagramControl.IsPageLoaded)
             {
@@ -2871,7 +2871,7 @@ namespace Syncfusion.Windows.Diagram
         /// Enum specifying the unit to be used.
         /// </value>
         /// </summary>
-        internal MeasureUnits MeasurementUnits
+        public MeasureUnits MeasurementUnits
         {
             get
             {
@@ -3302,16 +3302,16 @@ namespace Syncfusion.Windows.Diagram
                 //(dview as DiagramView).SelectionList.Add(this);
             }
 
-            this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //this.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
-            if (double.IsNaN(this.Width))
-            {
-                this.Width = DesiredSize.Width;
-            }
-            if (double.IsNaN(this.Height))
-            {
-                this.Height = DesiredSize.Height;
-            }
+            //if (double.IsNaN(this.Width))
+            //{
+            //    this.Width = DesiredSize.Width;
+            //}
+            //if (double.IsNaN(this.Height))
+            //{
+            //    this.Height = DesiredSize.Height;
+            //}
 
             if (!DiagramControl.IsPageLoaded)
             {
@@ -3818,7 +3818,7 @@ namespace Syncfusion.Windows.Diagram
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (editor != null && (!LabelEditor.GetIsEditing(editor) || editor.InputHitTest(e.GetPosition(editor)) == null))
+            if (editor == null || (!LabelEditor.GetIsEditing(editor) || editor.InputHitTest(e.GetPosition(editor)) == null))
             {
                 ex = false;
                 if (dview.IsPageEditable && !this.IsGrouped)
@@ -4444,6 +4444,7 @@ namespace Syncfusion.Windows.Diagram
                 }
             }
         }
+
 
         /// <summary>
         /// Called when [units changed].

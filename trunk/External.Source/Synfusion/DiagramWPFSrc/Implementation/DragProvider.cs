@@ -365,7 +365,7 @@ namespace Syncfusion.Windows.Diagram
         /// Enum specifying the unit to be used.
         /// </value>
         /// </summary>
-        internal MeasureUnits MeasurementUnits
+        public MeasureUnits MeasurementUnits
         {
             get
             {
