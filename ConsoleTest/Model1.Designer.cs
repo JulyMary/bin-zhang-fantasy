@@ -16,6 +16,11 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("Model1", "Entity1Entity2", "Entity1", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ConsoleTest.Entity1), "Entity2", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ConsoleTest.Entity2))]
+
+#endregion
 
 namespace ConsoleTest
 {
@@ -154,6 +159,31 @@ namespace ConsoleTest
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("Model1", "Entity1Entity2", "Entity2")]
+        public EntityCollection<Entity2> Entity2_1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Entity2>("Model1.Entity1Entity2", "Entity2");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Entity2>("Model1.Entity1Entity2", "Entity2", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -179,6 +209,47 @@ namespace ConsoleTest
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("Model1", "Entity1Entity2", "Entity1")]
+        public Entity1 Entity1_1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Entity1>("Model1.Entity1Entity2", "Entity1").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Entity1>("Model1.Entity1Entity2", "Entity1").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Entity1> Entity1_1Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Entity1>("Model1.Entity1Entity2", "Entity1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Entity1>("Model1.Entity1Entity2", "Entity1", value);
+                }
+            }
+        }
+
+        #endregion
     }
 
     #endregion

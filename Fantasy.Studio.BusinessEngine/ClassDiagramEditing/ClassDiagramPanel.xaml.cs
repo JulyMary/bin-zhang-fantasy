@@ -77,6 +77,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             base.OnGotKeyboardFocus(e);
         }
 
+
+        private void diagramControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = this._model;
+        }
+
+
         #region IEntityEditingPanel Members
 
         public void Initialize()
@@ -100,7 +107,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
            
             this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
-            this.DataContext = this._model;
+            if (this.IsLoaded)
+            {
+                this.DataContext = this._model;
+            }
+            
         }
 
         void Entity_PropertyChanged(object sender, Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs e)
@@ -258,5 +269,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 e.Handled = true;
             }
         }
+
+       
+       
     }
 }

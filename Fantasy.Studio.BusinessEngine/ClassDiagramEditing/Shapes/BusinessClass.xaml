@@ -5,10 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:f="urn:schema-fantasy:xaml" 
              mc:Ignorable="d" 
-             d:DesignHeight="170" d:DesignWidth="187">
-    <Grid>
-        
-        <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3" Grid.RowSpan="2">
+             d:DesignHeight="170" d:DesignWidth="187" >
+        <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3" Grid.RowSpan="2" Margin="0,0,0,0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                     <GradientStop Color="#FFB2A39C" Offset="0" />
@@ -17,18 +15,35 @@
             </Border.Background>
             <Expander>
                 <Expander.Header >
-                    <Grid OpacityMask="{x:Null}">
+                    <Grid>
                         <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
                         <TextBlock Height="23" Margin="28,6,6,0" Name="textBlock1" Text="TextBlock" VerticalAlignment="Top" />
                         <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
                         <TextBlock Height="23" Margin="50,22,7,0" Name="textBlock2" Text="TextBlock" VerticalAlignment="Top" />
                     </Grid>
                 </Expander.Header>
-                <f:ExtendableTreeView Name="propertiesTreeView" Background="White" />
-            </Expander>
-        </Border>
-       
-    </Grid>
-    
-   
+            <StackPanel Orientation="Vertical">
+                <Expander Header="Properties" IsExpanded="True" Background="#FFDDD7D4">
+                    <ListBox>
+                        <ListBoxItem>
+                            <TextBlock>hello</TextBlock>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <TextBlock>hello</TextBlock>
+                        </ListBoxItem>
+                    </ListBox>
+                </Expander>
+                <Expander Header="Relations" IsExpanded="True"  Background="#FFDDD7D4" >
+                    <ListBox>
+                    <ListBoxItem>
+                        <TextBlock>hello</TextBlock>
+                    </ListBoxItem>
+                    <ListBoxItem>
+                        <TextBlock>hello</TextBlock>
+                        </ListBoxItem>
+                    </ListBox>
+                </Expander>
+            </StackPanel>
+        </Expander>
+    </Border>
 </UserControl>

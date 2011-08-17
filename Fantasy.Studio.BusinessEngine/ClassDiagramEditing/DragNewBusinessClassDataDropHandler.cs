@@ -20,58 +20,35 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 e.Effects = DragDropEffects.Copy;
                 e.Handled = true;
 
+                
+                DiagramView view = this.Site.GetRequiredService<DiagramView>();
                 DiagramModel model = this.Site.GetRequiredService<DiagramModel>();
-                Node EssentialWPF = new Node(Guid.NewGuid(), "EssentialWPF");
+                Point p = e.GetPosition(view.Page);
 
-                EssentialWPF.Shape = Syncfusion.Windows.Diagram.Shapes.FlowChart_Card;
+                Node newNode = new Node(Guid.NewGuid(), "Hello")
+                {
+                    LabelVisibility = Visibility.Collapsed,
+                    //IsLabelEditable=true,
+                    Content = new Shapes.BusinessClass() { IsHitTestVisible = true },
+                    Shape = Syncfusion.Windows.Diagram.Shapes.Rectangle,
+                   
+                    Height = double.NaN,
+                    OffsetX = p.X,
+                    OffsetY = p.Y,
+                    AllowRotate = false,
+                    GripperVisibility = Visibility.Visible,
+                };
 
-                EssentialWPF.Width = 100;
+                newNode.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+                newNode.Width = newNode.DesiredSize.Width;
 
-                EssentialWPF.Height = 50;
+                model.Nodes.Add(newNode);
 
-                EssentialWPF.OffsetX = 300;
+                newNode.SetResourceReference(FrameworkElement.StyleProperty, new ComponentResourceKey(typeof(Shapes.BusinessClass), "BusinessClassDSK"));
 
-                EssentialWPF.OffsetY = 300;
-                EssentialWPF.Content = "Hello";//new Button() { Content = "Hello", IsHitTestVisible = false};
-               
-
-                //Button b = new Button();
-
-                //b.Content = "Click ME!";
-
-                //EssentialWPF.Content = b;
-
-                //b.IsHitTestVisible = true;
-
-
-                model.Nodes.Add(EssentialWPF);
-
-                //Node newNode = new Node(Guid.NewGuid())
-                //{ 
-                //    LabelVisibility = Visibility.Collapsed,
-                //    Content = new Shapes.BusinessClass(),
-                //    Shape= Syncfusion.Windows.Diagram.Shapes.Rectangle
-                //};
-
-                //DiagramModel model = this.Site.GetRequiredService<DiagramModel>();
-                DiagramControl dc = this.Site.GetRequiredService<DiagramControl>();
-
-                //model.Nodes.Add(newNode);
-
-                //DiagramView view = this.Site.GetRequiredService<DiagramView>();
-                //if (!view.Page.Children.Contains(newNode))
-                //{
-
-                //}
-                //Point p = e.GetPosition(view.Page);
-
-                ////newNode.Position = p;
-                //newNode.Width = 50;
-                //newNode.Height = 50;
-
-                //view.SelectionList.Clear();
-                //view.SelectionList.Add(newNode);
-                //(newNode as FrameworkElement).Focus();        
+                view.SelectionList.Clear();
+                view.SelectionList.Add(newNode);
+                (newNode as FrameworkElement).Focus();        
                
             }
         }
