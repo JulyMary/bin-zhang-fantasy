@@ -41,14 +41,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Syncfusion.Diagram.Wpf, Version=9.204.0.138, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Syncfusion.Diagram.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="Syncfusion.Shared.Wpf, Version=9.204.0.138, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External\Syncfusion.Shared.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
@@ -175,6 +167,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\External.Source\Synfusion\DiagramWPFSrc\Syncfusion.Diagram.WPF_2010.csproj">
+      <Project>{F19EA870-B3B9-4F9F-ADDC-BBD885FE56A9}</Project>
+      <Name>Syncfusion.Diagram.WPF_2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External.Source\Synfusion\SharedWPFSrc\Syncfusion.Shared.WPF_2010.csproj">
+      <Project>{AD36B6B1-D676-40AD-BABE-9F6D6EE926C9}</Project>
+      <Name>Syncfusion.Shared.WPF_2010</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fantasy.Base\Fantasy.Base.csproj">
       <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
       <Name>Fantasy.Base</Name>
@@ -189,6 +189,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Resource Include="images\inheritance.png" />
     <Resource Include="images\ClassDiagram.png" />
     <Resource Include="images\UpArrowShort_Blue.ico" />

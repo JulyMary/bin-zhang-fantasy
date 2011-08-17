@@ -14,15 +14,25 @@
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Entity1Set" EntityType="Model1.Entity1" />
+          <AssociationSet Name="Entity1Entity2" Association="Model1.Entity1Entity2">
+            <End Role="Entity1" EntitySet="Entity1Set" />
+            <End Role="Entity2" EntitySet="Entity1Set" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Entity1">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Entity2_1" Relationship="Model1.Entity1Entity2" FromRole="Entity1" ToRole="Entity2" />
         </EntityType>
         <EntityType Name="Entity2" BaseType="Model1.Entity1">
+          <NavigationProperty Name="Entity1_1" Relationship="Model1.Entity1Entity2" FromRole="Entity2" ToRole="Entity1" />
         </EntityType>
+        <Association Name="Entity1Entity2">
+          <End Type="Model1.Entity1" Role="Entity1" Multiplicity="1" />
+          <End Type="Model1.Entity2" Role="Entity2" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -51,12 +61,21 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="Model1.Entity1" Width="1.5" PointX="3.125" PointY="1.5" Height="1.211080729166667" />
-        <EntityTypeShape EntityType="Model1.Entity2" Width="1.5" PointX="3.125" PointY="4" Height="1.0387792968749992" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Entity1" Width="1.375" PointX="9.5" PointY="2.25" Height="1.4033821614583339" />
+        <EntityTypeShape EntityType="Model1.Entity2" Width="1.5" PointX="5.875" PointY="5.875" Height="1.0187792968749996" IsExpanded="true" />
         <InheritanceConnector EntityType="Model1.Entity2" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.875" PointY="2.711080729166667" />
-          <ConnectorPoint PointX="3.875" PointY="4" />
+          <ConnectorPoint PointX="10.238147227691718" PointY="3.6533821614583331" />
+          <ConnectorPoint PointX="10.238147227691718" PointY="5.5" />
+          <ConnectorPoint PointX="9.9211544471791928" PointY="5.4999999999999991" />
+          <ConnectorPoint PointX="9.754487780512525" PointY="5.5" />
+          <ConnectorPoint PointX="6.625" PointY="5.5" />
+          <ConnectorPoint PointX="6.625" PointY="5.875" />
         </InheritanceConnector>
+        <AssociationConnector Association="Model1.Entity1Entity2">
+          <ConnectorPoint PointX="9.8378211138458589" PointY="3.6533821614583339" />
+          <ConnectorPoint PointX="9.8378211138458589" PointY="6.4805403645833337" />
+          <ConnectorPoint PointX="7.375" PointY="6.4805403645833337" />
+        </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
