@@ -2,11 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:sf="http://schemas.syncfusion.com/wpf"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes" >
+                    xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Syncfusion.Diagram.WPF;component/Themes/Generic.xaml"/>
+        <ResourceDictionary Source="Fantasy.Studio.BusinessEngine;component/Themes/Generic.NodeExpander.xaml" />
     </ResourceDictionary.MergedDictionaries>
+   
+    <!-- Standard Business Class Node style-->
     <Style TargetType="{x:Type sf:Node}" x:Key="{ComponentResourceKey 
         TypeInTargetAssembly={x:Type l:BusinessClass},
         ResourceId=BusinessClassDSK}">
@@ -31,7 +34,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="0">
                         <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="True">
-                            <sf:Resizer IsHitTestVisible="{TemplateBinding AllowResize}" x:Name="PART_Resizer"  Visibility="Collapsed"/>
+                            <sf:Resizer IsHitTestVisible="{TemplateBinding AllowResize}" x:Name="PART_Resizer"  Visibility="Collapsed" />
                             <ContentPresenter  
 										  Visibility="Visible" 
 										  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
@@ -148,4 +151,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+   
+
 </ResourceDictionary>

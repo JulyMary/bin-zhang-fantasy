@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:f="urn:schema-fantasy:xaml" 
+             xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes" 
              mc:Ignorable="d" 
              d:DesignHeight="170" d:DesignWidth="187" >
         <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3" Grid.RowSpan="2" Margin="0,0,0,0">
@@ -13,15 +14,16 @@
                     <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-            <Expander>
-                <Expander.Header >
-                    <Grid>
-                        <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
-                        <TextBlock Height="23" Margin="28,6,6,0" Name="textBlock1" Text="TextBlock" VerticalAlignment="Top" />
-                        <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
-                        <TextBlock Height="23" Margin="50,22,7,0" Name="textBlock2" Text="TextBlock" VerticalAlignment="Top" />
-                    </Grid>
-                </Expander.Header>
+        <l:NodeExpander x:Name="outerExpander" IsExpanded="True" >
+            <l:NodeExpander.Header >
+                <Grid>
+                    <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
+                    <TextBlock Height="23" Margin="28,6,6,0" Name="textBlock1" Text="TextBlock" VerticalAlignment="Top" />
+                    <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
+                    <TextBlock Height="23" Margin="50,22,7,0" Name="textBlock2" Text="TextBlock" VerticalAlignment="Top" />
+                </Grid>
+            </l:NodeExpander.Header>
+                
             <StackPanel Orientation="Vertical">
                 <Expander Header="Properties" IsExpanded="True" Background="#FFDDD7D4">
                     <ListBox>
@@ -44,6 +46,6 @@
                     </ListBox>
                 </Expander>
             </StackPanel>
-        </Expander>
+        </l:NodeExpander>
     </Border>
 </UserControl>

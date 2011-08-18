@@ -23,5 +23,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
         {
             InitializeComponent();
         }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            
+        }
     }
+
+   
 }
