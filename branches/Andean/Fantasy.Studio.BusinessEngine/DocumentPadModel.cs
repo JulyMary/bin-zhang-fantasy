@@ -27,7 +27,7 @@ namespace Fantasy.Studio.BusinessEngine
                 if (this.Site != null)
                 {
                     this.TreeViewModel = new ExtendableTreeViewModel("fantasy/studio/businessengine/documentpad/treeview", this, this.Site);
-                    BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);
+                    BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().GetRootPackage();
                     this.TreeViewModel.Items.Add(rootPackage);
                 }
             }

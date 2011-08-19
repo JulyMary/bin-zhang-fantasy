@@ -52,11 +52,12 @@ namespace Fantasy.Studio.Controls
                 ((IObjectWithSite)rs).Site = this.Site;
             }
 
-            rs.Selected = this.CreateCommand(builder.Codon._selected, builder.Codon.Selected);
-            rs.Unselected = this.CreateCommand(builder.Codon._unselected, builder.Codon.Unselected);
-            rs.DoubleClick = this.CreateCommand(builder.Codon._doubleClick, builder.Codon.DoubleClick);
-            rs.Expanded = this.CreateCommand(builder.Codon._expanded, builder.Codon.Expanded);
-            rs.Collapsed = this.CreateCommand(builder.Codon._collapsed, builder.Codon.Collapsed);
+            rs.Selected = this.CreateObject(builder.Codon._selected, builder.Codon.Selected);
+            rs.Unselected = this.CreateObject(builder.Codon._unselected, builder.Codon.Unselected);
+            rs.DoubleClick = this.CreateObject(builder.Codon._doubleClick, builder.Codon.DoubleClick);
+            rs.Expanded = this.CreateObject(builder.Codon._expanded, builder.Codon.Expanded);
+            rs.Collapsed = this.CreateObject(builder.Codon._collapsed, builder.Codon.Collapsed);
+            rs.DoDragDrop = this.CreateObject(builder.Codon._doDragDrop, builder.Codon.DoDragDrop);
 
             if (!string.IsNullOrEmpty(builder.Codon.ContextMenu))
             {
@@ -73,12 +74,12 @@ namespace Fantasy.Studio.Controls
             
         }
 
-        private ICommand CreateCommand(ObjectBuilder builder, ICommand command)
+        private T CreateObject<T>(ObjectBuilder builder, T command) where T : class
         {
-            ICommand rs = null;
+            T rs = null;
             if (builder != null)
             {
-                rs = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<ICommand>(builder.Build<object>());
+                rs = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<T>(builder.Build<object>());
                 if (rs is IObjectWithSite)
                 {
                     ((IObjectWithSite)rs).Site = this.Site;

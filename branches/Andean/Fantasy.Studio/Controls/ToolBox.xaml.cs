@@ -68,7 +68,7 @@ namespace Fantasy.Studio.Controls
                 {
 
                     ToolBoxItemModel itemModel = (ToolBoxItemModel)this.ListView.SelectedItem;
-                    DoDragDropEventArgs args = new DoDragDropEventArgs();
+                    DoDragDropEventArgs args = new DoDragDropEventArgs(itemModel.CommandParameter);
                     itemModel.DoDragDrop.HandleEvent(this.ListView, args);
                     if (args.AllowedEffects != DragDropEffects.None && args.Data != null)
                     {

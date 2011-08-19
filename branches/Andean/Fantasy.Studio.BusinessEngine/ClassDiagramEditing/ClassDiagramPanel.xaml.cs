@@ -60,6 +60,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             rs.AddService(this._model.ViewModel);
             rs.AddService(this.diagramControl);
             rs.AddService(this.diagramControl.View);
+            rs.AddService(this);
+
             rs.AddService(this._entity);
 
             return rs;
@@ -97,6 +99,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
 
             this._model = new ClassDiagramPanelModel();
+            this._model.Site = this.CreateChildSite();
 
             this._entity = (BusinessClassDiagram)data;
 
@@ -269,6 +272,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 e.Handled = true;
             }
         }
+
+
+
 
        
        

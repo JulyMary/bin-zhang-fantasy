@@ -40,7 +40,12 @@
             <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassFolderClassesProvider}" />
         </TreeNode>
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
-                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
+                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
+                  ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
+
 
         </TreeNode>
         <TreeNode ID="classDiagram" TargetType="{x:Type be:BusinessClassDiagram}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png" 
@@ -206,7 +211,11 @@
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
             <TreeNodeChildProvider ID="classes" Provider="{New sbe:PackageClassesProvider}"/>
         </TreeNode>
-        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
+        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}"
+                  >
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
 
         </TreeNode>
     </Extension>
@@ -225,11 +234,17 @@
         <Object ID="newclass">
             <sbe:DragNewBusinessClassDataOverHandler/>
         </Object>
+        <Object ID="existclass">
+            <sbe:DragBusinessClassOverHandler />
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers">
         <Object ID="newclass">
             <sbe:DragNewBusinessClassDataOverHandler/>
+        </Object>
+        <Object ID="existclass">
+            <sbe:DragBusinessClassOverHandler />
         </Object>
     </Extension>
 
@@ -240,6 +255,9 @@
     <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/drophandlers">
         <Object ID="newclass">
             <sbe:DragNewBusinessClassDataDropHandler/>
+        </Object>
+        <Object ID="existclass">
+            <sbe:DragBusinessClassDropHandler />
         </Object>
     </Extension>
 </AddIn>

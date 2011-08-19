@@ -27,7 +27,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
                 if (this.Site != null)
                 {
                     this.TreeViewModel = new ExtendableTreeViewModel("fantasy/studio/businessengine/classviewpad/treeview", this, this.Site);
-                    BusinessClass rootClass = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessClass>(BusinessClass.RootClassId);
+                    BusinessClass rootClass = this.Site.GetRequiredService<IEntityService>().GetRootClass();
                     this.TreeViewModel.Items.Add(rootClass);
                 }
             }

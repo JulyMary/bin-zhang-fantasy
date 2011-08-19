@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
                 }
             }
 
-            BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);
+            BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().GetRootPackage();
             this.TreeViewModel.Items.Add(rootPackage);
         }
        

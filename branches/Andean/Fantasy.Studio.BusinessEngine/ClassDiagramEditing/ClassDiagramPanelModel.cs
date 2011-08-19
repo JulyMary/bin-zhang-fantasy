@@ -6,7 +6,7 @@ using Syncfusion.Windows.Diagram;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
-    public class ClassDiagramPanelModel
+    public class ClassDiagramPanelModel : ObjectWithSite
     {
         public ClassDiagramPanelModel()
         {

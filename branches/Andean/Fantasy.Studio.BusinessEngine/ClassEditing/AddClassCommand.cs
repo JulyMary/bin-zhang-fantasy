@@ -32,11 +32,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             BusinessPackage parent = (BusinessPackage)parameter;
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessClass @class = es.CreateEntity<BusinessClass>();
+            BusinessClass @class = es.AddBusinessClass(parent);
            
-            @class.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessClassName, parent.Classes.Select(c=>c.Name));
-            parent.Classes.Add(@class);
-            @class.Package = parent;
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
             documentService.OpenView(@class); 
         }

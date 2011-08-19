@@ -13,7 +13,25 @@
     <Style TargetType="{x:Type sf:Node}" x:Key="{ComponentResourceKey 
         TypeInTargetAssembly={x:Type l:BusinessClass},
         ResourceId=BusinessClassDSK}">
-
+        <Style.Resources>
+            <Style x:Key="HideThumbTemplate" TargetType="sf:ResizerThumb" >
+                <Setter Property="Template" Value="{x:Null}"/>
+            </Style>
+            <Style x:Key="ResizerThumbTemplate" TargetType="sf:ResizerThumb">
+                <Setter Property="SnapsToDevicePixels" Value="true"/>
+                <Setter Property="OverridesDefaultStyle" Value="true"/>
+                <Setter Property="IsTabStop" Value="false"/>
+                <Setter Property="Focusable" Value="false"/>
+                <Setter Property="Cursor" Value="SizeWE"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Rectangle x:Name="PART_ReseizerThumb" Width="8" Height="8"  Stroke="Black" StrokeThickness="1"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
         <Setter Property="GripperStyle" Value="{StaticResource GripperTemplate}"/>
         <Setter Property="MinWidth" Value="20"/>
         <Setter Property="MinHeight" Value="20"/>
@@ -34,7 +52,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="0">
                         <Grid DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}" IsHitTestVisible="True">
-                            <sf:Resizer IsHitTestVisible="{TemplateBinding AllowResize}" x:Name="PART_Resizer"  Visibility="Collapsed" />
+                           
                             <ContentPresenter  
 										  Visibility="Visible" 
 										  HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
@@ -44,8 +62,9 @@
 										  ContentTemplate="{TemplateBinding ContentTemplate}"
 										  ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
                                          
-                                >
+                            >
                             </ContentPresenter>
+                            <sf:Resizer IsHitTestVisible="{TemplateBinding AllowResize}" x:Name="PART_Resizer"  Visibility="Collapsed" />
                             <ItemsControl ItemsSource="{Binding Path=Ports, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:Node}}}" x:Name="PART_PortItems" Visibility="Collapsed">
 
                                 <ItemsControl.ItemsPanel>
@@ -56,10 +75,6 @@
                             </ItemsControl>
 
                             <Border BorderThickness="2" Name="PART_ConectorOver" Visibility="Collapsed" IsHitTestVisible="False" BorderBrush="Red" Background="Transparent" />
-                            <sf:Gripper Style="{Binding Path=GripperStyle, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:Node}}, Mode=TwoWay}"  
-                                           Visibility="{Binding Path=GripperVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:Node}}, Mode=TwoWay}"   
-                                           MeasurementUnits="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:DiagramView}},Path=Page.MeasurementUnits,Mode=TwoWay}"
-                                           IsHitTestVisible="True" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -138,9 +153,6 @@
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="PART_PortItems" Property="Visibility" Value="Collapsed"/>
                         </MultiDataTrigger>
-
-                       
-
                         <Trigger Property="IsDragConnectionOver"  Value="True">
                             <Setter Property="Visibility" TargetName="PART_ConectorOver"  Value="Visible">
                             </Setter>
@@ -150,8 +162,29 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="LeftResizer" >
+            <Setter.Value>
+                <Style BasedOn="{StaticResource ResizerThumbTemplate}" TargetType="sf:ResizerThumb">
+                    <Setter Property="sf:ResizerThumb.Margin" Value="-8,0,0,0" />
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RightResizer" >
+            <Setter.Value>
+                <Style BasedOn="{StaticResource ResizerThumbTemplate}" TargetType="sf:ResizerThumb">
+                    <Setter Property="sf:ResizerThumb.Margin" Value="0,0,-8,0" />
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TopResizer" Value="{StaticResource HideThumbTemplate}" />
+        <Setter Property="BottomResizer" Value="{StaticResource HideThumbTemplate}" />
+        <Setter Property="TopLeftCornerResizer" Value="{StaticResource HideThumbTemplate}" />
+        <Setter Property="TopRightCornerResizer" Value="{StaticResource HideThumbTemplate}" />
+        <Setter Property="BottomLeftCornerResizer" Value="{StaticResource HideThumbTemplate}" />
+        <Setter Property="BottomRightCornerResizer" Value="{StaticResource HideThumbTemplate}" />
     </Style>
-
-   
-
 </ResourceDictionary>

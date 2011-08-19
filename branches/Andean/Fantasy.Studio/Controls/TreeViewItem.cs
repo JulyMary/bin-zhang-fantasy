@@ -48,8 +48,6 @@ namespace Fantasy.Studio.Controls
 
         public IEnumerable<TreeViewItem> TreeViewItems { get; private set; }
 
-       
-
-      
+        public IEventHandler<DoDragDropEventArgs> DoDragDrop { get; set; }
     }
 }
