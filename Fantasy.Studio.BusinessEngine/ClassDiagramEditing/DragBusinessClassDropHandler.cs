@@ -4,20 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using Syncfusion.Windows.Diagram;
-using System.Windows.Controls;
 using be = Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
-    public class DragNewBusinessClassDataDropHandler : ObjectWithSite, IEventHandler<DragEventArgs>
+    public class DragBusinessClassDropHandler  : ObjectWithSite, IEventHandler<DragEventArgs>
     {
         #region IEventHandler<DragEventArgs> Members
 
         public void HandleEvent(object sender, DragEventArgs e)
         {
-            DragNewBusinessClassData data = (DragNewBusinessClassData)e.Data.GetData(typeof(DragNewBusinessClassData));
-            if (data != null)
+            be.BusinessClass  @class = (be.BusinessClass)e.Data.GetData(typeof(be.BusinessClass));
+            if (@class != null)
             {
                 e.Effects = DragDropEffects.Copy;
                 e.Handled = true;
@@ -29,9 +28,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 be.BusinessClassDiagram cd = this.Site.GetRequiredService<be.BusinessClassDiagram>();
 
-                be.BusinessClass @class = this.Site.GetRequiredService<IEntityService>().AddBusinessClass(cd.Package);
-
-                Shapes.BusinessClassModel cm = new Shapes.BusinessClassModel() { Site = this.Site, Entity = @class };
+                Shapes.BusinessClassModel cm = new Shapes.BusinessClassModel() { Site = this.Site, Entity = @class, IsShortCut=cd.Package != @class.Package};
                 Shapes.BusinessClass c = new Shapes.BusinessClass() { DataContext = cm, Site = this.Site };
 
                 Node newNode = new Node(Guid.NewGuid())
@@ -58,4 +55,5 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         #endregion
     }
+   
 }

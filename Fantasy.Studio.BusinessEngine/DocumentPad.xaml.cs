@@ -42,6 +42,11 @@ namespace Fantasy.Studio.BusinessEngine
             monitor.CurrentSelectionService = this._selectionService;
         }
 
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            base.OnMouseLeftButtonDown(e);
+        }
+
         #region IPadContent Members
 
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

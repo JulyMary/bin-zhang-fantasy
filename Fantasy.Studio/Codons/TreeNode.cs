@@ -41,6 +41,10 @@ namespace Fantasy.Studio.Codons
         [Template("_collapsed")]
         public ICommand Collapsed { get; set; }
 
+        internal ObjectBuilder _doDragDrop = null;
+        [Template("_doDragDrop")]
+        public IEventHandler<DoDragDropEventArgs> DoDragDrop { get; set; }
+
 
         public string ContextMenu { get; set; }
 

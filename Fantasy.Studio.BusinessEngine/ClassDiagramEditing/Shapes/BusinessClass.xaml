@@ -7,6 +7,15 @@
              xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes" 
              mc:Ignorable="d" 
              d:DesignHeight="170" d:DesignWidth="187" >
+    <UserControl.Resources>
+        <DataTemplate x:Key="ClassToolTip">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="{Binding Name}" Padding="3,3,3,3" />
+                <TextBlock Text="{Binding Package.FullName}" Padding="3,3,3,3"  />
+            </StackPanel>
+        </DataTemplate>
+      
+    </UserControl.Resources>
         <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3" Grid.RowSpan="2" Margin="0,0,0,0">
             <Border.Background>
                 <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
@@ -14,36 +23,38 @@
                     <GradientStop Color="White" Offset="1" />
                 </LinearGradientBrush>
             </Border.Background>
-        <l:NodeExpander x:Name="outerExpander" IsExpanded="True" >
+        <l:NodeExpander x:Name="outerExpander" IsExpanded="{Binding IsExpanded, Mode=TwoWay}" >
             <l:NodeExpander.Header >
                 <Grid>
-                    <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
-                    <TextBlock Height="23" Margin="28,6,6,0" Name="textBlock1" Text="TextBlock" VerticalAlignment="Top" />
+                    <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
+                    <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/Shortcut.png"
+                           Visibility="{Binding IsShortCut, Converter={x:Static f:VisibilityConverter.Collapsed}}"/>
+                    <TextBlock Height="23" Margin="28,6,6,0" Text="{Binding Entity.Name }"  VerticalAlignment="Top">
+                        <TextBlock.ToolTip>
+                            <ToolTip DataContext="{Binding Entity}" ContentTemplate="{StaticResource ClassToolTip }" />
+                        </TextBlock.ToolTip>
+                    </TextBlock>
                     <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
-                    <TextBlock Height="23" Margin="50,22,7,0" Name="textBlock2" Text="TextBlock" VerticalAlignment="Top" />
+                    <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding Entity.ParentClass.Name}" VerticalAlignment="Top">
+                        <TextBlock.ToolTip>
+                             <ToolTip DataContext="{Binding Entity.ParentClass}" ContentTemplate="{StaticResource ClassToolTip }" />
+                        </TextBlock.ToolTip>
+                    </TextBlock>
                 </Grid>
             </l:NodeExpander.Header>
                 
             <StackPanel Orientation="Vertical">
-                <Expander Header="Properties" IsExpanded="True" Background="#FFDDD7D4">
-                    <ListBox>
-                        <ListBoxItem>
-                            <TextBlock>hello</TextBlock>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <TextBlock>hello</TextBlock>
-                        </ListBoxItem>
+                <Expander Header="Properties" IsExpanded="{Binding IsPropertiesExpanded, Mode=TwoWay}" Background="#FFDDD7D4">
+                    <ListBox ItemsSource="{Binding Entity.Properties}" MinHeight="23">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
                     </ListBox>
                 </Expander>
-                <Expander Header="Relations" IsExpanded="True"  Background="#FFDDD7D4" >
-                    <ListBox>
-                    <ListBoxItem>
-                        <TextBlock>hello</TextBlock>
-                    </ListBoxItem>
-                    <ListBoxItem>
-                        <TextBlock>hello</TextBlock>
-                        </ListBoxItem>
-                    </ListBox>
+                <Expander Header="Relations" IsExpanded="{Binding IsRelationsExpanded, Mode=TwoWay}"  Background="#FFDDD7D4" >
+       
                 </Expander>
             </StackPanel>
         </l:NodeExpander>

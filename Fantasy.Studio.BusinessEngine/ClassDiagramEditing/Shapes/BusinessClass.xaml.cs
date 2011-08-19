@@ -11,25 +11,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 {
     /// <summary>
     /// Interaction logic for BusinessClass.xaml
     /// </summary>
-    public partial class BusinessClass : UserControl
+    public partial class BusinessClass : UserControl, IObjectWithSite
     {
         public BusinessClass()
         {
             InitializeComponent();
         }
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-
-            
-        }
+        [Browsable(false)]
+        public IServiceProvider Site { get; set; }
     }
 
    

@@ -17,6 +17,8 @@ namespace Fantasy.BusinessEngine.Services
         NHibernate.Cfg.Configuration Configuration { get; }
 
         T CreateEntity<T>() where T : IEntity;
+
+
     }
 
 

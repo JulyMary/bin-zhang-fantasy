@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             this.Site = site;
             this.TreeViewModel = new ExtendableTreeViewModel("fantasy/studio/businessengine/businessclasspicker/treeview", this, site);
-            BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);
+            BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().GetRootPackage();
             this.TreeViewModel.Items.Add(rootPackage);
         }
        

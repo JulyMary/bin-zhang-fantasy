@@ -22,6 +22,8 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
+
+
         private static Dictionary<ISession, int> _updateLevel = new Dictionary<ISession, int>();
 
 
@@ -74,6 +76,16 @@ namespace Fantasy.BusinessEngine.Services
                     _updateLevel[session] = level;
                 }
             }
+        }
+
+        public static BusinessClass GetRootClass(this IEntityService es)
+        {
+            return es.DefaultSession.Get<BusinessClass>(BusinessClass.RootClassId);
+        }
+
+        public static BusinessPackage GetRootPackage(this IEntityService es)
+        {
+            return es.DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);  
         }
     }
 }

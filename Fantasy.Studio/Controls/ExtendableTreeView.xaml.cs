@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Fantasy.Windows;
 
 namespace Fantasy.Studio.Controls
 {
@@ -73,6 +74,56 @@ namespace Fantasy.Studio.Controls
             }
 
             return FindTreeViewItem(VisualTreeHelper.GetParent(source));
+        }
+
+       
+
+        private bool _startDraging = false;
+        private void TreeView_PreviewMouseButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Controls.TreeViewItem container = (System.Windows.Controls.TreeViewItem)this.GetContainerAtPoint<System.Windows.Controls.TreeViewItem>(e.GetPosition(this));
+
+            if(container != null)
+            {
+               
+                TreeViewItem data = (TreeViewItem)container.DataContext;
+                if(data.DoDragDrop != null)
+                {
+                    _startDraging = true;
+                    container.IsSelected = true;
+
+
+                }
+            }
+        }
+
+        private void TreeView_MouseMove(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                if (_startDraging && e.LeftButton == MouseButtonState.Pressed)
+                {
+
+                    TreeViewItem itemModel = (TreeViewItem)this.SelectedItem;
+                    DoDragDropEventArgs args = new DoDragDropEventArgs(itemModel.DataContext);
+                   
+                    itemModel.DoDragDrop.HandleEvent(this, args);
+                    if (args.AllowedEffects != DragDropEffects.None && args.Data != null)
+                    {
+                        DragDrop.DoDragDrop(this, args.Data, args.AllowedEffects);
+                    }
+                }
+
+            }
+            finally
+            {
+                _startDraging = false;
+            }
+        }
+
+        private void TreeView_PreviewMouseButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _startDraging = false;
         }
     }
 }
