@@ -70,12 +70,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramData.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramPanel.xaml.cs">
       <DependentUpon>ClassDiagramPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassDiagramEditing\ClassDiagramPanelModel.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramViewModel.cs" />
+    <Compile Include="ClassDiagramEditing\ClassNodeData.cs" />
+    <Compile Include="ClassDiagramEditing\Consts.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessClassDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessClassOverHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassData.cs" />

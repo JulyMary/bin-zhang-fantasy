@@ -18,6 +18,9 @@ using Fantasy.BusinessEngine.Services;
 using Fantasy.AddIns;
 using System.ComponentModel.Design;
 using Fantasy.Studio.Services;
+using Fantasy.XSerialization;
+using System.Xml.Linq;
+using Syncfusion.Windows.Diagram;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -104,7 +107,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._entity = (BusinessClassDiagram)data;
 
             //TODO: deserialize diagrammodel from entity
-
+            this.LoadDiagram();
 
             this._entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
@@ -115,6 +118,53 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this.DataContext = this._model;
             }
             
+        }
+
+
+
+
+
+        private void LoadDiagram()
+        {
+            if (!string.IsNullOrEmpty(this._entity.Diagram))
+            {
+                XSerializer ser = new XSerializer(typeof(ClassDiagramData));
+                XElement element = XElement.Parse(this._entity.Diagram);
+
+                ClassDiagramData diagramData = (ClassDiagramData)ser.Deserialize(element);
+                IEntityService es = this.Site.GetRequiredService<IEntityService>();
+
+                foreach (ClassNodeData classData in diagramData.Classes)
+                {
+                    BusinessClass @class = es.DefaultSession.Get<BusinessClass>(classData.ClassId);
+                    if (@class != null)
+                    {
+
+                        Shapes.BusinessClassModel cm = new Shapes.BusinessClassModel() { Site = this.CreateChildSite(), Entity = @class, IsShortCut = this._entity.Package != @class.Package };
+                        Shapes.BusinessClass c = new Shapes.BusinessClass() { DataContext = cm, Site = this.Site };
+
+                        Node newNode = new Node(Guid.NewGuid())
+                        {
+                            LabelVisibility = Visibility.Collapsed,
+                            Height = double.NaN,
+                            Width = classData.Width,
+                            OffsetX = classData.Left,
+                            OffsetY = classData.Top,
+                            Content = c
+                        };
+
+                        newNode.SetResourceReference(FrameworkElement.StyleProperty, new ComponentResourceKey(typeof(Shapes.BusinessClass), "BusinessClassDSK"));
+                        this._model.DiagramModel.Nodes.Add(newNode);
+                    }
+                }
+
+            }
+
+        }
+
+        private void SaveDiagram()
+        {
+
         }
 
         void Entity_PropertyChanged(object sender, Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs e)
