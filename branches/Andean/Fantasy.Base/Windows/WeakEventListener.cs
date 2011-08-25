@@ -9,6 +9,26 @@ namespace Fantasy.Windows
     public class WeakEventListener : IWeakEventListener
     {
 
+        public override bool Equals(object obj)
+        {
+            WeakEventListener we = obj as WeakEventListener;
+            if (we != null)
+            {
+                return we._handler == this._handler;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this._handler.GetHashCode();
+        }
+
+
+
         public WeakEventListener(Func<Type, object, EventArgs, bool> handler)
         {
             if (handler == null)
@@ -28,5 +48,16 @@ namespace Fantasy.Windows
         }
 
         #endregion
+
+
+        public static bool operator == (WeakEventListener x, WeakEventListener y)
+        {
+            return Object.Equals(x, y);
+        }
+
+        public static bool operator !=(WeakEventListener x, WeakEventListener y)
+        {
+            return ! Object.Equals(x, y);
+        }
     }
 }

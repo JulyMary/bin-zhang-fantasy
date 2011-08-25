@@ -18,15 +18,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
     /// <summary>
     /// Interaction logic for BusinessClass.xaml
     /// </summary>
-    public partial class BusinessClass : UserControl, IObjectWithSite
+    public partial class BusinessClass : UserControl
     {
         public BusinessClass()
         {
             InitializeComponent();
         }
 
-        [Browsable(false)]
-        public IServiceProvider Site { get; set; }
+      
     }
 
    
