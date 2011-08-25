@@ -70,14 +70,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
-    <Compile Include="ClassDiagramEditing\ClassDiagramData.cs" />
+    <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramPanel.xaml.cs">
       <DependentUpon>ClassDiagramPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassDiagramEditing\ClassDiagramPanelModel.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramViewModel.cs" />
-    <Compile Include="ClassDiagramEditing\ClassNodeData.cs" />
+    <Compile Include="ClassDiagramEditing\Model\ClassNode.cs" />
     <Compile Include="ClassDiagramEditing\Consts.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessClassDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessClassOverHandler.cs" />
@@ -87,7 +87,6 @@
     <Compile Include="ClassDiagramEditing\Shapes\BusinessClass.xaml.cs">
       <DependentUpon>BusinessClass.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ClassDiagramEditing\Shapes\BusinessClassModel.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\NodeExpander.cs" />
     <Compile Include="ClassEditing\AddClassCommand.cs" />
     <Compile Include="EntityServiceExtension.cs" />
@@ -277,6 +276,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

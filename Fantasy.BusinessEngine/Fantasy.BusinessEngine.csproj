@@ -50,6 +50,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessClass.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Collections\IObservableSet.cs" />
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
+    <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
     <Compile Include="Events\DefaultEntityCreateHandler.cs" />
     <Compile Include="Events\DefaultEntityDeletedHandler.cs" />

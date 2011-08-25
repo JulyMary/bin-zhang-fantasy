@@ -163,6 +163,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+
         private EntityState _previousState = EntityState.New;
         public virtual EntityState PreviousState
         {
