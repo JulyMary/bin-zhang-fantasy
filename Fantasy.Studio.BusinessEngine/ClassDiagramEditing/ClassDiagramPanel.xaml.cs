@@ -32,6 +32,48 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public ClassDiagramPanel()
         {
             InitializeComponent();
+
+            this._selectionService.SelectionChanged += new EventHandler(SelectionService_SelectionChanged);
+            this.diagramView.SelectionList.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(ViewSelectionCollectionChanged);
+        }
+
+
+        private bool _selecting = false;
+
+        void ViewSelectionCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        void SelectionService_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!this._selecting)
+            {
+
+               
+
+                object[] selected = this._selectionService.GetSelectedComponents().Cast<object>().ToArray();
+
+                foreach (Shapes.ClassNode node in this.diagramView.SelectionList)
+                {
+
+                }
+                
+                
+            }
+        }
+
+        private Node GetNodeFromObject(object obj)
+        {
+            if (obj is BusinessClass)
+            {
+                //var query = from 
+            }
+        }
+
+        private object GetObjectFromNode(Node node)
+        {
+
         }
 
       
@@ -52,15 +94,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         }
 
 
-        private ClassDiagramPanelModel _model;
+        private ClassDiagramPanelModel _viewModel;
 
 
         private IServiceProvider CreateChildSite()
         {
             Fantasy.ServiceModel.ServiceContainer rs = new ServiceModel.ServiceContainer(this.Site);
             rs.AddService(this._selectionService);
-            rs.AddService(this._model.DiagramModel);
-            rs.AddService(this._model.ViewModel);
+            rs.AddService(this._classDiagram);
+            rs.AddService(this._viewModel.ViewModel);
             rs.AddService(this.diagramControl);
             rs.AddService(this.diagramControl.View);
             rs.AddService(this);
@@ -85,7 +127,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void diagramControl_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = this._model;
+            this.DataContext = this._viewModel;
         }
 
 
@@ -97,129 +139,84 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         }
 
         private BusinessClassDiagram _entity;
+        private Model.ClassDiagram _classDiagram;
+        private ClassDiagramModelBinder _binder; 
 
         public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
         {
 
-            this._model = new ClassDiagramPanelModel();
-            this._model.Site = this.CreateChildSite();
-
+            
             this._entity = (BusinessClassDiagram)data;
 
-            //TODO: deserialize diagrammodel from entity
-            this.LoadDiagram();
+            this._classDiagram = new Model.ClassDiagram();
+            Fantasy.ServiceModel.ServiceContainer site = new ServiceModel.ServiceContainer(this.Site);
+            site.AddService(this._selectionService);
+            site.AddService(this);
+            site.AddService(this._entity);
 
-            this._entity.EntityStateChanged += new EventHandler(EntityStateChanged);
-            this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
-           
-            this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+            this._classDiagram.Site = site;
+
+            this._classDiagram.LoadDiagram(this._entity); 
+
+            this._viewModel = new ClassDiagramPanelModel();
+            this._viewModel.Site = this.CreateChildSite();
+
+            this._binder = new ClassDiagramModelBinder(this._classDiagram, this._viewModel.DiagramModel);
+
+            this._classDiagram.PropertyChanged += new PropertyChangedEventHandler(ClassDiagramPropertyChanged);
+                
+         
             if (this.IsLoaded)
             {
-                this.DataContext = this._model;
+                this.DataContext = this._viewModel;
+            }
+
+            if (this._classDiagram.EditingState == EditingState.Dirty)
+            {
+                this.OnDirtyStateChanged(EventArgs.Empty);
             }
             
         }
 
-
-
-
-
-        private void LoadDiagram()
+        void ClassDiagramPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(this._entity.Diagram))
+            if (e.PropertyName == "EditingState")
             {
-                XSerializer ser = new XSerializer(typeof(ClassDiagramData));
-                XElement element = XElement.Parse(this._entity.Diagram);
-
-                ClassDiagramData diagramData = (ClassDiagramData)ser.Deserialize(element);
-                IEntityService es = this.Site.GetRequiredService<IEntityService>();
-
-                foreach (ClassNodeData classData in diagramData.Classes)
-                {
-                    BusinessClass @class = es.DefaultSession.Get<BusinessClass>(classData.ClassId);
-                    if (@class != null)
-                    {
-
-                        Shapes.BusinessClassModel cm = new Shapes.BusinessClassModel() { Site = this.CreateChildSite(), Entity = @class, IsShortCut = this._entity.Package != @class.Package };
-                        Shapes.BusinessClass c = new Shapes.BusinessClass() { DataContext = cm, Site = this.Site };
-
-                        Node newNode = new Node(Guid.NewGuid())
-                        {
-                            LabelVisibility = Visibility.Collapsed,
-                            Height = double.NaN,
-                            Width = classData.Width,
-                            OffsetX = classData.Left,
-                            OffsetY = classData.Top,
-                            Content = c
-                        };
-
-                        newNode.SetResourceReference(FrameworkElement.StyleProperty, new ComponentResourceKey(typeof(Shapes.BusinessClass), "BusinessClassDSK"));
-                        this._model.DiagramModel.Nodes.Add(newNode);
-                    }
-                }
-
+                OnDirtyStateChanged(EventArgs.Empty);
             }
-
         }
+
 
         private void SaveDiagram()
         {
 
         }
-
-        void Entity_PropertyChanged(object sender, Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs e)
-        {
-            
-        }
-
-        void EntityStateChanged(object sender, EventArgs e)
-        {
-            this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
-            CommandManager.InvalidateRequerySuggested();
-        }
-
-        private EditingState _dirtyState = EditingState.Clean;
+ 
         public EditingState DirtyState
         {
-            get { return _dirtyState; }
-            set
+            get
             {
-                if (_dirtyState != value)
-                {
-                    this._dirtyState = value;
-                    this.OnDirtyStateChanged(EventArgs.Empty);
-                }
+                return this._classDiagram != null ? this._classDiagram.EditingState : EditingState.Clean;  
             }
+           
         }
 
         public event EventHandler DirtyStateChanged;
 
         protected virtual void OnDirtyStateChanged(EventArgs e)
         {
+            
             if (this.DirtyStateChanged != null)
             {
                 this.DirtyStateChanged(this, e);
             }
+            CommandManager.InvalidateRequerySuggested();
         }
 
         public void Save()
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
-
-            session.BeginUpdate();
-            try
-            {
-                //TODO: serialize diagram model to entity
-
-                session.SaveOrUpdate(this._entity);
-                session.EndUpdate(true);
-            }
-            catch
-            {
-                session.EndUpdate(false);
-                throw;
-            }
-            this.DirtyState = EditingState.Clean;
+            this._classDiagram.Save();
+            this._classDiagram.EditingState = EditingState.Clean; 
         }
 
         public new UIElement Content
@@ -239,8 +236,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public void Closed()
         {
-            this._entity.EntityStateChanged -= new EventHandler(EntityStateChanged);
-            this._entity.PropertyChanged -= new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
+            this._classDiagram.PropertyChanged -= new PropertyChangedEventHandler(ClassDiagramPropertyChanged);
         }
 
         #endregion
