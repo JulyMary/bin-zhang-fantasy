@@ -21,38 +21,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             {
                 e.Effects = DragDropEffects.Copy;
                 e.Handled = true;
-
-                
                 DiagramView view = this.Site.GetRequiredService<DiagramView>();
-                DiagramModel model = this.Site.GetRequiredService<DiagramModel>();
+                Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
                 Point p = e.GetPosition(view.Page);
-
                 be.BusinessClassDiagram cd = this.Site.GetRequiredService<be.BusinessClassDiagram>();
 
                 be.BusinessClass @class = this.Site.GetRequiredService<IEntityService>().AddBusinessClass(cd.Package);
 
-                Shapes.BusinessClassModel cm = new Shapes.BusinessClassModel() { Site = this.Site, Entity = @class };
-                Shapes.BusinessClass c = new Shapes.BusinessClass() { DataContext = cm, Site = this.Site };
-
-                Node newNode = new Node(Guid.NewGuid())
-                {
-                    LabelVisibility = Visibility.Collapsed,
-                    Height = double.NaN,
-                    Width = 180,
-                    OffsetX = p.X,
-                    OffsetY = p.Y,
-                    AllowRotate = false,
-                    Content = c
-                };
-
-                newNode.SetResourceReference(FrameworkElement.StyleProperty, new ComponentResourceKey(typeof(Shapes.BusinessClass), "BusinessClassDSK"));
-                model.Nodes.Add(newNode);
-                view.SelectionList.Clear();
-                view.SelectionList.Add(newNode);
-                (newNode as FrameworkElement).Focus();
-
-               
-               
+                Model.ClassNode node = new Model.ClassNode() { Left = p.X, Top = p.Y, ClassId = @class.Id, Entity = @class };
+                diagram.Classes.Add(node);
             }
         }
 

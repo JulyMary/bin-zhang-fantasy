@@ -24,9 +24,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 	    }
 
         [XAttribute("left")]
-        private int _left = 0;
-        
-        public int Left
+        private double _left = 0;
+
+        public double Left
         {
             get { return _left; }
             set
@@ -40,8 +40,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         }
 
         [XAttribute("top")]
-        private int _top = 0;
-        public int Top
+        private double _top = 0;
+        public double Top
         {
             get { return _top; }
             set
@@ -57,9 +57,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         
 
         [XAttribute("width")]
-        private int _width = 180;
+        private double _width = 180;
 
-        public int Width
+        public double Width
         {
             get { return _width; }
             set
@@ -169,7 +169,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         private void AttatchEntity(BusinessClass entity)
         {
            
-            this.Entity = entity;
+            //this.Entity = entity;
 
             EditingState state = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
             EntityStateChangedEventManager.AddListener(this.Entity, this._classListener);

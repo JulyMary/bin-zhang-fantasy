@@ -95,9 +95,9 @@
 
     <Extension Path="fantasy/studio/businessengine/classdiagrameditor/commandbindings">
         <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
+            <!--<CommandBinding.Conditional>
                 <OwnerState State="Dirty" StateMember="DirtyState"/>
-            </CommandBinding.Conditional>
+            </CommandBinding.Conditional>-->
         </CommandBinding>
     </Extension>
 

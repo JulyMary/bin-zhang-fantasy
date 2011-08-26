@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramModelBinder.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramPanel.xaml.cs">
@@ -84,8 +85,8 @@
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassData.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassDataDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassDataOverHandler.cs" />
-    <Compile Include="ClassDiagramEditing\Shapes\BusinessClass.xaml.cs">
-      <DependentUpon>BusinessClass.xaml</DependentUpon>
+    <Compile Include="ClassDiagramEditing\Shapes\ClassNode.xaml.cs">
+      <DependentUpon>ClassNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassDiagramEditing\Shapes\NodeExpander.cs" />
     <Compile Include="ClassEditing\AddClassCommand.cs" />
@@ -206,6 +207,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\Shortcut.png" />
+    <Page Include="ClassDiagramEditing\Shapes\ClassNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -221,10 +226,6 @@
     <Resource Include="images\minus.ico" />
     <Resource Include="images\plus.ico" />
     <Page Include="ClassDiagramEditing\ClassDiagramPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ClassDiagramEditing\Shapes\BusinessClass.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

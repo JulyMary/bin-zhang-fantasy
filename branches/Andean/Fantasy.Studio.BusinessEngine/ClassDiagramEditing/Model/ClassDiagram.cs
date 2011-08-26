@@ -30,6 +30,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public void LoadDiagram(BusinessClassDiagram entity)
         {
             this.Entity = entity;
+
+            this.EditingState = Entity.EntityState == EntityState.Clean ? EditingState.Clean : Studio.EditingState.Dirty;
+
             if (!string.IsNullOrEmpty(this.Entity.Diagram))
             {
                 _deserializing = true;
@@ -108,20 +111,26 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         void ClassesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-
+            
             if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
             {
-                foreach (ClassNode node in e.OldItems)
+                if (e.OldItems != null)
                 {
-                    node.Diagram = null;
-                    node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
+                    foreach (ClassNode node in e.OldItems)
+                    {
+                        node.Diagram = null;
+                        node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
+                    }
                 }
             }
-            foreach (ClassNode node in e.NewItems)
+            if (e.NewItems != null)
             {
-                node.Diagram = this;
-                node.Site = this.Site;
-                node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
+                foreach (ClassNode node in e.NewItems)
+                {
+                    node.Diagram = this;
+                    node.Site = this.Site;
+                    node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
+                }
             }
                  
             if (!this._deserializing)
@@ -160,8 +169,5 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
-
-       
-      
     }
 }

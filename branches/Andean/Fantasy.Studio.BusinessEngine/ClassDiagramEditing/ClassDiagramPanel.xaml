@@ -3,12 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:f="urn:schema-fantasy:xaml"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=diagramControl}">
     <Grid>
         <sf:DiagramControl Model="{Binding DiagramModel}" x:Name="diagramControl" Loaded="diagramControl_Loaded">
             <sf:DiagramControl.View>
-                <sf:DiagramView  IsZoomEnabled="True" Bounds="0,0,1200,1200" Name="diagramView"
+                <sf:DiagramView FocusManager.IsFocusScope="False"   IsZoomEnabled="True" Bounds="0,0,1200,1200" Name="diagramView"
                     DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop"></sf:DiagramView>
             </sf:DiagramControl.View>
         </sf:DiagramControl>

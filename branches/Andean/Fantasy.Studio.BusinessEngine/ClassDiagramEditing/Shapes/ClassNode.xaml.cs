@@ -11,22 +11,27 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 {
     /// <summary>
-    /// Interaction logic for BusinessClass.xaml
+    /// Interaction logic for ClassNode.xaml
     /// </summary>
-    public partial class BusinessClass : UserControl
+    public partial class ClassNode : Syncfusion.Windows.Diagram.Node
     {
-        public BusinessClass()
+        static ClassNode()
         {
-            InitializeComponent();
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(ClassNode), new FrameworkPropertyMetadata(typeof(ClassNode)));
+
         }
 
-      
-    }
 
-   
+        public ClassNode()
+        {
+            InitializeComponent();
+
+        }
+
+       
+    }
 }

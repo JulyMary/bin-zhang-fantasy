@@ -10,9 +10,7 @@
     </ResourceDictionary.MergedDictionaries>
    
     <!-- Standard Business Class Node style-->
-    <Style TargetType="{x:Type sf:Node}" x:Key="{ComponentResourceKey 
-        TypeInTargetAssembly={x:Type l:BusinessClass},
-        ResourceId=BusinessClassDSK}">
+    <Style TargetType="{x:Type l:ClassNode}" x:Key="{x:Type l:ClassNode}" >
         <Style.Resources>
             <Style x:Key="HideThumbTemplate" TargetType="sf:ResizerThumb" >
                 <Setter Property="Template" Value="{x:Null}"/>
