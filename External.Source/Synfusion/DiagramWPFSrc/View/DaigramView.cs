@@ -679,7 +679,7 @@ namespace Syncfusion.Windows.Diagram
             this.Page = new DiagramPage();
             this.Page.Loaded += new RoutedEventHandler(Page_Loaded);
             this.Page.Focusable = true;
-            FocusManager.SetIsFocusScope(this.Page, true);
+            FocusManager.SetIsFocusScope(this.Page, false);
             this.Page.Focus();
             DiagramCommandManager d = new DiagramCommandManager(this);
             this.AllowDrop = true;

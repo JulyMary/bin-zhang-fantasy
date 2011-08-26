@@ -1070,7 +1070,7 @@
     <Style TargetType="{x:Type local:DiagramView}">
         <Setter Property="BorderThickness" Value="0"></Setter>
         <Setter Property="BorderBrush" Value="Black"></Setter>
-        <Setter Property="FocusManager.IsFocusScope" Value="True" />
+        <Setter Property="FocusManager.IsFocusScope" Value="False" />
         <Setter Property="Background" Value="White"/>
         <Setter Property="Template">
             <Setter.Value>
