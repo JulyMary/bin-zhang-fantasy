@@ -22,10 +22,10 @@ namespace Syncfusion.Windows.Diagram
     /// <summary>
     /// Collection, used to store <see cref="Node"/> objects.
     /// </summary>
-    public class NodeCollection : IList, IEnumerable
+    public class NodeCollection : IList, IEnumerable, INotifyCollectionChanged
     {
 
-        internal event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
 
         //private NotifyCollectionChangedEventHandler handler;
 

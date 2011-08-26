@@ -436,7 +436,7 @@ namespace Syncfusion.Windows.Diagram
             this.AllowDrop = true;
             this.Focus();
             this.Focusable = true;
-            FocusManager.SetIsFocusScope(this, true);
+            FocusManager.SetIsFocusScope(this, false);
             //DiagramViewGrid dvg = new DiagramViewGrid();
             //this.Children.Add(dvg);
             this.Loaded += new RoutedEventHandler(DiagramPage_Loaded);

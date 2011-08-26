@@ -943,7 +943,7 @@ namespace Syncfusion.Windows.Diagram
 
                 m_editingItem = item;
                 item.Focus();
-                FocusManager.SetIsFocusScope(item, true);
+                FocusManager.SetIsFocusScope(item, false);
                 foreach (Visual visual in VisualUtils.EnumChildrenOfType(item, typeof(ContentPresenter)))
                 {
                     if ((visual as ContentPresenter).Name == "Content")
