@@ -12,6 +12,8 @@ namespace Fantasy.AddIns
 
         public DefaultAddInTreeNode()
         {
+            this.InsertAfter = new string[0];
+            this.InsertBefore = new string[0];
             this.ChildNodes.Inserted += new EventHandler<CollectionEventArgs<DefaultAddInTreeNode>>(ChildNodes_Inserted);
         }
 
@@ -152,6 +154,7 @@ namespace Fantasy.AddIns
                 {
                     rs = afterOrders.Max() + 1;
                 }
+                order[node] = rs;
                 return rs;
             }
         }
@@ -161,7 +164,7 @@ namespace Fantasy.AddIns
             Dictionary<DefaultAddInTreeNode, List<string>> rs = new Dictionary<DefaultAddInTreeNode, List<string>>();
             foreach (DefaultAddInTreeNode node in this.ChildNodes)
             {
-                rs.Add(node, new List<string>());
+                rs.Add(node, new List<string>(node.InsertAfter));
             }
             foreach (DefaultAddInTreeNode node in this.ChildNodes)
             {

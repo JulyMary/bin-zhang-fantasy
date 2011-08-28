@@ -33,6 +33,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
             this.EditingState = Entity.EntityState == EntityState.Clean ? EditingState.Clean : Studio.EditingState.Dirty;
 
+            this.Entity.EntityStateChanged += new EventHandler(Entity_EntityStateChanged);
+
             if (!string.IsNullOrEmpty(this.Entity.Diagram))
             {
                 _deserializing = true;
@@ -63,6 +65,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+        void Entity_EntityStateChanged(object sender, EventArgs e)
+        {
+            if (this.Entity.EntityState != EntityState.Clean)
+            {
+                this.EditingState = Studio.EditingState.Dirty;
+            }
+        }
+
         public void SyncEntities()
         {
 
@@ -75,6 +85,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+        public void Unload()
+        {
+            this.Entity.EntityStateChanged -= new EventHandler(Entity_EntityStateChanged);
+
+        }
 
         public void Save()
         {
@@ -169,5 +184,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+
+       
     }
 }

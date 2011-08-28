@@ -1,6 +1,7 @@
 ﻿<AddIn  xmlns="urn:schema-fantasy:xaml"
         xmlns:be="urn:schema-fantasy:business-engine"
         xmlns:sbe="urn:schema-fantasy:studio-business-engine"
+        xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
         Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
@@ -8,6 +9,18 @@
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine"/>
     </AddIn.Import>
+
+    <Extension Path="fantasy/adaption">
+        <Adapter ID="ClassNode" InsertBefore="TypeDescriptor">
+            <Adapter.Factory>
+                <dm:ClassNodeAdapterFactory/>
+            </Adapter.Factory> 
+            <x:Type TypeName="dm:ClassNode" />
+        </Adapter>
+        
+    </Extension>
+
+
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}"/>
     </Extension>
