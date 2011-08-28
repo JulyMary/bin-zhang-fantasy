@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModelBinder.cs" />
+    <Compile Include="ClassDiagramEditing\Model\ClassNodeAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramPanel.xaml.cs">
@@ -90,6 +91,8 @@
     </Compile>
     <Compile Include="ClassDiagramEditing\Shapes\NodeExpander.cs" />
     <Compile Include="ClassEditing\AddClassCommand.cs" />
+    <Compile Include="EntityFullNameConverter.cs" />
+    <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />

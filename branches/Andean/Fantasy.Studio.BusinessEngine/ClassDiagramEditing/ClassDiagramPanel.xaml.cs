@@ -42,7 +42,29 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         void ViewSelectionCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (!this._selecting)
+            {
+                this._selecting = true;
+                try
+                {
+                    var query = from shape in this.diagramView.SelectionList.Cast<Node>() select shape.DataContext;
+
+                    if (query.Count() > 0)
+                    {
+
+                        this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
+                    }
+                    else
+                    {
+                        this._selectionService.SetSelectedComponents(new object[] {this._entity}, SelectionTypes.Replace);
+                    }
+
+                }
+                finally
+                {
+                    this._selecting = false;
+                }
+            }
         }
 
         void SelectionService_SelectionChanged(object sender, EventArgs e)
@@ -50,32 +72,35 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             if (!this._selecting)
             {
 
-               
-
-                object[] selected = this._selectionService.GetSelectedComponents().Cast<object>().ToArray();
-
-                foreach (Shapes.ClassNode node in this.diagramView.SelectionList)
+                this._selecting = true;
+                try
                 {
 
+                    object[] selected = this._selectionService.GetSelectedComponents().Cast<object>().ToArray();
+
+                    foreach (Node shape in this.diagramView.SelectionList.Cast<Node>().ToArray())
+                    {
+                        if (Array.IndexOf(selected, shape.DataContext) <= 0)
+                        {
+                            this.diagramView.SelectionList.Remove(shape);
+                        }
+                    }
+
+                    var query = from shape in this._viewModel.DiagramModel.Nodes.Cast<Node>()
+                                where Array.IndexOf(selected, shape.DataContext) >= 0 && this.diagramView.SelectionList.IndexOf(shape) < 0
+                                select shape;
+                    this.diagramView.SelectionList.AddRange(query.ToArray());
                 }
-                
+                finally
+                {
+                    this._selecting = false;
+                }
+
                 
             }
         }
 
-        private Node GetNodeFromObject(object obj)
-        {
-            if (obj is BusinessClass)
-            {
-                //var query = from 
-            }
-        }
-
-        private object GetObjectFromNode(Node node)
-        {
-
-        }
-
+       
       
         private IServiceProvider _site;
         [Browsable(false)]
@@ -175,6 +200,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             {
                 this.OnDirtyStateChanged(EventArgs.Empty);
             }
+
+            this._selectionService.SetSelectedComponents(new object[] { this._entity });
             
         }
 
@@ -187,10 +214,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         }
 
 
-        private void SaveDiagram()
-        {
-
-        }
+      
  
         public EditingState DirtyState
         {
@@ -237,6 +261,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public void Closed()
         {
             this._classDiagram.PropertyChanged -= new PropertyChangedEventHandler(ClassDiagramPropertyChanged);
+            this._classDiagram.Unload();
         }
 
         #endregion

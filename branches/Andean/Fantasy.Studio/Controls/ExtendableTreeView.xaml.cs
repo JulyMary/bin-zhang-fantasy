@@ -28,13 +28,13 @@ namespace Fantasy.Studio.Controls
 
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            TreeViewItem old = (TreeViewItem)e.OldValue;
+            TreeViewItem old = e.OldValue as TreeViewItem;
             if (old != null && old.Unselected != null && old.Unselected.CanExecute(old.DataContext))
             {
                 old.Unselected.Execute(old.DataContext);
             }
 
-            TreeViewItem @new = (TreeViewItem)e.NewValue;
+            TreeViewItem @new = e.NewValue as TreeViewItem;
 
             if (@new != null && @new.Selected != null && @new.Selected.CanExecute(@new.DataContext))
             {

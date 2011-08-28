@@ -7,6 +7,8 @@ using Syncfusion.Windows.Diagram;
 using System.Windows.Controls;
 using be = Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
+using System.ComponentModel.Design;
+using System.Windows.Threading;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -30,6 +32,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 Model.ClassNode node = new Model.ClassNode() { Left = p.X, Top = p.Y, ClassId = @class.Id, Entity = @class };
                 diagram.Classes.Add(node);
+                ISelectionService sel = this.Site.GetService<ISelectionService>();
+                if (sel != null)
+                {
+                    sel.SetSelectedComponents(new object[] { node }, SelectionTypes.Replace);
+                }
             }
         }
 
