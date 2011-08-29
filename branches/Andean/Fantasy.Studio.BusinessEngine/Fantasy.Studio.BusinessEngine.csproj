@@ -90,6 +90,10 @@
       <DependentUpon>ClassNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassDiagramEditing\Shapes\NodeExpander.cs" />
+    <Compile Include="ClassDiagramEditing\Model\PropertyNode.cs" />
+    <Compile Include="ClassDiagramEditing\Shapes\UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClassEditing\AddClassCommand.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
@@ -211,6 +215,10 @@
   <ItemGroup>
     <Resource Include="images\Shortcut.png" />
     <Page Include="ClassDiagramEditing\Shapes\ClassNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClassDiagramEditing\Shapes\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

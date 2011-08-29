@@ -8,7 +8,7 @@
          xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes" 
              mc:Ignorable="d" 
              d:DesignHeight="160" d:DesignWidth="180" OffsetX="{Binding Left, Mode=TwoWay}" OffsetY="{Binding Top, Mode=TwoWay}"
-          Width="{Binding Width, Mode=TwoWay}">
+          Width="{Binding Width, Mode=TwoWay}" DataContextChanged="Node_DataContextChanged">
     <sf:Node.Resources>
         <DataTemplate x:Key="ClassToolTip">
             <StackPanel Orientation="Vertical">
@@ -31,31 +31,76 @@
                     <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
                     <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/Shortcut.png"
                            Visibility="{Binding IsShortCut, Converter={x:Static f:VisibilityConverter.Collapsed}}"/>
-                    <TextBlock Height="23" Margin="28,6,6,0" Text="{Binding Entity.Name }"  VerticalAlignment="Top">
-                        <TextBlock.ToolTip>
-                            <ToolTip DataContext="{Binding Entity}" ContentTemplate="{StaticResource ClassToolTip }" />
-                        </TextBlock.ToolTip>
-                    </TextBlock>
+                    <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >
+                        <TextBlock Text="{Binding Entity.Name }" />
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DisplayIndex}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text=" : " />
+                            <TextBlock Text="{Binding DisplayIndex}" />
+                        </StackPanel>
+                    </StackPanel>
                     <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
                     <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding Entity.ParentClass.Name}" VerticalAlignment="Top">
-                        <TextBlock.ToolTip>
-                             <ToolTip DataContext="{Binding Entity.ParentClass}" ContentTemplate="{StaticResource ClassToolTip }" />
-                        </TextBlock.ToolTip>
                     </TextBlock>
                 </Grid>
             </l:NodeExpander.Header>
 
             <StackPanel Orientation="Vertical">
-                <Expander Header="Properties" IsExpanded="{Binding IsPropertiesExpanded, Mode=TwoWay}" Background="#FFDDD7D4">
-                    <ListBox ItemsSource="{Binding Entity.Properties}" MinHeight="23">
+                <Expander Header="Properties" IsExpanded="{Binding ShowProperties, Mode=TwoWay}" Background="#FFDDD7D4">
+                    <ListBox ItemsSource="{Binding Properties}" MinHeight="23" Name="PropertyListBox">
+                        <ListBox.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="ContentControl.HorizontalContentAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
+                                
+                                <Grid Height="23">
+
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Entity.Name}"/>
+                                    <StackPanel Orientation="Horizontal" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center" Name="UpDownPanel">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="Image">
+                                               
+                                                <Setter Property="Width" Value="16" />
+                                                <Setter Property="Height" Value="16" />
+                                                
+                                            </Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                                <Setter Property="HorizontalAlignment" Value="Right" />
+                                                <Setter Property="BorderThickness" Value="0" />
+                                                <Setter Property="Focusable" Value="False" />
+                                               
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <Button IsEnabled="{Binding CanMoveUp}" Click="MoveUpButton_Click">
+                                            <f:AutoGrayImage IsEnabled="{Binding CanMoveUp}" Source="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
+                                        </Button>
+                                        <Button  IsEnabled="{Binding CanMoveDown}" Click="MoveDownButton_Click">
+                                            <f:AutoGrayImage IsEnabled="{Binding CanMoveDown}"  Source="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
+                                        </Button>
+                                    </StackPanel>
+                                   
+                                </Grid>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                        <Setter TargetName="UpDownPanel" Property="Visibility"  Value="Visible"/>
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
                 </Expander>
-                <Expander Header="Relations" IsExpanded="{Binding IsRelationsExpanded, Mode=TwoWay}"  Background="#FFDDD7D4" >
+                <Expander Header="Relations" Visibility="Collapsed" IsExpanded="{Binding ShowRelations, Mode=TwoWay}"  Background="#FFDDD7D4" >
 
                 </Expander>
             </StackPanel>

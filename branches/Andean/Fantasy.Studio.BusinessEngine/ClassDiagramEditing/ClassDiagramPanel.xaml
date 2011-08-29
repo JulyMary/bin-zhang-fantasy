@@ -7,7 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=diagramControl}">
     <Grid>
-        <sf:DiagramControl Model="{Binding DiagramModel}" x:Name="diagramControl" Loaded="diagramControl_Loaded">
+        <sf:DiagramControl x:Name="diagramControl" >
+            <sf:DiagramControl.Model>
+                <sf:DiagramModel x:Name="diagramControlModel" />
+            </sf:DiagramControl.Model>
+           
             <sf:DiagramControl.View>
                 <sf:DiagramView FocusManager.IsFocusScope="False"   IsZoomEnabled="True" Bounds="0,0,1200,1200" Name="diagramView"
                     DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop"></sf:DiagramView>

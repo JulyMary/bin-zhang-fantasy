@@ -9,6 +9,7 @@ using System.Windows;
 using System.Collections.Specialized;
 using NHibernate;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
@@ -169,8 +170,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         private void AttatchEntity(BusinessClass entity)
         {
            
-            //this.Entity = entity;
-
             EditingState state = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
             EntityStateChangedEventManager.AddListener(this.Entity, this._classListener);
             foreach (BusinessProperty prop in entity.Properties)
@@ -182,8 +181,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 }
             }
 
+            this.Properties = new ObservableAdapterCollection<PropertyNode>(entity.Properties, p => { return new PropertyNode((BusinessProperty)p); });
+
+            this.EditingState = state;
+
+
             CollectionChangedEventManager.AddListener((INotifyCollectionChanged)this.Entity.Properties, this._propertyCollectionListener); 
-        
+            
+
         }
 
         private bool PropertyCollectionChanged(Type managerType, object sender, EventArgs args)
@@ -191,14 +196,21 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             NotifyCollectionChangedEventArgs e = (NotifyCollectionChangedEventArgs)args;
             if (e.Action != NotifyCollectionChangedAction.Move)
             {
-                foreach (BusinessProperty prop in e.OldItems)
+                if (e.OldItems != null)
                 {
-                    EntityStateChangedEventManager.RemoveListener(prop, this._propertyListener);  
+                    foreach (BusinessProperty prop in e.OldItems)
+                    {
+                        EntityStateChangedEventManager.RemoveListener(prop, this._propertyListener);
+                    }
                 }
 
-                foreach (BusinessProperty prop in e.NewItems)
+                if (e.NewItems != null)
                 {
-                    EntityStateChangedEventManager.AddListener(prop, this._propertyListener);  
+
+                    foreach (BusinessProperty prop in e.NewItems)
+                    {
+                        EntityStateChangedEventManager.AddListener(prop, this._propertyListener);
+                    }
                 }
             }
 
@@ -229,7 +241,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public IServiceProvider Site { get; set; }
 
 
-        private EditingState _editingState = EditingState.Dirty ;
+        private EditingState _editingState = EditingState.Clean ;
 
         public EditingState EditingState
         {
@@ -244,11 +256,32 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+
+        private int _displayIndex;
+
+        public int DisplayIndex
+        {
+            get { return _displayIndex; }
+            set
+            {
+                if (_displayIndex != value)
+                {
+                    _displayIndex = value;
+                    this.OnPropertyChanged("DisplayIndex");
+                }
+            }
+        }
+
+
+        private static string[] NoneSerializeProperties = new string[] {
+            "EditingState", "Properties", "DisplayIndex"
+        };
+
         protected override void OnPropertyChanged(string propertyName)
         {
 
             base.OnPropertyChanged(propertyName);
-            if (propertyName != "EditingState")
+            if (Array.IndexOf(NoneSerializeProperties, propertyName) < 0)
             {
                 this.EditingState = EditingState.Dirty;
             }
@@ -284,6 +317,21 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+
+        private INotifyCollectionChanged _properties;
+
+        public INotifyCollectionChanged Properties
+        {
+            get { return _properties; }
+            private set
+            {
+                if (_properties != value)
+                {
+                    _properties = value;
+                    this.OnPropertyChanged("Properties");
+                }
+            }
+        }
 
     }
 }
