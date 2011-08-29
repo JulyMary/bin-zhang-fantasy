@@ -63,7 +63,33 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     }
                 }
             }
+
+            foreach (BusinessClass @class in this.Classes.Select(n => n.Entity).Distinct())
+            {
+                UpdateDisplayIndex(@class);
+            }
+
         }
+
+
+        private void UpdateDisplayIndex(BusinessClass @class)
+        {
+            ClassNode[] nodes = this.Classes.Where(n => n.Entity == @class).ToArray();
+            if (nodes.Length == 1)
+            {
+                nodes[0].DisplayIndex = 0;
+            }
+            else if (nodes.Length > 1)
+            {
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    nodes[i].DisplayIndex = i + 1;
+                }
+            }
+
+
+        }
+
 
         void Entity_EntityStateChanged(object sender, EventArgs e)
         {
@@ -126,6 +152,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         void ClassesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            HashSet<BusinessClass> entities = new HashSet<BusinessClass>();
             
             if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
             {
@@ -133,6 +160,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 {
                     foreach (ClassNode node in e.OldItems)
                     {
+                        entities.Add(node.Entity);
+
                         node.Diagram = null;
                         node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
                     }
@@ -142,6 +171,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             {
                 foreach (ClassNode node in e.NewItems)
                 {
+                    entities.Add(node.Entity);
                     node.Diagram = this;
                     node.Site = this.Site;
                     node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
@@ -151,6 +181,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             if (!this._deserializing)
             {
                 this.EditingState = EditingState.Dirty;
+                foreach (BusinessClass @class in entities)
+                {
+                    UpdateDisplayIndex(@class);
+                }
             }
         }
 

@@ -252,6 +252,20 @@
         </Object>
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/classnode/contextmenu">
+        <Button ID="AddProperty" Text="Add Property" Command="{Command Name=AddBusinessProperty}" />
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/classnode/commandbindings">
+        <CommandBinding ID="AddProperty" Command="{Command Name=AddBusinessProperty}" Handler="{New sbe:AddPropertyCommand}" ParameterSource="Owner" ParameterMember="DataContext.Entity">
+            <!--<CommandBinding.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity Member="DataContext.Entity" />
+                </Not>
+            </CommandBinding.Conditional>-->
+        </CommandBinding>
+    </Extension>
+
     <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers">
         <Object ID="newclass">
             <sbe:DragNewBusinessClassDataOverHandler/>

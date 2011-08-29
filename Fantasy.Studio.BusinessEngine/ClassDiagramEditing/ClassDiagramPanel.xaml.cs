@@ -86,7 +86,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         }
                     }
 
-                    var query = from shape in this._viewModel.DiagramModel.Nodes.Cast<Node>()
+                    var query = from shape in this.diagramControlModel.Nodes.Cast<Node>()
                                 where Array.IndexOf(selected, shape.DataContext) >= 0 && this.diagramView.SelectionList.IndexOf(shape) < 0
                                 select shape;
                     this.diagramView.SelectionList.AddRange(query.ToArray());
@@ -127,7 +127,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             Fantasy.ServiceModel.ServiceContainer rs = new ServiceModel.ServiceContainer(this.Site);
             rs.AddService(this._selectionService);
             rs.AddService(this._classDiagram);
-            rs.AddService(this._viewModel.ViewModel);
+            rs.AddService(this.diagramControlModel);
             rs.AddService(this.diagramControl);
             rs.AddService(this.diagramControl.View);
             rs.AddService(this);
@@ -152,7 +152,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void diagramControl_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = this._viewModel;
+            //this.DataContext = this._viewModel;
+           
         }
 
 
@@ -186,15 +187,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._viewModel = new ClassDiagramPanelModel();
             this._viewModel.Site = this.CreateChildSite();
 
-            this._binder = new ClassDiagramModelBinder(this._classDiagram, this._viewModel.DiagramModel);
+            this._binder = new ClassDiagramModelBinder(this._classDiagram, this.diagramControlModel);
 
             this._classDiagram.PropertyChanged += new PropertyChangedEventHandler(ClassDiagramPropertyChanged);
-                
-         
-            if (this.IsLoaded)
-            {
-                this.DataContext = this._viewModel;
-            }
+
+            this.DataContext = this._viewModel;
+            
 
             if (this._classDiagram.EditingState == EditingState.Dirty)
             {

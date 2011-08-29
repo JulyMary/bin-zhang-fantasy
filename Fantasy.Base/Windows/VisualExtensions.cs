@@ -68,6 +68,29 @@ namespace Fantasy.Windows
             return (ItemContainer)GetAncestor<ItemContainer>(obj);
                  
         }
+
+
+
+        public static bool IsDescendantOf(this DependencyObject childObject, DependencyObject ancestor)
+        {
+           
+            DependencyObject child = childObject;
+            while ((child != null) && child != ancestor)
+            {
+                // VisualTreeHelper works with objects of type Visual or Visual3D.
+                // If the current object is not derived from Visual or Visual3D,
+                // then use the LogicalTreeHelper to find the parent element.
+                if (child is Visual || child is System.Windows.Media.Media3D.Visual3D)
+                    child = VisualTreeHelper.GetParent(child);
+                else
+                    child = LogicalTreeHelper.GetParent(child);
+            }
+
+            return child == ancestor;
+        }
+
+
+       
         
     }
 }

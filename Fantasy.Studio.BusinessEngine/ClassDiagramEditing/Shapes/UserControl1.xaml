@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes.UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:f="urn:schema-fantasy:xaml"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
+        <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/Shortcut.png"
+                           Visibility="{Binding IsShortCut, Converter={x:Static f:VisibilityConverter.Collapsed}}"/>
+        <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >
+            <TextBlock Text="{Binding Entity.Name }" />
+            
+            <TextBlock Text=" : " />
+            <TextBlock Text="{Binding DisplayIndex}" />
+        </StackPanel>
+        <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
+        <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding Entity.ParentClass.Name}" VerticalAlignment="Top">
+        </TextBlock>
+    </Grid>
+</UserControl>
