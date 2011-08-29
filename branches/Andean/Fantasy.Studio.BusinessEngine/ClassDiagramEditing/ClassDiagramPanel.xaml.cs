@@ -21,6 +21,7 @@ using Fantasy.Studio.Services;
 using Fantasy.XSerialization;
 using System.Xml.Linq;
 using Syncfusion.Windows.Diagram;
+using System.Diagnostics;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -340,6 +341,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
+        }
+
+        private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            Debug.WriteLine(e.NewFocus.GetType().ToString());
         }
 
 

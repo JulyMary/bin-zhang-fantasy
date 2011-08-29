@@ -16,6 +16,8 @@ using Fantasy.Windows;
 using m = Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model;
 using Fantasy.Studio.Services;
 using Fantasy.AddIns;
+using System.ComponentModel.Design;
+using System.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 {
@@ -41,7 +43,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
         {
             DependencyObject container = this.PropertyListBox.ContainerFromElement((DependencyObject)e.Source);
 
-            Model.PropertyNode node = ( Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
+            Model.PropertyNode node = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
             BusinessProperty from = node.Entity;
 
             BusinessClass cls = from.Class;
@@ -81,15 +83,19 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
         private void Node_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             m.ClassNode model = this.DataContext as m.ClassNode;
-             this.CommandBindings.Clear();
-            if(model != null)
+            this.CommandBindings.Clear();
+
+            ISelectionService selectionService = model.Site.GetService<ISelectionService>();
+            selectionService.SelectionChanged += new EventHandler(SelectionService_SelectionChanged);
+
+            if (model != null)
             {
                 IMenuService svc = model.Site.GetService<IMenuService>();
                 if (svc != null)
                 {
                     this.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classnode/contextmenu", this, model.Site);
                 }
-                
+
                 foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/classnode/commandbindings").BuildChildItems(this, model.Site))
                 {
                     this.CommandBindings.Add(cb);
@@ -99,8 +105,63 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             {
                 this.ContextMenu = null;
             }
- 
-          
+
+
+        }
+
+        void SelectionService_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!_selecting)
+            {
+                this._selecting = true;
+                try
+                {
+                    m.ClassNode model = this.DataContext as m.ClassNode;
+                    ISelectionService svc = model.Site.GetRequiredService<ISelectionService>();
+                    IEnumerable<object> selected = svc.GetSelectedComponents().Cast<object>();
+
+                    var query = from n in this.PropertyListBox.SelectedItems.Cast<m.PropertyNode>()
+                                where !selected.Any(o => o == n.Entity)
+                                select n;
+
+                    foreach(object o in query.ToArray())
+                    {
+                        this.PropertyListBox.SelectedItems.Remove(o);
+                    };
+
+
+                }
+                finally
+                {
+                    this._selecting = false;
+                }
+            }
+        }
+
+
+        private bool _selecting = false;
+
+        private void PropertyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!_selecting)
+            {
+                this._selecting = true;
+                try
+                {
+                    m.ClassNode model = this.DataContext as m.ClassNode;
+                    var q1 = this.PropertyListBox.SelectedItems.Cast<m.PropertyNode>().Select(n => n.Entity);
+
+                    ISelectionService svc = model.Site.GetRequiredService<ISelectionService>();
+
+                    svc.SetSelectedComponents(q1.ToArray(), SelectionTypes.Replace);
+
+
+                }
+                finally
+                {
+                    this._selecting = false;
+                }
+            }
         }
 
     }
