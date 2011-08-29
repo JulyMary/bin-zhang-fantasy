@@ -3868,7 +3868,7 @@ namespace Syncfusion.Windows.Diagram
                                 }
                             }
 
-                            (m_diagramPage as DiagramPage).Focus();
+                            this.Focus();
                         }
 
                         lastNodeClick = DateTime.Now;
@@ -4400,7 +4400,7 @@ namespace Syncfusion.Windows.Diagram
                                 }
                             }
 
-                            (m_diagramPage as DiagramPage).Focus();
+                            this.Focus();
                         }
                     }
                 }
