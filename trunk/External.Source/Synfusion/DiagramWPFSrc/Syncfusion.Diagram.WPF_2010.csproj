@@ -249,6 +249,7 @@
     <Compile Include="Implementation\Rotator.cs" />
     <Compile Include="Implementation\RotateThumb.cs" />
     <Compile Include="Nodes\Group.cs" />
+    <Compile Include="Nodes\Node.Attached.cs" />
     <Compile Include="Ruler\HorizontalRuler.cs" />
     <Compile Include="Ruler\TickBar.cs" />
     <Compile Include="Ruler\VerticalRuler.cs" />
