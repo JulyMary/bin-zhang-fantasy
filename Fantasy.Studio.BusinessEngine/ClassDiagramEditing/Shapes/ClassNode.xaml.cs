@@ -18,6 +18,7 @@ using Fantasy.Studio.Services;
 using Fantasy.AddIns;
 using System.ComponentModel.Design;
 using System.Collections;
+using System.Collections.Specialized;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 {
@@ -78,7 +79,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             to.Order = temp;
 
             cls.Properties.Swap(index, index + 1);
+
+            if (this.PropertyListBox.SelectedItem != node)
+            {
+                this.PropertyListBox.SelectedItem = node;
+            }
+
         }
+
+        private WeakEventListener _propertyNodesChangedListener;
 
         private void Node_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -93,13 +102,17 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 IMenuService svc = model.Site.GetService<IMenuService>();
                 if (svc != null)
                 {
-                    this.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classnode/contextmenu", this, model.Site);
+                    this.ConentStackPanel.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classnode/contextmenu", this, model.Site);
                 }
 
                 foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/classnode/commandbindings").BuildChildItems(this, model.Site))
                 {
-                    this.CommandBindings.Add(cb);
+                    this.ConentStackPanel.CommandBindings.Add(cb);
                 }
+
+                _propertyNodesChangedListener = new WeakEventListener(this.AutoSelectNewProperty);
+                CollectionChangedEventManager.AddListener(model.Properties, _propertyNodesChangedListener);
+
             }
             else
             {
@@ -107,6 +120,32 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             }
 
 
+        }
+
+        private bool AutoSelectNewProperty(Type managerType, object sender, EventArgs e)
+        {
+            if (this.IsKeyboardFocusWithin)
+            {
+                NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs)e;
+                m.ClassNode model = this.DataContext as m.ClassNode;
+                model.ShowMember = model.ShowProperties = true;
+                if (args.NewItems != null)
+                {
+
+                    this.PropertyListBox.SelectedItems.Clear();
+                    foreach(m.PropertyNode p in args.NewItems)
+                    {
+                        this.PropertyListBox.SelectedItems.Add(p);
+                    }
+                   
+                }
+                if (!this.PropertyListBox.IsKeyboardFocusWithin)
+                {
+                    this.PropertyListBox.Focus();
+                }
+            }
+
+            return true;
         }
 
         void SelectionService_SelectionChanged(object sender, EventArgs e)
@@ -161,6 +200,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 {
                     this._selecting = false;
                 }
+            }
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (!this.ConentStackPanel.IsKeyboardFocusWithin)
+            {
+                this.Focus();
             }
         }
 

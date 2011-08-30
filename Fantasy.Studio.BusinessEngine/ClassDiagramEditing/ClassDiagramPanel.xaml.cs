@@ -123,19 +123,24 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         private ClassDiagramPanelModel _viewModel;
 
 
-        private IServiceProvider CreateChildSite()
+        private ServiceModel.ServiceContainer _childSite;
+
+        private IServiceProvider GetChildSite()
         {
-            Fantasy.ServiceModel.ServiceContainer rs = new ServiceModel.ServiceContainer(this.Site);
-            rs.AddService(this._selectionService);
-            rs.AddService(this._classDiagram);
-            rs.AddService(this.diagramControlModel);
-            rs.AddService(this.diagramControl);
-            rs.AddService(this.diagramControl.View);
-            rs.AddService(this);
+            if (_childSite == null)
+            {
+                _childSite = new ServiceModel.ServiceContainer(this.Site);
+                _childSite.AddService(this._selectionService);
+                _childSite.AddService(this._classDiagram);
+                _childSite.AddService(this.diagramControlModel);
+                _childSite.AddService(this.diagramControl);
+                _childSite.AddService(this.diagramControl.View);
+                _childSite.AddService(this);
 
-            rs.AddService(this._entity);
+                _childSite.AddService(this._entity);
+            }
 
-            return rs;
+            return _childSite;
         }
 
         private ISelectionService _selectionService = new SelectionService(null);
@@ -151,18 +156,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         }
 
 
-        private void diagramControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            //this.DataContext = this._viewModel;
-           
-        }
+       
 
 
         #region IEntityEditingPanel Members
 
         public void Initialize()
         {
-            
+           
         }
 
         private BusinessClassDiagram _entity;
@@ -171,6 +172,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
         {
+
+
 
             
             this._entity = (BusinessClassDiagram)data;
@@ -186,7 +189,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._classDiagram.LoadDiagram(this._entity); 
 
             this._viewModel = new ClassDiagramPanelModel();
-            this._viewModel.Site = this.CreateChildSite();
+            this._viewModel.Site = this.GetChildSite();
 
             this._binder = new ClassDiagramModelBinder(this._classDiagram, this.diagramControlModel);
 
@@ -201,6 +204,20 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             }
 
             this._selectionService.SetSelectedComponents(new object[] { this._entity });
+
+
+
+            IMenuService svc = this.Site.GetService<IMenuService>();
+            if (svc != null)
+            {
+                this.diagramView.NodeContextMenu = this.diagramView.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/contextmenu", this, this.GetChildSite());
+            }
+
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/commandbindings").BuildChildItems(this, this.GetChildSite()))
+            {
+                this.diagramView.CommandBindings.Add(cb);
+            }
+
             
         }
 
@@ -269,7 +286,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void DiagramView_DragEnter(object sender, DragEventArgs e)
         {
-            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/enterhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/enterhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
             foreach (IEventHandler<DragEventArgs> handler in handlers)
             {
                 handler.HandleEvent(this, e);
@@ -288,7 +305,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void DiagramView_DragOver(object sender, DragEventArgs e)
         {
-            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
             foreach (IEventHandler<DragEventArgs> handler in handlers)
             {
                 handler.HandleEvent(this, e);
@@ -307,7 +324,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void DiagramView_DragLeave(object sender, DragEventArgs e)
         {
-            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/leavehandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/leavehandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
             foreach (IEventHandler<DragEventArgs> handler in handlers)
             {
                 handler.HandleEvent(this, e);
@@ -326,7 +343,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void DiagramView_Drop(object sender, DragEventArgs e)
         {
-            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/drophandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.CreateChildSite());
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/dragdrop/drophandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
             foreach (IEventHandler<DragEventArgs> handler in handlers)
             {
                 handler.HandleEvent(this, e);
@@ -345,7 +362,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void UserControl_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
-            Debug.WriteLine(e.NewFocus.GetType().ToString());
+            //Debug.WriteLine(e.NewFocus.GetType().ToString());
         }
 
 

@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("Fantasy.Workbench.Startup")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ClickView")]
+[assembly: AssemblyCompany("Fantasy")]
 [assembly: AssemblyProduct("Fantasy.Workbench.Startup")]
-[assembly: AssemblyCopyright("Copyright © ClickView 2011")]
+[assembly: AssemblyCopyright("Copyright © Fantasy 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

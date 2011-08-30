@@ -70,7 +70,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramDeleteHandler.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModelBinder.cs" />
+    <Compile Include="ClassDiagramEditing\ClassNodeDeleteHandler.cs" />
+    <Compile Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml.cs">
+      <DependentUpon>ConfirmDeletionDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClassDiagramEditing\Model\ClassNodeAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
@@ -214,6 +220,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\Shortcut.png" />
+    <Page Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ClassDiagramEditing\Shapes\ClassNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\ActiveWindow.cs" />
+    <Compile Include="Conditions\SelectionType.cs" />
     <Compile Include="Controls\ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
     </Compile>

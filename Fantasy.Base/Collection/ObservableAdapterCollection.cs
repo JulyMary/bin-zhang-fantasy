@@ -108,12 +108,12 @@ namespace Fantasy.Collections
                         break;
                     case NotifyCollectionChangedAction.Move:
                         {
-                            args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, this.CreateAddedAdapters(e.NewItems), e.NewStartingIndex, e.OldStartingIndex);
+                            args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, this.CreateAddedAdapters(e.OldItems), e.NewStartingIndex, e.OldStartingIndex);
                         }
                         break;
                     case NotifyCollectionChangedAction.Remove:
                         {
-                            args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this.CreateAddedAdapters(e.NewItems));
+                            args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, this.CreateAddedAdapters(e.OldItems),e.OldStartingIndex );
                         }
                         break;
                     case NotifyCollectionChangedAction.Replace:

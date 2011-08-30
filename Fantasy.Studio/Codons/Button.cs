@@ -72,7 +72,7 @@ namespace Fantasy.Studio.Codons
             {
                 rs.ChildItems.Union(childCollections);
             }
-            rs.Update(owner);
+           
             return rs;
         }
 
