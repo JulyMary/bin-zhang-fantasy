@@ -681,7 +681,7 @@ namespace Syncfusion.Windows.Diagram
             this.Page.Focusable = true;
             FocusManager.SetIsFocusScope(this.Page, false);
             this.Page.Focus();
-            DiagramCommandManager d = new DiagramCommandManager(this);
+            //DiagramCommandManager d = new DiagramCommandManager(this);
             this.AllowDrop = true;
             this.Unloaded += new RoutedEventHandler(DiagramView_Unloaded);
             if (this.CPManager == null)
@@ -7482,7 +7482,7 @@ namespace Syncfusion.Windows.Diagram
                 {
                     this.startPoint = new Point?(e.GetPosition(this));
                     SelectionList.Clear();
-                    Focus();
+                    //Focus();
                     e.Handled = true;
                 }
                 else if (Scrollviewer.Equals(e.OriginalSource))

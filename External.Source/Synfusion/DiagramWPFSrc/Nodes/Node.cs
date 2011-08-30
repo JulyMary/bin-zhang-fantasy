@@ -91,7 +91,7 @@ namespace Syncfusion.Windows.Diagram
 #if SyncfusionFramework4_0
     [DesignTimeVisible(false)]
 #endif
-    public class Node : ContentControl, IShape, INodeGroup, INotifyPropertyChanged, ICommon
+    public partial class Node : ContentControl, IShape, INodeGroup, INotifyPropertyChanged, ICommon
     {
 
         internal bool m_LayoutDisconnected;
@@ -3424,47 +3424,47 @@ namespace Syncfusion.Windows.Diagram
         /// button is pressed while the mouse pointer is over this control.
         /// </summary>
         /// <param name="e">The MouseButtonEventArgs</param>
-        protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)
-        {
-            base.OnPreviewMouseRightButtonDown(e);
-            if (dc.View.IsPageEditable && !dview.IsPanEnabled && this.AllowSelect)
-            {
-                ////base.OnPreviewMouseLeftButtonDown(e);
+        //protected override void OnPreviewMouseRightButtonDown(MouseButtonEventArgs e)
+        //{
+        //    base.OnPreviewMouseRightButtonDown(e);
+        //    if (dc.View.IsPageEditable && !dview.IsPanEnabled && this.AllowSelect)
+        //    {
+        //        ////base.OnPreviewMouseLeftButtonDown(e);
 
-                IDiagramPage diagramPanel = VisualTreeHelper.GetParent(this) as IDiagramPage;
-                if (diagramPanel != null)
-                {
-                    if (!this.IsGrouped)
-                    {
-                        ////diagramPanel.SelectionList.Clear();
-                        if (!this.IsSelected)
-                        {
-                            diagramPanel.SelectionList.Clear();
-                            diagramPanel.SelectionList.Add(this);
-                        }
-                    }
-                    else
-                    {
-                        bool anyOneSelected = this.IsSelected;
-                        if (!anyOneSelected)
-                        {
-                            foreach (Group g in this.Groups)
-                            {
-                                if (g.IsSelected == true)
-                                {
-                                    anyOneSelected = true;
-                                }
-                            }
-                        }
-                        if (!anyOneSelected)
-                        {
-                            diagramPanel.SelectionList.Clear();
-                            diagramPanel.SelectionList.Add(this);
-                        }
-                    }
-                }
-            }
-        }
+        //        IDiagramPage diagramPanel = VisualTreeHelper.GetParent(this) as IDiagramPage;
+        //        if (diagramPanel != null)
+        //        {
+        //            if (!this.IsGrouped)
+        //            {
+        //                ////diagramPanel.SelectionList.Clear();
+        //                if (!this.IsSelected)
+        //                {
+        //                    diagramPanel.SelectionList.Clear();
+        //                    diagramPanel.SelectionList.Add(this);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                bool anyOneSelected = this.IsSelected;
+        //                if (!anyOneSelected)
+        //                {
+        //                    foreach (Group g in this.Groups)
+        //                    {
+        //                        if (g.IsSelected == true)
+        //                        {
+        //                            anyOneSelected = true;
+        //                        }
+        //                    }
+        //                }
+        //                if (!anyOneSelected)
+        //                {
+        //                    diagramPanel.SelectionList.Clear();
+        //                    diagramPanel.SelectionList.Add(this);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         internal string ContextMenu_Delete;
         internal string ContextMenu_Grouping;
@@ -3816,9 +3816,9 @@ namespace Syncfusion.Windows.Diagram
         /// Invoked when an unhandled <see cref="E:System.Windows.UIElement.PreviewMouseLeftButtonDown"/> routed event reaches an element in its route that is derived from this class. Implement this method to add class handling for this event.
         /// </summary>
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseButtonEventArgs"/> that contains the event data. The event data reports that the left mouse button was pressed.</param>
-        protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
+        protected override void OnPreviewMouseDown(MouseButtonEventArgs e)
         {
-            if (editor == null || (!LabelEditor.GetIsEditing(editor) || editor.InputHitTest(e.GetPosition(editor)) == null))
+            if (!Node.IsInSelectionScope(this, (DependencyObject)e.OriginalSource) )
             {
                 ex = false;
                 if (dview.IsPageEditable && !this.IsGrouped)
