@@ -15,5 +15,7 @@ namespace Fantasy.BusinessEngine.Services
 
         void CreateClassTable(BusinessClass @class);
 
+        void DeleteClassTable(BusinessClass @class);
+
     }
 }

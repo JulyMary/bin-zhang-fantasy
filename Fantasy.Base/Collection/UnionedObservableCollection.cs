@@ -78,7 +78,7 @@ namespace Fantasy.Collection
                             args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, e.OldItems, e.NewStartingIndex + starting, e.OldStartingIndex + starting);
                             break;
                         case NotifyCollectionChangedAction.Remove:
-                            args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Move, e.OldItems, e.OldStartingIndex + starting); 
+                            args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, e.OldItems, e.OldStartingIndex + starting); 
                             break;
                         case NotifyCollectionChangedAction.Replace:
                             args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, e.NewItems, e.OldItems, e.OldStartingIndex + starting);  

@@ -177,5 +177,16 @@ namespace Fantasy.BusinessEngine.MSSQL
         }
 
         #endregion
+
+        #region IDDLService Members
+
+
+        public void DeleteClassTable(BusinessClass @class)
+        {
+            string sql = String.Format("drop table [{0}].[{1}]", @class.TableSchema, @class.TableName);
+            this.ExecuteSql(sql);
+        }
+
+        #endregion
     }
 }

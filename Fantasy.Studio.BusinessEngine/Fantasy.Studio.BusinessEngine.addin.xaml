@@ -121,7 +121,7 @@
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
-
+        <Button ID="Delete" Text="Delete" Command="{New sbe:RemoveClassCommand}" ParameterSource="Owner" />
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
