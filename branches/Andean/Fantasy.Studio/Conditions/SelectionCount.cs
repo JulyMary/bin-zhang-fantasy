@@ -6,6 +6,7 @@ using Fantasy.AddIns;
 using Fantasy.Studio.Services;
 using Fantasy.ServiceModel;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 
 namespace Fantasy.Studio.Conditions
 {
@@ -16,13 +17,20 @@ namespace Fantasy.Studio.Conditions
 
             int selected = 0;
 
-            IMonitorSelectionService mss = ServiceManager.Services.GetRequiredService<IMonitorSelectionService>();
-            ISelectionService ss = mss.CurrentSelectionService;
+            ISelectionService ss = services.GetService<ISelectionService>();
+
+            if (ss == null)
+            {
+                IMonitorSelectionService mss = services.GetRequiredService<IMonitorSelectionService>();
+                ss = mss.CurrentSelectionService;
+            }
 
             if (ss != null)
             {
                 selected = ss.SelectionCount; 
             }
+
+            Debug.WriteLine("Selected : " + selected.ToString());
 
             switch (this.Count)
             {

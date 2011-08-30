@@ -159,31 +159,6 @@ namespace ConsoleTest
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("Model1", "Entity1Entity2", "Entity2")]
-        public EntityCollection<Entity2> Entity2_1
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Entity2>("Model1.Entity1Entity2", "Entity2");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Entity2>("Model1.Entity1Entity2", "Entity2", value);
-                }
-            }
-        }
-
-        #endregion
     }
     
     /// <summary>

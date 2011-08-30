@@ -25,7 +25,7 @@ namespace Fantasy.Studio.Codons
         {
             DefaultTooBar rs = new DefaultTooBar() { Caption = this.Text };
             ToolBarModel model = new ToolBarModel(subItems, this.ID) { Conditions = condition, Text=Text };
-            model.Update(owner);
+            //model.Update(owner);
             
             rs.DataContext = model;
 
