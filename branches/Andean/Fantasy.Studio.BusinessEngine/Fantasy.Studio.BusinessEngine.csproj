@@ -101,6 +101,7 @@
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassEditing\AddClassCommand.cs" />
+    <Compile Include="ClassEditing\RemoveClassCommand.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />

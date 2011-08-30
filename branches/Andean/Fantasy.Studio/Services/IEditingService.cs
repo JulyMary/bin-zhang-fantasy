@@ -8,5 +8,6 @@ namespace Fantasy.Studio.Services
     public interface IEditingService
     {
         IEditingViewContent OpenView(object data);
+        bool CloseView(object data, bool force);
     }
 }

@@ -12,7 +12,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
     public class ClassDiagramDeleteHandler : ObjectWithSite, ICommand
     {
-        #region ICommand Members
+       
 
         public object Execute(object args)
         {
@@ -90,12 +90,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         }
 
-        #endregion
-
-
-
-       
-
 
         private bool CanDeleteObjects()
         {
@@ -115,11 +109,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         return false;
                     }
                     else if(!IsDeletable(node.Entity, deletable, selected))
-                    {
-                        return false;
-                    }
-
-                    if (node.DisplayIndex > 0 || node.IsShortCut || node.Entity.IsSystem)
                     {
                         return false;
                     }

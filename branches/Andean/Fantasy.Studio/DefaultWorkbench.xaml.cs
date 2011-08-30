@@ -372,12 +372,48 @@ namespace Fantasy.Studio
             return rs;
         }
 
+        public bool CloseView(object data, bool force)
+        {
+            _forceClosing = true;
+            bool rs = true;
+            try
+            {
+                IEditingViewContent view = null;
+
+                var query = from v in this.Views where (v is IEditingViewContent) && ((IEditingViewContent)v).Data == data select v;
+
+                view = (IEditingViewContent)query.SingleOrDefault();
+
+                if (view != null)
+                {
+                    rs = false;
+                    EventHandler handler = delegate(object sender, EventArgs e){
+                        rs = true;
+                    };
+                    IWorkbenchWindow ww = view.WorkbenchWindow;
+                    ww.Closed += handler;
+                    ww.Close();
+                    ww.Closed -= handler;
+                   
+                }
+            }
+            finally
+            {
+                _forceClosing = false;
+            }
+
+            return rs;
+
+        }
+
+        private bool _forceClosing = false;
+
         private IMessageBoxService _messageBox;
 
         private void WorkbenchWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             IEditingViewContent content = (IEditingViewContent)((IWorkbenchWindow)sender).ViewContent;
-            if (content.DirtyState == EditingState.Dirty && !this._closingAllViews)
+            if (content.DirtyState == EditingState.Dirty && !this._closingAllViews && !this._forceClosing)
             {
                 string text = "\n" + content.Title;
                 switch (_messageBox.Show(string.Format(Properties.Resources.SaveChangesText, text), button: MessageBoxButton.YesNoCancel, defaultResult: MessageBoxResult.Yes))
