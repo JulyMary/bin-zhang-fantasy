@@ -17,9 +17,7 @@
             </Adapter.Factory> 
             <x:Type TypeName="dm:ClassNode" />
         </Adapter>
-        
     </Extension>
-
 
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}"/>
@@ -58,12 +56,10 @@
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
-
-
         </TreeNode>
         <TreeNode ID="classDiagram" TargetType="{x:Type be:BusinessClassDiagram}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png" 
-                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"  >
-            
+                  Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
+                  ContextMenu="fantasy/studio/businessengine/documentpad/classdiagram/contextmenu">           
         </TreeNode>  
     </Extension>
 
@@ -71,6 +67,9 @@
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
                   Text="{Binding Path=FullName}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
             <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassChildClassesProvider}" />
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
         </TreeNode>
     </Extension>
 
@@ -78,7 +77,17 @@
         <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner">
         </Button>
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
-        <Button ID="Remove" Text="Remove"/>
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeletePackageCommand}" ParameterSource="Owner">
+            <Button.Conditional>
+                <And Action="Disable">
+                    <CollectionCount Operator="Equality" Count="0" Member="ChildPackages" />
+                    <CollectionCount Operator="Equality" Count="0" Member="Classes" />
+                    <Not>
+                        <sbe:IsSystemEntity />
+                    </Not>
+                </And>
+            </Button.Conditional>
+        </Button>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/panels">
@@ -119,9 +128,21 @@
         <Button ID="AddClassDiagram" Text="Add Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner" ParameterMember="Package"/>
 
     </Extension>
+    
     <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
-        <Button ID="Delete" Text="Delete" Command="{New sbe:RemoveClassCommand}" ParameterSource="Owner" />
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteClassCommand}" ParameterSource="Owner" >
+            <Button.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity/>
+                </Not>
+            </Button.Conditional>
+        </Button>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/classdiagram/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteClassDiagramCommand}" ParameterSource="Owner" />
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">

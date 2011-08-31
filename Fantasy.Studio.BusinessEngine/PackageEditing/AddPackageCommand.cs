@@ -39,10 +39,10 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
             parent.ChildPackages.Add(child);
             child.ParentPackage = parent;
 
-            BusinessClassDiagram diagram = es.CreateEntity<BusinessClassDiagram>();
-            diagram.Name = Resources.DefaultNewBusinessClassDiagramName;
-            child.ClassDiagrams.Add(diagram);
-            diagram.Package = child;
+            //BusinessClassDiagram diagram = es.CreateEntity<BusinessClassDiagram>();
+            //diagram.Name = Resources.DefaultNewBusinessClassDiagramName;
+            //child.ClassDiagrams.Add(diagram);
+            //diagram.Package = child;
 
             IEditingService documentService = ServiceManager.Services.GetRequiredService<IEditingService>();
             documentService.OpenView(child); 

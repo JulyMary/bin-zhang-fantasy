@@ -6,6 +6,7 @@ using Fantasy.ServiceModel;
 using System.ComponentModel.Design;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.Studio.Services;
 
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
@@ -72,6 +73,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
             ISelectionService ss = this.Site.GetRequiredService<ISelectionService>();
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            IEditingService editing = this.Site.GetRequiredService<IEditingService>();
 
             object[] selected = ss.GetSelectedComponents().Cast<object>().ToArray();
 
@@ -83,7 +85,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 if (o is Model.ClassNode)
                 {
-                   es.DefaultSession.Delete(((Model.ClassNode)o).Entity);
+                    BusinessClass cls = (BusinessClass)((Model.ClassNode)o).Entity;
+                    cls.Package.Classes.Remove(cls);
+                    cls.ParentClass.ChildClasses.Remove(cls);
+                    cls.Package = null;
+                    diagram.DeletingEntities.Add(cls);
+                    editing.CloseView(cls, true);
+
                 }
 
             }

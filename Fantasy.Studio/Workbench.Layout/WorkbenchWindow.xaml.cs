@@ -27,7 +27,7 @@ namespace Fantasy.Studio.Workbench.Layout
         {
             InitializeComponent();
             this._view = view;
-            this.Title = this._view.Title;
+            this.Title = GetDisplayTitle();
             view.TitleChanged += new EventHandler(ViewTitleChanged);
             if (view is IEditingViewContent)
             {
@@ -40,17 +40,25 @@ namespace Fantasy.Studio.Workbench.Layout
 
         void ViewTitleChanged(object sender, EventArgs e)
         {
+
+
+            this.Title = GetDisplayTitle();
+            this.OnTitleChanged(EventArgs.Empty);
+
+        }
+
+        private string GetDisplayTitle()
+        {
             string title = this.ViewContent.Title;
             IEditingViewContent edit = this.ViewContent as IEditingViewContent;
             if (edit != null && edit.DirtyState == EditingState.Dirty)
             {
                 title += "*";
             }
-
-            this.Title = title;
-            this.OnTitleChanged(EventArgs.Empty);
-
+            return title;
         }
+
+
 
 
         
@@ -112,6 +120,10 @@ namespace Fantasy.Studio.Workbench.Layout
         public event EventHandler Deselected;
         protected virtual void OnDeselected(EventArgs e)
         {
+            if (this.ViewContent != null)
+            {
+                this.ViewContent.Deselected();
+            }
             if (this.Deselected != null)
             {
                 this.Deselected(this, e);
@@ -122,6 +134,11 @@ namespace Fantasy.Studio.Workbench.Layout
         public event EventHandler Selected;
         protected virtual void OnSelected(EventArgs e)
         {
+            if (this.ViewContent != null)
+            {
+                this.ViewContent.Selected();
+            }
+
             if (this.Selected != null)
             {
                 this.Selected(this, e);

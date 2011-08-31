@@ -54,8 +54,7 @@ namespace Fantasy.BusinessEngine.MSSQL
 
 
 
-        #region IDDLService Members
-
+       
 
         public void CreateClassTable(BusinessClass @class)
         {
@@ -176,17 +175,13 @@ namespace Fantasy.BusinessEngine.MSSQL
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IDDLService Members
-
 
         public void DeleteClassTable(BusinessClass @class)
         {
-            string sql = String.Format("drop table [{0}].[{1}]", @class.TableSchema, @class.TableName);
+            string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]" , @class.TableSchema, @class.TableName);
             this.ExecuteSql(sql);
         }
 
-        #endregion
+     
     }
 }

@@ -150,5 +150,18 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
         #endregion
+
+
+
+        public void ViewContentSelected()
+        {
+        }
+
+        public void ViewContentDeselected()
+        {
+            
+        }
+
+       
     }
 }

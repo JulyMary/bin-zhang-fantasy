@@ -155,10 +155,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             base.OnGotKeyboardFocus(e);
         }
 
-
-       
-
-
         #region IEntityEditingPanel Members
 
         public void Initialize()
@@ -173,9 +169,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
         {
 
-
-
-            
             this._entity = (BusinessClassDiagram)data;
 
             this._classDiagram = new Model.ClassDiagram();
@@ -365,10 +358,28 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             //Debug.WriteLine(e.NewFocus.GetType().ToString());
         }
 
+        protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
+        {
+            
+            base.OnIsKeyboardFocusWithinChanged(e);
 
+            if (this.IsKeyboardFocusWithin && this._classDiagram != null)
+            {
+                this._classDiagram.SyncEntities();  
+            }
 
+        }
 
-       
+        public void ViewContentSelected()
+        {
+            
+        }
+
+        public void ViewContentDeselected()
+        {
+           
+        }
+
        
     }
 }

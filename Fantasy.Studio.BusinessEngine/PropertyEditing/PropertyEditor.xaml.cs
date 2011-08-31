@@ -212,5 +212,19 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
             }
            
         }
+
+       
+
+        public void ViewContentSelected()
+        {
+           
+        }
+
+        public void ViewContentDeselected()
+        {
+           
+        }
+
+       
     }
 }

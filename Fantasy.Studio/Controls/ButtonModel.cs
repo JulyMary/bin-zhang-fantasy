@@ -175,6 +175,21 @@ namespace Fantasy.Studio.Controls
             }
         }
 
+        private bool _enabled = true;
+
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    this.OnPropertyChanged("Enabled");
+                }
+            }
+        }
+
         public UnionedObservableCollection<object> ChildItems { get; private set; }
 
         public IList<IUpdateStatus> ChildUpdateStatus { get; private set; }
@@ -183,8 +198,10 @@ namespace Fantasy.Studio.Controls
 
         public void Update(object caller)
         {
-            this.Visible = this.Conditions.GetCurrentConditionFailedAction(caller, this.Site) != ConditionFailedAction.Exclude;
-            if (this.Visible)
+            ConditionFailedAction action = this.Conditions.GetCurrentConditionFailedAction(caller, this.Site);
+            this.Visible = action != ConditionFailedAction.Exclude;
+            this.Enabled = action != ConditionFailedAction.Disable;
+            if (this.Visible && Enabled)
             {
                 foreach(IUpdateStatus child in this.ChildUpdateStatus)
                 {

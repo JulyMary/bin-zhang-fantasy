@@ -10,8 +10,7 @@ namespace Fantasy.BusinessEngine
     {
         public BusinessClass()
         {
-            this.ChildClasses = new ObservableList<BusinessClass>();
-            this.Properties = new ObservableList<BusinessProperty>();
+            
         }
 
         public virtual string Name
@@ -81,10 +80,87 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual IObservableList<BusinessClass> ChildClasses { get; private set; }
+        //private IObservableList<BusinessClass> _childClasses = new ObservableList<BusinessClass>();
+        //public virtual IObservableList<BusinessClass> ChildClasses
+        //{
+        //    get
+        //    {
+        //        return _childClasses;
+        //    }
+        //    private set
+        //    {
+        //        _childClasses = value;
+        //        this.OnNotifyPropertyChangedPropertyChanged("ChildClasses");
+        //    }
+        //}
 
+        private IObservableList<BusinessClass> _persistedChildClasses = new ObservableList<BusinessClass>();
+        protected internal virtual IObservableList<BusinessClass> PersistedChildClasses
+        {
+            get { return _persistedChildClasses; }
+            private set
+            {
+                if (_persistedChildClasses != value)
+                {
+                    _persistedChildClasses = value;
+                    _childClasses.Source = value;
+                }
+            }
+        }
 
-        public virtual IObservableList<BusinessProperty> Properties { get; private set; }
+        private ObservableListView<BusinessClass> _childClasses;
+        public virtual IObservableList<BusinessClass> ChildClasses
+        {
+            get
+            {
+                if (this._childClasses == null)
+                {
+                    this._childClasses = new ObservableListView<BusinessClass>(this._persistedChildClasses);
+                }
+                return _childClasses;
+            }
+        }
+
+        //private IObservableList<BusinessProperty> _properties = new ObservableList<BusinessProperty>();
+        //public virtual IObservableList<BusinessProperty> Properties
+        //{
+        //    get
+        //    {
+        //        return _properties; 
+        //    }
+        //    private set
+        //    {
+        //        this._properties = value;
+        //        this.OnNotifyPropertyChangedPropertyChanged("Properties");
+        //    }
+        //}
+
+        private IObservableList<BusinessProperty> _persistedProperties = new ObservableList<BusinessProperty>();
+        protected internal virtual IObservableList<BusinessProperty> PersistedProperties
+        {
+            get { return _persistedProperties; }
+            private set
+            {
+                if (_persistedProperties != value)
+                {
+                    _persistedProperties = value;
+                    _properties.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessProperty> _properties;
+        public virtual IObservableList<BusinessProperty> Properties
+        {
+            get
+            {
+                if (this._properties == null)
+                {
+                    this._properties = new ObservableListView<BusinessProperty>(this._persistedProperties);
+                }
+                return _properties;
+            }
+        }
 
         public virtual string TableName
         {

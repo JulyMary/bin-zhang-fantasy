@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
+using System.Windows.Data;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Windows;
 
 namespace Fantasy
 {
@@ -160,6 +164,78 @@ namespace Fantasy
         public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
         {
             return new Collection<T>(collection);
+        }
+
+        private class GenericSortedView<T> : IEnumerable<T>, INotifyCollectionChanged, IWeakEventListener
+        {
+            private ICollectionView _view;
+
+            public GenericSortedView(ICollectionView view)
+            {
+                this._view = view;
+                CollectionChangedEventManager.AddListener(view, this);
+            }
+
+          
+            public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+            private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+            {
+                if (this.CollectionChanged != null)
+                {
+                    this.CollectionChanged(this, e);
+                }
+            }
+         
+          
+            public IEnumerator<T> GetEnumerator()
+            {
+                foreach(T item in this._view)
+                {
+                    yield return item;
+                }
+            }
+
+            
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this._view.GetEnumerator();
+            }
+
+
+
+            #region IWeakEventListener Members
+
+            public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+            {
+                this.OnCollectionChanged((NotifyCollectionChangedEventArgs)e);
+                return true;
+            }
+
+            #endregion
+        }
+
+        public static IEnumerable<T> ToSorted<T>(this IEnumerable<T> collection, string propertyName, ListSortDirection direction = ListSortDirection.Ascending)
+        {
+            CollectionViewSource vs = new CollectionViewSource();
+            vs.Source = collection;
+
+            vs.View.SortDescriptions.Add(new System.ComponentModel.SortDescription(propertyName, direction));
+
+            return new GenericSortedView<T>(vs.View);
+        }
+
+
+        public static IEnumerable ToSorted(this IEnumerable collection, string propertyName, ListSortDirection direction = ListSortDirection.Ascending)
+        {
+            CollectionViewSource vs = new CollectionViewSource();
+            vs.Source = collection;
+
+            vs.View.SortDescriptions.Add(new System.ComponentModel.SortDescription(propertyName, direction));
+
+
+            return vs.View;
         }
     }
 }

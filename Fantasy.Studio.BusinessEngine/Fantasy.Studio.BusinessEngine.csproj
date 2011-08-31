@@ -77,6 +77,7 @@
     <Compile Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml.cs">
       <DependentUpon>ConfirmDeletionDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClassDiagramEditing\DeleteClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassNodeAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
@@ -101,7 +102,7 @@
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassEditing\AddClassCommand.cs" />
-    <Compile Include="ClassEditing\RemoveClassCommand.cs" />
+    <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="ClassDiagramEditing\ClassFolderClassDiagramsProvider.cs" />
     <Compile Include="ClassEditing\PackageClassesProvider.cs" />
     <Compile Include="ClassEditing\PackageClassFolderProvider.cs" />
+    <Compile Include="PackageEditing\DeletePackageCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
     <Compile Include="InvokerMemberConverter.cs" />

@@ -35,7 +35,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             BusinessClass @class = es.AddBusinessClass(parent);
            
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
-            documentService.OpenView(@class); 
+            IViewContent content = documentService.OpenView(@class);
+            if (content != null)
+            {
+                content.WorkbenchWindow.Select();
+            }
         }
 
         #endregion

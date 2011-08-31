@@ -118,12 +118,19 @@ namespace Fantasy.Studio.BusinessEngine
 
         public virtual void Selected()
         {
-            
+
+            foreach (IEntityEditingPanel panel in this._model.EditingPanels)
+            {
+                panel.ViewContentSelected();
+            }
         }
 
         public virtual void Deselected()
         {
-           
+            foreach (IEntityEditingPanel panel in this._model.EditingPanels)
+            {
+                panel.ViewContentDeselected();
+            }
         }
 
         public virtual void Closing(System.ComponentModel.CancelEventArgs e)

@@ -99,7 +99,34 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual IObservableList<BusinessEnumValue> EnumValues { get; private set; }
+        //public virtual IObservableList<BusinessEnumValue> EnumValues { get; private set; }
+
+        private IObservableList<BusinessEnum> _persistedEnumValues = new ObservableList<BusinessEnum>();
+        protected internal virtual IObservableList<BusinessEnum> PersistedEnumValues
+        {
+            get { return _persistedEnumValues; }
+            private set
+            {
+                if (_persistedEnumValues != value)
+                {
+                    _persistedEnumValues = value;
+                    _enumValues.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessEnum> _enumValues;
+        public virtual IObservableList<BusinessEnum> EnumValues
+        {
+            get
+            {
+                if (this._enumValues == null)
+                {
+                    this._enumValues = new ObservableListView<BusinessEnum>(this._persistedEnumValues);
+                }
+                return _enumValues;
+            }
+        }
 
         
     }

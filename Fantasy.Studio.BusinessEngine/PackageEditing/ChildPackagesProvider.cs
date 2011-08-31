@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
+using System.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.PackageEditing
 {
@@ -11,9 +12,9 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
     {
         #region IChildItemsProvider Members
 
-        public IEnumerable<object> GetChildren(object parent)
+        public IEnumerable GetChildren(object parent)
         {
-            return ((BusinessPackage)parent).ChildPackages;
+            return ((BusinessPackage)parent).ChildPackages.ToSorted("Name");
         }
 
         #endregion

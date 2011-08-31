@@ -8,6 +8,6 @@ namespace Fantasy.Studio.Controls
 {
     public interface IChildItemsProvider
     {
-        IEnumerable<object> GetChildren(object parent);
+        IEnumerable GetChildren(object parent);
     }
 }

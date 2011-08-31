@@ -150,6 +150,7 @@
     <Compile Include="AddIns\BindingExtension.cs" />
     <Compile Include="AddIns\CodonBase.cs" />
     <Compile Include="AddIns\Codons\Adapter.cs" />
+    <Compile Include="AddIns\Conditions\CollectionCount.cs" />
     <Compile Include="AddIns\IValueProvider.cs" />
     <Compile Include="AddIns\MemberValueProvider.cs" />
     <Compile Include="AddIns\Services\RegisterAdaptionService.cs" />
@@ -175,11 +176,13 @@
     <Compile Include="AddIns\TemplateAttribute.cs" />
     <Compile Include="Collection\Collection.cs" />
     <Compile Include="Collection\CollectionExtensions.cs" />
-    <Compile Include="Collection\ObservableAdapterCollection.cs" />
     <Compile Include="Collection\UnionedObservableCollection.cs" />
+    <Compile Include="Collection\ObservableAdapterCollection.cs" />
+    <Compile Include="Collection\Generic.UnionedObservableCollection.cs" />
     <Compile Include="Collection\DictionaryExtensions.cs" />
     <Compile Include="Collection\Key.cs" />
     <Compile Include="IEventHandler.cs" />
+    <Compile Include="NumericalComparisonOperator.cs" />
     <Compile Include="ServiceModel\ServiceContainer.cs" />
     <Compile Include="Windows\BooleanInverterConverter.cs" />
     <Compile Include="Windows\MouseUtilities.cs" />

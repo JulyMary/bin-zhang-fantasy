@@ -20,7 +20,7 @@ namespace Fantasy.Studio.Controls
         public TreeViewItem(ExtendableTreeViewModel model)
         {
             this._model = model;
-            this.Items = new UnionedObservableCollection<object>();
+            this.Items = new UnionedObservableCollection();
             this.TreeViewItems = new ObservableAdapterCollection<TreeViewItem>(this.Items, this._model.CreateTreeViewItem);
         }
 
@@ -44,7 +44,7 @@ namespace Fantasy.Studio.Controls
 
         public ICommand Collapsed { get; set; }
 
-        public UnionedObservableCollection<object> Items { get; private set; }
+        public UnionedObservableCollection Items { get; private set; }
 
         public IEnumerable<TreeViewItem> TreeViewItems { get; private set; }
 

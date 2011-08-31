@@ -64,6 +64,7 @@
     <Compile Include="Collections\IObservableList.cs" />
     <Compile Include="Collections\IObservableSet.cs" />
     <Compile Include="Collections\ObservableList.cs" />
+    <Compile Include="Collections\ObservableListView.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />

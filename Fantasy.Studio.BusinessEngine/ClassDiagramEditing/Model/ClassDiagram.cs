@@ -120,7 +120,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public void Save()
         {
             ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
-
+            IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
 
             session.BeginUpdate();
             try
@@ -129,6 +129,22 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 this.Entity.Diagram = ser.Serialize(this).ToString(SaveOptions.OmitDuplicateNamespaces);
 
                 session.SaveOrUpdate(this.Entity);
+
+                foreach (IBusinessEntity entity in this.DeletingEntities)
+                {
+                    if (entity is BusinessClass)
+                    {
+                        BusinessClass cls = (BusinessClass)entity;
+                        ddl.DeleteClassTable((BusinessClass)entity);
+                        if (entity.EntityState != EntityState.New && entity.EntityState != EntityState.Deleted)
+                        {
+                            session.Delete(entity);
+                        }
+                    }
+                }
+
+                this.DeletingEntities.Clear();
+               
                 foreach (ClassNode cls in this.Classes)
                 {
                     cls.SaveEntity();
@@ -217,6 +233,16 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 }
             }
         }
+
+
+        private ISet<IBusinessEntity> _deletingEntities = new HashSet<IBusinessEntity>() ;
+        public ISet<IBusinessEntity> DeletingEntities
+        {
+            get
+            {
+                return _deletingEntities;
+            }
+        }   
 
 
        
