@@ -1,18 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.Specialized;
 using System.Windows;
-using System.Collections;
-using System.Collections.Generic;
 
 
 namespace Fantasy.Collection
 {
-    public class UnionedObservableCollection : INotifyCollectionChanged, ICollection, IWeakEventListener
+    public class UnionedObservableCollection<T> : INotifyCollectionChanged, ICollection<T>, IWeakEventListener
     {
 
-        private List<IEnumerable> _childCollections = new List<IEnumerable>();
+        private List<IEnumerable<T>> _childCollections = new List<IEnumerable<T>>();
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
@@ -35,7 +34,7 @@ namespace Fantasy.Collection
             }
         }
 
-        public void Union(IEnumerable child)
+        public void Union(IEnumerable<T> child)
         {
             int newIndex = this.Count;
             this._childCollections.Add(child);
@@ -46,9 +45,9 @@ namespace Fantasy.Collection
                 CollectionChangedEventManager.AddListener(n, this);
             }
 
-            if (child.Cast<object>().Count() > 0)
+            if (child.Count() > 0)
             {
-                NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, child.Cast<object>().ToArray(), newIndex);
+                NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new List<T>(child), newIndex);
                 this.OnCollectionChanged(args);
             }
 
@@ -58,11 +57,11 @@ namespace Fantasy.Collection
         void ChildCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             int starting = 0;
-            foreach (IEnumerable child in _childCollections)
+            foreach (IEnumerable<T> child in _childCollections)
             {
                 if (!object.Equals(child, sender))
                 {
-                    starting += child.Cast<object>().Count();
+                    starting += child.Count();
                 }
                 else
                 {
@@ -95,19 +94,19 @@ namespace Fantasy.Collection
             
         }
 
-        public void Division(IEnumerable child)
+        public void Division(IEnumerable<T> child)
         {
 
             int starting = 0;
-            foreach (IEnumerable items in _childCollections)
+            foreach (IEnumerable<T> items in _childCollections)
             {
                 if (!object.Equals(items, child))
                 {
-                    starting += items.Cast<object>().Count();
+                    starting += items.Count();
                 }
                 else
                 {
-                    NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, child.Cast<object>().ToArray(), starting);
+                    NotifyCollectionChangedEventArgs args = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new List<T>(child), starting);
 
                     INotifyCollectionChanged n = child as INotifyCollectionChanged;
                     if (n != null)
@@ -125,10 +124,10 @@ namespace Fantasy.Collection
 
         #region IEnumerable<T> Members
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return (from items in _childCollections
-                    from item in items.Cast<object>()
+                    from item in items
                     select item).GetEnumerator();
         }
 
@@ -145,10 +144,10 @@ namespace Fantasy.Collection
 
         #region ICollection<T> Members
 
-        //void ICollection.Add(object item)
-        //{
-        //    throw new NotSupportedException();
-        //}
+        void ICollection<T>.Add(T item)
+        {
+            throw new NotSupportedException();
+        }
 
         public void Clear()
         {
@@ -164,11 +163,11 @@ namespace Fantasy.Collection
             this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
         }
 
-        public bool Contains(object item)
+        public bool Contains(T item)
         {
-            foreach (IEnumerable items in this._childCollections)
+            foreach (IEnumerable<T> items in this._childCollections)
             {
-                if (items.Cast<object>().Contains(item))
+                if (items.Contains(item))
                 {
                     return true;
                 }
@@ -176,20 +175,18 @@ namespace Fantasy.Collection
             return false;
         }
 
-        public void CopyTo(Array array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
-            foreach (object item in this)
+            foreach (T item in this)
             {
                 if (arrayIndex < array.Length)
                 {
-                    array.SetValue(item, arrayIndex) ;
-                    
+                    array[arrayIndex] = item;
                 }
                 else
                 {
                     break;
                 }
-                arrayIndex++;
             }
         }
         private int _count = 0;
@@ -206,7 +203,7 @@ namespace Fantasy.Collection
                     _count = 0;
                     if (this._childCollections.Count > 0)
                     {
-                        _count = this._childCollections.Sum(c => c.Cast<object>().Count());
+                        _count = this._childCollections.Sum(c => c.Count());
                     }
 
                 }
@@ -219,27 +216,16 @@ namespace Fantasy.Collection
             get { return false; }
         }
 
-        //public bool Remove(object item)
-        //{
-        //    throw new NotSupportedException();
-        //}
-
-        #endregion
-
-        #region ICollection Members
-
-
-        public bool IsSynchronized
+        public bool Remove(T item)
         {
-            get { return false; }
-        }
-
-        private object _syncRoot = new object();
-        public object SyncRoot
-        {
-            get { return _syncRoot; }
+            throw new NotSupportedException();
         }
 
         #endregion
+
+
+
+
+        
     }
 }

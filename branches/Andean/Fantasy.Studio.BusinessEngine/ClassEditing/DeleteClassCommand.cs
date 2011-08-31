@@ -8,7 +8,7 @@ using Fantasy.Studio.Services;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
-    public class RemoveClassCommand : ObjectWithSite, System.Windows.Input.ICommand
+    public class DeleteClassCommand : ObjectWithSite, System.Windows.Input.ICommand
     {
         #region ICommand Members
 
@@ -33,7 +33,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             {
                 @class.Package.Classes.Remove(@class);
                 this.Site.GetRequiredService<IDDLService>().DeleteClassTable(@class);
-                es.DefaultSession.Delete(@class);
+                if (@class.EntityState != EntityState.New)
+                {
+                    es.DefaultSession.Delete(@class);
+                }
                 es.DefaultSession.EndUpdate(true);
                 this.Site.GetRequiredService<IEditingService>().CloseView(@class, true);
             }

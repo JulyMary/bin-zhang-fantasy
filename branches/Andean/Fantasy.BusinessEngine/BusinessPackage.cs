@@ -10,9 +10,7 @@ namespace Fantasy.BusinessEngine
     {
         public BusinessPackage()
         {
-            this.ChildPackages = new ObservableList<BusinessPackage>();
-            this.Classes = new ObservableList<BusinessClass>();
-            this.ClassDiagrams = new ObservableList<BusinessClassDiagram>();
+            
         }
 
         public virtual string Name
@@ -40,11 +38,90 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual IObservableList<BusinessPackage> ChildPackages { get; private set; }
+        
 
-        public virtual IObservableList<BusinessClass> Classes { get; private set; }
+        private IObservableList<BusinessPackage> _persistedChildPackages = new ObservableList<BusinessPackage>();
+        protected internal virtual IObservableList<BusinessPackage> PersistedChildPackages
+        {
+            get { return _persistedChildPackages; }
+            private set
+            {
+                if (_persistedChildPackages != value)
+                {
+                    _persistedChildPackages = value;
+                    _childPackages.Source = value;
+                }
+            }
+        }
 
-        public virtual IObservableList<BusinessClassDiagram> ClassDiagrams { get; private set; }
+        private ObservableListView<BusinessPackage> _childPackages;
+        public virtual IObservableList<BusinessPackage> ChildPackages
+        {
+            get
+            {
+                if (this._childPackages == null)
+                {
+                    this._childPackages = new ObservableListView<BusinessPackage>(this._persistedChildPackages);
+                }
+                return _childPackages;
+            }
+        }
+
+        private IObservableList<BusinessClass> _persistedClasses = new ObservableList<BusinessClass>();
+        protected internal virtual IObservableList<BusinessClass> PersistedClasses
+        {
+            get { return _persistedClasses; }
+            private set
+            {
+                if (_persistedClasses != value)
+                {
+                    _persistedClasses = value;
+                    _classes.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessClass> _classes;
+        public virtual IObservableList<BusinessClass> Classes
+        {
+            get
+            {
+                if (this._classes == null)
+                {
+                    this._classes = new ObservableListView<BusinessClass>(this._persistedClasses); 
+                }
+                return _classes;
+            }
+        }
+
+
+        private IObservableList<BusinessClassDiagram> _persistedClassDiagrams = new ObservableList<BusinessClassDiagram>();
+        protected internal virtual IObservableList<BusinessClassDiagram> PersistedClassDiagrams
+        {
+            get { return _persistedClassDiagrams; }
+            private set
+            {
+                if (_persistedClassDiagrams != value)
+                {
+                    _persistedClassDiagrams = value;
+                    _classDiagrams.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessClassDiagram> _classDiagrams;
+        public virtual IObservableList<BusinessClassDiagram> ClassDiagrams
+        {
+            get
+            {
+                if (this._classDiagrams == null)
+                {
+                    this._classDiagrams = new ObservableListView<BusinessClassDiagram>(this._persistedClassDiagrams);
+                }
+                return _classDiagrams;
+            }
+        }
+
 
         public virtual BusinessPackage ParentPackage
         {

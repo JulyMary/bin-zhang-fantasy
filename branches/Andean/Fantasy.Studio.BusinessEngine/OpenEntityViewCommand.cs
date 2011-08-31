@@ -26,8 +26,13 @@ namespace Fantasy.Studio.BusinessEngine
         {
             
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
-           
-            documentService.OpenView(parameter); 
+
+            IViewContent content = documentService.OpenView(parameter);
+            if (content != null)
+            {
+                content.WorkbenchWindow.Select();
+            }  
+            
         }
 
         #endregion

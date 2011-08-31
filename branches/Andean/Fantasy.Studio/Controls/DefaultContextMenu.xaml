@@ -20,6 +20,7 @@
             <Setter Property="Visibility" Value="{Binding Visible, Converter={x:Static b:VisibilityConverter.Collapsed}}" />
             <Setter Property="IsCheckable" Value="{Binding IsCheckable, Mode=OneWay}" />
             <Setter Property="IsChecked" Value="{Binding IsChecked, Mode=OneWay}" />
+            <Setter Property="IsEnabled" Value="{Binding Enabled}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding HasIcon}" Value="true">
                     <Setter Property="Icon" Value="{DynamicResource img}" />

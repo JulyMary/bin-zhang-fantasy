@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using NHibernate.Event;
 using Fantasy.AddIns;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Fantasy.BusinessEngine.Events
 {
@@ -21,16 +23,36 @@ namespace Fantasy.BusinessEngine.Events
                 {
                     _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/updating");
                 }
-                EntityCancelEventArgs e = new EntityCancelEventArgs((IEntity)@event.Entity);
-                foreach (IEntityCancelEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
+                IEntity entity = @event.Entity as IEntity;
+                INotifyPropertyChanged np = entity as INotifyPropertyChanged;
+
+                PropertyChangedEventHandler propertyChagned = (sender, e) =>
                 {
-                    handler.Execute(e);
-                    if (e.Cancel)
+                    int index = Array.IndexOf(@event.Persister.PropertyNames, e.PropertyName);
+                    if (index >= 0)
                     {
-                        break;
+                        @event.State[index] = Invoker.Invoke(entity, e.PropertyName);
                     }
+                };
+
+                np.PropertyChanged += propertyChagned;
+                try
+                {
+                    EntityCancelEventArgs e = new EntityCancelEventArgs((IEntity)@event.Entity);
+                    foreach (IEntityCancelEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
+                    {
+                        handler.Execute(e);
+                        if (e.Cancel)
+                        {
+                            break;
+                        }
+                    }
+                    rs = e.Cancel;
                 }
-                rs = e.Cancel;
+                finally
+                {
+                    np.PropertyChanged -= propertyChagned;
+                }
 
             }
 

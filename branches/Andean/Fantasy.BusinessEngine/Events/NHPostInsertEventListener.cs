@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using NHibernate.Event;
 using Fantasy.AddIns;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Fantasy.BusinessEngine.Events
 {
@@ -22,11 +24,15 @@ namespace Fantasy.BusinessEngine.Events
                     _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/inserted");
                 }
 
-                EntityEventArgs e = new EntityEventArgs(entity);
-                foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
-                {
-                    handler.Execute(e);
-                }
+
+                
+
+                    EntityEventArgs e = new EntityEventArgs(entity);
+                    foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
+                    {
+                        handler.Execute(e);
+                    }
+                
             }
         }
 

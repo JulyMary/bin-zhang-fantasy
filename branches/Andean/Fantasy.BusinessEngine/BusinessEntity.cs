@@ -290,8 +290,6 @@ namespace Fantasy.BusinessEngine
         void IEntity.OnInserting(CancelEventArgs e)
         {
             this.OnInserting(e);
-
-          
            
         }
 

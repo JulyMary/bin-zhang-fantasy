@@ -5,14 +5,15 @@ using System.Text;
 using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
 using Fantasy.Studio.BusinessEngine.ClassEditing;
+using System.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
     public class ClassFolderClassDiagramsProvider : ObjectWithSite, IChildItemsProvider
     {
-        public IEnumerable<object> GetChildren(object parent)
+        public IEnumerable GetChildren(object parent)
         {
-            return ((ClassFolder)parent).Package.ClassDiagrams;
+            return ((ClassFolder)parent).Package.ClassDiagrams.ToSorted("Name");
         }
     }
 }

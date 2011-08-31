@@ -18,6 +18,7 @@ namespace Fantasy.Studio.BusinessEngine
 
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessClassName, package.Classes.Select(c => c.Name));
             rs.ParentClass = es.GetRootClass();
+            rs.ParentClass.ChildClasses.Add(rs);
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             package.Classes.Add(rs);
             rs.Package = package;

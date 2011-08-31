@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.Studio.Controls;
+using System.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
@@ -11,10 +12,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
         #region IChildItemsProvider Members
 
-        public IEnumerable<object> GetChildren(object parent)
+        public IEnumerable GetChildren(object parent)
         {
             ClassFolder folder = (ClassFolder)parent;
-            return folder.Package.Classes; 
+            return folder.Package.Classes.ToSorted("Name"); 
         }
 
         #endregion
