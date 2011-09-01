@@ -11,5 +11,12 @@ namespace Fantasy.Studio.Services
         ISelectionService CurrentSelectionService { get; set; }
 
         event EventHandler SelectionChanged;
+
+
+        bool IsReadOnly { get; }
+
+        event EventHandler IsReadOnlyChanged;
+
+
     }
 }

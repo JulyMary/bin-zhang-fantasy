@@ -55,8 +55,11 @@ namespace Fantasy.Studio.Descriptor
         {
             get
             {
-                return _readOnly || (this._setAction == null && ! this.PropertyInfo.CanWrite); 
-            }
+               
+               
+
+                return (this.Owner != null && this.Owner.IsReadOnly) || _readOnly || (this._setAction == null && ! this.PropertyInfo.CanWrite); 
+            } 
         }
 
         private Type _propertyType = null;

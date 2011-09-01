@@ -68,6 +68,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\ProductInfo.cs" />
+    </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
@@ -148,8 +151,6 @@
     </Compile>
     <Compile Include="ClassEditing\ClassEditor.cs" />
     <Compile Include="ClassEditing\ClassFolder.cs" />
-    <Compile Include="ReadOnlyAdapterFactory.cs" />
-    <Compile Include="ClassEditing\ReadOnlyBusinessCalss.cs" />
     <Compile Include="Conditions\IsSystemEntity.cs" />
     <Compile Include="OpenEntityViewCommand.cs" />
     <Compile Include="EntityEditingViewContent.xaml.cs">
@@ -162,8 +163,6 @@
       <DependentUpon>DocumentPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="DocumentPadModel.cs" />
-    <Compile Include="ClassEditing\ReadOnlyBusinessClassFactory.cs" />
-    <Compile Include="PackageEditing\ReadOnlyBusinessPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -177,7 +176,6 @@
     <Compile Include="PropertyGridEditor.xaml.cs">
       <DependentUpon>PropertyGridEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PackageEditing\ReadOnlyBusinessPackageFactory.cs" />
     <Compile Include="PropertyEditing\RemovePropertyCommand.cs" />
     <Compile Include="ClassEditing\SaveBusinessClassViewContentCommand.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />

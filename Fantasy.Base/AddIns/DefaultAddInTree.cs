@@ -7,6 +7,7 @@ using System.Windows.Markup;
 using System.IO;
 using Fantasy.IO;
 using System.Xml;
+using System.Xaml;
 
 namespace Fantasy.AddIns
 {
@@ -161,7 +162,7 @@ namespace Fantasy.AddIns
                         addIn = parser.Parse(reader);
                         AddInTree.Tree.InsertAddIn(addIn);
                     }
-                    catch(Exception error)
+                    catch (XamlObjectWriterException error)
                     {
                         errors.Add(error);
                         retryList.Add(file);

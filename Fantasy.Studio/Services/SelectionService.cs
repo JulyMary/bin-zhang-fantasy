@@ -7,10 +7,11 @@ using System.ComponentModel;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace Fantasy.Studio.Services
 {
-    public  class SelectionService : ISelectionService, IDisposable
+    public  class SelectionService : ISelectionService, ISelectionServiceEx, IDisposable
     {
         // Fields
         private string[] _contextAttributes;
@@ -27,7 +28,7 @@ namespace Fantasy.Studio.Services
         private static readonly int StateTransactionChange = BitVector32.CreateMask(StateTransaction);
 
         // Events
-        event EventHandler ISelectionService.SelectionChanged
+        public event EventHandler SelectionChanged
         {
             add
             {
@@ -39,7 +40,7 @@ namespace Fantasy.Studio.Services
             }
         }
 
-        event EventHandler ISelectionService.SelectionChanging
+        public event EventHandler SelectionChanging
         {
             add
             {
@@ -169,7 +170,7 @@ namespace Fantasy.Studio.Services
             }
         }
 
-        bool ISelectionService.GetComponentSelected(object component)
+        public bool GetComponentSelected(object component)
         {
             if (component == null)
             {
@@ -178,7 +179,7 @@ namespace Fantasy.Studio.Services
             return ((this._selection != null) && this._selection.Contains(component));
         }
 
-        ICollection ISelectionService.GetSelectedComponents()
+        public ICollection GetSelectedComponents()
         {
             if (this._selection != null)
             {
@@ -189,12 +190,12 @@ namespace Fantasy.Studio.Services
             return new object[0];
         }
 
-        void ISelectionService.SetSelectedComponents(ICollection components)
+        public void SetSelectedComponents(ICollection components)
         {
             ((ISelectionService)this).SetSelectedComponents(components, SelectionTypes.Auto);
         }
 
-        void ISelectionService.SetSelectedComponents(ICollection components, SelectionTypes selectionType)
+        public void SetSelectedComponents(ICollection components, SelectionTypes selectionType)
         {
             int num;
             bool flag = (selectionType & SelectionTypes.Toggle) == SelectionTypes.Toggle;
@@ -381,7 +382,7 @@ namespace Fantasy.Studio.Services
         }
 
         // Properties
-        object ISelectionService.PrimarySelection
+        public object PrimarySelection
         {
             get
             {
@@ -393,7 +394,7 @@ namespace Fantasy.Studio.Services
             }
         }
 
-        int ISelectionService.SelectionCount
+        public int SelectionCount
         {
             get
             {
@@ -404,6 +405,55 @@ namespace Fantasy.Studio.Services
                 return 0;
             }
         }
+
+
+
+        #region ISelectionServiceEx Members
+
+        private ObservableCollection<object> _selectableObjects = new ObservableCollection<object>();
+
+        public IList SelectableObjects
+        {
+            get
+            {
+                return _selectableObjects;
+            }
+        }
+
+        ICollection ISelectionServiceEx.SelectableObjects
+        {
+            get { return _selectableObjects; }
+        }
+
+
+        private bool _isReadOnly = false;
+
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set 
+            {
+                if (_isReadOnly != value)
+                {
+
+                    _isReadOnly = value;
+                    this.OnIsReadOnlyChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+        public event EventHandler IsReadOnlyChanged;
+
+        protected virtual void OnIsReadOnlyChanged(EventArgs e)
+        {
+            if (this.IsReadOnlyChanged != null)
+            {
+                this.IsReadOnlyChanged(this, e);
+            }
+        }
+
+
+        #endregion
     }
 
 

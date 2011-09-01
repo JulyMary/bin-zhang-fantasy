@@ -34,8 +34,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             InitializeComponent();
 
-            this._selectionService.SelectionChanged += new EventHandler(SelectionService_SelectionChanged);
-            this.diagramView.SelectionList.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(ViewSelectionCollectionChanged);
         }
 
 
@@ -54,6 +52,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     {
 
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
+                        this._selectionService.IsReadOnly = query.Any(n => ((Model.ClassNode)n).IsShortCut); 
                     }
                     else
                     {
@@ -143,7 +142,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             return _childSite;
         }
 
-        private ISelectionService _selectionService = new SelectionService(null);
+        private SelectionService _selectionService;
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
@@ -168,6 +167,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
         {
+
+            this._selectionService = new SelectionService(this.Site);
+            this._selectionService.SelectionChanged += new EventHandler(SelectionService_SelectionChanged);
+            this.diagramView.SelectionList.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(ViewSelectionCollectionChanged);
+
 
             this._entity = (BusinessClassDiagram)data;
 
