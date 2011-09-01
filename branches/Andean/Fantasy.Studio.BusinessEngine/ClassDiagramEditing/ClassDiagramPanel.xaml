@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:f="urn:schema-fantasy:xaml"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=diagramControl}" GotKeyboardFocus="UserControl_GotKeyboardFocus">
+             d:DesignHeight="300" d:DesignWidth="300" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=diagramControl}" GotKeyboardFocus="UserControl_GotKeyboardFocus" Background="Black">
     <Grid>
-        <sf:DiagramControl x:Name="diagramControl" >
+        <sf:DiagramControl x:Name="diagramControl">
             <sf:DiagramControl.Model>
                 <sf:DiagramModel x:Name="diagramControlModel" />
             </sf:DiagramControl.Model>

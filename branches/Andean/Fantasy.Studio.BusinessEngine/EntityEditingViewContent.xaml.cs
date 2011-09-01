@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine
     /// <summary>
     /// Interaction logic for EntityEditingViewContent.xaml
     /// </summary>
-    public abstract partial class EntityEditingViewContent : UserControl, IViewContent, IEditingViewContent, IObjectWithSite
+    public abstract partial class EntityEditingViewContent : UserControl, IViewContent, IEditingViewContent, IObjectWithSite, IEntityEditingPanelContainer
     {
         public EntityEditingViewContent()
         {
@@ -35,6 +35,13 @@ namespace Fantasy.Studio.BusinessEngine
         public IBusinessEntity Entity { get; private set; }
 
         EntityEditingViewContentModel _model;
+
+
+        public ICollection<IEntityEditingPanel> Panels
+        {
+            get { return this._model.EditingPanels; }
+        }
+
 
         public virtual void Load(IBusinessEntity entity)
         {
@@ -61,17 +68,62 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 panel.Initialize();
                 panel.Load(entity);
-
-                TabItem item = new TabItem() { Header = panel.Title, Content = panel.Content };
-                this.panelContainer.Items.Add(item);
-
-                item.Visibility = _model.TabStripVisibility;
-
                 panel.DirtyStateChanged += new EventHandler(EditingPanel_DirtyStateChanged);
             }
 
+            this.DataContext = this._model;
+            if (this._model.EditingPanels.Count > 0)
+            {
+                this.ActivePanel = this._model.EditingPanels[0];
+                this.panelContainer.SelectedIndex = 0;
+            }
+
+           
+
             EvalDirtyState();
         }
+
+
+
+
+        public IEntityEditingPanel ActivePanel
+        {
+            get { return (IEntityEditingPanel)GetValue(ActivePanelProperty); }
+            set { SetValue(ActivePanelProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ActivePanel.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ActivePanelProperty =
+            DependencyProperty.Register("ActivePanel", typeof(IEntityEditingPanel), typeof(EntityEditingViewContent), new UIPropertyMetadata(null, ActivePanelChangedCallback));
+
+        private static void ActivePanelChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((EntityEditingViewContent)d).panelContainer.SelectedItem = e.NewValue;
+
+            ((EntityEditingViewContent)d).OnActivePanelChanged(EventArgs.Empty);
+        }
+
+        private void panelContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            this.ActivePanel = (IEntityEditingPanel)this.panelContainer.SelectedItem;
+        }
+
+
+        public event EventHandler ActivePanelChanged;
+
+        protected virtual void OnActivePanelChanged(EventArgs e)
+        {
+            if (this.ActivePanelChanged != null)
+            {
+                this.ActivePanelChanged(this, e);
+            }
+        }
+  
+
+
+
+       
+
 
         void EditingPanel_DirtyStateChanged(object sender, EventArgs e)
         {
@@ -103,7 +155,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         #region IViewContent Members
 
-        UIElement IViewContent.Content
+        public UIElement Element
         {
             get { return this; }
         }
@@ -233,6 +285,12 @@ namespace Fantasy.Studio.BusinessEngine
        
         public IServiceProvider Site { get; set; }
 
-        
+
+
+
+
+
+       
+       
     }
 }

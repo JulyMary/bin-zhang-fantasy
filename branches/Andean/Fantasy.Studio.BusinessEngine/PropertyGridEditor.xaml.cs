@@ -121,7 +121,7 @@ namespace Fantasy.Studio.BusinessEngine
             this.DirtyState = EditingState.Clean;
         }
 
-        public new UIElement Content
+        public UIElement Element
         {
             get { return this; }
         }

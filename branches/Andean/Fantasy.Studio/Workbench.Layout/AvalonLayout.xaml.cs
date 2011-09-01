@@ -193,5 +193,10 @@ namespace Fantasy.Studio.Workbench.Layout
             IPadContent pad = this._workbench.Pads.Single(p => p.Content == container.Content);
             pad.BringPadToFront();
         }
+
+        private void dockingManager_ActiveDocumentChanged(object sender, EventArgs e)
+        {
+            this.OnActiveWorkbenchWindowChanged(e);
+        }
     }
 }

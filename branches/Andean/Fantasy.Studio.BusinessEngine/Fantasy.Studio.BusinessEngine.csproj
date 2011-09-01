@@ -68,13 +68,15 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\ProductInfo.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\ProductInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramModeCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramDeleteHandler.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramMode.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModelBinder.cs" />
     <Compile Include="ClassDiagramEditing\ClassNodeDeleteHandler.cs" />
     <Compile Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml.cs">
@@ -109,6 +111,7 @@
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />
+    <Compile Include="IEntityEditingPanelContainer.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
     <Compile Include="ClassEditing\ClassChildClassesProvider.cs" />

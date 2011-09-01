@@ -165,7 +165,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
             
         }
 
-        UIElement IEntityEditingPanel.Content
+        public UIElement Element
         {
             get { return this; }
         }

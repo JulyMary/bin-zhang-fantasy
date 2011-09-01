@@ -100,8 +100,34 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             }
         }
 
-       
-      
+
+
+        public ClassDiagramMode Mode
+        {
+            get { return (ClassDiagramMode)GetValue(ModeProperty); }
+            set 
+            {
+                if (this.Mode != value)
+                {
+                    SetValue(ModeProperty, value);
+
+                    if (this.Mode != ClassDiagramMode.Default)
+                    {
+                        this.diagramView.EnableConnection = true;
+                    }
+                    else
+                    {
+                        this.diagramView.EnableConnection = false;
+                    }
+                }
+
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for Mode.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ModeProperty =
+            DependencyProperty.Register("Mode", typeof(ClassDiagramMode), typeof(ClassDiagramPanel), new UIPropertyMetadata(ClassDiagramMode.Default));
+
         private IServiceProvider _site;
         [Browsable(false)]
         public IServiceProvider Site
@@ -256,7 +282,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._classDiagram.EditingState = EditingState.Clean; 
         }
 
-        public new UIElement Content
+        public UIElement Element
         {
             get { return this; }
         }

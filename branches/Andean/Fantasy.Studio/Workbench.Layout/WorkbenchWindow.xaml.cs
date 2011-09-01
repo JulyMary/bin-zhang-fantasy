@@ -33,7 +33,7 @@ namespace Fantasy.Studio.Workbench.Layout
             {
                 ((IEditingViewContent)view).DirtyStateChanged += new EventHandler(ViewTitleChanged);
             }
-            this.Content = view.Content;
+            this.Content = view.Element;
             this.IsActiveDocumentChanged +=new EventHandler(OnIsActiveDocumentChanged);
             view.WorkbenchWindow = this;
         }

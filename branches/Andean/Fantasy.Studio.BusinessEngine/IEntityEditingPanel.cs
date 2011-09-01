@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         void Save();
 
-        UIElement Content { get; }
+        UIElement Element { get; }
 
         string Title { get; }
 

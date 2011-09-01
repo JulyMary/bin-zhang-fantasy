@@ -87,6 +87,12 @@ namespace Fantasy.Studio.Codons
             {
                 rs = command;
             }
+
+            if (rs is IObjectWithSite)
+            {
+                ((IObjectWithSite)rs).Site = services;
+            }
+
             return rs;
         }
     }
