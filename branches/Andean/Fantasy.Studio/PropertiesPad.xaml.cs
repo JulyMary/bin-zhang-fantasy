@@ -82,6 +82,7 @@ namespace Fantasy.Studio
         {
             this._monitorSelectionService = ServiceManager.Services.GetRequiredService<IMonitorSelectionService>();
             this._monitorSelectionService.SelectionChanged += new EventHandler(MonitorSelectionServiceSelectionChanged);
+            this._monitorSelectionService.IsReadOnlyChanged += new EventHandler(MonitorSelectionServiceSelectionChanged);
             _adapterManager = ServiceManager.Services.GetRequiredService<IAdapterManager>();
             SetSelection();
         }
@@ -119,21 +120,20 @@ namespace Fantasy.Studio
             {
                 object[] selected = this._monitorSelectionService.CurrentSelectionService.GetSelectedComponents().Cast<object>().Select(o => _adapterManager.GetAdapter(o, typeof(ICustomTypeDescriptor))).ToArray();
 
-                this.PropertyGrid.SelectedObjects = selected;
-            }
-            else
-            {
-                this.PropertyGrid.SelectedObjects = null;
-            }
-
-            if (this.PropertyGrid.SelectedObjects != null)
-            {
-                foreach (object o in this.PropertyGrid.SelectedObjects)
+                foreach (object o in selected)
                 {
                     INotifyPropertyChanged np;
                     if (o is Fantasy.Studio.Descriptor.CustomTypeDescriptor)
                     {
-                        np = ((Fantasy.Studio.Descriptor.CustomTypeDescriptor)o).Component as INotifyPropertyChanged;
+                        Fantasy.Studio.Descriptor.CustomTypeDescriptor descriptor = (Fantasy.Studio.Descriptor.CustomTypeDescriptor)o;
+
+                        np = descriptor.Component as INotifyPropertyChanged;
+
+                        if (this._monitorSelectionService.IsReadOnly)
+                        {
+                            descriptor.IsReadOnly = true;
+                        }
+
                     }
                     else
                     {
@@ -144,7 +144,16 @@ namespace Fantasy.Studio
                         np.PropertyChanged += new PropertyChangedEventHandler(SelctedObjectPropertyChanged);
                     }
                 }
+                
+
+                this.PropertyGrid.SelectedObjects = selected;
             }
+            else
+            {
+                this.PropertyGrid.SelectedObjects = null;
+            }
+
+           
         }
 
         void SelctedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)

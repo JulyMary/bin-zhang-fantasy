@@ -11,6 +11,10 @@ namespace Fantasy.Studio.Services
     {
         ICollection SelectableObjects { get; }
 
-        event EventHandler SelectableObjectsChanged;
+        bool IsReadOnly { get; set; }
+
+        event EventHandler IsReadOnlyChanged;
+
+       
     }
 }

@@ -190,9 +190,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                     m.ClassNode model = this.DataContext as m.ClassNode;
                     var q1 = this.PropertyListBox.SelectedItems.Cast<m.PropertyNode>().Select(n => n.Entity);
 
-                    ISelectionService svc = model.Site.GetRequiredService<ISelectionService>();
+                    ISelectionServiceEx svc = model.Site.GetRequiredService<ISelectionServiceEx>();
 
                     svc.SetSelectedComponents(q1.ToArray(), SelectionTypes.Replace);
+                    svc.IsReadOnly = model.IsShortCut;
 
 
                 }

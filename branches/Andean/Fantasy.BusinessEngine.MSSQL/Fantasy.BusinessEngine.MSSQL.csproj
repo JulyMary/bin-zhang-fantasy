@@ -44,6 +44,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\ProductInfo.cs" />
+    </ItemGroup>
   <ItemGroup>
     <Compile Include="SqlSequenceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

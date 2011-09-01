@@ -159,7 +159,9 @@ namespace Fantasy.Studio.Descriptor
 		{
 			return _component;
 		}
-	}
+
+        public bool IsReadOnly { get; set; }
+    }
 
 	
 

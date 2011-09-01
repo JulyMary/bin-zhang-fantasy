@@ -65,6 +65,9 @@
       <HintPath>..\External\WPFToolkit.Extended.dll</HintPath>
     </Reference>
   </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\ProductInfo.cs" />
+    </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\ActiveWindow.cs" />
     <Compile Include="Conditions\SelectionType.cs" />
@@ -94,7 +97,6 @@
     <Compile Include="Conditions\SelectionCount.cs" />
     <Compile Include="Controls\AutoGrayImage.cs" />
     <Compile Include="Controls\Views\PlainView.cs" />
-    <Compile Include="Descriptor\IReadOnlyAdapter.cs" />
     <Compile Include="Descriptor\ListBoxDropDownTypeEditor.cs" />
     <Compile Include="ParameterSource.cs" />
     <Compile Include="CommandTargetProvider.cs" />

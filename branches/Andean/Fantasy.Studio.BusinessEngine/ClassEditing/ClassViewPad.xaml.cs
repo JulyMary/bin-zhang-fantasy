@@ -45,12 +45,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             ITreeViewItem item = (ITreeViewItem)this.treeView.SelectedItem;
-            object data = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IReadOnlyAdapter>(item.DataContext);
+            object data = item.DataContext;
 
-            if (data == null)
-            {
-                data = item.DataContext;
-            }
+           
 
             _selectionService.SetSelectedComponents(new object[] { data }, SelectionTypes.Primary);
         }
@@ -86,7 +83,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
         public void Initialize()
         {
-            this._selectionService = new SelectionService(this.Site);
+            this._selectionService = new SelectionService(this.Site) { IsReadOnly = true };
             ClassViewPadModel model = new ClassViewPadModel() { Site = this.Site };
             this.DataContext = model;
         }
