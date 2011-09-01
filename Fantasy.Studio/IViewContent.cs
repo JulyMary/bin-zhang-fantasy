@@ -9,10 +9,8 @@ namespace Fantasy.Studio
 {
     public interface IViewContent : IDisposable
     {
-        /// <summary>
-        /// This is the Windows.Forms control for the view.
-        /// </summary>
-        UIElement Content
+       
+        UIElement Element
         {
             get;
         }

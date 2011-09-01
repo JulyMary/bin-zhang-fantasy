@@ -255,12 +255,35 @@
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/toolbox/items">
-        <ToolBoxItem ID="Pointer" Category="ClassDiagram" Text="Pointer" Icon="/Fantasy.Studio;component/images/basecursor.png" />
+        
+        <ToolBoxItem ID="Pointer" Category="ClassDiagram" Text="Pointer" Icon="/Fantasy.Studio;component/images/basecursor.png"
+                     >
+            <ToolBoxItem.Conditional>
+                <ActiveWindow Type="classdiagram"/>
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.Selected>
+                <sbe:ClassDiagramModeCommand Mode="Default" />
+            </ToolBoxItem.Selected>
+        </ToolBoxItem>
         <ToolBoxItem ID="Class" Category="ClassDiagram" Text="Class" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png">
+            <ToolBoxItem.Conditional>
+                <ActiveWindow Type="classdiagram"/>
+            </ToolBoxItem.Conditional>
             <ToolBoxItem.DoDragDrop>
                 <DoDragDropHandler Data="{x:Static sbe:DragNewBusinessClassData.Value}" AllowedEffects="Copy"   />
             </ToolBoxItem.DoDragDrop>
-            
+            <ToolBoxItem.Selected>
+                <sbe:ClassDiagramModeCommand Mode="Default" />
+            </ToolBoxItem.Selected>
+        
+        </ToolBoxItem>
+        <ToolBoxItem ID="Inheritance" Category="ClassDiagram" Text="Inheritance" Icon="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png">
+            <ToolBoxItem.Conditional>
+                <ActiveWindow Type="classdiagram"/>
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.Selected>
+                <sbe:ClassDiagramModeCommand Mode="InheritanceConnection" />
+            </ToolBoxItem.Selected>
         </ToolBoxItem>
     </Extension>
     
