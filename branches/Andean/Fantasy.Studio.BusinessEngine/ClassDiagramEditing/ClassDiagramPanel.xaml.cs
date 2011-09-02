@@ -46,7 +46,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this._selecting = true;
                 try
                 {
-                    var query = from shape in this.diagramView.SelectionList.Cast<Node>() select shape.DataContext;
+                    var query = from shape in this.diagramView.SelectionList.FilterAndCast<Node>() select shape.DataContext;
 
                     if (query.Count() > 0)
                     {
@@ -110,18 +110,55 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 if (this.Mode != value)
                 {
                     SetValue(ModeProperty, value);
-
-                    if (this.Mode != ClassDiagramMode.Default)
-                    {
-                        this.diagramView.EnableConnection = true;
-                    }
-                    else
-                    {
-                        this.diagramView.EnableConnection = false;
-                    }
+                    this.OnModeChanged();
                 }
-
             }
+        }
+
+        private void OnModeChanged()
+        {
+            switch (this.Mode)
+            {
+
+                case ClassDiagramMode.InheritanceConnection:
+                    {
+                        Connection.ConnectionAdorner adorner = new Connection.ConnectionAdorner(this.diagramView, this.GetChildSite());
+                        adorner.ValidateFirstNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateSubclass);
+                        adorner.ValidateSecondNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateParentClass);
+                        adorner.CreatConnection += new EventHandler(CreateInheritance);
+                        adorner.Exit += new EventHandler(ExitCreateInheritance);
+                    }
+
+                    break;
+                case ClassDiagramMode.RelationConnection:
+                    break;
+               
+            }
+        }
+
+        void ExitCreateInheritance(object sender, EventArgs e)
+        {
+            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+            adorner.ValidateFirstNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateSubclass);
+            adorner.ValidateSecondNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateParentClass);
+            adorner.CreatConnection -= new EventHandler(CreateInheritance);
+            adorner.Exit -= new EventHandler(ExitCreateInheritance);
+            this.Mode = ClassDiagramMode.Default;
+        }
+
+        void CreateInheritance(object sender, EventArgs e)
+        {
+            //LineConnector connection = new LineConnector(
+        }
+
+        void ValidateParentClass(object sender, Connection.ValidatNodeArgs e)
+        {
+            e.IsValid = true;
+        }
+
+        void ValidateSubclass(object sender, Connection.ValidatNodeArgs e)
+        {
+            e.IsValid = true;
         }
 
         // Using a DependencyProperty as the backing store for Mode.  This enables animation, styling, binding, etc...

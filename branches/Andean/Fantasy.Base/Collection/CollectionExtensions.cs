@@ -237,5 +237,16 @@ namespace Fantasy
 
             return vs.View;
         }
+
+        public static IEnumerable<T> FilterAndCast<T>(this IEnumerable collection)
+        {
+            foreach (object o in collection)
+            {
+                if (o is T)
+                {
+                    yield return (T)o;
+                }
+            }
+        }
     }
 }
