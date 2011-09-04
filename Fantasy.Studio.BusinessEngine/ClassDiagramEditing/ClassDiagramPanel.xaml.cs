@@ -52,7 +52,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     {
 
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
-                        this._selectionService.IsReadOnly = query.Any(n => ((Model.ClassNode)n).IsShortCut); 
+                        this._selectionService.IsReadOnly = query.Any(n => ((Model.ClassGlyph)n).IsShortCut); 
                     }
                     else
                     {
@@ -148,7 +148,17 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         void CreateInheritance(object sender, EventArgs e)
         {
-            //LineConnector connection = new LineConnector(
+            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+            Model.InheritanceGlyph inheritance = new Model.InheritanceGlyph()
+            {
+                ChildClass = (Model.ClassGlyph)adorner.FirstNode.DataContext,
+                ChildGlyphId = adorner.FirstNode.ID,
+                ParentClass = (Model.ClassGlyph)adorner.SecondNode.DataContext,
+                ParentGlyphId = adorner.SecondNode.ID,
+                EditingState = EditingState.Dirty,
+            };
+
+            this._classDiagram.Inheritances.Add(inheritance);
         }
 
         void ValidateParentClass(object sender, Connection.ValidatNodeArgs e)

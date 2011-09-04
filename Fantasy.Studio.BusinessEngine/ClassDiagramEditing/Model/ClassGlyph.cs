@@ -14,15 +14,32 @@ using Fantasy.Collections;
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
     [XSerializable("class", NamespaceUri= Consts.ClassDiagramNamespace)]
-    public class ClassNode : NotifyPropertyChangedObject, IObjectWithSite
+    public class ClassGlyph : ClassDiagramGlyph
     {
 
-        public ClassNode ()
+        public ClassGlyph ()
 	    {
             this._classListener = new WeakEventListener(this.EntityStateChanged);
             this._propertyListener = new WeakEventListener(this.EntityStateChanged);
             this._propertyCollectionListener = new WeakEventListener(this.PropertyCollectionChanged); 
 	    }
+
+
+        [XAttribute("id")]
+        private Guid _id;
+
+        public Guid Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    this.OnPropertyChanged("Id");
+                }
+            }
+        }
 
         [XAttribute("left")]
         private double _left = 0;
@@ -236,25 +253,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         }
 
 
-        public ClassDiagram Diagram { get; internal set; }
-
-        public IServiceProvider Site { get; set; }
-
-
-        private EditingState _editingState = EditingState.Clean ;
-
-        public EditingState EditingState
-        {
-            get { return _editingState; }
-            set
-            {
-                if (_editingState != value)
-                {
-                    _editingState = value;
-                    this.OnPropertyChanged("EditingState");
-                }
-            }
-        }
+       
 
 
         private int _displayIndex;
@@ -287,7 +286,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
-        public void SaveEntity()
+        public override void SaveEntity()
         {
             ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
 
@@ -308,7 +307,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 dll.CreateClassTable(this.Entity);
 
                 session.EndUpdate(true);
-                this.EditingState = EditingState.Clean;
+                base.SaveEntity();
             }
             catch
             {

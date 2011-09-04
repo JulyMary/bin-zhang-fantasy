@@ -11,11 +11,11 @@
     </AddIn.Import>
 
     <Extension Path="fantasy/adaption">
-        <Adapter ID="ClassNode" InsertBefore="TypeDescriptor">
+        <Adapter ID="ClassGlyph" InsertBefore="TypeDescriptor">
             <Adapter.Factory>
-                <dm:ClassNodeAdapterFactory/>
-            </Adapter.Factory> 
-            <x:Type TypeName="dm:ClassNode" />
+                <dm:ClassGlyphAdapterFactory/>
+            </Adapter.Factory>
+            <x:Type TypeName="dm:ClassGlyph" />
         </Adapter>
     </Extension>
 
@@ -302,7 +302,7 @@
             <Button.Conditional>
                 <And Action="Exclude">
                     <SelectionCount Count="1" />
-                    <SelectionType Mode="Primary" TargetType="{x:Type dm:ClassNode}" />
+                    <SelectionType Mode="Primary" TargetType="{x:Type dm:ClassGlyph}" />
                 </And>
             </Button.Conditional>
         </Button>
@@ -314,7 +314,7 @@
             <CommandBinding.Conditional>
                 <And>
                     <SelectionCount Count="1" />
-                    <SelectionType Mode="Primary" TargetType="{x:Type dm:ClassNode}" />
+                    <SelectionType Mode="Primary" TargetType="{x:Type dm:ClassGlyph}" />
                 </And>
             </CommandBinding.Conditional>
         </CommandBinding>
@@ -331,12 +331,12 @@
         </CommandBinding>
     </Extension>
 
-    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/classnode/contextmenu">
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/classglyph/contextmenu">
         <Button ID="AddProperty" Text="Add Property" Command="{Command Name=AddBusinessProperty}" />
         <Button ID="Delete" Text="Delete" Command="Delete" />
     </Extension>
 
-    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/classnode/commandbindings">
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/classglyph/commandbindings">
         <CommandBinding ID="AddProperty" Command="{Command Name=AddBusinessProperty}" Handler="{New sbe:AddPropertyCommand}" ParameterSource="Owner" ParameterMember="DataContext.Entity">
             <CommandBinding.Conditional>
                 <Not>

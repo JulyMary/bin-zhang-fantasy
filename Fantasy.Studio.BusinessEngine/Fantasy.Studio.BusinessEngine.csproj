@@ -87,7 +87,8 @@
     <Compile Include="ClassDiagramEditing\Connection\SelectSecondNodeHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ValidatNodeArgs.cs" />
     <Compile Include="ClassDiagramEditing\DeleteClassDiagramCommand.cs" />
-    <Compile Include="ClassDiagramEditing\Model\ClassNodeAdapterFactory.cs" />
+    <Compile Include="ClassDiagramEditing\Model\ClassDiagramGlyph.cs" />
+    <Compile Include="ClassDiagramEditing\Model\ClassGlyphAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramEditor.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramPanel.xaml.cs">
@@ -95,7 +96,7 @@
     </Compile>
     <Compile Include="ClassDiagramEditing\ClassDiagramPanelModel.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramViewModel.cs" />
-    <Compile Include="ClassDiagramEditing\Model\ClassNode.cs" />
+    <Compile Include="ClassDiagramEditing\Model\ClassGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Consts.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessClassDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessClassOverHandler.cs" />
@@ -103,6 +104,8 @@
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassDataDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassDataOverHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\SelectFirstNodeHandler.cs" />
+    <Compile Include="ClassDiagramEditing\Model\InheritanceGlyph.cs" />
+    <Compile Include="ClassDiagramEditing\Model\Point.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassNode.xaml.cs">
       <DependentUpon>ClassNode.xaml</DependentUpon>
     </Compile>

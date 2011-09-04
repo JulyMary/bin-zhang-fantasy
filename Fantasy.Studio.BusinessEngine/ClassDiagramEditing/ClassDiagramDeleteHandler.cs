@@ -59,9 +59,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             foreach (object o in selected)
             {
 
-                if (o is Model.ClassNode)
+                if (o is Model.ClassGlyph)
                 {
-                    diagram.Classes.Remove((Model.ClassNode)o);
+                    diagram.Classes.Remove((Model.ClassGlyph)o);
                 }
                
             }
@@ -83,9 +83,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             foreach (object o in selected)
             {
 
-                if (o is Model.ClassNode)
+                if (o is Model.ClassGlyph)
                 {
-                    BusinessClass cls = (BusinessClass)((Model.ClassNode)o).Entity;
+                    BusinessClass cls = (BusinessClass)((Model.ClassGlyph)o).Entity;
                     cls.Package.Classes.Remove(cls);
                     cls.ParentClass.ChildClasses.Remove(cls);
                     cls.Package = null;
@@ -109,9 +109,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             foreach (object o in selected)
             {
 
-                if (o is Model.ClassNode)
+                if (o is Model.ClassGlyph)
                 {
-                    Model.ClassNode node = (Model.ClassNode)o;
+                    Model.ClassGlyph node = (Model.ClassGlyph)o;
                     if (node.IsShortCut)
                     {
                         return false;
