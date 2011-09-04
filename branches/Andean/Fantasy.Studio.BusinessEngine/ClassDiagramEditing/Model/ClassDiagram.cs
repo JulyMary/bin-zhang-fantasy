@@ -18,10 +18,37 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
     {
         public ClassDiagram()
         {
-            this.Classes = new ObservableCollection<ClassNode>();
+            this.Classes = new ObservableCollection<ClassGlyph>();
 
             this.Classes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(ClassesCollectionChanged);
+            this.Inheritances = new ObservableCollection<InheritanceGlyph>();
+            this.Inheritances.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(InheritancesCollectionChanged);
 
+        }
+
+        void InheritancesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
+            {
+                if (e.OldItems != null)
+                {
+                    foreach (InheritanceGlyph node in e.OldItems)
+                    {
+                        node.Diagram = null;
+                        node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
+                    }
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (InheritanceGlyph node in e.NewItems)
+                {
+                    
+                    node.Diagram = this;
+                    node.Site = this.Site;
+                    node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
+                }
+            }
         }
 
 
@@ -50,7 +77,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 }
 
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
-                foreach (ClassNode node in this.Classes.ToArray())
+                foreach (ClassGlyph node in this.Classes.ToArray())
                 {
                     BusinessClass @class = es.DefaultSession.Get<BusinessClass>(node.ClassId);
                     if (@class == null)
@@ -62,6 +89,23 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                         node.Entity = @class;
                     }
                 }
+
+                foreach (InheritanceGlyph inheritance in this.Inheritances.ToArray())
+                {
+                    ClassGlyph child = this.Classes.SingleOrDefault(c => c.Id == inheritance.ChildGlyphId);
+                    ClassGlyph parent = this.Classes.SingleOrDefault(c => c.Id == inheritance.ParentGlyphId);
+
+                    if (child != null && parent != null)
+                    {
+                        inheritance.ParentClass = parent;
+                        inheritance.ChildClass = child;
+                    }
+                    else
+                    {
+                        this.Inheritances.Remove(inheritance);
+                    }
+                }
+
             }
 
             foreach (BusinessClass @class in this.Classes.Select(n => n.Entity).Distinct())
@@ -74,7 +118,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         private void UpdateDisplayIndex(BusinessClass @class)
         {
-            ClassNode[] nodes = this.Classes.Where(n => n.Entity == @class).ToArray();
+            ClassGlyph[] nodes = this.Classes.Where(n => n.Entity == @class).ToArray();
             if (nodes.Length == 1)
             {
                 nodes[0].DisplayIndex = 0;
@@ -102,7 +146,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public void SyncEntities()
         {
 
-            foreach (ClassNode node in this.Classes.ToArray())
+            foreach (ClassGlyph node in this.Classes.ToArray())
             {
                 if (node.Entity.EntityState == EntityState.Deleted)
                 {
@@ -145,9 +189,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
                 this.DeletingEntities.Clear();
                
-                foreach (ClassNode cls in this.Classes)
+                foreach (ClassGlyph cls in this.Classes)
                 {
                     cls.SaveEntity();
+                }
+
+                foreach (InheritanceGlyph i in this.Inheritances)
+                {
+                    i.SaveEntity();
                 }
 
                 session.EndUpdate(true);
@@ -174,23 +223,23 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             {
                 if (e.OldItems != null)
                 {
-                    foreach (ClassNode node in e.OldItems)
+                    foreach (ClassGlyph node in e.OldItems)
                     {
                         entities.Add(node.Entity);
 
                         node.Diagram = null;
-                        node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
+                        node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
                     }
                 }
             }
             if (e.NewItems != null)
             {
-                foreach (ClassNode node in e.NewItems)
+                foreach (ClassGlyph node in e.NewItems)
                 {
                     entities.Add(node.Entity);
                     node.Diagram = this;
                     node.Site = this.Site;
-                    node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ClassNodePropertyChanged);
+                    node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
                 }
             }
                  
@@ -204,17 +253,22 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
-        void ClassNodePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void GlyphPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "EditingState" && ((ClassNode)sender).EditingState == EditingState.Dirty)
+            if (e.PropertyName == "EditingState" && ((ClassDiagramGlyph)sender).EditingState == EditingState.Dirty)
             {
                 this.EditingState = Studio.EditingState.Dirty;
             }
         }
 
         [XArray(Name="classes"),
-        XArrayItem(Name = "class", Type = typeof(ClassNode))]
-        public ObservableCollection<ClassNode> Classes { get; private set; }
+        XArrayItem(Name = "class", Type = typeof(ClassGlyph))]
+        public ObservableCollection<ClassGlyph> Classes { get; private set; }
+
+
+        [XArray(Name="inheritances"),
+        XArrayItem(Name="inheritance", Type=typeof(Point))]
+        public ObservableCollection<InheritanceGlyph> Inheritances { get; private set; }
 
         public IServiceProvider Site { get; set; }
 
@@ -242,7 +296,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             {
                 return _deletingEntities;
             }
-        }   
+        } 
+  
+       
 
 
        

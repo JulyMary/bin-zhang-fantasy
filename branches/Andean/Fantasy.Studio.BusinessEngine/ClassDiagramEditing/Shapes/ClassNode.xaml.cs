@@ -33,6 +33,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 
         }
 
+        public ClassNode(Guid id)
+            : base(id)
+        {
+            InitializeComponent();
+        }
 
         public ClassNode()
         {
@@ -91,7 +96,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 
         private void Node_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            m.ClassNode model = this.DataContext as m.ClassNode;
+            m.ClassGlyph model = this.DataContext as m.ClassGlyph;
             this.CommandBindings.Clear();
 
             ISelectionService selectionService = model.Site.GetService<ISelectionService>();
@@ -102,10 +107,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 IMenuService svc = model.Site.GetService<IMenuService>();
                 if (svc != null)
                 {
-                    this.ConentStackPanel.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classnode/contextmenu", this, model.Site);
+                    this.ConentStackPanel.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classglyph/contextmenu", this, model.Site);
                 }
 
-                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/classnode/commandbindings").BuildChildItems(this, model.Site))
+                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/classglyph/commandbindings").BuildChildItems(this, model.Site))
                 {
                     this.ConentStackPanel.CommandBindings.Add(cb);
                 }
@@ -127,7 +132,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             if (this.IsKeyboardFocusWithin)
             {
                 NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs)e;
-                m.ClassNode model = this.DataContext as m.ClassNode;
+                m.ClassGlyph model = this.DataContext as m.ClassGlyph;
                 model.ShowMember = model.ShowProperties = true;
                 if (args.NewItems != null)
                 {
@@ -155,7 +160,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 this._selecting = true;
                 try
                 {
-                    m.ClassNode model = this.DataContext as m.ClassNode;
+                    m.ClassGlyph model = this.DataContext as m.ClassGlyph;
                     ISelectionService svc = model.Site.GetRequiredService<ISelectionService>();
                     IEnumerable<object> selected = svc.GetSelectedComponents().Cast<object>();
 
@@ -187,7 +192,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 this._selecting = true;
                 try
                 {
-                    m.ClassNode model = this.DataContext as m.ClassNode;
+                    m.ClassGlyph model = this.DataContext as m.ClassGlyph;
                     var q1 = this.PropertyListBox.SelectedItems.Cast<m.PropertyNode>().Select(n => n.Entity);
 
                     ISelectionServiceEx svc = model.Site.GetRequiredService<ISelectionServiceEx>();

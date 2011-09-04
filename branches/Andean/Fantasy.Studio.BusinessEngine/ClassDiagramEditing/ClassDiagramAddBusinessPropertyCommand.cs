@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public object Execute(object args)
         {
             ISelectionService selection = this.Site.GetRequiredService<ISelectionService>();
-            Model.ClassNode node = (Model.ClassNode)selection.PrimarySelection;
+            Model.ClassGlyph node = (Model.ClassGlyph)selection.PrimarySelection;
             return new PropertyEditing.AddPropertyCommand() { Site = this.Site }.Execute(node.Entity);
         }
 

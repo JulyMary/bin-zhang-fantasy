@@ -8,15 +8,15 @@ using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
-    public class ClassNodeAdapterFactory : ObjectWithSite, IAdapterFactory
+    public class ClassGlyphAdapterFactory : ObjectWithSite, IAdapterFactory
     {
         #region IAdapterFactory Members
 
         public object GetAdapter(object adaptee, Type targetType)
         {
-            if (adaptee is ClassNode)
+            if (adaptee is ClassGlyph)
             {
-                ClassNode node = (ClassNode)adaptee;
+                ClassGlyph node = (ClassGlyph)adaptee;
 
                 if (targetType == typeof(BusinessClass))
                 {
