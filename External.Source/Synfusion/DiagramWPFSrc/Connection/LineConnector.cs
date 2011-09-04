@@ -1703,6 +1703,17 @@ namespace Syncfusion.Windows.Diagram
             }
         }
 
+
+        protected virtual void OnConnectorPathGeometryUpdated(EventArgs e)
+        {
+            if (this.ConnectorPathGeometryUpdated != null)
+            {
+                this.ConnectorPathGeometryUpdated(this, e);
+            }
+        }
+
+        public event EventHandler<EventArgs> ConnectorPathGeometryUpdated;
+
         /// <summary>
         /// Called whenever the head node, tail node or position of the node is changed. 
         /// </summary>
@@ -2194,6 +2205,8 @@ namespace Syncfusion.Windows.Diagram
             }
 
             this.bridged = true;
+
+            this.OnConnectorPathGeometryUpdated(EventArgs.Empty);
         }
         //public  void UpdateConnectorPath(LineConnector line)
         //{
