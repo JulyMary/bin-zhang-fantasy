@@ -323,6 +323,33 @@ namespace Syncfusion.Windows.Diagram
             }
         }
 
+
+
+
+        public bool IsHeadMovable
+        {
+            get { return (bool)GetValue(IsHeadMovableProperty); }
+            set { SetValue(IsHeadMovableProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsHeadMovable.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsHeadMovableProperty =
+            DependencyProperty.Register("IsHeadMovable", typeof(bool), typeof(ConnectorBase), new UIPropertyMetadata(true));
+
+
+
+        public bool IsTailMovable
+        {
+            get { return (bool)GetValue(IsTailMovableProperty); }
+            set { SetValue(IsTailMovableProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsTailMovable.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsTailMovableProperty =
+            DependencyProperty.Register("IsTailMovable", typeof(bool), typeof(ConnectorBase), new UIPropertyMetadata(true));
+
+
+
         /// <summary>
         /// Gets or sets the vertex style.
         /// </summary>

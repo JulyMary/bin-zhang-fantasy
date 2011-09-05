@@ -490,11 +490,11 @@ namespace Syncfusion.Windows.Diagram
             _FirstLoaded = true;
             this.Width = MeasureUnitsConverter.ToPixels(this.Width, this.MeasurementUnits);
             this.Height = MeasureUnitsConverter.ToPixels(this.Height, this.MeasurementUnits);
-            if (centerport != null)
-            {
-                centerport.Left = this.Width / 2;
-                centerport.Top = this.Height / 2;
-            }
+            //if (centerport != null)
+            //{
+            //    centerport.Left = this.Width / 2;
+            //    centerport.Top = this.Height / 2;
+            //}
         }
 
         //internal static void SetUnitBinding(string PropName, string UnitPropName, DependencyProperty dependencyProperty, FrameworkElement src)
@@ -656,26 +656,44 @@ namespace Syncfusion.Windows.Diagram
                 centerport.Name = "PART_Sync_CenterPort";
                 centerport.Node = this;
                 centerport.PortShape = PortShapes.Circle;
-                if (!double.IsNaN(this.Width) || !double.IsNaN(this.Height))
-                {
-                    if (double.IsNaN(centerport.Width) || double.IsNaN(centerport.Height))
-                    {
-                        //double four = 4;// MeasureUnitsConverter.FromPixels(4, DiagramPage.Munits);
-                        centerport.Left = this.Width / 2;// -four;
-                        centerport.Top = this.Height / 2;// -four;
-                    }
-                    else
-                    {
-                        centerport.Left = this.Width / 2;// -centerport.Width / 2;
-                        centerport.Top = this.Height / 2;// -centerport.Height / 2;
-                    }
-                }
-                else
-                {
-                    double two0ne = 25;// MeasureUnitsConverter.FromPixels(25, this.MeasurementUnits);
-                    centerport.Left = two0ne;
-                    centerport.Top = two0ne;
-                }
+                //if (!double.IsNaN(this.Width) || !double.IsNaN(this.Height))
+                //{
+                //    if (double.IsNaN(centerport.Width) || double.IsNaN(centerport.Height))
+                //    {
+                //        //double four = 4;// MeasureUnitsConverter.FromPixels(4, DiagramPage.Munits);
+                //        centerport.Left = this.Width / 2;// -four;
+                //        centerport.Top = this.Height / 2;// -four;
+                //    }
+                //    else
+                //    {
+                //        centerport.Left = this.Width / 2;// -centerport.Width / 2;
+                //        centerport.Top = this.Height / 2;// -centerport.Height / 2;
+                //    }
+                //}
+                //else
+                //{
+                //    double two0ne = 25;// MeasureUnitsConverter.FromPixels(25, this.MeasurementUnits);
+                //    centerport.Left = two0ne;
+                //    centerport.Top = two0ne;
+                //}
+
+                centerport.Left = this.ActualWidth / 2;
+                centerport.Top = this.ActualHeight / 2;
+                
+                //DependencyPropertyDescriptor wpd = DependencyPropertyDescriptor.FromProperty(FrameworkElement.ActualWidthProperty, typeof(FrameworkElement));
+                
+                //wpd.AddValueChanged(this, (sender, args) =>
+                //{ 
+                //    centerport.Left = this.ActualWidth / 2; 
+                //});
+
+                //DependencyPropertyDescriptor hpd = DependencyPropertyDescriptor.FromProperty(FrameworkElement.ActualHeightProperty, typeof(FrameworkElement));
+                //wpd.AddValueChanged(this, (sender, args) =>
+                //{ 
+                //    centerport.Top = this.ActualHeight / 2; 
+                //});
+
+                this.SizeChanged += (sender, args) => { centerport.Left = this.ActualWidth / 2; centerport.Top = this.ActualHeight / 2; };
 
                 if (this.Ports != null)
                 {
