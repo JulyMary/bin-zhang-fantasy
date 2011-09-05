@@ -3356,7 +3356,7 @@ namespace Syncfusion.Windows.Diagram
         /// Gets or sets a value indicating whether <see cref="LineConnector"/> is deleted.
         /// </summary>
         /// <value><c>true</c> if is line deleted; otherwise, <c>false</c>.</value>
-        internal bool Islinedeleted
+        public bool Islinedeleted
         {
             get { return linedel; }
             set { linedel = value; }

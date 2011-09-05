@@ -515,6 +515,8 @@ namespace Syncfusion.Windows.Diagram
         /// </summary>
         internal void updateThumbStyle()
         {
+            LineConnector connector = lineconnector as LineConnector;
+
             if ((lineconnector as LineConnector).DecoratorAdornerStyle != null)
             {
                 thumbStyle = (lineconnector as LineConnector).DecoratorAdornerStyle;
@@ -530,6 +532,9 @@ namespace Syncfusion.Windows.Diagram
                 headThumb.Style = thumbStyle;
                 tailThumb.Style = thumbStyle;
             }
+
+            headThumb.Visibility = connector.IsHeadMovable ? Visibility.Visible : System.Windows.Visibility.Collapsed;
+            tailThumb.Visibility = connector.IsTailMovable ? Visibility.Visible : System.Windows.Visibility.Collapsed;
 
         }
 

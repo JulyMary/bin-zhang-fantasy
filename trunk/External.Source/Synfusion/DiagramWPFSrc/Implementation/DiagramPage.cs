@@ -535,7 +535,7 @@ namespace Syncfusion.Windows.Diagram
         /// </summary>
         /// <param name="element">The element.</param>
         /// <returns>The Diagram Control object</returns>
-        internal static DiagramControl GetDiagramControl(FrameworkElement element)
+        public static DiagramControl GetDiagramControl(FrameworkElement element)
         {
             DependencyObject parent = VisualTreeHelper.GetParent(element);
             while (parent != null)
