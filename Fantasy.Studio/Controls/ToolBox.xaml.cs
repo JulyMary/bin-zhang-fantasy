@@ -25,31 +25,29 @@ namespace Fantasy.Studio.Controls
             InitializeComponent();
         }
 
-
-
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            foreach (ToolBoxItemModel item in e.RemovedItems)
+            Button btn = (Button)sender;
+            ToolBoxItemModel item = (ToolBoxItemModel)btn.DataContext;
+            if (item.Click != null && item.Click.CanExecute(item.CommandParameter) )
             {
-                if (item.Unselected != null && item.Unselected.CanExecute(item.CommandParameter))
-                {
-                    item.Unselected.Execute(item.CommandParameter);
-                }
-            }
-
-            foreach (ToolBoxItemModel item in e.AddedItems)
-            {
-                if (item.Selected != null && item.Selected.CanExecute(item.CommandParameter))
-                {
-                    item.Selected.Execute(item.CommandParameter);
-                }
+                item.Click.Execute(item.CommandParameter);
             }
         }
+
+       
+       
 
         private bool _startDraging = false;
         private void ListView_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             ToolBoxItemModel itemModel = (ToolBoxItemModel)this.ListView.GetObjectAtPoint<ListViewItem>(e.GetPosition(this.ListView));
+
+            if (itemModel != null && itemModel.Click != null && itemModel.Click.CanExecute(itemModel.CommandParameter))
+            {
+                itemModel.Click.Execute(itemModel.CommandParameter);
+            }
+
 
             _startDraging = itemModel != null && itemModel.DoDragDrop != null;
             this.ListView.SelectedItem = itemModel;
@@ -82,6 +80,8 @@ namespace Fantasy.Studio.Controls
                 _startDraging = false;
             }
         }
+
+       
 
 
     }

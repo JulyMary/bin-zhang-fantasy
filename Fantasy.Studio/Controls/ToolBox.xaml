@@ -12,9 +12,9 @@
         <v:ListView x:Key="listView">
             <v:ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal" >
-                        <Image Source="{Binding Icon}" Width="16" Height="16" />
-                        <TextBlock Text="{Binding Text}" />
+                    <StackPanel Orientation="Horizontal">
+                    <Image Source="{Binding Icon}" Width="16" Height="16" />
+                    <TextBlock Text="{Binding Text}" />
                     </StackPanel>
                 </DataTemplate>
             </v:ListView.ItemTemplate>
@@ -33,7 +33,7 @@
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
-    <ListView Name="ListView" ItemsSource="{Binding Source={StaticResource items}}"  View="{StaticResource listView}" SelectionChanged="ListView_SelectionChanged" PreviewMouseLeftButtonDown="ListView_MouseLeftButtonDown" MouseLeftButtonUp="ListView_MouseLeftButtonUp" MouseMove="ListView_MouseMove">
+    <ListView Name="ListView" ItemsSource="{Binding Source={StaticResource items}}"  View="{StaticResource listView}" PreviewMouseLeftButtonDown="ListView_MouseLeftButtonDown" MouseLeftButtonUp="ListView_MouseLeftButtonUp" MouseMove="ListView_MouseMove">
         <ListView.GroupStyle>
             <GroupStyle>
                 <GroupStyle.ContainerStyle>
@@ -54,5 +54,7 @@
                 </GroupStyle.ContainerStyle>
             </GroupStyle>
         </ListView.GroupStyle>
+       
     </ListView>
+   
 </UserControl>
