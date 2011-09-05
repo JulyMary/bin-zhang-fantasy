@@ -17,7 +17,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.IsFlags).Not.Nullable();
             this.Map(x => x.IsExternal).Not.Nullable();
             this.Map(x => x.ExternalAssemblyName, "ExternalAssembly");
-            this.HasMany<BusinessEnum>(x => x.PersistedEnumValues).CollectionType<ObservableList<BusinessEnumValue>>().KeyColumn("ENUMID");
+            this.HasMany<BusinessEnum>(x => x.PersistedEnumValues).CollectionType<ObservableList<BusinessEnumValue>>().KeyColumn("ENUMID").Cascade.All().Inverse();
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual int Value
+        public virtual long Value
         {
             get
             {
-                return (int)this.GetValue("Value", 0);
+                return (long)this.GetValue("Value", 0);
             }
             set
             {

@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessEnum : BusinessEntity
+    public class BusinessEnum : BusinessEntity, INamedBusinessEntity
     {
         public virtual string Name
         {
@@ -98,8 +98,6 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("ExternalAssemblyName", value);
             }
         }
-
-        //public virtual IObservableList<BusinessEnumValue> EnumValues { get; private set; }
 
         private IObservableList<BusinessEnum> _persistedEnumValues = new ObservableList<BusinessEnum>();
         protected internal virtual IObservableList<BusinessEnum> PersistedEnumValues

@@ -122,6 +122,9 @@
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />
+    <Compile Include="EnumEditing\AddEnumCommand.cs" />
+    <Compile Include="EnumEditing\ClassFolderEnumsProvider.cs" />
+    <Compile Include="EnumEditing\EnumEditor.cs" />
     <Compile Include="IEntityEditingPanelContainer.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
@@ -234,6 +237,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\enum.gif" />
     <Resource Include="images\Shortcut.png" />
     <Page Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml">
       <SubType>Designer</SubType>

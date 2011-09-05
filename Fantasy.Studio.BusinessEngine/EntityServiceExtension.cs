@@ -25,5 +25,17 @@ namespace Fantasy.Studio.BusinessEngine
 
             return rs;
         }
+
+        public static BusinessEnum AddBusinessEnum(this IEntityService es, BusinessPackage package)
+        {
+            BusinessEnum rs = es.CreateEntity<BusinessEnum>();
+            rs.IsExternal = false;
+            rs.IsFlags = false;
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessEnumName, package.Enums.Select(c => c.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
+            package.Enums.Add(rs);
+            rs.Package = package;
+            return rs;
+        }
     }
 }

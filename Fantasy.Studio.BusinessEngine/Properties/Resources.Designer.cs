@@ -97,7 +97,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Class.
+        ///   Looks up a localized string similar to New Class.
         /// </summary>
         internal static string DefaultNewBusinessClassName {
             get {
@@ -106,7 +106,16 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Package.
+        ///   Looks up a localized string similar to New Enum.
+        /// </summary>
+        internal static string DefaultNewBusinessEnumName {
+            get {
+                return ResourceManager.GetString("DefaultNewBusinessEnumName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Package.
         /// </summary>
         internal static string DefaultNewBusinessPackageName {
             get {
@@ -115,7 +124,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Property.
+        ///   Looks up a localized string similar to New Property.
         /// </summary>
         internal static string DefaultNewBusinessPropertyName {
             get {
