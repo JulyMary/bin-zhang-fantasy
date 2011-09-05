@@ -26,6 +26,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             foreach (Model.ClassGlyph node in this._model.Classes)
             {
                 this.AddNode(node);
+               
             }
 
             foreach (Model.InheritanceGlyph inheritance in this._model.Inheritances)
@@ -40,10 +41,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void AddInheritance(Model.InheritanceGlyph inheritance)
         {
-            Shapes.ClassNode childShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n=>n.DataContext == inheritance.ChildClass);
-            Shapes.ClassNode parentShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n=>n.DataContext == inheritance.ParentClass);
+            Shapes.ClassNode childShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n=>n.DataContext == inheritance.DerivedClass);
+            Shapes.ClassNode parentShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n=>n.DataContext == inheritance.BaseClass);
             LineConnector connector = new LineConnector()
             {
+                IsHeadMovable = false,
+                IsTailMovable = false,
                 TailNode = childShape,
                 HeadNode = parentShape,
                 ConnectorType = ConnectorType.Orthogonal,
@@ -51,12 +54,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 TailDecoratorShape = DecoratorShape.None,
             };
 
-            connector.LineStyle.Stroke = Brushes.Black;
+           // connector.LineStyle.Stroke = Brushes.Black;
             connector.LineStyle.StrokeThickness = 2;
-
-            foreach (Model.Point mp in inheritance.IntermediatePoints)
+            if (inheritance.IntermediatePoints.Count > 0)
             {
-                connector.IntermediatePoints.Add(new Point(mp.X, mp.Y));
+                connector.IntermediatePoints.Clear();
+                foreach (Model.Point mp in inheritance.IntermediatePoints)
+                {
+                    connector.IntermediatePoints.Add(new Point(mp.X, mp.Y));
+                }
             }
 
             connector.DataContext = inheritance;
@@ -66,9 +72,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._view.Connections.Add(connector);
 
         }
-
-
-
 
         void ConnectorPathGeometryUpdated(object sender, EventArgs e)
         {
@@ -186,7 +189,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             LineConnector connector = this._view.Connections.Cast<LineConnector>().Single(c => c.DataContext == inheritance);
             connector.ConnectorPathGeometryUpdated -= new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            DiagramControl dc = DiagramPage.GetDiagramControl(connector);
+            dc.View.Islinedeleted = true;
+            connector.IsSelected = false;
+            ConnectionDeleteRoutedEventArgs lnewEventArgs = new ConnectionDeleteRoutedEventArgs(connector);
+            lnewEventArgs.RoutedEvent = DiagramView.ConnectorDeletingEvent;
+            dc.View.RaiseEvent(lnewEventArgs);
             this._view.Connections.Remove(connector);
+            dc.View.Islinedeleted = false;
         }
 
         void Classes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

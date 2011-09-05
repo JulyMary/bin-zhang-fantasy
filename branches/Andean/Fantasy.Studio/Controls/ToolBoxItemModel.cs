@@ -14,11 +14,13 @@ namespace Fantasy.Studio.Controls
 
         public string Category { get; set; }
         
-        public ICommand DoubleClick { get; set; }
+        //public ICommand DoubleClick { get; set; }
+
+        public ICommand Click { get; set; }
         
-        public ICommand Selected { get; set; }
+        //public ICommand Selected { get; set; }
        
-        public ICommand Unselected { get; set; }
+        //public ICommand Unselected { get; set; }
 
         public IEventHandler<DoDragDropEventArgs> DoDragDrop { get; set; }
 

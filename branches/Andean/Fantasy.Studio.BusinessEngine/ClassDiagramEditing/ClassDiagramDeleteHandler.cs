@@ -7,6 +7,7 @@ using System.ComponentModel.Design;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Studio.Services;
+using Syncfusion.Windows.Diagram;
 
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
@@ -17,6 +18,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public object Execute(object args)
         {
+            ISelectionService svc = this.Site.GetRequiredService<ISelectionService>();
+            object[] selected = svc.GetSelectedComponents().Cast<object>().ToArray();
+
             bool deleteObjects = CanDeleteObjects();
 
             if (deleteObjects)
@@ -34,13 +38,16 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             }
 
+            DiagramView view = this.Site.GetRequiredService<DiagramView>();
+            view.SelectionList.Clear();
+
             if (deleteObjects)
             {
-                DoDeleteObjects();
+                DoDeleteObjects(selected);
             }
             else
             {
-                DoDeleteSymbols();
+                DoDeleteSymbols(selected);
             }
 
             return null;
@@ -49,37 +56,53 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             
         }
 
-        private void DoDeleteSymbols()
+        private void DoDeleteSymbols(object[] selected)
         {
             Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
-            ISelectionService svc = this.Site.GetRequiredService<ISelectionService>();
+           
 
-            object[] selected = svc.GetSelectedComponents().Cast<object>().ToArray();
+           
 
             foreach (object o in selected)
             {
 
                 if (o is Model.ClassGlyph)
                 {
+                    Model.ClassGlyph cls = (Model.ClassGlyph)o;
+
+
+                    var query = from inheritance in diagram.Inheritances
+                                where inheritance.BaseClass == cls || inheritance.DerivedClass == cls
+                                select inheritance;
+                    foreach (Model.InheritanceGlyph inheritance in query.ToArray())
+                    {
+                        diagram.Inheritances.Remove(inheritance);
+                    }
+
                     diagram.Classes.Remove((Model.ClassGlyph)o);
+
+                }
+                else if (o is Model.InheritanceGlyph)
+                {
+                    diagram.Inheritances.Remove((Model.InheritanceGlyph)o);
                 }
                
             }
 
         }
 
-        private void DoDeleteObjects()
+        private void DoDeleteObjects(object[] selected)
         {
             Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
             ISelectionService ss = this.Site.GetRequiredService<ISelectionService>();
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             IEditingService editing = this.Site.GetRequiredService<IEditingService>();
 
-            object[] selected = ss.GetSelectedComponents().Cast<object>().ToArray();
-
-            DoDeleteSymbols();
            
 
+            DoDeleteSymbols(selected);
+
+            BusinessClass rootClass = es.GetRootClass();
             foreach (object o in selected)
             {
 
@@ -91,9 +114,19 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     cls.Package = null;
                     diagram.DeletingEntities.Add(cls);
                     editing.CloseView(cls, true);
-
                 }
-
+                else if (o is Model.InheritanceGlyph)
+                {
+                    Model.InheritanceGlyph inheritance = (Model.InheritanceGlyph)o;
+                    BusinessClass cls = inheritance.DerivedClass.Entity;
+                    
+                    if (!diagram.DeletingEntities.Contains(cls))
+                    {
+                        cls.ParentClass.ChildClasses.Remove(cls);
+                        cls.ParentClass = rootClass;
+                        rootClass.ChildClasses.Add(cls);
+                    }
+                }
             }
 
         }
@@ -117,6 +150,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         return false;
                     }
                     else if(!IsDeletable(node.Entity, deletable, selected))
+                    {
+                        return false;
+                    }
+                }
+                else if (o is Model.InheritanceGlyph)
+                {
+                    Model.InheritanceGlyph inheritance = (Model.InheritanceGlyph)o;
+                    if (inheritance.DerivedClass.Entity.EntityState != EntityState.New)
                     {
                         return false;
                     }

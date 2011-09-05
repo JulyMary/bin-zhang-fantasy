@@ -1,7 +1,8 @@
-﻿<AddIn   xmlns="urn:schema-fantasy:xaml"
+﻿<AddIn  xmlns="urn:schema-fantasy:xaml"
         xmlns:be="urn:schema-fantasy:business-engine"
         xmlns:sbe="urn:schema-fantasy:studio-business-engine"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model"
         Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine"/>
@@ -40,7 +41,10 @@
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
         </TypeDescriptor>
 
-        
+        <TypeDescriptor ID="InheritanceGlyph" TargetType="{x:Type dm:InheritanceGlyph}" >
+            <PropertyDescriptor ID="Base" Name="BaseTypeName" Caption="Base Type" />
+            <PropertyDescriptor ID="Derived" Name="DerivedTypeName" Caption="Derived Type" />
+        </TypeDescriptor>
 
         <TypeDescriptor ID="businessclass" TargetType="{x:Type be:BusinessClass}">
             <TypeDescriptor.Conditional>

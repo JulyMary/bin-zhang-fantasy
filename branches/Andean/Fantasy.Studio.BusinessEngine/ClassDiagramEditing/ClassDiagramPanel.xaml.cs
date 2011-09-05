@@ -46,13 +46,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this._selecting = true;
                 try
                 {
-                    var query = from shape in this.diagramView.SelectionList.FilterAndCast<Node>() select shape.DataContext;
+                    var query = from shape in this.diagramView.SelectionList.FilterAndCast<ContentControl>() select shape.DataContext;
 
                     if (query.Count() > 0)
                     {
 
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
-                        this._selectionService.IsReadOnly = query.Any(n => ((Model.ClassGlyph)n).IsShortCut); 
+                        this._selectionService.IsReadOnly = query.FilterAndCast<Model.ClassGlyph>().Any(n=>n.IsShortCut);
+ 
                     }
                     else
                     {
@@ -78,7 +79,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                     object[] selected = this._selectionService.GetSelectedComponents().Cast<object>().ToArray();
 
-                    foreach (Node shape in this.diagramView.SelectionList.Cast<Node>().ToArray())
+                    foreach (ContentControl shape in this.diagramView.SelectionList.Cast<ContentControl>().ToArray())
                     {
                         if (Array.IndexOf(selected, shape.DataContext) <= 0)
                         {
@@ -86,7 +87,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         }
                     }
 
-                    var query = from shape in this.diagramControlModel.Nodes.Cast<Node>()
+                    var query = from shape in this.diagramControlModel.Nodes.Cast<ContentControl>().Union(this.diagramControlModel.Connections.Cast<ContentControl>())
                                 where Array.IndexOf(selected, shape.DataContext) >= 0 && this.diagramView.SelectionList.IndexOf(shape) < 0
                                 select shape;
                     this.diagramView.SelectionList.AddRange(query.ToArray());
@@ -149,26 +150,74 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         void CreateInheritance(object sender, EventArgs e)
         {
             Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+
+
+
             Model.InheritanceGlyph inheritance = new Model.InheritanceGlyph()
             {
-                ChildClass = (Model.ClassGlyph)adorner.FirstNode.DataContext,
-                ChildGlyphId = adorner.FirstNode.ID,
-                ParentClass = (Model.ClassGlyph)adorner.SecondNode.DataContext,
-                ParentGlyphId = adorner.SecondNode.ID,
+                DerivedClass = (Model.ClassGlyph)adorner.FirstNode.DataContext,
+                DerivedGlyphId = adorner.FirstNode.ID,
+                BaseClass = (Model.ClassGlyph)adorner.SecondNode.DataContext,
+                BaseGlyphId = adorner.SecondNode.ID,
                 EditingState = EditingState.Dirty,
             };
 
+            BusinessClass childEntity = inheritance.DerivedClass.Entity;
+            BusinessClass parentEntity = inheritance.BaseClass.Entity;
+
+            if (childEntity.ParentClass != parentEntity)
+            {
+                if (childEntity.ParentClass != null)
+                {
+                    childEntity.ParentClass.ChildClasses.Remove(childEntity);
+                    parentEntity.ChildClasses.Add(childEntity);
+                    childEntity.ParentClass = parentEntity;
+                }
+
+            }
+
             this._classDiagram.Inheritances.Add(inheritance);
+
+            this._selectionService.SetSelectedComponents(new object[] { inheritance }, SelectionTypes.Replace);
+           
         }
 
         void ValidateParentClass(object sender, Connection.ValidatNodeArgs e)
         {
-            e.IsValid = true;
+            Model.ClassGlyph parent = (Model.ClassGlyph)e.Node.DataContext;
+
+            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+
+            Model.ClassGlyph child = (Model.ClassGlyph)adorner.FirstNode.DataContext;
+
+            if (child.Entity.EntityState == EntityState.New)
+            {
+                e.IsValid = !parent.Entity.Flatten(c => c.ParentClass).Any(c => c == child.Entity); 
+            }
+            else
+            {
+                e.IsValid = child.Entity.ParentClass == parent.Entity;
+            }
+
+             
         }
 
         void ValidateSubclass(object sender, Connection.ValidatNodeArgs e)
         {
-            e.IsValid = true;
+            Model.ClassGlyph glyph = (Model.ClassGlyph)e.Node.DataContext;
+
+            var hasInheritance = from inheritance in this._classDiagram.Inheritances where inheritance.DerivedClass.Entity == glyph.Entity select inheritance;
+
+            if (!glyph.IsShortCut && !hasInheritance.Any())
+            {
+                e.IsValid = true;
+            }
+            else
+            {
+                e.IsValid = false;
+            }
+
+
         }
 
         // Using a DependencyProperty as the backing store for Mode.  This enables animation, styling, binding, etc...

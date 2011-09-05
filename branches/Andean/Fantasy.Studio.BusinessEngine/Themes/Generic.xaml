@@ -37,7 +37,7 @@
         <Setter Property="CustomPathStyle" Value="{Binding Path=Page.CustomPathStyle, RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type sf:DiagramView}}}"></Setter>
         <Setter Property="Content" Value=" " />
         <Setter Property="Background" Value="Transparent" />
-              <Setter Property="LeftResizer" Value="{StaticResource LeftResizerThumpTemplate}"/>
+        <Setter Property="LeftResizer" Value="{StaticResource LeftResizerThumpTemplate}"/>
         <Setter Property="RightResizer" Value="{StaticResource RightResizerThumpTemplate}"/>
         <Setter Property="MeasurementUnits" Value="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:DiagramView}},Path=Page.MeasurementUnits,Mode=TwoWay}"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -88,7 +88,7 @@
                             <MultiDataTrigger.Conditions>
                                 <Condition Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsSelected}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
@@ -96,11 +96,11 @@
                                 <Condition  Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsMouseOver}"/>
                                 <Condition Value="Visible" Binding="{Binding RelativeSource={RelativeSource Self},Path=PortVisibility}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </MultiDataTrigger>
 
                         <Trigger Property="PortVisibility"  Value="Visible">
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </Trigger>
 
                         <MultiDataTrigger>
@@ -108,7 +108,7 @@
                                 <Condition  Value="Visible" Binding="{Binding RelativeSource={RelativeSource Self},Path=PortVisibility}"/>
                                 <Condition Value="Collapsed" Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:DiagramView}},Path=PortVisibility}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
@@ -116,7 +116,7 @@
                                 <Condition  Value="Collapsed" Binding="{Binding RelativeSource={RelativeSource Self},Path=PortVisibility}"/>
                                 <Condition Value="Visible" Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:DiagramView}},Path=PortVisibility}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
@@ -124,7 +124,7 @@
                                 <Condition  Value="Visible" Binding="{Binding RelativeSource={RelativeSource Self},Path=PortVisibility}"/>
                                 <Condition Value="Visible" Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type sf:DiagramView}},Path=PortVisibility}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
@@ -141,7 +141,7 @@
                                 <Condition Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsSelected}"/>
                                 <Condition Value="Visible" Binding="{Binding RelativeSource={RelativeSource Self},Path=PortVisibility}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Visible"/>-->
                         </MultiDataTrigger>
 
                         <MultiDataTrigger>
@@ -149,7 +149,7 @@
                                 <Condition Value="False" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsPortEnabled}"/>
                                 <Condition Value="True" Binding="{Binding RelativeSource={RelativeSource Self},Path=IsSelected}"/>
                             </MultiDataTrigger.Conditions>
-                            <Setter TargetName="PART_PortItems" Property="Visibility" Value="Collapsed"/>
+                            <!--<Setter TargetName="PART_PortItems" Property="Visibility" Value="Collapsed"/>-->
                         </MultiDataTrigger>
                         <Trigger Property="IsDragConnectionOver"  Value="True">
                             <Setter Property="Visibility" TargetName="PART_ConectorOver"  Value="Visible">

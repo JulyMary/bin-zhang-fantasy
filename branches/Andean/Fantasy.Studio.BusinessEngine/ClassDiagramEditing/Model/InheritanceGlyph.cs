@@ -17,34 +17,81 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         }
 
 
-        [XAttribute("child")]
-        private Guid _childGlyphId;
+        [XAttribute("derived")]
+        private Guid _derivedGlyphId;
 
-        public Guid ChildGlyphId
+        public Guid DerivedGlyphId
         {
-            get { return _childGlyphId; }
+            get { return _derivedGlyphId; }
             set
             {
-                if (_childGlyphId != value)
+                if (_derivedGlyphId != value)
                 {
-                    _childGlyphId = value;
-                    this.OnPropertyChanged("ChildGlyphId");
+                    _derivedGlyphId = value;
+                    this.OnPropertyChanged("DerivedGlyphId");
                 }
             }
         }
 
-        [XAttribute("parent")]
-        private Guid _parentGlyphId;
+        [XAttribute("base")]
+        private Guid _baseGlyphId;
 
-        public Guid ParentGlyphId
+        public Guid BaseGlyphId
         {
-            get { return _parentGlyphId; }
+            get { return _baseGlyphId; }
             set
             {
-                if (_parentGlyphId != value)
+                if (_baseGlyphId != value)
                 {
-                    _parentGlyphId = value;
-                    this.OnPropertyChanged("ParentGlyphId");
+                    _baseGlyphId = value;
+                    this.OnPropertyChanged("BaseGlyphId");
+                }
+            }
+        }
+
+
+        public string BaseTypeName
+        {
+            get
+            {
+                return this.BaseClass != null ? this.BaseClass.Entity.FullName : null; 
+            }
+        }
+
+        public string DerivedTypeName
+        {
+            get
+            {
+                return this.DerivedClass != null ? this.DerivedClass.Entity.FullName : null;
+            }
+        }
+
+        private ClassGlyph _derivedClass;
+
+        public ClassGlyph DerivedClass
+        {
+            get { return _derivedClass; }
+            set
+            {
+                if (_derivedClass != value)
+                {
+                    _derivedClass = value;
+
+                }
+            }
+        }
+
+        private ClassGlyph _baseClass;
+
+        public ClassGlyph BaseClass
+        {
+            get { return _baseClass; }
+            set
+            {
+                if (_baseClass != value)
+                {
+                    _baseClass = value;
+
                 }
             }
         }
@@ -63,35 +110,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
-        private ClassGlyph _childClass;
-
-        public ClassGlyph ChildClass
-        {
-            get { return _childClass; }
-            set
-            {
-                if (_childClass != value)
-                {
-                    _childClass = value;
-                   
-                }
-            }
-        }
-
-        private ClassGlyph _parentClass;
-
-        public ClassGlyph ParentClass
-        {
-            get { return _parentClass; }
-            set
-            {
-                if (_parentClass != value)
-                {
-                    _parentClass = value;
-                   
-                }
-            }
-        }
+       
 
 
         public override void SaveEntity()

@@ -49,6 +49,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
                 }
             }
+
+            if (!this._deserializing)
+            {
+                this.EditingState = EditingState.Dirty;
+               
+            }
         }
 
 
@@ -92,13 +98,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
                 foreach (InheritanceGlyph inheritance in this.Inheritances.ToArray())
                 {
-                    ClassGlyph child = this.Classes.SingleOrDefault(c => c.Id == inheritance.ChildGlyphId);
-                    ClassGlyph parent = this.Classes.SingleOrDefault(c => c.Id == inheritance.ParentGlyphId);
+                    ClassGlyph child = this.Classes.SingleOrDefault(c => c.Id == inheritance.BaseGlyphId);
+                    ClassGlyph parent = this.Classes.SingleOrDefault(c => c.Id == inheritance.BaseGlyphId);
 
-                    if (child != null && parent != null)
+                    if (child != null && parent != null && child.Entity.ParentClass == parent.Entity)
                     {
-                        inheritance.ParentClass = parent;
-                        inheritance.ChildClass = child;
+                        inheritance.BaseClass = parent;
+                        inheritance.DerivedClass = child;
                     }
                     else
                     {
@@ -153,6 +159,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     this.Classes.Remove(node);
                 }
             }
+
+            foreach (InheritanceGlyph inheritance in this.Inheritances.ToArray())
+            {
+                ClassGlyph child = this.Classes.SingleOrDefault(c => c.Id == inheritance.DerivedGlyphId);
+                ClassGlyph parent = this.Classes.SingleOrDefault(c => c.Id == inheritance.BaseGlyphId);
+
+                if (child == null || parent == null || child.Entity.ParentClass != parent.Entity)
+                {
+                    this.Inheritances.Remove(inheritance);
+                }
+            }
+
         }
 
         public void Unload()
@@ -267,7 +285,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
 
         [XArray(Name="inheritances"),
-        XArrayItem(Name="inheritance", Type=typeof(Point))]
+        XArrayItem(Name = "inheritance", Type = typeof(InheritanceGlyph))]
         public ObservableCollection<InheritanceGlyph> Inheritances { get; private set; }
 
         public IServiceProvider Site { get; set; }

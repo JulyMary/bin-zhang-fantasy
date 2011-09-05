@@ -261,9 +261,9 @@
             <ToolBoxItem.Conditional>
                 <ActiveWindow Type="classdiagram"/>
             </ToolBoxItem.Conditional>
-            <ToolBoxItem.Selected>
+            <ToolBoxItem.Click>
                 <sbe:ClassDiagramModeCommand Mode="Default" />
-            </ToolBoxItem.Selected>
+            </ToolBoxItem.Click>
         </ToolBoxItem>
         <ToolBoxItem ID="Class" Category="ClassDiagram" Text="Class" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png">
             <ToolBoxItem.Conditional>
@@ -272,18 +272,18 @@
             <ToolBoxItem.DoDragDrop>
                 <DoDragDropHandler Data="{x:Static sbe:DragNewBusinessClassData.Value}" AllowedEffects="Copy"   />
             </ToolBoxItem.DoDragDrop>
-            <ToolBoxItem.Selected>
+            <ToolBoxItem.Click>
                 <sbe:ClassDiagramModeCommand Mode="Default" />
-            </ToolBoxItem.Selected>
+            </ToolBoxItem.Click>
         
         </ToolBoxItem>
         <ToolBoxItem ID="Inheritance" Category="ClassDiagram" Text="Inheritance" Icon="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png">
             <ToolBoxItem.Conditional>
                 <ActiveWindow Type="classdiagram"/>
             </ToolBoxItem.Conditional>
-            <ToolBoxItem.Selected>
+            <ToolBoxItem.Click>
                 <sbe:ClassDiagramModeCommand Mode="InheritanceConnection" />
-            </ToolBoxItem.Selected>
+            </ToolBoxItem.Click>
         </ToolBoxItem>
     </Extension>
     
