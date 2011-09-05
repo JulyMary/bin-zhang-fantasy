@@ -38,7 +38,35 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        
+
+        private IObservableList<BusinessEnum> _persistedEnums = new ObservableList<BusinessEnum>();
+        protected internal virtual IObservableList<BusinessEnum> PersistedEnums
+        {
+            get { return _persistedEnums; }
+            private set
+            {
+                if (_persistedEnums != value)
+                {
+                    _persistedEnums = value;
+                    _enums.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessEnum> _enums;
+        public virtual IObservableList<BusinessEnum> Enums
+        {
+            get
+            {
+                if (this._enums == null)
+                {
+                    this._enums = new ObservableListView<BusinessEnum>(this._persistedEnums);
+                }
+                return _enums;
+            }
+        }
+
+
 
         private IObservableList<BusinessPackage> _persistedChildPackages = new ObservableList<BusinessPackage>();
         protected internal virtual IObservableList<BusinessPackage> PersistedChildPackages

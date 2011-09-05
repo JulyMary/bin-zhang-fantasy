@@ -11,6 +11,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.ClassEditing")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.ClassDiagramEditing")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.PropertyEditing")]
+[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.EnumEditing")]
 [assembly: XmlnsDefinition(XamlNamespaces.DiagramModel, "Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model")]
 
 internal class XamlNamespaces

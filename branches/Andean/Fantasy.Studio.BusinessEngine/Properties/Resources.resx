@@ -130,13 +130,16 @@
     <value>Class Diagram</value>
   </data>
   <data name="DefaultNewBusinessClassName" xml:space="preserve">
-    <value>Class</value>
+    <value>New Class</value>
+  </data>
+  <data name="DefaultNewBusinessEnumName" xml:space="preserve">
+    <value>New Enum</value>
   </data>
   <data name="DefaultNewBusinessPackageName" xml:space="preserve">
-    <value>Package</value>
+    <value>New Package</value>
   </data>
   <data name="DefaultNewBusinessPropertyName" xml:space="preserve">
-    <value>Property</value>
+    <value>New Property</value>
   </data>
   <data name="DocumentPadTitle" xml:space="preserve">
     <value>Business Model</value>

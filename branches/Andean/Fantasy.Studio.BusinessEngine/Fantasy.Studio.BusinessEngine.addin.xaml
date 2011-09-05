@@ -49,6 +49,7 @@
                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/classfolder/contextmenu" >
             <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:ClassFolderClassDiagramsProvider}" />
             <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassFolderClassesProvider}" />
+            <TreeNodeChildProvider ID="enum" Provider="{New sbe:ClassFolderEnumsProvider}" />
         </TreeNode>
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
                   Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
@@ -60,7 +61,11 @@
         <TreeNode ID="classDiagram" TargetType="{x:Type be:BusinessClassDiagram}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png" 
                   Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
                   ContextMenu="fantasy/studio/businessengine/documentpad/classdiagram/contextmenu">           
-        </TreeNode>  
+        </TreeNode>
+        <TreeNode ID="enum" TargetType="{x:Type be:BusinessEnum}" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif"
+            Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
+                  ContextMenu="fantasy/studio/businessengine/documentpad/enum/contextmenu">
+        </TreeNode>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classviewpad/treeview">
@@ -97,7 +102,11 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
-
+        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
+            <CommandBinding.Conditional>
+                <OwnerState State="Dirty" StateMember="DirtyState"/>
+            </CommandBinding.Conditional>
+        </CommandBinding>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classeditor/panels">
@@ -126,7 +135,7 @@
     <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
         <Button ID="AddClass" Text="Add Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" ParameterMember="Package"/>
         <Button ID="AddClassDiagram" Text="Add Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner" ParameterMember="Package"/>
-
+        <Button ID="AddEnum" Text="Add Enum" Command="{New sbe:AddEnumCommand}" ParameterSource="Owner" ParameterMember="Package" />
     </Extension>
     
     <Extension Path="fantasy/studio/businessengine/documentpad/class/contextmenu">
@@ -140,18 +149,28 @@
         </Button>
     </Extension>
 
-    <Extension Path="fantasy/studio/businessengine/documentpad/classdiagram/contextmenu">
+    <Extension Path="fantasy/studio/businessengine/documentpad/enum/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
-        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteClassDiagramCommand}" ParameterSource="Owner" />
+        <Button ID="Delete" Text="Delete" >
+            <Button.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity/>
+                </Not>
+            </Button.Conditional>
+        </Button>
     </Extension>
 
-    <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
-                <OwnerState State="Dirty" StateMember="DirtyState"/>
-            </CommandBinding.Conditional>
-        </CommandBinding>
+    <Extension Path="fantasy/studio/businessengine/documentpad/classdiagram/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteClassDiagramCommand}" ParameterSource="Owner" >
+            <Button.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity/>
+                </Not>
+            </Button.Conditional>
+        </Button>
     </Extension>
+
 
     <Extension Path="fantasy/studio/documents/views">
         <Object ID="packageeditor">
@@ -171,6 +190,12 @@
                 <IsTypeOf Type="{x:Type be:BusinessClassDiagram}" />
             </Object.Conditional>
             <sbe:ClassDiagramEditor /> 
+        </Object>
+        <Object ID="enumeditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessEnum}" />
+            </Object.Conditional>
+            <sbe:EnumEditor /> 
         </Object>
     </Extension>
 
@@ -245,15 +270,27 @@
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
             <TreeNodeChildProvider ID="classes" Provider="{New sbe:PackageClassesProvider}"/>
         </TreeNode>
-        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}"
-                  >
+        <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
-
         </TreeNode>
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/enumeditor/panels">
+        <Object ID="General" >
+            <sbe:PropertyGridEditor/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/enumeditor/commandbindings">
+        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
+            <CommandBinding.Conditional>
+                <OwnerState State="Dirty" StateMember="DirtyState"/>
+            </CommandBinding.Conditional>
+        </CommandBinding>
+    </Extension>
+    
     <Extension Path="fantasy/studio/workbench/toolbox/items">
         
         <ToolBoxItem ID="Pointer" Category="ClassDiagram" Text="Pointer" Icon="/Fantasy.Studio;component/images/basecursor.png"
@@ -325,7 +362,6 @@
                     <Not>
                         <SelectionType Mode="Any" TargetType="{x:Type be:BusinessClassDiagram}" />
                     </Not>
-                   
                 </And>
             </CommandBinding.Conditional>
         </CommandBinding>
