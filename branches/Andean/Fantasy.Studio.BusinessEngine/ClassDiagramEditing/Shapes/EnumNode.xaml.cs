@@ -11,13 +11,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Syncfusion.Windows.Diagram;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 {
     /// <summary>
     /// Interaction logic for EnumNode.xaml
     /// </summary>
-    public partial class EnumNode : UserControl
+    public partial class EnumNode : Node
     {
         public EnumNode()
         {

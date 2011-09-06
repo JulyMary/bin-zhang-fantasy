@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace Fantasy.BusinessEngine.Maps
+{
+    public class BusinessAssemblyReferenceMap : BusinessEntityMap<BusinessAssemblyReference>
+    {
+        public BusinessAssemblyReferenceMap()
+        {
+            this.Table("ASSEMBLYREFERENCE");
+            this.Map(x => x.FullName).Not.Nullable();
+            this.Map(x => x.CopyLocal).Not.Nullable();
+            this.Map(x => x.RawAssembly);
+            this.References(x => x.Group).Column("GROUPID").Not.Nullable();
+        }
+    }
+}
