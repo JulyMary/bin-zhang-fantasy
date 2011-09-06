@@ -5,5 +5,10 @@
     <Setting Name="PropertyEditorGridViewLayout" Type="Fantasy.Studio.Controls.GridViewLayoutSetting" Scope="User">
       <Value Profile="(Default)">&lt;GridViewLayoutSetting/&gt;</Value>
     </Setting>
+      <Setting Name="EnumValuesPanelGridViewLayout"
+               Type="Fantasy.Studio.Controls.GridViewLayoutSetting"
+               Scope="User">
+          <Value Profile="(Default)">&lt;GridViewLayoutSetting/&gt;</Value>
+      </Setting>
   </Settings>
 </SettingsFile>

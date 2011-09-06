@@ -115,6 +115,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Value.
+        /// </summary>
+        internal static string DefaultNewBusinessEnumValueName {
+            get {
+                return ResourceManager.GetString("DefaultNewBusinessEnumValueName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Package.
         /// </summary>
         internal static string DefaultNewBusinessPackageName {
@@ -138,6 +147,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         internal static string DocumentPadTitle {
             get {
                 return ResourceManager.GetString("DocumentPadTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Values.
+        /// </summary>
+        internal static string EnumValuesPanelTitle {
+            get {
+                return ResourceManager.GetString("EnumValuesPanelTitle", resourceCulture);
             }
         }
         

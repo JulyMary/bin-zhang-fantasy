@@ -12,7 +12,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return (BusinessEnum)this.GetValue("Enum", 0);
+                return (BusinessEnum)this.GetValue("Enum", null);
             }
             set
             {
@@ -24,7 +24,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return (long)this.GetValue("Value", 0);
+                return (long)this.GetValue("Value", 0L);
             }
             set
             {

@@ -135,6 +135,9 @@
   <data name="DefaultNewBusinessEnumName" xml:space="preserve">
     <value>New Enum</value>
   </data>
+  <data name="DefaultNewBusinessEnumValueName" xml:space="preserve">
+    <value>New Value</value>
+  </data>
   <data name="DefaultNewBusinessPackageName" xml:space="preserve">
     <value>New Package</value>
   </data>
@@ -143,6 +146,9 @@
   </data>
   <data name="DocumentPadTitle" xml:space="preserve">
     <value>Business Model</value>
+  </data>
+  <data name="EnumValuesPanelTitle" xml:space="preserve">
+    <value>Values</value>
   </data>
   <data name="PakcageClassFolderName" xml:space="preserve">
     <value>Classes</value>
