@@ -52,10 +52,12 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\ProductInfo.cs" />
-    </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ProductInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessAssemblyReference.cs" />
+    <Compile Include="BusinessAssemblyReferenceGroup.cs" />
     <Compile Include="BusinessClass.cs" />
     <Compile Include="BusinessClassDiagram.cs" />
     <Compile Include="BusinessDataType.cs" />
@@ -93,6 +95,8 @@
     <Compile Include="Events\IEntityPropertyChangedEventHandler.cs" />
     <Compile Include="Events\IEntityPropertyChangingEventHandler.cs" />
     <Compile Include="INamedBusinessEntity.cs" />
+    <Compile Include="Maps\BusinessAssemblyReferenceGroupMap.cs" />
+    <Compile Include="Maps\BusinessAssemblyReferenceMap.cs" />
     <Compile Include="Maps\BusinessClassDiagramMap.cs" />
     <Compile Include="Maps\BusinessClassMap.cs" />
     <Compile Include="Maps\BusinessDataTypeMap.cs" />

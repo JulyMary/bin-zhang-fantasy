@@ -1,8 +1,15 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     6/09/2011 4:28:37 PM                         */
+/* Created on:     2011/9/6 21:21:31                            */
 /*==============================================================*/
 
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('ASSEMBLYREFERENCE') and o.name = 'FK_ASSEMBLYREFERENCEGROUP')
+alter table ASSEMBLYREFERENCE
+   drop constraint FK_ASSEMBLYREFERENCEGROUP
+go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -103,10 +110,34 @@ alter table BUSINESSPROPERTY
 go
 
 if exists (select 1
+            from  sysindexes
+           where  id    = object_id('ASSEMBLYREFERENCE')
+            and   name  = 'GROUPASSEMBLY_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index ASSEMBLYREFERENCE.GROUPASSEMBLY_FK
+go
+
+alter table ASSEMBLYREFERENCE
+   drop constraint PK_ASSEMBLYREFERENCE
+go
+
+if exists (select 1
             from  sysobjects
            where  id = object_id('ASSEMBLYREFERENCE')
             and   type = 'U')
    drop table ASSEMBLYREFERENCE
+go
+
+alter table ASSEMBLYREFERENCEGROUP
+   drop constraint PK_ASSEMBLYREFERENCEGROUP
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('ASSEMBLYREFERENCEGROUP')
+            and   type = 'U')
+   drop table ASSEMBLYREFERENCEGROUP
 go
 
 if exists (select 1
@@ -372,10 +403,41 @@ go
 /*==============================================================*/
 create table ASSEMBLYREFERENCE (
    ID                   T_GUID               not null,
+   GROUPID              T_GUID               not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
    FULLNAME             varchar(255)         not null,
    RAWASSEMBLY          image                null,
    COPYLOCAL            bit                  not null
 )
+go
+
+alter table ASSEMBLYREFERENCE
+   add constraint PK_ASSEMBLYREFERENCE primary key (ID)
+go
+
+/*==============================================================*/
+/* Index: GROUPASSEMBLY_FK                                      */
+/*==============================================================*/
+create index GROUPASSEMBLY_FK on ASSEMBLYREFERENCE (
+GROUPID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: ASSEMBLYREFERENCEGROUP                                */
+/*==============================================================*/
+create table ASSEMBLYREFERENCEGROUP (
+   ID                   uniqueidentifier     not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null
+)
+go
+
+alter table ASSEMBLYREFERENCEGROUP
+   add constraint PK_ASSEMBLYREFERENCEGROUP primary key (ID)
 go
 
 /*==============================================================*/
@@ -691,6 +753,11 @@ go
 create index IDX_PROPERTYCLASSTYPE_FK on BUSINESSPROPERTY (
 CLASSTYPEID ASC
 )
+go
+
+alter table ASSEMBLYREFERENCE
+   add constraint FK_ASSEMBLYREFERENCEGROUP foreign key (GROUPID)
+      references ASSEMBLYREFERENCEGROUP (ID)
 go
 
 alter table BUSINESSASSOCIATION

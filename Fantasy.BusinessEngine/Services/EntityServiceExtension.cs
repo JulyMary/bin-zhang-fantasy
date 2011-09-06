@@ -87,5 +87,10 @@ namespace Fantasy.BusinessEngine.Services
         {
             return es.DefaultSession.Get<BusinessPackage>(BusinessPackage.RootPackageId);  
         }
+
+        public static BusinessAssemblyReferenceGroup GetAssemblyReferenceGroup(this IEntityService es)
+        {
+            return es.DefaultSession.Get<BusinessAssemblyReferenceGroup>(BusinessAssemblyReferenceGroup.RootId);
+        }
     }
 }
