@@ -104,10 +104,15 @@
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassDataDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessClassDataOverHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\SelectFirstNodeHandler.cs" />
+    <Compile Include="ClassDiagramEditing\Model\EnumGlyph.cs" />
+    <Compile Include="ClassDiagramEditing\Model\EnumValueNode.cs" />
     <Compile Include="ClassDiagramEditing\Model\InheritanceGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\Point.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassNode.xaml.cs">
       <DependentUpon>ClassNode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClassDiagramEditing\Shapes\EnumNode.xaml.cs">
+      <DependentUpon>EnumNode.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassDiagramEditing\Shapes\NodeExpander.cs" />
     <Compile Include="ClassDiagramEditing\Model\PropertyNode.cs" />
@@ -252,6 +257,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClassDiagramEditing\Shapes\ClassNode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClassDiagramEditing\Shapes\EnumNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
