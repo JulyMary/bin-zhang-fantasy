@@ -1,8 +1,151 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2011/8/5 22:33:58                            */
+/* Created on:     6/09/2011 4:28:37 PM                         */
 /*==============================================================*/
 
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSASSOCIATION') and o.name = 'FK_PACKAGEASSOCIATIONS')
+alter table BUSINESSASSOCIATION
+   drop constraint FK_PACKAGEASSOCIATIONS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSASSOCIATION') and o.name = 'FK_BUSINESS_RELATION_CLASS_LEFT')
+alter table BUSINESSASSOCIATION
+   drop constraint FK_BUSINESS_RELATION_CLASS_LEFT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSASSOCIATION') and o.name = 'FK_BUSINESS_RELATION_CLASS_RIGHT')
+alter table BUSINESSASSOCIATION
+   drop constraint FK_BUSINESS_RELATION_CLASS_RIGHT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSCLASS') and o.name = 'FK_BUSINESS_PACKAGE_CLASS')
+alter table BUSINESSCLASS
+   drop constraint FK_BUSINESS_PACKAGE_CLASS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSCLASS') and o.name = 'FK_BUSINESS_CLASS_PRENTCHILDREN')
+alter table BUSINESSCLASS
+   drop constraint FK_BUSINESS_CLASS_PRENTCHILDREN
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSCLASSDIAGRAM') and o.name = 'FK_BUSINESS_PACKAGECL_BUSINESS')
+alter table BUSINESSCLASSDIAGRAM
+   drop constraint FK_BUSINESS_PACKAGECL_BUSINESS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSENUM') and o.name = 'FK_BUSINESS_PACKAGE_ENUM')
+alter table BUSINESSENUM
+   drop constraint FK_BUSINESS_PACKAGE_ENUM
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSENUMVALUE') and o.name = 'FK_BUSNIESS_ENUM_ENUMVALUES')
+alter table BUSINESSENUMVALUE
+   drop constraint FK_BUSNIESS_ENUM_ENUMVALUES
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSOBJECT') and o.name = 'FK_BUSINESS_OBJECTCLA_BUSINESS')
+alter table BUSINESSOBJECT
+   drop constraint FK_BUSINESS_OBJECTCLA_BUSINESS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSPACKAGE') and o.name = 'FK_BUSINESS_PACKAGE_PARENTCHILDREN')
+alter table BUSINESSPACKAGE
+   drop constraint FK_BUSINESS_PACKAGE_PARENTCHILDREN
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSPROPERTY') and o.name = 'FK_BUSINESS_CLASS_PROPERTIES')
+alter table BUSINESSPROPERTY
+   drop constraint FK_BUSINESS_CLASS_PROPERTIES
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSPROPERTY') and o.name = 'FK_BUSINESS_CLASS_PROPERTYTYPE')
+alter table BUSINESSPROPERTY
+   drop constraint FK_BUSINESS_CLASS_PROPERTYTYPE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSPROPERTY') and o.name = 'FK_BUSINESS_ENUM_PROPERTYTYPE')
+alter table BUSINESSPROPERTY
+   drop constraint FK_BUSINESS_ENUM_PROPERTYTYPE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSPROPERTY') and o.name = 'FK_BUSINESS_TYPE_PROPERTY')
+alter table BUSINESSPROPERTY
+   drop constraint FK_BUSINESS_TYPE_PROPERTY
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('ASSEMBLYREFERENCE')
+            and   type = 'U')
+   drop table ASSEMBLYREFERENCE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSASSOCIATION')
+            and   name  = 'PACKAGEASSOCIATIONS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSASSOCIATION.PACKAGEASSOCIATIONS_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSASSOCIATION')
+            and   name  = 'RELATIONSHIPRIGHT_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSASSOCIATION.RELATIONSHIPRIGHT_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSASSOCIATION')
+            and   name  = 'RELATIONSHIPLEFT_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSASSOCIATION.RELATIONSHIPLEFT_FK
+go
+
+alter table BUSINESSASSOCIATION
+   drop constraint PK_BUSINESSASSOCIATION
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSASSOCIATION')
+            and   type = 'U')
+   drop table BUSINESSASSOCIATION
+go
 
 if exists (select 1
             from  sysindexes
@@ -22,6 +165,10 @@ if exists (select 1
    drop index BUSINESSCLASS.IDX_PARENTCLASS_FK
 go
 
+alter table BUSINESSCLASS
+   drop constraint PK_BUSINESSCLASS
+go
+
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSCLASS')
@@ -38,11 +185,19 @@ if exists (select 1
    drop index BUSINESSCLASSDIAGRAM.PACKAGECLASSDIAGRAM_FK
 go
 
+alter table BUSINESSCLASSDIAGRAM
+   drop constraint PK_BUSINESSCLASSDIAGRAM
+go
+
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSCLASSDIAGRAM')
             and   type = 'U')
    drop table BUSINESSCLASSDIAGRAM
+go
+
+alter table BUSINESSDATATYPE
+   drop constraint PK_BUSINESSDATATYPE
 go
 
 if exists (select 1
@@ -61,6 +216,10 @@ if exists (select 1
    drop index BUSINESSENUM.IDX_PACKAGEENUM_FK
 go
 
+alter table BUSINESSENUM
+   drop constraint PK_BUSINESSENUM
+go
+
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSENUM')
@@ -75,6 +234,10 @@ if exists (select 1
             and   indid > 0
             and   indid < 255)
    drop index BUSINESSENUMVALUE.IDX_BUSINESSENUMVALUES_FK
+go
+
+alter table BUSINESSENUMVALUE
+   drop constraint PK_BUSINESSENUMVALUE
 go
 
 if exists (select 1
@@ -93,6 +256,10 @@ if exists (select 1
    drop index BUSINESSOBJECT.IDX_OBJECTCLASS_FK
 go
 
+alter table BUSINESSOBJECT
+   drop constraint PK_BUSINESSOBJECT
+go
+
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSOBJECT')
@@ -107,6 +274,10 @@ if exists (select 1
             and   indid > 0
             and   indid < 255)
    drop index BUSINESSPACKAGE.IDX_CHILDPACKAGES_FK
+go
+
+alter table BUSINESSPACKAGE
+   drop constraint PK_BUSINESSPACKAGE
 go
 
 if exists (select 1
@@ -152,36 +323,15 @@ if exists (select 1
    drop index BUSINESSPROPERTY.IDX_PROPERTIES_FK
 go
 
+alter table BUSINESSPROPERTY
+   drop constraint PK_BUSINESSPROPERTY
+go
+
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSPROPERTY')
             and   type = 'U')
    drop table BUSINESSPROPERTY
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('BUSINESSRELATIONSHIP')
-            and   name  = 'RELATIONSHIPRIGHT_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index BUSINESSRELATIONSHIP.RELATIONSHIPRIGHT_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('BUSINESSRELATIONSHIP')
-            and   name  = 'RELATIONSHIPLEFT_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index BUSINESSRELATIONSHIP.RELATIONSHIPLEFT_FK
-go
-
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('BUSINESSRELATIONSHIP')
-            and   type = 'U')
-   drop table BUSINESSRELATIONSHIP
 go
 
 if exists(select 1 from systypes where name='T_DBENTITY')
@@ -218,6 +368,72 @@ create type T_NAME
 go
 
 /*==============================================================*/
+/* Table: ASSEMBLYREFERENCE                                     */
+/*==============================================================*/
+create table ASSEMBLYREFERENCE (
+   ID                   T_GUID               not null,
+   FULLNAME             varchar(255)         not null,
+   RAWASSEMBLY          image                null,
+   COPYLOCAL            bit                  not null
+)
+go
+
+/*==============================================================*/
+/* Table: BUSINESSASSOCIATION                                   */
+/*==============================================================*/
+create table BUSINESSASSOCIATION (
+   ID                   T_GUID               not null,
+   PACKAGEID            T_GUID               null,
+   NAME                 T_NAME               not null,
+   CODENAME             T_NAME               not null,
+   TABLENAME            T_DBENTITY           not null,
+   TABLESCHEMA          T_DBENTITY           not null,
+   TABLESPACE           T_DBENTITY           not null,
+   LEFTROLENAME         T_NAME               not null,
+   LEFTROLECODE         T_NAME               not null,
+   LEFTCLASSID          T_GUID               not null,
+   LEFTCARDINALITY      int                  not null,
+   LEFTNAVIGATABLE      bit                  not null,
+   RIGHTROLENAME        T_NAME               not null,
+   RIGHTROLECODE        T_NAME               not null,
+   RIGHTCLASSID         T_GUID               not null,
+   RIGHTCARDINALITY     int                  not null,
+   RIGHTNAVIGATABLE     bit                  not null,
+   CREATIONTIME         datetime             not null,
+   MODIFICATIONTIME     datetime             not null,
+   ISSYSTEM             bit                  not null
+)
+go
+
+alter table BUSINESSASSOCIATION
+   add constraint PK_BUSINESSASSOCIATION primary key (ID)
+go
+
+/*==============================================================*/
+/* Index: RELATIONSHIPLEFT_FK                                   */
+/*==============================================================*/
+create index RELATIONSHIPLEFT_FK on BUSINESSASSOCIATION (
+LEFTCLASSID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: RELATIONSHIPRIGHT_FK                                  */
+/*==============================================================*/
+create index RELATIONSHIPRIGHT_FK on BUSINESSASSOCIATION (
+RIGHTCLASSID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: PACKAGEASSOCIATIONS_FK                                */
+/*==============================================================*/
+create index PACKAGEASSOCIATIONS_FK on BUSINESSASSOCIATION (
+PACKAGEID ASC
+)
+go
+
+/*==============================================================*/
 /* Table: BUSINESSCLASS                                         */
 /*==============================================================*/
 create table BUSINESSCLASS (
@@ -236,9 +452,12 @@ create table BUSINESSCLASS (
    IMPLEMENTS           varchar(4096)        null,
    AUTOSCRIPT           text                 null,
    SCRIPT               text                 null,
-   SCRIPTOPTIONS        int                  null,
-   constraint PK_BUSINESSCLASS primary key (ID)
+   SCRIPTOPTIONS        int                  null
 )
+go
+
+alter table BUSINESSCLASS
+   add constraint PK_BUSINESSCLASS primary key (ID)
 go
 
 /*==============================================================*/
@@ -267,9 +486,12 @@ create table BUSINESSCLASSDIAGRAM (
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null,
    NAME                 T_NAME               not null,
-   DIAGRAM              text                 null,
-   constraint PK_BUSINESSCLASSDIAGRAM primary key (ID)
+   DIAGRAM              text                 null
 )
+go
+
+alter table BUSINESSCLASSDIAGRAM
+   add constraint PK_BUSINESSCLASSDIAGRAM primary key (PACKAGEID, ID)
 go
 
 /*==============================================================*/
@@ -292,9 +514,12 @@ create table BUSINESSDATATYPE (
    DEFAULTPRECISION     int                  null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSDATATYPE primary key (ID)
+   ISSYSTEM             bit                  not null
 )
+go
+
+alter table BUSINESSDATATYPE
+   add constraint PK_BUSINESSDATATYPE primary key (ID)
 go
 
 /*==============================================================*/
@@ -308,11 +533,15 @@ create table BUSINESSENUM (
    ISFLAGS              bit                  not null,
    ISEXTERNAL           bit                  null,
    EXTERNALASSEMBLY     T_NAME               null,
+   EXTERNALNAMESPACE    varchar(255)         null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSENUM primary key (ID)
+   ISSYSTEM             bit                  not null
 )
+go
+
+alter table BUSINESSENUM
+   add constraint PK_BUSINESSENUM primary key (ID)
 go
 
 /*==============================================================*/
@@ -334,9 +563,12 @@ create table BUSINESSENUMVALUE (
    VALUE                int                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSENUMVALUE primary key (ID)
+   ISSYSTEM             bit                  not null
 )
+go
+
+alter table BUSINESSENUMVALUE
+   add constraint PK_BUSINESSENUMVALUE primary key (ENUMID, ID)
 go
 
 /*==============================================================*/
@@ -356,9 +588,12 @@ create table BUSINESSOBJECT (
    NAME                 T_NAME               null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSOBJECT primary key (ID)
+   ISSYSTEM             bit                  not null
 )
+go
+
+alter table BUSINESSOBJECT
+   add constraint PK_BUSINESSOBJECT primary key (ID)
 go
 
 /*==============================================================*/
@@ -380,9 +615,12 @@ create table BUSINESSPACKAGE (
    CODENAME             T_NAME               not null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSPACKAGE primary key (ID)
+   ISSYSTEM             bit                  not null
 )
+go
+
+alter table BUSINESSPACKAGE
+   add constraint PK_BUSINESSPACKAGE primary key (ID)
 go
 
 /*==============================================================*/
@@ -415,9 +653,12 @@ create table BUSINESSPROPERTY (
    ISCALCULATED         bit                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSPROPERTY primary key (ID)
+   ISSYSTEM             bit                  not null
 )
+go
+
+alter table BUSINESSPROPERTY
+   add constraint PK_BUSINESSPROPERTY primary key (CLASSID, ID)
 go
 
 /*==============================================================*/
@@ -452,46 +693,78 @@ CLASSTYPEID ASC
 )
 go
 
-/*==============================================================*/
-/* Table: BUSINESSRELATIONSHIP                                  */
-/*==============================================================*/
-create table BUSINESSRELATIONSHIP (
-   ID                   T_GUID               not null,
-   NAME                 T_NAME               not null,
-   CODENAME             T_NAME               not null,
-   TABLENAME            T_DBENTITY           not null,
-   TABLESCHEMA          T_DBENTITY           not null,
-   TABLESPACE           T_DBENTITY           not null,
-   LEFTROLENAME         T_NAME               not null,
-   LEFTROLECODE         T_NAME               not null,
-   LEFTCLASSID          T_GUID               not null,
-   LEFTCARDINALITY      int                  not null,
-   LEFTNAVIGATABLE      bit                  not null,
-   RIGHTROLENAME        T_NAME               not null,
-   RIGHTROLECODE        T_NAME               not null,
-   RIGHTCLASSID         T_GUID               not null,
-   RIGHTCARDINALITY     int                  not null,
-   RIGHTNAVIGATABLE     bit                  not null,
-   CREATIONTIME         datetime             not null,
-   MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSRELATIONSHIP primary key (ID)
-)
+alter table BUSINESSASSOCIATION
+   add constraint FK_PACKAGEASSOCIATIONS foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
 go
 
-/*==============================================================*/
-/* Index: RELATIONSHIPLEFT_FK                                   */
-/*==============================================================*/
-create index RELATIONSHIPLEFT_FK on BUSINESSRELATIONSHIP (
-LEFTCLASSID ASC
-)
+alter table BUSINESSASSOCIATION
+   add constraint FK_BUSINESS_RELATION_CLASS_LEFT foreign key (LEFTCLASSID)
+      references BUSINESSCLASS (ID)
+         on delete cascade
 go
 
-/*==============================================================*/
-/* Index: RELATIONSHIPRIGHT_FK                                  */
-/*==============================================================*/
-create index RELATIONSHIPRIGHT_FK on BUSINESSRELATIONSHIP (
-RIGHTCLASSID ASC
-)
+alter table BUSINESSASSOCIATION
+   add constraint FK_BUSINESS_RELATION_CLASS_RIGHT foreign key (RIGHTCLASSID)
+      references BUSINESSCLASS (ID)
+         on delete cascade
+go
+
+alter table BUSINESSCLASS
+   add constraint FK_BUSINESS_PACKAGE_CLASS foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
+alter table BUSINESSCLASS
+   add constraint FK_BUSINESS_CLASS_PRENTCHILDREN foreign key (PARENTCLASSID)
+      references BUSINESSCLASS (ID)
+go
+
+alter table BUSINESSCLASSDIAGRAM
+   add constraint FK_BUSINESS_PACKAGECL_BUSINESS foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+         on delete cascade
+go
+
+alter table BUSINESSENUM
+   add constraint FK_BUSINESS_PACKAGE_ENUM foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
+alter table BUSINESSENUMVALUE
+   add constraint FK_BUSNIESS_ENUM_ENUMVALUES foreign key (ENUMID)
+      references BUSINESSENUM (ID)
+         on delete cascade
+go
+
+alter table BUSINESSOBJECT
+   add constraint FK_BUSINESS_OBJECTCLA_BUSINESS foreign key (CLASSID)
+      references BUSINESSCLASS (ID)
+go
+
+alter table BUSINESSPACKAGE
+   add constraint FK_BUSINESS_PACKAGE_PARENTCHILDREN foreign key (PARENTPACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
+alter table BUSINESSPROPERTY
+   add constraint FK_BUSINESS_CLASS_PROPERTIES foreign key (CLASSID)
+      references BUSINESSCLASS (ID)
+         on delete cascade
+go
+
+alter table BUSINESSPROPERTY
+   add constraint FK_BUSINESS_CLASS_PROPERTYTYPE foreign key (CLASSTYPEID)
+      references BUSINESSCLASS (ID)
+go
+
+alter table BUSINESSPROPERTY
+   add constraint FK_BUSINESS_ENUM_PROPERTYTYPE foreign key (ENUMTYPEID)
+      references BUSINESSENUM (ID)
+go
+
+alter table BUSINESSPROPERTY
+   add constraint FK_BUSINESS_TYPE_PROPERTY foreign key (DATATYPEID)
+      references BUSINESSDATATYPE (ID)
 go
 
