@@ -1,0 +1,63 @@
+﻿<sf:Node x:Class="Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes.EnumNode"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:sf="http://schemas.syncfusion.com/wpf"
+             xmlns:f="urn:schema-fantasy:xaml"
+             xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes" 
+             mc:Ignorable="d" 
+             d:DesignHeight="160" d:DesignWidth="180" OffsetX="{Binding Left, Mode=TwoWay}" OffsetY="{Binding Top, Mode=TwoWay}"
+             Width="{Binding Width, Mode=TwoWay}" DataContextChanged="Node_DataContextChanged">
+
+    <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3">
+        <Border.Background>
+            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                <GradientStop Color="#FFB2A39C" Offset="0" />
+                <GradientStop Color="White" Offset="1" />
+            </LinearGradientBrush>
+        </Border.Background>
+        <l:NodeExpander x:Name="outerExpander" IsExpanded="{Binding ShowMember, Mode=TwoWay}" >
+            <l:NodeExpander.Header >
+                <Grid>
+                    <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/enum.gif" />
+                    <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/Shortcut.png"
+                           Visibility="{Binding IsShortCut, Converter={x:Static f:VisibilityConverter.Collapsed}}"/>
+                    <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >
+                        <TextBlock Text="{Binding Entity.Name }" />
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DisplayIndex}" Value="0">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text=" : " />
+                            <TextBlock Text="{Binding DisplayIndex}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </l:NodeExpander.Header>
+
+            <StackPanel Focusable="True" Name="ConentStackPanel" Orientation="Vertical" sf:Node.IsSelectionScope="True" MouseDown="StackPanel_MouseDown">
+                <ListBox ItemsSource="{Binding EnumValues}" MinHeight="23" Name="EnumValueListBox" SelectionMode="Extended" SelectionChanged="EnumValueListBox_SelectionChanged">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="ContentControl.HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Entity.Name}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </l:NodeExpander>
+    </Border>
+
+</sf:Node>
+

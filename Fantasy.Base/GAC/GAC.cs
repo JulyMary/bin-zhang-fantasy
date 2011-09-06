@@ -825,7 +825,7 @@ namespace System.GAC
 			[MarshalAs(UnmanagedType.LPWStr)] string pszStreamName,
 			uint dwFormat,
 			uint dwFormatFlags,
-			out UCOMIStream ppIStream,
+            out System.Runtime.InteropServices.ComTypes.IStream ppIStream,
 			ref long puliMaxSize);
 
 		/// <summary>
