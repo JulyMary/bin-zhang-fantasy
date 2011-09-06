@@ -20,7 +20,7 @@
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
-            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:EntityCodeNameSetAction}"/>
             <PropertyDescriptor ID="BuildAsAssembly" Name="BuildAsAssembly" Caption="Build As Assembly" Category="General"/>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
@@ -56,7 +56,7 @@
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
-            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:EntityCodeNameSetAction}"/>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
             <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
@@ -82,6 +82,8 @@
                 </PropertyDescriptor.Conditional>
             </PropertyDescriptor>
         </TypeDescriptor>
+        
+        
 
         <TypeDescriptor ID="BusinessProperty" TargetType="{x:Type be:BusinessProperty}">
             <TypeDescriptor.Conditional>
@@ -113,8 +115,64 @@
             <PropertyDescriptor ID="Type" Name="Type" Caption="Type" Category="General" Converter="{New sbe:BusinessDataTypeConverter}" 
                                 Set="{New sbe:BusinessPropertyDataTypeAccessor}" Get="{New sbe:BusinessPropertyDataTypeAccessor}"
                                 Editor="{New sbe:BusinessPropertyTypeEditor}" Type="{x:Type be:IBusinessEntity}"/>
-           
-            
+        </TypeDescriptor>
+        
+        <TypeDescriptor ID="BusinessEnum" TargetType="{x:Type be:BusinessEnum}">
+            <TypeDescriptor.Conditional >
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:EntityCodeNameSetAction}" >
+                <PropertyDescriptor.Conditional>
+                    <Not  Action="Disable">
+                        <sbe:IsExternalEnum/>
+                    </Not>
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General">
+                <PropertyDescriptor.Conditional>
+                    <Not  Action="Disable">
+                        <sbe:IsExternalEnum/>
+                    </Not>
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="IsFlags" Name="IsFlags" Caption="Is Flags" Category="General" >
+                <PropertyDescriptor.Conditional>
+                    <Not  Action="Disable">
+                        <sbe:IsExternalEnum/>
+                    </Not>
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="IsExternal" Name="IsExternal" Caption="Is External" Category="General" ReadOnly="True" />
+            <PropertyDescriptor ID="Assembly" Name="ExternalAssemblyName" Caption="External Assembly" Category="General" ReadOnly="True" />
+        </TypeDescriptor>
+        
+        <TypeDescriptor ID="BusinessEnumValue" TargetType="{x:Type be:BusinessEnumValue}">
+            <TypeDescriptor.Conditional >
+                
+                <Not Action="Disable">
+                    
+                    <Or>
+                        <sbe:IsSystemEntity />
+                        <sbe:IsExternalEnum Member="Enum" />
+                    </Or>
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:EntityCodeNameSetAction}" >
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General">
+            </PropertyDescriptor>
         </TypeDescriptor>
     </Extension>
 

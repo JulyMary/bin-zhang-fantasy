@@ -11,24 +11,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel.Design;
+using Fantasy.Studio.Services;
 using Fantasy.BusinessEngine;
 using Fantasy.Studio.Controls;
 using Fantasy.AddIns;
-using Fantasy.Studio.Services;
-using Fantasy.ServiceModel;
-using System.ComponentModel.Design;
 using NHibernate;
 using Fantasy.BusinessEngine.Services;
 using System.Collections.Specialized;
 
-namespace Fantasy.Studio.BusinessEngine.PropertyEditing
+namespace Fantasy.Studio.BusinessEngine.EnumEditing
 {
     /// <summary>
-    /// Interaction logic for BusinessPropertyEditor.xaml
+    /// Interaction logic for EnumValuesPanel.xaml
     /// </summary>
-    public partial class PropertyEditor : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class EnumValuesPanel : UserControl, IEntityEditingPanel, IObjectWithSite
     {
-        public PropertyEditor()
+        public EnumValuesPanel()
         {
             InitializeComponent();
            
@@ -38,8 +37,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         private ISelectionService _selectionService = new SelectionService(null);
 
-        private PropertyEditorModel _model;
-
+     
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             if (this.Site != null)
@@ -50,7 +48,9 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
             base.OnGotKeyboardFocus(e);
         }
 
-       
+
+        private EnumValuesPanelModel _model;
+
         #region IEntityEditingPanel Members
 
         public void Initialize()
@@ -60,66 +60,65 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         public void Load(IBusinessEntity entity)
         {
-            this._model = new PropertyEditorModel((BusinessClass)entity);
+            this._model = new EnumValuesPanelModel((BusinessEnum)entity);
+            this._model.Enum.EnumValues.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(EnumValuesChanged);
 
-            this._model.Class.Properties.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PropertiesChanged);
-
-            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/toolbars").BuildChildItems(this._model, this.Site))
+            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/enumeditor/valuespanel/toolbars").BuildChildItems(this._model, this.Site))
             {
                 this.ToolBarTray.ToolBars.Add(bar);
             }
 
-            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/propertyeditor/commandbindings").BuildChildItems(this._model, this.Site))
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/enumeditor/valuespanel/commandbindings").BuildChildItems(this._model, this.Site))
             {
                 this.CommandBindings.Add(cb);
             }
 
             
             this.DataContext = this._model;
-            foreach (BusinessProperty prop in this._model.Class.Properties)
+            foreach (BusinessEnumValue value in this._model.Enum.EnumValues)
             {
-                if (prop.EntityState != EntityState.Clean)
+                if (value.EntityState != EntityState.Clean)
                 {
                     this.DirtyState = EditingState.Dirty;
                 }
-                this.HandlePropertyEvents(prop);
+                this.HandleEnumEvents(value);
             }
 
-            
-            Properties.Settings.Default.PropertyEditorGridViewLayout.LoadLayout(this.PropertyGridView);
+
+            Properties.Settings.Default.EnumValuesPanelGridViewLayout.LoadLayout(this.PropertyGridView);
 
         }
 
-        void PropertiesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        void EnumValuesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             this.DirtyState = EditingState.Dirty;
-            if (e.Action == NotifyCollectionChangedAction.Remove)
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Move)
             {
-                foreach (BusinessProperty prop in this._model.Class.Properties)
+                foreach (BusinessEnumValue value in e.OldItems)
                 {
-                    this.RemovePropertyEvents(prop);
+                    this.RemoveEnumValueEvents(value);
                 }
             }
         }
 
-        private void HandlePropertyEvents(BusinessProperty prop)
+        private void HandleEnumEvents(BusinessEnumValue value)
         {
-            prop.EntityStateChanged += new EventHandler(PropertyStateChanged); 
+            value.EntityStateChanged += new EventHandler(EnumValueStateChanged); 
         }
 
-        void PropertyStateChanged(object sender, EventArgs e)
+        void EnumValueStateChanged(object sender, EventArgs e)
         {
             this.DirtyState =  EditingState.Dirty;
-            BusinessProperty prop = (BusinessProperty)sender;
+            BusinessEnumValue prop = (BusinessEnumValue)sender;
             if(prop.EntityState == EntityState.Deleted)
             {
-                RemovePropertyEvents(prop);
+                RemoveEnumValueEvents(prop);
             }
         }
 
-        private void RemovePropertyEvents(BusinessProperty prop)
+        private void RemoveEnumValueEvents(BusinessEnumValue value)
         {
-            prop.EntityStateChanged -= new EventHandler(PropertyStateChanged); 
+            value.EntityStateChanged -= new EventHandler(EnumValueStateChanged); 
         }
 
 
@@ -157,9 +156,9 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
             try
             {
 
-                foreach (BusinessProperty prop in this._model.Class.Properties)
+                foreach (BusinessEnumValue value in this._model.Enum.EnumValues)
                 {
-                    session.SaveOrUpdate(prop);
+                    session.SaveOrUpdate(value);
                 }
                 session.EndUpdate(true);
             }
@@ -179,7 +178,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         public string Title
         {
-            get { return Properties.Resources.BusinessPropertyEditorTitle; }
+            get { return Properties.Resources.EnumValuesPanelTitle; }
         }
 
         #endregion
@@ -196,12 +195,12 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         public void Closed()
         {
-            this._model.Class.Properties.CollectionChanged -= new NotifyCollectionChangedEventHandler(this.PropertiesChanged);
-            foreach (BusinessProperty prop in this._model.Class.Properties)
+            this._model.Enum.EnumValues.CollectionChanged -= new NotifyCollectionChangedEventHandler(this.EnumValuesChanged);
+            foreach (BusinessEnumValue value in this._model.Enum.EnumValues)
             {
-                this.RemovePropertyEvents(prop);
+                this.RemoveEnumValueEvents(value);
             }
-            Properties.Settings.Default.PropertyEditorGridViewLayout = this._propertyGridLayout;
+            Properties.Settings.Default.EnumValuesPanelGridViewLayout = this._propertyGridLayout;
         }
 
         #endregion
@@ -209,16 +208,14 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
         private void propertyListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             this._selectionService.SetSelectedComponents(this.propertyListView.SelectedItems);
-        
-            foreach (BusinessProperty property in e.RemovedItems)
+            foreach (BusinessEnumValue value in e.RemovedItems)
             {
-                this._model.Selected.Remove(property);
+                this._model.Selected.Remove(value);
             }
-            foreach (BusinessProperty property in e.AddedItems)
+            foreach (BusinessEnumValue value in e.AddedItems)
             {
-                this._model.Selected.Add(property);
+                this._model.Selected.Add(value);
             }
-           
         }
 
        
@@ -232,6 +229,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
         {
            
         }
+
 
        
     }

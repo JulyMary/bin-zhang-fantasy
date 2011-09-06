@@ -119,12 +119,20 @@
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\IConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />
+    <Compile Include="Conditions\IsExternalEnum.cs" />
+    <Compile Include="EntityCodeNameSetAction.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />
     <Compile Include="EnumEditing\AddEnumCommand.cs" />
+    <Compile Include="EnumEditing\AddEnumValueCommand.cs" />
     <Compile Include="EnumEditing\ClassFolderEnumsProvider.cs" />
+    <Compile Include="EnumEditing\DeleteEnumValueCommand.cs" />
     <Compile Include="EnumEditing\EnumEditor.cs" />
+    <Compile Include="EnumEditing\EnumValuesPanel.xaml.cs">
+      <DependentUpon>EnumValuesPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EnumEditing\EnumValuesPanelModel.cs" />
     <Compile Include="IEntityEditingPanelContainer.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
@@ -248,6 +256,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClassDiagramEditing\Shapes\UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EnumEditing\EnumValuesPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

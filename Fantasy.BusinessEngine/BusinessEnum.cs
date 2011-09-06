@@ -25,7 +25,14 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return this.Package != null && this.Package.Id != BusinessPackage.RootPackageId ? this.Package.Name + "." + this.Name : this.Name;
+                if (this.IsExternal)
+                {
+                    return this.ExternalNamespace + "." + this.Name;
+                }
+                else
+                {
+                    return this.Package != null && this.Package.Id != BusinessPackage.RootPackageId ? this.Package.Name + "." + this.Name : this.Name;
+                }
             }
         }
 
@@ -34,7 +41,15 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return this.Package != null ? this.Package.FullCodeName + "." + this.CodeName : this.CodeName;
+                if (this.IsExternal)
+                {
+                    return this.ExternalNamespace + "." + this.CodeName;
+
+                }
+                else
+                {
+                    return this.Package != null ? this.Package.FullCodeName + "." + this.CodeName : this.CodeName;
+                }
             }
 
         }
@@ -99,8 +114,21 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private IObservableList<BusinessEnum> _persistedEnumValues = new ObservableList<BusinessEnum>();
-        protected internal virtual IObservableList<BusinessEnum> PersistedEnumValues
+
+        public virtual string ExternalNamespace
+        {
+            get
+            {
+                return (string)this.GetValue("ExternalNamespace", null);
+            }
+            set
+            {
+                this.SetValue("ExternalNamespace", value);
+            }
+        }
+
+        private IObservableList<BusinessEnumValue> _persistedEnumValues = new ObservableList<BusinessEnumValue>();
+        protected internal virtual IObservableList<BusinessEnumValue> PersistedEnumValues
         {
             get { return _persistedEnumValues; }
             private set
@@ -113,14 +141,14 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private ObservableListView<BusinessEnum> _enumValues;
-        public virtual IObservableList<BusinessEnum> EnumValues
+        private ObservableListView<BusinessEnumValue> _enumValues;
+        public virtual IObservableList<BusinessEnumValue> EnumValues
         {
             get
             {
                 if (this._enumValues == null)
                 {
-                    this._enumValues = new ObservableListView<BusinessEnum>(this._persistedEnumValues);
+                    this._enumValues = new ObservableListView<BusinessEnumValue>(this._persistedEnumValues);
                 }
                 return _enumValues;
             }
