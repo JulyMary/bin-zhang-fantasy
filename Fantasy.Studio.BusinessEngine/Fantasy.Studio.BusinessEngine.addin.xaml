@@ -88,7 +88,8 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/referencegroup/contextmenu">
-        <Button ID="Add" Command="{New sbe:AddReferenceCommand}" Text="Add Reference"/>
+        <Button ID="Add" Command="{New sbe:AddReferenceCommand}" Text="Add Reference..."/>
+        <Button ID="AddGAC" Command="{New sbe:AddGACReferenceCommand}" Text="Add Reference From GAC..."/>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/reference/contextmenu">
