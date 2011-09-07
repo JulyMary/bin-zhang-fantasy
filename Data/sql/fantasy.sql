@@ -1,8 +1,9 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2011/9/6 21:21:31                            */
+/* Created on:     7/09/2011 9:56:49 AM                         */
 /*==============================================================*/
-
+USE [Fantasy]
+GO
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -409,6 +410,7 @@ create table ASSEMBLYREFERENCE (
    ISSYSTEM             bit                  not null,
    FULLNAME             varchar(255)         not null,
    RAWASSEMBLY          image                null,
+   RAWHASH              varchar(32)          null,
    COPYLOCAL            bit                  not null
 )
 go
@@ -453,12 +455,12 @@ create table BUSINESSASSOCIATION (
    TABLESPACE           T_DBENTITY           not null,
    LEFTROLENAME         T_NAME               not null,
    LEFTROLECODE         T_NAME               not null,
-   LEFTCLASSID          T_GUID               not null,
+   LEFTCLASSID          T_GUID               null,
    LEFTCARDINALITY      int                  not null,
    LEFTNAVIGATABLE      bit                  not null,
    RIGHTROLENAME        T_NAME               not null,
    RIGHTROLECODE        T_NAME               not null,
-   RIGHTCLASSID         T_GUID               not null,
+   RIGHTCLASSID         T_GUID               null,
    RIGHTCARDINALITY     int                  not null,
    RIGHTNAVIGATABLE     bit                  not null,
    CREATIONTIME         datetime             not null,
@@ -672,7 +674,6 @@ go
 create table BUSINESSPACKAGE (
    ID                   T_GUID               not null,
    PARENTPACKAGEID      T_GUID               null,
-   BUILDASASSEMBLY      bit                  not null default 0,
    NAME                 T_NAME               not null,
    CODENAME             T_NAME               not null,
    MODIFICATIONTIME     datetime             not null,
@@ -768,13 +769,13 @@ go
 alter table BUSINESSASSOCIATION
    add constraint FK_BUSINESS_RELATION_CLASS_LEFT foreign key (LEFTCLASSID)
       references BUSINESSCLASS (ID)
-         on delete cascade
+         on delete set null
 go
 
 alter table BUSINESSASSOCIATION
    add constraint FK_BUSINESS_RELATION_CLASS_RIGHT foreign key (RIGHTCLASSID)
       references BUSINESSCLASS (ID)
-         on delete cascade
+         on delete set null
 go
 
 alter table BUSINESSCLASS

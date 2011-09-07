@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Globalization;
 
 namespace Fantasy.BusinessEngine
 {
@@ -21,7 +23,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        protected internal virtual string FullName
+        public virtual string FullName
         {
             get
             {
@@ -35,6 +37,7 @@ namespace Fantasy.BusinessEngine
                     if (value != null)
                     {
                         this.AssemblyName = new AssemblyName(value);
+                        
                     }
                     else
                     {
@@ -47,7 +50,7 @@ namespace Fantasy.BusinessEngine
 
         private AssemblyName _assemblyName;
 
-        public virtual  AssemblyName AssemblyName
+        private AssemblyName AssemblyName
         {
             get { return _assemblyName; }
             set
@@ -58,15 +61,103 @@ namespace Fantasy.BusinessEngine
                     if (value != null)
                     {
                         this.FullName = value.FullName;
+                        this.Name = _assemblyName.Name;
+                        this.CultureInfo = _assemblyName.CultureInfo;
+                        this.Version = _assemblyName.Version;
+                        byte[] pc = _assemblyName.GetPublicKeyToken();
+                        if (pc != null)
+                        {
+                            this.PublicToken = BitConverter.ToString(pc).Replace("-", string.Empty);
+                        }
+                        else
+                        {
+                            this.PublicToken = null;
+                        }
                     }
                     else
                     {
                         this.FullName = null;
                     }
-                    this.OnNotifyPropertyChangedPropertyChanged("AssemblyName");
+                   
                 }
             }
         }
+
+
+        private string _name;
+
+        public virtual string Name
+        {
+            get { return _name; }
+            private set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    this.OnNotifyPropertyChangedPropertyChanged("Name");
+                }
+            }
+        }
+
+
+        private  CultureInfo _cultureInfo;
+
+        public virtual CultureInfo CultureInfo
+        {
+            get { return _cultureInfo; }
+            private set
+            {
+                if (_cultureInfo != value)
+                {
+                    _cultureInfo = value;
+                    this.OnNotifyPropertyChangedPropertyChanged("CultureInfo");
+                }
+            }
+        }
+
+        private Version _version;
+
+        public virtual Version Version
+        {
+            get { return _version; }
+            private set
+            {
+                if (_version != value)
+                {
+                    _version = value;
+                    this.OnNotifyPropertyChangedPropertyChanged("Version");
+                }
+            }
+        }
+
+        private string _publicToken;
+
+        public virtual string PublicToken
+        {
+            get { return _publicToken; }
+            private set
+            {
+                if (_publicToken != value)
+                {
+                    _publicToken = value;
+                    this.OnNotifyPropertyChangedPropertyChanged("PublicToken");
+                }
+            }
+        }
+
+
+        protected internal virtual byte[] PersitedRawAssembly
+        {
+            get
+            {
+                return (byte[])this.GetValue("RawAssembly", null);
+            }
+            set
+            {
+                this.SetValue("RawAssembly", value);
+            }
+        }
+
 
         public virtual byte[] RawAssembly
         {
@@ -77,6 +168,32 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("RawAssembly", value);
+                if (value == null)
+                {
+                    this.RawHash = null;
+                }
+                else
+                {
+                    using (MD5CryptoServiceProvider provider = new MD5CryptoServiceProvider())
+                    {
+                        byte[] bitHash = provider.ComputeHash(value);
+                        this.RawHash = BitConverter.ToString(bitHash).Replace("-", string.Empty);
+                    }
+                }
+            }
+        }
+
+
+
+        public virtual string RawHash
+        {
+            get
+            {
+                return (string)this.GetValue("RawHash", null);
+            }
+            private set
+            {
+                this.SetValue("RawHash", value);
             }
         }
 

@@ -19,6 +19,12 @@
         </Adapter>
     </Extension>
 
+    <Extension Path="fantasy/services">
+        <Object ID="UpdateLocalAssembliesService" InsertAfter="nhprovider">
+            <be:UpdateLocalAssembliesService/>
+        </Object>
+    </Extension>
+
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}"/>
     </Extension>
@@ -44,6 +50,7 @@
                   Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/package/contextmenu">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
             <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageClassFolderProvider}"/>
+            <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
         <TreeNode ID="classFolder" TargetType="{x:Type sbe:ClassFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/classfolder/contextmenu" >
@@ -66,8 +73,28 @@
             Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
                   ContextMenu="fantasy/studio/businessengine/documentpad/enum/contextmenu">
         </TreeNode>
+        <TreeNode ID="ReferenceGroup" TargetType="{x:Type be:BusinessAssemblyReferenceGroup}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ReferenceFolder.png"
+                  Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/referencegroup/contextmenu">
+            <TreeNodeChildProvider ID="Reference" Provider="{New sbe:AssemblyReferenceProvider}" />
+        </TreeNode>
+
+        <TreeNode ID="Reference" TargetType="{x:Type be:BusinessAssemblyReference}" Icon="/Fantasy.Studio.BusinessEngine;component/images/Reference.png"
+                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/reference/contextmenu">
+           
+        </TreeNode>
+        
+        
+        
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/documentpad/referencegroup/contextmenu">
+        <Button ID="Add" Command="{New sbe:AddReferenceCommand}" Text="Add Reference"/>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/reference/contextmenu">
+        <Button ID="Delete" Command="{New sbe:DeleteReferenceCommand}" Text="Delete" ParameterSource="Owner" />
+    </Extension>
+    
     <Extension Path="fantasy/studio/businessengine/classviewpad/treeview">
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
                   Text="{Binding Path=FullName}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">

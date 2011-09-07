@@ -12,7 +12,8 @@ namespace Fantasy.BusinessEngine.Maps
             this.Table("ASSEMBLYREFERENCE");
             this.Map(x => x.FullName).Not.Nullable();
             this.Map(x => x.CopyLocal).Not.Nullable();
-            this.Map(x => x.RawAssembly);
+            this.Map(x => x.PersitedRawAssembly).Column("RAWASSEMBLY").LazyLoad();
+            this.Map(x => x.RawHash);
             this.References(x => x.Group).Column("GROUPID").Not.Nullable();
         }
     }

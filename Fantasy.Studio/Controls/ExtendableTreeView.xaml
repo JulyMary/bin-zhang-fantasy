@@ -8,7 +8,7 @@
           
     <TreeView.Resources>
         <Style TargetType="{x:Type TreeViewItem}">
-            <Setter Property="ContextMenu" Value="{Binding ContextMenu}"/>
+            
             <EventSetter Event="MouseDoubleClick"  Handler="TreeViewItemDoubleClick" />
             
         </Style>
@@ -16,7 +16,7 @@
    
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding TreeViewItems}" >
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" ContextMenu="{Binding ContextMenu}">
                 <Image Source="{Binding Icon.Value}" Width="16" Height="16" />
                 <TextBlock Text="{Binding Text.Value}" />
             </StackPanel>
