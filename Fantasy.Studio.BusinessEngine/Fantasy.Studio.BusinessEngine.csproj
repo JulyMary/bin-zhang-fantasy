@@ -149,6 +149,9 @@
       <DependentUpon>EnumValuesPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="EnumEditing\EnumValuesPanelModel.cs" />
+    <Compile Include="EnumEditing\ImportEnumDialog.xaml.cs">
+      <DependentUpon>ImportEnumDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="IEntityEditingPanelContainer.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
@@ -287,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EnumEditing\EnumValuesPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EnumEditing\ImportEnumDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

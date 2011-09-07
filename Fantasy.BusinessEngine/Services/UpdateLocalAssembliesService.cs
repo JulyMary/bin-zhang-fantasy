@@ -17,6 +17,12 @@ namespace Fantasy.BusinessEngine.Services
 
         public override void InitializeService()
         {
+
+            if (!LongPathDirectory.Exists(Settings.Default.FullReferencesPath))
+            {
+                LongPathDirectory.Create(Settings.Default.FullReferencesPath);
+            }
+
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
             foreach (BusinessAssemblyReference reference in group.References)
