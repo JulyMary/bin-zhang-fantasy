@@ -117,49 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddReferenceDialogFilter" xml:space="preserve">
-    <value>Assembly File (.dll)|*.dll</value>
-  </data>
-  <data name="AddReferenceDialogTitle" xml:space="preserve">
-    <value>Add Reference</value>
-  </data>
-  <data name="BusinessPropertyEditorTitle" xml:space="preserve">
-    <value>Properties</value>
-  </data>
-  <data name="ClassDiagramPanelTitle" xml:space="preserve">
-    <value>Diagram</value>
-  </data>
-  <data name="ClassViewPadTitle" xml:space="preserve">
-    <value>Class View</value>
-  </data>
-  <data name="DefaultNewBusinessClassDiagramName" xml:space="preserve">
-    <value>Class Diagram</value>
-  </data>
-  <data name="DefaultNewBusinessClassName" xml:space="preserve">
-    <value>New Class</value>
-  </data>
-  <data name="DefaultNewBusinessEnumName" xml:space="preserve">
-    <value>New Enum</value>
-  </data>
-  <data name="DefaultNewBusinessEnumValueName" xml:space="preserve">
-    <value>New Value</value>
-  </data>
-  <data name="DefaultNewBusinessPackageName" xml:space="preserve">
-    <value>New Package</value>
-  </data>
-  <data name="DefaultNewBusinessPropertyName" xml:space="preserve">
-    <value>New Property</value>
-  </data>
-  <data name="DocumentPadTitle" xml:space="preserve">
-    <value>Business Model</value>
-  </data>
-  <data name="EnumValuesPanelTitle" xml:space="preserve">
-    <value>Values</value>
-  </data>
-  <data name="PakcageClassFolderName" xml:space="preserve">
-    <value>Classes</value>
-  </data>
-  <data name="PropertyGridEditorDefaultTitle" xml:space="preserve">
-    <value>General</value>
+  <data name="AssemblyReferenceGroupName" xml:space="preserve">
+    <value>References</value>
   </data>
 </root>

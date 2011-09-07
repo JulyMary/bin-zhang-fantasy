@@ -188,6 +188,7 @@
     <Compile Include="IEventHandler.cs" />
     <Compile Include="NumericalComparisonOperator.cs" />
     <Compile Include="ServiceModel\ServiceContainer.cs" />
+    <Compile Include="Reflection\AssemblyLoader.cs" />
     <Compile Include="Windows\BooleanInverterConverter.cs" />
     <Compile Include="Windows\MouseUtilities.cs" />
     <Compile Include="Windows\VisualExtensions.cs" />

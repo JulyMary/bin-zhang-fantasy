@@ -71,6 +71,12 @@
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\ObservableListView.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
+    <Compile Include="Properties\Settings.settings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.settings.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
     <Compile Include="Events\DefaultEntityCreateHandler.cs" />
@@ -112,6 +118,11 @@
     <Compile Include="Events\EntityPropertyChangingEventArgs.cs" />
     <Compile Include="Events\NHPreUpdateEventListener.cs" />
     <Compile Include="Maps\BusinessPropertyMap.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\DebugConnectionStringProvider.cs" />
     <Compile Include="Services\DefaultBusinessDataTypeRepository.cs" />
     <Compile Include="Services\EntityServiceExtension.cs" />
@@ -123,6 +134,7 @@
     <Compile Include="Services\DefaultEntityService.cs" />
     <Compile Include="Services\ISequenceService.cs" />
     <Compile Include="Services\WellknownSequences.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +151,27 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Codons\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>%28None%29</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\Settings.settings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Settings.settings.cs</LastGenOutput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

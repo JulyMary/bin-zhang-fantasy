@@ -61,6 +61,24 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Assembly File (.dll)|*.dll.
+        /// </summary>
+        internal static string AddReferenceDialogFilter {
+            get {
+                return ResourceManager.GetString("AddReferenceDialogFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Reference.
+        /// </summary>
+        internal static string AddReferenceDialogTitle {
+            get {
+                return ResourceManager.GetString("AddReferenceDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Properties.
         /// </summary>
         internal static string BusinessPropertyEditorTitle {

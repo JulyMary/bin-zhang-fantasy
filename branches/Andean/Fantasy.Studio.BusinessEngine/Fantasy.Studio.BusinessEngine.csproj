@@ -72,6 +72,10 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyReference\AddReferenceCommand.cs" />
+    <Compile Include="AssemblyReference\AssemblyReferenceProvider.cs" />
+    <Compile Include="AssemblyReference\DeleteReferenceCommand.cs" />
+    <Compile Include="AssemblyReference\RootPackageReferenceGroupProvider.cs" />
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModeCommand.cs" />
@@ -209,6 +213,7 @@
     <Compile Include="PropertyEditing\RemovePropertyCommand.cs" />
     <Compile Include="ClassEditing\SaveBusinessClassViewContentCommand.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -250,6 +255,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\Reference.png" />
+    <Resource Include="images\ReferenceFolder.png" />
     <Resource Include="images\enum.gif" />
     <Resource Include="images\Shortcut.png" />
     <Page Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml">

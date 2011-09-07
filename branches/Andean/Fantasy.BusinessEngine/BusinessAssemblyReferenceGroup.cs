@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine.Collections;
+using Fantasy.BusinessEngine.Properties;
 
 namespace Fantasy.BusinessEngine
 {
@@ -35,6 +36,14 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+
+        public virtual string Name 
+        {
+            get
+            {
+                return Resources.AssemblyReferenceGroupName;
+            }
+        }
 
         public static readonly Guid RootId = new Guid("90390416-a147-4d0a-aa59-837bdb4a5228");
     }

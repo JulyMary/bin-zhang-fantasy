@@ -183,17 +183,7 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        public virtual bool BuildAsAssembly
-        {
-            get
-            {
-                return (bool)this.GetValue("BuildAsAssembly", false);
-            }
-            set
-            {
-                this.SetValue("BuildAsAssembly", value);
-            }
-        }
+       
 
 
         public readonly static Guid RootPackageId = new Guid("28f26cdc-9ce5-4d0a-814d-08ce58105e25");
