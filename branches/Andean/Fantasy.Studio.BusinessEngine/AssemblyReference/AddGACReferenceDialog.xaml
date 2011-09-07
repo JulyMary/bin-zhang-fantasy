@@ -1,0 +1,26 @@
+﻿<Window x:Class="Fantasy.Studio.BusinessEngine.AssemblyReference.AddGACReferenceDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:f="urn:schema-fantasy:xaml"
+        xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.AssemblyReference"
+        Title="Add Reference" Height="600" Width="800"  Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <l:AssemblyNameConverter x:Key="NameConverter" />
+        <l:AssemblyVersionConverter x:Key="VersionConverter" />
+        <l:AssemblyProcessArchitectureConverter x:Key="PlatformConverter" />
+    </Window.Resources>
+    <Grid>
+        <ListView Margin="12,12,12,41" Name="AssemblyList" ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Assemblies}" SelectionChanged="AssemblyList_SelectionChanged">
+            <ListView.View>
+                <GridView AllowsColumnReorder="true" x:Name="AssemblyGridView">
+                    <GridViewColumn DisplayMemberBinding="{Binding Converter={StaticResource NameConverter}}" Header="Name" f:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>
+                    <GridViewColumn Header="Version" DisplayMemberBinding="{Binding Converter={StaticResource VersionConverter}}" f:GridViewLayout.ColumnId="VersionColumn" />
+                    <GridViewColumn Header="Runtime Version" DisplayMemberBinding="{Binding ImageRuntimeVersion}"  f:GridViewLayout.ColumnId="RunTimeVersionColumn" />
+                    <GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Converter={StaticResource PlatformConverter }}"  f:GridViewLayout.ColumnId="PlatformColumn" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content="OK" HorizontalAlignment="Right" Margin="0,0,93,12" Name="OkButton" Width="75" IsDefault="True" Click="OkButton_Click" IsEnabled="{Binding IsOKEnabled}" Height="23" VerticalAlignment="Bottom" />
+        <Button Content="Cancel" Height="23" Margin="0,0,12,12" Name="CancelButton" VerticalAlignment="Bottom" IsCancel="True" Click="CancelButton_Click" HorizontalAlignment="Right" Width="75" />
+    </Grid>
+</Window>

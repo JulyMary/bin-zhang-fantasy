@@ -72,8 +72,15 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyReference\AddGACReferenceCommand.cs" />
+    <Compile Include="AssemblyReference\AddGACReferenceDialog.xaml.cs">
+      <DependentUpon>AddGACReferenceDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AssemblyReference\AddReferenceCommand.cs" />
+    <Compile Include="AssemblyReference\AssemblyNameConverter.cs" />
+    <Compile Include="AssemblyReference\AssemblyProcessArchitectureConverter.cs" />
     <Compile Include="AssemblyReference\AssemblyReferenceProvider.cs" />
+    <Compile Include="AssemblyReference\AssemblyVersionConverter.cs" />
     <Compile Include="AssemblyReference\DeleteReferenceCommand.cs" />
     <Compile Include="AssemblyReference\RootPackageReferenceGroupProvider.cs" />
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
@@ -259,6 +266,10 @@
     <Resource Include="images\ReferenceFolder.png" />
     <Resource Include="images\enum.gif" />
     <Resource Include="images\Shortcut.png" />
+    <Page Include="AssemblyReference\AddGACReferenceDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ClassDiagramEditing\ConfirmDeletionDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
