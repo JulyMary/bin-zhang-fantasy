@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using Fantasy.IO;
 
 namespace Fantasy.Reflection
 {
@@ -49,6 +50,16 @@ namespace Fantasy.Reflection
             return CreateDomainLoader().ReflectionOnlyLoadFrom(assemblyFile);
         }
 
+        public Type[] ReflectionOnlyGetTypes(Assembly assembly)
+        {
+            return CreateDomainLoader().ReflectionOnlyGetTypes(assembly); 
+        }
+
+        public Type ReflectionOnlyGetType(Assembly assembly, string typeName, bool throwErrors = false, bool ignoreCase = false)
+        {
+            return CreateDomainLoader().ReflectionOnlyGetType(assembly, typeName, throwErrors, ignoreCase );
+        }
+
 
         #region IDisposable Members
 
@@ -62,6 +73,12 @@ namespace Fantasy.Reflection
 
     public class DomainAssemblyLoader : MarshalByRefObject
     {
+        public DomainAssemblyLoader()
+        {
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += new ResolveEventHandler(ReflectionOnlyAssemblyResolve);
+          
+        }
+       
         public Assembly ReflectionOnlyLoad(string assemblyString)
         {
             return Assembly.ReflectionOnlyLoad(assemblyString);
@@ -72,5 +89,38 @@ namespace Fantasy.Reflection
             return Assembly.ReflectionOnlyLoadFrom(assemblyFile);
         }
 
+
+        public Type[] ReflectionOnlyGetTypes(Assembly assembly)
+        {
+             return assembly.GetTypes();
+        }
+
+        private Assembly ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Assembly rs = null;
+
+            if (!args.RequestingAssembly.GlobalAssemblyCache)
+            {
+                string dir = LongPath.GetDirectoryName(args.RequestingAssembly.CodeBase);
+                AssemblyName an = new AssemblyName(args.Name);
+                string file = LongPath.Combine(dir, an.Name + ".dll");
+                if (LongPathFile.Exists(file))
+                {
+                    rs = Assembly.ReflectionOnlyLoadFrom(file);
+                }
+
+            }
+            if(rs == null)
+            {
+                return Assembly.ReflectionOnlyLoad(args.Name); 
+            }
+
+            return rs;
+        }
+
+        public Type ReflectionOnlyGetType(Assembly assembly, string typeName, bool throwErrors, bool ignoreCase)
+        {
+            return assembly.GetType(typeName, throwErrors, ignoreCase);
+        }
     }
 }

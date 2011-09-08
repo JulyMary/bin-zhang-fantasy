@@ -25,12 +25,18 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-
+            this.DialogResult = true;
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            this.DialogResult = false;
+        }
 
+        private void EnumsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            ImportEnumDialogModel model = (ImportEnumDialogModel)this.DataContext;
+            model.SelectedEnum = this.EnumsTreeView.SelectedItem as EnumNode;
         }
     }
 }

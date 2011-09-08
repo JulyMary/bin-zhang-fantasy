@@ -37,5 +37,67 @@ namespace Fantasy.Studio.BusinessEngine
             rs.Package = package;
             return rs;
         }
+
+        public static BusinessEnum AddExternalBusinessEnum(this IEntityService es, BusinessPackage package, Type enumType)
+        {
+            BusinessEnum rs = es.CreateEntity<BusinessEnum>();
+            rs.IsExternal = true;
+            rs.IsFlags = enumType.IsDefined(typeof(FlagsAttribute), true);
+            rs.Name = UniqueNameGenerator.GetName(enumType.Name, package.Enums.Select(c => c.Name));
+            rs.CodeName = enumType.Name;
+            rs.ExternalNamespace = enumType.Namespace;
+            rs.ExternalAssemblyName = enumType.Assembly.GetName().Name;
+
+            foreach (Enum value in Enum.GetValues(enumType))
+            {
+                BusinessEnumValue bv = es.CreateEntity<BusinessEnumValue>();
+                bv.Name = value.ToString();
+                bv.CodeName = value.ToString();
+                bv.Value = Convert.ToInt64(value);
+                bv.Enum = rs;
+                rs.EnumValues.Add(bv);
+            }
+
+            package.Enums.Add(rs);
+            rs.Package = package;
+            return rs;
+        }
+
+
+        public static void SyncExternalEnum(this IEntityService es, BusinessEnum @enum, Type enumType)
+        {
+            IEnumerable<object> values = new object[0];
+
+
+            if (enumType != null)
+            {
+                values = Enum.GetValues(enumType).Cast<object>();
+            }
+
+            var toDelete = from ev in @enum.EnumValues where !values.Any(v => v.ToString() == ev.CodeName) select ev;
+            foreach (BusinessEnumValue ev in toDelete)
+            {
+                @enum.EnumValues.Remove(ev);
+                ev.Enum = null;
+            }
+
+            foreach (BusinessEnumValue ev in @enum.EnumValues)
+            {
+                Enum value = (Enum)values.First(v => v.ToString() == ev.CodeName);
+                ev.Value = Convert.ToInt64(value);
+            }
+
+            var toAdd = from v in values where !@enum.EnumValues.Any(ev => ev.CodeName == v.ToString()) select v;
+
+            foreach (Enum value in toAdd)
+            {
+                BusinessEnumValue bv = es.CreateEntity<BusinessEnumValue>();
+                bv.Name = value.ToString();
+                bv.CodeName = value.ToString();
+                bv.Value = Convert.ToInt64(value);
+                bv.Enum = @enum;
+                @enum.EnumValues.Add(bv);
+            }
+        }
     }
 }

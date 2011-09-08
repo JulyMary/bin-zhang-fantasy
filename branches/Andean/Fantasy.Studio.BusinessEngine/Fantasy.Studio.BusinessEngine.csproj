@@ -142,16 +142,24 @@
     <Compile Include="EntityServiceExtension.cs" />
     <Compile Include="EnumEditing\AddEnumCommand.cs" />
     <Compile Include="EnumEditing\AddEnumValueCommand.cs" />
+    <Compile Include="EnumEditing\AssemblyNode.cs" />
     <Compile Include="EnumEditing\ClassFolderEnumsProvider.cs" />
     <Compile Include="EnumEditing\DeleteEnumValueCommand.cs" />
     <Compile Include="EnumEditing\EnumEditor.cs" />
+    <Compile Include="EnumEditing\EnumNameSetAction.cs" />
+    <Compile Include="EnumEditing\EnumNode.cs" />
+    <Compile Include="EnumEditing\EnumValueNameSetAction.cs" />
     <Compile Include="EnumEditing\EnumValuesPanel.xaml.cs">
       <DependentUpon>EnumValuesPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="EnumEditing\EnumValuesPanelModel.cs" />
+    <Compile Include="EnumEditing\ImportEnumCommand.cs" />
     <Compile Include="EnumEditing\ImportEnumDialog.xaml.cs">
       <DependentUpon>ImportEnumDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnumEditing\ImportEnumDialogModel.cs" />
+    <Compile Include="EnumEditing\NamespaceNode.cs" />
+    <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
     <Compile Include="IEntityEditingPanelContainer.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
@@ -265,6 +273,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\syncenum.png" />
+    <Resource Include="images\EnumItem.png" />
+    <Resource Include="images\Namespace.png" />
     <Resource Include="images\Reference.png" />
     <Resource Include="images\ReferenceFolder.png" />
     <Resource Include="images\enum.gif" />
