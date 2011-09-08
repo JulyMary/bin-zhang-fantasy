@@ -52,7 +52,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     {
 
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
-                        this._selectionService.IsReadOnly = query.FilterAndCast<Model.ClassGlyph>().Any(n=>n.IsShortCut);
+                        this._selectionService.IsReadOnly = query.FilterAndCast<Model.ClassGlyph>().Any(n => n.IsShortCut)
+                            || query.FilterAndCast<Model.EnumGlyph>().Any(en => en.IsShortCut);
  
                     }
                     else

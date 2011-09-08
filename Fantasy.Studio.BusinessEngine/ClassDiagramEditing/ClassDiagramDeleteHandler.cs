@@ -82,6 +82,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     diagram.Classes.Remove((Model.ClassGlyph)o);
 
                 }
+                else if (o is Model.EnumGlyph)
+                {
+                    diagram.Enums.Remove((Model.EnumGlyph)o);
+                }
                 else if (o is Model.InheritanceGlyph)
                 {
                     diagram.Inheritances.Remove((Model.InheritanceGlyph)o);
@@ -127,6 +131,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         rootClass.ChildClasses.Add(cls);
                     }
                 }
+                else if (o is Model.EnumGlyph)
+                {
+                    BusinessEnum @enum = (BusinessEnum)((Model.EnumGlyph)o).Entity;
+                    @enum.Package.Enums.Remove(@enum);
+                    @enum.Package = null;
+                    diagram.DeletingEntities.Add(@enum);
+                    editing.CloseView(@enum, true);
+                }
             }
 
         }
@@ -162,6 +174,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         return false;
                     }
                 }
+                else if (o is Model.EnumGlyph)
+                {
+                    Model.EnumGlyph node = (Model.EnumGlyph)o;
+                    if (node.IsShortCut)
+                    {
+                        return false;
+                    }
+                    else if(!IsDeletable(node.Entity, deletable, selected))
+                    {
+                        return false;
+                    }
+                }
                 else
                 {
                     return false;
@@ -171,6 +195,47 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             return true;
 
+        }
+
+        private bool IsDeletable(BusinessEnum @enum, List<object> deletable, object[] selected)
+        {
+            if (deletable.IndexOf(@enum) >= 0)
+            {
+                return true;
+            }
+
+
+            if (@enum.IsSystem)
+            {
+                return false;
+            }
+
+
+            Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
+
+
+            if (diagram.Entity.Package != @enum.Package)
+            {
+                return false;
+            }
+
+            var hasNode = from node in diagram.Enums where node.Entity == @enum select node;
+
+            if (!hasNode.Any())
+            {
+                return false;
+            }
+
+
+            var hasUnselectedNode = from node in diagram.Enums where node.Entity == @enum  && Array.IndexOf(selected, node) < 0 select node;
+
+            if (hasUnselectedNode.Any())
+            {
+                return false;
+            }
+
+            deletable.Add(@enum);
+            return true;
         }
 
         private bool IsDeletable(BusinessClass @class, List<object> deletable, object[] selected)
