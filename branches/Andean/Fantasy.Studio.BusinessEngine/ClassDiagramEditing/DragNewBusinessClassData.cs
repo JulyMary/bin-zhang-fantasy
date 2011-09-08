@@ -5,7 +5,6 @@ using System.Text;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
-   
 
     public class DragNewBusinessClassData
     {
@@ -21,4 +20,5 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public static DragNewBusinessClassData Value { get; private set; }
     }
+   
 }

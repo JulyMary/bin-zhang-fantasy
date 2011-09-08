@@ -17,6 +17,13 @@
             </Adapter.Factory>
             <x:Type TypeName="dm:ClassGlyph" />
         </Adapter>
+        <Adapter ID="enumGlyph">
+            <Adapter.Factory>
+                <dm:EnumGlyphAdapterFactory/>
+            </Adapter.Factory>
+            <x:Type TypeName="dm:EnumGlyph" />
+        </Adapter>
+       
     </Extension>
 
     <Extension Path="fantasy/services">
@@ -402,6 +409,19 @@
             </ToolBoxItem.Click>
         
         </ToolBoxItem>
+
+        <ToolBoxItem ID="Enum" Category="ClassDiagram" Text="Enum" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif">
+            <ToolBoxItem.Conditional>
+                <ActiveWindow Type="classdiagram"/>
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.DoDragDrop>
+                <DoDragDropHandler Data="{x:Static sbe:DragNewBusinessEnumData.Value}" AllowedEffects="Copy"   />
+            </ToolBoxItem.DoDragDrop>
+            <ToolBoxItem.Click>
+                <sbe:ClassDiagramModeCommand Mode="Default" />
+            </ToolBoxItem.Click>
+
+        </ToolBoxItem>
         <ToolBoxItem ID="Inheritance" Category="ClassDiagram" Text="Inheritance" Icon="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png">
             <ToolBoxItem.Conditional>
                 <ActiveWindow Type="classdiagram"/>
@@ -418,6 +438,9 @@
         </Object>
         <Object ID="existclass">
             <sbe:DragBusinessClassOverHandler />
+        </Object>
+        <Object ID="newenum">
+            <sbe:DragNewBusinessEnumDataOverHandler />
         </Object>
     </Extension>
 
@@ -484,6 +507,9 @@
         <Object ID="existclass">
             <sbe:DragBusinessClassOverHandler />
         </Object>
+        <Object ID="newenum">
+            <sbe:DragNewBusinessEnumDataOverHandler />
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/leavehandlers">
@@ -496,6 +522,9 @@
         </Object>
         <Object ID="existclass">
             <sbe:DragBusinessClassDropHandler />
+        </Object>
+        <Object ID="newenum">
+            <sbe:DragNewBusinessEnumDataDropHandler/>
         </Object>
     </Extension>
 </AddIn>

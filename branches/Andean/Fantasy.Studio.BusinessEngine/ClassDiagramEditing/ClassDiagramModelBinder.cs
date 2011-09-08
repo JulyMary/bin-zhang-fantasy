@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using sf=Syncfusion.Windows.Diagram;
+using sf = Syncfusion.Windows.Diagram;
 using System.ComponentModel.Design;
 using Syncfusion.Windows.Diagram;
 using System.Windows.Media;
@@ -21,12 +21,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             this._model = model;
             this._view = view;
-            
-            
+
+
             foreach (Model.ClassGlyph node in this._model.Classes)
             {
                 this.AddNode(node);
-               
+
             }
 
             foreach (Model.InheritanceGlyph inheritance in this._model.Inheritances)
@@ -36,13 +36,53 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             this._model.Classes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Classes_CollectionChanged);
             this._model.Inheritances.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Inheritances_CollectionChanged);
-           
+            this._model.Enums.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Enums_CollectionChanged);
+
+        }
+
+        void Enums_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
+            {
+                if (e.OldItems != null)
+                {
+                    foreach (Model.EnumGlyph node in e.OldItems)
+                    {
+                        this.RemoveNode(node);
+                    }
+                }
+                if (e.NewItems != null)
+                {
+                    foreach (Model.EnumGlyph node in e.NewItems)
+                    {
+                        this.AddNode(node);
+                    }
+                }
+            }
+        }
+
+        private void AddNode(Model.EnumGlyph node)
+        {
+            Shapes.EnumNode shape = new Shapes.EnumNode(node.Id);
+
+            shape.DataContext = node;
+
+            this._view.Nodes.Add(shape);
+        }
+
+        private void RemoveNode(Model.EnumGlyph node)
+        {
+            Shapes.EnumNode shape = this._view.Nodes.Cast<Shapes.EnumNode>().SingleOrDefault(s => s.DataContext == node);
+            if (shape != null)
+            {
+                this._view.Nodes.Remove(shape);
+            }
         }
 
         private void AddInheritance(Model.InheritanceGlyph inheritance)
         {
-            Shapes.ClassNode childShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n=>n.DataContext == inheritance.DerivedClass);
-            Shapes.ClassNode parentShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n=>n.DataContext == inheritance.BaseClass);
+            Shapes.ClassNode childShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == inheritance.DerivedClass);
+            Shapes.ClassNode parentShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == inheritance.BaseClass);
             LineConnector connector = new LineConnector()
             {
                 IsHeadMovable = false,
@@ -54,7 +94,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 TailDecoratorShape = DecoratorShape.None,
             };
 
-           // connector.LineStyle.Stroke = Brushes.Black;
+            // connector.LineStyle.Stroke = Brushes.Black;
             connector.LineStyle.StrokeThickness = 2;
             if (inheritance.IntermediatePoints.Count > 0)
             {
@@ -107,7 +147,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     this._bindingInheritances = true;
                     try
                     {
-                        
+
                         Model.InheritanceGlyph inheritance = (Model.InheritanceGlyph)sender;
                         LineConnector connector = this._view.Connections.Cast<LineConnector>().Single(c => c.DataContext == sender);
 
@@ -129,7 +169,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                             case
                             System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
                                 {
-                                    for (int i = 0 ;i <e.OldItems.Count; i++)
+                                    for (int i = 0; i < e.OldItems.Count; i++)
                                     {
                                         Model.Point p = (Model.Point)e.NewItems[i];
                                         connector.IntermediatePoints[i + e.OldStartingIndex] = new Point(p.X, p.Y);
@@ -142,7 +182,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                                     connector.IntermediatePoints.AddRange(e.NewItems.Cast<Model.Point>().Select(p => new Point(p.X, p.Y)));
                                 }
                                 break;
-                      
+
                         }
 
                         connector.UpdateConnectorPathGeometry();
@@ -161,7 +201,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         private object _synRoot = new object();
 
         private bool _bindingInheritances = false;
-        
+
 
         void Inheritances_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -177,7 +217,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 if (e.NewItems != null)
                 {
-                    foreach(Model.InheritanceGlyph iht in e.NewItems)
+                    foreach (Model.InheritanceGlyph iht in e.NewItems)
                     {
                         this.AddInheritance(iht);
                     }
@@ -201,43 +241,25 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         void Classes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            switch (e.Action)
+
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
             {
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                if (e.OldItems != null)
+                {
+                    foreach (Model.ClassGlyph node in e.OldItems)
                     {
-                        foreach (Model.ClassGlyph node in e.NewItems)
-                        {
-                            this.AddNode(node);
-                        }
+                        this.RemoveNode(node);
                     }
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Move:
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                }
+                if (e.NewItems != null)
+                {
+                    foreach (Model.ClassGlyph node in e.NewItems)
                     {
-                        foreach (Model.ClassGlyph node in e.OldItems)
-                        {
-                            this.RemoveNode(node);
-                        }
+                        this.AddNode(node);
                     }
-                    break;
-                case System.Collections.Specialized.NotifyCollectionChangedAction.Replace:
-                    {
-                       
-                        foreach (Model.ClassGlyph node in e.OldItems)
-                        {
-                            this.RemoveNode(node);
-                        }
-                        foreach (Model.ClassGlyph node in e.NewItems)
-                        {
-                            this.AddNode(node);
-                        }
-                       
-                    }
-                    break;
-              
-               
+                }
             }
+
         }
 
 
@@ -253,7 +275,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         private void AddNode(Model.ClassGlyph node)
         {
             Shapes.ClassNode shape = new Shapes.ClassNode(node.Id);
-            
+
             shape.DataContext = node;
 
             this._view.Nodes.Add(shape);
