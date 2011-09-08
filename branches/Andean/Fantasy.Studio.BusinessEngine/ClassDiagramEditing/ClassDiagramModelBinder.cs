@@ -72,7 +72,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void RemoveNode(Model.EnumGlyph node)
         {
-            Shapes.EnumNode shape = this._view.Nodes.Cast<Shapes.EnumNode>().SingleOrDefault(s => s.DataContext == node);
+            Shapes.EnumNode shape = this._view.Nodes.FilterAndCast<Shapes.EnumNode>().SingleOrDefault(s => s.DataContext == node);
             if (shape != null)
             {
                 this._view.Nodes.Remove(shape);
@@ -265,7 +265,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void RemoveNode(Model.ClassGlyph node)
         {
-            Shapes.ClassNode shape = this._view.Nodes.Cast<Shapes.ClassNode>().SingleOrDefault(s => s.DataContext == node);
+            Shapes.ClassNode shape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().SingleOrDefault(s => s.DataContext == node);
             if (shape != null)
             {
                 this._view.Nodes.Remove(shape);
