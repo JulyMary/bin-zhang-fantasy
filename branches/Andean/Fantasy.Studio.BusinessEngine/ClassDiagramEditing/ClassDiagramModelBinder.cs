@@ -34,6 +34,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this.AddInheritance(inheritance);
             }
 
+            foreach (Model.EnumGlyph @enum in this._model.Enums)
+            {
+                this.AddNode(@enum);
+            }
+
             this._model.Classes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Classes_CollectionChanged);
             this._model.Inheritances.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Inheritances_CollectionChanged);
             this._model.Enums.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Enums_CollectionChanged);
