@@ -24,6 +24,63 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this.Inheritances = new ObservableCollection<InheritanceGlyph>();
             this.Inheritances.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(InheritancesCollectionChanged);
 
+            this.Enums = new ObservableCollection<EnumGlyph>();
+            this.Enums.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(EnumsCollectionChanged);
+
+        }
+
+        void EnumsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            HashSet<BusinessEnum> entities = new HashSet<BusinessEnum>();
+
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
+            {
+                if (e.OldItems != null)
+                {
+                    foreach (EnumGlyph node in e.OldItems)
+                    {
+                        entities.Add(node.Entity);
+
+                        node.Diagram = null;
+                        node.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
+                    }
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (EnumGlyph node in e.NewItems)
+                {
+                    entities.Add(node.Entity);
+                    node.Diagram = this;
+                    node.Site = this.Site;
+                    node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
+                }
+            }
+
+            if (!this._deserializing)
+            {
+                this.EditingState = EditingState.Dirty;
+                foreach (BusinessEnum @enum in entities)
+                {
+                    UpdateDisplayIndex(@enum);
+                }
+            }
+        }
+
+        private void UpdateDisplayIndex(BusinessEnum @enum)
+        {
+            EnumGlyph [] nodes = this.Enums.Where(n => n.Entity == @enum).ToArray();
+            if (nodes.Length == 1)
+            {
+                nodes[0].DisplayIndex = 0;
+            }
+            else if (nodes.Length > 1)
+            {
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    nodes[i].DisplayIndex = i + 1;
+                }
+            }
         }
 
         void InheritancesCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -112,11 +169,29 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     }
                 }
 
+                foreach (EnumGlyph node in this.Enums.ToArray())
+                {
+                    BusinessEnum @enum = es.DefaultSession.Get<BusinessEnum>(node.EnumId);
+                    if (@enum == null)
+                    {
+                        this.Enums.Remove(node);
+                    }
+                    else
+                    {
+                        node.Entity = @enum;
+                    }
+                }
+
             }
 
             foreach (BusinessClass @class in this.Classes.Select(n => n.Entity).Distinct())
             {
                 UpdateDisplayIndex(@class);
+            }
+
+            foreach (BusinessEnum @enum in this.Enums.Select(n => n.Entity).Distinct())
+            {
+                UpdateDisplayIndex(@enum);
             }
 
         }
@@ -171,6 +246,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 }
             }
 
+            foreach (EnumGlyph node in this.Enums.ToArray())
+            {
+                if (node.Entity.EntityState == EntityState.Deleted)
+                {
+                    this.Enums.Remove(node);
+                }
+            }
+
         }
 
         public void Unload()
@@ -215,6 +298,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 foreach (InheritanceGlyph i in this.Inheritances)
                 {
                     i.SaveEntity();
+                }
+
+                foreach (EnumGlyph e in this.Enums)
+                {
+                    e.SaveEntity();
                 }
 
                 session.EndUpdate(true);
@@ -282,6 +370,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         [XArray(Name="classes"),
         XArrayItem(Name = "class", Type = typeof(ClassGlyph))]
         public ObservableCollection<ClassGlyph> Classes { get; private set; }
+
+        [XArray(Name = "enums"),
+        XArrayItem(Name = "enum", Type = typeof(EnumGlyph))]
+        public ObservableCollection<EnumGlyph> Enums { get; private set; }
 
 
         [XArray(Name="inheritances"),

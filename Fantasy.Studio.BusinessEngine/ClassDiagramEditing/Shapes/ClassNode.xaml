@@ -1,4 +1,4 @@
-﻿<sf:Node x:Class="Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes.ClassNode"
+﻿<l:ClassDiagramNode x:Class="Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes.ClassNode"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -9,14 +9,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="160" d:DesignWidth="180" OffsetX="{Binding Left, Mode=TwoWay}" OffsetY="{Binding Top, Mode=TwoWay}"
           Width="{Binding Width, Mode=TwoWay}" DataContextChanged="Node_DataContextChanged">
-    <sf:Node.Resources>
+    <l:ClassDiagramNode.Resources>
         <DataTemplate x:Key="ClassToolTip">
             <StackPanel Orientation="Vertical">
                 <TextBlock Text="{Binding Name}" Padding="3,3,3,3" />
                 <TextBlock Text="{Binding Package.FullName}" Padding="3,3,3,3"  />
             </StackPanel>
         </DataTemplate>
-    </sf:Node.Resources>
+    </l:ClassDiagramNode.Resources>
 
     <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3">
         <Border.Background>
@@ -107,4 +107,4 @@
         </l:NodeExpander>
     </Border>
 
-</sf:Node>
+</l:ClassDiagramNode>

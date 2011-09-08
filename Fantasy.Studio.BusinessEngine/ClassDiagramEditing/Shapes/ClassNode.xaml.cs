@@ -25,13 +25,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
     /// <summary>
     /// Interaction logic for ClassNode.xaml
     /// </summary>
-    public partial class ClassNode : Syncfusion.Windows.Diagram.Node
+    public partial class ClassNode : ClassDiagramNode
     {
-        static ClassNode()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(ClassNode), new FrameworkPropertyMetadata(typeof(ClassNode)));
-
-        }
+      
 
         public ClassNode(Guid id)
             : base(id)
