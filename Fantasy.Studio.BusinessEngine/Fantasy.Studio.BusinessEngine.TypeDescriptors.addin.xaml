@@ -161,7 +161,6 @@
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:EnumValueNameSetAction}" >
-                
             </PropertyDescriptor>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General">
                 <PropertyDescriptor.Conditional>
@@ -170,6 +169,7 @@
                     </Not>
                 </PropertyDescriptor.Conditional>
             </PropertyDescriptor>
+            <PropertyDescriptor ID="Value" Name="Value" Caption="Value" Category="General"/>
         </TypeDescriptor>
         
         <TypeDescriptor ID="AssemblyReferenceGroup" TargetType="{x:Type be:BusinessAssemblyReferenceGroup}">
