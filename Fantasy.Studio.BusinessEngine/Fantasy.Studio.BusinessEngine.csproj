@@ -156,7 +156,8 @@
     <Compile Include="EnumEditing\AddEnumCommand.cs" />
     <Compile Include="EnumEditing\AddEnumValueCommand.cs" />
     <Compile Include="EnumEditing\AssemblyNode.cs" />
-    <Compile Include="EnumEditing\ClassFolderEnumsProvider.cs" />
+    <Compile Include="EnumEditing\ObjectModelFolderEnumsProvider.cs" />
+    <Compile Include="EnumEditing\DeleteClassCommand.cs" />
     <Compile Include="EnumEditing\DeleteEnumValueCommand.cs" />
     <Compile Include="EnumEditing\EnumEditor.cs" />
     <Compile Include="EnumEditing\EnumNameSetAction.cs" />
@@ -172,12 +173,13 @@
     </Compile>
     <Compile Include="EnumEditing\ImportEnumDialogModel.cs" />
     <Compile Include="EnumEditing\NamespaceNode.cs" />
+    <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
     <Compile Include="IEntityEditingPanelContainer.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
     <Compile Include="ClassDiagramEditing\ClassChildClassesProvider.cs" />
-    <Compile Include="ClassEditing\ClassFolderClassesProvider.cs" />
+    <Compile Include="ClassEditing\ObjectModelFolderClassesProvider.cs" />
     <Compile Include="ClassEditing\BusinessClassSchemaEditor.cs" />
     <Compile Include="ClassEditing\BusinessClassTableSpaceEditor.cs" />
     <Compile Include="ClassEditing\BusinessClassPicker.xaml.cs">
@@ -189,9 +191,9 @@
       <DependentUpon>ClassViewPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassEditing\ClassViewPadModel.cs" />
-    <Compile Include="ClassDiagramEditing\ClassFolderClassDiagramsProvider.cs" />
+    <Compile Include="ClassDiagramEditing\ObjectModelFolderClassDiagramsProvider.cs" />
     <Compile Include="ClassEditing\PackageClassesProvider.cs" />
-    <Compile Include="ClassEditing\PackageClassFolderProvider.cs" />
+    <Compile Include="ClassEditing\PackageObjectModelFolderProvider.cs" />
     <Compile Include="PackageEditing\DeletePackageCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
@@ -215,7 +217,7 @@
       <DependentUpon>PropertyEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassEditing\ClassEditor.cs" />
-    <Compile Include="ClassEditing\ClassFolder.cs" />
+    <Compile Include="ClassEditing\ObjectModelFolder.cs" />
     <Compile Include="Conditions\IsSystemEntity.cs" />
     <Compile Include="OpenEntityViewCommand.cs" />
     <Compile Include="EntityEditingViewContent.xaml.cs">
@@ -249,6 +251,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">

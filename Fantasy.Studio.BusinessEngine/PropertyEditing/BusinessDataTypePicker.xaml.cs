@@ -40,9 +40,18 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         private void extendableTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ITreeViewItem item = (ITreeViewItem)e.NewValue;
+            ITreeViewItem item = e.NewValue as ITreeViewItem;
             IBusinessEntity entity = item != null ? (IBusinessEntity)item.DataContext : null;
-            ((BusinessDataTypePikcerModel)this.DataContext).SelectedItem = entity;
+            BusinessDataTypePikcerModel model = (BusinessDataTypePikcerModel)this.DataContext;
+            if (!(entity is BusinessPackage))
+            {
+                model.SelectedItem = entity;
+            }
+            else
+            {
+                model.SelectedItem = null;
+            }
+           
         }
 
         private void extendableTreeView_MouseDoubleClick(object sender, MouseButtonEventArgs e)

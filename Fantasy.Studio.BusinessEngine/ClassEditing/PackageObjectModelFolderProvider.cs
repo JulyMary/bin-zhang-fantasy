@@ -8,7 +8,7 @@ using System.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
-    public class PackageClassFolderProvider : ObjectWithSite, IChildItemsProvider
+    public class PackageObjectModelFolderProvider : ObjectWithSite, IChildItemsProvider
     {
         #region IChildItemsProvider Members
 
@@ -18,7 +18,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             BusinessPackage package = (BusinessPackage)parent;
             if (package.Id != BusinessPackage.RootPackageId)
             {
-                return new object[] { new ClassFolder(package)};
+                return new object[] { new ObjectModelFolder(package)};
             }
             else
             {

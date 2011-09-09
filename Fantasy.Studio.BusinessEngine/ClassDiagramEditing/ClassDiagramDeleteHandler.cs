@@ -112,12 +112,16 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 if (o is Model.ClassGlyph)
                 {
+                   
                     BusinessClass cls = (BusinessClass)((Model.ClassGlyph)o).Entity;
-                    cls.Package.Classes.Remove(cls);
-                    cls.ParentClass.ChildClasses.Remove(cls);
-                    cls.Package = null;
-                    diagram.DeletingEntities.Add(cls);
-                    editing.CloseView(cls, true);
+                    if (!diagram.DeletingEntities.Contains(cls))
+                    {
+                        cls.Package.Classes.Remove(cls);
+                        cls.ParentClass.ChildClasses.Remove(cls);
+                        //cls.Package = null;
+                        diagram.DeletingEntities.Add(cls);
+                        editing.CloseView(cls, true);
+                    }
                 }
                 else if (o is Model.InheritanceGlyph)
                 {
@@ -133,11 +137,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 }
                 else if (o is Model.EnumGlyph)
                 {
+
                     BusinessEnum @enum = (BusinessEnum)((Model.EnumGlyph)o).Entity;
-                    @enum.Package.Enums.Remove(@enum);
-                    @enum.Package = null;
-                    diagram.DeletingEntities.Add(@enum);
-                    editing.CloseView(@enum, true);
+                    if (!diagram.DeletingEntities.Contains(@enum))
+                    {
+                        @enum.Package.Enums.Remove(@enum);
+                        //@enum.Package = null;
+                        diagram.DeletingEntities.Add(@enum);
+                        editing.CloseView(@enum, true);
+                    }
                 }
             }
 

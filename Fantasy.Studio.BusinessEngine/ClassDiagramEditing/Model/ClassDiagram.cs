@@ -155,7 +155,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
                 foreach (InheritanceGlyph inheritance in this.Inheritances.ToArray())
                 {
-                    ClassGlyph child = this.Classes.SingleOrDefault(c => c.Id == inheritance.BaseGlyphId);
+                    ClassGlyph child = this.Classes.SingleOrDefault(c => c.Id == inheritance.DerivedGlyphId);
                     ClassGlyph parent = this.Classes.SingleOrDefault(c => c.Id == inheritance.BaseGlyphId);
 
                     if (child != null && parent != null && child.Entity.ParentClass == parent.Entity)

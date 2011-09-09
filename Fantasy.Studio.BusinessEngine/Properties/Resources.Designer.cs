@@ -178,11 +178,11 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Classes.
+        ///   Looks up a localized string similar to Object Model.
         /// </summary>
-        internal static string PakcageClassFolderName {
+        internal static string ObjectModelFolderName {
             get {
-                return ResourceManager.GetString("PakcageClassFolderName", resourceCulture);
+                return ResourceManager.GetString("ObjectModelFolderName", resourceCulture);
             }
         }
         

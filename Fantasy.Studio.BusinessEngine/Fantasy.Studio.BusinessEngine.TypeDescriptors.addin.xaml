@@ -36,7 +36,7 @@
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
         </TypeDescriptor>
         
-        <TypeDescriptor ID="ClassFolder" TargetType="{x:Type sbe:ClassFolder}">
+        <TypeDescriptor ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
         </TypeDescriptor>
 

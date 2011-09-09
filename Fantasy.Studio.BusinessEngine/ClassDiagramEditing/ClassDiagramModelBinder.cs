@@ -97,6 +97,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 ConnectorType = ConnectorType.Orthogonal,
                 HeadDecoratorShape = DecoratorShape.Arrow,
                 TailDecoratorShape = DecoratorShape.None,
+                IsLabelEditable = false
+           
             };
 
             // connector.LineStyle.Stroke = Brushes.Black;

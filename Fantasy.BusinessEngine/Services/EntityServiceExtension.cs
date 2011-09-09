@@ -55,19 +55,27 @@ namespace Fantasy.BusinessEngine.Services
                     _updateLevel.Remove(session);
                     try
                     {
-                        session.Flush();
+                        
+                        
                         if (commit)
                         {
+                            session.Flush();
                             session.Transaction.Commit();
                         }
                         else
                         {
-                            session.Transaction.Rollback();
+                            if (!session.IsConnected)
+                            {
+                                session.Transaction.Rollback();
+                            }
                         }
                     }
                     catch
                     {
-                        session.Transaction.Rollback();
+                        if (!session.IsConnected)
+                        {
+                            session.Transaction.Rollback();
+                        }
                         throw;
                     }
                 }
