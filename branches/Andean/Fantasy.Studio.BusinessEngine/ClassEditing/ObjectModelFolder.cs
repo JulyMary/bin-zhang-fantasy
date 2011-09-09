@@ -14,11 +14,11 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
-    public class ClassFolder
+    public class ObjectModelFolder
     {
         public Fantasy.BusinessEngine.BusinessPackage Package {get;private set;}
 
-        public ClassFolder(Fantasy.BusinessEngine.BusinessPackage package)
+        public ObjectModelFolder(Fantasy.BusinessEngine.BusinessPackage package)
         {
            
             this.Package = package;          
@@ -28,7 +28,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
         public string Name
         {
-            get { return Resources.PakcageClassFolderName; }
+            get { return Resources.ObjectModelFolderName; }
         }
 
        

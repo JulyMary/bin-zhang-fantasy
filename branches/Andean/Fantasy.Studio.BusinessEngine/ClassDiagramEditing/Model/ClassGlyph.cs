@@ -24,6 +24,72 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this._propertyCollectionListener = new WeakEventListener(this.PropertyCollectionChanged); 
 	    }
 
+        [XAttribute("id")]
+        private Guid _id;
+
+        public Guid Id
+        {
+            get { return _id; }
+            set
+            {
+                if (_id != value)
+                {
+                    _id = value;
+                    this.OnPropertyChanged("Id");
+                }
+            }
+        }
+
+        [XAttribute("left")]
+        private double _left = 0;
+
+        public double Left
+        {
+            get { return _left; }
+            set
+            {
+                if (_left != value)
+                {
+                    _left = value;
+                    this.OnPropertyChanged("Left");
+                }
+            }
+        }
+
+        [XAttribute("top")]
+        private double _top = 0;
+        public double Top
+        {
+            get { return _top; }
+            set
+            {
+                if (_top != value)
+                {
+                    _top = value;
+                    this.OnPropertyChanged("Top");
+                }
+            }
+        }
+
+
+
+        [XAttribute("width")]
+        private double _width = 180;
+
+        public double Width
+        {
+            get { return _width; }
+            set
+            {
+                if (_width != value)
+                {
+                    _width = value;
+                    this.OnPropertyChanged("Width");
+                }
+            }
+        }
+
+
         [XAttribute("class")]
         private Guid _classId;
 
@@ -222,31 +288,34 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         public override void SaveEntity()
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
-
-         
-            session.BeginUpdate();
-            try
+            if (this.DisplayIndex <= 1)
             {
+                ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
 
 
-                session.SaveOrUpdate(this.Entity);
-                foreach (BusinessProperty prop in this.Entity.Properties)
+                session.BeginUpdate();
+                try
                 {
-                    session.SaveOrUpdate(prop);
+
+
+                    session.SaveOrUpdate(this.Entity);
+                    foreach (BusinessProperty prop in this.Entity.Properties)
+                    {
+                        session.SaveOrUpdate(prop);
+                    }
+
+                    IDDLService dll = this.Site.GetRequiredService<IDDLService>();
+
+                    dll.CreateClassTable(this.Entity);
+
+                    session.EndUpdate(true);
+                    base.SaveEntity();
                 }
-
-                IDDLService dll = this.Site.GetRequiredService<IDDLService>();
-
-                dll.CreateClassTable(this.Entity);
-
-                session.EndUpdate(true);
-                base.SaveEntity();
-            }
-            catch
-            {
-                session.EndUpdate(false);
-                throw;
+                catch
+                {
+                    session.EndUpdate(false);
+                    throw;
+                }
             }
         }
 

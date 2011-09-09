@@ -50,26 +50,11 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
                     _selectedItem = value;
 
                     this.OnPropertyChanged("SelectedItem");
-
-                    this.IsOKEnabled = _selectedItem != null && !(_selectedItem is BusinessPackage);
                 }
             }
         }
 
-        private bool _isOKEnabled = false;
-
-        public bool IsOKEnabled
-        {
-            get { return _isOKEnabled; }
-            private set
-            {
-                if (_isOKEnabled != value)
-                {
-                    _isOKEnabled = value;
-                    this.OnPropertyChanged("IsOKEnabled");
-                }
-            }
-        }
+       
 
         public IServiceProvider Site { get; set; }
         

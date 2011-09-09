@@ -22,7 +22,70 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this._enumValueCollectionListener = new WeakEventListener(this.EnumValueCollectionChanged); 
 	    }
 
+         [XAttribute("id")]
+         private Guid _id;
 
+         public Guid Id
+         {
+             get { return _id; }
+             set
+             {
+                 if (_id != value)
+                 {
+                     _id = value;
+                     this.OnPropertyChanged("Id");
+                 }
+             }
+         }
+
+         [XAttribute("left")]
+         private double _left = 0;
+
+         public double Left
+         {
+             get { return _left; }
+             set
+             {
+                 if (_left != value)
+                 {
+                     _left = value;
+                     this.OnPropertyChanged("Left");
+                 }
+             }
+         }
+
+         [XAttribute("top")]
+         private double _top = 0;
+         public double Top
+         {
+             get { return _top; }
+             set
+             {
+                 if (_top != value)
+                 {
+                     _top = value;
+                     this.OnPropertyChanged("Top");
+                 }
+             }
+         }
+
+
+
+         [XAttribute("width")]
+         private double _width = 180;
+
+         public double Width
+         {
+             get { return _width; }
+             set
+             {
+                 if (_width != value)
+                 {
+                     _width = value;
+                     this.OnPropertyChanged("Width");
+                 }
+             }
+         }
        
 
         [XAttribute("enum")]
@@ -192,28 +255,31 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         public override void SaveEntity()
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
-
-         
-            session.BeginUpdate();
-            try
+            if (this.DisplayIndex <= 1)
             {
+                ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
 
 
-                session.SaveOrUpdate(this.Entity);
-                foreach (BusinessEnumValue prop in this.Entity.EnumValues)
+                session.BeginUpdate();
+                try
                 {
-                    session.SaveOrUpdate(prop);
-                }
 
-                IDDLService dll = this.Site.GetRequiredService<IDDLService>();
-                session.EndUpdate(true);
-                base.SaveEntity();
-            }
-            catch
-            {
-                session.EndUpdate(false);
-                throw;
+
+                    session.SaveOrUpdate(this.Entity);
+                    foreach (BusinessEnumValue prop in this.Entity.EnumValues)
+                    {
+                        session.SaveOrUpdate(prop);
+                    }
+
+                    IDDLService dll = this.Site.GetRequiredService<IDDLService>();
+                    session.EndUpdate(true);
+                    base.SaveEntity();
+                }
+                catch
+                {
+                    session.EndUpdate(false);
+                    throw;
+                }
             }
         }
 
@@ -228,7 +294,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 if (_enumValues != value)
                 {
                     _enumValues = value;
-                    this.OnPropertyChanged("Properties");
+                    this.OnPropertyChanged("EnumValues");
                 }
             }
         }

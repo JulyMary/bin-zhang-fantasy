@@ -15,9 +15,7 @@ namespace FantasyDeveloper
         [STAThread]
         static void Main()
         {
-
             string dir = LongPath.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().CodeBase);
-           
 
             DefaultAddInTree.Initialize(LongPathDirectory.EnumerateAllFiles(dir, "*.addin.xaml"));
 

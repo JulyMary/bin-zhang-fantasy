@@ -57,14 +57,14 @@
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" 
                   Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/package/contextmenu">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
-            <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageClassFolderProvider}"/>
+            <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageObjectModelFolderProvider}"/>
             <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
-        <TreeNode ID="classFolder" TargetType="{x:Type sbe:ClassFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
-                  Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/classfolder/contextmenu" >
-            <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:ClassFolderClassDiagramsProvider}" />
-            <TreeNodeChildProvider ID="class" Provider="{New sbe:ClassFolderClassesProvider}" />
-            <TreeNodeChildProvider ID="enum" Provider="{New sbe:ClassFolderEnumsProvider}" />
+        <TreeNode ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
+                  Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu" >
+            <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:ObjectModelFolderClassDiagramsProvider}" />
+            <TreeNodeChildProvider ID="class" Provider="{New sbe:ObjectModelFolderClassesProvider}" />
+            <TreeNodeChildProvider ID="enum" Provider="{New sbe:ObjectModelFolderEnumsProvider}" />
             
         </TreeNode>
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png"
@@ -172,7 +172,7 @@
         </CommandBinding>
     </Extension>
 
-    <Extension Path="fantasy/studio/businessengine/documentpad/classfolder/contextmenu">
+    <Extension Path="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu">
         <Button ID="AddClass" Text="Add Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" ParameterMember="Package"/>
         <Button ID="AddClassDiagram" Text="Add Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner" ParameterMember="Package"/>
         <Button ID="AddEnum" Text="Add Enum" Command="{New sbe:AddEnumCommand}" ParameterSource="Owner" ParameterMember="Package" />
@@ -192,7 +192,7 @@
 
     <Extension Path="fantasy/studio/businessengine/documentpad/enum/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner"/>
-        <Button ID="Delete" Text="Delete" >
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteEnumCommand}" ParameterSource="Owner" >
             <Button.Conditional>
                 <Not Action="Disable">
                     <sbe:IsSystemEntity/>
@@ -354,8 +354,12 @@
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}"/>
             <TreeNodeChildProvider ID="classes" Provider="{New sbe:PackageClassesProvider}"/>
+            <TreeNodeChildProvider ID="enums" Provider="{New sbe:PackageEnumsProvider}" />
         </TreeNode>
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}">
+
+        </TreeNode>
+        <TreeNode ID="enum" TargetType="{x:Type be:BusinessEnum}" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif" Text="{Binding Path=Name}">
 
         </TreeNode>
     </Extension>

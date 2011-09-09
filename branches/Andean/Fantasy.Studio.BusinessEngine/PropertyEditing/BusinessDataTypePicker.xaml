@@ -8,7 +8,17 @@
     <Grid>
        
         <f:ExtendableTreeView DataContext="{Binding TreeViewModel}"  Height="508" HorizontalAlignment="Left" Margin="12,12,0,0" Name="extendableTreeView" VerticalAlignment="Top" Width="754" SelectedItemChanged="extendableTreeView_SelectedItemChanged" MouseDoubleClick="extendableTreeView_MouseDoubleClick" />
-        <Button Content="OK" Height="23" HorizontalAlignment="Left" Margin="610,526,0,0" Name="OkButton" VerticalAlignment="Top" Width="75" IsDefault="True" Click="OkButton_Click" IsEnabled="{Binding IsOKEnabled}"   />
+        <Button Content="OK" Height="23" HorizontalAlignment="Left" Margin="610,526,0,0" Name="OkButton" VerticalAlignment="Top" Width="75" IsDefault="True" Click="OkButton_Click" >
+            <Button.Style>
+                <Style TargetType="Button" >
+                    <Style.Triggers >
+                        <DataTrigger Binding="{Binding SelectedItem}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="691,526,0,0" Name="CancelButton" VerticalAlignment="Top" Width="75" IsCancel="True" Click="CancelButton_Click" />
     </Grid>
 </Window>

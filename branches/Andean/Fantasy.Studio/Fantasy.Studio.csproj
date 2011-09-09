@@ -65,9 +65,9 @@
       <HintPath>..\External\WPFToolkit.Extended.dll</HintPath>
     </Reference>
   </ItemGroup>
-    <ItemGroup>
-        <Compile Include="..\ProductInfo.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\ProductInfo.cs" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\ActiveWindow.cs" />
     <Compile Include="Conditions\SelectionType.cs" />
@@ -202,6 +202,9 @@
     <Compile Include="Controls\IChildItemsProvider.cs" />
     <Compile Include="Controls\TreeViewItem.cs" />
     <Compile Include="ToolBoxPadModel.cs" />
+    <Compile Include="UnhandledExcpetionWindow.xaml.cs">
+      <DependentUpon>UnhandledExcpetionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewCollection.cs" />
     <Compile Include="ViewContentEventArgs.cs" />
     <Compile Include="WindowStateSetting.cs" />
@@ -285,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ExtendableTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UnhandledExcpetionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
