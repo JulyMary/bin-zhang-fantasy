@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
-    public class ClassNodeDeleteHandler : ObjectWithSite, ICommand
+    public class EnumNodeDeleteHandler : ObjectWithSite, ICommand
     {
         #region ICommand Members
 
@@ -19,10 +19,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             bool rs = false;
 
-            Model.ClassGlyph glyph = (Model.ClassGlyph)parameter;
+            Model.EnumGlyph glyph = (Model.EnumGlyph)parameter;
             if (!glyph.IsShortCut)
             {
-
                 ICollection selected = selectionService.GetSelectedComponents();
 
                 if (selected.Count > 0)
@@ -30,7 +29,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     rs = true;
                     foreach (object o in selectionService.GetSelectedComponents())
                     {
-                        if (!(o is BusinessProperty) || ((BusinessProperty)o).IsSystem)
+                        BusinessEnumValue ev = o as BusinessEnumValue;
+                        if (ev == null || ev.IsSystem || ev.Enum.IsExternal)
                         {
                             rs = false;
                             break;
@@ -38,6 +38,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     }
                 }
             }
+
+            
 
             return rs;
 
@@ -53,12 +55,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             foreach (object o in selected)
             {
-                if (o is BusinessProperty)
+                if (o is BusinessEnumValue)
                 {
-                    BusinessProperty prop = o as BusinessProperty;
-                   
-                    prop.Class.Properties.Remove(prop);
-                    prop.Class = null;
+                    BusinessEnumValue value = o as BusinessEnumValue;
+                    value.Enum.EnumValues.Remove(value);
+                    value.Enum = null;
                 }
             }
         }

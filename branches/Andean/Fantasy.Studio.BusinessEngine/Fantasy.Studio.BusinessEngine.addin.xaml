@@ -81,6 +81,9 @@
         <TreeNode ID="enum" TargetType="{x:Type be:BusinessEnum}" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif"
             Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"
                   ContextMenu="fantasy/studio/businessengine/documentpad/enum/contextmenu">
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
         </TreeNode>
         <TreeNode ID="ReferenceGroup" TargetType="{x:Type be:BusinessAssemblyReferenceGroup}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ReferenceFolder.png"
                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/referencegroup/contextmenu">
@@ -442,6 +445,9 @@
         <Object ID="newenum">
             <sbe:DragNewBusinessEnumDataOverHandler />
         </Object>
+        <Object ID="existenum">
+            <sbe:DragBusinessEnumOverHandler />
+        </Object>
     </Extension>
 
 
@@ -454,6 +460,14 @@
                 </And>
             </Button.Conditional>
         </Button>
+        <Button ID="AddEnumValue" Text="Add Enum Value" Command="{Command Name=AddBusinessEnumValue}" >
+            <Button.Conditional>
+                <And Action="Exclude">
+                    <SelectionCount Count="1" />
+                    <SelectionType Mode="Primary" TargetType="{x:Type dm:EnumGlyph}" />
+                </And>
+            </Button.Conditional>
+        </Button>
         <Button ID="Delete" Text="Delete" Command="Delete" />
     </Extension>
 
@@ -463,6 +477,26 @@
                 <And>
                     <SelectionCount Count="1" />
                     <SelectionType Mode="Primary" TargetType="{x:Type dm:ClassGlyph}" />
+                    <Not>
+                        <dm:IsSelectedShortcut />
+                    </Not>
+                    <Not>
+                        <dm:IsSelectedSystemEntity />
+                    </Not>
+                </And>
+            </CommandBinding.Conditional>
+        </CommandBinding>
+        <CommandBinding ID="AddEnumValue" Command="{Command Name=AddBusinessEnumValue}" Handler="{New sbe:ClassDiagramAddBusinessEnumCommand}">
+            <CommandBinding.Conditional>
+                <And>
+                    <SelectionCount Count="1" />
+                    <SelectionType Mode="Primary" TargetType="{x:Type dm:EnumGlyph}" />
+                    <Not>
+                        <dm:IsSelectedShortcut />
+                    </Not>
+                    <Not>
+                        <dm:IsSelectedSystemEntity /> 
+                    </Not>
                 </And>
             </CommandBinding.Conditional>
         </CommandBinding>
@@ -487,18 +521,39 @@
         <CommandBinding ID="AddProperty" Command="{Command Name=AddBusinessProperty}" Handler="{New sbe:AddPropertyCommand}" ParameterSource="Owner" ParameterMember="DataContext.Entity">
             <CommandBinding.Conditional>
                 <Not>
-                     <sbe:IsSystemEntity Member="DataContext.Entity" />
+                    <Or>
+                        <sbe:IsSystemEntity Member="DataContext.Entity" />
+                        <dm:IsShortcut Member="DataContext"/>
+                    </Or>
+                    
                 </Not>
             </CommandBinding.Conditional>
         </CommandBinding>
-        <CommandBinding ID="Remove" Command="Delete" Handler="{New sbe:ClassNodeDeleteHandler}" >
-            <CommandBinding.Conditional>
-                <Not>
-                    <sbe:IsSystemEntity Member="DataContext.Entity" />
-                </Not>
-            </CommandBinding.Conditional>
+        <CommandBinding ID="delete" Command="Delete" Handler="{New sbe:ClassNodeDeleteHandler}" ParameterSource="Owner" ParameterMember="DataContext" >
+          
         </CommandBinding>
     </Extension>
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/enumglyph/contextmenu">
+        <Button ID="AddEnumValue" Text="Add Enum Value" Command="{Command Name=AddBusinessEnumValue}" />
+        <Button ID="Delete" Text="Delete" Command="Delete" />
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/classdiagrampanel/enumglyph/commandbindings">
+        <CommandBinding ID="AddEnumValue" Command="{Command Name=AddBusinessEnumValue}" Handler="{New sbe:AddEnumValueCommand}" ParameterSource="Owner" ParameterMember="DataContext.Entity">
+            <CommandBinding.Conditional>
+                <Not>
+                    <Or>
+                        <sbe:IsSystemEntity Member="DataContext.Entity" />
+                        <sbe:IsExternalEnum Member="DataContext.Entity" />
+                        <dm:IsShortcut Member="DataContext" />
+                    </Or>
+                </Not>
+            </CommandBinding.Conditional>
+        </CommandBinding>
+        <CommandBinding ID="Remove" Command="Delete" Handler="{New sbe:EnumNodeDeleteHandler}" ParameterSource="Owner" ParameterMember="DataContext"  >
+        </CommandBinding>
+    </Extension>
+
 
     <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/overhandlers">
         <Object ID="newclass">
@@ -509,6 +564,9 @@
         </Object>
         <Object ID="newenum">
             <sbe:DragNewBusinessEnumDataOverHandler />
+        </Object>
+        <Object ID="existenum">
+            <sbe:DragBusinessEnumOverHandler />
         </Object>
     </Extension>
 
@@ -525,6 +583,9 @@
         </Object>
         <Object ID="newenum">
             <sbe:DragNewBusinessEnumDataDropHandler/>
+        </Object>
+        <Object ID="existenum">
+            <sbe:DragBusinessEnumDropHandler />
         </Object>
     </Extension>
 </AddIn>

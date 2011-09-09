@@ -14,7 +14,7 @@ using Fantasy.Collections;
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
     [XSerializable("class", NamespaceUri= Consts.ClassDiagramNamespace)]
-    public class ClassGlyph : ClassDiagramGlyph
+    public class ClassGlyph : ClassDiagramGlyph, IBusinessEntityGlyph
     {
 
         public ClassGlyph ()
@@ -23,72 +23,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this._propertyListener = new WeakEventListener(this.EntityStateChanged);
             this._propertyCollectionListener = new WeakEventListener(this.PropertyCollectionChanged); 
 	    }
-
-
-        [XAttribute("id")]
-        private Guid _id;
-
-        public Guid Id
-        {
-            get { return _id; }
-            set
-            {
-                if (_id != value)
-                {
-                    _id = value;
-                    this.OnPropertyChanged("Id");
-                }
-            }
-        }
-
-        [XAttribute("left")]
-        private double _left = 0;
-
-        public double Left
-        {
-            get { return _left; }
-            set
-            {
-                if (_left != value)
-                {
-                    _left = value;
-                    this.OnPropertyChanged("Left");
-                }
-            }
-        }
-
-        [XAttribute("top")]
-        private double _top = 0;
-        public double Top
-        {
-            get { return _top; }
-            set
-            {
-                if (_top != value)
-                {
-                    _top = value;
-                    this.OnPropertyChanged("Top");
-                }
-            }
-        }
-
-        
-
-        [XAttribute("width")]
-        private double _width = 180;
-
-        public double Width
-        {
-            get { return _width; }
-            set
-            {
-                if (_width != value)
-                {
-                    _width = value;
-                    this.OnPropertyChanged("Width");
-                }
-            }
-        }
 
         [XAttribute("class")]
         private Guid _classId;
@@ -330,6 +264,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     this.OnPropertyChanged("Properties");
                 }
             }
+        }
+
+        IBusinessEntity IBusinessEntityGlyph.Entity
+        {
+            get { return this.Entity; }
         }
 
     }

@@ -13,7 +13,7 @@ using Fantasy.BusinessEngine.Services;
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
     [XSerializable("enum", NamespaceUri= Consts.ClassDiagramNamespace)]
-    public class EnumGlyph : ClassDiagramGlyph
+    public class EnumGlyph : ClassDiagramGlyph, Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model.IBusinessEntityGlyph
     {
          public EnumGlyph()
 	    {
@@ -23,70 +23,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 	    }
 
 
-        [XAttribute("id")]
-        private Guid _id;
-
-        public Guid Id
-        {
-            get { return _id; }
-            set
-            {
-                if (_id != value)
-                {
-                    _id = value;
-                    this.OnPropertyChanged("Id");
-                }
-            }
-        }
-
-        [XAttribute("left")]
-        private double _left = 0;
-
-        public double Left
-        {
-            get { return _left; }
-            set
-            {
-                if (_left != value)
-                {
-                    _left = value;
-                    this.OnPropertyChanged("Left");
-                }
-            }
-        }
-
-        [XAttribute("top")]
-        private double _top = 0;
-        public double Top
-        {
-            get { return _top; }
-            set
-            {
-                if (_top != value)
-                {
-                    _top = value;
-                    this.OnPropertyChanged("Top");
-                }
-            }
-        }
-
-        
-
-        [XAttribute("width")]
-        private double _width = 180;
-
-        public double Width
-        {
-            get { return _width; }
-            set
-            {
-                if (_width != value)
-                {
-                    _width = value;
-                    this.OnPropertyChanged("Width");
-                }
-            }
-        }
+       
 
         [XAttribute("enum")]
         private Guid _enumId;
@@ -295,5 +232,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 }
             }
         }
+
+       
+
+        IBusinessEntity IBusinessEntityGlyph.Entity
+        {
+            get { return this.Entity; }
+        }
+
+       
     }
 }

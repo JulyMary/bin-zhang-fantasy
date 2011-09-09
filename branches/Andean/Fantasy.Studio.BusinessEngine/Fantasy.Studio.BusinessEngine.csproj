@@ -97,6 +97,10 @@
     <Compile Include="ClassDiagramEditing\Connection\NoCursorHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\SelectSecondNodeHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ValidatNodeArgs.cs" />
+    <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessEnumValueCommand.cs" />
+    <Compile Include="ClassDiagramEditing\DragBusinessEnumDropHandler.cs" />
+    <Compile Include="ClassDiagramEditing\DragBusinessEnumOverHandler.cs" />
+    <Compile Include="ClassDiagramEditing\EnumNodeDeleteHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumDataDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumDataOverHandler.cs" />
     <Compile Include="ClassDiagramEditing\DeleteClassDiagramCommand.cs" />
@@ -121,6 +125,9 @@
     <Compile Include="ClassDiagramEditing\Model\EnumGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\EnumValueNode.cs" />
     <Compile Include="ClassDiagramEditing\Model\InheritanceGlyph.cs" />
+    <Compile Include="ClassDiagramEditing\Model\IShortcutableGlyph.cs" />
+    <Compile Include="ClassDiagramEditing\Model\IsSelectedShortcut.cs" />
+    <Compile Include="ClassDiagramEditing\Model\IsSelectedSystemEntity.cs" />
     <Compile Include="ClassDiagramEditing\Model\Point.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassDiagramNode.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassNode.xaml.cs">
@@ -141,6 +148,7 @@
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
+    <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
     <Compile Include="EntityCodeNameSetAction.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
