@@ -28,7 +28,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
     /// <summary>
     /// Interaction logic for ClassDiagramPanel.xaml
     /// </summary>
-    public partial class ClassDiagramPanel : UserControl, IEntityEditingPanel, IObjectWithSite 
+    public partial class ClassDiagramPanel : UserControl, IEntityEditingPanel, IObjectWithSite
     {
         public ClassDiagramPanel()
         {
@@ -54,11 +54,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
                         this._selectionService.IsReadOnly = query.FilterAndCast<Model.ClassGlyph>().Any(n => n.IsShortCut)
                             || query.FilterAndCast<Model.EnumGlyph>().Any(en => en.IsShortCut);
- 
+
                     }
                     else
                     {
-                        this._selectionService.SetSelectedComponents(new object[] {this._entity}, SelectionTypes.Replace);
+                        this._selectionService.SetSelectedComponents(new object[] { this._entity }, SelectionTypes.Replace);
                     }
 
                 }
@@ -98,7 +98,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     this._selecting = false;
                 }
 
-                
+
             }
         }
 
@@ -107,7 +107,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public ClassDiagramMode Mode
         {
             get { return (ClassDiagramMode)GetValue(ModeProperty); }
-            set 
+            set
             {
                 if (this.Mode != value)
                 {
@@ -134,7 +134,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     break;
                 case ClassDiagramMode.RelationConnection:
                     break;
-               
+
             }
         }
 
@@ -180,43 +180,54 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._classDiagram.Inheritances.Add(inheritance);
 
             this._selectionService.SetSelectedComponents(new object[] { inheritance }, SelectionTypes.Replace);
-           
+
         }
 
         void ValidateParentClass(object sender, Connection.ValidatNodeArgs e)
         {
-            Model.ClassGlyph parent = (Model.ClassGlyph)e.Node.DataContext;
-
-            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
-
-            Model.ClassGlyph child = (Model.ClassGlyph)adorner.FirstNode.DataContext;
-
-            if (child.Entity.EntityState == EntityState.New)
+            bool isValid = false;
+            Model.ClassGlyph parent = e.Node.DataContext as Model.ClassGlyph;
+            if (parent != null)
             {
-                e.IsValid = !parent.Entity.Flatten(c => c.ParentClass).Any(c => c == child.Entity); 
-            }
-            else
-            {
-                e.IsValid = child.Entity.ParentClass == parent.Entity;
+
+                Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+
+                Model.ClassGlyph child = (Model.ClassGlyph)adorner.FirstNode.DataContext;
+
+                if (child.Entity.EntityState == EntityState.New)
+                {
+                    isValid = !parent.Entity.Flatten(c => c.ParentClass).Any(c => c == child.Entity);
+                }
+                else
+                {
+                    isValid = child.Entity.ParentClass == parent.Entity;
+                }
             }
 
-             
+            e.IsValid = isValid;
+
+
         }
 
         void ValidateSubclass(object sender, Connection.ValidatNodeArgs e)
         {
-            Model.ClassGlyph glyph = (Model.ClassGlyph)e.Node.DataContext;
 
-            var hasInheritance = from inheritance in this._classDiagram.Inheritances where inheritance.DerivedClass.Entity == glyph.Entity select inheritance;
+            bool isValid = false;
 
-            if (!glyph.IsShortCut && !hasInheritance.Any())
+            Model.ClassGlyph glyph = e.Node.DataContext as Model.ClassGlyph;
+            if (glyph != null)
             {
-                e.IsValid = true;
+
+                var hasInheritance = from inheritance in this._classDiagram.Inheritances where inheritance.DerivedClass.Entity == glyph.Entity select inheritance;
+
+                if (!glyph.IsShortCut && !hasInheritance.Any())
+                {
+                    isValid = true;
+                }
             }
-            else
-            {
-                e.IsValid = false;
-            }
+
+            e.IsValid = isValid;
+
 
 
         }
@@ -236,7 +247,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             set
             {
                 _site = value;
-              
+
 
             }
         }
@@ -281,12 +292,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public void Initialize()
         {
-           
+
         }
 
         private BusinessClassDiagram _entity;
         private Model.ClassDiagram _classDiagram;
-        private ClassDiagramModelBinder _binder; 
+        private ClassDiagramModelBinder _binder;
 
         public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
         {
@@ -306,7 +317,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             this._classDiagram.Site = site;
 
-            this._classDiagram.LoadDiagram(this._entity); 
+            this._classDiagram.LoadDiagram(this._entity);
 
             this._viewModel = new ClassDiagramPanelModel();
             this._viewModel.Site = this.GetChildSite();
@@ -316,7 +327,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._classDiagram.PropertyChanged += new PropertyChangedEventHandler(ClassDiagramPropertyChanged);
 
             this.DataContext = this._viewModel;
-            
+
 
             if (this._classDiagram.EditingState == EditingState.Dirty)
             {
@@ -338,7 +349,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this.diagramView.CommandBindings.Add(cb);
             }
 
-            
+
         }
 
         void ClassDiagramPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -350,22 +361,22 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         }
 
 
-      
- 
+
+
         public EditingState DirtyState
         {
             get
             {
-                return this._classDiagram != null ? this._classDiagram.EditingState : EditingState.Clean;  
+                return this._classDiagram != null ? this._classDiagram.EditingState : EditingState.Clean;
             }
-           
+
         }
 
         public event EventHandler DirtyStateChanged;
 
         protected virtual void OnDirtyStateChanged(EventArgs e)
         {
-            
+
             if (this.DirtyStateChanged != null)
             {
                 this.DirtyStateChanged(this, e);
@@ -376,7 +387,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public void Save()
         {
             this._classDiagram.Save();
-            this._classDiagram.EditingState = EditingState.Clean; 
+            this._classDiagram.EditingState = EditingState.Clean;
         }
 
         public UIElement Element
@@ -402,7 +413,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         #endregion
 
-       
+
 
         private void DiagramView_DragEnter(object sender, DragEventArgs e)
         {
@@ -487,26 +498,26 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
         {
-            
+
             base.OnIsKeyboardFocusWithinChanged(e);
 
             if (this.IsKeyboardFocusWithin && this._classDiagram != null)
             {
-                this._classDiagram.SyncEntities();  
+                this._classDiagram.SyncEntities();
             }
 
         }
 
         public void ViewContentSelected()
         {
-            
+
         }
 
         public void ViewContentDeselected()
         {
-           
+
         }
 
-       
+
     }
 }

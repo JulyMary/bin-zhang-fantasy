@@ -11,6 +11,17 @@ namespace Fantasy.Studio.BusinessEngine
 {
     static class EntityServiceExtension 
     {
+        public static BusinessPackage AddBusinessPackage(this IEntityService es, BusinessPackage parent)
+        {
+            BusinessPackage rs = es.CreateEntity<BusinessPackage>();
+
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessPackageName, parent.ChildPackages.Select(p => p.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
+            parent.ChildPackages.Add(rs);
+            rs.ParentPackage = parent;
+            return rs;
+        }
+
         public static BusinessClass AddBusinessClass(this IEntityService es, BusinessPackage package)
         {
            
@@ -98,6 +109,43 @@ namespace Fantasy.Studio.BusinessEngine
                 bv.Enum = @enum;
                 @enum.EnumValues.Add(bv);
             }
+        }
+
+        public static  BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package)
+        {
+            BusinessAssociation rs = es.CreateEntity<BusinessAssociation>();
+            rs.Package = package;
+            package.Associations.Add(rs);
+            return rs;
+        }
+
+        public static BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package, BusinessClass left, BusinessClass right)
+        {
+            BusinessAssociation rs = es.CreateEntity<BusinessAssociation>();
+            rs.Package = package;
+            package.Associations.Add(rs);
+
+            
+            rs.Name = UniqueNameGenerator.GetName(left.Name + "_" + right.Name, package.Associations.Select(a => a.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
+            
+            rs.LeftClass = left;
+            rs.LeftRoleName = left.Name;
+            rs.LeftRoleCode = left.CodeName;
+            rs.LeftCardinality = "0..1";
+            rs.LeftNavigatable = true;
+            left.LeftAssociations.Add(rs);
+
+
+            rs.RightClass = right;
+            rs.RightRoleName = right.Name;
+            rs.RightRoleCode = right.CodeName;
+            rs.RightCardinality = "*";
+            rs.RightNavigatable = true;
+            right.RightAssociations.Add(rs);
+
+            return rs;
+
         }
     }
 }

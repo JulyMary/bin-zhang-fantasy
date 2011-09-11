@@ -33,11 +33,7 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
         {
             BusinessPackage parent = (BusinessPackage)parameter;
             IEntityService es = ServiceManager.Services.GetRequiredService<IEntityService>();
-            BusinessPackage child = es.CreateEntity<BusinessPackage>();
-           
-            child.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessPackageName, parent.ChildPackages.Select(p=>p.Name));
-            parent.ChildPackages.Add(child);
-            child.ParentPackage = parent;
+            BusinessPackage child = es.AddBusinessPackage(parent);
 
             //BusinessClassDiagram diagram = es.CreateEntity<BusinessClassDiagram>();
             //diagram.Name = Resources.DefaultNewBusinessClassDiagramName;

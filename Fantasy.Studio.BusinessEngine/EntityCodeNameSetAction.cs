@@ -19,9 +19,10 @@ namespace Fantasy.Studio.BusinessEngine
             string name = (string)value;
             string ocname = UniqueNameGenerator.GetCodeName((string)entity.Name);
             entity.Name = name;
-            string cname = UniqueNameGenerator.GetCodeName(name);
+           
             if ((string)entity.CodeName == ocname)
             {
+                string cname = UniqueNameGenerator.GetCodeName(name);
                 entity.CodeName = cname;
             }
 

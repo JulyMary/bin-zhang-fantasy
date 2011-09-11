@@ -71,6 +71,8 @@
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\ObservableListView.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
+    <Compile Include="BusinessAssociation.cs" />
+    <Compile Include="Maps\BusinessAssociationMap.cs" />
     <Compile Include="Properties\Settings.settings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

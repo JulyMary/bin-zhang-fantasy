@@ -21,6 +21,9 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.TableSchema).Not.Nullable();
             this.Map(x => x.TableSpace);
             this.Map(x => x.IsSimple).Not.Nullable();
+
+            this.HasMany(x => x.PersistedLeftAssociations).CollectionType<ObservableList<BusinessAssociation>>().KeyColumn("LEFTCLASSID").Cascade.AllDeleteOrphan().Inverse();
+            this.HasMany(x => x.PersistedRightAssociations).CollectionType<ObservableList<BusinessAssociation>>().KeyColumn("RIGHTCLASSID").Cascade.AllDeleteOrphan().Inverse();
 	    }
            
     }

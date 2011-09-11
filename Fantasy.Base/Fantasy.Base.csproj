@@ -190,6 +190,7 @@
     <Compile Include="ServiceModel\ServiceContainer.cs" />
     <Compile Include="Reflection\AssemblyLoader.cs" />
     <Compile Include="Windows\BooleanInverterConverter.cs" />
+    <Compile Include="Windows\DataObjectExtension.cs" />
     <Compile Include="Windows\MouseUtilities.cs" />
     <Compile Include="Windows\VisualExtensions.cs" />
     <Compile Include="Windows\WeakEventListener.cs" />

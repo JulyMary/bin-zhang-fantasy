@@ -16,8 +16,10 @@ namespace Fantasy.BusinessEngine.Maps
             this.References(x => x.ParentPackage).Column("ParentPackageId");
             this.HasMany(x => x.PersistedChildPackages).CollectionType<ObservableList<BusinessPackage>>().KeyColumn("ParentPackageId").Cascade.None().Inverse();
             this.HasMany(x => x.PersistedClasses).CollectionType<ObservableList<BusinessClass>>().KeyColumn("PackageID").Cascade.None().Inverse();
+
             this.HasMany(x => x.PersistedClassDiagrams).CollectionType<ObservableList<BusinessClassDiagram>>().KeyColumn("PackageID").Cascade.AllDeleteOrphan().Inverse();
             this.HasMany(x => x.PersistedEnums).CollectionType<ObservableList<BusinessEnum>>().KeyColumn("PackageId").Cascade.None().Inverse();
+            this.HasMany(x => x.PersistedAssociations).CollectionType<ObservableList<BusinessAssociation>>().KeyColumn("PackageID").Cascade.None().Inverse();
            
         }
     }

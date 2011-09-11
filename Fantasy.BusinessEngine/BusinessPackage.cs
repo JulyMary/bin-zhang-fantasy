@@ -132,7 +132,10 @@ namespace Fantasy.BusinessEngine
                 if (_persistedClassDiagrams != value)
                 {
                     _persistedClassDiagrams = value;
-                    _classDiagrams.Source = value;
+                    if (_classDiagrams != null)
+                    {
+                        _classDiagrams.Source = value;
+                    }
                 }
             }
         }
@@ -147,6 +150,37 @@ namespace Fantasy.BusinessEngine
                     this._classDiagrams = new ObservableListView<BusinessClassDiagram>(this._persistedClassDiagrams);
                 }
                 return _classDiagrams;
+            }
+        }
+
+
+        private IObservableList<BusinessAssociation> _persistedAssociations = new ObservableList<BusinessAssociation>();
+        protected internal virtual IObservableList<BusinessAssociation> PersistedAssociations
+        {
+            get { return _persistedAssociations; }
+            private set
+            {
+                if (_persistedAssociations != value)
+                {
+                    _persistedAssociations = value;
+                    if (_associations != null)
+                    {
+                        _associations.Source = value;
+                    }
+                }
+            }
+        }
+
+        private ObservableListView<BusinessAssociation> _associations;
+        public virtual IObservableList<BusinessAssociation> Associations
+        {
+            get
+            {
+                if (this._associations == null)
+                {
+                    this._associations = new ObservableListView<BusinessAssociation>(this._persistedAssociations);
+                }
+                return _associations;
             }
         }
 

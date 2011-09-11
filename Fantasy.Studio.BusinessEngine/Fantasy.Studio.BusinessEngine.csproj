@@ -83,6 +83,11 @@
     <Compile Include="AssemblyReference\AssemblyVersionConverter.cs" />
     <Compile Include="AssemblyReference\DeleteReferenceCommand.cs" />
     <Compile Include="AssemblyReference\RootPackageReferenceGroupProvider.cs" />
+    <Compile Include="AssociationEditing\AddAssociationCommand.cs" />
+    <Compile Include="AssociationEditing\AssociationEditor.cs" />
+    <Compile Include="AssociationEditing\AssociationFolder.cs" />
+    <Compile Include="AssociationEditing\AssociationFolderAssociationsProvider.cs" />
+    <Compile Include="AssociationEditing\ObjectModelAssociationFolderProvider.cs" />
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModeCommand.cs" />
@@ -289,6 +294,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\association.png" />
     <Resource Include="images\syncenum.png" />
     <Resource Include="images\EnumItem.png" />
     <Resource Include="images\Namespace.png" />

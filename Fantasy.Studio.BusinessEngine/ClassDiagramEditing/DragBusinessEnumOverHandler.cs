@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using Fantasy.BusinessEngine;
+using Fantasy.Windows;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -14,7 +15,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         public void HandleEvent(object sender, DragEventArgs e)
         {
-            BusinessEnum data = (BusinessEnum)e.Data.GetData(typeof(BusinessEnum));
+
+            string[] formats = e.Data.GetFormats();
+
+            BusinessEnum data = e.Data.GetDataByType<BusinessEnum>();
             if (data != null)
             {
                 e.Effects = DragDropEffects.Copy;

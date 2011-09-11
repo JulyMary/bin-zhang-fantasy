@@ -110,6 +110,7 @@ namespace Fantasy.Studio.Controls
                     itemModel.DoDragDrop.HandleEvent(this, args);
                     if (args.AllowedEffects != DragDropEffects.None && args.Data != null)
                     {
+                        
                         DragDrop.DoDragDrop(this, args.Data, args.AllowedEffects);
                     }
                 }
