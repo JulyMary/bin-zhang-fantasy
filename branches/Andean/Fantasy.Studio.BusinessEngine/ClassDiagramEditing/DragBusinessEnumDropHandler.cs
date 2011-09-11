@@ -8,6 +8,7 @@ using be = Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using System.ComponentModel.Design;
 using System.Windows.Threading;
+using Fantasy.Windows;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -18,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public void HandleEvent(object sender, DragEventArgs e)
         {
 
-            be.BusinessEnum @enum = (be.BusinessEnum)e.Data.GetData(typeof(be.BusinessEnum));
+            be.BusinessEnum @enum = e.Data.GetDataByType<be.BusinessEnum>();
             if (@enum != null)
             {
                 e.Effects = DragDropEffects.Copy;

@@ -123,6 +123,9 @@
   <data name="AddReferenceDialogTitle" xml:space="preserve">
     <value>Add Reference</value>
   </data>
+  <data name="AssociationFolderName" xml:space="preserve">
+    <value>Associations</value>
+  </data>
   <data name="BusinessPropertyEditorTitle" xml:space="preserve">
     <value>Properties</value>
   </data>

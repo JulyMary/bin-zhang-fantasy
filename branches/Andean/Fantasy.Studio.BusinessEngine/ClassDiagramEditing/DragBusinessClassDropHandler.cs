@@ -8,6 +8,7 @@ using be = Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using System.ComponentModel.Design;
 using System.Windows.Threading;
+using Fantasy.Windows;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -18,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public void HandleEvent(object sender, DragEventArgs e)
         {
 
-            be.BusinessClass @class = (be.BusinessClass)e.Data.GetData(typeof(be.BusinessClass));
+            be.BusinessClass @class = e.Data.GetDataByType<be.BusinessClass>();
             if (@class != null)
             {
                 e.Effects = DragDropEffects.Copy;

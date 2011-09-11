@@ -62,6 +62,7 @@
         </TreeNode>
         <TreeNode ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu" >
+            <TreeNodeChildProvider ID="associations" Provider="{New sbe:ObjectModelAssociationFolderProvider}" />
             <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:ObjectModelFolderClassDiagramsProvider}" />
             <TreeNodeChildProvider ID="class" Provider="{New sbe:ObjectModelFolderClassesProvider}" />
             <TreeNodeChildProvider ID="enum" Provider="{New sbe:ObjectModelFolderEnumsProvider}" />
@@ -94,8 +95,11 @@
                    Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/reference/contextmenu">
            
         </TreeNode>
-        
-        
+
+        <TreeNode ID="AssociationFolder" TargetType="{x:Type sbe:AssociationFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
+                  Text="{Binding Path=Name}">
+            
+        </TreeNode>
         
     </Extension>
 
@@ -591,5 +595,19 @@
         <Object ID="existenum">
             <sbe:DragBusinessEnumDropHandler />
         </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/associationeditor/panels">
+        <Object ID="General" >
+            <sbe:PropertyGridEditor/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/associationeditor/commandbindings" >
+        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
+            <CommandBinding.Conditional>
+                <OwnerState State="Dirty" StateMember="DirtyState"/>
+            </CommandBinding.Conditional>
+        </CommandBinding>
     </Extension>
 </AddIn>

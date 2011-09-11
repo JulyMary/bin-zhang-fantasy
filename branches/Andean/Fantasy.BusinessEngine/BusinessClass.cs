@@ -272,5 +272,69 @@ namespace Fantasy.BusinessEngine
         {
             return (T)this._previousValues.GetValueOrDefault(propertyName, defaultValue);
         }
+
+
+
+
+        private IObservableList<BusinessAssociation> _persistedLeftAssociations = new ObservableList<BusinessAssociation>();
+        protected internal virtual IObservableList<BusinessAssociation> PersistedLeftAssociations
+        {
+            get { return _persistedLeftAssociations; }
+            private set
+            {
+                if (_persistedLeftAssociations != value)
+                {
+                    _persistedLeftAssociations = value;
+                    if (_leftAssocations != null)
+                    {
+                        _leftAssocations.Source = value;
+                    }
+                }
+            }
+        }
+
+        private ObservableListView<BusinessAssociation> _leftAssocations;
+        public virtual IObservableList<BusinessAssociation> LeftAssociations
+        {
+            get
+            {
+                if (this._leftAssocations == null)
+                {
+                    this._leftAssocations = new ObservableListView<BusinessAssociation>(this._persistedLeftAssociations);
+                }
+                return _leftAssocations;
+            }
+        }
+
+
+        private IObservableList<BusinessAssociation> _persistedRightAssociations = new ObservableList<BusinessAssociation>();
+        protected internal virtual IObservableList<BusinessAssociation> PersistedRightAssociations
+        {
+            get { return _persistedRightAssociations; }
+            private set
+            {
+                if (_persistedRightAssociations != value)
+                {
+                    _persistedRightAssociations = value;
+                    if (_rightAssociations != null)
+                    {
+                        _rightAssociations.Source = value;
+                    }
+                }
+            }
+        }
+
+        private ObservableListView<BusinessAssociation> _rightAssociations;
+        public virtual IObservableList<BusinessAssociation> RightAssociations
+        {
+            get
+            {
+                if (this._rightAssociations == null)
+                {
+                    this._rightAssociations = new ObservableListView<BusinessAssociation>(this._persistedRightAssociations);
+                }
+                return _rightAssociations;
+            }
+        }
     }
 }

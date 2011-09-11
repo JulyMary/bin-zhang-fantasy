@@ -1,9 +1,9 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     7/09/2011 9:56:49 AM                         */
+/* Created on:     2011/9/10 15:39:11                           */
 /*==============================================================*/
-USE [Fantasy]
-GO
+use fantasy
+go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -431,7 +431,7 @@ go
 /* Table: ASSEMBLYREFERENCEGROUP                                */
 /*==============================================================*/
 create table ASSEMBLYREFERENCEGROUP (
-   ID                   uniqueidentifier     not null,
+   ID                   T_GUID               not null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null
@@ -453,15 +453,15 @@ create table BUSINESSASSOCIATION (
    TABLENAME            T_DBENTITY           not null,
    TABLESCHEMA          T_DBENTITY           not null,
    TABLESPACE           T_DBENTITY           not null,
-   LEFTROLENAME         T_NAME               not null,
-   LEFTROLECODE         T_NAME               not null,
+   LEFTROLENAME         T_NAME               null,
+   LEFTROLECODE         T_NAME               null,
    LEFTCLASSID          T_GUID               null,
-   LEFTCARDINALITY      int                  not null,
+   LEFTCARDINALITY      varchar(16)          not null,
    LEFTNAVIGATABLE      bit                  not null,
-   RIGHTROLENAME        T_NAME               not null,
-   RIGHTROLECODE        T_NAME               not null,
+   RIGHTROLENAME        T_NAME               null,
+   RIGHTROLECODE        T_NAME               null,
    RIGHTCLASSID         T_GUID               null,
-   RIGHTCARDINALITY     int                  not null,
+   RIGHTCARDINALITY     varchar(16)          not null,
    RIGHTNAVIGATABLE     bit                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
@@ -769,13 +769,11 @@ go
 alter table BUSINESSASSOCIATION
    add constraint FK_BUSINESS_RELATION_CLASS_LEFT foreign key (LEFTCLASSID)
       references BUSINESSCLASS (ID)
-         on delete set null
 go
 
 alter table BUSINESSASSOCIATION
    add constraint FK_BUSINESS_RELATION_CLASS_RIGHT foreign key (RIGHTCLASSID)
       references BUSINESSCLASS (ID)
-         on delete set null
 go
 
 alter table BUSINESSCLASS
