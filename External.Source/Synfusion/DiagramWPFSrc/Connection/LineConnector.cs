@@ -557,6 +557,7 @@ namespace Syncfusion.Windows.Diagram
                 dc.View.Page.InvalidateMeasure();
             }
         }
+
         void LineConnectorDecorator_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             TranslateTransform tth = new TranslateTransform(-(this.GetTemplateChild("PART_HeadDecoratorAnchorPath") as Path).ActualWidth + 2, -(this.GetTemplateChild("PART_HeadDecoratorAnchorPath") as Path).ActualHeight / 2);
