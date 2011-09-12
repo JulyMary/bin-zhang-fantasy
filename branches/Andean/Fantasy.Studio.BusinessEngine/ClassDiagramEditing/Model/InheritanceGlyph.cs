@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
     [XSerializable("inheritance", NamespaceUri= Consts.ClassDiagramNamespace)]
-    public class InheritanceGlyph : ClassDiagramGlyph
+    public class InheritanceGlyph : ClassDiagramGlyph, Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model.IConnectGlyph
     {
         public InheritanceGlyph()
         {

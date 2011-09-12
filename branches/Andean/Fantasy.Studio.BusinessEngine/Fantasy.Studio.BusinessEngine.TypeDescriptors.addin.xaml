@@ -214,13 +214,13 @@
                     <OwnerState StateMember="EntityState" State="New" Action="Disable" />
                 </PropertyDescriptor.Conditional>
             </PropertyDescriptor>
-            <PropertyDescriptor ID="LeftClass" Name="LeftClass" Caption="Left Class" Category="Left" Editor="{New sbe:BusinessClassTypeEditor}" Converter="{New sbe:EntityFullNameConverter}" />
+            <PropertyDescriptor ID="LeftClass" Name="LeftClass" Caption="Left Class" Category="Left" ReadOnly="true" Converter="{New sbe:EntityFullNameConverter}" />
             <PropertyDescriptor ID="LeftCardinality" Name="LeftCardinality" Caption="Left Cardinality" Category="Left" Editor="{New sbe:CardinalityEditor}" />
             <PropertyDescriptor ID="LeftRoleName" Name="LeftRoleName" Caption="Left Role Name" Category="Left" Set="{New sbe:BusinessAssociationLeftRoleNameSetAction}" />
             <PropertyDescriptor ID="LeftRoleCode" Name="LeftRoleCode" Caption="Left Role Code Name" Category="Left" />
             <PropertyDescriptor ID="LeftNavigatable" Name="LeftNavigatable" Caption="Left Navigatable" Category="Left" />
 
-            <PropertyDescriptor ID="RightClass" Name="RightClass" Caption="Right Class" Category="Right" Editor="{New sbe:BusinessClassTypeEditor}" Converter="{New sbe:EntityFullNameConverter}" />
+            <PropertyDescriptor ID="RightClass" Name="RightClass" Caption="Right Class" Category="Right" ReadOnly="true" Converter="{New sbe:EntityFullNameConverter}" />
             <PropertyDescriptor ID="RightCardinality" Name="RightCardinality" Caption="Right Cardinality" Category="Right"  Editor="{New sbe:CardinalityEditor}" />
             <PropertyDescriptor ID="RightRoleName" Name="RightRoleName" Caption="Right Role Name" Category="Right" Set="{New sbe:BusinessAssociationRightRoleNameSetAction}"  />
             <PropertyDescriptor ID="RightRoleCode" Name="RightRoleCode" Caption="Right Role Code Name" Category="Right" />

@@ -26,6 +26,10 @@ namespace Fantasy.Utils
 
         public static string GetCodeName(string name)
         {
+            if (name == null)
+            {
+                return null;
+            }
             return codeRegex.Replace(name, string.Empty);
         }
     }

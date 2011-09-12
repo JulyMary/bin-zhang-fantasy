@@ -185,4 +185,6 @@
         <Setter Property="BottomLeftCornerResizer" Value="{StaticResource HideThumbTemplate}" />
         <Setter Property="BottomRightCornerResizer" Value="{StaticResource HideThumbTemplate}" />
     </Style>
+
+    
 </ResourceDictionary>

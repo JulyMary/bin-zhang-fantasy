@@ -31,6 +31,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             InitializeComponent();
         }
 
+        public EnumNode()
+        {
+            InitializeComponent();
+        }
+
        
         private void ClassDiagramNode_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {

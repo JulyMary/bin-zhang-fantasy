@@ -113,6 +113,8 @@
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumDataDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumDataOverHandler.cs" />
     <Compile Include="ClassDiagramEditing\DeleteClassDiagramCommand.cs" />
+    <Compile Include="ClassDiagramEditing\Model\AssociationGlyph.cs" />
+    <Compile Include="ClassDiagramEditing\Model\AssociationGlyphAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagramGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassGlyphAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
@@ -133,11 +135,13 @@
     <Compile Include="ClassDiagramEditing\Model\EnumGlyphAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\EnumGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\EnumValueNode.cs" />
+    <Compile Include="ClassDiagramEditing\Model\IConnectGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\InheritanceGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\IShortcutableGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsSelectedShortcut.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsSelectedSystemEntity.cs" />
     <Compile Include="ClassDiagramEditing\Model\Point.cs" />
+    <Compile Include="ClassDiagramEditing\Shapes\CardinalityAdorner.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassDiagramNode.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassNode.xaml.cs">
       <DependentUpon>ClassNode.xaml</DependentUpon>
