@@ -19,6 +19,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 
         }
 
+        public ClassDiagramNode()
+        {
+
+        }
+
        
     }
 }

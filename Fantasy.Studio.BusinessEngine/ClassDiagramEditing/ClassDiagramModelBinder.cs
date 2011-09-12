@@ -7,6 +7,8 @@ using System.ComponentModel.Design;
 using Syncfusion.Windows.Diagram;
 using System.Windows.Media;
 using System.Windows;
+using System.Collections.Specialized;
+using System.Windows.Documents;
 
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
@@ -39,11 +41,43 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this.AddNode(@enum);
             }
 
+            foreach (Model.AssociationGlyph association in this._model.Associations)
+            {
+                this.AddAssociation(association);
+            }
+
             this._model.Classes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Classes_CollectionChanged);
             this._model.Inheritances.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Inheritances_CollectionChanged);
             this._model.Enums.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Enums_CollectionChanged);
+            this._model.Associations.CollectionChanged += new NotifyCollectionChangedEventHandler(Associations_CollectionChanged);
+
 
         }
+
+        void Associations_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
+            {
+                if (e.OldItems != null)
+                {
+                    foreach (Model.AssociationGlyph node in e.OldItems)
+                    {
+                        this.RemoveConnector(node);
+                    }
+                }
+                if (e.NewItems != null)
+                {
+                    foreach (Model.AssociationGlyph node in e.NewItems)
+                    {
+                        this.AddAssociation(node);
+                    }
+                }
+            }
+        }
+
+      
+
+       
 
         void Enums_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -83,6 +117,54 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this._view.Nodes.Remove(shape);
             }
         }
+
+
+        private void AddAssociation(Model.AssociationGlyph association)
+        {
+            Shapes.ClassNode leftShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == association.LeftClass);
+            Shapes.ClassNode rightShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == association.RightClass);
+
+            LineConnector connector = new LineConnector()
+            {
+                IsHeadMovable = false,
+                IsTailMovable = false,
+                HeadNode = leftShape,
+                TailNode = rightShape,
+                HeadDecoratorShape = DecoratorShape.Diamond,
+               
+                TailDecoratorShape = DecoratorShape.Diamond,
+                IsLabelEditable = false,
+                
+            };
+            connector.TailDecoratorStyle.Fill = connector.HeadDecoratorStyle.Fill = Brushes.White;
+           
+            connector.LineStyle.StrokeDashArray = new DoubleCollection(new double[] { 3, 1 });
+
+            if (association.IntermediatePoints.Count > 0)
+            {
+                connector.IntermediatePoints.Clear();
+                foreach (Model.Point mp in association.IntermediatePoints)
+                {
+                    connector.IntermediatePoints.Add(new Point(mp.X, mp.Y));
+                }
+            }
+
+            connector.DataContext = association;
+
+
+
+            
+
+            association.IntermediatePoints.CollectionChanged += new NotifyCollectionChangedEventHandler(IntermediatePoints_CollectionChanged);
+            connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            this._view.Connections.Add(connector);
+
+            Shapes.CardinalityAdorner lc = new Shapes.CardinalityAdorner(connector);
+            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(connector);
+            adornerLayer.Add(lc);
+
+        }
+
 
         private void AddInheritance(Model.InheritanceGlyph inheritance)
         {
@@ -124,22 +206,22 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             lock (_synRoot)
             {
-                if (this._bindingInheritances == false)
+                if (this._bindingConnector == false)
                 {
-                    this._bindingInheritances = true;
+                    this._bindingConnector = true;
                     try
                     {
                         LineConnector connector = (LineConnector)sender;
-                        Model.InheritanceGlyph inheritance = (Model.InheritanceGlyph)connector.DataContext;
-                        inheritance.IntermediatePoints.Clear();
+                        Model.IConnectGlyph glyph = (Model.IConnectGlyph)connector.DataContext;
+                        glyph.IntermediatePoints.Clear();
                         foreach (Point p in connector.IntermediatePoints)
                         {
-                            inheritance.IntermediatePoints.Add(new Model.Point() { X = p.X, Y = p.Y });
+                            glyph.IntermediatePoints.Add(new Model.Point() { X = p.X, Y = p.Y });
                         }
                     }
                     finally
                     {
-                        this._bindingInheritances = false;
+                        this._bindingConnector = false;
                     }
                 }
             }
@@ -149,13 +231,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             lock (_synRoot)
             {
-                if (this._bindingInheritances == false)
+                if (this._bindingConnector == false)
                 {
-                    this._bindingInheritances = true;
+                    this._bindingConnector = true;
                     try
                     {
 
-                        Model.InheritanceGlyph inheritance = (Model.InheritanceGlyph)sender;
+                        Model.IConnectGlyph glyph = (Model.IConnectGlyph)sender;
                         LineConnector connector = this._view.Connections.Cast<LineConnector>().Single(c => c.DataContext == sender);
 
                         switch (e.Action)
@@ -197,7 +279,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     }
                     finally
                     {
-                        this._bindingInheritances = false;
+                        this._bindingConnector = false;
                     }
                 }
             }
@@ -207,7 +289,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private object _synRoot = new object();
 
-        private bool _bindingInheritances = false;
+        private bool _bindingConnector = false;
 
 
         void Inheritances_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -218,7 +300,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 {
                     foreach (Model.InheritanceGlyph iht in e.OldItems)
                     {
-                        this.RemoveInheritance(iht);
+                        this.RemoveConnector(iht);
                     }
                 }
 
@@ -232,9 +314,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             }
         }
 
-        private void RemoveInheritance(Model.InheritanceGlyph inheritance)
+        private void RemoveConnector(Model.IConnectGlyph glyph)
         {
-            LineConnector connector = this._view.Connections.Cast<LineConnector>().Single(c => c.DataContext == inheritance);
+            glyph.IntermediatePoints.CollectionChanged -= new NotifyCollectionChangedEventHandler(IntermediatePoints_CollectionChanged);
+            LineConnector connector = this._view.Connections.Cast<LineConnector>().Single(c => c.DataContext == glyph);
             connector.ConnectorPathGeometryUpdated -= new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
             DiagramControl dc = DiagramPage.GetDiagramControl(connector);
             dc.View.Islinedeleted = true;
@@ -293,7 +376,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         public void Dispose()
         {
             this._model.Classes.CollectionChanged -= new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Classes_CollectionChanged);
-
+            this._model.Inheritances.CollectionChanged -= new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Inheritances_CollectionChanged);
+            this._model.Enums.CollectionChanged -= new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Enums_CollectionChanged);
+            this._model.Associations.CollectionChanged -= new NotifyCollectionChangedEventHandler(Associations_CollectionChanged);
         }
 
         #endregion

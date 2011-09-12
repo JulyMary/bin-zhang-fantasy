@@ -23,6 +23,13 @@
             </Adapter.Factory>
             <x:Type TypeName="dm:EnumGlyph" />
         </Adapter>
+        
+        <Adapter ID="associationGlyph">
+            <Adapter.Factory>
+                <dm:AssociationGlyphAdapterFactory />
+            </Adapter.Factory>
+            <x:Type TypeName="dm:AssociationGlyph" />
+        </Adapter>
        
     </Extension>
 
@@ -462,6 +469,14 @@
             </ToolBoxItem.Conditional>
             <ToolBoxItem.Click>
                 <sbe:ClassDiagramModeCommand Mode="InheritanceConnection" />
+            </ToolBoxItem.Click>
+        </ToolBoxItem>
+        <ToolBoxItem ID="Association" Category="ClassDiagram" Text="Association" Icon="/Fantasy.Studio.BusinessEngine;component/images/association.png">
+            <ToolBoxItem.Conditional>
+                <ActiveWindow Type="classdiagram"/>
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.Click>
+                <sbe:ClassDiagramModeCommand Mode="AssocationConnection" />
             </ToolBoxItem.Click>
         </ToolBoxItem>
     </Extension>

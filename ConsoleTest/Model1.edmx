@@ -77,24 +77,25 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="Model1" >
-        <EntityTypeShape EntityType="Model1.Entity1" Width="1.375" PointX="9.5" PointY="2.25" Height="1.231080729166667" />
+        <EntityTypeShape EntityType="Model1.Entity1" Width="1.375" PointX="11.125" PointY="4.25" Height="1.211080729166667" />
         <EntityTypeShape EntityType="Model1.Entity2" Width="1.5" PointX="5.875" PointY="5.875" Height="1.0187792968749996" IsExpanded="true" />
         <InheritanceConnector EntityType="Model1.Entity2" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.5" PointY="2.7973504918981487" />
-          <ConnectorPoint PointX="7.4791666666666679" PointY="2.7973504918981487" />
-          <ConnectorPoint PointX="7.4791666666666679" PointY="6.1465181822916666" />
-          <ConnectorPoint PointX="7.375" PointY="6.1465181822916666" />
+          <ConnectorPoint PointX="11.8125" PointY="5.4610807291666674" />
+          <ConnectorPoint PointX="11.8125" PointY="5.7110807291666674" />
+          <ConnectorPoint PointX="7.1145858333333329" PointY="5.7110807291666665" />
+          <ConnectorPoint PointX="6.9479191666666669" PointY="5.7110807291666674" />
+          <ConnectorPoint PointX="6.625" PointY="5.7110807291666674" />
+          <ConnectorPoint PointX="6.625" PointY="5.875" />
         </InheritanceConnector>
         <AssociationConnector Association="Model1.Entity1Entity2">
-          <ConnectorPoint PointX="9.8124975" PointY="3.461080729166667" />
-          <ConnectorPoint PointX="9.8124975" PointY="6.4805403645833337" />
-          <ConnectorPoint PointX="7.375" PointY="6.4805403645833337" />
+          <ConnectorPoint PointX="11.125" PointY="4.8555403645833337" />
+          <ConnectorPoint PointX="7.0312525" PointY="4.8555403645833337" />
+          <ConnectorPoint PointX="7.0312525" PointY="5.875" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="Model1.Entity3" Width="1.5" PointX="2.625" PointY="1.625" Height="1.211080729166667" />
+        <EntityTypeShape EntityType="Model1.Entity3" Width="1.5" PointX="5.875" PointY="7.875" Height="1.4033821614583339" />
         <AssociationConnector Association="Model1.Entity3Entity2">
-          <ConnectorPoint PointX="3.375" PointY="3.0283821614583339" />
-          <ConnectorPoint PointX="3.375" PointY="6.5766910807291659" />
-          <ConnectorPoint PointX="5.875" PointY="6.5766910807291659" />
+          <ConnectorPoint PointX="6.625" PointY="7.875" />
+          <ConnectorPoint PointX="6.625" PointY="7.2783821614583326" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>

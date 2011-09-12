@@ -7,6 +7,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
     public enum ClassDiagramMode
     {
-        Default, InheritanceConnection, RelationConnection
+        Default, InheritanceConnection, AssocationConnection
     }
 }

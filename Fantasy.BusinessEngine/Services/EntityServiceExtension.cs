@@ -10,7 +10,6 @@ namespace Fantasy.BusinessEngine.Services
     public static class EntityServiceExtension
     {
 
-
         public static IDbCommand CreateCommand(this ISession session)
         {
             IDbCommand rs = session.Connection.CreateCommand();
@@ -20,9 +19,6 @@ namespace Fantasy.BusinessEngine.Services
             }
             return rs;
         }
-
-
-
 
         private static Dictionary<ISession, int> _updateLevel = new Dictionary<ISession, int>();
 

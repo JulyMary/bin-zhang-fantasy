@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessAssociation : BusinessEntity
+    public class BusinessAssociation : BusinessEntity, INamedBusinessEntity
     {
 
         public virtual string Name
@@ -129,7 +129,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return (string)this.GetValue("LeftRoleCode", 0);
+                return (string)this.GetValue("LeftRoleCode", null);
             }
             set
             {

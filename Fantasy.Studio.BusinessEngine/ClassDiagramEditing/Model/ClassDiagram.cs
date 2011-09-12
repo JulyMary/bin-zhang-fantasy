@@ -27,6 +27,36 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this.Enums = new ObservableCollection<EnumGlyph>();
             this.Enums.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(EnumsCollectionChanged);
 
+            this.Associations = new ObservableCollection<AssociationGlyph>();
+            this.Associations.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(AssociationsCollectionChanged);
+
+        }
+
+        void AssociationsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+           
+            if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
+            {
+                if (e.OldItems != null)
+                {
+                    foreach (AssociationGlyph node in e.OldItems)
+                    {
+                        node.Diagram = null;
+                        node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
+                    }
+                }
+
+                if (e.NewItems != null)
+                {
+                    foreach (AssociationGlyph node in e.NewItems)
+                    {
+                        
+                        node.Diagram = this;
+                        node.Site = this.Site;
+                        node.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(GlyphPropertyChanged);
+                    }
+                }
+            }
         }
 
         void EnumsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -182,6 +212,24 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     }
                 }
 
+                foreach (AssociationGlyph node in this.Associations.ToArray())
+                {
+
+                    BusinessAssociation association = es.DefaultSession.Get<BusinessAssociation>(node.AssociationId);
+                    ClassGlyph left = this.Classes.SingleOrDefault(c => c.Id == node.LeftGlyphId);
+                    ClassGlyph right = this.Classes.SingleOrDefault(c => c.Id == node.RightGlyphId);
+
+                    if (association == null || left == null || right == null)
+                    {
+                        this.Associations.Remove(node);
+                    }
+                    else
+                    {
+                        node.Entity = association;
+                    }
+
+                }
+
             }
 
             foreach (BusinessClass @class in this.Classes.Select(n => n.Entity).Distinct())
@@ -251,6 +299,16 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 if (node.Entity.EntityState == EntityState.Deleted)
                 {
                     this.Enums.Remove(node);
+                }
+            }
+
+            foreach (AssociationGlyph node in this.Associations.ToArray())
+            {
+                ClassGlyph left = this.Classes.SingleOrDefault(c => c.Id == node.LeftGlyphId);
+                ClassGlyph right = this.Classes.SingleOrDefault(c => c.Id == node.RightGlyphId);
+                if (node.Entity.EntityState == EntityState.Deleted || left == null || right == null)
+                {
+                    this.Associations.Remove(node);
                 }
             }
 
@@ -379,6 +437,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         [XArray(Name="inheritances"),
         XArrayItem(Name = "inheritance", Type = typeof(InheritanceGlyph))]
         public ObservableCollection<InheritanceGlyph> Inheritances { get; private set; }
+
+
+        [XArray(Name = "associations"),
+        XArrayItem(Name = "association", Type = typeof(AssociationGlyph))]
+        public ObservableCollection<AssociationGlyph> Associations { get; private set; }
 
         public IServiceProvider Site { get; set; }
 

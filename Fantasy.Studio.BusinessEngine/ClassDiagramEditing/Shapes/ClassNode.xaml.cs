@@ -35,6 +35,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             InitializeComponent();
         }
 
+        public ClassNode()
+        {
+            InitializeComponent();
+        }
        
 
         private void MoveUpButton_Click(object sender, RoutedEventArgs e)

@@ -82,7 +82,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                     foreach (ContentControl shape in this.diagramView.SelectionList.Cast<ContentControl>().ToArray())
                     {
-                        if (Array.IndexOf(selected, shape.DataContext) <= 0)
+                        if (Array.IndexOf(selected, shape.DataContext) < 0)
                         {
                             this.diagramView.SelectionList.Remove(shape);
                         }
@@ -132,10 +132,85 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     }
 
                     break;
-                case ClassDiagramMode.RelationConnection:
+                case ClassDiagramMode.AssocationConnection:
+                    {
+                        Connection.ConnectionAdorner adorner = new Connection.ConnectionAdorner(this.diagramView, this.GetChildSite());
+                        adorner.ValidateFirstNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateLeftClass);
+                        adorner.ValidateSecondNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateRightClass);
+                        adorner.CreatConnection += new EventHandler(CreatAssociation);
+                        adorner.Exit += new EventHandler(ExitCreateAssociation);
+                    }
                     break;
 
             }
+        }
+
+        void ExitCreateAssociation(object sender, EventArgs e)
+        {
+            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+            adorner.ValidateFirstNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateLeftClass);
+            adorner.ValidateSecondNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateRightClass);
+            adorner.CreatConnection -= new EventHandler(CreatAssociation);
+            adorner.Exit -= new EventHandler(ExitCreateAssociation);
+            this.Mode = ClassDiagramMode.Default;
+        }
+
+        void CreatAssociation(object sender, EventArgs e)
+        {
+            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
+
+
+
+            Model.AssociationGlyph association = new Model.AssociationGlyph()
+            {
+                LeftClass = (Model.ClassGlyph)adorner.FirstNode.DataContext,
+                LeftGlyphId = adorner.FirstNode.ID,
+                RightClass = (Model.ClassGlyph)adorner.SecondNode.DataContext,
+                RightGlyphId  = adorner.SecondNode.ID,
+                EditingState = EditingState.Dirty,
+            };
+
+            BusinessClass leftEntity = association.LeftClass.Entity;
+            BusinessClass rightEntity = association.RightClass.Entity;
+
+            BusinessPackage package = this._entity.Package;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            BusinessAssociation entity = es.AddAssociation(package, leftEntity, rightEntity);
+            association.Entity = entity;
+            association.AssociationId = entity.Id;
+
+            this._classDiagram.Associations.Add(association);
+
+            this._selectionService.SetSelectedComponents(new object[] { association }, SelectionTypes.Replace);
+        }
+
+
+        void ValidateRightClass(object sender, Connection.ValidatNodeArgs e)
+        {
+            bool isValid = false;
+
+            Model.ClassGlyph glyph = e.Node.DataContext as Model.ClassGlyph;
+            if (glyph != null)
+            {
+
+                isValid = true;
+            }
+
+            e.IsValid = isValid;
+        }
+
+        void ValidateLeftClass(object sender, Connection.ValidatNodeArgs e)
+        {
+            bool isValid = false;
+
+            Model.ClassGlyph glyph = e.Node.DataContext as Model.ClassGlyph;
+            if (glyph != null)
+            {
+
+                isValid = true;
+            }
+
+            e.IsValid = isValid;
         }
 
         void ExitCreateInheritance(object sender, EventArgs e)
