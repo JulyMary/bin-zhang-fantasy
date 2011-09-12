@@ -87,6 +87,10 @@
     <Compile Include="AssociationEditing\AssociationEditor.cs" />
     <Compile Include="AssociationEditing\AssociationFolder.cs" />
     <Compile Include="AssociationEditing\AssociationFolderAssociationsProvider.cs" />
+    <Compile Include="AssociationEditing\BusinessAssociationLeftRoleNameSetAction.cs" />
+    <Compile Include="AssociationEditing\BusinessAssociationRightRoleNameSetAction.cs" />
+    <Compile Include="AssociationEditing\CardinalityEditor.cs" />
+    <Compile Include="AssociationEditing\DeleteAssociationCommand.cs" />
     <Compile Include="AssociationEditing\ObjectModelAssociationFolderProvider.cs" />
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
@@ -294,6 +298,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\associationfolder.png" />
     <Resource Include="images\association.png" />
     <Resource Include="images\syncenum.png" />
     <Resource Include="images\EnumItem.png" />

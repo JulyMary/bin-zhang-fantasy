@@ -183,5 +183,48 @@
             <PropertyDescriptor ID="PublicToken" Name="PublicToken" Caption="Public Token" Category="General" />
             <PropertyDescriptor ID="CopyLocal" Name="CopyLocal" Caption="Copy Local" Category="General" />
         </TypeDescriptor>
+
+
+        <TypeDescriptor ID="businessassociation" TargetType="{x:Type be:BusinessAssociation}">
+            <TypeDescriptor.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:EntityCodeNameSetAction}"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="TableName" Name="TableName" Caption="Table Name" Category="Database" >
+                <PropertyDescriptor.Conditional>
+                    <OwnerState StateMember="EntityState" State="New" Action="Disable" />
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="TableSchema" Name="TableSchema" Caption="Table Schema" Category="Database" Editor="{New sbe:BusinessClassSchemaEditor}" >
+                <PropertyDescriptor.Conditional>
+                    <OwnerState StateMember="EntityState" State="New" Action="Disable" />
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="TableSpace" Name="TableSpace" Caption="Table Space" Category="Database" Editor="{New sbe:BusinessClassTableSpaceEditor}" >
+                <PropertyDescriptor.Conditional>
+                    <OwnerState StateMember="EntityState" State="New" Action="Disable" />
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="LeftClass" Name="LeftClass" Caption="Left Class" Category="Left" Editor="{New sbe:BusinessClassTypeEditor}" Converter="{New sbe:EntityFullNameConverter}" />
+            <PropertyDescriptor ID="LeftCardinality" Name="LeftCardinality" Caption="Left Cardinality" Category="Left" Editor="{New sbe:CardinalityEditor}" />
+            <PropertyDescriptor ID="LeftRoleName" Name="LeftRoleName" Caption="Left Role Name" Category="Left" Set="{New sbe:BusinessAssociationLeftRoleNameSetAction}" />
+            <PropertyDescriptor ID="LeftRoleCode" Name="LeftRoleCode" Caption="Left Role Code Name" Category="Left" />
+            <PropertyDescriptor ID="LeftNavigatable" Name="LeftNavigatable" Caption="Left Navigatable" Category="Left" />
+
+            <PropertyDescriptor ID="RightClass" Name="RightClass" Caption="Right Class" Category="Right" Editor="{New sbe:BusinessClassTypeEditor}" Converter="{New sbe:EntityFullNameConverter}" />
+            <PropertyDescriptor ID="RightCardinality" Name="RightCardinality" Caption="Right Cardinality" Category="Right"  Editor="{New sbe:CardinalityEditor}" />
+            <PropertyDescriptor ID="RightRoleName" Name="RightRoleName" Caption="Right Role Name" Category="Right" Set="{New sbe:BusinessAssociationRightRoleNameSetAction}"  />
+            <PropertyDescriptor ID="RightRoleCode" Name="RightRoleCode" Caption="Right Role Code Name" Category="Right" />
+            <PropertyDescriptor ID="RightNavigatable" Name="RightNavigatable" Caption="Right Navigatable" Category="Right" />
+        </TypeDescriptor>
     </Extension>
 </AddIn>

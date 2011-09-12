@@ -96,15 +96,35 @@
            
         </TreeNode>
 
-        <TreeNode ID="AssociationFolder" TargetType="{x:Type sbe:AssociationFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png"
-                  Text="{Binding Path=Name}">
+        <TreeNode ID="AssociationFolder" TargetType="{x:Type sbe:AssociationFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/associationfolder.png"
+                  Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/associationfolder/contextmenu">
+            <TreeNodeChildProvider ID="Associations" Provider="{New sbe:AssociationFolderAssociationsProvider}" />
+        </TreeNode>
+
+        <TreeNode ID="Association" TargetType="{x:Type be:BusinessAssociation}" Icon="/Fantasy.Studio.BusinessEngine;component/images/association.png"
+                  Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/association/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}" >
             
         </TreeNode>
         
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/documentpad/associationfolder/contextmenu">
+        <Button ID="Add" Command="{New sbe:AddAssociationCommand}" Text="Add Association" ParameterSource="Owner" ParameterMember="Package"/>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/association/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" />
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteAssociationCommand}">
+            <Button.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity />
+                </Not>
+            </Button.Conditional>
+        </Button>
+    </Extension>
+
     <Extension Path="fantasy/studio/businessengine/documentpad/referencegroup/contextmenu">
-        <Button ID="Add" Command="{New sbe:AddReferenceCommand}" Text="Add Reference..."/>
+        <Button ID="Add" Command="{New sbe:AddReferenceCommand}" Text="Add Reference..." />
         <Button ID="AddGAC" Command="{New sbe:AddGACReferenceCommand}" Text="Add Reference From GAC..."/>
     </Extension>
 
@@ -242,6 +262,12 @@
             </Object.Conditional>
             <sbe:EnumEditor /> 
         </Object>
+        <Object ID="associationeditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessAssociation}"/>
+            </Object.Conditional>
+            <sbe:AssociationEditor />
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classeditor/commandbindings">
@@ -317,14 +343,11 @@
                         <sbe:IsSystemEntity Member="Enum" />
                         <sbe:IsExternalEnum Member="Enum" />
                     </Or>
-                   
                 </Not>
             </CommandBinding.Conditional>
            
         </CommandBinding>
         
-        
-
         <CommandBinding ID="DeleteValue" Command="Delete" Handler="{New sbe:DeleteEnumValueCommand}" ParameterSource="Owner" ParameterMember="Selected">
             <CommandBinding.Conditional>
                 <And>

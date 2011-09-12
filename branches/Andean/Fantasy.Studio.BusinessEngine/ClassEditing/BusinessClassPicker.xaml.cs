@@ -39,7 +39,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
         private void extendableTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ITreeViewItem item = (ITreeViewItem)e.NewValue;
+            ITreeViewItem item = e.NewValue as ITreeViewItem;
             IBusinessEntity entity = item != null ? (IBusinessEntity)item.DataContext : null;
             ((BusinessClassPikcerModel)this.DataContext).SelectedItem = entity;
         }
