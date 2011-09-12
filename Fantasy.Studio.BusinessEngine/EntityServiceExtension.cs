@@ -114,6 +114,8 @@ namespace Fantasy.Studio.BusinessEngine
         public static  BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package)
         {
             BusinessAssociation rs = es.CreateEntity<BusinessAssociation>();
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessAssociationName, package.Associations.Select(a => a.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             rs.Package = package;
             package.Associations.Add(rs);
             return rs;
