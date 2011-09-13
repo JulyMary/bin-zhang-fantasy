@@ -117,6 +117,7 @@
     <Compile Include="ClassDiagramEditing\DeleteClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\Model\AssociationGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\AssociationGlyphAdapterFactory.cs" />
+    <Compile Include="ClassDiagramEditing\Model\RoleNode.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagramGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassGlyphAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />

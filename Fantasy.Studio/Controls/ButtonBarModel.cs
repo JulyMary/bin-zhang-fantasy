@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Fantasy.Collection;
+using Fantasy.Collections;
 using Fantasy.Studio.Codons;
 using System.Collections;
 using System.ComponentModel;
