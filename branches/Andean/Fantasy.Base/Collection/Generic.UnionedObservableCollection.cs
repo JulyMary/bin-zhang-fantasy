@@ -6,7 +6,7 @@ using System.Collections.Specialized;
 using System.Windows;
 
 
-namespace Fantasy.Collection
+namespace Fantasy.Collections
 {
     public class UnionedObservableCollection<T> : INotifyCollectionChanged, ICollection<T>, IWeakEventListener
     {

@@ -5,7 +5,7 @@ using System.Text;
 using Fantasy.AddIns;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using Fantasy.Collection;
+using Fantasy.Collections;
 using Fantasy.Windows;
 using System.Windows.Input;
 

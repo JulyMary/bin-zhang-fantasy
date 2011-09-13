@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine;
 using System.Collections.ObjectModel;
-using Fantasy.Collection;
+using Fantasy.Collections;
 
 namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 {

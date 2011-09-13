@@ -118,7 +118,7 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/associationfolder/contextmenu">
-        <Button ID="Add" Command="{New sbe:AddAssociationCommand}" Text="Add Association" ParameterSource="Owner" ParameterMember="Package"/>
+        <!--<Button ID="Add" Command="{New sbe:AddAssociationCommand}" Text="Add Association" ParameterSource="Owner" ParameterMember="Package"/>-->
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/association/contextmenu">
