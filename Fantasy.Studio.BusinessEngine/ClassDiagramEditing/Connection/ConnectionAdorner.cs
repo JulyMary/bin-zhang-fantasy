@@ -23,12 +23,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             this._pen = new Pen(new SolidColorBrush(Colors.DarkGray), 2);
             _pen.DashStyle = DashStyles.Dash; 
 
+         
+
             this.View.AddHandler(Control.MouseEnterEvent, new MouseEventHandler(diagramView_MouseEnter), true);
             this.View.AddHandler(Control.MouseLeaveEvent, new MouseEventHandler(diagramView_MouseLeave), true);
             this.View.AddHandler(Control.MouseMoveEvent, new MouseEventHandler(diagramView_MouseMove), true);
             this.View.AddHandler(Control.MouseUpEvent, new MouseButtonEventHandler(diagramView_MouseUp), true);
             this.View.AddHandler(Control.MouseDownEvent, new MouseButtonEventHandler(diagramView_MouseDown), true);
-
+            this.Unloaded += new RoutedEventHandler(ConnectionAdorner_Unloaded);
 
             this.Handlers.AddRange(new IConnectionHandler[] { new NoCursorHandler(), new SelectFirstNodeHandler(), new ExitConnectionHandler() });   
 
@@ -38,7 +40,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
 
         }
+
+        
         private Cursor _oldCursor;
+
+      
 
         private void InvokeHandler(Action<IConnectionHandler, ConnectionArgs> action, MouseEventArgs e)
         {
@@ -137,6 +143,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
         public IServiceProvider Site { get; set; }
 
+
+        void ConnectionAdorner_Unloaded(object sender, RoutedEventArgs e)
+        {
+            this.View.RemoveHandler(Control.MouseEnterEvent, new MouseEventHandler(diagramView_MouseEnter));
+            this.View.RemoveHandler(Control.MouseLeaveEvent, new MouseEventHandler(diagramView_MouseLeave));
+            this.View.RemoveHandler(Control.MouseMoveEvent, new MouseEventHandler(diagramView_MouseMove));
+            this.View.RemoveHandler(Control.MouseUpEvent, new MouseButtonEventHandler(diagramView_MouseUp));
+        }
+
         public void OnExit()
         {
             if (this.View.IsMouseCaptured)
@@ -145,10 +160,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             }
             this.View.ForceCursor = false;
             this.View.Cursor = this._oldCursor;
-            this.View.RemoveHandler(Control.MouseEnterEvent, new MouseEventHandler(diagramView_MouseEnter));
-            this.View.RemoveHandler(Control.MouseLeaveEvent, new MouseEventHandler(diagramView_MouseLeave));
-            this.View.RemoveHandler(Control.MouseMoveEvent, new MouseEventHandler(diagramView_MouseMove));
-            this.View.RemoveHandler(Control.MouseUpEvent, new MouseButtonEventHandler(diagramView_MouseUp));
+            
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(this.View);
             layer.Remove(this);
             if (this.Exit != null)
