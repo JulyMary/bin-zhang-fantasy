@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Collections.Specialized;
 using System.Windows.Documents;
+using Fantasy.Windows;
 
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
@@ -138,7 +139,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             };
             connector.TailDecoratorStyle.Fill = connector.HeadDecoratorStyle.Fill = Brushes.White;
            
-            connector.LineStyle.StrokeDashArray = new DoubleCollection(new double[] { 3, 1 });
+            connector.LineStyle = new LineStyle(connector) { StrokeDashArray=  new DoubleCollection(new double[] { 3, 1 })};
+
+         
 
             if (association.IntermediatePoints.Count > 0)
             {
@@ -159,9 +162,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
             this._view.Connections.Add(connector);
 
-            Shapes.CardinalityAdorner lc = new Shapes.CardinalityAdorner(connector);
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(connector);
-            adornerLayer.Add(lc);
+            IDiagramPage page = VisualTreeHelper.GetParent(connector) as IDiagramPage;
+            
+            Shapes.CardinalityAdorner lc = new Shapes.CardinalityAdorner(page , connector);
+            
 
         }
 
