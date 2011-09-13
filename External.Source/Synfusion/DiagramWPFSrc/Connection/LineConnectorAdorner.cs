@@ -821,6 +821,9 @@ namespace Syncfusion.Windows.Diagram
             }
         }
 
+
+        private DoubleCollection _oldStrokeDashArray = null;
+
         /// <summary>
         /// Handles the DragStarted event of the Thumb control.
         /// </summary>
@@ -849,6 +852,7 @@ namespace Syncfusion.Windows.Diagram
                     this.HitNodeConnector = null;
                     this.pathGeometry = null;
                     this.Cursor = Cursors.Cross;
+                    this._oldStrokeDashArray = this.lineconnector.LineStyle.StrokeDashArray; 
                     this.lineconnector.LineStyle.StrokeDashArray = new DoubleCollection(new double[] { 3, 3 });
 
                     if (sender == headThumb)
@@ -1465,7 +1469,7 @@ namespace Syncfusion.Windows.Diagram
             }
             if (!dragged)
             {
-                this.lineconnector.LineStyle.StrokeDashArray = null;
+                this.lineconnector.LineStyle.StrokeDashArray = this._oldStrokeDashArray;
                 if (deletingMode)
                 {
                     InvalidateVertexs();
@@ -1667,7 +1671,7 @@ namespace Syncfusion.Windows.Diagram
             this.HitNodeConnector = null;
             this.HitPort = null;
             this.pathGeometry = null;
-            this.lineconnector.LineStyle.StrokeDashArray = null;
+            this.lineconnector.LineStyle.StrokeDashArray =this._oldStrokeDashArray;
             this.InvalidateVisual();
             (dc.View.Page as DiagramPage).InvalidateMeasure();
             //dc.View.Linehoffset = dc.View.Scrollviewer.HorizontalOffset;
