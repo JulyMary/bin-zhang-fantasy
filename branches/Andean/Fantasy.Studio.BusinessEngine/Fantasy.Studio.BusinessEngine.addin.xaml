@@ -110,7 +110,9 @@
 
         <TreeNode ID="Association" TargetType="{x:Type be:BusinessAssociation}" Icon="/Fantasy.Studio.BusinessEngine;component/images/association.png"
                   Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/association/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}" >
-            
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
         </TreeNode>
         
     </Extension>
@@ -121,7 +123,7 @@
 
     <Extension Path="fantasy/studio/businessengine/documentpad/association/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" />
-        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteAssociationCommand}">
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteAssociationCommand}" ParameterSource="Owner" >
             <Button.Conditional>
                 <Not>
                     <sbe:IsSystemEntity />
@@ -494,6 +496,9 @@
         <Object ID="existenum">
             <sbe:DragBusinessEnumOverHandler />
         </Object>
+        <Object ID="existassociation">
+            <sbe:DragBusinessAssociationOverHandler />
+        </Object>
     </Extension>
 
 
@@ -614,6 +619,9 @@
         <Object ID="existenum">
             <sbe:DragBusinessEnumOverHandler />
         </Object>
+        <Object ID="existassociation">
+            <sbe:DragBusinessAssociationOverHandler />
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/classdiagrampanel/dragdrop/leavehandlers">
@@ -632,6 +640,9 @@
         </Object>
         <Object ID="existenum">
             <sbe:DragBusinessEnumDropHandler />
+        </Object>
+        <Object ID="existassociation">
+            <sbe:DragBusinessAssociationDropHandler />
         </Object>
     </Extension>
 

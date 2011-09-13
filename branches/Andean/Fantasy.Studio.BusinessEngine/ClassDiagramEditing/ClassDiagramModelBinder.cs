@@ -154,17 +154,21 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             connector.DataContext = association;
 
-
-
-            
-
             association.IntermediatePoints.CollectionChanged += new NotifyCollectionChangedEventHandler(IntermediatePoints_CollectionChanged);
             connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            connector.Loaded += (sender, e) =>
+            {
+                LineConnector cnnt = sender as LineConnector;
+                IDiagramPage page = VisualTreeHelper.GetParent(cnnt) as IDiagramPage;
+                Shapes.CardinalityAdorner lc = new Shapes.CardinalityAdorner(page, cnnt);
+            };
             this._view.Connections.Add(connector);
 
-            IDiagramPage page = VisualTreeHelper.GetParent(connector) as IDiagramPage;
             
-            Shapes.CardinalityAdorner lc = new Shapes.CardinalityAdorner(page , connector);
+
+            
+
+            
             
 
         }

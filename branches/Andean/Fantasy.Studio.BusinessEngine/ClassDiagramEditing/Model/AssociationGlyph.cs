@@ -11,6 +11,8 @@ using Fantasy.Windows;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
+
+    [XSerializable("association", NamespaceUri = Consts.ClassDiagramNamespace)]
     public class AssociationGlyph : ClassDiagramGlyph, IConnectGlyph
     {
         public AssociationGlyph()
@@ -19,6 +21,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this.IntermediatePoints = new ObservableCollection<Point>();
         }
 
+        [XAttribute("left")]
         private Guid _leftGlyphId;
 
         public Guid LeftGlyphId
@@ -34,6 +37,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+        [XAttribute("right")]
         private Guid _rightGlyphId;
 
         public Guid RightGlyphId
@@ -49,6 +53,21 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+
+        private bool? _isShortCut;
+
+        public bool IsShortCut
+        {
+            get
+            {
+                if (_isShortCut == null)
+                {
+                    _isShortCut = this.Entity.Package != this.Diagram.Entity.Package;
+                }
+                return (bool)_isShortCut;
+            }
+        }
+        
 
         private ClassGlyph _leftClass;
 
@@ -66,7 +85,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             set { _rightClass = value; }
         }
 
-
+        [XAttribute("association")]
         private Guid _associationId;
 
         public Guid AssociationId

@@ -71,12 +71,20 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     Model.ClassGlyph cls = (Model.ClassGlyph)o;
 
 
-                    var query = from inheritance in diagram.Inheritances
+                    var inheritances = from inheritance in diagram.Inheritances
                                 where inheritance.BaseClass == cls || inheritance.DerivedClass == cls
                                 select inheritance;
-                    foreach (Model.InheritanceGlyph inheritance in query.ToArray())
+                    foreach (Model.InheritanceGlyph inheritance in inheritances.ToArray())
                     {
                         diagram.Inheritances.Remove(inheritance);
+                    }
+
+                    var associations = from association in diagram.Associations
+                                       where association.LeftClass == cls || association.RightClass == cls
+                                       select association;
+                    foreach (Model.AssociationGlyph association in associations.ToArray())
+                    {
+                        diagram.Associations.Remove(association);
                     }
 
                     diagram.Classes.Remove((Model.ClassGlyph)o);
@@ -89,6 +97,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 else if (o is Model.InheritanceGlyph)
                 {
                     diagram.Inheritances.Remove((Model.InheritanceGlyph)o);
+                }
+                else if (o is Model.AssociationGlyph)
+                {
+                    diagram.Associations.Remove((Model.AssociationGlyph)o);
                 }
                
             }
@@ -147,6 +159,25 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         editing.CloseView(@enum, true);
                     }
                 }
+                else if (o is Model.AssociationGlyph)
+                {
+                    BusinessAssociation association = (BusinessAssociation)((Model.AssociationGlyph)o).Entity;
+                    association.Package.Associations.Remove(association);
+                    //association.Package = null;
+
+                    if (association.LeftClass != null)
+                    {
+                        association.LeftClass.LeftAssociations.Remove(association);
+                        //association.LeftClass = null;
+                    }
+
+                    if (association.RightClass != null)
+                    {
+                        association.RightClass.RightAssociations.Remove(association);
+                        //association.RightClass = null;
+                    }
+                    editing.CloseView(association, true);
+                }
             }
 
         }
@@ -165,11 +196,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 if (o is Model.ClassGlyph)
                 {
                     Model.ClassGlyph node = (Model.ClassGlyph)o;
-                    if (node.IsShortCut)
-                    {
-                        return false;
-                    }
-                    else if(!IsDeletable(node.Entity, deletable, selected))
+                    if(!IsDeletable(node.Entity, deletable, selected))
                     {
                         return false;
                     }
@@ -194,6 +221,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         return false;
                     }
                 }
+                else if (o is Model.AssociationGlyph)
+                {
+                    Model.AssociationGlyph association = (Model.AssociationGlyph)o;
+                    if (!IsDeletable(association.Entity, deletable, selected))
+                    {
+                        return false;
+                    }
+                }
                 else
                 {
                     return false;
@@ -203,6 +238,47 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             return true;
 
+        }
+
+        private bool IsDeletable(BusinessAssociation association, List<object> deletable, object[] selected)
+        {
+            if (deletable.IndexOf(association) >= 0)
+            {
+                return true;
+            }
+
+
+            if (association.IsSystem)
+            {
+                return false;
+            }
+
+
+            Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
+
+
+            if (diagram.Entity.Package != association.Package)
+            {
+                return false;
+            }
+
+            var hasNode = from node in diagram.Associations where node.Entity == association select node;
+
+            if (!hasNode.Any())
+            {
+                return false;
+            }
+
+
+            var hasUnselectedNode = from node in diagram.Associations where node.Entity == association && Array.IndexOf(selected, node) < 0 select node;
+
+            if (hasUnselectedNode.Any())
+            {
+                return false;
+            }
+
+            deletable.Add(association);
+            return true;
         }
 
         private bool IsDeletable(BusinessEnum @enum, List<object> deletable, object[] selected)
