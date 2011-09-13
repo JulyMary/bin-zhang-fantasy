@@ -57,6 +57,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     }
                 }
             }
+
+            if (!this._deserializing)
+            {
+                this.EditingState = EditingState.Dirty;
+                
+            }
         }
 
         void EnumsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -226,6 +232,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     else
                     {
                         node.Entity = association;
+                        node.LeftClass = left;
+                        node.RightClass = right;
                     }
 
                 }

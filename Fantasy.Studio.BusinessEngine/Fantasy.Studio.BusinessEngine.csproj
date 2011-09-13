@@ -107,8 +107,10 @@
     <Compile Include="ClassDiagramEditing\Connection\SelectSecondNodeHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ValidatNodeArgs.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessEnumValueCommand.cs" />
+    <Compile Include="ClassDiagramEditing\DragBusinessAssociationOverHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessEnumDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessEnumOverHandler.cs" />
+    <Compile Include="ClassDiagramEditing\DragBusinessAssociationDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\EnumNodeDeleteHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumDataDropHandler.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumDataOverHandler.cs" />
