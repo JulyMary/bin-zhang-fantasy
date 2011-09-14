@@ -6,6 +6,8 @@ using System.Windows.Input;
 using System.ComponentModel.Design;
 using Fantasy.BusinessEngine;
 using System.Collections;
+using Fantasy.Adaption;
+using System.Reflection;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -24,13 +26,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             {
 
                 ICollection selected = selectionService.GetSelectedComponents();
-
+             
                 if (selected.Count > 0)
                 {
                     rs = true;
                     foreach (object o in selectionService.GetSelectedComponents())
                     {
-                        if (!(o is BusinessProperty) || ((BusinessProperty)o).IsSystem)
+                        if (!(o is Model.MemberNode) || ((Model.MemberNode)o).IsSystem)
                         {
                             rs = false;
                             break;
@@ -51,14 +53,44 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             var selected = selectionService.GetSelectedComponents().Cast<object>();
 
-            foreach (object o in selected)
+            Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
+
+            foreach (Model.MemberNode o in selected)
             {
-                if (o is BusinessProperty)
+                if (o is Model.PropertyNode)
                 {
-                    BusinessProperty prop = o as BusinessProperty;
+                    BusinessProperty prop = ((Model.PropertyNode)o).Entity;
                    
                     prop.Class.Properties.Remove(prop);
                     prop.Class = null;
+                }
+                else if (o is Model.LeftRoleNode || o is Model.RightRoleNode)
+                {
+                    BusinessAssociation association = Invoker.Invoke<BusinessAssociation>(o, "Entity");
+                    if (association.Package != null)
+                    {
+                        association.Package.Associations.Remove(association);
+                        association.Package = null;
+                    }
+                    if (association.LeftClass != null)
+                    {
+                        association.LeftClass.LeftAssociations.Remove(association);
+                        association.LeftClass = null;
+                    }
+                    if (association.RightClass != null)
+                    {
+                        association.RightClass.RightAssociations.Remove(association);
+                        association.RightClass = null;
+                    }
+
+                    var query = from glyph in diagram.Associations where glyph.Entity == association select glyph;
+
+                    foreach (Model.AssociationGlyph glyph in query.ToArray())
+                    {
+                        diagram.Associations.Remove(glyph);
+                    }
+                    diagram.DeletingEntities.Add(association);
+
                 }
             }
         }

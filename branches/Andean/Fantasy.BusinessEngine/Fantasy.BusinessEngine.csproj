@@ -72,6 +72,7 @@
     <Compile Include="Collections\ObservableListView.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
     <Compile Include="BusinessAssociation.cs" />
+    <Compile Include="Events\BusinessAssociationCreateOrderHandler.cs" />
     <Compile Include="Maps\BusinessAssociationMap.cs" />
     <Compile Include="Properties\Settings.settings.cs">
       <AutoGen>True</AutoGen>

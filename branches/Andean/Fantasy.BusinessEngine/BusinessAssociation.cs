@@ -162,6 +162,30 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+        public virtual long LeftRoleDisplayOrder
+        {
+            get
+            {
+                return (long)this.GetValue("LeftRoleDisplayOrder", 0L);
+            }
+            set
+            {
+                this.SetValue("LeftRoleDisplayOrder", value);
+            }
+        }
+
+        public virtual long RightRoleDisplayOrder
+        {
+            get
+            {
+                return (long)this.GetValue("RightRoleDisplayOrder", 0L);
+            }
+            set
+            {
+                this.SetValue("RightRoleDisplayOrder", value);
+            }
+        }
+
 
         public virtual BusinessClass RightClass
         {

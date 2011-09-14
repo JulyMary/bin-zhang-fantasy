@@ -30,7 +30,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 be.BusinessClass @class = this.Site.GetRequiredService<IEntityService>().AddBusinessClass(cd.Package);
 
-                Model.ClassGlyph node = new Model.ClassGlyph() {Id = Guid.NewGuid(), Left = p.X, Top = p.Y, ClassId = @class.Id, Entity = @class, ShowMember = true, ShowProperties = true, ShowRelations = true };
+                Model.ClassGlyph node = new Model.ClassGlyph() {Id = Guid.NewGuid(), Left = p.X, Top = p.Y, ClassId = @class.Id, Entity = @class, ShowMember = true, ShowInheritedMembers=false };
                 diagram.Classes.Add(node);
                 ISelectionService sel = this.Site.GetService<ISelectionService>();
                 if (sel != null)

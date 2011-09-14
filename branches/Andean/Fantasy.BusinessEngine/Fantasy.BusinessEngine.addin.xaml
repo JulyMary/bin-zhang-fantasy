@@ -32,6 +32,12 @@
             </Object.Conditional>
             <be:BusinessPropertyCreateOrderHandler/>
         </Object>
+        <Object ID="BusinessAssociationCreateOrder">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessAssociation}"/>
+            </Object.Conditional>
+            <be:BusinessAssociationCreateOrderHandler/>
+        </Object>
         <Object ID="defaultcreatehandler">
             <be:DefaultEntityCreateHandler/>
         </Object>

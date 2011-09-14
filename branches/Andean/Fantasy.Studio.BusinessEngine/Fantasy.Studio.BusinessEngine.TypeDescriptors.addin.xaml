@@ -226,5 +226,29 @@
             <PropertyDescriptor ID="RightRoleCode" Name="RightRoleCode" Caption="Right Role Code Name" Category="Right" />
             <PropertyDescriptor ID="RightNavigatable" Name="RightNavigatable" Caption="Right Navigatable" Category="Right" />
         </TypeDescriptor>
+        <TypeDescriptor ID="LeftRoleNode" TargetType="{x:Type dm:LeftRoleNode}">
+            <TypeDescriptor.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity Member="Entity" />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
+            <PropertyDescriptor ID="Navigatable" Name="Navigatable" Caption="Navigatable" Category="General"/>
+            <PropertyDescriptor ID="Association" Name="Entity" Caption="Association" Category="General" Converter="{New sbe:EntityFullNameConverter}" />
+            <PropertyDescriptor ID="Cardinality" Name="Cardinality" Caption="Cardinality" Category="General" Editor="{New sbe:CardinalityEditor}"/>
+        </TypeDescriptor>
+        <TypeDescriptor ID="RightRoleNode" TargetType="{x:Type dm:RightRoleNode}">
+            <TypeDescriptor.Conditional>
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity Member="Entity" />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
+            <PropertyDescriptor ID="Navigatable" Name="Navigatable" Caption="Navigatable" Category="General"/>
+            <PropertyDescriptor ID="Association" Name="Entity" Caption="Association" Category="General" Converter="{New sbe:EntityFullNameConverter}" />
+            <PropertyDescriptor ID="Cardinality" Name="Cardinality" Caption="Cardinality" Category="General" Editor="{New sbe:CardinalityEditor}"/>
+        </TypeDescriptor>
     </Extension>
 </AddIn>

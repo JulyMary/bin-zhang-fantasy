@@ -45,53 +45,68 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
         {
             DependencyObject container = this.PropertyListBox.ContainerFromElement((DependencyObject)e.Source);
 
-            Model.PropertyNode node = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
-            BusinessProperty from = node.Entity;
+            Model.MemberNode from = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
 
-            BusinessClass cls = from.Class;
+            Model.ClassGlyph clsGlyph = (Model.ClassGlyph)this.DataContext;
 
-            int index = cls.Properties.IndexOf(from);
+            Model.MemberNode to = clsGlyph.Members[clsGlyph.Members.IndexOf(from) - 1];
 
-            BusinessProperty to = cls.Properties[index - 1];
+            clsGlyph.Members.Lock();
 
-            long temp = from.Order;
-            from.Order = to.Order;
-            to.Order = temp;
-
-            cls.Properties.Swap(index, index - 1);
+            long temp = from.DisplayOrder;
+            from.DisplayOrder = to.DisplayOrder;
+            to.DisplayOrder = temp;
+            clsGlyph.Members.Unlock();
+            clsGlyph.EditingState = EditingState.Dirty;
         }
 
         private void MoveDownButton_Click(object sender, RoutedEventArgs e)
         {
             DependencyObject container = this.PropertyListBox.ContainerFromElement((DependencyObject)e.Source);
 
-            Model.PropertyNode node = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
+          
 
-            BusinessProperty from = node.Entity;
+            Model.MemberNode from = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
 
-            BusinessClass cls = from.Class;
+            Model.ClassGlyph clsGlyph = (Model.ClassGlyph)this.DataContext;
 
-            int index = cls.Properties.IndexOf(from);
+            Model.MemberNode to = clsGlyph.Members[clsGlyph.Members.IndexOf(from) + 1];
 
-            BusinessProperty to = cls.Properties[index + 1];
+            clsGlyph.Members.Lock();
 
-            long temp = from.Order;
-            from.Order = to.Order;
-            to.Order = temp;
-
-            cls.Properties.Swap(index, index + 1);
-
-            if (this.PropertyListBox.SelectedItem != node)
-            {
-                this.PropertyListBox.SelectedItem = node;
-            }
+            long temp = from.DisplayOrder;
+            from.DisplayOrder = to.DisplayOrder;
+            to.DisplayOrder = temp;
+            clsGlyph.Members.Unlock();
+            clsGlyph.EditingState = EditingState.Dirty;
 
         }
 
         private WeakEventListener _propertyNodesChangedListener;
 
+        private Fantasy.ServiceModel.ServiceContainer _childSite;
+
+        private Fantasy.ServiceModel.ServiceContainer ChildSite
+        {
+            get
+            {
+                if (_childSite == null)
+                {
+
+                    m.ClassGlyph model = this.DataContext as m.ClassGlyph;
+                    _childSite = new ServiceModel.ServiceContainer(model.Site);
+                    _childSite.AddService(model);
+                    _childSite.AddService(model.Diagram);
+                    
+                }
+                return _childSite;
+            }
+
+        }
+
         private void Node_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            this._childSite = null;
             m.ClassGlyph model = this.DataContext as m.ClassGlyph;
             this.CommandBindings.Clear();
 
@@ -103,10 +118,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 IMenuService svc = model.Site.GetService<IMenuService>();
                 if (svc != null)
                 {
-                    this.ConentStackPanel.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classglyph/contextmenu", this, model.Site);
+                    this.ConentStackPanel.ContextMenu = svc.CreateContextMenu("fantasy/studio/businessengine/classdiagrampanel/classglyph/contextmenu", this, this.ChildSite);
                 }
 
-                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/classglyph/commandbindings").BuildChildItems(this, model.Site))
+                foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classdiagrampanel/classglyph/commandbindings").BuildChildItems(this, this.ChildSite))
                 {
                     this.ConentStackPanel.CommandBindings.Add(cb);
                 }
@@ -129,7 +144,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             {
                 NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs)e;
                 m.ClassGlyph model = this.DataContext as m.ClassGlyph;
-                model.ShowMember = model.ShowProperties = true;
+                model.ShowMember = true;
                 if (args.NewItems != null)
                 {
 
@@ -160,8 +175,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                     ISelectionService svc = model.Site.GetRequiredService<ISelectionService>();
                     IEnumerable<object> selected = svc.GetSelectedComponents().Cast<object>();
 
-                    var query = from n in this.PropertyListBox.SelectedItems.Cast<m.PropertyNode>()
-                                where !selected.Any(o => o == n.Entity)
+                    var query = from n in this.PropertyListBox.SelectedItems.Cast<m.MemberNode>()
+                                where !selected.Any(o => o == n)
                                 select n;
 
                     foreach(object o in query.ToArray())
@@ -189,14 +204,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                 try
                 {
                     m.ClassGlyph model = this.DataContext as m.ClassGlyph;
-                    var q1 = this.PropertyListBox.SelectedItems.Cast<m.PropertyNode>().Select(n => n.Entity);
+                    var q1 = this.PropertyListBox.SelectedItems.Cast<m.MemberNode>();
 
                     ISelectionServiceEx svc = model.Site.GetRequiredService<ISelectionServiceEx>();
 
                     svc.SetSelectedComponents(q1.ToArray(), SelectionTypes.Replace);
                     svc.IsReadOnly = model.IsShortCut;
-
-
                 }
                 finally
                 {

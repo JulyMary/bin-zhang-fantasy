@@ -22,12 +22,14 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.LeftRoleName);
             this.Map(x => x.LeftRoleCode);
             this.Map(x => x.LeftNavigatable).Not.Nullable();
+            this.Map(x => x.LeftRoleDisplayOrder); 
 
             this.References(x => x.RightClass).Column("RIGHTCLASSID").Not.Nullable();
             this.Map(x => x.RightCardinality).Not.Nullable();
             this.Map(x => x.RightRoleName);
             this.Map(x => x.RightRoleCode);
             this.Map(x => x.RightNavigatable);
+            this.Map(x => x.RightRoleDisplayOrder); 
 
 
            

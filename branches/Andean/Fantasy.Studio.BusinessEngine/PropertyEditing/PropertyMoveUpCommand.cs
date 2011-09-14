@@ -32,9 +32,9 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
             BusinessProperty to = model.Class.Properties[index - 1];
 
-            long temp = from.Order;
-            from.Order = to.Order;
-            to.Order = temp;
+            long temp = from.DisplayOrder;
+            from.DisplayOrder = to.DisplayOrder;
+            to.DisplayOrder = temp;
 
             model.Class.Properties.Swap(index, index - 1);
 

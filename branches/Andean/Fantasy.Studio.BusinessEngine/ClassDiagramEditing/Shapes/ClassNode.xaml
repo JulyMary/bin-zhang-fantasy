@@ -54,55 +54,61 @@
             </l:NodeExpander.Header>
 
             <StackPanel Focusable="True" Name="ConentStackPanel" Orientation="Vertical" sf:Node.IsSelectionScope="True" MouseDown="StackPanel_MouseDown">
-                <Expander  Header="Properties" IsExpanded="{Binding ShowProperties, Mode=TwoWay}" Background="#FFDDD7D4">
-                    <ListBox ItemsSource="{Binding Properties}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended">
-                        <ListBox.ItemContainerStyle>
-                            <Style>
-                                <Setter Property="ContentControl.HorizontalContentAlignment" Value="Stretch"/>
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                
-                                <Grid Height="23">
+                <StackPanel.Resources>
+                    <l:MemberImageConverter x:Key="mc" />
+                </StackPanel.Resources>
+                <ListBox ItemsSource="{Binding Members}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended">
+                    <ListBox.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="ContentControl.HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>  
+                            <Grid Height="23">
+                                <Border Margin="2,2,2,2">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource mc}}">
+                                        </Image>
 
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Entity.Name}"/>
-                                    <StackPanel Orientation="Horizontal" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center" Name="UpDownPanel">
-                                        <StackPanel.Resources>
-                                            <Style TargetType="Image">
-                                               
-                                                <Setter Property="Width" Value="16" />
-                                                <Setter Property="Height" Value="16" />
-                                                
-                                            </Style>
-                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
-                                                <Setter Property="HorizontalAlignment" Value="Right" />
-                                                <Setter Property="BorderThickness" Value="0" />
-                                                <Setter Property="Focusable" Value="False" />
-                                               
-                                            </Style>
-                                        </StackPanel.Resources>
-                                        <Button IsEnabled="{Binding CanMoveUp}" Click="MoveUpButton_Click">
-                                            <f:AutoGrayImage IsEnabled="{Binding CanMoveUp}" Source="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
-                                        </Button>
-                                        <Button  IsEnabled="{Binding CanMoveDown}" Click="MoveDownButton_Click">
-                                            <f:AutoGrayImage IsEnabled="{Binding CanMoveDown}"  Source="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
-                                        </Button>
+
+                                        <TextBlock Text="{Binding Name}"/>
                                     </StackPanel>
+                                </Border>
+                                <StackPanel Orientation="Horizontal" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center" Name="UpDownPanel">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="Image">
+                                               
+                                            <Setter Property="Width" Value="16" />
+                                            <Setter Property="Height" Value="16" />
+                                                
+                                        </Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                            <Setter Property="Focusable" Value="False" />
+                                               
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <Button IsEnabled="{Binding CanMoveUp}" Click="MoveUpButton_Click">
+                                        <f:AutoGrayImage IsEnabled="{Binding CanMoveUp}" Source="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
+                                    </Button>
+                                    <Button  IsEnabled="{Binding CanMoveDown}" Click="MoveDownButton_Click">
+                                        <f:AutoGrayImage IsEnabled="{Binding CanMoveDown}"  Source="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
+                                    </Button>
+                                </StackPanel>
                                    
-                                </Grid>
-                                <DataTemplate.Triggers>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
-                                        <Setter TargetName="UpDownPanel" Property="Visibility"  Value="Visible"/>
-                                    </DataTrigger>
-                                </DataTemplate.Triggers>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Expander>
-                <Expander Header="Relations" Visibility="Collapsed" IsExpanded="{Binding ShowRelations, Mode=TwoWay}"  Background="#FFDDD7D4" >
-
-                </Expander>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                    <Setter TargetName="UpDownPanel" Property="Visibility"  Value="Visible"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+              
+                
             </StackPanel>
         </l:NodeExpander>
     </Border>

@@ -58,6 +58,7 @@ namespace Fantasy.BusinessEngine.MSSQL
 
         public void CreateClassTable(BusinessClass @class)
         {
+            return;
             if (@class.PreviousState == EntityState.New)
             {
                 if (@class.IsSimple)

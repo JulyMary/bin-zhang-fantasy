@@ -7,74 +7,104 @@ using Fantasy.Windows;
 using System.ComponentModel;
 using System.Windows;
 using System.Collections.Specialized;
+using NHibernate;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
-    internal class PropertyNode : NotifyPropertyChangedObject, IWeakEventListener
+    public class PropertyNode : MemberNode, IWeakEventListener
     {
         public PropertyNode(BusinessProperty property)
         {
+          
             this.Entity = property;
-            CollectionChangedEventManager.AddListener(this.Entity.Class.Properties, this);
-            EvalUpDown();
-
+            this.EditingState = property.EntityState != EntityState.Clean ? EditingState.Dirty : Studio.EditingState.Clean;
+            EntityStateChangedEventManager.AddListener(this.Entity, this);
+            PropertyChangedEventManager.AddListener(this.Entity, this, "DisplayOrder");
+            PropertyChangedEventManager.AddListener(this.Entity, this, "Name"); 
         }
 
         public BusinessProperty Entity { get; private set; }
 
-        private bool _canMoveUp;
 
-        public bool CanMoveUp
+        public override string Name
         {
-            get { return _canMoveUp; }
-            private set
-            {
-                if (_canMoveUp != value)
-                {
-                    _canMoveUp = value;
-                    this.OnPropertyChanged("CanMoveUp");
-                }
-            }
-        }
-
-        private bool _canMoveDown;
-
-        public bool CanMoveDown
-        {
-            get { return _canMoveDown; }
+            get { return this.Entity.Name; }
             set
             {
-                if (_canMoveDown != value)
-                {
-                    _canMoveDown = value;
-                    this.OnPropertyChanged("CanMoveDown");
-                }
+                this.Entity.Name = value;
             }
         }
 
+        
 
-        private void EvalUpDown()
-        {
-
-            if (this.Entity.IsSystem || this.Entity.Class == null)
-            {
-                this.CanMoveDown = false;
-                this.CanMoveUp = false;
-            }
-            else
-            {
-                this.CanMoveUp = this.Entity.Class.Properties.IndexOf(this.Entity) > 0;
-                this.CanMoveDown = this.Entity.Class.Properties.LastOrDefault() != this.Entity;
-            }
-
-        }
+        #region IWeakEventListener Members
 
         public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
         {
-            EvalUpDown();
+            if (managerType == typeof(EntityStateChangedEventManager))
+            {
+                this.EditingState = this.Entity.EntityState != EntityState.Clean ? EditingState.Dirty : Studio.EditingState.Clean;
+                return true;
+            }
+            else if (managerType == typeof(PropertyChangedEventManager))
+            {
+                PropertyChangedEventArgs args = (PropertyChangedEventArgs)e;
+                switch (args.PropertyName)
+                {
+                    case "Name":
+                        this.OnPropertyChanged("Name");
+                        break;
+                    case "DisplayOrder":
+                        this.OnPropertyChanged("DisplayOrder");
+                        break;
+                }
 
-            return true;
+                return true;
+            }
+            return false;
         }
 
+        #endregion
+
+        public override long DisplayOrder
+        {
+            get
+            {
+                return this.Entity.DisplayOrder;
+            }
+            set
+            {
+                this.Entity.DisplayOrder = value;
+            }
+        }
+
+        public override void SaveEntity()
+        {
+            if (this.Entity.EntityState == EntityState.Clean)
+            {
+                return;
+            }
+            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+
+
+            session.BeginUpdate();
+            try
+            {
+                session.SaveOrUpdate(this.Entity);
+                session.EndUpdate(true);
+               
+            }
+            catch
+            {
+                session.EndUpdate(false);
+                throw;
+            }
+        }
+
+        public override bool IsSystem
+        {
+            get { return this.Entity.IsSystem; }
+        }
     }
 }
