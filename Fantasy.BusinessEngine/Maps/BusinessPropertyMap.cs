@@ -23,7 +23,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.IsNullable);
             this.Map(x => x.DefaultValue);
             this.Map(x => x.IsCalculated);
-            this.Map(x => x.Order).Column("DisplayOrder").Not.Nullable();
+            this.Map(x => x.DisplayOrder).Column("DisplayOrder").Not.Nullable();
           
         }
     }

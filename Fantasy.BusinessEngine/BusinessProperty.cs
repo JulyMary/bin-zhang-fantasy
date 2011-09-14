@@ -224,15 +224,15 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual long Order
+        public virtual long DisplayOrder
         {
             get
             {
-                return (long)this.GetValue("Order", 0L);
+                return (long)this.GetValue("DisplayOrder", 0L);
             }
             set
             {
-                this.SetValue("Order", value);
+                this.SetValue("DisplayOrder", value);
             }
         }
 

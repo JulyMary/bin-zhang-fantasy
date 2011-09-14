@@ -30,7 +30,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
                 Point p = e.GetPosition(view.Page);
 
-                Model.ClassGlyph node = new Model.ClassGlyph() {Id = Guid.NewGuid(), Left = p.X, Top = p.Y, ClassId = @class.Id, Entity=@class, ShowMember=false, ShowProperties=true, ShowRelations=true };
+                Model.ClassGlyph node = new Model.ClassGlyph() {Id = Guid.NewGuid(), Left = p.X, Top = p.Y, ClassId = @class.Id, Entity=@class, ShowMember=false, ShowInheritedMembers = false };
                 diagram.Classes.Add(node);
 
                 ISelectionService sel = this.Site.GetService<ISelectionService>();

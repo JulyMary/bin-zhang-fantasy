@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using NHibernate;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Collections;
+using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
@@ -19,9 +20,50 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         public ClassGlyph ()
 	    {
-            this._classListener = new WeakEventListener(this.EntityStateChanged);
-            this._propertyListener = new WeakEventListener(this.EntityStateChanged);
-            this._propertyCollectionListener = new WeakEventListener(this.PropertyCollectionChanged); 
+            this._classListener = new WeakEventListener((t, sender, e) =>
+            {
+                if (((IEntity)sender).EntityState != EntityState.Clean)
+                {
+                    this.EditingState = EditingState.Dirty;
+                }
+                return true;
+            });
+
+            this._memberListener = new WeakEventListener((t, sender, e) =>
+            {
+                if (((MemberNode)sender).EditingState == Studio.EditingState.Dirty)
+                {
+                    this.EditingState = Studio.EditingState.Dirty;
+                }
+                return true;
+            });
+
+            this._memberCollectionListener = new WeakEventListener((t, sender, args) =>
+            {
+                NotifyCollectionChangedEventArgs e = (NotifyCollectionChangedEventArgs)args;
+                if (e.Action != NotifyCollectionChangedAction.Move)
+                {
+                    if (e.OldItems != null)
+                    {
+                        foreach (MemberNode member in e.OldItems)
+                        {
+                            PropertyChangedEventManager.RemoveListener(member, this._memberListener, "EditingState");
+                        }
+                    }
+
+                    if (e.NewItems != null)
+                    {
+
+                        foreach (MemberNode member in e.NewItems)
+                        {
+                            PropertyChangedEventManager.AddListener(member, this._memberListener, "EditingState");
+                        }
+                    }
+                }
+
+                this.EditingState = EditingState.Dirty;
+                return true;
+            });
 	    }
 
         [XAttribute("id")]
@@ -123,35 +165,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
-        [XAttribute("showProperties")]
-        private bool _showProperties;
+        [XAttribute("showInherited")]
+        private bool _showInheritedMembers;
 
-        public bool ShowProperties
+        public bool ShowInheritedMembers
         {
-            get { return _showProperties; }
+            get { return _showInheritedMembers; }
             set
             {
-                if (_showProperties != value)
+                if (_showInheritedMembers != value)
                 {
-                    _showProperties = value;
-                    this.OnPropertyChanged("ShowProperties");
-                }
-            }
-        }
-
-      
-        [XAttribute("showRelations")]
-        private bool _showRelations;
-
-        public bool ShowRelations
-        {
-            get { return _showRelations; }
-            set
-            {
-                if (_showRelations != value)
-                {
-                    _showRelations = value;
-                    this.OnPropertyChanged("ShowRelations");
+                    _showInheritedMembers = value;
+                    this.OnPropertyChanged("ShowInheritedMembers");
                 }
             }
         }
@@ -171,70 +196,53 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         }
 
         private WeakEventListener _classListener;
-        private WeakEventListener _propertyListener;
-        private WeakEventListener _propertyCollectionListener;
+        private WeakEventListener _memberListener;
+        private WeakEventListener _memberCollectionListener;
 
 
-        private bool EntityStateChanged(Type managerType, object sender, EventArgs e)
+        private ObservableAdapterCollection<PropertyNode> _properties;
+        public ObservableAdapterCollection<PropertyNode> Properties
         {
-            if (((IEntity)sender).EntityState != EntityState.Clean)
+            get
             {
-                this.EditingState = EditingState.Dirty;
+                return _properties;
             }
-            return true;
         }
+        private ObservableAdapterCollection<LeftRoleNode> _leftRoles;
+        private ObservableAdapterCollection<RightRoleNode> _rightRoles;
 
         private void AttatchEntity(BusinessClass entity)
         {
            
             EditingState state = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
             EntityStateChangedEventManager.AddListener(this.Entity, this._classListener);
-            foreach (BusinessProperty prop in entity.Properties)
+
+
+            this._properties = new ObservableAdapterCollection<PropertyNode>(entity.Properties, p => { return new PropertyNode((BusinessProperty)p) { Site = this.Site }; });
+            this._leftRoles = new ObservableAdapterCollection<LeftRoleNode>(entity.RightAssociations, a => { return new LeftRoleNode((BusinessAssociation)a) { Site = this.Site }; });
+            this._rightRoles = new ObservableAdapterCollection<RightRoleNode>(entity.LeftAssociations, a => { return new RightRoleNode((BusinessAssociation)a){ Site = this.Site }; });
+
+            this.Members.AddChildCollection(new IEnumerable<MemberNode>[] { this._properties, this._leftRoles, this._rightRoles });
+
+            CollectionChangedEventManager.AddListener(this._properties, this._memberCollectionListener);
+            CollectionChangedEventManager.AddListener(this._leftRoles, this._memberCollectionListener);
+            CollectionChangedEventManager.AddListener(this._rightRoles, this._memberCollectionListener);
+
+            
+
+            foreach (MemberNode member in this._properties.Union<MemberNode>(this._leftRoles).Union(this._rightRoles))
             {
-                EntityStateChangedEventManager.AddListener(prop, this._propertyListener);
-                if (prop.EntityState != EntityState.Clean)
+                PropertyChangedEventManager.AddListener(member, this._memberListener, "EditingState");
+                if (member.EditingState == Studio.EditingState.Dirty)
                 {
                     state = EditingState.Dirty;
                 }
             }
 
-            this.Properties = new ObservableAdapterCollection<PropertyNode>(entity.Properties, p => { return new PropertyNode((BusinessProperty)p); });
-
             this.EditingState = state;
 
 
-            CollectionChangedEventManager.AddListener((INotifyCollectionChanged)this.Entity.Properties, this._propertyCollectionListener); 
-            
-
         }
-
-        private bool PropertyCollectionChanged(Type managerType, object sender, EventArgs args)
-        {
-            NotifyCollectionChangedEventArgs e = (NotifyCollectionChangedEventArgs)args;
-            if (e.Action != NotifyCollectionChangedAction.Move)
-            {
-                if (e.OldItems != null)
-                {
-                    foreach (BusinessProperty prop in e.OldItems)
-                    {
-                        EntityStateChangedEventManager.RemoveListener(prop, this._propertyListener);
-                    }
-                }
-
-                if (e.NewItems != null)
-                {
-
-                    foreach (BusinessProperty prop in e.NewItems)
-                    {
-                        EntityStateChangedEventManager.AddListener(prop, this._propertyListener);
-                    }
-                }
-            }
-
-            this.EditingState = EditingState.Dirty;
-            return true;
-        }
-
 
 
         private BusinessClass _entity;
@@ -251,9 +259,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 }
             }
         }
-
-
-       
 
 
         private int _displayIndex;
@@ -273,7 +278,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
 
         private static string[] NoneSerializeProperties = new string[] {
-            "EditingState", "Properties", "DisplayIndex"
+            "EditingState", "DisplayIndex"
         };
 
         protected override void OnPropertyChanged(string propertyName)
@@ -299,9 +304,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
 
                     session.SaveOrUpdate(this.Entity);
-                    foreach (BusinessProperty prop in this.Entity.Properties)
+                    foreach (MemberNode member in this.Members)
                     {
-                        session.SaveOrUpdate(prop);
+                        member.SaveEntity();
                     }
 
                     IDDLService dll = this.Site.GetRequiredService<IDDLService>();
@@ -320,19 +325,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         }
 
 
-        private INotifyCollectionChanged _properties;
+        private MemaberNodeCollection _members = new MemaberNodeCollection();
 
-        public INotifyCollectionChanged Properties
+        public MemaberNodeCollection Members
         {
-            get { return _properties; }
-            private set
-            {
-                if (_properties != value)
-                {
-                    _properties = value;
-                    this.OnPropertyChanged("Properties");
-                }
-            }
+            get { return _members; }
+            
         }
 
         IBusinessEntity IBusinessEntityGlyph.Entity

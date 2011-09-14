@@ -6,19 +6,18 @@ using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.BusinessEngine.Events
 {
-    public class BusinessPropertyCreateOrderHandler : ObjectWithSite, IEntityEventHandler
+    public class BusinessAssociationCreateOrderHandler : ObjectWithSite, IEntityEventHandler
     {
-
-
         #region IEntityEventHandler Members
 
         public void Execute(EntityEventArgs e)
         {
-            BusinessProperty property = (BusinessProperty)e.Entity;
+            BusinessAssociation ass = (BusinessAssociation)e.Entity;
 
             ISequenceService seq = this.Site.GetRequiredService<ISequenceService>();
 
-            property.DisplayOrder = seq.LongNext(WellknownSequences.MetaModel);
+            ass.LeftRoleDisplayOrder = seq.LongNext(WellknownSequences.MetaModel);
+            ass.RightRoleDisplayOrder = seq.LongNext(WellknownSequences.MetaModel);
         }
 
         #endregion

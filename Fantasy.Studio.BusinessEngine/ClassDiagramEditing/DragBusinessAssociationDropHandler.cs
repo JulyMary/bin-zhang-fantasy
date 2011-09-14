@@ -34,10 +34,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
 
 
-                Model.ClassGlyph leftNode = new Model.ClassGlyph() { Id = Guid.NewGuid(), Left = p.X, Top = p.Y, ClassId = association.LeftClass.Id, Entity = association.LeftClass, ShowMember = false, ShowProperties = true, ShowRelations = true };
+                Model.ClassGlyph leftNode = new Model.ClassGlyph() { Id = Guid.NewGuid(), Left = p.X, Top = p.Y, ClassId = association.LeftClass.Id, Entity = association.LeftClass, ShowMember = false, ShowInheritedMembers=false };
                 diagram.Classes.Add(leftNode);
 
-                Model.ClassGlyph rightNode = new Model.ClassGlyph() { Id = Guid.NewGuid(), Left = p.X, Top = p.Y + 200, ClassId = association.RightClass.Id, Entity = association.RightClass, ShowMember = false, ShowProperties = true, ShowRelations = true };
+                Model.ClassGlyph rightNode = new Model.ClassGlyph() { Id = Guid.NewGuid(), Left = p.X, Top = p.Y + 200, ClassId = association.RightClass.Id, Entity = association.RightClass, ShowMember = false, ShowInheritedMembers = false };
                 diagram.Classes.Add(rightNode);
 
 

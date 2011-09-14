@@ -117,7 +117,9 @@
     <Compile Include="ClassDiagramEditing\DeleteClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\Model\AssociationGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\AssociationGlyphAdapterFactory.cs" />
-    <Compile Include="ClassDiagramEditing\Model\RoleNode.cs" />
+    <Compile Include="ClassDiagramEditing\Model\MemaberNodeCollection.cs" />
+    <Compile Include="ClassDiagramEditing\Model\MemberNode.cs" />
+    <Compile Include="ClassDiagramEditing\Model\LeftRoleNode.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagramGlyph.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassGlyphAdapterFactory.cs" />
     <Compile Include="ClassDiagramEditing\Model\ClassDiagram.cs" />
@@ -144,6 +146,8 @@
     <Compile Include="ClassDiagramEditing\Model\IsSelectedShortcut.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsSelectedSystemEntity.cs" />
     <Compile Include="ClassDiagramEditing\Model\Point.cs" />
+    <Compile Include="ClassDiagramEditing\Model\PropertyNodeAdapterFactory.cs" />
+    <Compile Include="ClassDiagramEditing\Model\RightRoleNode.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\CardinalityAdorner.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassDiagramNode.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\ClassNode.xaml.cs">
@@ -152,6 +156,7 @@
     <Compile Include="ClassDiagramEditing\Shapes\EnumNode.xaml.cs">
       <DependentUpon>EnumNode.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ClassDiagramEditing\Shapes\MemberImageConverter.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\NodeExpander.cs" />
     <Compile Include="ClassDiagramEditing\Model\PropertyNode.cs" />
     <Compile Include="ClassDiagramEditing\Shapes\UserControl1.xaml.cs">

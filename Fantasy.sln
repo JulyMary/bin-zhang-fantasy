@@ -26,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ProductInfo.cs = ProductInfo.cs
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasy.AddInFormatter", "Fantasy.AddInFormatter\Fantasy.AddInFormatter.csproj", "{639B80BD-E20F-4655-B043-D75EA3106537}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{322BF4F2-E944-4FB0-854C-E1DD3FB8A110}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -276,6 +280,31 @@ Global
 		{F19EA870-B3B9-4F9F-ADDC-BBD885FE56A9}.Release-Xml|Mixed Platforms.ActiveCfg = Release-Xml|Any CPU
 		{F19EA870-B3B9-4F9F-ADDC-BBD885FE56A9}.Release-Xml|Mixed Platforms.Build.0 = Release-Xml|Any CPU
 		{F19EA870-B3B9-4F9F-ADDC-BBD885FE56A9}.Release-Xml|x86.ActiveCfg = Release-Xml|Any CPU
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug|x86.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug|x86.Build.0 = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.DebugHost|Any CPU.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.DebugHost|Mixed Platforms.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.DebugHost|Mixed Platforms.Build.0 = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.DebugHost|x86.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.DebugHost|x86.Build.0 = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug-Xml|Any CPU.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug-Xml|Mixed Platforms.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug-Xml|Mixed Platforms.Build.0 = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug-Xml|x86.ActiveCfg = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Debug-Xml|x86.Build.0 = Debug|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release|Any CPU.ActiveCfg = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release|Mixed Platforms.Build.0 = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release|x86.ActiveCfg = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release|x86.Build.0 = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release-Xml|Any CPU.ActiveCfg = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release-Xml|Mixed Platforms.ActiveCfg = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release-Xml|Mixed Platforms.Build.0 = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release-Xml|x86.ActiveCfg = Release|x86
+		{639B80BD-E20F-4655-B043-D75EA3106537}.Release-Xml|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -283,5 +312,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{AD36B6B1-D676-40AD-BABE-9F6D6EE926C9} = {4AC48CF4-2F4F-4977-91EE-54FBE9FF0E34}
 		{F19EA870-B3B9-4F9F-ADDC-BBD885FE56A9} = {4AC48CF4-2F4F-4977-91EE-54FBE9FF0E34}
+		{639B80BD-E20F-4655-B043-D75EA3106537} = {322BF4F2-E944-4FB0-854C-E1DD3FB8A110}
 	EndGlobalSection
 EndGlobal
