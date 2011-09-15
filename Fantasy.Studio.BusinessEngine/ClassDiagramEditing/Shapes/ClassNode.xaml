@@ -57,7 +57,49 @@
                 <StackPanel.Resources>
                     <l:MemberImageConverter x:Key="mc" />
                 </StackPanel.Resources>
+                <ToggleButton Width="10" Height="10" HorizontalAlignment="Left" IsChecked="{Binding ShowInheritedMembers, Mode=TwoWay}">
+                    <ToggleButton.ToolTip>
+                        <ToolTip>
+                            <TextBlock>Show / hide inherited properties.</TextBlock>
+                        </ToolTip>
+                    </ToggleButton.ToolTip>
+                    <ToggleButton.Style>
+                       <Style TargetType="ToggleButton">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border Background="Transparent">
+                                             <ContentPresenter/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Content" >
+                                <Setter.Value>
+                                    <Path Data="M 2,5 H 8 M 5,2 V 8" Stroke="#FF666666" />
+                                    
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="true">
+
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Path Name="lines" Data="M 2,5 H 8" Stroke="#FF666666" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                             
+                            </Style.Triggers>
+                        </Style>
+                      
+                    </ToggleButton.Style>
+                    
+                </ToggleButton>
                 <ListBox ItemsSource="{Binding Members}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended">
+                    <ListBox.Background>
+                        <SolidColorBrush />
+                    </ListBox.Background>
                     <ListBox.ItemContainerStyle>
                         <Style>
                             <Setter Property="ContentControl.HorizontalContentAlignment" Value="Stretch"/>
@@ -72,22 +114,29 @@
                                         </Image>
 
 
-                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding Name}">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsInherited}" Value="true">
+                                                            <Setter Property="Foreground" Value="#FF666666"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style> 
+                                            </TextBlock.Style>
+                                        </TextBlock>
                                     </StackPanel>
                                 </Border>
                                 <StackPanel Orientation="Horizontal" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center" Name="UpDownPanel">
                                     <StackPanel.Resources>
                                         <Style TargetType="Image">
-                                               
                                             <Setter Property="Width" Value="16" />
                                             <Setter Property="Height" Value="16" />
-                                                
                                         </Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
                                             <Setter Property="HorizontalAlignment" Value="Right" />
                                             <Setter Property="BorderThickness" Value="0" />
                                             <Setter Property="Focusable" Value="False" />
-                                               
                                         </Style>
                                     </StackPanel.Resources>
                                     <Button IsEnabled="{Binding CanMoveUp}" Click="MoveUpButton_Click">
@@ -100,9 +149,13 @@
                                    
                             </Grid>
                             <DataTemplate.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True"/>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type l:ClassDiagramNode}}, Path=DataContext.IsShortCut}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
                                     <Setter TargetName="UpDownPanel" Property="Visibility"  Value="Visible"/>
-                                </DataTrigger>
+                                </MultiDataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

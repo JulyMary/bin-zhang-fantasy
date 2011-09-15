@@ -64,6 +64,21 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 this.EditingState = EditingState.Dirty;
                 return true;
             });
+
+            this._inheritanceChangedListener = new WeakEventListener((t, sender, args) =>
+            {
+                this.Members.Lock();
+                try
+                {
+                    this.DetachInheritedData();
+                    this.AttachInheritedData();
+                }
+                finally
+                {
+                    this.Members.Unlock();
+                }
+                return true;
+            });
 	    }
 
         [XAttribute("id")]
@@ -177,6 +192,17 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 {
                     _showInheritedMembers = value;
                     this.OnPropertyChanged("ShowInheritedMembers");
+                    if (this.Entity != null)
+                    {
+                        if (value)
+                        {
+                            this.AttachInheritedData();
+                        }
+                        else
+                        {
+                            this.DetachInheritedData();
+                        }
+                    }
                 }
             }
         }
@@ -222,13 +248,28 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this._leftRoles = new ObservableAdapterCollection<LeftRoleNode>(entity.RightAssociations, a => { return new LeftRoleNode((BusinessAssociation)a) { Site = this.Site }; });
             this._rightRoles = new ObservableAdapterCollection<RightRoleNode>(entity.LeftAssociations, a => { return new RightRoleNode((BusinessAssociation)a){ Site = this.Site }; });
 
-            this.Members.AddChildCollection(new IEnumerable<MemberNode>[] { this._properties, this._leftRoles, this._rightRoles });
+            this.Members.Lock();
+            try
+            {
+                this.Members.AddChildCollection(this._properties);
+                this.Members.AddChildCollection(this._leftRoles);
+                this.Members.AddChildCollection(this._rightRoles);
+
+                if (this.ShowInheritedMembers)
+                {
+                    this.AttachInheritedData();
+                }
+            }
+            finally
+            {
+                this.Members.Unlock();
+            }
 
             CollectionChangedEventManager.AddListener(this._properties, this._memberCollectionListener);
             CollectionChangedEventManager.AddListener(this._leftRoles, this._memberCollectionListener);
             CollectionChangedEventManager.AddListener(this._rightRoles, this._memberCollectionListener);
 
-            
+           
 
             foreach (MemberNode member in this._properties.Union<MemberNode>(this._leftRoles).Union(this._rightRoles))
             {
@@ -242,6 +283,76 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this.EditingState = state;
 
 
+        }
+
+        private WeakEventListener _inheritanceChangedListener;
+
+
+        private void DetachInheritedData()
+        {
+            this.Members.Lock();
+            PropertyChangedEventManager.RemoveListener(this.Entity, this._inheritanceChangedListener, "ParentClass");
+            try
+            {
+                foreach (InheritedData data in this._inheritedData)
+                {
+                    PropertyChangedEventManager.RemoveListener(data.Class, this._inheritanceChangedListener, "ParentClass");
+                    this.Members.RemoveChildCollection(data.Properties);
+                    this.Members.RemoveChildCollection(data.LeftRoles);
+                    this.Members.RemoveChildCollection(data.RightRoles);
+                }
+            }
+            finally
+            {
+                this.Members.Unlock();
+            }
+        }
+
+        private void AttachInheritedData()
+        {
+            PropertyChangedEventManager.AddListener(this.Entity, this._inheritanceChangedListener, "ParentClass");
+            this.Members.Lock();
+            try
+            {
+                BusinessClass @class = this.Entity.ParentClass;
+                while (@class != null)
+                {
+                    InheritedData data = new InheritedData()
+                    {
+                        Class = @class,
+                        Properties = new ObservableAdapterCollection<PropertyNode>(@class.Properties, p => new PropertyNode((BusinessProperty)p) { Site = this.Site, IsInherited = true }),
+                        LeftRoles = new ObservableAdapterCollection<LeftRoleNode>(@class.RightAssociations, a => new LeftRoleNode((BusinessAssociation)a) { Site = this.Site, IsInherited = true }),
+                        RightRoles = new ObservableAdapterCollection<RightRoleNode>(@class.LeftAssociations, a => new RightRoleNode((BusinessAssociation)a) { Site = this.Site, IsInherited = true })
+
+                    };
+                    
+                    this.Members.AddChildCollection(data.Properties);
+                    this.Members.AddChildCollection(data.LeftRoles);
+                    this.Members.AddChildCollection(data.RightRoles);
+                    PropertyChangedEventManager.AddListener(@class, this._inheritanceChangedListener, "ParentClass");
+
+                    this._inheritedData.Add(data);
+                    @class = @class.ParentClass;
+                }
+            }
+            finally
+            {
+                this.Members.Unlock();
+            }
+            
+        }
+
+        private List<InheritedData> _inheritedData = new List<InheritedData>();
+
+        private class InheritedData
+        {
+            public BusinessClass Class { get; set; }
+
+            public ObservableAdapterCollection<PropertyNode> Properties { get; set; }
+
+            public ObservableAdapterCollection<LeftRoleNode> LeftRoles { get; set; }
+
+            public ObservableAdapterCollection<RightRoleNode> RightRoles { get; set; }
         }
 
 
