@@ -17,5 +17,9 @@ namespace Fantasy.BusinessEngine.Services
 
         void DeleteClassTable(BusinessClass @class);
 
+        string[] GetTableFullNames();
+
+        string[] GetTableNames(string schema);
+
     }
 }

@@ -24,13 +24,18 @@ namespace Fantasy.Studio.BusinessEngine
 
         public static BusinessClass AddBusinessClass(this IEntityService es, BusinessPackage package)
         {
-           
+
+
             BusinessClass rs = es.CreateEntity<BusinessClass>();
 
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessClassName, package.Classes.Select(c => c.Name));
             rs.ParentClass = es.GetRootClass();
             rs.ParentClass.ChildClasses.Add(rs);
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
+            rs.TableSchema = Settings.Default.DefaultTableSchema;
+
+            rs.TableName = String.Format("{0}_{1}", Settings.Default.DefaultClassTablePrefix, rs.CodeName);
+            rs.TableSpace = String.IsNullOrEmpty(Settings.Default.DefaultTableSpace) ? null : Settings.Default.DefaultTableSpace;
             package.Classes.Add(rs);
             rs.Package = package;
 
@@ -117,6 +122,7 @@ namespace Fantasy.Studio.BusinessEngine
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessAssociationName, package.Associations.Select(a => a.Name));
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             rs.Package = package;
+
             package.Associations.Add(rs);
             return rs;
         }
@@ -130,18 +136,21 @@ namespace Fantasy.Studio.BusinessEngine
             
             rs.Name = UniqueNameGenerator.GetName(left.Name + "_" + right.Name, package.Associations.Select(a => a.Name));
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
+            rs.TableSchema = Settings.Default.DefaultTableSchema;
+            rs.TableSpace = string.IsNullOrEmpty(Settings.Default.DefaultTableSpace) ? null : Settings.Default.DefaultTableSpace;
+            rs.TableName = Settings.Default.DefaultAssociationTablePrefix + "_" + rs.CodeName;
             
             rs.LeftClass = left;
-            rs.LeftRoleName = left.Name;
-            rs.LeftRoleCode = left.CodeName;
+            rs.LeftRoleName = UniqueNameGenerator.GetName(left.Name, right.RightAssociations.Select(a=>a.LeftRoleName)) ;
+            rs.LeftRoleCode = UniqueNameGenerator.GetCodeName(rs.LeftRoleName);
             rs.LeftCardinality = "0..1";
             rs.LeftNavigatable = true;
             left.LeftAssociations.Add(rs);
 
 
             rs.RightClass = right;
-            rs.RightRoleName = right.Name;
-            rs.RightRoleCode = right.CodeName;
+            rs.RightRoleName = UniqueNameGenerator.GetName(right.Name, left.LeftAssociations.Select(a => a.RightRoleName));
+            rs.RightRoleCode = UniqueNameGenerator.GetCodeName(rs.RightRoleName);
             rs.RightCardinality = "*";
             rs.RightNavigatable = true;
             right.RightAssociations.Add(rs);

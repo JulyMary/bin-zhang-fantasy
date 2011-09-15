@@ -7,6 +7,7 @@ using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using NHibernate;
 using Fantasy.Studio.Controls;
+using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
@@ -29,40 +30,61 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
         }
 
-        private IBusinessEntity _selectedItem;
+        private BusinessClass _selectedItem;
 
-        public IBusinessEntity SelectedItem
+        public BusinessClass SelectedItem
         {
             get { return _selectedItem; }
             set
             {
                 if (_selectedItem != value)
                 {
-                    _selectedItem = value;
+                    SelectedItemChangeingEventArgs e = new SelectedItemChangeingEventArgs(value);
+                    this.OnSelectedItemChanging(e);
+                    if (!e.Cancel)
+                    {
+                        _selectedItem = value;
 
-                    this.OnPropertyChanged("SelectedItem");
-
-                    this.IsOKEnabled = _selectedItem != null && !(_selectedItem is BusinessPackage);
+                        this.OnPropertyChanged("SelectedItem");
+                    }
+                    else if(this._selectedItem != null)
+                    {
+                        this._selectedItem = null;
+                        this.OnPropertyChanged("SelectedItem");
+                    }
+                    
+                    
                 }
             }
         }
 
-        private bool _isOKEnabled = false;
 
-        public bool IsOKEnabled
+        public event EventHandler<SelectedItemChangeingEventArgs> SelectedItemChanging;
+
+        protected virtual void OnSelectedItemChanging(SelectedItemChangeingEventArgs e)
         {
-            get { return _isOKEnabled; }
-            private set
+            if (this.SelectedItemChanging != null)
             {
-                if (_isOKEnabled != value)
-                {
-                    _isOKEnabled = value;
-                    this.OnPropertyChanged("IsOKEnabled");
-                }
+                this.SelectedItemChanging(this, e);
             }
         }
+
 
         public IServiceProvider Site { get; set; }
+
+
+        public class SelectedItemChangeingEventArgs : CancelEventArgs
+        {
+            internal SelectedItemChangeingEventArgs(BusinessClass @class)
+            {
+                this.Class = @class;
+            }
+
+           
+            public BusinessClass Class { get; private set; }
+
+
+        }
         
     }
 }

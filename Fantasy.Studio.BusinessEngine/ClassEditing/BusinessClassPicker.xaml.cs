@@ -40,7 +40,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         private void extendableTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             ITreeViewItem item = e.NewValue as ITreeViewItem;
-            IBusinessEntity entity = item != null ? (IBusinessEntity)item.DataContext : null;
+            BusinessClass entity = item != null ? item.DataContext as BusinessClass : null;
             ((BusinessClassPikcerModel)this.DataContext).SelectedItem = entity;
         }
 
@@ -51,6 +51,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
                 this.DialogResult = true;
             }
         }
-
+        
+       
+        
+       
+       
     }
+
+
+
+
+
 }
