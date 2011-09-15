@@ -1,9 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2011/9/10 15:39:11                           */
+/* Created on:     15/09/2011 5:05:12 PM                        */
 /*==============================================================*/
-use fantasy
-go
+
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -452,17 +451,19 @@ create table BUSINESSASSOCIATION (
    CODENAME             T_NAME               not null,
    TABLENAME            T_DBENTITY           not null,
    TABLESCHEMA          T_DBENTITY           not null,
-   TABLESPACE           T_DBENTITY           not null,
+   TABLESPACE           T_DBENTITY           null,
    LEFTROLENAME         T_NAME               null,
    LEFTROLECODE         T_NAME               null,
    LEFTCLASSID          T_GUID               null,
    LEFTCARDINALITY      varchar(16)          not null,
    LEFTNAVIGATABLE      bit                  not null,
+   LEFTROLEDISPLAYORDER bigint               null,
    RIGHTROLENAME        T_NAME               null,
    RIGHTROLECODE        T_NAME               null,
    RIGHTCLASSID         T_GUID               null,
    RIGHTCARDINALITY     varchar(16)          not null,
    RIGHTNAVIGATABLE     bit                  not null,
+   RIGHTROLEDISPLAYORDER bigint               null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
    ISSYSTEM             bit                  not null
