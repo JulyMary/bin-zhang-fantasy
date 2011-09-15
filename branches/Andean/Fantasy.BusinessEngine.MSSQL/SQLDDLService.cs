@@ -183,6 +183,37 @@ namespace Fantasy.BusinessEngine.MSSQL
             this.ExecuteSql(sql);
         }
 
+        public string[] GetTableFullNames()
+        {
+            string sql = "select t2.name + '.' + t1.name  from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id";
+
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                return cmd.ExecuteList<string>().ToArray();
+
+            }
+        }
+
+
+
      
+
+
+        public string[] GetTableNames(string schema)
+        {
+            string sql = String.Format("select t1.name from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id and t2.name = '{0}'", schema) ;
+
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                return cmd.ExecuteList<string>().ToArray();
+
+            }
+        }
+
+        
     }
 }

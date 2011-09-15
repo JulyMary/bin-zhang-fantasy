@@ -164,6 +164,7 @@
     </Compile>
     <Compile Include="ClassEditing\AddClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionAdorner.cs" />
+    <Compile Include="ClassEditing\BusinessClassNameSetAction.cs" />
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\IConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />

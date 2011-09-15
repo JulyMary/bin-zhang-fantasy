@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing.Design;
 using System.ComponentModel;
+using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
@@ -18,6 +19,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             object rs = value;
             BusinessClassPikcerModel model = new BusinessClassPikcerModel(this.Site);
+            model.SelectedItemChanging += (sender, e) => {
+                if (e.Class != null)
+                {
+                    if (e.Class.Flatten(c => c.ParentClass).Any(c => c == (BusinessClass)((Fantasy.Studio.Descriptor.CustomTypeDescriptor)context.Instance).Component))
+                    {
+                        e.Cancel = true;
+                    }
+                }
+            }; 
             try
             {
                 BusinessClassPicker picker = new BusinessClassPicker();
