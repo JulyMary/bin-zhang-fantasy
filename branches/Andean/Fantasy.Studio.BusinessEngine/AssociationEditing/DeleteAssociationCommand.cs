@@ -16,17 +16,15 @@ namespace Fantasy.Studio.BusinessEngine.AssociationEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessAssociation association = (BusinessAssociation)args;
-            es.DefaultSession.BeginUpdate();
+            IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
+            es.BeginUpdate();
             try
             {
                 association.Package.Associations.Remove(association);
                 association.Package = null;
 
-                if (association.EntityState != EntityState.New && association.EntityState != EntityState.Deleted)
-                {
-                    es.DefaultSession.Delete(association);
-                }
-
+                
+               
                 if (association.LeftClass != null)
                 {
                     association.LeftClass.LeftAssociations.Remove(association);
@@ -38,13 +36,15 @@ namespace Fantasy.Studio.BusinessEngine.AssociationEditing
                     association.RightClass.RightAssociations.Remove(association);
                     association.RightClass = null;
                 }
-
-                es.DefaultSession.EndUpdate(true);
+               
+                ddl.DeleteAssociationTable(association);
+                es.Delete(association);
+                es.EndUpdate(true);
                 this.Site.GetRequiredService<IEditingService>().CloseView(association, true);
             }
             catch
             {
-                es.DefaultSession.EndUpdate(false);
+                es.EndUpdate(false);
             }
 
             return null;

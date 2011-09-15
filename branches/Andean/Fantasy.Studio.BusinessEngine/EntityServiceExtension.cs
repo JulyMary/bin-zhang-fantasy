@@ -34,7 +34,7 @@ namespace Fantasy.Studio.BusinessEngine
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             rs.TableSchema = Settings.Default.DefaultTableSchema;
 
-            rs.TableName = String.Format("{0}_{1}", Settings.Default.DefaultClassTablePrefix, rs.CodeName);
+            rs.TableName = String.Format("{0}_{1}", Settings.Default.DefaultClassTablePrefix, rs.CodeName).ToUpper();
             rs.TableSpace = String.IsNullOrEmpty(Settings.Default.DefaultTableSpace) ? null : Settings.Default.DefaultTableSpace;
             package.Classes.Add(rs);
             rs.Package = package;
@@ -138,7 +138,7 @@ namespace Fantasy.Studio.BusinessEngine
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             rs.TableSchema = Settings.Default.DefaultTableSchema;
             rs.TableSpace = string.IsNullOrEmpty(Settings.Default.DefaultTableSpace) ? null : Settings.Default.DefaultTableSpace;
-            rs.TableName = Settings.Default.DefaultAssociationTablePrefix + "_" + rs.CodeName;
+            rs.TableName = (Settings.Default.DefaultAssociationTablePrefix + "_" + rs.CodeName).ToUpper();
             
             rs.LeftClass = left;
             rs.LeftRoleName = UniqueNameGenerator.GetName(left.Name, right.RightAssociations.Select(a=>a.LeftRoleName)) ;
@@ -157,6 +157,18 @@ namespace Fantasy.Studio.BusinessEngine
 
             return rs;
 
+        }
+
+        public static BusinessProperty AddBusinessProperty(this IEntityService es, BusinessClass @class)
+        {
+            BusinessProperty rs = es.CreateEntity<BusinessProperty>();
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessPropertyName, @class.Properties.Select(p => p.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
+            rs.FieldName = rs.CodeName.ToUpper();
+            rs.Class = @class;
+            @class.Properties.Add(rs);
+
+            return rs;
         }
     }
 }

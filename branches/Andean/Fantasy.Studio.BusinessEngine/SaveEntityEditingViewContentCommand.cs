@@ -16,23 +16,21 @@ namespace Fantasy.Studio.BusinessEngine
 
         public object Execute(object caller)
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
             EntityEditingViewContent vwr = (EntityEditingViewContent)caller;
-            session.BeginUpdate();
+            es.BeginUpdate();
             try
             {
 
                 vwr.Save();
-                session.EndUpdate(true);
+                es.EndUpdate(true);
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
-            
-
             
             return null;
         }

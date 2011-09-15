@@ -61,7 +61,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assembly File (.dll)|*.dll.
+        ///   Looks up a localized string similar to Assembly File |*.dll.
         /// </summary>
         internal static string AddReferenceDialogFilter {
             get {

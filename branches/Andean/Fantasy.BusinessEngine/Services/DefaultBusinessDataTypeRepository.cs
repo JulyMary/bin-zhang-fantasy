@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.ServiceModel;
-using NHibernate.Linq;
+
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -13,9 +13,10 @@ namespace Fantasy.BusinessEngine.Services
 
         public override void InitializeService()
         {
+           
 
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            var query = from t in es.DefaultSession.Query<BusinessDataType>() orderby t.Name select t;
+            var query = from t in es.Query<BusinessDataType>() orderby t.Name select t;
             _all = query.ToArray();
 
             this.Binary = _all.Single(t => t.Id == BusinessDataType.WellknownIds.Binary);

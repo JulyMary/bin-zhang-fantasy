@@ -28,21 +28,21 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessEnum @enum = (BusinessEnum)parameter;
-            es.DefaultSession.BeginUpdate();
+            es.BeginUpdate();
             try
             {
                 @enum.Package.Enums.Remove(@enum);
 
                 if (@enum.EntityState != EntityState.New)
                 {
-                    es.DefaultSession.Delete(@enum);
+                    es.Delete(@enum);
                 }
-                es.DefaultSession.EndUpdate(true);
+                es.EndUpdate(true);
                 this.Site.GetRequiredService<IEditingService>().CloseView(@enum, true);
             }
             catch
             {
-                es.DefaultSession.EndUpdate(false);
+                es.EndUpdate(false);
             }
 
         }

@@ -104,18 +104,18 @@ namespace Fantasy.Studio.BusinessEngine
         {
             
 
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
-            session.BeginUpdate();
+            es.BeginUpdate();
             try
             {
 
-                session.SaveOrUpdate(this._entity);
-                session.EndUpdate(true);
+                es.SaveOrUpdate(this._entity);
+                es.EndUpdate(true);
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
             this.DirtyState = EditingState.Clean;

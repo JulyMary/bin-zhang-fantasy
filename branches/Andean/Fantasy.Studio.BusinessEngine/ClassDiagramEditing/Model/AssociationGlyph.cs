@@ -151,20 +151,28 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public override void SaveEntity()
         {
             
-                ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
+            es.BeginUpdate();
+            try
+            {
+                if (this.Entity.EntityState == EntityState.New)
+                {
+                    if (this.Diagram.Associations.FirstOrDefault(a => a.Entity == this.Entity) == this)
+                    {
+                        ddl.CreateAssoicationTable(this.Entity);
+                    }
+                }
 
-                session.BeginUpdate();
-                try
-                {
-                    session.SaveOrUpdate(this.Entity);
-                    session.EndUpdate(true);
-                    base.SaveEntity();
-                }
-                catch
-                {
-                    session.EndUpdate(false);
-                    throw;
-                }
+                es.SaveOrUpdate(this.Entity);
+                es.EndUpdate(true);
+                base.SaveEntity();
+            }
+            catch
+            {
+                es.EndUpdate(false);
+                throw;
+            }
             
         }
 

@@ -18,18 +18,24 @@ namespace Fantasy.BusinessEngine.Events
 
             if (entity != null)
             {
-                if (_treeNode == null)
-                {
-                    _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/deleted");
-                }
+                OnPostDelete(entity);
+            }
+        }
 
-                entity.EntityState = EntityState.Deleted;
-                EntityEventArgs e = new EntityEventArgs(entity);
 
-                foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(@event.Entity, this.Site))
-                {
-                    handler.Execute(e);
-                }
+        public void OnPostDelete(IEntity entity)
+        {
+            if (_treeNode == null)
+            {
+                _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/deleted");
+            }
+
+            entity.EntityState = EntityState.Deleted;
+            EntityEventArgs e = new EntityEventArgs(entity);
+
+            foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(entity, this.Site))
+            {
+                handler.Execute(e);
             }
         }
 

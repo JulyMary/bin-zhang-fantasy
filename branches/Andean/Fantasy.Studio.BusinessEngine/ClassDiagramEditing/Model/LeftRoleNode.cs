@@ -133,19 +133,20 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             {
                 return;
             }
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
 
-            session.BeginUpdate();
+
+            es.BeginUpdate();
             try
             {
-                session.SaveOrUpdate(this.Entity);
-                session.EndUpdate(true);
+                es.SaveOrUpdate(this.Entity);
+                es.EndUpdate(true);
 
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
         }

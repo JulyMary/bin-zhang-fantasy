@@ -150,21 +150,21 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 
         public void Save()
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
-            session.BeginUpdate();
+            es.BeginUpdate();
             try
             {
 
                 foreach (BusinessEnumValue value in this._model.Enum.EnumValues)
                 {
-                    session.SaveOrUpdate(value);
+                    es.SaveOrUpdate(value);
                 }
-                session.EndUpdate(true);
+                es.EndUpdate(true);
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
             this.DirtyState = EditingState.Clean;

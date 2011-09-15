@@ -26,9 +26,9 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
                 {
                     property.CodeName = cname;
                 }
-                if (property.EntityState == EntityState.New && property.FieldName == ocname)
+                if (property.EntityState == EntityState.New && property.FieldName == ocname.ToUpper())
                 {
-                    property.FieldName = cname;
+                    property.FieldName = cname.ToUpper();
                 }
                 
             }

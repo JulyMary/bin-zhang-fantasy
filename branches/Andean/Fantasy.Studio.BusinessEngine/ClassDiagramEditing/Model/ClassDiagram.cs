@@ -178,7 +178,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
                 foreach (ClassGlyph node in this.Classes.ToArray())
                 {
-                    BusinessClass @class = es.DefaultSession.Get<BusinessClass>(node.ClassId);
+                    BusinessClass @class = es.Get<BusinessClass>(node.ClassId);
                     if (@class == null)
                     {
                         this.Classes.Remove(node);
@@ -207,7 +207,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
                 foreach (EnumGlyph node in this.Enums.ToArray())
                 {
-                    BusinessEnum @enum = es.DefaultSession.Get<BusinessEnum>(node.EnumId);
+                    BusinessEnum @enum = es.Get<BusinessEnum>(node.EnumId);
                     if (@enum == null)
                     {
                         this.Enums.Remove(node);
@@ -221,7 +221,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 foreach (AssociationGlyph node in this.Associations.ToArray())
                 {
 
-                    BusinessAssociation association = es.DefaultSession.Get<BusinessAssociation>(node.AssociationId);
+                    BusinessAssociation association = es.Get<BusinessAssociation>(node.AssociationId);
                     ClassGlyph left = this.Classes.SingleOrDefault(c => c.Id == node.LeftGlyphId);
                     ClassGlyph right = this.Classes.SingleOrDefault(c => c.Id == node.RightGlyphId);
 
@@ -330,28 +330,35 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
         public void Save()
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
             IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
 
-            session.BeginUpdate();
+            es.BeginUpdate();
             try
             {
                 XSerializer ser = new XSerializer(typeof(ClassDiagram));
                 this.Entity.Diagram = ser.Serialize(this).ToString(SaveOptions.OmitDuplicateNamespaces);
 
-                session.SaveOrUpdate(this.Entity);
+                es.SaveOrUpdate(this.Entity);
 
                 foreach (IBusinessEntity entity in this.DeletingEntities)
                 {
                     if (entity is BusinessClass)
                     {
                         BusinessClass cls = (BusinessClass)entity;
-                        ddl.DeleteClassTable((BusinessClass)entity);
-                        if (entity.EntityState != EntityState.New && entity.EntityState != EntityState.Deleted)
-                        {
-                            session.Delete(entity);
-                        }
+                        ddl.DeleteClassTable(cls);
+                        
+                        
+                       
                     }
+                    else if (entity is BusinessAssociation)
+                    {
+                        BusinessAssociation assn = (BusinessAssociation)entity;
+                        ddl.DeleteAssociationTable(assn);
+
+                    }
+                    es.Delete(entity);
+
                 }
 
                 this.DeletingEntities.Clear();
@@ -371,12 +378,17 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                     e.SaveEntity();
                 }
 
-                session.EndUpdate(true);
+                foreach (AssociationGlyph assn in this.Associations)
+                {
+                    assn.SaveEntity();
+                }
+
+                es.EndUpdate(true);
                 this.EditingState = EditingState.Clean;
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
         }
@@ -479,9 +491,5 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         } 
   
-       
-
-
-       
     }
 }

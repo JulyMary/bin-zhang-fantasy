@@ -114,9 +114,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             IEditingService editing = this.Site.GetRequiredService<IEditingService>();
 
-           
+            
 
             DoDeleteSymbols(selected);
+
+           
 
             BusinessClass rootClass = es.GetRootClass();
             foreach (object o in selected)

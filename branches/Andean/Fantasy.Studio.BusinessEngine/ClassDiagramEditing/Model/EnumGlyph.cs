@@ -257,27 +257,27 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         {
             if (this.DisplayIndex <= 1)
             {
-                ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+                IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
 
-                session.BeginUpdate();
+                es.BeginUpdate();
                 try
                 {
 
 
-                    session.SaveOrUpdate(this.Entity);
+                    es.SaveOrUpdate(this.Entity);
                     foreach (BusinessEnumValue prop in this.Entity.EnumValues)
                     {
-                        session.SaveOrUpdate(prop);
+                        es.SaveOrUpdate(prop);
                     }
 
                     IDDLService dll = this.Site.GetRequiredService<IDDLService>();
-                    session.EndUpdate(true);
+                    es.EndUpdate(true);
                     base.SaveEntity();
                 }
                 catch
                 {
-                    session.EndUpdate(false);
+                    es.EndUpdate(false);
                     throw;
                 }
             }

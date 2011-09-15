@@ -151,21 +151,21 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         public void Save()
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
-            session.BeginUpdate();
+            es.BeginUpdate();
             try
             {
 
                 foreach (BusinessProperty prop in this._model.Class.Properties)
                 {
-                    session.SaveOrUpdate(prop);
+                    es.SaveOrUpdate(prop);
                 }
-                session.EndUpdate(true);
+                es.EndUpdate(true);
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
             this.DirtyState = EditingState.Clean;
