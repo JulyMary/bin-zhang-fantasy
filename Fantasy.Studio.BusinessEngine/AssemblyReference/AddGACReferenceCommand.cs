@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             {
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
                 BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
-                es.DefaultSession.BeginUpdate();
+                es.BeginUpdate();
                 try
                 {
                     foreach (Assembly assembly in dlg.SelectedAssemblies)
@@ -34,14 +34,14 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                             reference.Group = group;
                             group.References.Add(reference);
                             reference.CopyLocal = false;
-                            es.DefaultSession.SaveOrUpdate(reference);
+                            es.SaveOrUpdate(reference);
                         }
                     }
-                    es.DefaultSession.EndUpdate(true);
+                    es.EndUpdate(true);
                 }
                 catch
                 {
-                    es.DefaultSession.EndUpdate(false);
+                    es.EndUpdate(false);
                     throw;
                 }
 

@@ -18,12 +18,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
         {
             BusinessClass cls = (BusinessClass)args;
             IEntityService svc = this.Site.GetRequiredService<IEntityService>();
-            BusinessProperty property = svc.CreateEntity<BusinessProperty>();
-            property.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessPropertyName, cls.Properties.Select(p => p.Name));
-            property.CodeName = property.FieldName = UniqueNameGenerator.GetCodeName(property.Name);
-            property.Class = cls;
-            cls.Properties.Add(property);
-            return property;
+            return svc.AddBusinessProperty(cls);
         }
     }
 }

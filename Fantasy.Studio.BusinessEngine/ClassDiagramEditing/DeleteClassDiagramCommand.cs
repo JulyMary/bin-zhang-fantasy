@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessClassDiagram diagram = (BusinessClassDiagram)args;
-            es.DefaultSession.BeginUpdate();
+            es.BeginUpdate();
             try
             {
                 diagram.Package.ClassDiagrams.Remove(diagram);
@@ -25,15 +25,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                 if (diagram.EntityState != EntityState.New && diagram.EntityState != EntityState.Deleted)
                 {
-                    es.DefaultSession.Delete(diagram);
+                    es.Delete(diagram);
                 }
 
-                es.DefaultSession.EndUpdate(true);
+                es.EndUpdate(true);
                 this.Site.GetRequiredService<IEditingService>().CloseView(diagram, true);
             }
             catch
             {
-                es.DefaultSession.EndUpdate(false);
+                es.EndUpdate(false);
             }
 
             return null;

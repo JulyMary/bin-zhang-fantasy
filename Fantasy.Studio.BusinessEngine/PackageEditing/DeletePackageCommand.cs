@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessPackage package = (BusinessPackage)args;
-            es.DefaultSession.BeginUpdate();
+            es.BeginUpdate();
             try
             {
                 package.ParentPackage.ChildPackages.Remove(package);
@@ -25,15 +25,15 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
 
                 if (package.EntityState != EntityState.New && package.EntityState != EntityState.Deleted)
                 {
-                    es.DefaultSession.Delete(package);
+                    es.Delete(package);
                 }
 
-                es.DefaultSession.EndUpdate(true);
+                es.EndUpdate(true);
                 this.Site.GetRequiredService<IEditingService>().CloseView(package, true);
             }
             catch
             {
-                es.DefaultSession.EndUpdate(false);
+                es.EndUpdate(false);
             }
 
             return null;

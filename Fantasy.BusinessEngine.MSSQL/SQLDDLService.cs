@@ -19,7 +19,7 @@ namespace Fantasy.BusinessEngine.MSSQL
         private void LoadDataTypes()
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            using (IDbCommand cmd = es.CreateCommand())
             {
                 cmd.CommandText = "select name from sys.types order by name";
 
@@ -39,7 +39,7 @@ namespace Fantasy.BusinessEngine.MSSQL
         private int ExecuteSql(string sql)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            using (IDbCommand cmd = es.CreateCommand())
             {
                 cmd.CommandText = sql;
                 return cmd.ExecuteNonQuery();
@@ -58,7 +58,9 @@ namespace Fantasy.BusinessEngine.MSSQL
 
         public void CreateClassTable(BusinessClass @class)
         {
-            return;
+
+
+
             if (@class.PreviousState == EntityState.New)
             {
                 if (@class.IsSimple)
@@ -188,7 +190,22 @@ namespace Fantasy.BusinessEngine.MSSQL
             string sql = "select t2.name + '.' + t1.name  from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id";
 
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            using (IDbCommand cmd = es.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                return cmd.ExecuteList<string>().ToArray();
+
+            }
+        }
+
+
+
+        public string[] GetTableNames(string schema)
+        {
+            string sql = String.Format("select t1.name from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id and t2.name = '{0}'", schema) ;
+
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            using (IDbCommand cmd = es.CreateCommand())
             {
                 cmd.CommandText = sql;
                 return cmd.ExecuteList<string>().ToArray();
@@ -200,20 +217,33 @@ namespace Fantasy.BusinessEngine.MSSQL
 
      
 
-
-        public string[] GetTableNames(string schema)
+        public void CreateAssoicationTable(BusinessAssociation association)
         {
-            string sql = String.Format("select t1.name from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id and t2.name = '{0}'", schema) ;
+            string sql = String.Format("create table [{0}].[{1}] ( [LEFTID] uniqueidentifier not null, [RIGHTID] uniqueidentifier not null, CONSTRAINT [PK_{1}] PRIMARY KEY CLUSTERED ([LEFTID], [RIGHTID]) )",
+                association.TableSchema, association.TableName);
 
-            IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.DefaultSession.CreateCommand())
+            if (!string.IsNullOrEmpty(association.TableSpace))
             {
-                cmd.CommandText = sql;
-                return cmd.ExecuteList<string>().ToArray();
-
+                sql += String.Format(" on [{0}]", association.TableSpace);
             }
+
+            this.ExecuteSql(sql);
+
+            sql = string.Format("alter table [{0}].[{1}] add constraint FK_{1}_LEFT foreign key (LEFTID) references [{2}].[{3}] ([ID]) on delete cascade",
+                association.TableSchema, association.TableName, association.LeftClass.TableSchema, association.LeftClass.TableName);
+            this.ExecuteSql(sql);
+
+            sql = string.Format("alter table [{0}].[{1}] add constraint FK_{1}_RIGHT foreign key (RIGHTID) references [{2}].[{3}] ([ID]) on delete cascade",
+               association.TableSchema, association.TableName, association.RightClass.TableSchema, association.RightClass.TableName);
+            this.ExecuteSql(sql);
         }
 
-        
+        public void DeleteAssociationTable(BusinessAssociation association)
+        {
+            string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]", association.TableSchema, association.TableName);
+            this.ExecuteSql(sql);
+        }
+
+       
     }
 }

@@ -406,15 +406,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         {
             if (this.DisplayIndex <= 1)
             {
-                ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+                IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
 
-                session.BeginUpdate();
+                es.BeginUpdate();
                 try
                 {
 
 
-                    session.SaveOrUpdate(this.Entity);
+                    es.SaveOrUpdate(this.Entity);
                     foreach (MemberNode member in this.Members)
                     {
                         member.SaveEntity();
@@ -424,12 +424,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
                     dll.CreateClassTable(this.Entity);
 
-                    session.EndUpdate(true);
+                    es.EndUpdate(true);
                     base.SaveEntity();
                 }
                 catch
                 {
-                    session.EndUpdate(false);
+                    es.EndUpdate(false);
                     throw;
                 }
             }

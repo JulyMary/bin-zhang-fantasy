@@ -21,5 +21,10 @@ namespace Fantasy.BusinessEngine.Services
 
         string[] GetTableNames(string schema);
 
+
+        void CreateAssoicationTable(BusinessAssociation association);
+
+        void DeleteAssociationTable(BusinessAssociation association);
+
     }
 }

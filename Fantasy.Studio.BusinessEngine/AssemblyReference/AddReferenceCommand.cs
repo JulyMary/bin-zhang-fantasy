@@ -39,7 +39,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             {
 
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
-                es.DefaultSession.BeginUpdate();
+                es.BeginUpdate();
                 try
                 {
 
@@ -59,11 +59,11 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                         }
                     }
                     _loader.Dispose();
-                    es.DefaultSession.EndUpdate(true);
+                    es.EndUpdate(true);
                 }
                 catch
                 {
-                    es.DefaultSession.EndUpdate(false);
+                    es.EndUpdate(false);
                     throw;
                 }
 
@@ -109,7 +109,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                     {
                         reference.CopyLocal = false;
                     }
-                    es.DefaultSession.SaveOrUpdate(reference);
+                    es.SaveOrUpdate(reference);
 
                     if (reference.CopyLocal)
                     {

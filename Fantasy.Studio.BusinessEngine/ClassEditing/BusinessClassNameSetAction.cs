@@ -21,7 +21,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             {
 
                 string ocname = UniqueNameGenerator.GetCodeName(cls.Name);
-                string otname = Settings.Default.DefaultClassTablePrefix + "_" + ocname;
+                string otname = (Settings.Default.DefaultClassTablePrefix + "_" + ocname).ToUpper();
                 cls.Name = name;
                 string cname = UniqueNameGenerator.GetCodeName(name);
                 if (cls.CodeName == ocname)
@@ -30,7 +30,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
                 }
                 if (cls.EntityState == EntityState.New && cls.TableName == otname)
                 {
-                    cls.TableName = Settings.Default.DefaultClassTablePrefix + "_" + cname;
+                    cls.TableName = (Settings.Default.DefaultClassTablePrefix + "_" + cname).ToUpper();
                 }
 
             }

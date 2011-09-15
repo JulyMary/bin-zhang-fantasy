@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessAssemblyReference reference = (BusinessAssemblyReference)args;
-            es.DefaultSession.BeginUpdate();
+            es.BeginUpdate();
             try
             {
                 reference.Group.References.Remove(reference);
@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
                 if (reference.EntityState != EntityState.New && reference.EntityState != EntityState.Deleted)
                 {
-                    es.DefaultSession.Delete(reference);
+                    es.Delete(reference);
                 }
 
 
@@ -40,12 +40,12 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                 }
 
 
-                es.DefaultSession.EndUpdate(true);
+                es.EndUpdate(true);
                
             }
             catch
             {
-                es.DefaultSession.EndUpdate(false);
+                es.EndUpdate(false);
             }
 
             return null;

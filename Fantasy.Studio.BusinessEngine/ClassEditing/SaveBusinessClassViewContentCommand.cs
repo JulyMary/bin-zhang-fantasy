@@ -15,10 +15,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
         public object Execute(object caller)
         {
-            ISession session = this.Site.GetRequiredService<IEntityService>().DefaultSession;
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
             EntityEditingViewContent vwr = (EntityEditingViewContent)caller;
-            session.BeginUpdate();
+            es.BeginUpdate();
             try
             {
 
@@ -29,11 +29,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
                 dll.CreateClassTable((BusinessClass)vwr.Entity); 
 
-                session.EndUpdate(true);
+                es.EndUpdate(true);
             }
             catch
             {
-                session.EndUpdate(false);
+                es.EndUpdate(false);
                 throw;
             }
 
