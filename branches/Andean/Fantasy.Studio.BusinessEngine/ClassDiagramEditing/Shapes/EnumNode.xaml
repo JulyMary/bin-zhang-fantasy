@@ -44,6 +44,9 @@
 
             <StackPanel Focusable="True" Name="ConentStackPanel" Orientation="Vertical" sf:Node.IsSelectionScope="True" MouseDown="ConentStackPanel_MouseDown">
                 <ListBox ItemsSource="{Binding EnumValues}" MinHeight="23" Name="EnumValueListBox" SelectionMode="Extended" SelectionChanged="EnumValueListBox_SelectionChanged">
+                    <ListBox.Background>
+                        <SolidColorBrush />
+                    </ListBox.Background>
                     <ListBox.ItemContainerStyle>
                         <Style>
                             <Setter Property="ContentControl.HorizontalContentAlignment" Value="Stretch"/>
@@ -51,7 +54,11 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Entity.Name}"/>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/EnumItem.png">
+                                </Image>
+                                <TextBlock Text="{Binding Entity.Name}"/>
+                            </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

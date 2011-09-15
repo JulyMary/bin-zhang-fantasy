@@ -32,7 +32,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     rs = true;
                     foreach (object o in selectionService.GetSelectedComponents())
                     {
-                        if (!(o is Model.MemberNode) || ((Model.MemberNode)o).IsSystem)
+                        if (!(o is Model.MemberNode) || ((Model.MemberNode)o).IsSystem || ((Model.MemberNode)o).IsInherited)
                         {
                             rs = false;
                             break;

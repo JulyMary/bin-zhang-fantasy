@@ -50,19 +50,17 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         private WeakEventListener _displayOrderListener;
         private WeakEventListener _childCollectionListener;
 
-        public void AddChildCollection(IEnumerable<IEnumerable<MemberNode>> childCollections)
+        public void AddChildCollection(IEnumerable<MemberNode> childCollection)
         {
-            foreach (IEnumerable<MemberNode> childCollection in childCollections)
-            {
-                this._childCollections.Add(childCollection);
-                INotifyCollectionChanged nc = (INotifyCollectionChanged)childCollection;
-                CollectionChangedEventManager.AddListener(nc, this._childCollectionListener);
+            this._childCollections.Add(childCollection);
+            INotifyCollectionChanged nc = (INotifyCollectionChanged)childCollection;
+            CollectionChangedEventManager.AddListener(nc, this._childCollectionListener);
 
-                foreach (MemberNode member in childCollection)
-                {
-                    AddListenDisplayOrderChanged(member);
-                }
+            foreach (MemberNode member in childCollection)
+            {
+                AddListenDisplayOrderChanged(member);
             }
+            
             this.OnCollectionChanged();
         }
 
@@ -78,18 +76,16 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
       
 
-        public void RemoveChildCollection(IEnumerable<IEnumerable<MemberNode>> childCollections)
+        public void RemoveChildCollection(IEnumerable<MemberNode> childCollection)
         {
-            foreach (IEnumerable<MemberNode> childCollection in childCollections)
+            this._childCollections.Remove(childCollection);
+            INotifyCollectionChanged nc = (INotifyCollectionChanged)childCollection;
+            CollectionChangedEventManager.RemoveListener(nc, this._childCollectionListener);
+            foreach (MemberNode member in childCollection)
             {
-                this._childCollections.Remove(childCollection);
-                INotifyCollectionChanged nc = (INotifyCollectionChanged)childCollection;
-                CollectionChangedEventManager.RemoveListener(nc, this._childCollectionListener);
-                foreach (MemberNode member in childCollection)
-                {
-                    RemoveListenDisplayOrderChanged(member);
-                }
+                RemoveListenDisplayOrderChanged(member);
             }
+           
             this.OnCollectionChanged();
         }
 

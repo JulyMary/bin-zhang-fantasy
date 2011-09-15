@@ -45,7 +45,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
         {
             DependencyObject container = this.PropertyListBox.ContainerFromElement((DependencyObject)e.Source);
 
-            Model.MemberNode from = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
+            Model.MemberNode from = (Model.MemberNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
 
             Model.ClassGlyph clsGlyph = (Model.ClassGlyph)this.DataContext;
 
@@ -64,9 +64,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
         {
             DependencyObject container = this.PropertyListBox.ContainerFromElement((DependencyObject)e.Source);
 
-          
 
-            Model.MemberNode from = (Model.PropertyNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
+
+            Model.MemberNode from = (Model.MemberNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
 
             Model.ClassGlyph clsGlyph = (Model.ClassGlyph)this.DataContext;
 
@@ -209,7 +209,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                     ISelectionServiceEx svc = model.Site.GetRequiredService<ISelectionServiceEx>();
 
                     svc.SetSelectedComponents(q1.ToArray(), SelectionTypes.Replace);
-                    svc.IsReadOnly = model.IsShortCut;
+                    svc.IsReadOnly = model.IsShortCut || q1.Any(m=>m.IsInherited) ;
                 }
                 finally
                 {
