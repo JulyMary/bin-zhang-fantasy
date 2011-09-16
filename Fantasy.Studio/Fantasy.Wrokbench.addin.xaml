@@ -87,9 +87,6 @@
     </Extension>
     <Extension Path="fantasy/studio/workbench/toolbars">
         <ToolBar ID="standard" Text="Standard" >
-            <Button ID="Open" Text="Open" Icon="/Fantasy.Studio;component/images/OpenFolder.png"/>
-            <Button ID="SEP1" Text="-" />
-            <Button ID="Close" Text="Close"/>
             <Button ID="Save" Text="Save" Command="Save" Icon="/Fantasy.Studio;component/images/save.ico" />
         </ToolBar>
     </Extension>
@@ -112,6 +109,10 @@
         <Object ID="toolbox">
             <ToolBoxPad />
         </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/workbench/commandbindings">
+        
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/toolbox/items">

@@ -64,12 +64,33 @@
         <Object ID="defaultinsertinghandler">
             <be:DefaultEntityInsertingHandler />
         </Object>
+       
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/inserted">
         <Object ID="defaultinsertedhandler">
             <be:DefaultEntityInsertedHandler />
         </Object>
+        <Object ID="BusinessClassCreateTable">
+            <be:BusinessClassCreateTableHandler />
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessClass}" />
+            </Object.Conditional>
+        </Object>
+        <Object ID="BusinessPropertyCreateColumn">
+            <be:BusinessPropertyCreateColumnHandler />
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessProperty}" />
+            </Object.Conditional>
+        </Object>
+        <Object ID="BusinessAssociationCreateTable">
+            <be:BusinessAssociationCreateTableHandler />
+            <Object.Conditional >
+                <IsTypeOf Type="{x:Type be:BusinessAssociation}" />
+            </Object.Conditional>
+        </Object>
+        
+        
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/updating">
@@ -82,6 +103,13 @@
         <Object ID="defaultupdatedhandler">
             <be:DefaultEntityUpdatedHandler />
         </Object>
+        <Object ID="BusinessPropertyUpdateColumn">
+            <be:BusinessPropertyUpdateColumnHandler />
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessProperty}" />
+            </Object.Conditional>
+        </Object>
+        
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/deleting">
@@ -93,6 +121,24 @@
     <Extension Path="fantasy/businessengine/entityhandlers/deleted">
         <Object ID="defaultdeletedhandler">
             <be:DefaultEntityDeletedHandler/>
+        </Object>
+        <Object ID="BusinessClassDropTable" >
+            <be:BusinessClassDropTableHandler />
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessClass}" />
+            </Object.Conditional>
+        </Object>
+        <Object ID="BusinessPropertyDropColumn">
+            <be:BusinessPropertyDropColumnHandler />
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessProperty}" />
+            </Object.Conditional>
+        </Object>
+        <Object ID="BusinessAssociationDropTable">
+            <be:BusinessAssociationDropTableHandler />
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessAssociation}" />
+            </Object.Conditional>
         </Object>
     </Extension>
 

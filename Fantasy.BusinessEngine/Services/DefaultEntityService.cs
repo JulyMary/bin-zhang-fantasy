@@ -11,6 +11,7 @@ using NHibernate.Event.Default;
 using Fantasy.BusinessEngine.Events;
 using System.Data;
 using NHibernate.Linq;
+using System.ComponentModel;
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -141,11 +142,14 @@ namespace Fantasy.BusinessEngine.Services
                     try
                     {
 
-
+                        CancelEventArgs e = new CancelEventArgs();
+                        this.OnCommitting(e);
+                        commit = commit & !e.Cancel;
                         if (commit)
                         {
                             this.DefaultSession.Flush();
                             this.DefaultSession.Transaction.Commit();
+                            this.OnCommitted(EventArgs.Empty); 
                         }
                         else
                         {
@@ -201,23 +205,36 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
-
-
-
         public void SaveOrUpdate(IEntity entity)
         {
             this.DefaultSession.SaveOrUpdate(entity);
         }
-
-
-
-
 
         public IQueryable<T> Query<T>()
         {
             return this.DefaultSession.Query<T>();
         }
 
-       
+
+        public event CancelEventHandler Committing;
+
+        protected virtual void OnCommitting(CancelEventArgs e)
+        {
+            if (this.Committing != null)
+            {
+                this.Committing(this, e);
+            }
+        }
+
+
+        public event EventHandler Committed;
+
+        protected virtual void OnCommitted(EventArgs e)
+        {
+            if (this.Committed != null)
+            {
+                this.Committed(this, e);
+            }
+        }
     }
 }

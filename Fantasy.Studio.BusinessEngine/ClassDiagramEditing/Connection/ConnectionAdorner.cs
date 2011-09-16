@@ -152,7 +152,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             this.View.RemoveHandler(Control.MouseUpEvent, new MouseButtonEventHandler(diagramView_MouseUp));
         }
 
-        public void OnExit()
+        public void Exit()
         {
             if (this.View.IsMouseCaptured)
             {
@@ -163,13 +163,22 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(this.View);
             layer.Remove(this);
-            if (this.Exit != null)
+
+           
+            if (this.Exited != null)
             {
-                this.Exit(this, EventArgs.Empty);
+                this.Exited(this, EventArgs.Empty);
             }
+            this.IsExited = true;
         }
 
-        public event EventHandler Exit;
+
+        public bool IsExited { get; private set; }
+
+
+      
+
+        public event EventHandler Exited;
 
 
         public event EventHandler CreatConnection;

@@ -37,11 +37,7 @@
         </Object>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/associationeditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
-                <OwnerState State="Dirty" StateMember="DirtyState" />
-            </CommandBinding.Conditional>
-        </CommandBinding>
+       
     </Extension>
     <Extension Path="fantasy/studio/businessengine/associationeditor/panels">
         <Object ID="General">
@@ -70,11 +66,7 @@
         <TreeNode ID="enum" TargetType="{x:Type be:BusinessEnum}" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif" Text="{Binding Path=Name}"></TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classdiagrameditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
-                <OwnerState State="Dirty" StateMember="DirtyState" />
-            </CommandBinding.Conditional>
-        </CommandBinding>
+       
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classdiagrameditor/panels">
         <Object ID="diagram">
@@ -228,11 +220,7 @@
         <Button ID="Delete" Text="Delete" Command="Delete" />
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classeditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveBusinessClassViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
-                <OwnerState State="Dirty" StateMember="DirtyState" />
-            </CommandBinding.Conditional>
-        </CommandBinding>
+       
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classeditor/panels">
         <Object ID="General">
@@ -366,11 +354,7 @@
         </TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/enumeditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
-                <OwnerState State="Dirty" StateMember="DirtyState" />
-            </CommandBinding.Conditional>
-        </CommandBinding>
+       
     </Extension>
     <Extension Path="fantasy/studio/businessengine/enumeditor/panels">
         <Object ID="General">
@@ -423,11 +407,7 @@
         </ToolBar>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/packageeditor/commandbindings">
-        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveEntityEditingViewContentCommand}" ParameterSource="Owner">
-            <CommandBinding.Conditional>
-                <OwnerState State="Dirty" StateMember="DirtyState" />
-            </CommandBinding.Conditional>
-        </CommandBinding>
+       
     </Extension>
     <Extension Path="fantasy/studio/businessengine/packageeditor/panels">
         <Object ID="General">
@@ -561,5 +541,10 @@
                 <sbe:ClassDiagramModeCommand Mode="AssocationConnection" />
             </ToolBoxItem.Click>
         </ToolBoxItem>
+    </Extension>
+
+
+    <Extension Path="fantasy/studio/workbench/commandbindings">
+        <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveAllCommandHandler}" />
     </Extension>
 </AddIn>

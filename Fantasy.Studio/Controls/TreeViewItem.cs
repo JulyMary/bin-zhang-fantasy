@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using Fantasy.AddIns;
 using System.Windows;
 using System.Collections.Specialized;
-using Fantasy.Collections;
+
 
 
 namespace Fantasy.Studio.Controls

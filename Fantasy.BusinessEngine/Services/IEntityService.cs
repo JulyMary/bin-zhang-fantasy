@@ -4,18 +4,13 @@ using System.Linq;
 using System.Text;
 using NHibernate;
 using System.Data;
+using System.ComponentModel;
 
 namespace Fantasy.BusinessEngine.Services
 {
     public interface IEntityService
     {
-        //ISession OpenSession();
-
-        //ISession DefaultSession {get;}
-
-        //ISessionFactory SessionFactory { get; }
-
-        //NHibernate.Cfg.Configuration Configuration { get; }
+        
 
         T CreateEntity<T>() where T : IEntity;
 
@@ -32,6 +27,10 @@ namespace Fantasy.BusinessEngine.Services
         IDbCommand CreateCommand();
 
         IQueryable<T> Query<T>();
+
+        event CancelEventHandler Committing;
+
+        event EventHandler Committed;
 
 
     }

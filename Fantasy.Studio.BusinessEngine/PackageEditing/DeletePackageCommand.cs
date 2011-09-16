@@ -17,23 +17,13 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessPackage package = (BusinessPackage)args;
-            es.BeginUpdate();
-            try
-            {
-                package.ParentPackage.ChildPackages.Remove(package);
-                package.ParentPackage = null;
 
-                if (package.EntityState != EntityState.New && package.EntityState != EntityState.Deleted)
-                {
-                    es.Delete(package);
-                }
+            package.ParentPackage.ChildPackages.Remove(package);
+            package.ParentPackage = null;
 
-                es.EndUpdate(true);
-                this.Site.GetRequiredService<IEditingService>().CloseView(package, true);
-            }
-            catch
+            if (package.EntityState != EntityState.New && package.EntityState != EntityState.Deleted)
             {
-                es.EndUpdate(false);
+                es.Delete(package);
             }
 
             return null;

@@ -267,6 +267,7 @@
     </Compile>
     <Compile Include="PropertyEditing\RemovePropertyCommand.cs" />
     <Compile Include="ClassEditing\SaveBusinessClassViewContentCommand.cs" />
+    <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="XamlNamespaces.cs" />

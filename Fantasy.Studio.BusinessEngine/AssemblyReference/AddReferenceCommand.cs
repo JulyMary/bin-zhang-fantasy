@@ -40,9 +40,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
                 es.BeginUpdate();
-                try
-                {
-
+               
                     _loader = new AssemblyLoader();
 
                     foreach (string filename in dlg.FileNames)
@@ -59,13 +57,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                         }
                     }
                     _loader.Dispose();
-                    es.EndUpdate(true);
-                }
-                catch
-                {
-                    es.EndUpdate(false);
-                    throw;
-                }
+                   
 
             }
 

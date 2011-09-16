@@ -16,36 +16,30 @@ namespace Fantasy.Studio.BusinessEngine.AssociationEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessAssociation association = (BusinessAssociation)args;
-            IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
-            es.BeginUpdate();
-            try
-            {
-                association.Package.Associations.Remove(association);
-                association.Package = null;
 
-                
-               
-                if (association.LeftClass != null)
-                {
-                    association.LeftClass.LeftAssociations.Remove(association);
-                    association.LeftClass = null;
-                }
 
-                if (association.RightClass != null)
-                {
-                    association.RightClass.RightAssociations.Remove(association);
-                    association.RightClass = null;
-                }
-               
-                ddl.DeleteAssociationTable(association);
-                es.Delete(association);
-                es.EndUpdate(true);
-                this.Site.GetRequiredService<IEditingService>().CloseView(association, true);
-            }
-            catch
+            association.Package.Associations.Remove(association);
+            association.Package = null;
+
+
+
+            if (association.LeftClass != null)
             {
-                es.EndUpdate(false);
+                association.LeftClass.LeftAssociations.Remove(association);
+                association.LeftClass = null;
             }
+
+            if (association.RightClass != null)
+            {
+                association.RightClass.RightAssociations.Remove(association);
+                association.RightClass = null;
+            }
+
+
+            es.Delete(association);
+           
+            this.Site.GetRequiredService<IEditingService>().CloseView(association, true);
+
 
             return null;
         }

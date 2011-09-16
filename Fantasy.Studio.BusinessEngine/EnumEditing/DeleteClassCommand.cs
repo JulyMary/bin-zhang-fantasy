@@ -22,28 +22,22 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
             return @enum.EntityState != EntityState.Deleted && !@enum.IsSystem;
         }
 
-        event EventHandler System.Windows.Input.ICommand.CanExecuteChanged {add{} remove{}}
+        event EventHandler System.Windows.Input.ICommand.CanExecuteChanged { add { } remove { } }
 
         public void Execute(object parameter)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessEnum @enum = (BusinessEnum)parameter;
-            es.BeginUpdate();
-            try
-            {
-                @enum.Package.Enums.Remove(@enum);
 
-                if (@enum.EntityState != EntityState.New)
-                {
-                    es.Delete(@enum);
-                }
-                es.EndUpdate(true);
-                this.Site.GetRequiredService<IEditingService>().CloseView(@enum, true);
-            }
-            catch
+            @enum.Package.Enums.Remove(@enum);
+
+            if (@enum.EntityState != EntityState.New)
             {
-                es.EndUpdate(false);
+                es.Delete(@enum);
             }
+
+            this.Site.GetRequiredService<IEditingService>().CloseView(@enum, true);
+
 
         }
 

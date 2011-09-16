@@ -24,11 +24,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
 
                 vwr.Save();
 
-
-                IDDLService dll = this.Site.GetRequiredService<IDDLService>();
-
-                dll.CreateClassTable((BusinessClass)vwr.Entity); 
-
                 es.EndUpdate(true);
             }
             catch

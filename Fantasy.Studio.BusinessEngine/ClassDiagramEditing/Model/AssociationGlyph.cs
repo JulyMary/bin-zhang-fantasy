@@ -156,14 +156,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             es.BeginUpdate();
             try
             {
-                if (this.Entity.EntityState == EntityState.New)
-                {
-                    if (this.Diagram.Associations.FirstOrDefault(a => a.Entity == this.Entity) == this)
-                    {
-                        ddl.CreateAssoicationTable(this.Entity);
-                    }
-                }
-
                 es.SaveOrUpdate(this.Entity);
                 es.EndUpdate(true);
                 base.SaveEntity();
