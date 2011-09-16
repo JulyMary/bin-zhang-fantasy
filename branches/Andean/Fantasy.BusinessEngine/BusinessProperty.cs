@@ -34,6 +34,13 @@ namespace Fantasy.BusinessEngine
         }
 
 
+        public virtual string TableSchema { get; private set; }
+        public virtual string TableName { get; private set; }
+
+
+
+
+
         public virtual string CodeName
         {
             get
@@ -111,7 +118,23 @@ namespace Fantasy.BusinessEngine
 
             }
         }
-       
+
+        public override EntityState EntityState
+        {
+            get
+            {
+                return base.EntityState;
+            }
+            protected set
+            {
+                base.EntityState = value;
+                if (value == BusinessEngine.EntityState.Clean)
+                {
+                    this.TableName = this.Class.TableName;
+                    this.TableSchema = this.Class.TableSchema; 
+                }
+            }
+        }
        
 
         public virtual BusinessClass DataClassType
@@ -239,52 +262,8 @@ namespace Fantasy.BusinessEngine
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            this.PreviousState = BusinessEngine.EntityState.Clean;
+           
         }
 
-        public override EntityState EntityState
-        {
-            get
-            {
-                return base.EntityState;
-            }
-            protected set
-            {
-
-                if (this.EntityState == BusinessEngine.EntityState.Clean && value == BusinessEngine.EntityState.Dirty || value == BusinessEngine.EntityState.Deleted)
-                {
-                    this.PreviousState = BusinessEngine.EntityState.Clean;
-                }
-                base.EntityState = value;
-            }
-        }
-
-
-        private EntityState _previousState = EntityState.New;
-        public virtual EntityState PreviousState
-        {
-            get
-            {
-                return _previousState;
-            }
-            set
-            {
-                this._previousState = value;
-                this._previousValues.Clear();
-                foreach (KeyValuePair<string, object> kv in this.Values)
-                {
-                    this._previousValues.Add(kv.Key, kv.Value);
-                }
-            }
-        }
-
-        public virtual T GetPreviousValue<T>(string propertyName, T defaultValue = default(T))
-        {
-            return (T)this._previousValues.GetValueOrDefault(propertyName, defaultValue);
-        }
-
-
-        private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
-       
     }
 }

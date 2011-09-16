@@ -238,7 +238,7 @@ namespace Fantasy
             return vs.View;
         }
 
-        public static IEnumerable<T> FilterAndCast<T>(this IEnumerable collection)
+        public static IEnumerable<T> OfType<T>(this IEnumerable collection)
         {
             foreach (object o in collection)
             {

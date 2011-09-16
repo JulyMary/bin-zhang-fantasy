@@ -18,7 +18,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
         public void MouseDown(ConnectionArgs args)
         {
-            args.Owner.OnExit();
+            args.Owner.Exit();
         }
 
         public void MouseEnter(ConnectionArgs args)

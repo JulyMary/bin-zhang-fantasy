@@ -66,6 +66,11 @@ namespace Fantasy.Studio
                 pad.Initialize();
             }
 
+            foreach(CommandBinding commandBinding in AddInTree.Tree.GetTreeNode("fantasy/studio/workbench/commandbindings").BuildChildItems(this, this.Site))
+            {
+                this.CommandBindings.Add(commandBinding);
+            }
+
             if (this.Initialize != null)
             {
                 this.Initialize(this, EventArgs.Empty);

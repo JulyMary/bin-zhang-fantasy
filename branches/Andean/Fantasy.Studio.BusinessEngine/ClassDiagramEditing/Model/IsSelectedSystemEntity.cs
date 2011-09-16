@@ -24,7 +24,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
             if (ss != null)
             {
-                rs = ss.GetSelectedComponents().FilterAndCast<IBusinessEntityGlyph>().Any(g => g.Entity.IsSystem);
+                rs = ss.GetSelectedComponents().OfType<IBusinessEntityGlyph>().Any(g => g.Entity.IsSystem);
 
             }
 

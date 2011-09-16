@@ -20,30 +20,22 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             {
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
                 BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
-                es.BeginUpdate();
-                try
-                {
-                    foreach (Assembly assembly in dlg.SelectedAssemblies)
-                    {
 
-                        string name = assembly.GetName().Name;
-                        if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
-                        {
-                            BusinessAssemblyReference reference = es.CreateEntity<BusinessAssemblyReference>();
-                            reference.FullName = assembly.FullName;
-                            reference.Group = group;
-                            group.References.Add(reference);
-                            reference.CopyLocal = false;
-                            es.SaveOrUpdate(reference);
-                        }
-                    }
-                    es.EndUpdate(true);
-                }
-                catch
+                foreach (Assembly assembly in dlg.SelectedAssemblies)
                 {
-                    es.EndUpdate(false);
-                    throw;
+
+                    string name = assembly.GetName().Name;
+                    if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        BusinessAssemblyReference reference = es.CreateEntity<BusinessAssemblyReference>();
+                        reference.FullName = assembly.FullName;
+                        reference.Group = group;
+                        group.References.Add(reference);
+                        reference.CopyLocal = false;
+                        es.SaveOrUpdate(reference);
+                    }
                 }
+
 
             }
 

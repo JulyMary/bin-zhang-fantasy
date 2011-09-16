@@ -331,8 +331,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public void Save()
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
-
+          
             es.BeginUpdate();
             try
             {
@@ -343,20 +342,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 
                 foreach (IBusinessEntity entity in this.DeletingEntities)
                 {
-                    if (entity is BusinessClass)
-                    {
-                        BusinessClass cls = (BusinessClass)entity;
-                        ddl.DeleteClassTable(cls);
-                        
-                        
-                       
-                    }
-                    else if (entity is BusinessAssociation)
-                    {
-                        BusinessAssociation assn = (BusinessAssociation)entity;
-                        ddl.DeleteAssociationTable(assn);
-
-                    }
+                   
                     es.Delete(entity);
 
                 }

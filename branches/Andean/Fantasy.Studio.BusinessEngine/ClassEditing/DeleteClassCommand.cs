@@ -28,22 +28,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessClass @class = (BusinessClass)parameter;
-            es.BeginUpdate();
-            try
-            {
+           
                 @class.Package.Classes.Remove(@class);
-                this.Site.GetRequiredService<IDDLService>().DeleteClassTable(@class);
-                if (@class.EntityState != EntityState.New)
-                {
-                    es.Delete(@class);
-                }
-                es.EndUpdate(true);
+                es.Delete(@class);
+               
                 this.Site.GetRequiredService<IEditingService>().CloseView(@class, true);
-            }
-            catch
-            {
-                es.EndUpdate(false);
-            }
+           
 
         }
 

@@ -53,77 +53,62 @@ namespace Fantasy.BusinessEngine.MSSQL
         public string[] TableSpaces { get; private set; }
 
 
-
-       
-
         public void CreateClassTable(BusinessClass @class)
         {
-
-
-
-            if (@class.PreviousState == EntityState.New)
+            if (@class.IsSimple)
             {
-                if (@class.IsSimple)
-                {
-                    this.CreateSimpleClassTable(@class);
-                }
-                else
-                {
-                    this.CreateStandardClassTable(@class);
-                }
+                this.CreateSimpleClassTable(@class);
             }
-            else if (@class.PreviousState == EntityState.Clean)
+            else
             {
-                if (@class.IsSimple)
-                {
-                    this.UpdateSimpleClassTable(@class);
-                }
-                else
-                {
-                    this.UpdateStandardClassTable(@class);
-                }
+                this.CreateStandardClassTable(@class);
             }
         }
 
-        private void UpdateStandardClassTable(BusinessClass @class)
+
+        private List<string> GetColumns(BusinessClass @class)
         {
+            string sql = string.Format("select name from sys.columns where t1.object_id = object_id('{0}.{1}')", @class.TableSchema, @class.TableName);
 
-            string alter = string.Format("alter table [{0}].[{1}]", @class.TableSchema, @class.TableName) ;
-
-            foreach (BusinessProperty property in @class.PreviousProperties.Where(p => p.EntityState == EntityState.Deleted))
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            using (IDbCommand cmd = es.CreateCommand())
             {
-                string sql = string.Format("{0} drop column [{1}] ", alter, property.FieldName);
-                this.ExecuteSql(sql);
-
+                cmd.CommandText = sql;
+                return cmd.ExecuteList<string>();
             }
-
-            foreach (BusinessProperty property in @class.Properties.Where(p => p.PreviousState == EntityState.New))
-            {
-                string sql = string.Format("{0} add {1}", alter, this.GetColumnDefine(property));
-                this.ExecuteSql(sql);
-            }
-
-            foreach (BusinessProperty property in @class.Properties.Where(p => p.PreviousState == EntityState.Clean))
-            {
-                string sql = string.Format("{0} alter column {1}", alter, this.GetColumnDefine(property));
-                this.ExecuteSql(sql);
-            }
-
         }
 
-      
-        private void UpdateSimpleClassTable(BusinessClass @class)
+
+        public void CreateClassColumn(BusinessProperty property)
         {
-            throw new NotImplementedException();
+            string sql = string.Format(@"if exists (select 1 from sys.tables where object_id('{0}.{1}') = [object_id]) 
+                                            if not exists (select 1 from sys.columns where name='{2}' and object_id('{0}.{1}') = [object_id] ) 
+	                                            alter table [{0}].[{1}] add {3}", 
+                                        property.Class.TableSchema, property.Class.TableName, property.FieldName, this.GetColumnDefine(property));
+            this.ExecuteSql(sql);
+        }
+
+        public void UpdateClassColumn(BusinessProperty property)
+        {
+            string sql = string.Format("alter table [{0}].[{1}] alter column {2}", property.TableSchema, property.TableName, this.GetColumnDefine(property));
+            this.ExecuteSql(sql);
+        }
+
+        public void DropClassColumn(BusinessProperty property)
+        {
+            string sql = string.Format(@"if exists (select 1 from sys.columns where name='{2}' and object_id('{0}.{1}') = [object_id] ) 
+	                                            alter table [{0}].[{1}] drop column {2}",
+                                       property.TableSchema, property.TableName, property.FieldName, this.GetColumnDefine(property));
+            this.ExecuteSql(sql);
         }
 
         private void CreateStandardClassTable(BusinessClass @class)
         {
             StringBuilder sql = new StringBuilder();
             sql.AppendFormat("create table [{0}].[{1}] ( {2} )", @class.TableSchema, @class.TableName, this.GetCreateColumnsDefine(@class));
-            if(! string.IsNullOrEmpty(@class.TableSpace))
+            if (!string.IsNullOrEmpty(@class.TableSpace))
             {
-               sql.AppendFormat(" on [{0}]", @class.TableSpace);    
+                sql.AppendFormat(" on [{0}]", @class.TableSpace);
             }
             this.ExecuteSql(sql.ToString());
 
@@ -179,9 +164,9 @@ namespace Fantasy.BusinessEngine.MSSQL
         }
 
 
-        public void DeleteClassTable(BusinessClass @class)
+        public void DropClassTable(BusinessClass @class)
         {
-            string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]" , @class.TableSchema, @class.TableName);
+            string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]", @class.TableSchema, @class.TableName);
             this.ExecuteSql(sql);
         }
 
@@ -202,7 +187,7 @@ namespace Fantasy.BusinessEngine.MSSQL
 
         public string[] GetTableNames(string schema)
         {
-            string sql = String.Format("select t1.name from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id and t2.name = '{0}'", schema) ;
+            string sql = String.Format("select t1.name from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id and t2.name = '{0}'", schema);
 
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             using (IDbCommand cmd = es.CreateCommand())
@@ -215,7 +200,7 @@ namespace Fantasy.BusinessEngine.MSSQL
 
 
 
-     
+
 
         public void CreateAssoicationTable(BusinessAssociation association)
         {
@@ -238,12 +223,17 @@ namespace Fantasy.BusinessEngine.MSSQL
             this.ExecuteSql(sql);
         }
 
-        public void DeleteAssociationTable(BusinessAssociation association)
+        public void DropAssociationTable(BusinessAssociation association)
         {
             string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]", association.TableSchema, association.TableName);
             this.ExecuteSql(sql);
         }
 
+
+
+
+
        
+
     }
 }

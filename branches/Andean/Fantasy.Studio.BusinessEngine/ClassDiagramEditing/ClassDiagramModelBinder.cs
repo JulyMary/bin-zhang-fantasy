@@ -112,7 +112,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void RemoveNode(Model.EnumGlyph node)
         {
-            Shapes.EnumNode shape = this._view.Nodes.FilterAndCast<Shapes.EnumNode>().SingleOrDefault(s => s.DataContext == node);
+            Shapes.EnumNode shape = this._view.Nodes.OfType<Shapes.EnumNode>().SingleOrDefault(s => s.DataContext == node);
             if (shape != null)
             {
                 this._view.Nodes.Remove(shape);
@@ -122,8 +122,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void AddAssociation(Model.AssociationGlyph association)
         {
-            Shapes.ClassNode leftShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == association.LeftClass);
-            Shapes.ClassNode rightShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == association.RightClass);
+            Shapes.ClassNode leftShape = this._view.Nodes.OfType<Shapes.ClassNode>().Single(n => n.DataContext == association.LeftClass);
+            Shapes.ClassNode rightShape = this._view.Nodes.OfType<Shapes.ClassNode>().Single(n => n.DataContext == association.RightClass);
 
             LineConnector connector = new LineConnector()
             {
@@ -176,8 +176,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void AddInheritance(Model.InheritanceGlyph inheritance)
         {
-            Shapes.ClassNode childShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == inheritance.DerivedClass);
-            Shapes.ClassNode parentShape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().Single(n => n.DataContext == inheritance.BaseClass);
+            Shapes.ClassNode childShape = this._view.Nodes.OfType<Shapes.ClassNode>().Single(n => n.DataContext == inheritance.DerivedClass);
+            Shapes.ClassNode parentShape = this._view.Nodes.OfType<Shapes.ClassNode>().Single(n => n.DataContext == inheritance.BaseClass);
             LineConnector connector = new LineConnector()
             {
                 IsHeadMovable = false,
@@ -363,7 +363,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void RemoveNode(Model.ClassGlyph node)
         {
-            Shapes.ClassNode shape = this._view.Nodes.FilterAndCast<Shapes.ClassNode>().SingleOrDefault(s => s.DataContext == node);
+            Shapes.ClassNode shape = this._view.Nodes.OfType<Shapes.ClassNode>().SingleOrDefault(s => s.DataContext == node);
             if (shape != null)
             {
                 this._view.Nodes.Remove(shape);

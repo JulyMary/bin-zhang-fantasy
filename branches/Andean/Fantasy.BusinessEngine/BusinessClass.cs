@@ -80,19 +80,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        //private IObservableList<BusinessClass> _childClasses = new ObservableList<BusinessClass>();
-        //public virtual IObservableList<BusinessClass> ChildClasses
-        //{
-        //    get
-        //    {
-        //        return _childClasses;
-        //    }
-        //    private set
-        //    {
-        //        _childClasses = value;
-        //        this.OnNotifyPropertyChangedPropertyChanged("ChildClasses");
-        //    }
-        //}
+
 
         private IObservableList<BusinessClass> _persistedChildClasses = new ObservableList<BusinessClass>();
         protected internal virtual IObservableList<BusinessClass> PersistedChildClasses
@@ -121,19 +109,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        //private IObservableList<BusinessProperty> _properties = new ObservableList<BusinessProperty>();
-        //public virtual IObservableList<BusinessProperty> Properties
-        //{
-        //    get
-        //    {
-        //        return _properties; 
-        //    }
-        //    private set
-        //    {
-        //        this._properties = value;
-        //        this.OnNotifyPropertyChangedPropertyChanged("Properties");
-        //    }
-        //}
+
 
         private IObservableList<BusinessProperty> _persistedProperties = new ObservableList<BusinessProperty>();
         protected internal virtual IObservableList<BusinessProperty> PersistedProperties
@@ -212,16 +188,6 @@ namespace Fantasy.BusinessEngine
 
         public static readonly Guid RootClassId = new Guid("bf0aa7f4-588f-4556-963d-33242e649d57");
 
-       
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            this.PreviousState = BusinessEngine.EntityState.Clean;
-        }
-
-       
-
         public override EntityState EntityState
         {
             get
@@ -230,51 +196,9 @@ namespace Fantasy.BusinessEngine
             }
             protected set
             {
-
-                if (this.EntityState == BusinessEngine.EntityState.Clean && value == BusinessEngine.EntityState.Dirty || value == BusinessEngine.EntityState.Deleted)
-                {
-                    this.PreviousState = BusinessEngine.EntityState.Clean;
-                }
                 base.EntityState = value;
             }
         }
-
-
-        private EntityState _previousState = EntityState.New;
-        public virtual EntityState PreviousState
-        {
-            get
-            {
-                return _previousState;
-            }
-            set
-            {
-                this._previousState = value;
-                this._previousValues.Clear();
-                foreach (KeyValuePair<string, object> kv in this.Values)
-                {
-                    this._previousValues.Add(kv.Key, kv.Value);
-                }
-                this._previousProperties = this.Properties.ToArray();
-            }
-        }
-       
-        private BusinessProperty[] _previousProperties = new BusinessProperty[0]; 
-        public virtual BusinessProperty[] PreviousProperties
-        {
-            get
-            {
-                return _previousProperties ;
-            }
-        }
-        private Dictionary<string, object> _previousValues = new Dictionary<string, object>();
-        public virtual T GetPreviousValue<T>(string propertyName, T defaultValue = default(T))
-        {
-            return (T)this._previousValues.GetValueOrDefault(propertyName, defaultValue);
-        }
-
-
-
 
         private IObservableList<BusinessAssociation> _persistedLeftAssociations = new ObservableList<BusinessAssociation>();
         protected internal virtual IObservableList<BusinessAssociation> PersistedLeftAssociations

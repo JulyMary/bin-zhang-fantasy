@@ -420,10 +420,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                         member.SaveEntity();
                     }
 
-                    IDDLService dll = this.Site.GetRequiredService<IDDLService>();
-
-                    dll.CreateClassTable(this.Entity);
-
                     es.EndUpdate(true);
                     base.SaveEntity();
                 }

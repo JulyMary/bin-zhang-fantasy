@@ -17,36 +17,27 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessAssemblyReference reference = (BusinessAssemblyReference)args;
-            es.BeginUpdate();
-            try
+
+            reference.Group.References.Remove(reference);
+            reference.Group = null;
+
+            if (reference.EntityState != EntityState.New && reference.EntityState != EntityState.Deleted)
             {
-                reference.Group.References.Remove(reference);
-                reference.Group = null;
-
-                if (reference.EntityState != EntityState.New && reference.EntityState != EntityState.Deleted)
-                {
-                    es.Delete(reference);
-                }
-
-
-                if (reference.CopyLocal)
-                {
-                    string fileName = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
-                   
-                    if (LongPathFile.Exists(fileName))
-                    {
-                        LongPathFile.Delete(fileName);
-                    }
-                }
-
-
-                es.EndUpdate(true);
-               
+                es.Delete(reference);
             }
-            catch
+
+
+            if (reference.CopyLocal)
             {
-                es.EndUpdate(false);
+                string fileName = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
+
+                if (LongPathFile.Exists(fileName))
+                {
+                    LongPathFile.Delete(fileName);
+                }
             }
+
+
 
             return null;
         }

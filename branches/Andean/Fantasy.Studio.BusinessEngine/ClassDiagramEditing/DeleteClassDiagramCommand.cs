@@ -17,25 +17,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessClassDiagram diagram = (BusinessClassDiagram)args;
-            es.BeginUpdate();
-            try
+           
+            diagram.Package.ClassDiagrams.Remove(diagram);
+            diagram.Package = null;
+            if (diagram.EntityState != EntityState.New && diagram.EntityState != EntityState.Deleted)
             {
-                diagram.Package.ClassDiagrams.Remove(diagram);
-                diagram.Package = null;
-
-                if (diagram.EntityState != EntityState.New && diagram.EntityState != EntityState.Deleted)
-                {
-                    es.Delete(diagram);
-                }
-
-                es.EndUpdate(true);
-                this.Site.GetRequiredService<IEditingService>().CloseView(diagram, true);
+                es.Delete(diagram);
             }
-            catch
-            {
-                es.EndUpdate(false);
-            }
-
+            this.Site.GetRequiredService<IEditingService>().CloseView(diagram, true);
+           
             return null;
         }
 

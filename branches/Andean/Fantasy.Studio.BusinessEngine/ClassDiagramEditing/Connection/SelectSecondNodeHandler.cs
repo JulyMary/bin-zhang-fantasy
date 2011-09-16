@@ -76,7 +76,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
                     args.Owner.OnCreatConnection(EventArgs.Empty);
 
-                    args.Owner.OnExit();
+                    args.Owner.Exit();
                     args.Handled = true;
                 }
             //}

@@ -15,7 +15,7 @@ namespace Fantasy.BusinessEngine.Services
 
         void CreateClassTable(BusinessClass @class);
 
-        void DeleteClassTable(BusinessClass @class);
+        void DropClassTable(BusinessClass @class);
 
         string[] GetTableFullNames();
 
@@ -24,7 +24,12 @@ namespace Fantasy.BusinessEngine.Services
 
         void CreateAssoicationTable(BusinessAssociation association);
 
-        void DeleteAssociationTable(BusinessAssociation association);
+        void DropAssociationTable(BusinessAssociation association);
 
+        void CreateClassColumn(BusinessProperty property);
+
+        void UpdateClassColumn(BusinessProperty property);
+
+        void DropClassColumn(BusinessProperty property);
     }
 }

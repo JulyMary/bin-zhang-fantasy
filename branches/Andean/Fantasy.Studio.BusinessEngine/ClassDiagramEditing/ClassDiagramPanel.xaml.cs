@@ -46,14 +46,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 this._selecting = true;
                 try
                 {
-                    var query = from shape in this.diagramView.SelectionList.FilterAndCast<ContentControl>() select shape.DataContext;
+                    var query = from shape in this.diagramView.SelectionList.OfType<ContentControl>() select shape.DataContext;
 
                     if (query.Count() > 0)
                     {
 
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
-                        this._selectionService.IsReadOnly = query.FilterAndCast<Model.ClassGlyph>().Any(n => n.IsShortCut)
-                            || query.FilterAndCast<Model.EnumGlyph>().Any(en => en.IsShortCut);
+                        this._selectionService.IsReadOnly = query.OfType<Model.ClassGlyph>().Any(n => n.IsShortCut)
+                            || query.OfType<Model.EnumGlyph>().Any(en => en.IsShortCut);
 
                     }
                     else
@@ -119,6 +119,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         private void OnModeChanged()
         {
+            if (this._currentConnectionAdorner != null)
+            {
+                this._currentConnectionAdorner.ValidateFirstNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateLeftClass);
+                this._currentConnectionAdorner.ValidateSecondNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateRightClass);
+                this._currentConnectionAdorner.CreatConnection -= new EventHandler(CreatAssociation);
+                this._currentConnectionAdorner.Exited -= new EventHandler(ExitCreateAssociation);
+                this._currentConnectionAdorner.ValidateFirstNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateSubclass);
+                this._currentConnectionAdorner.ValidateSecondNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateParentClass);
+                this._currentConnectionAdorner.CreatConnection -= new EventHandler(CreateInheritance);
+                this._currentConnectionAdorner.Exited -= new EventHandler(ExitCreateInheritance);
+            }
+
             switch (this.Mode)
             {
 
@@ -128,7 +140,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         adorner.ValidateFirstNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateSubclass);
                         adorner.ValidateSecondNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateParentClass);
                         adorner.CreatConnection += new EventHandler(CreateInheritance);
-                        adorner.Exit += new EventHandler(ExitCreateInheritance);
+                        adorner.Exited += new EventHandler(ExitCreateInheritance);
+                        this._currentConnectionAdorner = adorner;
                     }
 
                     break;
@@ -138,20 +151,19 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                         adorner.ValidateFirstNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateLeftClass);
                         adorner.ValidateSecondNode += new EventHandler<Connection.ValidatNodeArgs>(ValidateRightClass);
                         adorner.CreatConnection += new EventHandler(CreatAssociation);
-                        adorner.Exit += new EventHandler(ExitCreateAssociation);
+                        adorner.Exited += new EventHandler(ExitCreateAssociation);
+                        this._currentConnectionAdorner = adorner;
                     }
                     break;
 
             }
         }
 
+        private Connection.ConnectionAdorner _currentConnectionAdorner = null;
+
         void ExitCreateAssociation(object sender, EventArgs e)
         {
-            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
-            adorner.ValidateFirstNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateLeftClass);
-            adorner.ValidateSecondNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateRightClass);
-            adorner.CreatConnection -= new EventHandler(CreatAssociation);
-            adorner.Exit -= new EventHandler(ExitCreateAssociation);
+            
             this.Mode = ClassDiagramMode.Default;
         }
 
@@ -215,19 +227,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         void ExitCreateInheritance(object sender, EventArgs e)
         {
-            Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
-            adorner.ValidateFirstNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateSubclass);
-            adorner.ValidateSecondNode -= new EventHandler<Connection.ValidatNodeArgs>(ValidateParentClass);
-            adorner.CreatConnection -= new EventHandler(CreateInheritance);
-            adorner.Exit -= new EventHandler(ExitCreateInheritance);
+           
+            
             this.Mode = ClassDiagramMode.Default;
         }
 
         void CreateInheritance(object sender, EventArgs e)
         {
             Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
-
-
 
             Model.InheritanceGlyph inheritance = new Model.InheritanceGlyph()
             {
