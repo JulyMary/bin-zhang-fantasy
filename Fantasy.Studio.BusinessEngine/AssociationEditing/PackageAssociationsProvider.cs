@@ -5,19 +5,20 @@ using System.Text;
 using Fantasy.Studio.Controls;
 using System.Collections;
 using Fantasy.BusinessEngine;
+using Fantasy.Adaption;
 
 namespace Fantasy.Studio.BusinessEngine.AssociationEditing
 {
-    public class AssociationFolderAssociationsProvider  : ObjectWithSite, IChildItemsProvider
+    public class PackageAssociationsProvider  : ObjectWithSite, IChildItemsProvider
     {
         #region IChildItemsProvider Members
 
         
         public IEnumerable GetChildren(object parent)
         {
-            AssociationFolder om = (AssociationFolder)parent;
-            BusinessPackage package = om.Package;
-            return package.Associations.ToSorted("Name");
+            IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
+
+            return am.GetAdapter<BusinessPackage>(parent).Associations.ToSorted("Name");
         }
 
         #endregion

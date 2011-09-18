@@ -13,27 +13,22 @@ using Fantasy.BusinessEngine.Collections;
 using Fantasy.BusinessEngine;
 using Fantasy.Studio.BusinessEngine.PackageEditing;
 
-namespace Fantasy.Studio.BusinessEngine.ClassEditing
+namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
-    public class ObjectModelFolder : IPackageSubfolder
+    public class UserRoleFolder : IPackageSubfolder
     {
         public Fantasy.BusinessEngine.BusinessPackage Package {get;private set;}
 
-        public ObjectModelFolder(Fantasy.BusinessEngine.BusinessPackage package)
+        public UserRoleFolder(Fantasy.BusinessEngine.BusinessPackage package)
         {
-           
             this.Package = package;          
         }
 
-        #region IDocumentTreeViewItem Members
-
         public string Name
         {
-            get { return Resources.ObjectModelFolderName; }
+            get { return Resources.UserRoleFolderName; }
         }
 
-       
-
-        #endregion
+        
     }
 }

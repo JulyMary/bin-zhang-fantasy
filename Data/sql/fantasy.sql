@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     15/09/2011 5:05:12 PM                        */
+/* Created on:     2011/9/17 20:36:53                           */
 /*==============================================================*/
 
 
@@ -9,6 +9,55 @@ if exists (select 1
    where r.fkeyid = object_id('ASSEMBLYREFERENCE') and o.name = 'FK_ASSEMBLYREFERENCEGROUP')
 alter table ASSEMBLYREFERENCE
    drop constraint FK_ASSEMBLYREFERENCEGROUP
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATION') and o.name = 'FK_BUSINESSAPPLICATION_ENTRYOBJECT')
+alter table BUSINESSAPPLICATION
+   drop constraint FK_BUSINESSAPPLICATION_ENTRYOBJECT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATION') and o.name = 'FK_BUSINESSAPPLICATION_PACKAGE')
+alter table BUSINESSAPPLICATION
+   drop constraint FK_BUSINESSAPPLICATION_PACKAGE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATIONACL') and o.name = 'FK_BUSINESS_APPLICATIONACL_PARTICIPANT')
+alter table BUSINESSAPPLICATIONACL
+   drop constraint FK_BUSINESS_APPLICATIONACL_PARTICIPANT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATIONACL') and o.name = 'FK_BUSINESS_APPLICATIONACL_STATE')
+alter table BUSINESSAPPLICATIONACL
+   drop constraint FK_BUSINESS_APPLICATIONACL_STATE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATIONACL') and o.name = 'FK_BUSINESS_APPLICATIONACL_ROLE')
+alter table BUSINESSAPPLICATIONACL
+   drop constraint FK_BUSINESS_APPLICATIONACL_ROLE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATIONPARTICIPANT') and o.name = 'FK_BUSINESSPARICIPANT_CLASS')
+alter table BUSINESSAPPLICATIONPARTICIPANT
+   drop constraint FK_BUSINESSPARICIPANT_CLASS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSAPPLICATIONPARTICIPANT') and o.name = 'FK_BUSINESS_PATICIPANT_APPLICATION')
+alter table BUSINESSAPPLICATIONPARTICIPANT
+   drop constraint FK_BUSINESS_PATICIPANT_APPLICATION
 go
 
 if exists (select 1
@@ -69,9 +118,9 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BUSINESSOBJECT') and o.name = 'FK_BUSINESS_OBJECTCLA_BUSINESS')
+   where r.fkeyid = object_id('BUSINESSOBJECT') and o.name = 'FK_BUSINESS_BUSINESSC_BUSINESS')
 alter table BUSINESSOBJECT
-   drop constraint FK_BUSINESS_OBJECTCLA_BUSINESS
+   drop constraint FK_BUSINESS_BUSINESSC_BUSINESS
 go
 
 if exists (select 1
@@ -110,16 +159,40 @@ alter table BUSINESSPROPERTY
 go
 
 if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSROLE') and o.name = 'FK_BUSINESS_ROLE_PACKAGE')
+alter table BUSINESSROLE
+   drop constraint FK_BUSINESS_ROLE_PACKAGE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSUSER') and o.name = 'FK_BUSINESS_USER_PACKAGE')
+alter table BUSINESSUSER
+   drop constraint FK_BUSINESS_USER_PACKAGE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSUSERROLE') and o.name = 'FK_BUSINESSUSERROLE_ROLE')
+alter table BUSINESSUSERROLE
+   drop constraint FK_BUSINESSUSERROLE_ROLE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSUSERROLE') and o.name = 'FK_BUSINESS_USERROLE_USER')
+alter table BUSINESSUSERROLE
+   drop constraint FK_BUSINESS_USERROLE_USER
+go
+
+if exists (select 1
             from  sysindexes
            where  id    = object_id('ASSEMBLYREFERENCE')
             and   name  = 'GROUPASSEMBLY_FK'
             and   indid > 0
             and   indid < 255)
    drop index ASSEMBLYREFERENCE.GROUPASSEMBLY_FK
-go
-
-alter table ASSEMBLYREFERENCE
-   drop constraint PK_ASSEMBLYREFERENCE
 go
 
 if exists (select 1
@@ -129,15 +202,95 @@ if exists (select 1
    drop table ASSEMBLYREFERENCE
 go
 
-alter table ASSEMBLYREFERENCEGROUP
-   drop constraint PK_ASSEMBLYREFERENCEGROUP
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('ASSEMBLYREFERENCEGROUP')
             and   type = 'U')
    drop table ASSEMBLYREFERENCEGROUP
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATION')
+            and   name  = 'BUSINESSPACKAGEAPPLICATIONS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATION.BUSINESSPACKAGEAPPLICATIONS_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATION')
+            and   name  = 'BUSINESSAPPLICATIONENTRYOBJECT_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATION.BUSINESSAPPLICATIONENTRYOBJECT_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSAPPLICATION')
+            and   type = 'U')
+   drop table BUSINESSAPPLICATION
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATIONACL')
+            and   name  = 'APPLICATIONPARTICIPANTACL_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATIONACL.APPLICATIONPARTICIPANTACL_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATIONACL')
+            and   name  = 'BUSINESSAPPLICATIONACLSTATE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATIONACL.BUSINESSAPPLICATIONACLSTATE_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATIONACL')
+            and   name  = 'CLASSACCESSCONTROLROLE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATIONACL.CLASSACCESSCONTROLROLE_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSAPPLICATIONACL')
+            and   type = 'U')
+   drop table BUSINESSAPPLICATIONACL
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATIONPARTICIPANT')
+            and   name  = 'PARTICIPANTCLASS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATIONPARTICIPANT.PARTICIPANTCLASS_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSAPPLICATIONPARTICIPANT')
+            and   name  = 'PATICIPANTAPPLICATION_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSAPPLICATIONPARTICIPANT.PATICIPANTAPPLICATION_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSAPPLICATIONPARTICIPANT')
+            and   type = 'U')
+   drop table BUSINESSAPPLICATIONPARTICIPANT
 go
 
 if exists (select 1
@@ -167,10 +320,6 @@ if exists (select 1
    drop index BUSINESSASSOCIATION.RELATIONSHIPLEFT_FK
 go
 
-alter table BUSINESSASSOCIATION
-   drop constraint PK_BUSINESSASSOCIATION
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSASSOCIATION')
@@ -196,10 +345,6 @@ if exists (select 1
    drop index BUSINESSCLASS.IDX_PARENTCLASS_FK
 go
 
-alter table BUSINESSCLASS
-   drop constraint PK_BUSINESSCLASS
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSCLASS')
@@ -216,19 +361,11 @@ if exists (select 1
    drop index BUSINESSCLASSDIAGRAM.PACKAGECLASSDIAGRAM_FK
 go
 
-alter table BUSINESSCLASSDIAGRAM
-   drop constraint PK_BUSINESSCLASSDIAGRAM
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSCLASSDIAGRAM')
             and   type = 'U')
    drop table BUSINESSCLASSDIAGRAM
-go
-
-alter table BUSINESSDATATYPE
-   drop constraint PK_BUSINESSDATATYPE
 go
 
 if exists (select 1
@@ -247,10 +384,6 @@ if exists (select 1
    drop index BUSINESSENUM.IDX_PACKAGEENUM_FK
 go
 
-alter table BUSINESSENUM
-   drop constraint PK_BUSINESSENUM
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSENUM')
@@ -267,10 +400,6 @@ if exists (select 1
    drop index BUSINESSENUMVALUE.IDX_BUSINESSENUMVALUES_FK
 go
 
-alter table BUSINESSENUMVALUE
-   drop constraint PK_BUSINESSENUMVALUE
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSENUMVALUE')
@@ -281,14 +410,10 @@ go
 if exists (select 1
             from  sysindexes
            where  id    = object_id('BUSINESSOBJECT')
-            and   name  = 'IDX_OBJECTCLASS_FK'
+            and   name  = 'BUSINESSCLASSOBJECT_FK'
             and   indid > 0
             and   indid < 255)
-   drop index BUSINESSOBJECT.IDX_OBJECTCLASS_FK
-go
-
-alter table BUSINESSOBJECT
-   drop constraint PK_BUSINESSOBJECT
+   drop index BUSINESSOBJECT.BUSINESSCLASSOBJECT_FK
 go
 
 if exists (select 1
@@ -305,10 +430,6 @@ if exists (select 1
             and   indid > 0
             and   indid < 255)
    drop index BUSINESSPACKAGE.IDX_CHILDPACKAGES_FK
-go
-
-alter table BUSINESSPACKAGE
-   drop constraint PK_BUSINESSPACKAGE
 go
 
 if exists (select 1
@@ -354,15 +475,68 @@ if exists (select 1
    drop index BUSINESSPROPERTY.IDX_PROPERTIES_FK
 go
 
-alter table BUSINESSPROPERTY
-   drop constraint PK_BUSINESSPROPERTY
-go
-
 if exists (select 1
             from  sysobjects
            where  id = object_id('BUSINESSPROPERTY')
             and   type = 'U')
    drop table BUSINESSPROPERTY
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSROLE')
+            and   name  = 'ROLE_PACKAGE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSROLE.ROLE_PACKAGE_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSROLE')
+            and   type = 'U')
+   drop table BUSINESSROLE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSUSER')
+            and   name  = 'USER_PACKAGE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSUSER.USER_PACKAGE_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSUSER')
+            and   type = 'U')
+   drop table BUSINESSUSER
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSUSERROLE')
+            and   name  = 'USERROLE_FK2'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSUSERROLE.USERROLE_FK2
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSUSERROLE')
+            and   name  = 'USERROLE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSUSERROLE.USERROLE_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSUSERROLE')
+            and   type = 'U')
+   drop table BUSINESSUSERROLE
 go
 
 if exists(select 1 from systypes where name='T_DBENTITY')
@@ -410,12 +584,9 @@ create table ASSEMBLYREFERENCE (
    FULLNAME             varchar(255)         not null,
    RAWASSEMBLY          image                null,
    RAWHASH              varchar(32)          null,
-   COPYLOCAL            bit                  not null
+   COPYLOCAL            bit                  not null,
+   constraint PK_ASSEMBLYREFERENCE primary key (ID)
 )
-go
-
-alter table ASSEMBLYREFERENCE
-   add constraint PK_ASSEMBLYREFERENCE primary key (ID)
 go
 
 /*==============================================================*/
@@ -433,12 +604,110 @@ create table ASSEMBLYREFERENCEGROUP (
    ID                   T_GUID               not null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_ASSEMBLYREFERENCEGROUP primary key (ID)
 )
 go
 
-alter table ASSEMBLYREFERENCEGROUP
-   add constraint PK_ASSEMBLYREFERENCEGROUP primary key (ID)
+/*==============================================================*/
+/* Table: BUSINESSAPPLICATION                                   */
+/*==============================================================*/
+create table BUSINESSAPPLICATION (
+   ID                   T_GUID               not null,
+   PACKAGEID            T_GUID               not null,
+   ENTRYOBJECTID        T_GUID               null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   NAME                 T_NAME               null,
+   constraint PK_BUSINESSAPPLICATION primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: BUSINESSAPPLICATIONENTRYOBJECT_FK                     */
+/*==============================================================*/
+create index BUSINESSAPPLICATIONENTRYOBJECT_FK on BUSINESSAPPLICATION (
+ENTRYOBJECTID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: BUSINESSPACKAGEAPPLICATIONS_FK                        */
+/*==============================================================*/
+create index BUSINESSPACKAGEAPPLICATIONS_FK on BUSINESSAPPLICATION (
+PACKAGEID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: BUSINESSAPPLICATIONACL                                */
+/*==============================================================*/
+create table BUSINESSAPPLICATIONACL (
+   ID                   T_GUID               not null,
+   STATEID              T_GUID               null,
+   ROLEID               T_GUID               not null,
+   PARTICIPANTID        T_GUID               not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   ACL                  text                 null,
+   constraint PK_BUSINESSAPPLICATIONACL primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: CLASSACCESSCONTROLROLE_FK                             */
+/*==============================================================*/
+create index CLASSACCESSCONTROLROLE_FK on BUSINESSAPPLICATIONACL (
+ROLEID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: BUSINESSAPPLICATIONACLSTATE_FK                        */
+/*==============================================================*/
+create index BUSINESSAPPLICATIONACLSTATE_FK on BUSINESSAPPLICATIONACL (
+STATEID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: APPLICATIONPARTICIPANTACL_FK                          */
+/*==============================================================*/
+create index APPLICATIONPARTICIPANTACL_FK on BUSINESSAPPLICATIONACL (
+PARTICIPANTID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: BUSINESSAPPLICATIONPARTICIPANT                        */
+/*==============================================================*/
+create table BUSINESSAPPLICATIONPARTICIPANT (
+   ID                   T_GUID               not null,
+   CLASSID              T_GUID               not null,
+   APPLICATIONID        T_GUID               not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSAPPLICATIONPARTICIP primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: PATICIPANTAPPLICATION_FK                              */
+/*==============================================================*/
+create index PATICIPANTAPPLICATION_FK on BUSINESSAPPLICATIONPARTICIPANT (
+APPLICATIONID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: PARTICIPANTCLASS_FK                                   */
+/*==============================================================*/
+create index PARTICIPANTCLASS_FK on BUSINESSAPPLICATIONPARTICIPANT (
+CLASSID ASC
+)
 go
 
 /*==============================================================*/
@@ -466,12 +735,9 @@ create table BUSINESSASSOCIATION (
    RIGHTROLEDISPLAYORDER bigint               null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSASSOCIATION primary key (ID)
 )
-go
-
-alter table BUSINESSASSOCIATION
-   add constraint PK_BUSINESSASSOCIATION primary key (ID)
 go
 
 /*==============================================================*/
@@ -517,12 +783,9 @@ create table BUSINESSCLASS (
    IMPLEMENTS           varchar(4096)        null,
    AUTOSCRIPT           text                 null,
    SCRIPT               text                 null,
-   SCRIPTOPTIONS        int                  null
+   SCRIPTOPTIONS        int                  null,
+   constraint PK_BUSINESSCLASS primary key (ID)
 )
-go
-
-alter table BUSINESSCLASS
-   add constraint PK_BUSINESSCLASS primary key (ID)
 go
 
 /*==============================================================*/
@@ -551,12 +814,9 @@ create table BUSINESSCLASSDIAGRAM (
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null,
    NAME                 T_NAME               not null,
-   DIAGRAM              text                 null
+   DIAGRAM              text                 null,
+   constraint PK_BUSINESSCLASSDIAGRAM primary key (PACKAGEID, ID)
 )
-go
-
-alter table BUSINESSCLASSDIAGRAM
-   add constraint PK_BUSINESSCLASSDIAGRAM primary key (PACKAGEID, ID)
 go
 
 /*==============================================================*/
@@ -579,12 +839,9 @@ create table BUSINESSDATATYPE (
    DEFAULTPRECISION     int                  null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSDATATYPE primary key (ID)
 )
-go
-
-alter table BUSINESSDATATYPE
-   add constraint PK_BUSINESSDATATYPE primary key (ID)
 go
 
 /*==============================================================*/
@@ -601,12 +858,9 @@ create table BUSINESSENUM (
    EXTERNALNAMESPACE    varchar(255)         null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSENUM primary key (ID)
 )
-go
-
-alter table BUSINESSENUM
-   add constraint PK_BUSINESSENUM primary key (ID)
 go
 
 /*==============================================================*/
@@ -628,12 +882,9 @@ create table BUSINESSENUMVALUE (
    VALUE                int                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSENUMVALUE primary key (ID)
 )
-go
-
-alter table BUSINESSENUMVALUE
-   add constraint PK_BUSINESSENUMVALUE primary key (ENUMID, ID)
 go
 
 /*==============================================================*/
@@ -651,20 +902,17 @@ create table BUSINESSOBJECT (
    ID                   T_GUID               not null,
    CLASSID              T_GUID               not null,
    NAME                 T_NAME               null,
-   CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSOBJECT primary key nonclustered (ID)
 )
 go
 
-alter table BUSINESSOBJECT
-   add constraint PK_BUSINESSOBJECT primary key (ID)
-go
-
 /*==============================================================*/
-/* Index: IDX_OBJECTCLASS_FK                                    */
+/* Index: BUSINESSCLASSOBJECT_FK                                */
 /*==============================================================*/
-create index IDX_OBJECTCLASS_FK on BUSINESSOBJECT (
+create index BUSINESSCLASSOBJECT_FK on BUSINESSOBJECT (
 CLASSID ASC
 )
 go
@@ -679,12 +927,9 @@ create table BUSINESSPACKAGE (
    CODENAME             T_NAME               not null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSPACKAGE primary key (ID)
 )
-go
-
-alter table BUSINESSPACKAGE
-   add constraint PK_BUSINESSPACKAGE primary key (ID)
 go
 
 /*==============================================================*/
@@ -717,12 +962,9 @@ create table BUSINESSPROPERTY (
    ISCALCULATED         bit                  not null,
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
-   ISSYSTEM             bit                  not null
+   ISSYSTEM             bit                  not null,
+   constraint PK_BUSINESSPROPERTY primary key (CLASSID, ID)
 )
-go
-
-alter table BUSINESSPROPERTY
-   add constraint PK_BUSINESSPROPERTY primary key (CLASSID, ID)
 go
 
 /*==============================================================*/
@@ -757,9 +999,124 @@ CLASSTYPEID ASC
 )
 go
 
+/*==============================================================*/
+/* Table: BUSINESSROLE                                          */
+/*==============================================================*/
+create table BUSINESSROLE (
+   ID                   T_GUID               not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   PACKAGEID            T_GUID               not null,
+   NAME                 T_NAME               not null,
+   DESCRIPTION          varchar(1024)        null,
+   ISCOMPUTED           bit                  not null,
+   constraint PK_BUSINESSROLE primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: ROLE_PACKAGE_FK                                       */
+/*==============================================================*/
+create index ROLE_PACKAGE_FK on BUSINESSROLE (
+PACKAGEID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: BUSINESSUSER                                          */
+/*==============================================================*/
+create table BUSINESSUSER (
+   ID                   T_GUID               not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   PACKAGEID            T_GUID               not null,
+   NAME                 T_NAME               not null,
+   "FULL NAME"          T_NAME               not null,
+   DESCRIPTION          varchar(1024)        null,
+   PASSWORD             varchar(16)          null,
+   constraint PK_BUSINESSUSER primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: USER_PACKAGE_FK                                       */
+/*==============================================================*/
+create index USER_PACKAGE_FK on BUSINESSUSER (
+PACKAGEID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: BUSINESSUSERROLE                                      */
+/*==============================================================*/
+create table BUSINESSUSERROLE (
+   USERID               T_GUID               not null,
+   ROLEID               T_GUID               not null,
+   constraint PK_BUSINESSUSERROLE primary key (USERID, ROLEID)
+)
+go
+
+/*==============================================================*/
+/* Index: USERROLE_FK                                           */
+/*==============================================================*/
+create index USERROLE_FK on BUSINESSUSERROLE (
+USERID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: USERROLE_FK2                                          */
+/*==============================================================*/
+create index USERROLE_FK2 on BUSINESSUSERROLE (
+ROLEID ASC
+)
+go
+
 alter table ASSEMBLYREFERENCE
    add constraint FK_ASSEMBLYREFERENCEGROUP foreign key (GROUPID)
       references ASSEMBLYREFERENCEGROUP (ID)
+go
+
+alter table BUSINESSAPPLICATION
+   add constraint FK_BUSINESSAPPLICATION_ENTRYOBJECT foreign key (ENTRYOBJECTID)
+      references BUSINESSOBJECT (ID)
+go
+
+alter table BUSINESSAPPLICATION
+   add constraint FK_BUSINESSAPPLICATION_PACKAGE foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
+alter table BUSINESSAPPLICATIONACL
+   add constraint FK_BUSINESS_APPLICATIONACL_PARTICIPANT foreign key (PARTICIPANTID)
+      references BUSINESSAPPLICATIONPARTICIPANT (ID)
+         on delete cascade
+go
+
+alter table BUSINESSAPPLICATIONACL
+   add constraint FK_BUSINESS_APPLICATIONACL_STATE foreign key (STATEID)
+      references BUSINESSENUMVALUE (ID)
+         on delete cascade
+go
+
+alter table BUSINESSAPPLICATIONACL
+   add constraint FK_BUSINESS_APPLICATIONACL_ROLE foreign key (ROLEID)
+      references BUSINESSROLE (ID)
+         on delete cascade
+go
+
+alter table BUSINESSAPPLICATIONPARTICIPANT
+   add constraint FK_BUSINESSPARICIPANT_CLASS foreign key (CLASSID)
+      references BUSINESSCLASS (ID)
+         on delete cascade
+go
+
+alter table BUSINESSAPPLICATIONPARTICIPANT
+   add constraint FK_BUSINESS_PATICIPANT_APPLICATION foreign key (APPLICATIONID)
+      references BUSINESSAPPLICATION (ID)
+         on delete cascade
 go
 
 alter table BUSINESSASSOCIATION
@@ -805,7 +1162,7 @@ alter table BUSINESSENUMVALUE
 go
 
 alter table BUSINESSOBJECT
-   add constraint FK_BUSINESS_OBJECTCLA_BUSINESS foreign key (CLASSID)
+   add constraint FK_BUSINESS_BUSINESSC_BUSINESS foreign key (CLASSID)
       references BUSINESSCLASS (ID)
 go
 
@@ -833,5 +1190,27 @@ go
 alter table BUSINESSPROPERTY
    add constraint FK_BUSINESS_TYPE_PROPERTY foreign key (DATATYPEID)
       references BUSINESSDATATYPE (ID)
+go
+
+alter table BUSINESSROLE
+   add constraint FK_BUSINESS_ROLE_PACKAGE foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
+alter table BUSINESSUSER
+   add constraint FK_BUSINESS_USER_PACKAGE foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
+alter table BUSINESSUSERROLE
+   add constraint FK_BUSINESSUSERROLE_ROLE foreign key (ROLEID)
+      references BUSINESSROLE (ID)
+         on delete cascade
+go
+
+alter table BUSINESSUSERROLE
+   add constraint FK_BUSINESS_USERROLE_USER foreign key (USERID)
+      references BUSINESSUSER (ID)
+         on delete cascade
 go
 

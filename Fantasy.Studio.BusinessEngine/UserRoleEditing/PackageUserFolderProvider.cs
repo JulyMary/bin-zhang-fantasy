@@ -4,21 +4,25 @@ using System.Linq;
 using System.Text;
 using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
-using System.Collections;
 using Fantasy.Adaption;
 
-namespace Fantasy.Studio.BusinessEngine.ClassEditing
+namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
-    public class PackageClassesProvider : ObjectWithSite, IChildItemsProvider
+    public class PackageUserFolderProvider : ObjectWithSite, IChildItemsProvider
     {
+
+
+      
+
         #region IChildItemsProvider Members
 
-        public IEnumerable GetChildren(object parent)
+        public System.Collections.IEnumerable GetChildren(object parent)
         {
-
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
 
-            return ((BusinessPackage)am.GetAdapter<BusinessPackage>(parent)).Classes.ToSorted("Name"); 
+            BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
+
+            return new object[] { new UserFolder(package) };
         }
 
         #endregion

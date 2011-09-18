@@ -129,6 +129,9 @@
   <data name="BusinessPropertyEditorTitle" xml:space="preserve">
     <value>Properties</value>
   </data>
+  <data name="BusinessUserPanelTitle" xml:space="preserve">
+    <value>General</value>
+  </data>
   <data name="ClassDiagramPanelTitle" xml:space="preserve">
     <value>Diagram</value>
   </data>
@@ -156,6 +159,12 @@
   <data name="DefaultNewBusinessPropertyName" xml:space="preserve">
     <value>New Property</value>
   </data>
+  <data name="DefaultNewBusinessRoleName" xml:space="preserve">
+    <value>NewRole</value>
+  </data>
+  <data name="DefaultNewBusinessUserName" xml:space="preserve">
+    <value>NewUser</value>
+  </data>
   <data name="DocumentPadTitle" xml:space="preserve">
     <value>Business Model</value>
   </data>
@@ -167,5 +176,14 @@
   </data>
   <data name="PropertyGridEditorDefaultTitle" xml:space="preserve">
     <value>General</value>
+  </data>
+  <data name="RoleFolderName" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="UserFolderName" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="UserRoleFolderName" xml:space="preserve">
+    <value>Users and Roles</value>
   </data>
 </root>

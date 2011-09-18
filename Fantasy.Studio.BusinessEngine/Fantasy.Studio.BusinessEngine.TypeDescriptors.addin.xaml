@@ -26,7 +26,6 @@
             <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" ReadOnly="true" />
         </TypeDescriptor>
         
-
         <TypeDescriptor ID="BusinessClassDiagram" TargetType="{x:Type be:BusinessClassDiagram}">
             <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
@@ -249,6 +248,15 @@
             <PropertyDescriptor ID="Navigatable" Name="Navigatable" Caption="Navigatable" Category="General"/>
             <PropertyDescriptor ID="Association" Name="Entity" Caption="Association" Category="General" Converter="{New sbe:EntityFullNameConverter}" />
             <PropertyDescriptor ID="Cardinality" Name="Cardinality" Caption="Cardinality" Category="General" Editor="{New sbe:CardinalityEditor}"/>
+        </TypeDescriptor>
+        <TypeDescriptor ID="UserRoleFolder" TargetType="{x:Type sbe:UserRoleFolder}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+        </TypeDescriptor>
+        <TypeDescriptor ID="UserFolder" TargetType="{x:Type sbe:UserFolder}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+        </TypeDescriptor>
+        <TypeDescriptor ID="RoleFolder" TargetType="{x:Type sbe:RoleFolder}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
         </TypeDescriptor>
     </Extension>
 </AddIn>

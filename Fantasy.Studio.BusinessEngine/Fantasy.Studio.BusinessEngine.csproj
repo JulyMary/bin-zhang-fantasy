@@ -86,12 +86,12 @@
     <Compile Include="AssociationEditing\AddAssociationCommand.cs" />
     <Compile Include="AssociationEditing\AssociationEditor.cs" />
     <Compile Include="AssociationEditing\AssociationFolder.cs" />
-    <Compile Include="AssociationEditing\AssociationFolderAssociationsProvider.cs" />
+    <Compile Include="AssociationEditing\PackageAssociationsProvider.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationLeftRoleNameSetAction.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationRightRoleNameSetAction.cs" />
     <Compile Include="AssociationEditing\CardinalityEditor.cs" />
     <Compile Include="AssociationEditing\DeleteAssociationCommand.cs" />
-    <Compile Include="AssociationEditing\ObjectModelAssociationFolderProvider.cs" />
+    <Compile Include="AssociationEditing\PackageAssociationFolderProvider.cs" />
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModeCommand.cs" />
@@ -178,7 +178,6 @@
     <Compile Include="EnumEditing\AddEnumCommand.cs" />
     <Compile Include="EnumEditing\AddEnumValueCommand.cs" />
     <Compile Include="EnumEditing\AssemblyNode.cs" />
-    <Compile Include="EnumEditing\ObjectModelFolderEnumsProvider.cs" />
     <Compile Include="EnumEditing\DeleteClassCommand.cs" />
     <Compile Include="EnumEditing\DeleteEnumValueCommand.cs" />
     <Compile Include="EnumEditing\EnumEditor.cs" />
@@ -198,10 +197,10 @@
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
     <Compile Include="IEntityEditingPanelContainer.cs" />
+    <Compile Include="PackageEditing\IPackageSubfolder.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
     <Compile Include="ClassDiagramEditing\ClassChildClassesProvider.cs" />
-    <Compile Include="ClassEditing\ObjectModelFolderClassesProvider.cs" />
     <Compile Include="ClassEditing\BusinessClassSchemaEditor.cs" />
     <Compile Include="ClassEditing\BusinessClassTableSpaceEditor.cs" />
     <Compile Include="ClassEditing\BusinessClassPicker.xaml.cs">
@@ -213,10 +212,11 @@
       <DependentUpon>ClassViewPad.xaml</DependentUpon>
     </Compile>
     <Compile Include="ClassEditing\ClassViewPadModel.cs" />
-    <Compile Include="ClassDiagramEditing\ObjectModelFolderClassDiagramsProvider.cs" />
+    <Compile Include="ClassDiagramEditing\PackageClassDiagramsProvider.cs" />
     <Compile Include="ClassEditing\PackageClassesProvider.cs" />
     <Compile Include="ClassEditing\PackageObjectModelFolderProvider.cs" />
     <Compile Include="PackageEditing\DeletePackageCommand.cs" />
+    <Compile Include="PackageEditing\PackageSubfolderAdpterFactory.cs" />
     <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
     <Compile Include="InvokerMemberConverter.cs" />
@@ -270,6 +270,17 @@
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UserRoleEditing\AddUserCommand.cs" />
+    <Compile Include="UserRoleEditing\BusinessUserPanel.xaml.cs">
+      <DependentUpon>BusinessUserPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserRoleEditing\PackageRoleFolderProvider.cs" />
+    <Compile Include="UserRoleEditing\PackageUserFolderProvider.cs" />
+    <Compile Include="UserRoleEditing\PackageUserRoleFolderProvider.cs" />
+    <Compile Include="UserRoleEditing\PackageUsersProvider.cs" />
+    <Compile Include="UserRoleEditing\RoleFolder.cs" />
+    <Compile Include="UserRoleEditing\UserFolder.cs" />
+    <Compile Include="UserRoleEditing\UserRoleFolder.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -312,6 +323,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\role.png" />
+    <Resource Include="images\user.png" />
+    <Page Include="UserRoleEditing\BusinessUserPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Resource Include="images\associationfolder.png" />
     <Resource Include="images\association.png" />
     <Resource Include="images\syncenum.png" />

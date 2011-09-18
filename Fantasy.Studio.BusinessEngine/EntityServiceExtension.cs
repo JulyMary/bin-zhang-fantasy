@@ -116,7 +116,7 @@ namespace Fantasy.Studio.BusinessEngine
             }
         }
 
-        public static  BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package)
+        public static BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package)
         {
             BusinessAssociation rs = es.CreateEntity<BusinessAssociation>();
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessAssociationName, package.Associations.Select(a => a.Name));
@@ -127,7 +127,7 @@ namespace Fantasy.Studio.BusinessEngine
             return rs;
         }
 
-        public static BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package, BusinessClass left, BusinessClass right)
+        public static BusinessAssociation AddBusinessAssociation(this IEntityService es, BusinessPackage package, BusinessClass left, BusinessClass right)
         {
             BusinessAssociation rs = es.CreateEntity<BusinessAssociation>();
             rs.Package = package;
@@ -169,6 +169,31 @@ namespace Fantasy.Studio.BusinessEngine
             @class.Properties.Add(rs);
 
             return rs;
+        }
+
+        public static BusinessUser AddBusinessUser(this IEntityService es, BusinessPackage package)
+        {
+            BusinessUser rs = es.CreateEntity<BusinessUser>();
+            var query = from p in es.GetRootPackage().Flatten(p => p.ChildPackages)
+                        from u in p.Users
+                        select u.Name;
+            rs.Name = rs.FullName = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessUserName, query);
+
+            return rs;
+        }
+
+        public static BusinessRole AddBusinessRole(this IEntityService es, BusinessPackage package)
+        {
+            BusinessRole rs = es.CreateEntity<BusinessRole>();
+            var query = from p in es.GetRootPackage().Flatten(p=>p.ChildPackages)
+                        from role in p.Roles
+                        select role.Name;
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessRoleName, query);
+
+            rs.Package = package;
+            package.Roles.Add(rs);
+            return rs;
+
         }
     }
 }

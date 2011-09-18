@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.BusinessEngine;
+using Fantasy.Adaption;
 
 namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 {
@@ -14,7 +15,10 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
         public System.Collections.IEnumerable GetChildren(object parent)
         {
-            BusinessPackage package = (BusinessPackage)parent;
+            IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
+
+            BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
+             
             if (package.Id == BusinessPackage.RootPackageId)
             {
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();

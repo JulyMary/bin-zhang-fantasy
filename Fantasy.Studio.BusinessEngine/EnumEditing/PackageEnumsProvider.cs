@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections;
 using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
+using Fantasy.Adaption;
 
 namespace Fantasy.Studio.BusinessEngine.EnumEditing
 {
@@ -15,8 +16,9 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 
         public IEnumerable GetChildren(object parent)
         {
-            BusinessPackage package = (BusinessPackage)parent;
-            return package.Enums.ToSorted("Name");
+            IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
+
+            return am.GetAdapter<BusinessPackage>(parent).Enums.ToSorted("Name");
         }
 
         #endregion
