@@ -185,6 +185,69 @@ namespace Fantasy.BusinessEngine
         }
 
 
+
+        private IObservableList<BusinessUser> _persistedUsers = new ObservableList<BusinessUser>();
+        protected internal virtual IObservableList<BusinessUser> PersistedUsers
+        {
+            get { return _persistedUsers; }
+            private set
+            {
+                if (_persistedUsers != value)
+                {
+                    _persistedUsers = value;
+                    if (_users != null)
+                    {
+                        _users.Source = value;
+                    }
+                }
+            }
+        }
+
+        private ObservableListView<BusinessUser> _users;
+        public virtual IObservableList<BusinessUser> Users
+        {
+            get
+            {
+                if (this._users == null)
+                {
+                    this._users = new ObservableListView<BusinessUser>(this._persistedUsers);
+                }
+                return _users;
+            }
+        }
+
+
+        private IObservableList<BusinessRole> _persistedRoles = new ObservableList<BusinessRole>();
+        protected internal virtual IObservableList<BusinessRole> PersistedRoles
+        {
+            get { return _persistedRoles; }
+            private set
+            {
+                if (_persistedRoles != value)
+                {
+                    _persistedRoles = value;
+                    if (_roles != null)
+                    {
+                        _roles.Source = value;
+                    }
+                }
+            }
+        }
+
+        private ObservableListView<BusinessRole> _roles;
+        public virtual IObservableList<BusinessRole> Roles
+        {
+            get
+            {
+                if (this._roles == null)
+                {
+                    this._roles = new ObservableListView<BusinessRole>(this._persistedRoles);
+                }
+                return _roles;
+            }
+        }
+
+
         public virtual BusinessPackage ParentPackage
         {
             get

@@ -66,12 +66,15 @@
     <Compile Include="BusinessEnumValue.cs" />
     <Compile Include="BusinessPackage.cs" />
     <Compile Include="BusinessProperty.cs" />
+    <Compile Include="BusinessRole.cs" />
+    <Compile Include="BusinessUser.cs" />
     <Compile Include="Collections\IObservableList.cs" />
     <Compile Include="Collections\IObservableSet.cs" />
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\ObservableListView.cs" />
     <Compile Include="Collections\PersistentGenericObservableBag.cs" />
     <Compile Include="BusinessAssociation.cs" />
+    <Compile Include="Encryption.cs" />
     <Compile Include="Events\BusinessAssociationCreateOrderHandler.cs" />
     <Compile Include="Events\BusinessAssociationCreateTableHandler.cs" />
     <Compile Include="Events\BusinessAssociationDropTableHandler.cs" />
@@ -81,6 +84,8 @@
     <Compile Include="Events\BusinessPropertyDropColumnHandler.cs" />
     <Compile Include="Events\BusinessPropertyUpdateColumnHandler.cs" />
     <Compile Include="Maps\BusinessAssociationMap.cs" />
+    <Compile Include="Maps\BusinessRoleMap.cs" />
+    <Compile Include="Maps\BusinessUserMap.cs" />
     <Compile Include="Properties\Settings.settings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.Studio.Controls;
-using Fantasy.BusinessEngine;
-using System.Collections;
 using Fantasy.Adaption;
+using Fantasy.BusinessEngine;
 
-namespace Fantasy.Studio.BusinessEngine.PackageEditing
+namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
-    public class ChildPackagesProvider : ObjectWithSite, IChildItemsProvider
+    public class PackageUsersProvider : ObjectWithSite, IChildItemsProvider
     {
+
         #region IChildItemsProvider Members
 
-        public IEnumerable GetChildren(object parent)
+        public System.Collections.IEnumerable GetChildren(object parent)
         {
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
 
-            return am.GetAdapter<BusinessPackage>(parent).ChildPackages.ToSorted("Name");
+            BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
+
+            return null;
         }
 
         #endregion

@@ -187,7 +187,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
             BusinessPackage package = this._entity.Package;
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessAssociation entity = es.AddAssociation(package, leftEntity, rightEntity);
+            BusinessAssociation entity = es.AddBusinessAssociation(package, leftEntity, rightEntity);
             association.Entity = entity;
             association.AssociationId = entity.Id;
 

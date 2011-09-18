@@ -2,32 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
+using Fantasy.Studio.Controls;
 using System.Collections;
 using Fantasy.Adaption;
 
-namespace Fantasy.Studio.BusinessEngine.ClassEditing
+namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
-    public class PackageObjectModelFolderProvider : ObjectWithSite, IChildItemsProvider
+    class PackageUserRoleFolderProvider :ObjectWithSite, IChildItemsProvider
     {
+
         #region IChildItemsProvider Members
 
-        
         public IEnumerable GetChildren(object parent)
         {
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
 
             BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
-           
-            if (package.Id != BusinessPackage.RootPackageId)
-            {
-                return new object[] { new ObjectModelFolder(package)};
-            }
-            else
-            {
-                return new object[0];
-            }
+            return new object[] { new UserRoleFolder(package)};
         }
 
         #endregion

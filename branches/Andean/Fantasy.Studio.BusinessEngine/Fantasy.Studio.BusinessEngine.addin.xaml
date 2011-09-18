@@ -27,6 +27,12 @@
             </Adapter.Factory>
             <x:Type TypeName="dm:PropertyNode" />
         </Adapter>
+        <Adapter ID="PackageSubFolder">
+            <Adapter.Factory>
+                <sbe:PackageSubfolderAdpterFactory />
+            </Adapter.Factory>
+            <x:Type Type="{x:Type sbe:IPackageSubfolder}" />
+        </Adapter>
     </Extension>
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}" />
@@ -320,14 +326,16 @@
     <Extension Path="fantasy/studio/businessengine/documentpad/treeview">
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/package/contextmenu">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
-            <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageObjectModelFolderProvider}" />
+            <TreeNodeChildProvider ID="objectModel" Provider="{New sbe:PackageObjectModelFolderProvider}" />
+            
+            <TreeNodeChildProvider ID="UserRoles" Provider="{New sbe:PackageUserRoleFolderProvider }" />
             <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
         <TreeNode ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu">
-            <TreeNodeChildProvider ID="associations" Provider="{New sbe:ObjectModelAssociationFolderProvider}" />
-            <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:ObjectModelFolderClassDiagramsProvider}" />
-            <TreeNodeChildProvider ID="class" Provider="{New sbe:ObjectModelFolderClassesProvider}" />
-            <TreeNodeChildProvider ID="enum" Provider="{New sbe:ObjectModelFolderEnumsProvider}" />
+            <TreeNodeChildProvider ID="associations" Provider="{New sbe:PackageAssociationFolderProvider}" />
+            <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:PackageClassDiagramsProvider}" />
+            <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageClassesProvider}" />
+            <TreeNodeChildProvider ID="enum" Provider="{New sbe:PackageEnumsProvider}" />
         </TreeNode>
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
             <TreeNode.DoDragDrop>
@@ -345,14 +353,33 @@
         </TreeNode>
         <TreeNode ID="Reference" TargetType="{x:Type be:BusinessAssemblyReference}" Icon="/Fantasy.Studio.BusinessEngine;component/images/Reference.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/reference/contextmenu"></TreeNode>
         <TreeNode ID="AssociationFolder" TargetType="{x:Type sbe:AssociationFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/associationfolder.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/associationfolder/contextmenu">
-            <TreeNodeChildProvider ID="Associations" Provider="{New sbe:AssociationFolderAssociationsProvider}" />
+            <TreeNodeChildProvider ID="Associations" Provider="{New sbe:PackageAssociationsProvider}" />
         </TreeNode>
         <TreeNode ID="Association" TargetType="{x:Type be:BusinessAssociation}" Icon="/Fantasy.Studio.BusinessEngine;component/images/association.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/association/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}">
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
         </TreeNode>
+        <TreeNode ID="UserRole" TargetType="{x:Type sbe:UserRoleFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" >
+            <TreeNodeChildProvider ID="userFolder" Provider="{New sbe:PackageUserFolderProvider}"/>
+            <TreeNodeChildProvider ID="roleFolder" Provider="{New sbe:PackageRoleFolderProvider}" />
+        </TreeNode>
+        <TreeNode ID="UserFolder" TargetType="{x:Type sbe:UserFolder}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}">
+            
+        </TreeNode>
+        <TreeNode ID="RoleFolder" TargetType="{x:Type sbe:RoleFolder}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}">
+            
+        </TreeNode>
+        <TreeNode ID="User" TargetType="{x:Type be:BusinessUser}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=FullName}">
+            
+        </TreeNode>
     </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/userfolder/contextmenu">
+        <Button ID="Add" Command="{New sbe:AddUserCommand}" Text="Add User" />
+       
+    </Extension>
+
     <Extension Path="fantasy/studio/businessengine/enumeditor/commandbindings">
        
     </Extension>

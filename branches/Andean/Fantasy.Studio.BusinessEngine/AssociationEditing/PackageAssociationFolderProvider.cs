@@ -6,19 +6,22 @@ using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
 using System.Collections;
 using Fantasy.Studio.BusinessEngine.ClassEditing;
+using Fantasy.Adaption;
 
 namespace Fantasy.Studio.BusinessEngine.AssociationEditing
 {
-    public class ObjectModelAssociationFolderProvider : ObjectWithSite, IChildItemsProvider
+    public class PackageAssociationFolderProvider : ObjectWithSite, IChildItemsProvider
     {
         #region IChildItemsProvider Members
 
         
         public IEnumerable GetChildren(object parent)
         {
-            ObjectModelFolder om = (ObjectModelFolder)parent;
+            IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
 
-            BusinessPackage package = om.Package;
+            BusinessPackage package = (BusinessPackage)am.GetAdapter<BusinessPackage>(parent);
+
+          
             if (package.Id != BusinessPackage.RootPackageId)
             {
                 return new object[] { new AssociationFolder(package)};
