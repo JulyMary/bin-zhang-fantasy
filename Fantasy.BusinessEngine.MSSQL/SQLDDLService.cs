@@ -111,8 +111,6 @@ namespace Fantasy.BusinessEngine.MSSQL
                 sql.AppendFormat(" on [{0}]", @class.TableSpace);
             }
             this.ExecuteSql(sql.ToString());
-
-
         }
 
         private string GetCreateColumnsDefine(BusinessClass @class)
@@ -183,8 +181,6 @@ namespace Fantasy.BusinessEngine.MSSQL
             }
         }
 
-
-
         public string[] GetTableNames(string schema)
         {
             string sql = String.Format("select t1.name from sys.tables t1, sys.schemas t2 where  t1.schema_id = t2.schema_id and t2.name = '{0}'", schema);
@@ -197,10 +193,6 @@ namespace Fantasy.BusinessEngine.MSSQL
 
             }
         }
-
-
-
-
 
         public void CreateAssoicationTable(BusinessAssociation association)
         {
@@ -228,12 +220,6 @@ namespace Fantasy.BusinessEngine.MSSQL
             string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]", association.TableSchema, association.TableName);
             this.ExecuteSql(sql);
         }
-
-
-
-
-
-       
 
     }
 }

@@ -22,6 +22,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.HasMany(x => x.PersistedAssociations).CollectionType<ObservableList<BusinessAssociation>>().KeyColumn("PackageID").Cascade.None().Inverse();
             this.HasMany(x => x.PersistedUsers).CollectionType<ObservableList<BusinessUser>>().KeyColumn("PackageID").Cascade.None().Inverse();
             this.HasMany(x => x.PersistedRoles).CollectionType<ObservableList<BusinessRole>>().KeyColumn("PackageID").Cascade.None().Inverse();
+            this.HasMany(x => x.PersistedApplications).CollectionType<ObservableList<BusinessApplication>>().KeyColumn("PackageID").Cascade.None().Inverse();
 
 
            

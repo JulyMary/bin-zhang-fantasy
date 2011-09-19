@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     19/09/2011 11:42:09 AM                       */
+/* Created on:     2011/9/19 22:49:18                           */
 /*==============================================================*/
 
+use Fantasy
+go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -645,7 +647,6 @@ go
 /*==============================================================*/
 create table BUSINESSAPPLICATIONACL (
    ID                   T_GUID               not null,
-   BUSINESSENUMVALUEBUS_ID T_GUID               null,
    STATEID              T_GUID               null,
    ROLEID               T_GUID               not null,
    PARTICIPANTID        T_GUID               not null,
@@ -669,7 +670,6 @@ go
 /* Index: BUSINESSAPPLICATIONACLSTATE_FK                        */
 /*==============================================================*/
 create index BUSINESSAPPLICATIONACLSTATE_FK on BUSINESSAPPLICATIONACL (
-BUSINESSENUMVALUEBUS_ID ASC,
 STATEID ASC
 )
 go
@@ -885,7 +885,7 @@ create table BUSINESSENUMVALUE (
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
    ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSENUMVALUE primary key (ENUMID, ID)
+   constraint PK_BUSINESSENUMVALUE primary key (ID)
 )
 go
 
@@ -1100,8 +1100,8 @@ alter table BUSINESSAPPLICATIONACL
 go
 
 alter table BUSINESSAPPLICATIONACL
-   add constraint FK_BUSINESS_APPLICATIONACL_STATE foreign key (BUSINESSENUMVALUEBUS_ID, STATEID)
-      references BUSINESSENUMVALUE (ENUMID, ID)
+   add constraint FK_BUSINESS_APPLICATIONACL_STATE foreign key (STATEID)
+      references BUSINESSENUMVALUE (ID)
          on delete cascade
 go
 
