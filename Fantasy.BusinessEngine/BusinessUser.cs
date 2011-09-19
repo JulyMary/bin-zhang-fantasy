@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessUser : BusinessEntity
+    public class BusinessUser : BusinessEntity, INamedBusinessEntity
     {
         public virtual string Name
         {
@@ -80,6 +80,17 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+        public virtual bool IsDisabled
+        {
+            get
+            {
+                return (bool)this.GetValue("IsDisabled", false);
+            }
+            set
+            {
+                this.SetValue("IsDisabled", value);
+            }
+        }
 
         private IObservableList<BusinessRole> _persistedRoles = new ObservableList<BusinessRole>();
         protected internal virtual IObservableList<BusinessRole> PersistedRoles

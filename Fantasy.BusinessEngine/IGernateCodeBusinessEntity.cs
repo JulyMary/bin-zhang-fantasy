@@ -5,14 +5,10 @@ using System.Text;
 
 namespace Fantasy.BusinessEngine
 {
-    public interface  INamedBusinessEntity
+    public interface IGernateCodeBusinessEntity : INamedBusinessEntity
     {
-        string Name { get; }
+        string CodeName { get; }
 
-       
-
-        string FullName { get; }
-
-        
+        string FullCodeName { get; }
     }
 }

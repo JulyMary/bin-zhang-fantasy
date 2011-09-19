@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessPackage : BusinessEntity, INamedBusinessEntity
+    public class BusinessPackage : BusinessEntity, IGernateCodeBusinessEntity
     {
         public BusinessPackage()
         {

@@ -270,15 +270,31 @@
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UserRoleEditing\AddRoleCommand.cs" />
     <Compile Include="UserRoleEditing\AddUserCommand.cs" />
+    <Compile Include="UserRoleEditing\BusinessRolePikcerModel.cs" />
+    <Compile Include="UserRoleEditing\BusinessRolePanel.xaml.cs">
+      <DependentUpon>BusinessRolePanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserRoleEditing\BusinessRolePicker.xaml.cs">
+      <DependentUpon>BusinessRolePicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserRoleEditing\BusinessUserPanel.xaml.cs">
       <DependentUpon>BusinessUserPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserRoleEditing\DeleteRoleCommand.cs" />
+    <Compile Include="UserRoleEditing\DragBusinessRoleDropHandler.cs" />
+    <Compile Include="UserRoleEditing\DragBusinessRoleOverHandler.cs" />
+    <Compile Include="UserRoleEditing\PackageNoComputedRolesProvider.cs" />
+    <Compile Include="UserRoleEditing\PackageRolesProvider.cs" />
+    <Compile Include="UserRoleEditing\RoleEditor.cs" />
+    <Compile Include="UserRoleEditing\DeleteUserCommand.cs" />
     <Compile Include="UserRoleEditing\PackageRoleFolderProvider.cs" />
     <Compile Include="UserRoleEditing\PackageUserFolderProvider.cs" />
     <Compile Include="UserRoleEditing\PackageUserRoleFolderProvider.cs" />
     <Compile Include="UserRoleEditing\PackageUsersProvider.cs" />
     <Compile Include="UserRoleEditing\RoleFolder.cs" />
+    <Compile Include="UserRoleEditing\UserEditor.cs" />
     <Compile Include="UserRoleEditing\UserFolder.cs" />
     <Compile Include="UserRoleEditing\UserRoleFolder.cs" />
     <Compile Include="XamlNamespaces.cs" />
@@ -287,7 +303,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>None</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -323,8 +338,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\objectmodelfolder.png" />
+    <Resource Include="images\userfolder.png" />
+    <Resource Include="images\rolefolder.png" />
+    <Resource Include="images\userrolefolder.png" />
     <Resource Include="images\role.png" />
     <Resource Include="images\user.png" />
+    <Page Include="UserRoleEditing\BusinessRolePanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserRoleEditing\BusinessRolePicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserRoleEditing\BusinessUserPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

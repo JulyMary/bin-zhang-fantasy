@@ -19,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
             BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
 
-            return null;
+            return package.Users.ToSorted("Name");
         }
 
         #endregion

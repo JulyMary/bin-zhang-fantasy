@@ -178,6 +178,8 @@ namespace Fantasy.Studio.BusinessEngine
                         from u in p.Users
                         select u.Name;
             rs.Name = rs.FullName = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessUserName, query);
+            rs.Package = package;
+            package.Users.Add(rs);
 
             return rs;
         }
@@ -195,5 +197,7 @@ namespace Fantasy.Studio.BusinessEngine
             return rs;
 
         }
+
+        
     }
 }

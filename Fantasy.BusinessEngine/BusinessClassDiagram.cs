@@ -51,19 +51,6 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        #region INamedBusinessEntity Members
-
-
-        string INamedBusinessEntity.CodeName
-        {
-            get { return this.Name; }
-        }
-
-        string INamedBusinessEntity.FullCodeName
-        {
-            get { return this.FullName; }
-        }
-
-        #endregion
+       
     }
 }

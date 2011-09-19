@@ -258,5 +258,36 @@
         <TypeDescriptor ID="RoleFolder" TargetType="{x:Type sbe:RoleFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
         </TypeDescriptor>
+        <TypeDescriptor ID="BusinessUser" TargetType="{x:Type be:BusinessUser}">
+            <TypeDescriptor.Conditional >
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" >
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General"/>
+            <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" />
+            <PropertyDescriptor ID="IsDisabled" Name="IsDisabled" Caption="Is Disabled" Category="General" />
+        </TypeDescriptor>
+        <TypeDescriptor ID="BusinessRole" TargetType="{x:Type be:BusinessRole}">
+            <TypeDescriptor.Conditional >
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
+            <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" />
+            <PropertyDescriptor ID="IsDisabled" Name="IsDisabled" Caption="Is Disabled" Category="General" />
+            <PropertyDescriptor ID="IsComputed" Name="IsComputed" Caption="Is Computed" Category="General" />
+        </TypeDescriptor>
     </Extension>
 </AddIn>

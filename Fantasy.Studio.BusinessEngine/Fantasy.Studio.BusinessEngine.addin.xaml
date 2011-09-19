@@ -316,6 +316,17 @@
             </Button.Conditional>
         </Button>
     </Extension>
+
+
+    <Extension Path="fantasy/studio/businessengine/businessrolepicker/treeview">
+        <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
+            <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
+            <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageNoComputedRolesProvider}" />
+        </TreeNode>
+        <TreeNode ID="roles" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}">
+        </TreeNode>
+    </Extension>
+    
     <Extension Path="fantasy/studio/businessengine/documentpad/reference/contextmenu">
         <Button ID="Delete" Command="{New sbe:DeleteReferenceCommand}" Text="Delete" ParameterSource="Owner" />
     </Extension>
@@ -331,7 +342,7 @@
             <TreeNodeChildProvider ID="UserRoles" Provider="{New sbe:PackageUserRoleFolderProvider }" />
             <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
-        <TreeNode ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu">
+        <TreeNode ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/objectmodelfolder.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu">
             <TreeNodeChildProvider ID="associations" Provider="{New sbe:PackageAssociationFolderProvider}" />
             <TreeNodeChildProvider ID="classDiagram" Provider="{New sbe:PackageClassDiagramsProvider}" />
             <TreeNodeChildProvider ID="class" Provider="{New sbe:PackageClassesProvider}" />
@@ -360,24 +371,58 @@
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
         </TreeNode>
-        <TreeNode ID="UserRole" TargetType="{x:Type sbe:UserRoleFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" >
+        <TreeNode ID="UserRole" TargetType="{x:Type sbe:UserRoleFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/userrolefolder.png" Text="{Binding Path=Name}" >
             <TreeNodeChildProvider ID="userFolder" Provider="{New sbe:PackageUserFolderProvider}"/>
             <TreeNodeChildProvider ID="roleFolder" Provider="{New sbe:PackageRoleFolderProvider}" />
         </TreeNode>
-        <TreeNode ID="UserFolder" TargetType="{x:Type sbe:UserFolder}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}">
-            
+        <TreeNode ID="UserFolder" TargetType="{x:Type sbe:UserFolder}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/userfolder.png" Text="{Binding Path=Name}"
+                  ContextMenu="fantasy/studio/businessengine/documentpad/userfolder/contextmenu">
+            <TreeNodeChildProvider ID="users" Provider="{New sbe:PackageUsersProvider}" />
         </TreeNode>
-        <TreeNode ID="RoleFolder" TargetType="{x:Type sbe:RoleFolder}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}">
-            
+        <TreeNode ID="RoleFolder" TargetType="{x:Type sbe:RoleFolder}"  Icon="/Fantasy.Studio.BusinessEngine;component/images/rolefolder.png" Text="{Binding Path=Name}"
+                  ContextMenu="fantasy/studio/businessengine/documentpad/rolefolder/contextmenu">
+            <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageRolesProvider}" />
         </TreeNode>
-        <TreeNode ID="User" TargetType="{x:Type be:BusinessUser}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=FullName}">
-            
+        <TreeNode ID="User" TargetType="{x:Type be:BusinessUser}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=Name}" 
+                  DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/user/contextmenu">
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
+        </TreeNode>
+        <TreeNode ID="Role" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}" 
+                  DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/role/contextmenu">
+            <TreeNode.DoDragDrop>
+                <DoDragDropDataContextHandler AllowedEffects="All" />
+            </TreeNode.DoDragDrop>
         </TreeNode>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/documentpad/userfolder/contextmenu">
-        <Button ID="Add" Command="{New sbe:AddUserCommand}" Text="Add User" />
-       
+        <Button ID="Add" Command="{New sbe:AddUserCommand}" Text="Add User" ParameterSource="Owner" />
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/documentpad/rolefolder/contextmenu">
+        <Button ID="Add" Command="{New sbe:AddRoleCommand}" Text="Add Role" ParameterSource="Owner" />
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" />
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteUserCommand}" ParameterSource="Owner">
+            <Button.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity />
+                </Not>
+            </Button.Conditional>
+        </Button>
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/documentpad/role/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" />
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteRoleCommand}" ParameterSource="Owner">
+            <Button.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity />
+                </Not>
+            </Button.Conditional>
+        </Button>
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/enumeditor/commandbindings">
@@ -474,6 +519,27 @@
             </CommandBinding.Conditional>
         </CommandBinding>
     </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/usereditor/commandbindings" >
+        
+    </Extension>
+    
+    <Extension Path="fantasy/studio/businessengine/usereditor/panels">
+        <Object ID="General">
+            <sbe:BusinessUserPanel />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/roleeditor/commandbindings" >
+
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/roleeditor/panels">
+        <Object ID="General">
+            <sbe:BusinessRolePanel />
+        </Object>
+    </Extension>
+
     <Extension Path="fantasy/studio/documents/views">
         <Object ID="packageeditor">
             <Object.Conditional>
@@ -504,6 +570,18 @@
                 <IsTypeOf Type="{x:Type be:BusinessAssociation}" />
             </Object.Conditional>
             <sbe:AssociationEditor />
+        </Object>
+        <Object ID="usereditor">
+            <Object.Conditional >
+                <IsTypeOf Type="{x:Type be:BusinessUser}" />
+            </Object.Conditional>
+            <sbe:UserEditor/>
+        </Object>
+        <Object ID="roleeditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessRole}" />
+            </Object.Conditional>
+            <sbe:RoleEditor/>
         </Object>
     </Extension>
     <Extension Path="fantasy/studio/routedcommands">
@@ -570,8 +648,27 @@
         </ToolBoxItem>
     </Extension>
 
-
     <Extension Path="fantasy/studio/workbench/commandbindings">
         <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveAllCommandHandler}" />
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/enterhandlers">
+        <Object ID="role">
+            <sbe:DragBusinessRoleOverHandler/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/leavehandlers">
+        
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/overhandlers">
+        <Object ID="role">
+            <sbe:DragBusinessRoleOverHandler/>
+        </Object>
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/drophandlers">
+        <Object ID="role">
+            <sbe:DragBusinessRoleDropHandler/>
+        </Object>
     </Extension>
 </AddIn>

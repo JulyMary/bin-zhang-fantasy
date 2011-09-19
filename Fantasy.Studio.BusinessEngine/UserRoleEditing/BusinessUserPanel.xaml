@@ -3,19 +3,116 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:f="urn:schema-fantasy:xaml"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="600">
-    <Grid>
-        <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="12,12,0,0" Name="label1" VerticalAlignment="Top"  />
-        <TextBox Height="23" Margin="126,14,0,0" Text="{Binding Name}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="347" />
-        <Label Content="Full Name:" Height="28" HorizontalAlignment="Left" Margin="12,46,0,0" Name="label2" VerticalAlignment="Top" />
-        <TextBox Height="23" Margin="126,46,0,0" Text="{Binding FullName}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="347" />
-        <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="12,80,0,0" Name="label3" VerticalAlignment="Top" />
-        <PasswordBox Height="23" Margin="126,80,0,0"  VerticalAlignment="Top" HorizontalAlignment="Left" Width="347" PasswordChanged="PasswordBox_PasswordChanged" />
-        <Label Content="Confirm Password:" Height="28" HorizontalAlignment="Left" Margin="12,114,0,0" Name="label4" VerticalAlignment="Top" />
-        <PasswordBox Height="23" Margin="126,114,127,0" VerticalAlignment="Top" />
-        <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="12,148,0,0" Name="label5" VerticalAlignment="Top" />
-        <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="126,150,127,0" Text="{Binding Description}" VerticalAlignment="Top" />
-        <CheckBox Content="Account is disabled" Height="16" HorizontalAlignment="Left" Margin="12,265,0,0" Name="checkBox1" VerticalAlignment="Top" />
-    </Grid>
+             
+             d:DesignHeight="800" d:DesignWidth="600" Background="{x:Static SystemColors.ControlBrush}"
+             f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=NameTextBox}">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="passwordHint">
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="Foreground" Value="DarkGray"/>
+            <Setter Property="IsHitTestVisible" Value="False" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPasswordChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="TextBox" >
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSystem}" Value="true">
+                    <Setter Property="IsEnabled"  Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="PasswordBox" >
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSystem}" Value="true">
+                    <Setter Property="IsEnabled"   Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <CollectionViewSource Source="{Binding Roles}" x:Key="roles">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" >
+            <Label Content="This is a system account and cannot be edit." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsSystem, Converter={x:Static f:VisibilityConverter.Collapsed}}">
+            </Label>
+            <Grid>
+                <GroupBox Header="General" Height="352" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox1" VerticalAlignment="Top" Width="497">
+                    <Grid>
+                        <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="4,4,0,0" Name="label1" VerticalAlignment="Top" />
+                        <TextBox Height="23" Margin="118,6,0,0" Text="{Binding Name, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" Name="NameTextBox" />
+                        <Label Content="Full Name:" Height="28" HorizontalAlignment="Left" Margin="4,38,0,0" Name="label2" VerticalAlignment="Top" />
+                        <TextBox Height="23" Margin="118,38,0,0" Text="{Binding FullName, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
+                        <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="4,72,0,0" Name="label3" VerticalAlignment="Top" />
+                        <PasswordBox Height="23" Margin="118,72,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" PasswordChanged="PasswordBox_PasswordChanged" Name="PasswordBox" />
+                        <TextBlock Height="23" Margin="122,72,32,0" VerticalAlignment="Top" Style="{StaticResource passwordHint}" Text="[Enter user's password]"></TextBlock>
+                        <Label Content="Confirm Password:" Height="28" HorizontalAlignment="Left" Margin="4,106,0,0" Name="label4" VerticalAlignment="Top" />
+                        <PasswordBox Height="23" Margin="118,106,0,0" VerticalAlignment="Top" PasswordChanged="PasswordBox_PasswordChanged" HorizontalAlignment="Left" Width="361" Name="ConfirmPasswordBox" />
+                        <TextBlock Height="23" Margin="122,106,32,0" VerticalAlignment="Top" Style="{StaticResource passwordHint}">[Re-enter user's password]</TextBlock>
+                        <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="4,140,0,0" Name="label5" VerticalAlignment="Top" />
+                        <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="118,142,0,0" Text="{Binding Description, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
+                        <CheckBox Content="Account is disabled" Height="16" HorizontalAlignment="Left" Margin="4,257,0,0" IsChecked="{Binding IsDisabled, Mode=TwoWay}" VerticalAlignment="Top" />
+                </Grid>
+                </GroupBox>
+                <GroupBox Header="Member Of" Height="320" HorizontalAlignment="Left" Margin="12,370,0,0" VerticalAlignment="Top" Width="497">
+                    <Grid>
+                        <ListView Height="256" Margin="6,6,6,0" Name="MemberOfListView" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource roles}}" DragEnter="MemberOfListView_DragEnter" DragLeave="MemberOfListView_DragLeave" DragOver="MemberOfListView_DragOver" Drop="MemberOfListView_Drop" AllowDrop="True">
+                            <ListView.Resources>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Icon">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Name">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="Description">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Description}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button Name="AddRoleButton" Content="Add" Height="23" HorizontalAlignment="Left" Margin="6,268,0,0" VerticalAlignment="Top" Width="75" Click="AddRoleButton_Click" />
+                        <Button Name="RemoveRoleButton" Content="Remove" Height="23" HorizontalAlignment="Left" Margin="87,268,0,0" VerticalAlignment="Top" Width="75" Click="RemoveRoleButton_Click">
+                            <Button.Style>
+                                <Style >
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=MemberOfListView, Path=SelectedItem}" Value="{x:Null}">
+                                            <Setter Property="Button.IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

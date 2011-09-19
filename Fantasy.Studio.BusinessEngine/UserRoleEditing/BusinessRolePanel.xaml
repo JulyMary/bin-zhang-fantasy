@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Fantasy.Studio.BusinessEngine.UserRoleEditing.BusinessRolePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:f="urn:schema-fantasy:xaml"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="600" Background="{x:Static SystemColors.ControlBrush}">
+    <UserControl.Resources>
+        <Style TargetType="TextBox" >
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSystem}" Value="true">
+                    <Setter Property="IsEnabled"  Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <StackPanel Orientation="Vertical" >
+            <Label Content="This is a system role and cannot be edit." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label6" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsSystem, Converter={x:Static f:VisibilityConverter.Collapsed}}">
+            </Label>
+            <GroupBox Header="General" Height="201" HorizontalAlignment="Left" Name="groupBox1" VerticalAlignment="Top" Width="497">
+                <Grid>
+                    <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="4,4,0,0" Name="label1" VerticalAlignment="Top" />
+                    <TextBox Height="23" Margin="118,6,0,0" Text="{Binding Name, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" Name="NameTextBox" />
+                    <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="4,33,0,0" Name="label5" VerticalAlignment="Top" />
+                    <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="118,35,0,0" Text="{Binding Description, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
+                    <CheckBox Content="Role is disabled" Height="16" HorizontalAlignment="Left" Margin="4,152,0,0" IsChecked="{Binding IsDisabled, Mode=TwoWay}" VerticalAlignment="Top" />
+                </Grid>
+            </GroupBox>
+            <Label Content="This is a computed role and cannot add members." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsSystem, Converter={x:Static f:VisibilityConverter.Collapsed}}">
+            </Label>
+            <GroupBox Header="Member Of" Height="320" HorizontalAlignment="Left"  Name="groupBox2" VerticalAlignment="Top" Width="497">
+                <Grid>
+                    <ListView Height="256" Margin="6,6,6,0" Name="listView1" VerticalAlignment="Top" />
+                    <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="6,268,0,0" VerticalAlignment="Top" Width="75" />
+                    <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="87,268,0,0"  VerticalAlignment="Top" Width="75" />
+                </Grid>
+            </GroupBox>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

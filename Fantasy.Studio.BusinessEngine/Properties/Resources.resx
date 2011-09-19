@@ -129,6 +129,9 @@
   <data name="BusinessPropertyEditorTitle" xml:space="preserve">
     <value>Properties</value>
   </data>
+  <data name="BusinessRolePanelTitle" xml:space="preserve">
+    <value>General</value>
+  </data>
   <data name="BusinessUserPanelTitle" xml:space="preserve">
     <value>General</value>
   </data>

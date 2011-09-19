@@ -22,7 +22,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
             BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
 
-            return new object[] { new UserFolder(package) };
+            return package.Id != BusinessPackage.RootPackageId ?  new object[] { new UserFolder(package) } : new object[0];
         }
 
         #endregion

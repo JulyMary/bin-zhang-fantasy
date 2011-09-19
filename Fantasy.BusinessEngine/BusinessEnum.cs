@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessEnum : BusinessEntity, INamedBusinessEntity
+    public class BusinessEnum : BusinessEntity, IGernateCodeBusinessEntity
     {
         public virtual string Name
         {
