@@ -671,4 +671,36 @@
             <sbe:DragBusinessRoleDropHandler/>
         </Object>
     </Extension>
+    
+    
+
+    <Extension Path="fantasy/studio/businessengine/businessuserpicker/treeview">
+        <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
+            <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
+            <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageUsersProvider}" />
+        </TreeNode>
+        <TreeNode ID="users" TargetType="{x:Type be:BusinessUser}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=Name}">
+        </TreeNode>
+    </Extension>
+
+
+    <Extension Path="fantasy/studio/businessengine/businessrolepanel/members/dragdrop/enterhandlers">
+        <Object ID="role">
+            <sbe:DragBusinessUserOverHandler/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/businessrolepanel/members/dragdrop/leavehandlers">
+
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/businessrolepanel/members/dragdrop/overhandlers">
+        <Object ID="role">
+            <sbe:DragBusinessUserOverHandler/>
+        </Object>
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/businessrolepanel/members/dragdrop/drophandlers">
+        <Object ID="role">
+            <sbe:DragBusinessUserDropHandler/>
+        </Object>
+    </Extension>
 </AddIn>

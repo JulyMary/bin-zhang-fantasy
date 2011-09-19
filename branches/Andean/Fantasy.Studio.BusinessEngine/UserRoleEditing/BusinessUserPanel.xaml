@@ -66,7 +66,7 @@
                 </GroupBox>
                 <GroupBox Header="Member Of" Height="320" HorizontalAlignment="Left" Margin="12,370,0,0" VerticalAlignment="Top" Width="497">
                     <Grid>
-                        <ListView Height="256" Margin="6,6,6,0" Name="MemberOfListView" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource roles}}" DragEnter="MemberOfListView_DragEnter" DragLeave="MemberOfListView_DragLeave" DragOver="MemberOfListView_DragOver" Drop="MemberOfListView_Drop" AllowDrop="True">
+                        <ListView Height="256" Margin="6,6,6,0" Name="MemberOfListView" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource roles}}" DragEnter="MemberOfListView_DragEnter" DragLeave="MemberOfListView_DragLeave" DragOver="MemberOfListView_DragOver" Drop="MemberOfListView_Drop" AllowDrop="True" Padding="4">
                             <ListView.Resources>
                                 <Style TargetType="{x:Type GridViewColumnHeader}">
                                     <Setter Property="Visibility" Value="Collapsed" />
@@ -74,24 +74,23 @@
                             </ListView.Resources>
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Header="Icon">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" />
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
                                     <GridViewColumn Header="Name">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Name}" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" />
+                                                    <TextBlock Text="{Binding Name}" Margin="2,0,0,0" />
+                                                </StackPanel>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
+                                   
                                     <GridViewColumn Header="Description">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding Description}" />
+                                                <TextBlock Text="{Binding Description}" FontStyle="Italic" TextTrimming="WordEllipsis">
+                                                   
+                                                </TextBlock>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

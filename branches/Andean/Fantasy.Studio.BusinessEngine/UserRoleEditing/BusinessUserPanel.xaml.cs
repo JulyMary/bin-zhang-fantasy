@@ -144,6 +144,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
                 es.EndUpdate(false);
                 throw;
             }
+            this.PasswordBox.Password = this.ConfirmPasswordBox.Password = string.Empty;
             this.IsPasswordChanged = false;
             this.DirtyState = EditingState.Clean;
         }
