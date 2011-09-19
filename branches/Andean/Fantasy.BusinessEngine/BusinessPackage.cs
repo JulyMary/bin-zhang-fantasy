@@ -248,6 +248,38 @@ namespace Fantasy.BusinessEngine
         }
 
 
+
+        private IObservableList<BusinessApplication> _persistedApplications = new ObservableList<BusinessApplication>();
+        protected internal virtual IObservableList<BusinessApplication> PersistedApplications
+        {
+            get { return _persistedApplications; }
+            private set
+            {
+                if (_persistedApplications != value)
+                {
+                    _persistedApplications = value;
+                    if (_applications != null)
+                    {
+                        _applications.Source = value;
+                    }
+                }
+            }
+        }
+
+        private ObservableListView<BusinessApplication> _applications;
+        public virtual IObservableList<BusinessApplication> Applications
+        {
+            get
+            {
+                if (this._applications == null)
+                {
+                    this._applications = new ObservableListView<BusinessApplication>(this._persistedApplications);
+                }
+                return _applications;
+            }
+        }
+
+
         public virtual BusinessPackage ParentPackage
         {
             get
@@ -278,10 +310,6 @@ namespace Fantasy.BusinessEngine
             }
     
         }
-
-
-       
-
 
         public readonly static Guid RootPackageId = new Guid("28f26cdc-9ce5-4d0a-814d-08ce58105e25");
        

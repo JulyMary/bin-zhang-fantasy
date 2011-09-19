@@ -72,6 +72,7 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEditing\ApplicationEditor.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceCommand.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceDialog.xaml.cs">
       <DependentUpon>AddGACReferenceDialog.xaml</DependentUpon>
