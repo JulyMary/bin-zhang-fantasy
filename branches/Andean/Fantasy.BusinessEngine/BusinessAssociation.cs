@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessAssociation : BusinessEntity, INamedBusinessEntity
+    public class BusinessAssociation : BusinessEntity, IGernateCodeBusinessEntity
     {
 
         public virtual string Name

@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2011/9/17 20:36:53                           */
+/* Created on:     19/09/2011 11:42:09 AM                       */
 /*==============================================================*/
 
 
@@ -645,6 +645,7 @@ go
 /*==============================================================*/
 create table BUSINESSAPPLICATIONACL (
    ID                   T_GUID               not null,
+   BUSINESSENUMVALUEBUS_ID T_GUID               null,
    STATEID              T_GUID               null,
    ROLEID               T_GUID               not null,
    PARTICIPANTID        T_GUID               not null,
@@ -668,6 +669,7 @@ go
 /* Index: BUSINESSAPPLICATIONACLSTATE_FK                        */
 /*==============================================================*/
 create index BUSINESSAPPLICATIONACLSTATE_FK on BUSINESSAPPLICATIONACL (
+BUSINESSENUMVALUEBUS_ID ASC,
 STATEID ASC
 )
 go
@@ -883,7 +885,7 @@ create table BUSINESSENUMVALUE (
    CREATIONTIME         datetime             not null,
    MODIFICATIONTIME     datetime             not null,
    ISSYSTEM             bit                  not null,
-   constraint PK_BUSINESSENUMVALUE primary key (ID)
+   constraint PK_BUSINESSENUMVALUE primary key (ENUMID, ID)
 )
 go
 
@@ -1011,6 +1013,7 @@ create table BUSINESSROLE (
    NAME                 T_NAME               not null,
    DESCRIPTION          varchar(1024)        null,
    ISCOMPUTED           bit                  not null,
+   ISDISABLED           bit                  null,
    constraint PK_BUSINESSROLE primary key (ID)
 )
 go
@@ -1033,9 +1036,10 @@ create table BUSINESSUSER (
    ISSYSTEM             bit                  not null,
    PACKAGEID            T_GUID               not null,
    NAME                 T_NAME               not null,
-   "FULL NAME"          T_NAME               not null,
+   FULLNAME             T_NAME               not null,
    DESCRIPTION          varchar(1024)        null,
-   PASSWORD             varchar(16)          null,
+   PASSWORD             varchar(128)         null,
+   ISDISABLED           bit                  not null,
    constraint PK_BUSINESSUSER primary key (ID)
 )
 go
@@ -1096,8 +1100,8 @@ alter table BUSINESSAPPLICATIONACL
 go
 
 alter table BUSINESSAPPLICATIONACL
-   add constraint FK_BUSINESS_APPLICATIONACL_STATE foreign key (STATEID)
-      references BUSINESSENUMVALUE (ID)
+   add constraint FK_BUSINESS_APPLICATIONACL_STATE foreign key (BUSINESSENUMVALUEBUS_ID, STATEID)
+      references BUSINESSENUMVALUE (ENUMID, ID)
          on delete cascade
 go
 

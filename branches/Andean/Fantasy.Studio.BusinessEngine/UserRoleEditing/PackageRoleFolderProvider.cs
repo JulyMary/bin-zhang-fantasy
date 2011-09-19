@@ -11,9 +11,6 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
     public class PackageRoleFolderProvider : ObjectWithSite, IChildItemsProvider
     {
 
-
-
-
         #region IChildItemsProvider Members
 
         public System.Collections.IEnumerable GetChildren(object parent)
@@ -22,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
             BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
 
-            return new object[] { new RoleFolder(package) };
+            return package.Id != BusinessPackage.RootPackageId ?  new object[] { new RoleFolder(package) } : new object[0];
         }
 
         #endregion

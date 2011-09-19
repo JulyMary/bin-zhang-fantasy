@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessRole : BusinessEntity
+    public class BusinessRole : BusinessEntity, INamedBusinessEntity
     {
         public virtual string Name
         {
@@ -56,6 +56,18 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+        public virtual bool IsDisabled
+        {
+            get
+            {
+                return (bool)this.GetValue("IsDisabled", false);
+            }
+            set
+            {
+                this.SetValue("IsDisabled", value);
+            }
+        }
+
 
         private IObservableList<BusinessUser> _persistedUsers = new ObservableList<BusinessUser>();
         protected internal virtual IObservableList<BusinessUser> PersistedUsers
@@ -86,5 +98,15 @@ namespace Fantasy.BusinessEngine
                 return _users;
             }
         }
+
+        #region INamedBusinessEntity Members
+
+
+        string INamedBusinessEntity.FullName
+        {
+            get { return this.Name; }
+        }
+
+        #endregion
     }
 }

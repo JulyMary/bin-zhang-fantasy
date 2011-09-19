@@ -278,11 +278,6 @@ namespace Fantasy.Studio.BusinessEngine
 
         #endregion
 
-       
-
-
-
-       
         public IServiceProvider Site { get; set; }
 
 

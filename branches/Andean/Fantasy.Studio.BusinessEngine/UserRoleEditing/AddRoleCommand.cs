@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fantasy.Adaption;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Studio.Services;
-using Fantasy.Adaption;
 
 namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
-    public class AddUserCommand : ObjectWithSite, System.Windows.Input.ICommand
+    public class AddRoleCommand : ObjectWithSite, System.Windows.Input.ICommand
     {
         #region ICommand Members
 
@@ -32,10 +32,10 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
             BusinessPackage parent = am.GetAdapter<BusinessPackage>(parameter);
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessUser user = es.AddBusinessUser(parent);
+            BusinessRole role = es.AddBusinessRole(parent);
 
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
-            IViewContent content = documentService.OpenView(user);
+            IViewContent content = documentService.OpenView(role);
             if (content != null)
             {
                 content.WorkbenchWindow.Select();

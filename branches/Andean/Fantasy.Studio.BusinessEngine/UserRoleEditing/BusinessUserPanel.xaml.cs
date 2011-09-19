@@ -14,13 +14,16 @@ using System.Windows.Shapes;
 using Fantasy.BusinessEngine;
 using Fantasy.Studio.Services;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.AddIns;
+using Fantasy.Windows;
+using System.Collections.Specialized;
 
 namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
     /// <summary>
     /// Interaction logic for BusinessUserPanel.xaml
     /// </summary>
-    public partial class BusinessUserPanel : UserControl, IEntityEditingPanel
+    public partial class BusinessUserPanel : UserControl, IEntityEditingPanel, IObjectWithSite
     {
         public BusinessUserPanel()
         {
@@ -36,10 +39,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         public IServiceProvider Site { get; set; }
 
-
         private SelectionService _selection = new SelectionService(null);
-
-      
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
@@ -51,16 +51,28 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             }
         }
 
-        private IBusinessEntity _entity;
-
+      
         public BusinessUser Entity { get; private set; }
 
         public void Load(Fantasy.BusinessEngine.IBusinessEntity entity)
         {
             this.Entity = (BusinessUser)entity;
             this.Entity.EntityStateChanged += new EventHandler(EntityStateChanged);
-            this.DirtyState = entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+            this.DataContext = this.Entity;
 
+            
+
+            this.DirtyState = entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+            this._selection.SetSelectedComponents(new object[] {this.Entity});
+            this._selection.IsReadOnly = true;
+
+            this._rolesChangedListener = new WeakEventListener((t, sender, e) => 
+            {
+                this.DirtyState = EditingState.Dirty;
+                return true;
+            });
+
+            CollectionChangedEventManager.AddListener(this.Entity.Roles, this._rolesChangedListener);
         }
 
        
@@ -85,7 +97,20 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             }
         }
 
+        public bool IsPasswordChanged
+        {
+            get { return (bool)GetValue(IsPasswordChangedProperty); }
+            set { SetValue(IsPasswordChangedProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsPasswordChanged.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsPasswordChangedProperty =
+            DependencyProperty.Register("IsPasswordChanged", typeof(bool), typeof(BusinessUserPanel), new UIPropertyMetadata(false));
+
         public event EventHandler DirtyStateChanged;
+
+
+        private WeakEventListener _rolesChangedListener;
 
         public void Save()
         {
@@ -94,11 +119,24 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             es.BeginUpdate();
             try
             {
+                bool canSave = true;
                 if (this.IsPasswordChanged)
                 {
-                    this.Entity.SetPassword(this.Password);
+                    if (this.PasswordBox.Password == this.ConfirmPasswordBox.Password)
+                    {
+                        this.Entity.SetPassword(this.PasswordBox.Password);
+                    }
+                    else
+                    {
+                        canSave = false;
+                    }
                 }
-                es.SaveOrUpdate(this._entity);
+
+                if (canSave && this.Entity.EntityState != EntityState.Clean)
+                {
+                    es.SaveOrUpdate(this.Entity);
+                }
+                
                 es.EndUpdate(true);
             }
             catch
@@ -106,6 +144,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
                 es.EndUpdate(false);
                 throw;
             }
+            this.IsPasswordChanged = false;
             this.DirtyState = EditingState.Clean;
         }
 
@@ -138,16 +177,140 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         {
            
         }
-
-       
-
-        public EventHandler EntityStateChanged { get; set; }
+        private void EntityStateChanged(object sender, EventArgs e)
+        {
+            if (this.Entity.EntityState != EntityState.Clean)
+            {
+                this.DirtyState = EditingState.Dirty;
+            }
+        }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-
+            this.IsPasswordChanged = true;
+            this.DirtyState = EditingState.Dirty; 
         }
 
+      
+        private void AddRoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            BusinessRolePikcerModel model = new BusinessRolePikcerModel(this.Site);
+            BusinessRolePicker picker = new BusinessRolePicker() { DataContext = model };
+            if ((bool)picker.ShowDialog())
+            {
+                BusinessRole role = model.SelectedItem;
+                if (this.Entity.Roles.IndexOf(role) < 0)
+                {
+                    this.Entity.Roles.Add(role);
+                    role.Users.Add(this.Entity);
+                    
+                }
+            }
+        }
+
+        private void RemoveRoleButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (BusinessRole role in this.MemberOfListView.SelectedItems.Cast<BusinessRole>().ToArray())
+            {
+                role.Users.Remove(this.Entity);
+                this.Entity.Roles.Remove(role);
+
+            }
+        }
+
+        private void MemberOfListView_DragEnter(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/enterhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void MemberOfListView_DragLeave(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/leavehandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private ServiceModel.ServiceContainer _childSite;
+
+        private IServiceProvider GetChildSite()
+        {
+            if (_childSite == null)
+            {
+                _childSite = new ServiceModel.ServiceContainer(this.Site);
+                
+                _childSite.AddService(this);
+
+                _childSite.AddService(this.Entity);
+            }
+
+            return _childSite;
+        }
+
+        private void MemberOfListView_DragOver(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/overhandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+        private void MemberOfListView_Drop(object sender, DragEventArgs e)
+        {
+            IEnumerable<IEventHandler<DragEventArgs>> handlers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/drophandlers").BuildChildItems<IEventHandler<DragEventArgs>>(this, this.GetChildSite());
+            foreach (IEventHandler<DragEventArgs> handler in handlers)
+            {
+                handler.HandleEvent(this, e);
+                if (e.Handled)
+                {
+                    break;
+                }
+            }
+
+            if (!e.Handled)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+        }
+
+       
        
     }
 }
