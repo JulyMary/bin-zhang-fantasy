@@ -282,6 +282,12 @@
     <Compile Include="UserRoleEditing\BusinessUserPanel.xaml.cs">
       <DependentUpon>BusinessUserPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserRoleEditing\BusinessUserPicker.xaml.cs">
+      <DependentUpon>BusinessUserPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserRoleEditing\BusinessUserPikcerModel.cs" />
+    <Compile Include="UserRoleEditing\DragBusinessUserDropHandler.cs" />
+    <Compile Include="UserRoleEditing\DragBusinessUserOverHandler.cs" />
     <Compile Include="UserRoleEditing\DeleteRoleCommand.cs" />
     <Compile Include="UserRoleEditing\DragBusinessRoleDropHandler.cs" />
     <Compile Include="UserRoleEditing\DragBusinessRoleOverHandler.cs" />
@@ -338,6 +344,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UserRoleEditing\BusinessUserPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="images\objectmodelfolder.png" />
     <Resource Include="images\userfolder.png" />
     <Resource Include="images\rolefolder.png" />

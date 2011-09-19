@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:f="urn:schema-fantasy:xaml"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="600" Background="{x:Static SystemColors.ControlBrush}">
@@ -14,6 +15,11 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <CollectionViewSource Source="{Binding Users}" x:Key="users">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Name"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
         <StackPanel Orientation="Vertical" >
@@ -30,11 +36,51 @@
             </GroupBox>
             <Label Content="This is a computed role and cannot add members." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsSystem, Converter={x:Static f:VisibilityConverter.Collapsed}}">
             </Label>
-            <GroupBox Header="Member Of" Height="320" HorizontalAlignment="Left"  Name="groupBox2" VerticalAlignment="Top" Width="497">
+            <GroupBox Header="Members" Height="320" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="497">
                 <Grid>
-                    <ListView Height="256" Margin="6,6,6,0" Name="listView1" VerticalAlignment="Top" />
-                    <Button Content="Add" Height="23" HorizontalAlignment="Left" Margin="6,268,0,0" VerticalAlignment="Top" Width="75" />
-                    <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="87,268,0,0"  VerticalAlignment="Top" Width="75" />
+                    <ListView Height="256" Margin="6,6,6,0" Name="MembersListView" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource users}}" DragEnter="MembersListView_DragEnter" DragLeave="MembersListView_DragLeave" DragOver="MembersListView_DragOver" Drop="MembersListView_Drop" AllowDrop="True" Padding="4">
+                        <ListView.Resources>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Name">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" />
+                                                <TextBlock Text="{Binding Name}" Margin="2,0,0,0" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+
+                                <GridViewColumn Header="Description">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Description}" FontStyle="Italic" TextTrimming="WordEllipsis">
+
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Button Name="AddUserButton" Content="Add" Height="23" HorizontalAlignment="Left" Margin="6,268,0,0" VerticalAlignment="Top" Width="75" Click="AddUserButton_Click" />
+                    <Button Name="RemoveUserButton" Content="Remove" Height="23" HorizontalAlignment="Left" Margin="87,268,0,0" VerticalAlignment="Top" Width="75" Click="RemoveUserButton_Click">
+                        <Button.Style>
+                            <Style >
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=MembersListView, Path=SelectedItem}" Value="{x:Null}">
+                                        <Setter Property="Button.IsEnabled" Value="false"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Grid>
             </GroupBox>
         </StackPanel>
