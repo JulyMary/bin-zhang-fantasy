@@ -17,14 +17,14 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.TableSchema).Not.Nullable();
             this.Map(x => x.TableSpace);
 
-            this.References(x => x.LeftClass).Column("LEFTCLASSID").Not.Nullable();
+            this.References(x => x.LeftClass).Column("LEFTCLASSID").Not.Nullable().Cascade.SaveUpdate();
             this.Map(x => x.LeftCardinality).Not.Nullable();
             this.Map(x => x.LeftRoleName);
             this.Map(x => x.LeftRoleCode);
             this.Map(x => x.LeftNavigatable).Not.Nullable();
             this.Map(x => x.LeftRoleDisplayOrder); 
 
-            this.References(x => x.RightClass).Column("RIGHTCLASSID").Not.Nullable();
+            this.References(x => x.RightClass).Column("RIGHTCLASSID").Not.Nullable().Cascade.SaveUpdate();
             this.Map(x => x.RightCardinality).Not.Nullable();
             this.Map(x => x.RightRoleName);
             this.Map(x => x.RightRoleCode);

@@ -198,6 +198,16 @@ namespace Fantasy.Studio.BusinessEngine
 
         }
 
+        public static BusinessApplication AddBusinessApplication(this IEntityService es, BusinessPackage package)
+        {
+            BusinessApplication rs = es.CreateEntity<BusinessApplication>();
+           
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessApplicationName, package.Enums.Select(c => c.Name));
+            package.Applications.Add(rs);
+            rs.Package = package;
+            return rs;
+        }
+
         
     }
 }

@@ -311,6 +311,30 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             }
         }
 
+        private void AutoSelectAll(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (sender is PasswordBox)
+            {
+                ((PasswordBox)sender).SelectAll();
+            }
+            else if(sender is TextBox) 
+            {
+                ((TextBox)sender).SelectAll();
+            }
+        }
+
+        private void AutoSelectAllByMouse(object sender, MouseEventArgs e)
+        {
+            if (sender is PasswordBox)
+            {
+                ((PasswordBox)sender).SelectAll();
+            }
+            else if (sender is TextBox)
+            {
+                ((TextBox)sender).SelectAll();
+            }
+        }
+
        
        
     }

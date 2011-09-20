@@ -20,6 +20,19 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+        public virtual BusinessApplication Application
+        {
+            get
+            {
+                return (BusinessApplication)this.GetValue("Application", null);
+            }
+            set
+            {
+                this.SetValue("Application", value);
+            }
+        }
+
+      
         public virtual bool IsEntry
         {
             get

@@ -6,18 +6,8 @@
              xmlns:f="urn:schema-fantasy:xaml"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
-        <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/Shortcut.png"
-                           Visibility="{Binding IsShortCut, Converter={x:Static f:VisibilityConverter.Collapsed}}"/>
-        <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >
-            <TextBlock Text="{Binding Entity.Name }" />
-            
-            <TextBlock Text=" : " />
-            <TextBlock Text="{Binding DisplayIndex}" />
-        </StackPanel>
-        <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
-        <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding Entity.ParentClass.Name}" VerticalAlignment="Top">
-        </TextBlock>
-    </Grid>
+
+    <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3">
+        
+    </Border>
 </UserControl>

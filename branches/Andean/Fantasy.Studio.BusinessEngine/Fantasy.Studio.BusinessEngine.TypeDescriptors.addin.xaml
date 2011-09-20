@@ -289,5 +289,23 @@
             <PropertyDescriptor ID="IsDisabled" Name="IsDisabled" Caption="Is Disabled" Category="General" />
             <PropertyDescriptor ID="IsComputed" Name="IsComputed" Caption="Is Computed" Category="General" />
         </TypeDescriptor>
+
+        <TypeDescriptor ID="ApplicationFolder" TargetType="{x:Type sbe:ApplicationFolder}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
+        </TypeDescriptor>
+        
+        <TypeDescriptor ID="BusinessApplication" TargetType="{x:Type be:BusinessApplication}">
+            <TypeDescriptor.Conditional >
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
+            <PropertyDescriptor ID="EntryObject" Name="EntryObjectId" Caption="Entry Object ID" Category="General" />
+        </TypeDescriptor>
     </Extension>
 </AddIn>

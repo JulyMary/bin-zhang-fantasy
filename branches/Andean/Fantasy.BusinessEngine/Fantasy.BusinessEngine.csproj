@@ -88,6 +88,7 @@
     <Compile Include="Events\BusinessPropertyUpdateColumnHandler.cs" />
     <Compile Include="IGernateCodeBusinessEntity.cs" />
     <Compile Include="Maps\BusinessApplicationMap.cs" />
+    <Compile Include="Maps\BusinessApplicationParticipantMap.cs" />
     <Compile Include="Maps\BusinessAssociationMap.cs" />
     <Compile Include="Maps\BusinessRoleMap.cs" />
     <Compile Include="Maps\BusinessUserMap.cs" />

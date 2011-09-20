@@ -123,6 +123,9 @@
   <data name="AddReferenceDialogTitle" xml:space="preserve">
     <value>Add Reference</value>
   </data>
+  <data name="ApplicationFolderName" xml:space="preserve">
+    <value>Applications</value>
+  </data>
   <data name="AssociationFolderName" xml:space="preserve">
     <value>Associations</value>
   </data>
@@ -140,6 +143,9 @@
   </data>
   <data name="ClassViewPadTitle" xml:space="preserve">
     <value>Class View</value>
+  </data>
+  <data name="DefaultNewBusinessApplicationName" xml:space="preserve">
+    <value>New Application</value>
   </data>
   <data name="DefaultNewBusinessAssociationName" xml:space="preserve">
     <value>New Association</value>
