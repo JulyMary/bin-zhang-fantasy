@@ -10,16 +10,26 @@ namespace Fantasy.Windows
     public class VisibilityConverter : IValueConverter
     {
         private Visibility _falseValue;
-        public VisibilityConverter(Visibility falseValue)
+        public VisibilityConverter(Visibility falseValue, bool invert)
         {
-            this._falseValue = falseValue; 
+            this._falseValue = falseValue;
+            this._invert = invert;
         }
 
         #region IValueConverter Members
 
+        private bool _invert = false;
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (System.Convert.ToBoolean(value))
+
+            bool b = System.Convert.ToBoolean(value);
+            if (this._invert)
+            {
+                b = !b;
+            }
+
+            if (b)
             {
                 return Visibility.Visible;
             }
@@ -31,22 +41,27 @@ namespace Fantasy.Windows
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if((Visibility)value == Visibility.Visible )
+            bool rs = (Visibility)value == Visibility.Visible;
+
+            if (_invert)
             {
-                return true;
+                rs = !rs;
             }
-            else
-            {
-                return false;
-            }
+
+            return rs;
+             
         }
 
         #endregion
 
-        public readonly static VisibilityConverter Hidden = new VisibilityConverter(Visibility.Hidden);
+        public readonly static VisibilityConverter Hidden = new VisibilityConverter(Visibility.Hidden, false);
 
-        public readonly static VisibilityConverter Collapsed = new VisibilityConverter(Visibility.Collapsed);
+        public readonly static VisibilityConverter Collapsed = new VisibilityConverter(Visibility.Collapsed, false);
 
-        public readonly static VisibilityConverter Visible = new VisibilityConverter(Visibility.Visible);
+        public readonly static VisibilityConverter InvertHidden = new VisibilityConverter(Visibility.Hidden, true);
+
+        public readonly static VisibilityConverter InvertCollapsed = new VisibilityConverter(Visibility.Collapsed, true);
+
+        public readonly static VisibilityConverter Visible = new VisibilityConverter(Visibility.Visible, false);
     }
 }

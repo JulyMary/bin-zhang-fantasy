@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public override string DocumentType
         {
-            get { return "class"; }
+            get { return "application"; }
         }
     }
 }

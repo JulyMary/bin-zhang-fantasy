@@ -79,7 +79,7 @@ namespace Fantasy.BusinessEngine
 
        
 
-        public string FullName
+        public virtual string FullName
         {
             get
             {

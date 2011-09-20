@@ -338,7 +338,7 @@
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/package/contextmenu">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
             <TreeNodeChildProvider ID="objectModel" Provider="{New sbe:PackageObjectModelFolderProvider}" />
-            
+            <TreeNodeChildProvider ID="applicationFolder" Provider="{New sbe:PackageApplicationFolderProvider}" />
             <TreeNodeChildProvider ID="UserRoles" Provider="{New sbe:PackageUserRoleFolderProvider }" />
             <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
@@ -395,7 +395,21 @@
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
         </TreeNode>
+        <TreeNode ID="ApplicationFolder" TargetType="{x:Type sbe:ApplicationFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/applicationfolder.png" Text="{Binding Path=Name}" 
+                  ContextMenu="fantasy/studio/businessengine/documentpad/applicationfolder/contextmenu">
+            <TreeNodeChildProvider ID="applications" Provider="{New sbe:PackageApplicationsProvider}" />
+        </TreeNode>
+        <TreeNode ID="Application" TargetType="{x:Type be:BusinessApplication}" Icon="/Fantasy.Studio.BusinessEngine;component/images/application.png" Text="{Binding Path=Name}"
+                  ContextMenu="fantasy/studio/businessengine/documentpad/application/contextmenu">
+            
+        </TreeNode>
     </Extension>
+
+
+    <Extension Path="fantasy/studio/businessengine/documentpad/applicationfolder/contextmenu">
+        <Button ID="Add" Command="{New sbe:AddApplicationCommand}" Text="Add Application" ParameterSource="Owner" />
+    </Extension>
+
 
     <Extension Path="fantasy/studio/businessengine/documentpad/userfolder/contextmenu">
         <Button ID="Add" Command="{New sbe:AddUserCommand}" Text="Add User" ParameterSource="Owner" />
@@ -404,6 +418,17 @@
         <Button ID="Add" Command="{New sbe:AddRoleCommand}" Text="Add Role" ParameterSource="Owner" />
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/documentpad/application/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" />
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteApplicationCommand}" ParameterSource="Owner">
+            <Button.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity />
+                </Not>
+            </Button.Conditional>
+        </Button>
+    </Extension>
+    
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}"  ParameterSource="Owner" />
         <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteUserCommand}" ParameterSource="Owner">
@@ -583,6 +608,12 @@
             </Object.Conditional>
             <sbe:RoleEditor/>
         </Object>
+        <Object ID="appeditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessApplication}" />
+            </Object.Conditional>
+            <sbe:ApplicationEditor />
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
@@ -703,4 +734,14 @@
             <sbe:DragBusinessUserDropHandler/>
         </Object>
     </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/applicationeditor/panels">
+        <Object ID="general">
+            <sbe:PropertyGridEditor />
+        </Object>
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/applicationeditor/commandbindings" >
+        
+    </Extension>
+    
 </AddIn>

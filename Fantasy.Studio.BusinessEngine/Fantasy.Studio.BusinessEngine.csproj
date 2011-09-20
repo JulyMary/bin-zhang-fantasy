@@ -72,7 +72,17 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEditing\AddApplicationCommand.cs" />
     <Compile Include="ApplicationEditing\ApplicationEditor.cs" />
+    <Compile Include="ApplicationEditing\ApplicationFolder.cs" />
+    <Compile Include="ApplicationEditing\DeleteApplicationCommand.cs" />
+    <Compile Include="ApplicationEditing\PackageApplicationFolderProvider.cs" />
+    <Compile Include="ApplicationEditing\PackageApplicationsProvider.cs" />
+    <Compile Include="ApplicationEditing\ParticipantNode.cs" />
+    <Compile Include="ApplicationEditing\ParticipantPanel.xaml.cs">
+      <DependentUpon>ParticipantPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationEditing\ParticipantPanelModel.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceCommand.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceDialog.xaml.cs">
       <DependentUpon>AddGACReferenceDialog.xaml</DependentUpon>
@@ -345,6 +355,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\applicationfolder.png" />
+    <Resource Include="images\application.png" />
+    <Page Include="ApplicationEditing\ParticipantPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserRoleEditing\BusinessUserPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

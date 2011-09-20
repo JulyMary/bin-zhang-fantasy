@@ -276,6 +276,16 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             }
         }
 
+        private void NameTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+           
+        }
+
+        private void NameTextBox_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            ((TextBox)sender).SelectAll();
+        }
+
        
 
     }

@@ -27,6 +27,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        
         <Style TargetType="PasswordBox" >
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSystem}" Value="true">
@@ -50,17 +51,17 @@
                 <GroupBox Header="General" Height="352" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox1" VerticalAlignment="Top" Width="497">
                     <Grid>
                         <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="4,4,0,0" Name="label1" VerticalAlignment="Top" />
-                        <TextBox Height="23" Margin="118,6,0,0" Text="{Binding Name, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" Name="NameTextBox" />
+                        <TextBox Height="23" Margin="118,6,0,0" Text="{Binding Name, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" Name="NameTextBox" GotKeyboardFocus="AutoSelectAll" GotMouseCapture="AutoSelectAllByMouse" />
                         <Label Content="Full Name:" Height="28" HorizontalAlignment="Left" Margin="4,38,0,0" Name="label2" VerticalAlignment="Top" />
-                        <TextBox Height="23" Margin="118,38,0,0" Text="{Binding FullName, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
+                        <TextBox Height="23" Margin="118,38,0,0" Text="{Binding FullName, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" GotKeyboardFocus="AutoSelectAll" GotMouseCapture="AutoSelectAllByMouse" />
                         <Label Content="Password:" Height="28" HorizontalAlignment="Left" Margin="4,72,0,0" Name="label3" VerticalAlignment="Top" />
-                        <PasswordBox Height="23" Margin="118,72,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" PasswordChanged="PasswordBox_PasswordChanged" Name="PasswordBox" />
+                        <PasswordBox Height="23" Margin="118,72,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" PasswordChanged="PasswordBox_PasswordChanged" Name="PasswordBox" GotMouseCapture="AutoSelectAllByMouse" />
                         <TextBlock Height="23" Margin="122,72,32,0" VerticalAlignment="Top" Style="{StaticResource passwordHint}" Text="[Enter user's password]"></TextBlock>
                         <Label Content="Confirm Password:" Height="28" HorizontalAlignment="Left" Margin="4,106,0,0" Name="label4" VerticalAlignment="Top" />
-                        <PasswordBox Height="23" Margin="118,106,0,0" VerticalAlignment="Top" PasswordChanged="PasswordBox_PasswordChanged" HorizontalAlignment="Left" Width="361" Name="ConfirmPasswordBox" />
+                        <PasswordBox Height="23" Margin="118,106,0,0" VerticalAlignment="Top" PasswordChanged="PasswordBox_PasswordChanged" HorizontalAlignment="Left" Width="361" Name="ConfirmPasswordBox" GotKeyboardFocus="AutoSelectAll" GotMouseCapture="AutoSelectAllByMouse" />
                         <TextBlock Height="23" Margin="122,106,32,0" VerticalAlignment="Top" Style="{StaticResource passwordHint}">[Re-enter user's password]</TextBlock>
                         <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="4,140,0,0" Name="label5" VerticalAlignment="Top" />
-                        <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="118,142,0,0" Text="{Binding Description, Mode=TwoWay}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
+                        <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="118,142,0,0" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
                         <CheckBox Content="Account is disabled" Height="16" HorizontalAlignment="Left" Margin="4,257,0,0" IsChecked="{Binding IsDisabled, Mode=TwoWay}" VerticalAlignment="Top" />
                 </Grid>
                 </GroupBox>
