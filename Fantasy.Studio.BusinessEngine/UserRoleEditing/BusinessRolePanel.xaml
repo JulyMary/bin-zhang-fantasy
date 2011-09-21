@@ -34,7 +34,7 @@
                     <CheckBox Content="Role is disabled" Height="16" HorizontalAlignment="Left" Margin="4,152,0,0" IsChecked="{Binding IsDisabled, Mode=TwoWay}" VerticalAlignment="Top" />
                 </Grid>
             </GroupBox>
-            <Label Content="This is a computed role and cannot add members." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsComputed, Converter={x:Static f:VisibilityConverter.InvertCollapsed}}">
+            <Label Content="This is a computed role and cannot add members." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsComputed, Converter={x:Static f:VisibilityConverter.Collapsed}}">
             </Label>
             <GroupBox Header="Members" Height="320" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="497">
                 <Grid>
