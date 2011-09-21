@@ -208,6 +208,17 @@ namespace Fantasy.Studio.BusinessEngine
             return rs;
         }
 
+
+        public static BusinessApplicationParticipant AddBusinessApplicationParticipant(this IEntityService es, BusinessApplication application, BusinessClass @class)
+        {
+            BusinessApplicationParticipant rs = es.CreateEntity<BusinessApplicationParticipant>();
+            rs.Application = application;
+            rs.Class = @class;
+            application.Participants.Add(rs);
+            return rs;
+
+        }
+
         
     }
 }

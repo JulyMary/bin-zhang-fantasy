@@ -20,10 +20,6 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
                                 <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
                                 <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >
                                     <TextBlock Text="{Binding FullName }" />
@@ -31,8 +27,6 @@
                                 <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
                                 <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding Entity.ParentClass.Name}" VerticalAlignment="Top">
                                 </TextBlock>
-                                <Path Grid.Column="1" VerticalAlignment="Center" Fill="Blue" Data="M 0 16 L 16 8 L 0 0 Z"
-                                      Visibility="{Binding IsSelected, RelativeSource={RelativeSource Mode=TemplatedParent}}" Opacity="0.5" />
                             </Grid>
                         </Border>
                         <Popup Placement="Right" PlacementTarget="{Binding ElementName=ClassBorder}"   IsOpen="{Binding IsSelected, RelativeSource={RelativeSource Mode=TemplatedParent}}" AllowsTransparency="True" >
