@@ -83,8 +83,12 @@
       <DependentUpon>ParticipantPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ApplicationEditing\ParticipantPanelModel.cs" />
+    <Compile Include="ApplicationEditing\VerticalTreeView.xaml.cs">
+      <DependentUpon>VerticalTreeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationEditing\VerticalTreeAncestorLine.cs" />
     <Compile Include="ApplicationEditing\VerticalTreeDescendantLine.cs" />
+    <Compile Include="ApplicationEditing\VerticalTreeViewItem.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceCommand.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceDialog.xaml.cs">
       <DependentUpon>AddGACReferenceDialog.xaml</DependentUpon>
@@ -360,6 +364,10 @@
     <Resource Include="images\applicationfolder.png" />
     <Resource Include="images\application.png" />
     <Page Include="ApplicationEditing\ParticipantPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ApplicationEditing\VerticalTreeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

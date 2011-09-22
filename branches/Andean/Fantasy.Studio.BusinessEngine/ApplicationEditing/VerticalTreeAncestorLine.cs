@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             {
                 double middle = this.ActualWidth / 2;
 
-                Geometry rs = new LineGeometry(new Point(middle, 0), new Point(middle, this.ActualHeight));
+                Geometry rs = new LineGeometry(new Point(middle, this.StrokeThickness), new Point(middle, this.ActualHeight));
 
                 if (this.HasLeftSibling)
                 {
@@ -75,7 +75,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             Pen pen = InvokePen();
             double middle = this.ActualWidth / 2;
-            drawingContext.DrawLine(pen, new Point(middle, 0), new Point(middle, this.ActualHeight - this.ArrowRadius * 2));
+            drawingContext.DrawLine(pen, new Point(middle, this.StrokeThickness), new Point(middle, this.ActualHeight - this.ArrowRadius * 2));
             if (this.HasLeftSibling)
             {
                 drawingContext.DrawLine(pen, new Point(0, this.StrokeThickness), new Point(middle, this.StrokeThickness)); 
@@ -86,8 +86,6 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             }
 
             drawingContext.DrawGeometry(this.Fill, pen, ArrowGeometry());
-
-
         }
 
         public bool HasLeftSibling
