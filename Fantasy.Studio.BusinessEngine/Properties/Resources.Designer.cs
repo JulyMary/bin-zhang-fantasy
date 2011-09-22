@@ -259,6 +259,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Participants.
+        /// </summary>
+        internal static string ParticipantPanelTitle {
+            get {
+                return ResourceManager.GetString("ParticipantPanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
         internal static string PropertyGridEditorDefaultTitle {

@@ -183,6 +183,9 @@
   <data name="ObjectModelFolderName" xml:space="preserve">
     <value>Object Model</value>
   </data>
+  <data name="ParticipantPanelTitle" xml:space="preserve">
+    <value>Participants</value>
+  </data>
   <data name="PropertyGridEditorDefaultTitle" xml:space="preserve">
     <value>General</value>
   </data>

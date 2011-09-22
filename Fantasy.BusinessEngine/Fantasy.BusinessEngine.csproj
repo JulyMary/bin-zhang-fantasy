@@ -63,6 +63,7 @@
     <Compile Include="BusinessAssemblyReferenceGroup.cs" />
     <Compile Include="BusinessClass.cs" />
     <Compile Include="BusinessClassDiagram.cs" />
+    <Compile Include="BusinessClassExtension.cs" />
     <Compile Include="BusinessDataType.cs" />
     <Compile Include="BusinessEntity.cs" />
     <Compile Include="BusinessEnum.cs" />

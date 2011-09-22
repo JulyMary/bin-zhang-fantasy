@@ -8,17 +8,16 @@ using System.Collections.ObjectModel;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
-    public class ParticipantNode : NotifyPropertyChangedObject
+    public class ParticipantNode
     {
-        public ParticipantNode(BusinessApplicationParticipant participant, ParticipantPanelModel model)
+        public ParticipantNode()
         {
-            this._model = model;
-            this.Participant = Participant;
+            
         }
 
-        public BusinessApplicationParticipant Participant { get; private set; }
+        public BusinessApplicationParticipant Participant { get; set; }
 
-        ParticipantPanelModel _model;
+        public BusinessClass Class { get; set; }
 
         private ObservableCollection<ParticipantNode> _childNodes = new ObservableCollection<ParticipantNode>(); 
 
@@ -55,9 +54,5 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             }
         }
 
-       
-        
-
-        
     }
 }

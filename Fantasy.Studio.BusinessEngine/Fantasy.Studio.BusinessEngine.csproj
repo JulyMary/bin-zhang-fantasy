@@ -83,6 +83,8 @@
       <DependentUpon>ParticipantPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ApplicationEditing\ParticipantPanelModel.cs" />
+    <Compile Include="ApplicationEditing\VerticalTreeAncestorLine.cs" />
+    <Compile Include="ApplicationEditing\VerticalTreeDescendantLine.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceCommand.cs" />
     <Compile Include="AssemblyReference\AddGACReferenceDialog.xaml.cs">
       <DependentUpon>AddGACReferenceDialog.xaml</DependentUpon>

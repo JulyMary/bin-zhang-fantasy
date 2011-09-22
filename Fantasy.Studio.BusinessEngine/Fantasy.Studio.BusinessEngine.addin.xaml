@@ -400,7 +400,7 @@
             <TreeNodeChildProvider ID="applications" Provider="{New sbe:PackageApplicationsProvider}" />
         </TreeNode>
         <TreeNode ID="Application" TargetType="{x:Type be:BusinessApplication}" Icon="/Fantasy.Studio.BusinessEngine;component/images/application.png" Text="{Binding Path=Name}"
-                  ContextMenu="fantasy/studio/businessengine/documentpad/application/contextmenu">
+                  ContextMenu="fantasy/studio/businessengine/documentpad/application/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}">
             
         </TreeNode>
     </Extension>
@@ -739,9 +739,14 @@
         <Object ID="general">
             <sbe:PropertyGridEditor />
         </Object>
+        <Object ID="participants">
+            <sbe:ParticipantPanel /> 
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/commandbindings" >
         
     </Extension>
-    
+
+   
+
 </AddIn>
