@@ -8,39 +8,93 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TreeView Name="ParticipantsTreeView">
+        <TreeView Name="ParticipantsTreeView" ItemsSource="{Binding Items}" PreviewDragEnter="ParticipantsTreeView_PreviewDragEnter" PreviewDragLeave="ParticipantsTreeView_PreviewDragLeave" PreviewDragOver="ParticipantsTreeView_PreviewDragOver" PreviewDrop="ParticipantsTreeView_PreviewDrop" AllowDrop="True">
+           
             <TreeView.Resources>
-                <HierarchicalDataTemplate DataType="l:ParticipantNode" ItemsSource="{Binding Items}">
-                    <Grid>
-                        <Border Name="ClassBorder" CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3" DataContext="{Binding Entity.Class}">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                    <GradientStop Color="#FFB2A39C" Offset="0" />
-                                    <GradientStop Color="White" Offset="1" />
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Grid>
+               
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsExpanded" Value="True" />
+                    <Setter Property="Template" >
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TreeViewItem">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <!--The top row contains the item's content.-->
+                                        <RowDefinition Height="Auto" />
+                                        <!--The bottom row contains the item's children.-->
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Width="{Binding ActualWidth, ElementName=PART_Header}" HorizontalAlignment="Center">
+                                        <l:VerticalTreeAncestorLine Height="40" Stroke="Black" Fill="Black" StrokeThickness="2" Visibility="{Binding Path=f:EnhencedTreeViewItem.IsRoot, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.InvertCollapsed}}" />
+                                        <ContentPresenter Name="PART_Header" ContentSource="Header"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                        <l:VerticalTreeDescendantLine Height="40" Stroke="Black" StrokeThickness="2" Visibility="{Binding HasItems, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.Collapsed}}" />
+                                    </StackPanel>
+                                    <!-- The ItemsPresenter displays the item's children. -->
+                                    <ItemsPresenter Grid.Row="1"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ItemsPanel">
+                        <Setter.Value>
+                            <ItemsPanelTemplate>
+                                <StackPanel HorizontalAlignment="Center" IsItemsHost="True" Orientation="Horizontal"  />
+                            </ItemsPanelTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="Border" x:Key="ClassBorder">
+                    <Setter Property="Background" >
+                        <Setter.Value>
+                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                <GradientStop Color="Gray" Offset="0" />
+                                <GradientStop Color="LightGray" Offset="1" />
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked}" Value="true">
+                            <Setter Property="Background" >
+                                <Setter.Value>
+                                    <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
+                                        <GradientStop Color="Green" Offset="0" />
+                                        <GradientStop Color="LightGreen" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="ToggleButton" x:Key="TransparentToggleButton">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ToggleButton">
+                                <Border Background="Transparent">
+                                    <ContentPresenter/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.Resources>
+
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
+                    <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Style="{StaticResource TransparentToggleButton}" >
+                        <Border Name="ClassBorder" CornerRadius="5" BorderThickness="1" BorderBrush="Black" Padding="3" Style="{StaticResource ClassBorder}" >
+                            <Grid DataContext="{Binding Class}">
                                 <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
                                 <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >
                                     <TextBlock Text="{Binding FullName }" />
                                 </StackPanel>
                                 <Image Height="16" HorizontalAlignment="Left" Margin="28,23,0,0" Name="image2" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/inheritance.png" />
-                                <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding Entity.ParentClass.Name}" VerticalAlignment="Top">
+                                <TextBlock Height="23" Margin="50,22,7,0" Text="{Binding ParentClass.Name}" VerticalAlignment="Top">
                                 </TextBlock>
                             </Grid>
                         </Border>
-                        <Popup Placement="Right" PlacementTarget="{Binding ElementName=ClassBorder}"   IsOpen="{Binding IsSelected, RelativeSource={RelativeSource Mode=TemplatedParent}}" AllowsTransparency="True" >
-                            <StackPanel>
-                                <TextBlock >text</TextBlock>
-                            </StackPanel>
-                        </Popup>
-                    </Grid>
+                    </ToggleButton>
                 </HierarchicalDataTemplate>
-                <Style TargetType="TreeViewItem">
-
-                </Style>
-            </TreeView.Resources>
-
+            </TreeView.ItemTemplate>
         </TreeView>
         <TextBlock IsHitTestVisible="False"  VerticalAlignment="Top" Margin="20,20,20,0" HorizontalAlignment="Center" TextWrapping="Wrap" FontStyle="Italic" Foreground="DarkGray"
                    Text="Drag a class from Business Model Pad or Classes Pad to here to add the root class for this application.">
@@ -53,7 +107,6 @@
                     </Style.Triggers>
                 </Style>
             </TextBlock.Style>
-
         </TextBlock>
     </Grid>
 </UserControl>

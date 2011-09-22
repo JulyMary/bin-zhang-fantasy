@@ -8,6 +8,12 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
     public class ApplicationEditor :  EntityEditingViewContent
     {
+
+        public ApplicationEditor()
+        {
+
+        }
+
         public override string EditingPanelPath
         {
             get { return "fantasy/studio/businessengine/applicationeditor/panels"; }

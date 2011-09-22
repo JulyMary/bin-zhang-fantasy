@@ -139,17 +139,7 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        public virtual IEnumerable<BusinessProperty> AllProperties
-        {
-            get
-            {
-                var query = from @class in this.Flatten(x => x.ParentClass).Reverse()
-                            from property in @class.Properties
-                            select property;
-
-                return query;
-            }
-        }
+       
 
 
         public virtual string TableName
@@ -245,16 +235,6 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        public virtual IEnumerable<BusinessAssociation> AllLeftAssociations
-        {
-            get
-            {
-                var query = from @class in this.Flatten(x => x.ParentClass).Reverse()
-                            from association in @class.LeftAssociations
-                            select association;
-                return query;
-            }
-        }
 
 
         private IObservableList<BusinessAssociation> _persistedRightAssociations = new ObservableList<BusinessAssociation>();
@@ -291,15 +271,6 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual IEnumerable<BusinessAssociation> AllRightAssociations
-        {
-            get
-            {
-                var query = from @class in this.Flatten(x => x.ParentClass).Reverse()
-                            from association in @class.RightAssociations
-                            select association;
-                return query;
-            }
-        }
+      
     }
 }

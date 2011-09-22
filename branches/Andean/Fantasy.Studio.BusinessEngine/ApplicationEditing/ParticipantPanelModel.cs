@@ -11,8 +11,9 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
     public class ParticipantPanelModel : ObjectWithSite
     {
 
-        public ParticipantPanelModel(BusinessApplication application)
+        public ParticipantPanelModel(BusinessApplication application, IServiceProvider site)
         {
+            this.Site = site;
 
             this._application = application;
 
@@ -26,32 +27,40 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private BusinessApplication _application;
 
-        public void AddRootParticipantForClass(BusinessClass @class)
+        public void AddRootNodeForClass(BusinessClass @class)
         {
-            if (!this._application.Participants.Any(x => x.Class == @class))
+            if (this._application.Participants.Count == 0)
             {
-                BusinessApplicationParticipant participant = _allParticipants.SingleOrDefault(x => x.Class == @class);
-                if (participant == null)
-                {
-                    participant = this.Site.GetRequiredService<IEntityService>().AddBusinessApplicationParticipant(this._application, @class);
-                    participant.IsEntry = true;
-                }
-
-                this.AddRootPaticipantNode(participant);
+                ParticipantNode node = this.CreateNode(@class);
+                this.Items.Add(node);
+                node.IsChecked = true;
             }
-
-
         }
 
-        private void AddRootPaticipantNode(BusinessApplicationParticipant participant)
+        private BusinessApplicationParticipant GetParticipant(BusinessClass @class)
         {
-            ParticipantNode node = this.CreateNode(participant);
-            this.Items.Add(node);
+            BusinessApplicationParticipant participant = _allParticipants.SingleOrDefault(x => x.Class == @class);
+            if (participant == null)
+            {
+                participant = this.Site.GetRequiredService<IEntityService>().AddBusinessApplicationParticipant(this._application, @class);
+                this._allParticipants.Add(participant);
+            }
+            else
+            {
+                if (!this._application.Participants.Contains(participant))
+                {
+                    participant.Application = this._application;
+                    this._application.Participants.Add(participant);
+                }
+            }
+            return participant;
         }
 
-        private ParticipantNode CreateNode(BusinessApplicationParticipant participant)
+       
+
+        private ParticipantNode CreateNode(BusinessClass @class)
         {
-            ParticipantNode rs = new ParticipantNode(participant, this);
+            ParticipantNode rs = new ParticipantNode() { Class = @class };
             rs.IsCheckedChanged += new EventHandler(NodeIsCheckedChanged);
             return rs;
 
@@ -63,33 +72,74 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             ParticipantNode node = (ParticipantNode)sender;
             if (node.IsChecked)
             {
-                this.AddChildNodes(node);
+                this.OnNodeChecked(node);
             }
             else
             {
-                this.RemoveChildNodes(node);
+                this.OnNodeUnchecked(node);
             }
         }
 
-        private void AddChildNodes(ParticipantNode node)
+        private void OnNodeChecked(ParticipantNode node)
         {
-            BusinessClass @class = node.Participant.Class;
+            BusinessApplicationParticipant participant = this.GetParticipant(node.Class);
 
-            
-            
+            node.Participant = participant;
 
+            participant.IsEntry = this.Items.Contains(node);
+
+
+            BusinessClass @class = node.Class;
+            var relatives =
+                (from prop in @class.AllProperties() where prop.DataClassType != null select prop.DataClassType)
+                .Union(from assn in @class.AllLeftAssociations() select assn.RightClass)
+                .Union(from assn in @class.AllRightAssociations() select assn.LeftClass)
+                .Distinct();
+
+            var added = from root in this.Items
+                        from n in root.Flatten(n => n.ChildNodes)
+                        select n.Participant.Class;
+
+            var candidates = relatives.Except(added).OrderBy(c=>c.Name);
+
+            foreach (BusinessClass relClass in candidates)
+            {
+                ParticipantNode childNode = this.CreateNode(relClass);
+                node.ChildNodes.Add(childNode);
+            }
         }
 
-        private void RemoveChildNodes(ParticipantNode node)
+        private void OnNodeUnchecked(ParticipantNode node)
         {
-            throw new NotImplementedException();
+            var participants = from decendent in node.Flatten(n => n.ChildNodes)
+                               where decendent.Participant != null
+                               select decendent.Participant;
+
+            foreach (BusinessApplicationParticipant participant in participants.ToArray())
+            {
+                this._application.Participants.Remove(participant);
+                participant.Application = null;
+            }
+
+            var childNodes = from child in node.Flatten(n => n.ChildNodes)
+                             where child != node
+                             select child;
+
+            foreach (ParticipantNode childNode in childNodes)
+            {
+                childNode.IsCheckedChanged -= new EventHandler(this.NodeIsCheckedChanged);
+            }
+            node.ChildNodes.Clear();
+
         }
 
         public ObservableCollection<ParticipantNode> Items { get; private set; }
 
-        public IEnumerable<ParticipantNode> GetChildNodes(ParticipantNode participantNode)
+
+
+        public void Save()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

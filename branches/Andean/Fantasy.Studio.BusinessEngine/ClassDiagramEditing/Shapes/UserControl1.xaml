@@ -4,10 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:f="urn:schema-fantasy:xaml"
+             xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ApplicationEditing"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3">
-        
-    </Border>
+    <StackPanel Orientation="Vertical" Height="160" Width="165">
+
+        <l:VerticalTreeAncestorLine Height="40" Stroke="Black" Fill="Black" HasLeftSibling="False" HasRightSibling="False" />
+        <Rectangle Height="40" Width="40" Fill="red"></Rectangle>
+        <l:VerticalTreeDescendantLine Height="40" Stroke="Black" />
+    </StackPanel>
 </UserControl>
