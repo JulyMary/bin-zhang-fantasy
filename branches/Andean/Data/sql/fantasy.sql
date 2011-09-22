@@ -1,10 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2011/9/19 22:49:18                           */
+/* Created on:     22/09/2011 11:30:32 AM                       */
 /*==============================================================*/
 
-use Fantasy
-go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -692,6 +690,7 @@ create table BUSINESSAPPLICATIONPARTICIPANT (
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null,
+   ISENTRY              bit                  not null,
    constraint PK_BUSINESSAPPLICATIONPARTICIP primary key (ID)
 )
 go
