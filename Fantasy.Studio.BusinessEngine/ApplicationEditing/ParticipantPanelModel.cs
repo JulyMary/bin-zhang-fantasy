@@ -91,14 +91,20 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
             BusinessClass @class = node.Class;
             var relatives =
-                (from prop in @class.AllProperties() where prop.DataClassType != null select prop.DataClassType)
-                .Union(from assn in @class.AllLeftAssociations() select assn.RightClass)
-                .Union(from assn in @class.AllRightAssociations() select assn.LeftClass)
+                (from prop in @class.AllProperties() where prop.DataClassType != null 
+                     from cls in prop.DataClassType.Flatten(c=>c.ChildClasses)
+                     select cls)
+                .Union(from assn in @class.AllLeftAssociations()
+                           from cls in assn.RightClass.Flatten(c => c.ChildClasses)
+                           select cls)
+                .Union(from assn in @class.AllRightAssociations()
+                           from cls in assn.LeftClass.Flatten(c =>c.ChildClasses)
+                           select cls)
                 .Distinct();
-
+                
             var added = from root in this.Items
                         from n in root.Flatten(n => n.ChildNodes)
-                        select n.Participant.Class;
+                        select n.Class;
 
             var candidates = relatives.Except(added).OrderBy(c=>c.Name);
 

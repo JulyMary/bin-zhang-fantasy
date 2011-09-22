@@ -1,0 +1,53 @@
+﻿<TreeView x:Class="Fantasy.Studio.BusinessEngine.ApplicationEditing.VerticalTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300"
+             xmlns:f="urn:schema-fantasy:xaml"
+             xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ApplicationEditing">
+    <TreeView.Resources>
+
+        <Style TargetType="l:VerticalTreeViewItem">
+            <Setter Property="IsExpanded" Value="True" />
+            <Setter Property="Template" >
+                <Setter.Value>
+                    <ControlTemplate TargetType="l:VerticalTreeViewItem">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <!--The top row contains the item's content.-->
+                                <RowDefinition Height="Auto" />
+                                <!--The bottom row contains the item's children.-->
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+
+                            <StackPanel Width="{Binding ActualWidth, ElementName=HeaderContainer}" HorizontalAlignment="Center">
+                                <l:VerticalTreeAncestorLine Height="40" Stroke="Black" Fill="Black" StrokeThickness="2" Visibility="{Binding IsRoot, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.InvertCollapsed}}"
+                                                            HasLeftSibling="{Binding IsFirstItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:BooleanInverterConverter.Default}}"
+                                                            HasRightSibling="{Binding IsLastItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:BooleanInverterConverter.Default}}"/>
+                                <Border Name="HeaderContainer">
+                                    <ContentPresenter Margin="10, 0, 10, 0" Name="PART_Header" ContentSource="Header"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <l:VerticalTreeDescendantLine Height="40" Stroke="Black" StrokeThickness="2" Visibility="{Binding HasItems, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.Collapsed}}"
+                                                              />
+                            </StackPanel>
+                           
+                            <!-- The ItemsPresenter displays the item's children. -->
+                            <ItemsPresenter Grid.Row="1"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ItemsPanel">
+                <Setter.Value>
+                    <ItemsPanelTemplate>
+                        <StackPanel HorizontalAlignment="Center" IsItemsHost="True" Orientation="Horizontal"  />
+                    </ItemsPanelTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+       
+    </TreeView.Resources>
+</TreeView>
