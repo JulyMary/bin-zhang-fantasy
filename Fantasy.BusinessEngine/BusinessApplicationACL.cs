@@ -54,5 +54,14 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("PersistedACL", value);
             }
         }
+
+        private BusinessObjectSecurity _objectSecurity = null;
+        public BusinessObjectSecurity Security
+        {
+            get
+            {
+                return _objectSecurity;
+            }
+        } 
     }
 }

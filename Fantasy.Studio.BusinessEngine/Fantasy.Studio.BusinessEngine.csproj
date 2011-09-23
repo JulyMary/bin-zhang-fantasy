@@ -75,9 +75,11 @@
     <Compile Include="ApplicationEditing\AddApplicationCommand.cs" />
     <Compile Include="ApplicationEditing\ApplicationEditor.cs" />
     <Compile Include="ApplicationEditing\ApplicationFolder.cs" />
+    <Compile Include="ApplicationEditing\ApplicationParticipantACLProvider.cs" />
     <Compile Include="ApplicationEditing\DeleteApplicationCommand.cs" />
     <Compile Include="ApplicationEditing\PackageApplicationFolderProvider.cs" />
     <Compile Include="ApplicationEditing\PackageApplicationsProvider.cs" />
+    <Compile Include="ApplicationEditing\ParticipantACL.cs" />
     <Compile Include="ApplicationEditing\ParticipantNode.cs" />
     <Compile Include="ApplicationEditing\ParticipantPanel.xaml.cs">
       <DependentUpon>ParticipantPanel.xaml</DependentUpon>
@@ -361,6 +363,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\acl.png" />
+    <Resource Include="images\classacl.png" />
     <Resource Include="images\applicationfolder.png" />
     <Resource Include="images\application.png" />
     <Page Include="ApplicationEditing\ParticipantPanel.xaml">
