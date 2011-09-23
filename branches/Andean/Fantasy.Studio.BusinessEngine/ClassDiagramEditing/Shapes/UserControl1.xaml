@@ -10,8 +10,20 @@
 
     <StackPanel Orientation="Vertical" Height="160" Width="165">
 
-        <l:VerticalTreeAncestorLine Height="40" Stroke="Black" Fill="Black" HasLeftSibling="False" HasRightSibling="False" />
-        <Rectangle Height="40" Width="40" Fill="red"></Rectangle>
+        <l:VerticalTreeAncestorLine Height="40" Stroke="Black" Fill="{DynamicResource ClassGlyphBorderBursh}" HasLeftSibling="False" HasRightSibling="False" />
+        <Rectangle Height="97" Width="100">
+            <Rectangle.Fill>
+                <RadialGradientBrush 
+            GradientOrigin="0.0,0.0" 
+            Center="0.0,0.0" RadiusX="1" RadiusY="1">
+                    <RadialGradientBrush.GradientStops>
+                        <GradientStop Color="White" Offset="0" />
+                        <GradientStop Color="#FFEFFFFF" Offset="0.4" />
+                        <GradientStop Color="#FFB1FFFF" Offset="1" />
+                    </RadialGradientBrush.GradientStops>
+                </RadialGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
         <l:VerticalTreeDescendantLine Height="40" Stroke="Black" />
     </StackPanel>
 </UserControl>

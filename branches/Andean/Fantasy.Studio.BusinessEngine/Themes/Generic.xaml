@@ -8,7 +8,19 @@
         <ResourceDictionary Source="/Syncfusion.Diagram.WPF;component/Themes/Generic.xaml"/>
         <ResourceDictionary Source="Fantasy.Studio.BusinessEngine;component/Themes/Generic.NodeExpander.xaml" />
     </ResourceDictionary.MergedDictionaries>
-   
+
+    <RadialGradientBrush x:Key="ClassGlyphFillBrush"
+            GradientOrigin="0.0,0.0" 
+            Center="0.0,0.0" RadiusX="1" RadiusY="1">
+        <RadialGradientBrush.GradientStops>
+            <GradientStop Color="White" Offset="0" />
+            <GradientStop Color="#FFEFFFFF" Offset="0.4" />
+            <GradientStop Color="#FFB1FFFF" Offset="1" />
+        </RadialGradientBrush.GradientStops>
+    </RadialGradientBrush>
+
+    <SolidColorBrush Color="#FF00AAAA" x:Key="ClassGlyphBorderBursh"/>
+
     <!-- Standard Business Class Node style-->
     <Style TargetType="{x:Type l:ClassDiagramNode}" x:Key="{x:Type l:ClassDiagramNode}" >
         <Style.Resources>

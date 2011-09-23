@@ -44,8 +44,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             get
             {
                 double middle = this.ActualWidth / 2;
-                Geometry line = new LineGeometry(new Point(DiamondRadius, DiamondRadius * 2), new Point(middle / 2, this.ActualHeight));
-                return new CombinedGeometry(line, DiamondGeometry()); 
+                Geometry rect = new RectangleGeometry(new Rect(new Point(middle, DiamondRadius * 2), new Point(middle + this.StrokeThickness, this.ActualHeight)));
+                return new CombinedGeometry(rect, DiamondGeometry()); 
             }
         }
 

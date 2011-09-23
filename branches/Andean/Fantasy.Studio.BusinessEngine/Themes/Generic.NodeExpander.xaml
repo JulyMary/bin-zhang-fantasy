@@ -30,8 +30,8 @@
 
                             <ToggleButton Grid.Column="1" VerticalAlignment="Top" Style="{StaticResource TransparentButton}" Name="toggleButton" IsChecked="{Binding Path=IsExpanded,Mode=TwoWay,RelativeSource={RelativeSource AncestorType=l:NodeExpander}}" >
                                 <Grid>
-                                    <Ellipse Name="circle" Grid.Column="0" Width="19" Height="19" Stroke="#FFA9A9A9" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <Path Name="arrow" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="#FF666666" StrokeThickness="2" SnapsToDevicePixels="False" Data="M1,1.5L4.5,5 8,1.5" />
+                                    <Ellipse Name="circle" Grid.Column="0" Width="19" Height="19" Stroke="#FF00AAAA" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    <Path Name="arrow" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="#FF00AAAA" StrokeThickness="2" SnapsToDevicePixels="False" Data="M1,1.5L4.5,5 8,1.5" />
                                 </Grid>
                             </ToggleButton>
                             <ContentPresenter IsHitTestVisible="False" Grid.Column="0" Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" SnapsToDevicePixels="True" RecognizesAccessKey="True" />

@@ -10,12 +10,17 @@
              d:DesignHeight="160" d:DesignWidth="180" OffsetX="{Binding Left, Mode=TwoWay}" OffsetY="{Binding Top, Mode=TwoWay}"
              Width="{Binding Width, Mode=TwoWay}" DataContextChanged="ClassDiagramNode_DataContextChanged">
 
-    <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3">
+    <Border CornerRadius="15" BorderThickness="1" BorderBrush="#FF00AAAA" Padding="3">
         <Border.Background>
-            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                <GradientStop Color="#FFB2A39C" Offset="0" />
-                <GradientStop Color="White" Offset="1" />
-            </LinearGradientBrush>
+            <RadialGradientBrush 
+            GradientOrigin="0.0,0.0" 
+            Center="0.0,0.0" RadiusX="1" RadiusY="1">
+                <RadialGradientBrush.GradientStops>
+                    <GradientStop Color="White" Offset="0" />
+                    <GradientStop Color="#FFEFFFFF" Offset="0.4" />
+                    <GradientStop Color="#FFB1FFFF" Offset="1" />
+                </RadialGradientBrush.GradientStops>
+            </RadialGradientBrush>
         </Border.Background>
         <l:NodeExpander x:Name="outerExpander" IsExpanded="{Binding ShowMember, Mode=TwoWay}" >
             <l:NodeExpander.Header >
@@ -43,7 +48,7 @@
             </l:NodeExpander.Header>
 
             <StackPanel Focusable="True" Name="ConentStackPanel" Orientation="Vertical" sf:Node.IsSelectionScope="True" MouseDown="ConentStackPanel_MouseDown">
-                <ListBox ItemsSource="{Binding EnumValues}" MinHeight="23" Name="EnumValueListBox" SelectionMode="Extended" SelectionChanged="EnumValueListBox_SelectionChanged">
+                <ListBox ItemsSource="{Binding EnumValues}" MinHeight="23" Name="EnumValueListBox" SelectionMode="Extended" SelectionChanged="EnumValueListBox_SelectionChanged" BorderBrush="#FF00AAAA">
                     <ListBox.Background>
                         <SolidColorBrush />
                     </ListBox.Background>

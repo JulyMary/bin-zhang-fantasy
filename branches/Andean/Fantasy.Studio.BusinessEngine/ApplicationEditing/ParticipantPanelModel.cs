@@ -17,13 +17,75 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
             this._application = application;
 
-            this._allParticipants.AddRange(application.Participants); 
+            this._allParticipants.UnionWith(application.Participants); 
 
             this.Items = new ObservableCollection<ParticipantNode>();
+            Refresh();
         }
 
 
-        private List<BusinessApplicationParticipant> _allParticipants = new List<BusinessApplicationParticipant>();
+
+        public void Refresh()
+        {
+
+            if (this.Items.Count == 1)
+            {
+                var query = from node in this.Items[0].Flatten(n => n.ChildNodes)
+                            select node;
+                foreach (ParticipantNode node in query)
+                {
+                    node.IsCheckedChanged -= NodeIsCheckedChanged;
+                }
+
+                this.Items.Clear();
+            }
+
+
+            BusinessApplicationParticipant rootParticipant = this._application.Participants.SingleOrDefault(p => p.IsEntry && p.Class.EntityState != EntityState.Deleted);
+            if (rootParticipant != null)
+            {
+                ParticipantNode rootNode = this.CreateNode(rootParticipant.Class);
+                this.Items.Add(rootNode);
+                ShowParticipant(rootNode);
+            }
+
+
+            var orphans = this._application.Participants.Except(
+                from root in this.Items
+                          select root.Flatten(n => n.ChildNodes) into allnodes
+                          from node in allnodes
+                          where node.Participant != null
+                          select node.Participant);
+
+            foreach (BusinessApplicationParticipant orphan in orphans.ToArray())
+            {
+                this._application.Participants.Remove(orphan);
+                orphan.Application = null;
+            }
+
+
+        }
+
+        private void ShowParticipant(ParticipantNode node)
+        {
+
+            var query = from paricipant in this._application.Participants
+                        where paricipant.Class == node.Class && node.Class.EntityState != EntityState.Deleted
+                        select paricipant;
+            if (query.Any())
+            {
+                node.IsChecked = true;
+                foreach (ParticipantNode child in node.ChildNodes)
+                {
+                    ShowParticipant(child);
+                }
+            }
+
+
+           
+        }
+
+        private HashSet<BusinessApplicationParticipant> _allParticipants = new HashSet<BusinessApplicationParticipant>();
 
         private BusinessApplication _application;
 
@@ -72,15 +134,15 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             ParticipantNode node = (ParticipantNode)sender;
             if (node.IsChecked)
             {
-                this.OnNodeChecked(node);
+                this.AddChildNodes(node);
             }
             else
             {
-                this.OnNodeUnchecked(node);
+                this.ClearChildNodes(node);
             }
         }
 
-        private void OnNodeChecked(ParticipantNode node)
+        private void AddChildNodes(ParticipantNode node)
         {
             BusinessApplicationParticipant participant = this.GetParticipant(node.Class);
 
@@ -115,7 +177,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             }
         }
 
-        private void OnNodeUnchecked(ParticipantNode node)
+        private void ClearChildNodes(ParticipantNode node)
         {
             var participants = from decendent in node.Flatten(n => n.ChildNodes)
                                where decendent.Participant != null
@@ -145,7 +207,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public void Save()
         {
-            
+            this._allParticipants.IntersectWith(this._application.Participants);
+           
         }
     }
 }
