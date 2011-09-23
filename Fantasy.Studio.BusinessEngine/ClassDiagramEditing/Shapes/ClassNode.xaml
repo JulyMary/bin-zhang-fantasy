@@ -18,12 +18,17 @@
         </DataTemplate>
     </l:ClassDiagramNode.Resources>
 
-    <Border CornerRadius="15" BorderThickness="1" BorderBrush="Black" Padding="3">
+    <Border CornerRadius="15" BorderThickness="1" BorderBrush="#FF00AAAA" Padding="3">
         <Border.Background>
-            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                <GradientStop Color="#FFB2A39C" Offset="0" />
-                <GradientStop Color="White" Offset="1" />
-            </LinearGradientBrush>
+            <RadialGradientBrush 
+            GradientOrigin="0.0,0.0" 
+            Center="0.0,0.0" RadiusX="1" RadiusY="1">
+                <RadialGradientBrush.GradientStops>
+                    <GradientStop Color="White" Offset="0" />
+                    <GradientStop Color="#FFEFFFFF" Offset="0.4" />
+                    <GradientStop Color="#FFB1FFFF" Offset="1" />
+                </RadialGradientBrush.GradientStops>
+            </RadialGradientBrush>
         </Border.Background>
         <l:NodeExpander x:Name="outerExpander" IsExpanded="{Binding ShowMember, Mode=TwoWay}" >
             <l:NodeExpander.Header >
@@ -76,7 +81,7 @@
                             </Setter>
                             <Setter Property="Content" >
                                 <Setter.Value>
-                                    <Path Data="M 2,5 H 8 M 5,2 V 8" Stroke="#FF666666" />
+                                    <Path Data="M 2,5 H 8 M 5,2 V 8" Stroke="#FF00AAAA" />
                                     
                                 </Setter.Value>
                             </Setter>
@@ -85,7 +90,7 @@
 
                                     <Setter Property="Content">
                                         <Setter.Value>
-                                            <Path Name="lines" Data="M 2,5 H 8" Stroke="#FF666666" />
+                                            <Path Name="lines" Data="M 2,5 H 8" Stroke="#FF00AAAA" />
                                         </Setter.Value>
                                     </Setter>
                                 </Trigger>
@@ -96,7 +101,7 @@
                     </ToggleButton.Style>
                     
                 </ToggleButton>
-                <ListBox ItemsSource="{Binding Members}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended">
+                <ListBox ItemsSource="{Binding Members}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended" BorderBrush="#FF00AAAA">
                     <ListBox.Background>
                         <SolidColorBrush />
                     </ListBox.Background>

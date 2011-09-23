@@ -16,17 +16,23 @@
                         <GradientStop Color="LightGray" Offset="1" />
                     </LinearGradientBrush>
                 </Setter.Value>
+                
             </Setter>
+            <Setter Property="BorderBrush" Value="DarkGray"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsChecked}" Value="true">
                     <Setter Property="Background" >
                         <Setter.Value>
-                            <LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                                <GradientStop Color="Green" Offset="0" />
-                                <GradientStop Color="LightGreen" Offset="1" />
-                            </LinearGradientBrush>
+                            <RadialGradientBrush GradientOrigin="0.0,0.0" Center="0.0,0.0" RadiusX="1" RadiusY="1">
+                                <RadialGradientBrush.GradientStops>
+                                    <GradientStop Color="White" Offset="0" />
+                                    <GradientStop Color="#FFEFFFFF" Offset="0.4" />
+                                    <GradientStop Color="#FFB1FFFF" Offset="1" />
+                                </RadialGradientBrush.GradientStops>
+                            </RadialGradientBrush>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="BorderBrush" Value="#FF00AAAA"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -34,7 +40,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Background="Transparent">
+                        <Border Background="Transparent" BorderThickness="0">
                             <ContentPresenter/>
                         </Border>
                     </ControlTemplate>
@@ -47,7 +53,7 @@
             <l:VerticalTreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
                     <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Style="{StaticResource TransparentToggleButton}" >
-                        <Border CornerRadius="5" BorderThickness="1" BorderBrush="Black" Padding="3" Style="{StaticResource ClassBorderStyle}" >
+                        <Border CornerRadius="5" BorderThickness="1" Padding="3" Style="{StaticResource ClassBorderStyle}" >
                             <Grid DataContext="{Binding Class}">
                                 <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />
                                 <StackPanel Height="23" Margin="28,6,6,0" VerticalAlignment="Top" Orientation="Horizontal" >

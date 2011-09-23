@@ -24,13 +24,13 @@
 
 
                             <StackPanel Width="{Binding ActualWidth, ElementName=HeaderContainer}" HorizontalAlignment="Center">
-                                <l:VerticalTreeAncestorLine Height="40" Stroke="Black" Fill="Black" StrokeThickness="2" Visibility="{Binding IsRoot, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.InvertCollapsed}}"
+                                <l:VerticalTreeAncestorLine Height="40" Stroke="#FF00AAAA" Fill="#FF00AAAA" StrokeThickness="1" Visibility="{Binding IsRoot, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.InvertCollapsed}}"
                                                             HasLeftSibling="{Binding IsFirstItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:BooleanInverterConverter.Default}}"
                                                             HasRightSibling="{Binding IsLastItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:BooleanInverterConverter.Default}}"/>
                                 <Border Name="HeaderContainer">
                                     <ContentPresenter Margin="10, 0, 10, 0" Name="PART_Header" ContentSource="Header"  HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 </Border>
-                                <l:VerticalTreeDescendantLine Height="40" Stroke="Black" StrokeThickness="2" Visibility="{Binding HasItems, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.Collapsed}}"
+                                <l:VerticalTreeDescendantLine Height="40" Stroke="#FF00AAAA" StrokeThickness="1" Visibility="{Binding HasItems, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.Collapsed}}"
                                                               />
                             </StackPanel>
                            

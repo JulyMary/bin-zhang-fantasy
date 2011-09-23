@@ -186,7 +186,10 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public void ViewContentSelected()
         {
-            
+            if (this._model != null)
+            {
+                this._model.Refresh();
+            }
         }
 
         public void ViewContentDeselected()
@@ -195,6 +198,13 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         }
 
         #endregion
+
+
+        protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnIsKeyboardFocusWithinChanged(e);
+            
+        }
 
 
     }

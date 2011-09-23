@@ -19,8 +19,6 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             base.OnApplyTemplate();
 
             this.IsRoot = ItemsControl.ItemsControlFromItemContainer(this) is TreeView;
-           
-
         }
 
         private void RefreshItemPosition()

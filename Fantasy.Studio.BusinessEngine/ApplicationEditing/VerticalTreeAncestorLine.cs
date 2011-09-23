@@ -17,16 +17,16 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             {
                 double middle = this.ActualWidth / 2;
 
-                Geometry rs = new LineGeometry(new Point(middle, this.StrokeThickness), new Point(middle, this.ActualHeight));
+                Geometry rs = new RectangleGeometry(new Rect( new Point(middle, 0), new Point(middle + this.StrokeThickness, this.ActualHeight)));
 
                 if (this.HasLeftSibling)
                 {
-                    rs = new CombinedGeometry(rs, new LineGeometry(new Point(0, this.StrokeThickness), new Point(middle, this.StrokeThickness)));
+                    rs = new CombinedGeometry(rs, new RectangleGeometry(new Rect(new Point(0, 0), new Point(middle, this.StrokeThickness))));
                 }
 
                 if (this.HasRightSibling)
                 {
-                    rs = new CombinedGeometry(rs, new LineGeometry(new Point(middle, this.StrokeThickness), new Point(this.ActualWidth, this.StrokeThickness)));
+                    rs = new CombinedGeometry(rs, new RectangleGeometry(new Rect(new Point(middle, 0), new Point(this.ActualWidth, this.StrokeThickness))));
                 }
 
                 rs = new CombinedGeometry(rs, ArrowGeometry());
@@ -75,14 +75,14 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             Pen pen = InvokePen();
             double middle = this.ActualWidth / 2;
-            drawingContext.DrawLine(pen, new Point(middle, this.StrokeThickness), new Point(middle, this.ActualHeight - this.ArrowRadius * 2));
+            drawingContext.DrawLine(pen, new Point(middle, 0), new Point(middle, this.ActualHeight - this.ArrowRadius * 2));
             if (this.HasLeftSibling)
             {
-                drawingContext.DrawLine(pen, new Point(0, this.StrokeThickness), new Point(middle, this.StrokeThickness)); 
+                drawingContext.DrawLine(pen, new Point(0, 0), new Point(middle, 0)); 
             }
             if (this.HasRightSibling)
             {
-                drawingContext.DrawLine(pen, new Point(middle, this.StrokeThickness), new Point(this.ActualWidth, this.StrokeThickness));
+                drawingContext.DrawLine(pen, new Point(middle, 0), new Point(this.ActualWidth, 0));
             }
 
             drawingContext.DrawGeometry(this.Fill, pen, ArrowGeometry());
