@@ -219,6 +219,22 @@ namespace Fantasy.Studio.BusinessEngine
 
         }
 
+
+        public static BusinessApplicationACL AddBusinessApplicationACL(this IEntityService es, BusinessApplicationParticipant participant, BusinessRole role, BusinessEnumValue state)
+        {
+            BusinessApplicationACL rs = es.CreateEntity<BusinessApplicationACL>();
+            rs.Participant = participant;
+            rs.Role = role;
+            rs.State = state;
+
+            BusinessObjectSecurity security = new BusinessObjectSecurity();
+            security.Sync(participant.Class, null);
+
+            return rs;
+
+
+        }
+
         
     }
 }

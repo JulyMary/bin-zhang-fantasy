@@ -98,8 +98,6 @@ namespace Fantasy.BusinessEngine
           
         }
 
-
-
         public static BusinessObjectSecurity Create(BusinessClass @class, BusinessObjectAccess? objectAccess, BusinessObjectAccess? propertyAccess)
         {
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
@@ -111,11 +109,10 @@ namespace Fantasy.BusinessEngine
             }
 
             return rs;
-
         }
 
 
-        public void SyncProperties(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        public virtual void Sync(BusinessClass @class, BusinessObjectAccess? propertyAccess)
         {
             var toRemove = from ps in this.Properties
                         where !@class.AllProperties().Any(p => p.Id == ps.Id)
@@ -164,15 +161,54 @@ namespace Fantasy.BusinessEngine
         public BusinessObjectSecurity Union(BusinessObjectSecurity other)
         {
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
+            
+            {
+                BusinessObjectAccess? oa1 = this.ObjectAccess;
+                BusinessObjectAccess? oa2 = other != null ? other.ObjectAccess : null;
+                
+                if (oa1 == null && oa2 == null)
+                {
+                    rs.ObjectAccess = null;
+                }
+                else if (oa1 == null)
+                {
+                    rs.ObjectAccess = oa2;
+                }
+                else if (oa2 == null)
+                {
+                    rs.ObjectAccess = oa1;
+                }
+                else
+                {
+                    rs.ObjectAccess = oa1 | oa2;
+                }
+
+            }
+
             foreach (BusinessObjectPropertySecurity ps1 in this.Properties)
             {
                 BusinessObjectPropertySecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
                 BusinessObjectPropertySecurity nps = new BusinessObjectPropertySecurity() { Id = ps1.Id, Name = ps1.Name };
 
-                BusinessObjectAccess oa1 = ps1.PropertyAccess ?? BusinessObjectAccess.None;
-                BusinessObjectAccess oa2 = ps2 != null && ps2.PropertyAccess != null ? (BusinessObjectAccess)ps2.PropertyAccess : BusinessObjectAccess.None;
+                BusinessObjectAccess? oa1 = ps1.PropertyAccess;
+                BusinessObjectAccess? oa2 = ps2 != null ? ps2.PropertyAccess : null;
 
-                nps.PropertyAccess = oa1 | oa2;
+                if (oa1 == null && oa2 == null)
+                {
+                    nps.PropertyAccess = null;
+                }
+                else if (oa1 == null)
+                {
+                    nps.PropertyAccess = oa2;
+                }
+                else if (oa2 == null)
+                {
+                    nps.PropertyAccess = oa1;
+                }
+                else
+                {
+                    nps.PropertyAccess = oa1 | oa2;
+                }
 
                 rs.Properties.Add(nps);
 
@@ -183,13 +219,36 @@ namespace Fantasy.BusinessEngine
         public BusinessObjectSecurity Intersect(BusinessObjectSecurity other)
         {
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
+
+            {
+                BusinessObjectAccess? oa1 = this.ObjectAccess;
+                BusinessObjectAccess? oa2 = other != null ? other.ObjectAccess : null;
+                if (oa1 == null && oa2 == null)
+                {
+                    rs.ObjectAccess = null;
+                }
+                else if (oa2 == null)
+                {
+                    rs.ObjectAccess = oa1;
+                }
+                else if (oa1 == null)
+                {
+                    rs.ObjectAccess = oa2;
+                }
+                else
+                {
+                    rs.ObjectAccess = oa1 | oa2;
+                }
+            }
+
+
             foreach (BusinessObjectPropertySecurity ps1 in this.Properties)
             {
                 BusinessObjectPropertySecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
                 BusinessObjectPropertySecurity nps = new BusinessObjectPropertySecurity() { Id = ps1.Id, Name = ps1.Name };
 
                 BusinessObjectAccess? oa1 = ps1.PropertyAccess;
-                BusinessObjectAccess? oa2 = ps2 != null ?  ps2.PropertyAccess : null;
+                BusinessObjectAccess? oa2 = ps2 != null ? ps2.PropertyAccess : null;
 
                 if (oa1 == null && oa2 == null)
                 {
