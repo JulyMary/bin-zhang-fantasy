@@ -216,6 +216,11 @@
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
     <Compile Include="IEntityEditingPanelContainer.cs" />
+    <Compile Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml.cs">
+      <DependentUpon>ObjectSecurityEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectSecurityEditing\ObjectSecurityEditorModel.cs" />
+    <Compile Include="ObjectSecurityEditing\ObjectSecurityPropertyModel.cs" />
     <Compile Include="PackageEditing\IPackageSubfolder.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />
@@ -372,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ApplicationEditing\VerticalTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
