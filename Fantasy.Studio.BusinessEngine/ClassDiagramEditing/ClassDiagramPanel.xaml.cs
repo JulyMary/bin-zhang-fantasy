@@ -28,7 +28,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
     /// <summary>
     /// Interaction logic for ClassDiagramPanel.xaml
     /// </summary>
-    public partial class ClassDiagramPanel : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class ClassDiagramPanel : UserControl, IDocumentEditingPanel, IObjectWithSite
     {
         public ClassDiagramPanel()
         {
@@ -381,7 +381,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         private Model.ClassDiagram _classDiagram;
         private ClassDiagramModelBinder _binder;
 
-        public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
+        public void Load(object data)
         {
 
             this._selectionService = new SelectionService(this.Site);

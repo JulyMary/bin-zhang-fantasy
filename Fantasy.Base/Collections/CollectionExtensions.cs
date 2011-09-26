@@ -248,5 +248,79 @@ namespace Fantasy
                 }
             }
         }
+
+
+        private class GenericFilteredView<T> : IEnumerable<T>, INotifyCollectionChanged, IWeakEventListener
+        {
+            public GenericFilteredView(IEnumerable collection, Func<T, bool> filter)
+            {
+                this._filter = filter;
+                this._source = collection;
+                INotifyCollectionChanged nc = collection as INotifyCollectionChanged;
+                if (nc != null)
+                {
+                    CollectionChangedEventManager.AddListener(nc, this);
+                }
+            }
+
+            private IEnumerable _source; 
+            private Func<T, bool> _filter;
+
+            #region IEnumerable<T> Members
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                foreach(T item in this._source)
+                {
+                    if (this._filter(item))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+
+            #endregion
+
+            #region IEnumerable Members
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
+            }
+
+            #endregion
+
+            #region IWeakEventListener Members
+
+            public bool ReceiveWeakEvent(Type managerType, object sender, EventArgs e)
+            {
+                if (this.CollectionChanged != null)
+                {
+                    this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset)); 
+                }
+                return true;
+            }
+
+            #endregion
+
+            #region INotifyCollectionChanged Members
+
+            public event NotifyCollectionChangedEventHandler CollectionChanged;
+
+          
+
+            #endregion
+        }
+
+
+        public static IEnumerable ToFiltered(this IEnumerable collection, Func<object, bool> filter)
+        {
+            return new GenericFilteredView<object>(collection, filter); 
+        }
+
+        public static IEnumerable<T> ToFiltered<T>(this IEnumerable<T> collection, Func<T, bool> filter)
+        {
+            return new GenericFilteredView<T>(collection, filter); 
+        }
     }
 }

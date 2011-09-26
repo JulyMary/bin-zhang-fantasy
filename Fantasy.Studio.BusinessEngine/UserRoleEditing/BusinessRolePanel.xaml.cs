@@ -23,7 +23,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
     /// <summary>
     /// Interaction logic for BusinessRolePanel.xaml
     /// </summary>
-    public partial class BusinessRolePanel : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class BusinessRolePanel : UserControl, IDocumentEditingPanel, IObjectWithSite
     {
         public BusinessRolePanel()
         {
@@ -58,12 +58,12 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         private WeakEventListener _rolesChangedListener;
 
-        public void Load(Fantasy.BusinessEngine.IBusinessEntity entity)
+        public void Load(object entity)
         {
             this.Entity = (BusinessRole)entity;
             this.Entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this.DataContext = this.Entity;
-            this.DirtyState = entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+            this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
 
             this._selection.SetSelectedComponents(new object[] { this.Entity });
             this._selection.IsReadOnly = true;

@@ -3,15 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using Fantasy.Windows;
 
 namespace Fantasy.BusinessEngine
 {
     public class BusinessApplicationACL : BusinessEntity
     {
 
-        
+        private WeakEventListener _referencesStateListener;
 
+        private WeakEventListener ReferencesStateListener
+        {
+            get
+            {
+                if (_referencesStateListener == null)
+                {
+                    _referencesStateListener = new WeakEventListener((type, sender, e) =>
+                    {
+                        IBusinessEntity cls = (IBusinessEntity)sender;
+                        if (cls.EntityState == BusinessEngine.EntityState.Deleted && this.Participant != null)
+                        {
+                            this.Participant.ACLs.Remove(this);
+                            this.Participant = null;
+                        }
 
+                        return true;
+                    });
+                }
+
+                return _referencesStateListener;
+            }
+        }
 
         public virtual BusinessEnumValue State
         {
@@ -22,6 +44,11 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("State", value);
+                if (value != null)
+                {
+                    EntityStateChangedEventManager.AddListener(value, this.ReferencesStateListener);
+                }
+
             }
         }
 
@@ -34,6 +61,10 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("Role", value);
+                if (value != null)
+                {
+                    EntityStateChangedEventManager.AddListener(value, this.ReferencesStateListener);
+                }
             }
         }
 

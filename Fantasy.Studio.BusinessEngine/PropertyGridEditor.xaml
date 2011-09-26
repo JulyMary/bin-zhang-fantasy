@@ -6,7 +6,7 @@
              xmlns:f="urn:schema-fantasy:xaml"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
-             xmlns:win="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=propertyGridHost}">
+             xmlns:win="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=propertyGrid}">
     <WindowsFormsHost Name="propertyGridHost">
         <win:PropertyGrid x:Name="propertyGrid" Dock="Fill"  />
     </WindowsFormsHost>

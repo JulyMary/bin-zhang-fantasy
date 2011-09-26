@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         public override string DocumentName
         {
-            get { return this.Entity != null ? ((BusinessUser)this.Entity).Name : string.Empty; }
+            get { return this.Data != null ? ((BusinessUser)this.Data).Name : string.Empty; }
         }
 
         public override string DocumentType

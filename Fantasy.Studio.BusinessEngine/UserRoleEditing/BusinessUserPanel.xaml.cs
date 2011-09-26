@@ -23,7 +23,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
     /// <summary>
     /// Interaction logic for BusinessUserPanel.xaml
     /// </summary>
-    public partial class BusinessUserPanel : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class BusinessUserPanel : UserControl, IDocumentEditingPanel, IObjectWithSite
     {
         public BusinessUserPanel()
         {
@@ -54,15 +54,15 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
       
         public BusinessUser Entity { get; private set; }
 
-        public void Load(Fantasy.BusinessEngine.IBusinessEntity entity)
+        public void Load(object entity)
         {
             this.Entity = (BusinessUser)entity;
             this.Entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this.DataContext = this.Entity;
 
-            
 
-            this.DirtyState = entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+
+            this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
             this._selection.SetSelectedComponents(new object[] {this.Entity});
             this._selection.IsReadOnly = true;
 
@@ -195,7 +195,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
       
         private void AddRoleButton_Click(object sender, RoutedEventArgs e)
         {
-            BusinessRolePikcerModel model = new BusinessRolePikcerModel(this.Site);
+            BusinessRolePikcerModel model = new BusinessRolePikcerModel(this.Site, true);
             BusinessRolePicker picker = new BusinessRolePicker() { DataContext = model };
             if ((bool)picker.ShowDialog())
             {

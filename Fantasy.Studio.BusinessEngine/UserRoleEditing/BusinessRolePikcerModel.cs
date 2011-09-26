@@ -13,10 +13,11 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
     class BusinessRolePikcerModel : NotifyPropertyChangedObject, IObjectWithSite
     {
-        public BusinessRolePikcerModel(IServiceProvider site)
+        public BusinessRolePikcerModel(IServiceProvider site, bool noComputed)
         {
             this.Site = site;
-            this.TreeViewModel = new ExtendableTreeViewModel("fantasy/studio/businessengine/businessrolepicker/treeview", this, site);
+            this.TreeViewModel = new ExtendableTreeViewModel(noComputed ? "fantasy/studio/businessengine/businessrolepicker/nocomputedtreeview" : "fantasy/studio/businessengine/businessrolepicker/treeview", 
+                this, site);
             BusinessPackage rootPackage = this.Site.GetRequiredService<IEntityService>().GetRootPackage();
             this.TreeViewModel.Items.Add(rootPackage);
         }

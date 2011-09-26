@@ -76,10 +76,15 @@
     <Compile Include="ApplicationEditing\ApplicationEditor.cs" />
     <Compile Include="ApplicationEditing\ApplicationFolder.cs" />
     <Compile Include="ApplicationEditing\ApplicationParticipantACLProvider.cs" />
+    <Compile Include="ApplicationEditing\DefaultParticipantACLModel.cs" />
+    <Compile Include="ApplicationEditing\DefaultParticipantACLPanel.xaml.cs">
+      <DependentUpon>DefaultParticipantACLPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationEditing\DeleteApplicationCommand.cs" />
     <Compile Include="ApplicationEditing\PackageApplicationFolderProvider.cs" />
     <Compile Include="ApplicationEditing\PackageApplicationsProvider.cs" />
     <Compile Include="ApplicationEditing\ParticipantACL.cs" />
+    <Compile Include="ApplicationEditing\ParticipantACLEditor.cs" />
     <Compile Include="ApplicationEditing\ParticipantNode.cs" />
     <Compile Include="ApplicationEditing\ParticipantPanel.xaml.cs">
       <DependentUpon>ParticipantPanel.xaml</DependentUpon>
@@ -191,6 +196,7 @@
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
     <Compile Include="EntityCodeNameSetAction.cs" />
+    <Compile Include="EntityEditingViewContent.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
     <Compile Include="EntityNameConverter.cs" />
     <Compile Include="EntityServiceExtension.cs" />
@@ -215,7 +221,7 @@
     <Compile Include="EnumEditing\NamespaceNode.cs" />
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
-    <Compile Include="IEntityEditingPanelContainer.cs" />
+    <Compile Include="IDocumentEditingPanelContainer.cs" />
     <Compile Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml.cs">
       <DependentUpon>ObjectSecurityEditor.xaml</DependentUpon>
     </Compile>
@@ -266,11 +272,10 @@
     <Compile Include="ClassEditing\ObjectModelFolder.cs" />
     <Compile Include="Conditions\IsSystemEntity.cs" />
     <Compile Include="OpenEntityViewCommand.cs" />
-    <Compile Include="EntityEditingViewContent.xaml.cs">
-      <DependentUpon>EntityEditingViewContent.xaml</DependentUpon>
+    <Compile Include="MultiPageEditingViewContent.xaml.cs">
+      <DependentUpon>MultiPageEditingViewContent.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EntityEditingViewContentModel.cs" />
-    <Compile Include="IEntityEditingPanel.cs" />
+    <Compile Include="IDocumentEditingPanel.cs" />
     <Compile Include="PackageEditing\PackageEditor.cs" />
     <Compile Include="DocumentPad.xaml.cs">
       <DependentUpon>DocumentPad.xaml</DependentUpon>
@@ -372,6 +377,10 @@
     <Resource Include="images\classacl.png" />
     <Resource Include="images\applicationfolder.png" />
     <Resource Include="images\application.png" />
+    <Page Include="ApplicationEditing\DefaultParticipantACLPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ApplicationEditing\ParticipantPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,8 +390,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserRoleEditing\BusinessUserPicker.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -491,7 +500,7 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Page Include="EntityEditingViewContent.xaml">
+    <Page Include="MultiPageEditingViewContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

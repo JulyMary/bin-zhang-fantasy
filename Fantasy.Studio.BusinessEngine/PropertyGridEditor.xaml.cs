@@ -24,7 +24,7 @@ namespace Fantasy.Studio.BusinessEngine
     /// <summary>
     /// Interaction logic for PropertyGridEditor.xaml
     /// </summary>
-    public partial class PropertyGridEditor : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class PropertyGridEditor : UserControl, IDocumentEditingPanel, IObjectWithSite
     {
         public PropertyGridEditor()
         {
@@ -52,9 +52,9 @@ namespace Fantasy.Studio.BusinessEngine
 
         private IBusinessEntity _entity;
 
-        public void Load(Fantasy.BusinessEngine.IBusinessEntity data)
+        public void Load(object data)
         {
-            this._entity = data;
+            this._entity = (IBusinessEntity)data;
             this._entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
             object descriptor = this.Site.GetRequiredService<IAdapterManager>().GetAdapter(this._entity, typeof(ICustomTypeDescriptor));

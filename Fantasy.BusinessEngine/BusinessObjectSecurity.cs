@@ -16,6 +16,7 @@ namespace Fantasy.BusinessEngine
         {
             ObservableCollection<BusinessObjectPropertySecurity> properties = new ObservableCollection<BusinessObjectPropertySecurity>();
             properties.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PropertiesChanged);
+            this.Properties = properties;
 
         }
 
