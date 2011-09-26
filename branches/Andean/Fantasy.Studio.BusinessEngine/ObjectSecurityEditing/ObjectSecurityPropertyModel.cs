@@ -11,7 +11,7 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
     {
         public ObjectSecurityPropertyModel(BusinessObjectPropertySecurity propertySecurity)
         {
-            this._entity = propertySecurity;
+            this.Entity = propertySecurity;
             if (propertySecurity.PropertyAccess == null)
             {
                 this.IsInherited = true;
@@ -40,7 +40,7 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                     this.CanWrite = false;
                     if (this._isInherited)
                     {
-                        this._entity.PropertyAccess = null;
+                        this.Entity.PropertyAccess = null;
 
                     }
                     this.OnPropertyChanged("IsInherited");
@@ -48,7 +48,7 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
             }
         }
 
-        private BusinessObjectPropertySecurity _entity;
+        public BusinessObjectPropertySecurity Entity {get;private set;}
 
         private bool _canRead;
 
@@ -63,11 +63,11 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
 
                     if (_canRead)
                     {
-                        _entity.PropertyAccess = _entity.PropertyAccess != null ? _entity.PropertyAccess | BusinessObjectAccess.Read : BusinessObjectAccess.Read;
+                        Entity.PropertyAccess = Entity.PropertyAccess != null ? Entity.PropertyAccess | BusinessObjectAccess.Read : BusinessObjectAccess.Read;
                     }
                     else
                     {
-                        _entity.PropertyAccess = _entity.PropertyAccess != null ? _entity.PropertyAccess &  ~BusinessObjectAccess.Read : BusinessObjectAccess.None;
+                        Entity.PropertyAccess = Entity.PropertyAccess != null ? Entity.PropertyAccess &  ~BusinessObjectAccess.Read : BusinessObjectAccess.None;
 
                     }
 
@@ -89,11 +89,11 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
 
                     if (_canWrite)
                     {
-                        _entity.PropertyAccess = _entity.PropertyAccess != null ? _entity.PropertyAccess | BusinessObjectAccess.Write : BusinessObjectAccess.Write;
+                        Entity.PropertyAccess = Entity.PropertyAccess != null ? Entity.PropertyAccess | BusinessObjectAccess.Write : BusinessObjectAccess.Write;
                     }
                     else
                     {
-                        _entity.PropertyAccess = _entity.PropertyAccess != null ? _entity.PropertyAccess & ~BusinessObjectAccess.Write : BusinessObjectAccess.None;
+                        Entity.PropertyAccess = Entity.PropertyAccess != null ? Entity.PropertyAccess & ~BusinessObjectAccess.Write : BusinessObjectAccess.None;
 
                     }
                     this.OnPropertyChanged("CanWrite");

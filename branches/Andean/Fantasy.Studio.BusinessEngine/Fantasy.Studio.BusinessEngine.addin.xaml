@@ -318,7 +318,7 @@
     </Extension>
 
 
-    <Extension Path="fantasy/studio/businessengine/businessrolepicker/treeview">
+    <Extension Path="fantasy/studio/businessengine/businessrolepicker/nocomputedtreeview">
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
             <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageNoComputedRolesProvider}" />
@@ -326,7 +326,16 @@
         <TreeNode ID="roles" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}">
         </TreeNode>
     </Extension>
-    
+
+    <Extension Path="fantasy/studio/businessengine/businessrolepicker/treeview">
+        <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
+            <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
+            <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageRolesProvider}" />
+        </TreeNode>
+        <TreeNode ID="roles" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}">
+        </TreeNode>
+    </Extension>
+
     <Extension Path="fantasy/studio/businessengine/documentpad/reference/contextmenu">
         <Button ID="Delete" Command="{New sbe:DeleteReferenceCommand}" Text="Delete" ParameterSource="Owner" />
     </Extension>
@@ -619,6 +628,12 @@
             </Object.Conditional>
             <sbe:ApplicationEditor />
         </Object>
+        <Object ID="ParticipantACLEditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type sbe:ParticipantACL}"/>
+            </Object.Conditional>
+            <sbe:ParticipantACLEditor/>
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
@@ -752,6 +767,13 @@
         
     </Extension>
 
-   
+    <Extension Path="fantasy/studio/businessengine/participantacleditor/panels">
+        <Object ID="Default">
+            <sbe:DefaultParticipantACLPanel />
+        </Object>
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/participantacleditor/commandbindings" >
+
+    </Extension>
 
 </AddIn>

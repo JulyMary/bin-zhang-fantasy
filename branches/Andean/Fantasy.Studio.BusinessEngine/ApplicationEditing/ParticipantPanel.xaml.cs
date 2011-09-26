@@ -22,7 +22,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
     /// <summary>
     /// Interaction logic for ParticipantPanel.xaml
     /// </summary>
-    public partial class ParticipantPanel : UserControl, IObjectWithSite, IEntityEditingPanel
+    public partial class ParticipantPanel : UserControl, IObjectWithSite, IDocumentEditingPanel
     {
         public ParticipantPanel()
         {
@@ -117,7 +117,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         public BusinessApplication Entity { get; private set; }
 
 
-        public void Load(Fantasy.BusinessEngine.IBusinessEntity entity)
+        public void Load(object entity)
         {
             this.Entity = (BusinessApplication)entity;
             this.DirtyState = this.Entity.Participants.Any(p => p.EntityState != EntityState.Clean) ? EditingState.Dirty : EditingState.Clean;

@@ -26,7 +26,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
     /// <summary>
     /// Interaction logic for BusinessPropertyEditor.xaml
     /// </summary>
-    public partial class PropertyEditor : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class PropertyEditor : UserControl, IDocumentEditingPanel, IObjectWithSite
     {
         public PropertyEditor()
         {
@@ -58,7 +58,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
             
         }
 
-        public void Load(IBusinessEntity entity)
+        public void Load(object entity)
         {
             this._model = new PropertyEditorModel((BusinessClass)entity);
 

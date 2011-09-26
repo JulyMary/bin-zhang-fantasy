@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine.AssociationEditing
 
         public override string DocumentName
         {
-            get { return this.Entity != null ? ((BusinessAssociation)this.Entity).FullName : string.Empty; }
+            get { return this.Data != null ? ((BusinessAssociation)this.Data).FullName : string.Empty; }
         }
 
         public override string DocumentType

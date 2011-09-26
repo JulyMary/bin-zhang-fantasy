@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         void ICommand.Execute(object parameter)
         {
             IWorkbench wb = this.Site.GetRequiredService<IWorkbench>();
-            ClassDiagramPanel panel = (ClassDiagramPanel)((IEntityEditingPanelContainer)wb.ActiveWorkbenchWindow.ViewContent).ActivePanel;
+            ClassDiagramPanel panel = (ClassDiagramPanel)((IDocumentEditingPanelContainer)wb.ActiveWorkbenchWindow.ViewContent).ActivePanel;
             panel.Mode = this.Mode;
            
         }

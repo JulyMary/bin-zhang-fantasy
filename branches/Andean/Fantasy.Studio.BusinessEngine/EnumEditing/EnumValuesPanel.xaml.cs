@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
     /// <summary>
     /// Interaction logic for EnumValuesPanel.xaml
     /// </summary>
-    public partial class EnumValuesPanel : UserControl, IEntityEditingPanel, IObjectWithSite
+    public partial class EnumValuesPanel : UserControl, IDocumentEditingPanel, IObjectWithSite
     {
         public EnumValuesPanel()
         {
@@ -58,7 +58,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
             
         }
 
-        public void Load(IBusinessEntity entity)
+        public void Load(object entity)
         {
             this._model = new EnumValuesPanelModel((BusinessEnum)entity);
             this._model.Enum.EnumValues.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(EnumValuesChanged);

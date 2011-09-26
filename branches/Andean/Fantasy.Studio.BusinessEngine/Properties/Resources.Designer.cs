@@ -232,6 +232,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Default.
+        /// </summary>
+        internal static string DefaultParticipantACLPanelTitle {
+            get {
+                return ResourceManager.GetString("DefaultParticipantACLPanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Business Model.
         /// </summary>
         internal static string DocumentPadTitle {
