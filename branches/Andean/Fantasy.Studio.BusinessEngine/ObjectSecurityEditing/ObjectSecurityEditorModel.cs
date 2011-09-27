@@ -23,10 +23,6 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
         }
 
 
-      
-
-       
-
         private bool _isInherited;
 
         public bool IsInherited

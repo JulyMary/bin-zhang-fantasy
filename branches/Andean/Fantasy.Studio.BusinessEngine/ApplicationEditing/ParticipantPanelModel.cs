@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine;
 using System.Collections.ObjectModel;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.Studio.Services;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
@@ -122,7 +123,11 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private ParticipantNode CreateNode(BusinessClass @class)
         {
-            ParticipantNode rs = new ParticipantNode() { Class = @class };
+            IMenuService ms = this.Site.GetRequiredService<IMenuService>();
+
+     
+            ParticipantNode rs = new ParticipantNode() { Class = @class};
+            rs.ContextMenu = ms.CreateContextMenu("fantasy/studio/businessengine/applicationeditor/participantpanel/participant/contextmenu", rs, this.Site);
             rs.IsCheckedChanged += new EventHandler(NodeIsCheckedChanged);
             return rs;
 
