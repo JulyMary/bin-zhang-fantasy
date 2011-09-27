@@ -34,7 +34,7 @@
                         </Style>
                     </CheckBox.Style>
                 </CheckBox>
-                <CheckBox Content="Delete" Name="ObjectDeleteCheckBox" Height="16" HorizontalAlignment="Right" Margin="0,6,73,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete,Mode=TwoWay}" >
+                <CheckBox Content="Delete" Name="ObjectDeleteCheckBox" Height="16" Margin="164,6,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete,Mode=TwoWay}" HorizontalAlignment="Left" Width="51">
                     <CheckBox.Style>
                         <Style TargetType="CheckBox">
                             <Style.Triggers>

@@ -52,7 +52,7 @@
         <l:VerticalTreeView Padding="10" x:Name="ParticipantsTreeView" ItemsSource="{Binding Items}" PreviewDragEnter="ParticipantsTreeView_PreviewDragEnter" PreviewDragLeave="ParticipantsTreeView_PreviewDragLeave" PreviewDragOver="ParticipantsTreeView_PreviewDragOver" PreviewDrop="ParticipantsTreeView_PreviewDrop" AllowDrop="True">
             <l:VerticalTreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding ChildNodes}">
-                    <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Style="{StaticResource TransparentToggleButton}" >
+                    <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Style="{StaticResource TransparentToggleButton}" ContextMenu="{Binding ContextMenu}" >
                         <Border CornerRadius="5" BorderThickness="1" Padding="3" Style="{StaticResource ClassBorderStyle}" >
                             <Grid DataContext="{Binding Class}">
                                 <Image Height="16" HorizontalAlignment="Left" Margin="6,6,0,0" Stretch="Fill" VerticalAlignment="Top" Width="16" Source="/Fantasy.Studio.BusinessEngine;component/images/class.png" />

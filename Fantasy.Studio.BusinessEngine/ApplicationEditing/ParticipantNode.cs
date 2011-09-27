@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine;
 using Fantasy.Windows;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
@@ -53,6 +54,10 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                 this.IsCheckedChanged(this, e);
             }
         }
+
+        public ContextMenu ContextMenu { get; set; }
+
+        
 
     }
 }
