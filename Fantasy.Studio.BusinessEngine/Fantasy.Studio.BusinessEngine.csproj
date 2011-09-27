@@ -329,6 +329,7 @@
     <Compile Include="UserRoleEditing\PackageUserRoleFolderProvider.cs" />
     <Compile Include="UserRoleEditing\PackageUsersProvider.cs" />
     <Compile Include="UserRoleEditing\RoleFolder.cs" />
+    <Compile Include="UserRoleEditing\RoleToolBoxItemsBuilder.cs" />
     <Compile Include="UserRoleEditing\UserEditor.cs" />
     <Compile Include="UserRoleEditing\UserFolder.cs" />
     <Compile Include="UserRoleEditing\UserRoleFolder.cs" />
@@ -373,6 +374,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\Properties.ico" />
     <Resource Include="images\acl.png" />
     <Resource Include="images\classacl.png" />
     <Resource Include="images\applicationfolder.png" />

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:f="urn:schema-fantasy:xaml"
+             xmlns:prop="clr-namespace:Fantasy.Studio.BusinessEngine.Properties"
              mc:Ignorable="d" 
              Background="{x:Static SystemColors.ControlBrush}"
              Visibility="Visible"
@@ -11,21 +12,38 @@
              f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=ACLListBox}">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Name="LeftColumn" Width="{Binding DefaultParticipantACLPanelLeftColumnWidth, Source={x:Static prop:Settings.Default}, Mode=OneTime}"/>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid  Margin="0,0,4,0">
             <TextBlock Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="textBlock1" Text="Roles" VerticalAlignment="Top" />
-            <ListBox Margin="6,35" ItemsSource="{Binding Items}" Name="ACLListBox" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" SelectionChanged="ACLListBox_SelectionChanged">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" />
-                            <TextBlock Text="{Binding Role.Name}" Margin="2,0,0,0" />
-                        </StackPanel>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListView Margin="6,35,2,35" ItemsSource="{Binding Items}" Name="ACLListBox" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" SelectionChanged="ACLListBox_SelectionChanged" Padding="4" AllowDrop="True" SelectionMode="Single" Drop="ACLListBox_Drop" DragOver="ACLListBox_DragOver" DragLeave="ACLListBox_DragLeave" DragEnter="ACLListBox_DragEnter">
+                <ListView.Resources>
+                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Style>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+
+                </ListView.Resources>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Role" Width="{Binding ActualWidth, ElementName=ACLListBox}">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Padding="2" HorizontalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                            <Image Width="24" Height="24" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" VerticalAlignment="Center" />
+                                            <TextBlock Text="{Binding Role.Name}" Margin="4,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
             <Button Content="Add" HorizontalAlignment="Left" Margin="6,0,0,6" Name="AddRoleButton" Width="75" Height="23" VerticalAlignment="Bottom" Click="AddRoleButton_Click"/>
             <Button Content="Remove" Height="23" HorizontalAlignment="Left" Margin="87,0,0,6" Name="RemoveRoleButton" VerticalAlignment="Bottom" Width="75" Click="RemoveRoleButton_Click">
                 <Button.Style>
@@ -39,7 +57,18 @@
                 </Button.Style>
             </Button>
         </Grid>
-        <GridSplitter HorizontalAlignment="Right" Width="4" Background="{x:Static SystemColors.ControlBrush}"  />
-        <os:ObjectSecurityEditor Grid.Column="1" x:Name="objectSecurityEditor1" Margin="6" DataContext="{Binding SelectedSecurityModel}" />
+        <GridSplitter HorizontalAlignment="Right" Width="2" />
+        <os:ObjectSecurityEditor Grid.Column="1" x:Name="objectSecurityEditor" Margin="6" DataContext="{Binding SelectedSecurityModel}">
+            <os:ObjectSecurityEditor.Style>
+                <Style TargetType="UserControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+                </os:ObjectSecurityEditor.Style>
+           
+        </os:ObjectSecurityEditor>
     </Grid>
 </UserControl>

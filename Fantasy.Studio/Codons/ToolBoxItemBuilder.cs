@@ -7,15 +7,20 @@ using System.Windows.Markup;
 
 namespace Fantasy.Studio.Codons
 {
-    [ContentProperty("Instance")]
+    [ContentProperty("Builder")]
     public class ToolBoxItemBuilder : CodonBase
     {
         public override object BuildItem(object owner, System.Collections.IEnumerable subItems, ConditionCollection condition, IServiceProvider services)
         {
-            return Instance.BuildItems(owner);
+            if (Builder is IObjectWithSite)
+            {
+                ((IObjectWithSite)Builder).Site = services;
+            }
+
+            return Builder.BuildItems(owner);
         }
         
-        public IToolBoxItesBuilder Instance { get; set; }
+        public IToolBoxItemsBuilder Builder { get; set; }
 
     }
 }

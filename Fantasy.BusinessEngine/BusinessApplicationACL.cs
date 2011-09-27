@@ -107,12 +107,13 @@ namespace Fantasy.BusinessEngine
             {
                 seucirty.Sync(this.Participant.Class, null);
             }
+            this.Security = seucirty;
 
         }
 
         void ObjectSecurity_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            this.PersistedACL = this._objectSecurity.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
+                this.PersistedACL = this._objectSecurity.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
         }
 
         private BusinessObjectSecurity _objectSecurity;
