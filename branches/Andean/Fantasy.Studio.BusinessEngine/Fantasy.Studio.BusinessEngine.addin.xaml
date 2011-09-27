@@ -722,6 +722,7 @@
             <ToolBoxItemBuilder.Conditional>
                 <Or>
                     <ActiveWindow Type="participantacl" />
+                    <ActiveWindow Type="user" />
                 </Or>
             </ToolBoxItemBuilder.Conditional>
             <ToolBoxItemBuilder.Builder>

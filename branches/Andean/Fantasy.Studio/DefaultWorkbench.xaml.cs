@@ -358,7 +358,7 @@ namespace Fantasy.Studio
         {
             IEditingViewContent rs = null;
 
-            var query = from v in this.Views where (v is IEditingViewContent) && ((IEditingViewContent)v).Data == data select v;
+            var query = from v in this.Views where (v is IEditingViewContent) && Object.Equals(((IEditingViewContent)v).Data , data) select v;
 
             rs = (IEditingViewContent)query.SingleOrDefault();
             if (rs == null)

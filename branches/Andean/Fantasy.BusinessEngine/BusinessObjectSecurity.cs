@@ -14,7 +14,7 @@ namespace Fantasy.BusinessEngine
     {
         public BusinessObjectSecurity()
         {
-            ObservableCollection<BusinessObjectPropertySecurity> properties = new ObservableCollection<BusinessObjectPropertySecurity>();
+            ObservableCollection<BusinessObjectMemberSecurity> properties = new ObservableCollection<BusinessObjectMemberSecurity>();
             properties.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PropertiesChanged);
             this.Properties = properties;
 
@@ -22,20 +22,20 @@ namespace Fantasy.BusinessEngine
 
         void PropertiesChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            this.IsDirty = true;
+            this.OnChanged(EventArgs.Empty);
 
             if (e.Action != System.Collections.Specialized.NotifyCollectionChangedAction.Move)
             {
                 if (e.NewItems != null)
                 {
-                    foreach (BusinessObjectPropertySecurity ps in e.NewItems)
+                    foreach (BusinessObjectMemberSecurity ps in e.NewItems)
                     {
                         ps.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(PropertySecurityChanged);
                     }
                 }
                 if (e.OldItems != null)
                 {
-                    foreach (BusinessObjectPropertySecurity ps in e.OldItems)
+                    foreach (BusinessObjectMemberSecurity ps in e.OldItems)
                     {
                         ps.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(PropertySecurityChanged);
                     }
@@ -46,7 +46,7 @@ namespace Fantasy.BusinessEngine
 
         void PropertySecurityChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            this.IsDirty = true;
+            this.OnChanged(EventArgs.Empty);
         }
 
 
@@ -62,14 +62,14 @@ namespace Fantasy.BusinessEngine
                 {
                     _objectAccess = value;
                     this.OnPropertyChanged("ObjectAccess");
-                    this.IsDirty = true;
+                    this.OnChanged(EventArgs.Empty);
                 }
             }
         }
 
         [XArray,
-        XArrayItem(Name = "property", Type=typeof(BusinessObjectPropertySecurity))]
-        public virtual IList<BusinessObjectPropertySecurity> Properties { get; protected set; }
+        XArrayItem(Name = "property", Type=typeof(BusinessObjectMemberSecurity))]
+        public virtual IList<BusinessObjectMemberSecurity> Properties { get; protected set; }
 
 
         public virtual BusinessObjectAccess? this[BusinessProperty property]
@@ -85,12 +85,12 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        private BusinessObjectPropertySecurity GetOrCreatePropertySecurity(BusinessProperty property)
+        private BusinessObjectMemberSecurity GetOrCreatePropertySecurity(BusinessProperty property)
         {
-            BusinessObjectPropertySecurity rs = this.Properties.SingleOrDefault(p => p.Id == property.Id);
+            BusinessObjectMemberSecurity rs = this.Properties.SingleOrDefault(p => p.Id == property.Id);
             if (rs == null)
             {
-                rs = new BusinessObjectPropertySecurity() { Id = property.Id, Name = property.Name };
+                rs = new BusinessObjectMemberSecurity() { Id = property.Id, Name = property.Name };
                 this.Properties.Add(rs);
             }
 
@@ -103,61 +103,136 @@ namespace Fantasy.BusinessEngine
         {
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
             rs.ObjectAccess = objectAccess;
-            foreach (BusinessProperty property in @class.AllProperties())
-            {
-                BusinessObjectPropertySecurity ps = new BusinessObjectPropertySecurity() { Id = property.Id, Name = property.Name, PropertyAccess=propertyAccess };
-                rs.Properties.Add(ps);
-            }
+            rs.Sync(@class, propertyAccess);
 
             return rs;
         }
 
+        private bool _syncing = false;
 
         public virtual void Sync(BusinessClass @class, BusinessObjectAccess? propertyAccess)
         {
-            var toRemove = from ps in this.Properties
-                        where !@class.AllProperties().Any(p => p.Id == ps.Id)
-                        select ps;
+            if (!_syncing)
+            {
+                _syncing = true;
+                try
+                {
+                    SyncProperties(@class, propertyAccess);
+                    SyncLeftAssn(@class, propertyAccess);
+                    SyncRightAssn(@class, propertyAccess);
+                }
+                finally
+                {
+                    _syncing = false;
+                }
+               
+            }
+        }
 
-            foreach (BusinessObjectPropertySecurity ps in toRemove.ToArray())
+        private void SyncLeftAssn(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        {
+            var toRemove = from ps in this.Properties
+                           where ps.MemberType == BusinessObjectMemberTypes.LeftAssociation && !@class.AllLeftAssociations().Any(p => p.Id == ps.Id)
+                           select ps;
+
+            foreach (BusinessObjectMemberSecurity ps in toRemove.ToArray())
             {
                 this.Properties.Remove(ps);
             }
 
-            foreach (BusinessObjectPropertySecurity ps in this.Properties)
+            foreach (BusinessObjectMemberSecurity ps in this.Properties.Where(p=>p.MemberType== BusinessObjectMemberTypes.LeftAssociation))
             {
-                BusinessProperty prop = @class.AllProperties().First(p=>p.Id == ps.Id);
-                ps.Name = prop.Name; 
+                BusinessAssociation assn = @class.AllLeftAssociations().First(p => p.Id == ps.Id);
+                ps.Name = assn.RightRoleName;
+                ps.DisplayOrder = assn.RightRoleDisplayOrder;
             }
 
-            var toAdd = from prop in @class.AllProperties() where !this.Properties.Any(p => p.Id == prop.Id) select
-                       new BusinessObjectPropertySecurity() { Id = prop.Id, Name = prop.Name, PropertyAccess = propertyAccess };
+            var toAdd = from assn in @class.AllLeftAssociations()
+                        where !this.Properties.Any(p => p.Id == assn.Id && p.MemberType== BusinessObjectMemberTypes.LeftAssociation)
+                        select
+                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.RightRoleName, PropertyAccess = propertyAccess, DisplayOrder = assn.RightRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.LeftAssociation };
 
-            foreach (BusinessObjectPropertySecurity ps in toAdd)
+            foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
-                this.Properties.Add(ps);
-            }
 
+                int index = this.Properties.BinarySearchBy(ps.DisplayOrder, (p => p.DisplayOrder));
+                this.Properties.Insert(~index, ps);
+            }
         }
 
-        private bool _isDirty;
-        private bool _isLoading = false;
-
-        public bool IsDirty
+        private void SyncRightAssn(BusinessClass @class, BusinessObjectAccess? propertyAccess)
         {
-            get { return _isDirty; }
-            set
+            var toRemove = from ps in this.Properties
+                           where ps.MemberType == BusinessObjectMemberTypes.RightAssociation && !@class.AllRightAssociations().Any(p => p.Id == ps.Id)
+                           select ps;
+
+            foreach (BusinessObjectMemberSecurity ps in toRemove.ToArray())
             {
-                if (_isDirty != value)
-                {
-                    _isDirty = value;
-                    if (!this._isLoading)
-                    {
-                        this.OnPropertyChanged("IsDirty");
-                    };
-                }
+                this.Properties.Remove(ps);
+            }
+
+            foreach (BusinessObjectMemberSecurity ps in this.Properties.Where(p => p.MemberType == BusinessObjectMemberTypes.RightAssociation))
+            {
+                BusinessAssociation assn = @class.AllRightAssociations().First(p => p.Id == ps.Id);
+                ps.Name = assn.LeftRoleName;
+                ps.DisplayOrder = assn.RightRoleDisplayOrder;
+            }
+
+            var toAdd = from assn in @class.AllRightAssociations()
+                        where !this.Properties.Any(p => p.Id == assn.Id && p.MemberType == BusinessObjectMemberTypes.RightAssociation)
+                        select
+                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.LeftRoleName, PropertyAccess = propertyAccess, DisplayOrder = assn.LeftRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.RightAssociation };
+
+            foreach (BusinessObjectMemberSecurity ps in toAdd)
+            {
+                int index = this.Properties.BinarySearchBy(ps.DisplayOrder, (p => p.DisplayOrder));
+                this.Properties.Insert(~index, ps);
             }
         }
+
+        private void SyncProperties(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        {
+            var toRemove = from ps in this.Properties
+                           where ps.MemberType == BusinessObjectMemberTypes.Property && !@class.AllProperties().Any(p => p.Id == ps.Id)
+                           select ps;
+
+            foreach (BusinessObjectMemberSecurity ps in toRemove.ToArray())
+            {
+                this.Properties.Remove(ps);
+            }
+
+            foreach (BusinessObjectMemberSecurity ps in this.Properties.Where(p=>p.MemberType == BusinessObjectMemberTypes.Property ))
+            {
+                BusinessProperty prop = @class.AllProperties().First(p => p.Id == ps.Id);
+                ps.Name = prop.Name;
+                ps.DisplayOrder = prop.DisplayOrder;
+            }
+
+            var toAdd = from prop in @class.AllProperties()
+                        where !this.Properties.Any(p => p.Id == prop.Id)
+                        select
+                            new BusinessObjectMemberSecurity() { Id = prop.Id, Name = prop.Name, PropertyAccess = propertyAccess, DisplayOrder=prop.DisplayOrder, MemberType= BusinessObjectMemberTypes.Property };
+
+            foreach (BusinessObjectMemberSecurity ps in toAdd)
+            {
+                int index = this.Properties.BinarySearchBy(ps.DisplayOrder, (p => p.DisplayOrder));
+                this.Properties.Insert(~index, ps);
+            }
+        }
+
+      
+
+        protected virtual void OnChanged(EventArgs e)
+        {
+            
+            if (!this._isLoading && this.Changed != null)
+            {
+                this.Changed(this, e);
+            }
+        }
+
+        public event EventHandler<EventArgs> Changed;
+
 
         public BusinessObjectSecurity Union(BusinessObjectSecurity other)
         {
@@ -186,10 +261,10 @@ namespace Fantasy.BusinessEngine
 
             }
 
-            foreach (BusinessObjectPropertySecurity ps1 in this.Properties)
+            foreach (BusinessObjectMemberSecurity ps1 in this.Properties)
             {
-                BusinessObjectPropertySecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
-                BusinessObjectPropertySecurity nps = new BusinessObjectPropertySecurity() { Id = ps1.Id, Name = ps1.Name };
+                BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
+                BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name };
 
                 BusinessObjectAccess? oa1 = ps1.PropertyAccess;
                 BusinessObjectAccess? oa2 = ps2 != null ? ps2.PropertyAccess : null;
@@ -243,10 +318,10 @@ namespace Fantasy.BusinessEngine
             }
 
 
-            foreach (BusinessObjectPropertySecurity ps1 in this.Properties)
+            foreach (BusinessObjectMemberSecurity ps1 in this.Properties)
             {
-                BusinessObjectPropertySecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
-                BusinessObjectPropertySecurity nps = new BusinessObjectPropertySecurity() { Id = ps1.Id, Name = ps1.Name };
+                BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
+                BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name };
 
                 BusinessObjectAccess? oa1 = ps1.PropertyAccess;
                 BusinessObjectAccess? oa2 = ps2 != null ? ps2.PropertyAccess : null;
@@ -284,7 +359,7 @@ namespace Fantasy.BusinessEngine
             return x.Intersect(y);
         }
 
-
+        private bool _isLoading = false;
         public void Load(XElement element)
         {
             XSerializer ser = new XSerializer(typeof(BusinessObjectSecurity));
@@ -300,7 +375,7 @@ namespace Fantasy.BusinessEngine
                 this._isLoading = false;
             }
 
-            this.IsDirty = false;
+           
         }
 
         public XElement ToXElement()
