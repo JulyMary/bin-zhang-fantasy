@@ -307,5 +307,9 @@
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
             <PropertyDescriptor ID="EntryObject" Name="EntryObjectId" Caption="Entry Object ID" Category="General" />
         </TypeDescriptor>
+
+        <TypeDescriptor ID="ParticipantACL" TargetType="{x:Type sbe:ParticipantACL}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
+        </TypeDescriptor>
     </Extension>
 </AddIn>

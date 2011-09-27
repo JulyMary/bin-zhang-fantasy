@@ -106,15 +106,16 @@ namespace Fantasy.BusinessEngine
             else
             {
                 seucirty.Sync(this.Participant.Class, null);
+                this.PersistedACL = seucirty.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
+
             }
-            this.Security = seucirty;
+            this._objectSecurity = seucirty;
+            this._objectSecurity.Changed += new EventHandler<EventArgs>(ObjectSecurity_Changed);
+
 
         }
 
-        void ObjectSecurity_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-                this.PersistedACL = this._objectSecurity.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
-        }
+       
 
         private BusinessObjectSecurity _objectSecurity;
         public virtual BusinessObjectSecurity Security
@@ -128,10 +129,16 @@ namespace Fantasy.BusinessEngine
                 this._objectSecurity = value;
                 if (value != null)
                 {
-                    this._objectSecurity.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ObjectSecurity_PropertyChanged);
+                    this.PersistedACL = this._objectSecurity.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
+                    this._objectSecurity.Changed += new EventHandler<EventArgs>(ObjectSecurity_Changed);
 
                 }
             }
+        }
+
+        void ObjectSecurity_Changed(object sender, EventArgs e)
+        {
+            this.PersistedACL = this._objectSecurity.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
         }
         
     }

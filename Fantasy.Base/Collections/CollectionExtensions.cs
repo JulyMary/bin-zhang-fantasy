@@ -13,17 +13,17 @@ namespace Fantasy
 
     public static class CollectionExtensions
     {
-        public static void SortBy<TSource, TKey>(this List<TSource> source, Func<TSource, TKey> keySelector)
+        public static void SortBy<TSource, TKey>(this IList<TSource> source, Func<TSource, TKey> keySelector)
         {
             CollectionExtensions.SortBy<TSource, TKey>(source, keySelector, Comparer.Default);
         }
 
-        public static int BinarySearchBy<TSource, TKey>(this List<TSource> source, TKey key, Func<TSource, TKey> keySelector)
+        public static int BinarySearchBy<TSource, TKey>(this IList<TSource> source, TKey key, Func<TSource, TKey> keySelector)
         {
             return CollectionExtensions.BinarySearchBy<TSource, TKey>(source, key, keySelector, Comparer.Default);
         }
 
-        public static void SortBy<TSource, TKey>(this List<TSource> source, Func<TSource, TKey> keySelector, IComparer comparer)
+        public static void SortBy<TSource, TKey>(this IList<TSource> source, Func<TSource, TKey> keySelector, IComparer comparer)
         {
             if (comparer == null)
             {
@@ -40,7 +40,33 @@ namespace Fantasy
             source.Sort(comparison);
         }
 
-        public static int BinarySearchBy<TSource, TKey>(this List<TSource> source, TKey key, Func<TSource, TKey> keySelector, IComparer comparer)
+        public static void Sort<TSource>(this IList<TSource> source)
+        {
+            Comparison<TSource> comparsion = (x, y) =>
+                {
+                    return Comparer.Default.Compare(x, y);
+                };
+            source.Sort(comparsion); 
+        }
+
+        public static void Sort<TSource>(this IList<TSource> source, Comparison<TSource> comparsion)
+        {
+            for (int i = 0; i < source.Count; i++)
+            {
+                for (int j = i + 1; j < source.Count; j++)
+                {
+                    if (comparsion(source[i], source[j]) > 0)
+                    {
+                        TSource temp = source[i];
+                        source[i] = source[j];
+                        source[j] = temp;
+                    }
+                }
+            }
+
+        }
+
+        public static int BinarySearchBy<TSource, TKey>(this IList<TSource> source, TKey key, Func<TSource, TKey> keySelector, IComparer comparer)
         {
             Func<int, object> valueSelector = (index) =>
                 {
@@ -114,35 +140,35 @@ namespace Fantasy
 
         public static IEnumerable<T> Flatten<T>(this T item, Func<T, IEnumerable<T>> children, Func<T, bool> condition)
         {
-            
-                if (condition == null || condition(item))
+
+            if (condition == null || condition(item))
+            {
+                yield return item;
+                if (children != null)
                 {
-                    yield return item;
-                    if (children != null)
+                    foreach (T child in children(item))
                     {
-                        foreach(T child in children(item))
+                        foreach (T descendant in child.Flatten(children, condition))
                         {
-                            foreach(T descendant in child.Flatten(children, condition))
-                            {
-                                yield return descendant;
-                            }
+                            yield return descendant;
                         }
                     }
                 }
-            
+            }
+
         }
 
         public static IEnumerable<T> Flatten<T>(this T item, Func<T, IEnumerable<T>> children)
         {
 
-            return Flatten(item, children, null); 
+            return Flatten(item, children, null);
 
         }
 
         public static IEnumerable<T> Flatten<T>(this T item, Func<T, T> parent, Func<T, bool> condition)
         {
             T obj = item;
-            if(condition == null || condition(obj))
+            if (condition == null || condition(obj))
             {
                 yield return obj;
                 T p = parent(obj);
@@ -158,7 +184,7 @@ namespace Fantasy
 
         public static IEnumerable<T> Flatten<T>(this T item, Func<T, T> parent)
         {
-            return Flatten(item, parent, null); 
+            return Flatten(item, parent, null);
         }
 
         public static Collection<T> ToCollection<T>(this IEnumerable<T> collection)
@@ -176,7 +202,7 @@ namespace Fantasy
                 CollectionChangedEventManager.AddListener(view, this);
             }
 
-          
+
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
             private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
@@ -186,17 +212,17 @@ namespace Fantasy
                     this.CollectionChanged(this, e);
                 }
             }
-         
-          
+
+
             public IEnumerator<T> GetEnumerator()
             {
-                foreach(T item in this._view)
+                foreach (T item in this._view)
                 {
                     yield return item;
                 }
             }
 
-            
+
 
             IEnumerator IEnumerable.GetEnumerator()
             {
@@ -263,14 +289,14 @@ namespace Fantasy
                 }
             }
 
-            private IEnumerable _source; 
+            private IEnumerable _source;
             private Func<T, bool> _filter;
 
             #region IEnumerable<T> Members
 
             public IEnumerator<T> GetEnumerator()
             {
-                foreach(T item in this._source)
+                foreach (T item in this._source)
                 {
                     if (this._filter(item))
                     {
@@ -296,7 +322,7 @@ namespace Fantasy
             {
                 if (this.CollectionChanged != null)
                 {
-                    this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset)); 
+                    this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 }
                 return true;
             }
@@ -307,7 +333,7 @@ namespace Fantasy
 
             public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-          
+
 
             #endregion
         }
@@ -315,12 +341,12 @@ namespace Fantasy
 
         public static IEnumerable ToFiltered(this IEnumerable collection, Func<object, bool> filter)
         {
-            return new GenericFilteredView<object>(collection, filter); 
+            return new GenericFilteredView<object>(collection, filter);
         }
 
         public static IEnumerable<T> ToFiltered<T>(this IEnumerable<T> collection, Func<T, bool> filter)
         {
-            return new GenericFilteredView<T>(collection, filter); 
+            return new GenericFilteredView<T>(collection, filter);
         }
     }
 }

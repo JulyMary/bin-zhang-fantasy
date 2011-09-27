@@ -8,22 +8,16 @@
              xmlns:f="urn:schema-fantasy:xaml" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
-    <UserControl.Resources>
-        <dat:CollectionViewSource x:Key="sortedProperties" Source="{Binding Properties}">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Entity.Name"/>
-            </CollectionViewSource.SortDescriptions>
-        </dat:CollectionViewSource>
-    </UserControl.Resources>
+   
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="245*" />
         </Grid.RowDefinitions>
         <GroupBox Header="Object Access" Height="Auto">
-            <Grid>
-                <CheckBox Content="Inhertied" Name="ObjectInhertiedCheckBox" Height="16" IsChecked="{Binding IsInherited, Mode=TwoWay}" HorizontalAlignment="Left" Margin="6,6,0,6"  VerticalAlignment="Top" />
-                <CheckBox Content="Create" Name="ObjectCreateCheckBox" Height="16" HorizontalAlignment="Left" Margin="91,6,0,0" VerticalAlignment="Top" IsChecked="{Binding CanCreate,  Mode=TwoWay}" >
+            <Grid Margin="6">
+                <CheckBox Content="Deny" Name="ObjectInhertiedCheckBox" Height="16" IsChecked="{Binding IsInherited, Mode=TwoWay}" HorizontalAlignment="Left" Margin="0"  VerticalAlignment="Top" />
+                <CheckBox Content="Create" Name="ObjectCreateCheckBox" Height="16" HorizontalAlignment="Left" Margin="71,0,0,0" VerticalAlignment="Top" IsChecked="{Binding CanCreate,  Mode=TwoWay}" >
                     <CheckBox.Style>
                         <Style TargetType="CheckBox">
                             <Style.Triggers>
@@ -34,7 +28,7 @@
                         </Style>
                     </CheckBox.Style>
                 </CheckBox>
-                <CheckBox Content="Delete" Name="ObjectDeleteCheckBox" Height="16" Margin="164,6,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete,Mode=TwoWay}" HorizontalAlignment="Left" Width="51">
+                <CheckBox Content="Delete" Name="ObjectDeleteCheckBox" Height="16" Margin="128,0,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete,Mode=TwoWay}" HorizontalAlignment="Left" Width="51">
                     <CheckBox.Style>
                         <Style TargetType="CheckBox">
                             <Style.Triggers>
@@ -47,9 +41,9 @@
                 </CheckBox>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Property Access" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Grid.Row="1" >
+        <GroupBox Header="Property &amp; Association Access" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Grid.Row="1" >
 
-            <ListView ItemsSource="{Binding Source={StaticResource sortedProperties}}" Name="PropertyListView">
+            <ListView ItemsSource="{Binding Properties}" Name="PropertyListView" Margin="6">
                 <ListView.CommandBindings>
                     <CommandBinding Command="SelectAll" Executed="PropertyListView_SelectAll" ></CommandBinding>
                 </ListView.CommandBindings>
@@ -64,13 +58,29 @@
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/Properties.ico" />
+                                        <Image Width="16" Height="16">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Entity.MemberType}" Value="Property" >
+                                                            <Setter Property="Source" Value="/Fantasy.Studio.BusinessEngine;component/images/Properties.ico" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Entity.MemberType}" Value="LeftAssociation" >
+                                                            <Setter Property="Source" Value="/Fantasy.Studio.BusinessEngine;component/images/association.png" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Entity.MemberType}" Value="RightAssociation" >
+                                                            <Setter Property="Source" Value="/Fantasy.Studio.BusinessEngine;component/images/association.png" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
                                         <TextBlock Text="{Binding Entity.Name}" Margin="2,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Inherited" f:GridViewLayout.ColumnId="InheritedColumn" >
+                        <GridViewColumn Header="Deny" f:GridViewLayout.ColumnId="InheritedColumn" >
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox IsChecked="{Binding IsInherited}" Checked="PropertyInheritedChecked" Unchecked="PropertyInheritedChecked" >

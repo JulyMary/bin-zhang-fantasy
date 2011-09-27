@@ -8,7 +8,7 @@ using Fantasy.Windows;
 namespace Fantasy.BusinessEngine
 {
     [XSerializable("property", NamespaceUri=Consts.SecurityNamespace)]
-    public class BusinessObjectPropertySecurity : NotifyPropertyChangedObject
+    public class BusinessObjectMemberSecurity : NotifyPropertyChangedObject
     {
         [XAttribute("id")]
         private Guid _id;
@@ -54,6 +54,38 @@ namespace Fantasy.BusinessEngine
                 {
                     _propertyAccess = value;
                     this.OnPropertyChanged("PropertyAccess");
+                }
+            }
+        }
+
+        [XAttribute("type")]
+        private BusinessObjectMemberTypes _memberType;
+
+        public BusinessObjectMemberTypes MemberType
+        {
+            get { return _memberType; }
+            set
+            {
+                if (_memberType != value)
+                {
+                    _memberType = value;
+                    this.OnPropertyChanged("MemberType");
+                }
+            }
+        }
+
+        [XAttribute("order")]
+        private long _displayOrder;
+
+        public long DisplayOrder
+        {
+            get { return _displayOrder; }
+            set
+            {
+                if (_displayOrder != value)
+                {
+                    _displayOrder = value;
+                    this.OnPropertyChanged("DisplayOrder");
                 }
             }
         }
