@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Fantasy.Windows;
+using Fantasy.Studio.Controls;
 
 namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
 {
@@ -23,5 +25,93 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
         {
             InitializeComponent();
         }
+
+
+        private bool _updating = false;
+
+        public void SaveLayout()
+        {
+            GridViewLayoutSetting layout = new GridViewLayoutSetting();
+            layout.SaveLayout(this.PropertyGridView);
+            Properties.Settings.Default.ObjectSecurityPropertyGridViewLayout = layout;
+
+        }
+
+        private void PropertyInheritedChecked(object sender, RoutedEventArgs e)
+        {
+            if (!this._updating)
+            {
+                this._updating = true;
+                try
+                {
+                    CheckBox checkBox = (CheckBox)sender;
+
+                    foreach (ObjectSecurityPropertyModel prop in this.PropertyListView.SelectedItems)
+                    {
+                        prop.IsInherited = (bool)checkBox.IsChecked;
+                    }
+  
+                }
+
+                finally
+                {
+                    this._updating = false;
+                }
+            }
+        }
+
+        private void PropertyWriteChecked(object sender, RoutedEventArgs e)
+        {
+            if (!this._updating)
+            {
+                this._updating = true;
+                try
+                {
+                    CheckBox checkBox = (CheckBox)sender;
+
+                    foreach (ObjectSecurityPropertyModel prop in this.PropertyListView.SelectedItems)
+                    {
+                        prop.CanWrite = (bool)checkBox.IsChecked;
+                    }
+                }
+                finally
+                {
+                    this._updating = false;
+                }
+            }
+        }
+
+        private void PropertyReadChecked(object sender, RoutedEventArgs e)
+        {
+            if (!this._updating)
+            {
+                this._updating = true;
+                try
+                {
+                    CheckBox checkBox = (CheckBox)sender;
+
+                    foreach (ObjectSecurityPropertyModel prop in this.PropertyListView.SelectedItems)
+                    {
+                        prop.CanRead = (bool)checkBox.IsChecked;
+                    }
+                }
+                finally
+                {
+                    this._updating = false;
+                }
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.ObjectSecurityPropertyGridViewLayout.LoadLayout(this.PropertyGridView);
+        }
+
+        private void PropertyListView_SelectAll(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.PropertyListView.SelectAll();
+        }
+
+       
     }
 }

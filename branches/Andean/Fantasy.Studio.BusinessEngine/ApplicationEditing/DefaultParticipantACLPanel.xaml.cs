@@ -93,8 +93,6 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         }
 
-
-
         private WeakEventListener _aclChangedListener;
         private WeakEventListener _aclCollectionChangedListener;
 
@@ -195,7 +193,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public void Closing(System.ComponentModel.CancelEventArgs e)
         {
-           
+            Properties.Settings.Default.DefaultParticipantACLPanelLeftColumnWidth = this.LeftColumn.ActualWidth;
+            objectSecurityEditor.SaveLayout();
         }
 
         public void Closed()
@@ -219,19 +218,21 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             this._selection.IsReadOnly = true;
             DefaultParticipantACLModel model = this.DataContext as DefaultParticipantACLModel;
-            if (model != null)
+            if (model != null && model.SelectedItem != null)
             {
+
                 this._selection.SetSelectedComponents(new object[] { model.SelectedItem.Role });
             }
+            else
+            {
+                this._selection.SetSelectedComponents(new object[] { });
+            }
         }
-
-       
-       
 
         private void AddRoleButton_Click(object sender, RoutedEventArgs e)
         {
 
-            DefaultParticipantACLModel model = this.DataContext as DefaultParticipantACLModel;
+           
 
             BusinessRolePikcerModel rm = new BusinessRolePikcerModel(this.Site, false);
             rm.SelectedItemChanging += (s, arg) =>
@@ -244,18 +245,72 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             if ((bool)rolePicker.ShowDialog())
             {
                 BusinessRole role = rm.SelectedItem;
-                IEntityService es = this.Site.GetRequiredService<IEntityService>();
-                BusinessApplicationACL acl = es.AddBusinessApplicationACL(this.Entity, role, null);
-                BusinessObjectSecurity sec = BusinessObjectSecurity.Create(this.Entity.Class, BusinessObjectAccess.None, BusinessObjectAccess.None);
-                acl.Security = sec;
-                model.SelectedItem = acl;
+                AddACL(role);
             }
+        }
+
+        private void AddACL(BusinessRole role)
+        {
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            BusinessApplicationACL acl = es.AddBusinessApplicationACL(this.Entity, role, null);
+            BusinessObjectSecurity sec = BusinessObjectSecurity.Create(this.Entity.Class, BusinessObjectAccess.None, BusinessObjectAccess.None);
+            acl.Security = sec;
+            DefaultParticipantACLModel model = this.DataContext as DefaultParticipantACLModel;
+            model.SelectedItem = acl;
         }
 
         private void RemoveRoleButton_Click(object sender, RoutedEventArgs e)
         {
             DefaultParticipantACLModel model = this.DataContext as DefaultParticipantACLModel;
             this.Entity.ACLs.Remove(model.SelectedItem);
+        }
+
+        private void ACLListBox_Drop(object sender, DragEventArgs e)
+        {
+            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            if (role != null && !this.Entity.ACLs.Any(a => a.Role == role))
+            {
+                e.Effects = DragDropEffects.Copy;
+                AddACL(role);
+                e.Handled = true;
+            }
+           
+        }
+
+        private void ACLListBox_DragOver(object sender, DragEventArgs e)
+        {
+            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            if (role != null && !this.Entity.ACLs.Any(a => a.Role == role))
+            {
+                e.Effects = DragDropEffects.Copy;
+                e.Handled = true;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+               
+            }
+        }
+
+        private void ACLListBox_DragLeave(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void ACLListBox_DragEnter(object sender, DragEventArgs e)
+        {
+            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            if (role != null && !this.Entity.ACLs.Any(a => a.Role == role))
+            {
+                e.Effects = DragDropEffects.Copy;
+                e.Handled = true;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
         }
 
        

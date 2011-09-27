@@ -696,7 +696,18 @@
             <ToolBoxItem.Click>
                 <sbe:ClassDiagramModeCommand Mode="AssocationConnection" />
             </ToolBoxItem.Click>
+            
         </ToolBoxItem>
+        <ToolBoxItemBuilder ID="roles">
+            <ToolBoxItemBuilder.Conditional>
+                <Or>
+                    <ActiveWindow Type="participantacl"/>
+                </Or>
+            </ToolBoxItemBuilder.Conditional>
+            <ToolBoxItemBuilder.Builder>
+                <sbe:RoleToolBoxItemsBuilder />
+            </ToolBoxItemBuilder.Builder>
+        </ToolBoxItemBuilder>
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/commandbindings">

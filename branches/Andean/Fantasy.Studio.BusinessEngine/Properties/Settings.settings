@@ -11,6 +11,9 @@
     <Setting Name="AddGACReferenceDialogGridViewLayout" Type="Fantasy.Studio.Controls.GridViewLayoutSetting" Scope="User">
       <Value Profile="(Default)">&lt;GridViewLayoutSetting/&gt;</Value>
     </Setting>
+    <Setting Name="ObjectSecurityPropertyGridViewLayout" Type="Fantasy.Studio.Controls.GridViewLayoutSetting" Scope="User">
+      <Value Profile="(Default)">&lt;GridViewLayoutSetting/&gt;</Value>
+    </Setting>
     <Setting Name="DefaultTableSchema" Type="System.String" Scope="User">
       <Value Profile="(Default)">dbo</Value>
     </Setting>
@@ -22,6 +25,9 @@
     </Setting>
     <Setting Name="DefaultTableSpace" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="DefaultParticipantACLPanelLeftColumnWidth" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">300</Value>
     </Setting>
   </Settings>
 </SettingsFile>

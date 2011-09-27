@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Fantasy.Studio.Controls;
 
-namespace Fantasy.Studio.Codons
+namespace Fantasy.Studio
 {
-    public interface IToolBoxItesBuilder
+    public interface IToolBoxItemsBuilder
     {
         ToolBoxItemModel[] BuildItems(object owner); 
     }
