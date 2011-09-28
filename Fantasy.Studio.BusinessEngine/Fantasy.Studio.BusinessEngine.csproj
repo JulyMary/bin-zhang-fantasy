@@ -37,6 +37,9 @@
     <Reference Include="Accessibility">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\External\ICSharpCode.AvalonEdit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -194,6 +197,9 @@
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\IConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />
+    <Compile Include="CodeEditing\CSCodeEditorPanel.xaml.cs">
+      <DependentUpon>CSCodeEditorPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
@@ -388,6 +394,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ApplicationEditing\VerticalTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CodeEditing\CSCodeEditorPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
