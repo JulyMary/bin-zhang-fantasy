@@ -20,7 +20,13 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             app.Package.Applications.Remove(app);
             app.Package = null;
             es.Delete(app);
-            this.Site.GetRequiredService<IEditingService>().CloseView(app, true);
+
+            IEditingService editingService = this.Site.GetRequiredService<IEditingService>();
+            foreach (BusinessApplicationParticipant participant in app.Participants)
+            {
+                editingService.CloseView(new ParticipantACL(participant), true);
+            }
+            editingService.CloseView(app, true);
 
             return null;
         }

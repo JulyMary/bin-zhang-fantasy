@@ -11,16 +11,19 @@
             <Setter Property="SyntaxHighlighting" Value="C#"/>
             <Setter Property="FontFamily" Value="Consolas" />
             <Setter Property="FontSize" Value="10pt"/>
+            <Setter Property="Document" Value="{Binding TextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
         </Style>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="138*" />
             <RowDefinition Height="0" />
+            <RowDefinition Height="*" MinHeight="50" />
         </Grid.RowDefinitions>
 
-        <avalonEdit:TextEditor Name="textEditorTop" Margin="0,0,0,2"/>
-        <GridSplitter VerticalAlignment="Bottom"  HorizontalAlignment="Stretch" Width="2"/>
-        <avalonEdit:TextEditor Name="textEditorBottom" Grid.Row="1"/>
+        <avalonEdit:TextEditor Name="textEditorTop" Margin="0,0,0,0" >
+            
+        </avalonEdit:TextEditor>
+        <GridSplitter Grid.Row="1" VerticalAlignment="Top"  HorizontalAlignment="Stretch" Width="2"/>
+        <avalonEdit:TextEditor Name="textEditorBottom" Margin="0,2,0,0" Grid.Row="1"/>
     </Grid>
 </UserControl>

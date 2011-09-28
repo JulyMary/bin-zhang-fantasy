@@ -194,12 +194,14 @@
     <Compile Include="ClassEditing\AddClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionAdorner.cs" />
     <Compile Include="ClassEditing\BusinessClassNameSetAction.cs" />
+    <Compile Include="ClassEditing\ClassScript.cs" />
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\IConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />
     <Compile Include="CodeEditing\CSCodeEditorPanel.xaml.cs">
       <DependentUpon>CSCodeEditorPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CodeEditing\EntityScript.cs" />
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
