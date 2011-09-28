@@ -294,7 +294,13 @@ namespace Fantasy.Studio.BusinessEngine
 
         public IServiceProvider Site { get; set; }
 
-
+        public virtual ImageSource Icon
+        {
+            get
+            {
+                return null;
+            }
+        }
 
 
 

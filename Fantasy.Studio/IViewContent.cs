@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Media;
 
 namespace Fantasy.Studio
 {
@@ -59,5 +60,7 @@ namespace Fantasy.Studio
         string DocumentName { get;}
 
         string DocumentType { get;}
+
+        ImageSource Icon { get; }
     }
 }
