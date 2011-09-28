@@ -203,6 +203,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private void ClearChildNodes(ParticipantNode node)
         {
+            IEditingService es = this.Site.GetRequiredService<IEditingService>();
             var participants = from decendent in node.Flatten(n => n.ChildNodes)
                                where decendent.Participant != null
                                select decendent.Participant;
@@ -211,6 +212,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             {
                 this._application.Participants.Remove(participant);
                 participant.Application = null;
+
+                es.CloseView(new ParticipantACL(participant), true);
             }
 
             var childNodes = from child in node.Flatten(n => n.ChildNodes)
@@ -240,6 +243,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             ParticipantNode root = this.Items[0];
             this.ClearChildNodes(root);
             this._application.Participants.Remove(root.Participant);
+            IEditingService es = this.Site.GetRequiredService<IEditingService>();
+            es.CloseView(new ParticipantACL(root.Participant), true);
             root.Participant.Application = null;
 
             this.Items.Clear();

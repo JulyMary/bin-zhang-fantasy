@@ -13,7 +13,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Table("BusinessApplicationParticipant");
             this.Map(x => x.IsEntry);
             this.References(x => x.Class).Column("CLASSID").Not.Nullable().Cascade.SaveUpdate();
-            this.References(x => x.Application).Column("APPLICATIONID").Not.Nullable();
+            this.References(x => x.Application).Column("APPLICATIONID").Not.Nullable().Cascade.SaveUpdate();
             this.HasMany(x=>x.PersistedACLs).CollectionType<ObservableList<BusinessApplicationACL>>().KeyColumn("PARTICIPANTID").Cascade.AllDeleteOrphan().Inverse();
         }
     }
