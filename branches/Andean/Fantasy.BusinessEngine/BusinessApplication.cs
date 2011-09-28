@@ -21,6 +21,8 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+       
+
         public virtual Guid? EntryObjectId
         {
             get
@@ -32,6 +34,40 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("EntryObjectId", value);
             }
         }
+
+
+        public virtual string CodeName
+        {
+            get
+            {
+                return (string)this.GetValue("CodeName", null);
+            }
+            set
+            {
+                this.SetValue("CodeName", value);
+            }
+        }
+
+        public virtual string FullCodeName
+        {
+            get
+            {
+                return this.Package != null ? this.Package.FullCodeName + "." + this.CodeName : this.CodeName;
+            }
+        }
+
+        public virtual string Script
+        {
+            get
+            {
+                return (string)this.GetValue("Script", null);
+            }
+            set
+            {
+                this.SetValue("Script", value);
+            }
+        }
+
 
 
         public virtual BusinessPackage Package

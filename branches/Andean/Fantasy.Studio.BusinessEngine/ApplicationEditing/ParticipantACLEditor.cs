@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
@@ -46,6 +48,19 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             base.Load(data);
 
             this.Title = ((ParticipantACL)data).Entity.Class.Name;
+        }
+
+        private ImageSource _icon;
+        public override ImageSource Icon
+        {
+            get
+            {
+                if (_icon == null)
+                {
+                    _icon = new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/acl.png", UriKind.Relative));
+                }
+                return _icon;
+            }
         }
     }
 }

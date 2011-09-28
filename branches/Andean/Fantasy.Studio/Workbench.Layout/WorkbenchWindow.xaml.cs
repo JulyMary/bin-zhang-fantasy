@@ -29,6 +29,7 @@ namespace Fantasy.Studio.Workbench.Layout
             this._view = view;
             this.Title = GetDisplayTitle();
             view.TitleChanged += new EventHandler(ViewTitleChanged);
+            this.Icon = view.Icon;
             if (view is IEditingViewContent)
             {
                 ((IEditingViewContent)view).DirtyStateChanged += new EventHandler(ViewTitleChanged);

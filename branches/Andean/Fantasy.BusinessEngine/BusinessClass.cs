@@ -26,6 +26,18 @@ namespace Fantasy.BusinessEngine
         }
 
 
+        public virtual bool IsAbstract
+        {
+            get
+            {
+                return (bool)this.GetValue("IsAbstract", false);
+            }
+            set
+            {
+                this.SetValue("IsAbstract", value);
+            }
+        }
+
         public virtual string FullName
         {
             get
@@ -187,6 +199,31 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("IsSimple", value);
+            }
+        }
+
+
+        public virtual string Script
+        {
+            get
+            {
+                return (string)this.GetValue("Script", null);
+            }
+            set
+            {
+                this.SetValue("Script", value);
+            }
+        }
+
+        public virtual string AutoScript
+        {
+            get
+            {
+                return (string)this.GetValue("AutoScript", null);
+            }
+            set
+            {
+                this.SetValue("AutoScript", value);
             }
         }
 

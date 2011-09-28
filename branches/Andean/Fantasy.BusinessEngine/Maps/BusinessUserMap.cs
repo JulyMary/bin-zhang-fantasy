@@ -16,6 +16,8 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.Password);
             this.Map(x => x.Description);
             this.Map(x => x.IsDisabled);
+            this.Map(x => x.CodeName).Not.Nullable();
+            this.Map(x => x.Script);
             this.References(x => x.Package).Column("PackageId");
             this.HasManyToMany<BusinessRole>(x => x.PersistedRoles).Table("BUSINESSUSERROLE").CollectionType<ObservableList<BusinessRole>>().ParentKeyColumn("UserID").ChildKeyColumn("RoleID").Inverse().Cascade.None();
         }

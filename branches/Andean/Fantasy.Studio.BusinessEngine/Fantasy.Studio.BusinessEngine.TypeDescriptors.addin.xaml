@@ -54,6 +54,11 @@
             <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsAbstract" Name="IsAbstract" Caption="Is Abstract" Category="General" >
+                <PropertyDescriptor.Conditional>
+                    <OwnerState StateMember="EntityState" State="New" Action="Disable" />
+                </PropertyDescriptor.Conditional>
+            </PropertyDescriptor>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:BusinessClassNameSetAction}"/>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
@@ -271,6 +276,8 @@
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" >
             </PropertyDescriptor>
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General"/>
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" />
             <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" />
             <PropertyDescriptor ID="IsDisabled" Name="IsDisabled" Caption="Is Disabled" Category="General" />
         </TypeDescriptor>
@@ -285,6 +292,9 @@
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
+           
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" />
             <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" />
             <PropertyDescriptor ID="IsDisabled" Name="IsDisabled" Caption="Is Disabled" Category="General" />
             <PropertyDescriptor ID="IsComputed" Name="IsComputed" Caption="Is Computed" Category="General" />
@@ -305,6 +315,9 @@
             <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" />
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" />
             <PropertyDescriptor ID="EntryObject" Name="EntryObjectId" Caption="Entry Object ID" Category="General" />
         </TypeDescriptor>
 

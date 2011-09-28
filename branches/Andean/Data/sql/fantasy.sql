@@ -1,8 +1,10 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     22/09/2011 11:30:32 AM                       */
+/* Created on:     28/09/2011 3:41:38 PM                        */
 /*==============================================================*/
 
+use Fantasy
+go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -517,6 +519,15 @@ go
 if exists (select 1
             from  sysindexes
            where  id    = object_id('BUSINESSUSERROLE')
+            and   name  = 'BUSINESSUSERROLE_PK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSUSERROLE.BUSINESSUSERROLE_PK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSUSERROLE')
             and   name  = 'USERROLE_FK2'
             and   indid > 0
             and   indid < 255)
@@ -614,12 +625,14 @@ go
 /*==============================================================*/
 create table BUSINESSAPPLICATION (
    ID                   T_GUID               not null,
-   PACKAGEID            T_GUID               not null,
-   ENTRYOBJECTID        T_GUID               null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null,
-   NAME                 T_NAME               null,
+   PACKAGEID            T_GUID               not null,
+   ENTRYOBJECTID        T_GUID               null,
+   NAME                 T_NAME               not null,
+   CODENAME             T_NAME               not null,
+   SCRIPT               text                 null,
    constraint PK_BUSINESSAPPLICATION primary key (ID)
 )
 go
@@ -785,6 +798,7 @@ create table BUSINESSCLASS (
    AUTOSCRIPT           text                 null,
    SCRIPT               text                 null,
    SCRIPTOPTIONS        int                  null,
+   ISABSTRACT           bit                  not null,
    constraint PK_BUSINESSCLASS primary key (ID)
 )
 go
@@ -1010,9 +1024,11 @@ create table BUSINESSROLE (
    ISSYSTEM             bit                  not null,
    PACKAGEID            T_GUID               not null,
    NAME                 T_NAME               not null,
+   CODENAME             T_NAME               not null,
    DESCRIPTION          varchar(1024)        null,
    ISCOMPUTED           bit                  not null,
    ISDISABLED           bit                  null,
+   SCRIPT               text                 null,
    constraint PK_BUSINESSROLE primary key (ID)
 )
 go
@@ -1035,10 +1051,12 @@ create table BUSINESSUSER (
    ISSYSTEM             bit                  not null,
    PACKAGEID            T_GUID               not null,
    NAME                 T_NAME               not null,
+   CODENAME             T_NAME               not null,
    FULLNAME             T_NAME               not null,
    DESCRIPTION          varchar(1024)        null,
    PASSWORD             varchar(128)         null,
    ISDISABLED           bit                  not null,
+   SCRIPT               text                 null,
    constraint PK_BUSINESSUSER primary key (ID)
 )
 go
@@ -1055,9 +1073,9 @@ go
 /* Table: BUSINESSUSERROLE                                      */
 /*==============================================================*/
 create table BUSINESSUSERROLE (
-   USERID               T_GUID               not null,
-   ROLEID               T_GUID               not null,
-   constraint PK_BUSINESSUSERROLE primary key (USERID, ROLEID)
+   USERID               uniqueidentifier     not null,
+   ROLEID               uniqueidentifier     not null,
+   constraint PK_BUSINESSUSERROLE primary key nonclustered (USERID, ROLEID)
 )
 go
 
@@ -1073,6 +1091,15 @@ go
 /* Index: USERROLE_FK2                                          */
 /*==============================================================*/
 create index USERROLE_FK2 on BUSINESSUSERROLE (
+ROLEID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: BUSINESSUSERROLE_PK                                   */
+/*==============================================================*/
+create index BUSINESSUSERROLE_PK on BUSINESSUSERROLE (
+USERID ASC,
 ROLEID ASC
 )
 go

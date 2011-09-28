@@ -14,6 +14,10 @@ namespace Fantasy.BusinessEngine.Maps
 
             this.Map(x => x.EntryObjectId);
 
+            this.Map(x => x.CodeName).Not.Nullable();
+
+            this.Map(x => x.Script);
+
             this.References(x => x.Package).Column("PackageId").Not.Nullable();
 
             this.HasMany(x=>x.PersistedParticipants).CollectionType<ObservableList<BusinessApplicationParticipant>>().KeyColumn("APPLICATIONID").Cascade.AllDeleteOrphan().Inverse();
