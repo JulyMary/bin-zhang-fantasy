@@ -8,37 +8,37 @@
              xmlns:f="urn:schema-fantasy:xaml" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <UserControl.Resources>
+        <Style TargetType="CheckBox">
+            <Style.Setters>
+                <Setter Property="Foreground" Value="#FF27689A" />
+                <Setter Property="IsThreeState" Value="True" />
+             </Style.Setters>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="{x:Null}">
+                    <Setter Property="Content" Value="Undecide"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="True">
+                    <Setter Property="Content" Value="Allow"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="False">
+                    <Setter Property="Content" Value="Deny"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="245*" />
         </Grid.RowDefinitions>
         <GroupBox Header="Object Access" Height="Auto">
             <Grid Margin="6">
-                <CheckBox Content="Deny" Name="ObjectInhertiedCheckBox" Height="16" IsChecked="{Binding IsInherited, Mode=TwoWay}" HorizontalAlignment="Left" Margin="0"  VerticalAlignment="Top" />
-                <CheckBox Content="Create" Name="ObjectCreateCheckBox" Height="16" HorizontalAlignment="Left" Margin="71,0,0,0" VerticalAlignment="Top" IsChecked="{Binding CanCreate,  Mode=TwoWay}" >
-                    <CheckBox.Style>
-                        <Style TargetType="CheckBox">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsInherited}" Value="true">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </CheckBox.Style>
-                </CheckBox>
-                <CheckBox Content="Delete" Name="ObjectDeleteCheckBox" Height="16" Margin="128,0,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete,Mode=TwoWay}" HorizontalAlignment="Left" Width="51">
-                    <CheckBox.Style>
-                        <Style TargetType="CheckBox">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsInherited}" Value="true">
-                                    <Setter Property="IsEnabled" Value="False" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </CheckBox.Style>
-                </CheckBox>
+                <TextBlock HorizontalAlignment="Left" Text="Create" VerticalAlignment="Top" />
+                <CheckBox  Height="16" HorizontalAlignment="Left" Margin="40,0,0,0"  VerticalAlignment="Top" IsChecked="{Binding CanCreate, Mode=TwoWay}" />
+                <TextBlock HorizontalAlignment="Left" Margin="0,22,0,0" Text="Delete" VerticalAlignment="Top" />
+                <CheckBox  Height="16" HorizontalAlignment="Left" Margin="40,22,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete, Mode=TwoWay}" />
             </Grid>
         </GroupBox>
         <GroupBox Header="Property &amp; Association Access" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Grid.Row="1" >
@@ -49,7 +49,7 @@
                 </ListView.CommandBindings>
                 <ListView.Resources>
                     <Style TargetType="{x:Type GridViewColumnHeader}">
-                        <Setter Property="HorizontalContentAlignment" Value="Left"></Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
                     </Style>
                 </ListView.Resources>
                 <ListView.View>
@@ -62,63 +62,38 @@
                                             <Image.Style>
                                                 <Style TargetType="Image">
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Entity.MemberType}" Value="Property" >
+                                                        <DataTrigger Binding="{Binding MemberType}" Value="Property" >
                                                             <Setter Property="Source" Value="/Fantasy.Studio.BusinessEngine;component/images/Properties.ico" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Entity.MemberType}" Value="LeftAssociation" >
+                                                        <DataTrigger Binding="{Binding MemberType}" Value="LeftAssociation" >
                                                             <Setter Property="Source" Value="/Fantasy.Studio.BusinessEngine;component/images/association.png" />
                                                         </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Entity.MemberType}" Value="RightAssociation" >
+                                                        <DataTrigger Binding="{Binding MemberType}" Value="RightAssociation" >
                                                             <Setter Property="Source" Value="/Fantasy.Studio.BusinessEngine;component/images/association.png" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <TextBlock Text="{Binding Entity.Name}" Margin="2,0,0,0"/>
+                                        <TextBlock Text="{Binding Name}" Margin="2,0,0,0"/>
                                     </StackPanel>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Deny" f:GridViewLayout.ColumnId="InheritedColumn" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="{Binding IsInherited}" Checked="PropertyInheritedChecked" Unchecked="PropertyInheritedChecked" >
-                                    </CheckBox>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Allow Read" f:GridViewLayout.ColumnId="ReadColumn" >
+                        
+                        <GridViewColumn Header="Read" f:GridViewLayout.ColumnId="ReadColumn" >
                            
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox  IsChecked="{Binding CanRead}" Checked="PropertyReadChecked" Unchecked="PropertyReadChecked" >
-                                        <CheckBox.Style>
-                                            <Style TargetType="CheckBox">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsInherited}" Value="true">
-                                                        <Setter Property="IsEnabled" Value="False" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
+                                    <CheckBox  IsChecked="{Binding CanRead}" Checked="PropertyReadChecked" Unchecked="PropertyReadChecked" > 
                                     </CheckBox>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
-                        <GridViewColumn Header="Allow Write" f:GridViewLayout.ColumnId="WriteColumn">
+                        <GridViewColumn Header="Write" f:GridViewLayout.ColumnId="WriteColumn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <CheckBox IsChecked="{Binding CanWrite}" Checked="PropertyWriteChecked" Unchecked="PropertyWriteChecked">
-                                        <CheckBox.Style>
-                                            <Style TargetType="CheckBox">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsInherited}" Value="true">
-                                                        <Setter Property="IsEnabled" Value="False" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </CheckBox.Style>
                                     </CheckBox>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>

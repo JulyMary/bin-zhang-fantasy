@@ -105,7 +105,7 @@ namespace Fantasy.BusinessEngine
             }
             else
             {
-                seucirty.Sync(this.Participant.Class, null);
+                seucirty.Sync(this.Participant.Class, null, null);
                 this.PersistedACL = seucirty.ToXElement().ToString(SaveOptions.OmitDuplicateNamespaces);
 
             }

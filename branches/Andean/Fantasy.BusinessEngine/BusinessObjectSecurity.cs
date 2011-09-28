@@ -49,20 +49,34 @@ namespace Fantasy.BusinessEngine
             this.OnChanged(EventArgs.Empty);
         }
 
+        [XAttribute("canCreate")]
+        private bool? _canCreate;
 
-        [XAttribute("access")]
-        private BusinessObjectAccess? _objectAccess;
-         
-        public BusinessObjectAccess? ObjectAccess
+        public bool? CanCreate
         {
-            get { return _objectAccess; }
+            get { return _canCreate; }
             set
             {
-                if (_objectAccess != value)
+                if (_canCreate != value)
                 {
-                    _objectAccess = value;
-                    this.OnPropertyChanged("ObjectAccess");
-                    this.OnChanged(EventArgs.Empty);
+                    _canCreate = value;
+                    this.OnPropertyChanged("CanCreate");
+                }
+            }
+        }
+
+        [XAttribute("canDelete")]
+        private bool? _canDelete;
+
+        public bool? CanDelete
+        {
+            get { return _canDelete; }
+            set
+            {
+                if (_canDelete != value)
+                {
+                    _canDelete = value;
+                    this.OnPropertyChanged("CanDelete");
                 }
             }
         }
@@ -70,20 +84,6 @@ namespace Fantasy.BusinessEngine
         [XArray,
         XArrayItem(Name = "property", Type=typeof(BusinessObjectMemberSecurity))]
         public virtual IList<BusinessObjectMemberSecurity> Properties { get; protected set; }
-
-
-        public virtual BusinessObjectAccess? this[BusinessProperty property]
-        {
-            get
-            {
-                return this.GetOrCreatePropertySecurity(property).PropertyAccess;
-            }
-            set
-            {
-                this.GetOrCreatePropertySecurity(property).PropertyAccess = value;
-            }
-        }
-
 
         private BusinessObjectMemberSecurity GetOrCreatePropertySecurity(BusinessProperty property)
         {
@@ -99,27 +99,27 @@ namespace Fantasy.BusinessEngine
           
         }
 
-        public static BusinessObjectSecurity Create(BusinessClass @class, BusinessObjectAccess? objectAccess, BusinessObjectAccess? propertyAccess)
+        public static BusinessObjectSecurity Create(BusinessClass @class, bool? canCreate, bool? canDelete, bool? canRead, bool? canWrite)
         {
-            BusinessObjectSecurity rs = new BusinessObjectSecurity();
-            rs.ObjectAccess = objectAccess;
-            rs.Sync(@class, propertyAccess);
+            BusinessObjectSecurity rs = new BusinessObjectSecurity() { _canCreate = canCreate, _canDelete = canDelete };
+            
+            rs.Sync(@class, canRead, canWrite);
 
             return rs;
         }
 
         private bool _syncing = false;
 
-        public virtual void Sync(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        public virtual void Sync(BusinessClass @class, bool? canRead, bool? canWrite)
         {
             if (!_syncing)
             {
                 _syncing = true;
                 try
                 {
-                    SyncProperties(@class, propertyAccess);
-                    SyncLeftAssn(@class, propertyAccess);
-                    SyncRightAssn(@class, propertyAccess);
+                    SyncProperties(@class, canRead, canWrite);
+                    SyncLeftAssn(@class, canRead, canWrite);
+                    SyncRightAssn(@class, canRead, canWrite);
                 }
                 finally
                 {
@@ -129,7 +129,49 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private void SyncLeftAssn(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        public static bool? NullableAnd(bool? x, bool? y)
+        {
+            if (x == null && y == null)
+            {
+                return null;
+            }
+            else if (x == null)
+            {
+                return y;
+            }
+            else if (y == null)
+            {
+                return x;
+            }
+            else
+            {
+                return (bool)x && (bool)y;
+            }
+
+        }
+
+        public static bool? NullableOr(bool? x, bool? y)
+        {
+            if (x == null && y == null)
+            {
+                return null;
+            }
+            else if (x == null)
+            {
+                return y;
+            }
+            else if (y == null)
+            {
+                return x;
+            }
+            else
+            {
+                return (bool)x || (bool)y;
+            }
+        }
+
+
+        private void SyncLeftAssn(BusinessClass @class, bool? canRead, bool? canWrite)
         {
             var toRemove = from ps in this.Properties
                            where ps.MemberType == BusinessObjectMemberTypes.LeftAssociation && !@class.AllLeftAssociations().Any(p => p.Id == ps.Id)
@@ -150,7 +192,7 @@ namespace Fantasy.BusinessEngine
             var toAdd = from assn in @class.AllLeftAssociations()
                         where !this.Properties.Any(p => p.Id == assn.Id && p.MemberType== BusinessObjectMemberTypes.LeftAssociation)
                         select
-                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.RightRoleName, PropertyAccess = propertyAccess, DisplayOrder = assn.RightRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.LeftAssociation };
+                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.RightRoleName, CanRead=canRead, CanWrite = canWrite, DisplayOrder = assn.RightRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.LeftAssociation };
 
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
@@ -160,7 +202,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private void SyncRightAssn(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        private void SyncRightAssn(BusinessClass @class, bool? canRead, bool? canWrite)
         {
             var toRemove = from ps in this.Properties
                            where ps.MemberType == BusinessObjectMemberTypes.RightAssociation && !@class.AllRightAssociations().Any(p => p.Id == ps.Id)
@@ -181,7 +223,7 @@ namespace Fantasy.BusinessEngine
             var toAdd = from assn in @class.AllRightAssociations()
                         where !this.Properties.Any(p => p.Id == assn.Id && p.MemberType == BusinessObjectMemberTypes.RightAssociation)
                         select
-                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.LeftRoleName, PropertyAccess = propertyAccess, DisplayOrder = assn.LeftRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.RightAssociation };
+                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.LeftRoleName, CanRead = canRead, CanWrite = canWrite, DisplayOrder = assn.LeftRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.RightAssociation };
 
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
@@ -190,7 +232,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private void SyncProperties(BusinessClass @class, BusinessObjectAccess? propertyAccess)
+        private void SyncProperties(BusinessClass @class, bool? canRead, bool? canWrite)
         {
             var toRemove = from ps in this.Properties
                            where ps.MemberType == BusinessObjectMemberTypes.Property && !@class.AllProperties().Any(p => p.Id == ps.Id)
@@ -211,7 +253,7 @@ namespace Fantasy.BusinessEngine
             var toAdd = from prop in @class.AllProperties()
                         where !this.Properties.Any(p => p.Id == prop.Id)
                         select
-                            new BusinessObjectMemberSecurity() { Id = prop.Id, Name = prop.Name, PropertyAccess = propertyAccess, DisplayOrder=prop.DisplayOrder, MemberType= BusinessObjectMemberTypes.Property };
+                            new BusinessObjectMemberSecurity() { Id = prop.Id, Name = prop.Name, CanRead=canRead, CanWrite=canWrite, DisplayOrder=prop.DisplayOrder, MemberType= BusinessObjectMemberTypes.Property };
 
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
@@ -237,54 +279,18 @@ namespace Fantasy.BusinessEngine
         public BusinessObjectSecurity Union(BusinessObjectSecurity other)
         {
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
-            
-            {
-                BusinessObjectAccess? oa1 = this.ObjectAccess;
-                BusinessObjectAccess? oa2 = other != null ? other.ObjectAccess : null;
-                
-                if (oa1 == null && oa2 == null)
-                {
-                    rs.ObjectAccess = null;
-                }
-                else if (oa1 == null)
-                {
-                    rs.ObjectAccess = oa2;
-                }
-                else if (oa2 == null)
-                {
-                    rs.ObjectAccess = oa1;
-                }
-                else
-                {
-                    rs.ObjectAccess = oa1 | oa2;
-                }
 
-            }
+            rs.CanCreate = NullableOr(this.CanCreate, other != null ? other.CanCreate : null);
+            rs.CanDelete = NullableOr(this.CanDelete, other != null ? other.CanDelete : null);
 
             foreach (BusinessObjectMemberSecurity ps1 in this.Properties)
             {
                 BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
                 BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name };
 
-                BusinessObjectAccess? oa1 = ps1.PropertyAccess;
-                BusinessObjectAccess? oa2 = ps2 != null ? ps2.PropertyAccess : null;
-
-                if (oa1 == null && oa2 == null)
-                {
-                    nps.PropertyAccess = null;
-                }
-                else if (oa1 == null)
-                {
-                    nps.PropertyAccess = oa2;
-                }
-                else if (oa2 == null)
-                {
-                    nps.PropertyAccess = oa1;
-                }
-                else
-                {
-                    nps.PropertyAccess = oa1 | oa2;
-                }
+                nps.CanRead = NullableOr(ps1.CanRead, ps2 != null ? ps2.CanRead : null);
+                nps.CanWrite = NullableOr(ps1.CanWrite, ps2 != null ? ps2.CanWrite : null);
+                
 
                 rs.Properties.Add(nps);
 
@@ -296,54 +302,20 @@ namespace Fantasy.BusinessEngine
         {
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
 
-            {
-                BusinessObjectAccess? oa1 = this.ObjectAccess;
-                BusinessObjectAccess? oa2 = other != null ? other.ObjectAccess : null;
-                if (oa1 == null && oa2 == null)
-                {
-                    rs.ObjectAccess = null;
-                }
-                else if (oa2 == null)
-                {
-                    rs.ObjectAccess = oa1;
-                }
-                else if (oa1 == null)
-                {
-                    rs.ObjectAccess = oa2;
-                }
-                else
-                {
-                    rs.ObjectAccess = oa1 | oa2;
-                }
-            }
-
+            rs.CanCreate = NullableAnd(this.CanCreate, other != null ? other.CanCreate : null);
+            rs.CanDelete = NullableAnd(this.CanDelete, other != null ? other.CanDelete : null);
 
             foreach (BusinessObjectMemberSecurity ps1 in this.Properties)
             {
                 BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
                 BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name };
 
-                BusinessObjectAccess? oa1 = ps1.PropertyAccess;
-                BusinessObjectAccess? oa2 = ps2 != null ? ps2.PropertyAccess : null;
-
-                if (oa1 == null && oa2 == null)
-                {
-                    nps.PropertyAccess = null;
-                }
-                else if (oa2 == null)
-                {
-                    nps.PropertyAccess = oa1;
-                }
-                else if (oa1 == null)
-                {
-                    nps.PropertyAccess = oa2;
-                }
-                else
-                {
-                    nps.PropertyAccess = oa1 | oa2;
-                }
+                nps.CanRead = NullableAnd(ps1.CanRead, ps2 != null ? ps2.CanRead : null);
+                nps.CanWrite = NullableAnd(ps1.CanWrite, ps2 != null ? ps2.CanWrite : null);
                 rs.Properties.Add(nps);
+
             }
+             
 
             return rs;
         }
