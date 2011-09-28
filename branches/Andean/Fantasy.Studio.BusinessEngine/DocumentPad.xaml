@@ -8,8 +8,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <f:ExtendableTreeView Name="treeView" VirtualizingStackPanel.IsVirtualizing="True" 
-              VirtualizingStackPanel.VirtualizationMode="Recycling"
-              DataContext="{Binding TreeViewModel}" SelectedItemChanged="treeView_SelectedItemChanged" >
+              VirtualizingStackPanel.VirtualizationMode="Recycling" 
+              DataContext="{Binding TreeViewModel}"  >
         
     </f:ExtendableTreeView>
 </UserControl>

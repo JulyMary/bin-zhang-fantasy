@@ -99,19 +99,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private ServiceModel.ServiceContainer _childSite;
 
-        private IServiceProvider GetChildSite()
-        {
-            if (_childSite == null)
-            {
-                _childSite = new ServiceModel.ServiceContainer(this.Site);
-
-                _childSite.AddService(this);
-
-                _childSite.AddService(this.Entity);
-            }
-
-            return _childSite;
-        }
+      
 
         private ParticipantPanelModel _model;
         public BusinessApplication Entity { get; private set; }
@@ -128,10 +116,25 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                     return true;
                 });
 
-            CollectionChangedEventManager.AddListener(this.Entity.Participants, this._participantsChangedListener); 
+            CollectionChangedEventManager.AddListener(this.Entity.Participants, this._participantsChangedListener);
 
-            this._model = new ParticipantPanelModel(this.Entity, this.GetChildSite());
+
+            _childSite = new ServiceModel.ServiceContainer(this.Site);
+
+            _childSite.AddService(this);
+
+            _childSite.AddService(this.Entity);
+
+
+            this._model = new ParticipantPanelModel(this.Entity, this._childSite);
+            _childSite.AddService(this._model);
             this.DataContext = _model;
+
+
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/applicationeditor/participantpanel/commandbindings").BuildChildItems(this._model, this._childSite))
+            {
+                this.CommandBindings.Add(cb);
+            }
         }
 
         private EditingState _dirtyState;

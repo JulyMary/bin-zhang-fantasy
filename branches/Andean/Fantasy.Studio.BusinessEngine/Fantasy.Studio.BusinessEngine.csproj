@@ -76,6 +76,7 @@
     <Compile Include="ApplicationEditing\ApplicationEditor.cs" />
     <Compile Include="ApplicationEditing\ApplicationFolder.cs" />
     <Compile Include="ApplicationEditing\ApplicationParticipantACLProvider.cs" />
+    <Compile Include="ApplicationEditing\ClearParticipantsCommandHandler.cs" />
     <Compile Include="ApplicationEditing\DefaultParticipantACLModel.cs" />
     <Compile Include="ApplicationEditing\DefaultParticipantACLPanel.xaml.cs">
       <DependentUpon>DefaultParticipantACLPanel.xaml</DependentUpon>

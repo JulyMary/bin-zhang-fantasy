@@ -16,9 +16,9 @@
    
     <TreeView.ItemTemplate>
         <HierarchicalDataTemplate ItemsSource="{Binding TreeViewItems}" >
-            <StackPanel Orientation="Horizontal" ContextMenu="{Binding ContextMenu}">
+            <StackPanel Orientation="Horizontal" ContextMenu="{Binding ContextMenu}" Margin="1">
                 <Image Source="{Binding Icon.Value}" Width="16" Height="16" />
-                <TextBlock Text="{Binding Text.Value}" />
+                <TextBlock Text="{Binding Text.Value}" Margin="2,0,0,0" />
             </StackPanel>
         </HierarchicalDataTemplate>
     </TreeView.ItemTemplate>
