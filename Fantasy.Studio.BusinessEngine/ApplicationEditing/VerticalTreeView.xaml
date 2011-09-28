@@ -23,7 +23,7 @@
                             </Grid.RowDefinitions>
 
 
-                            <StackPanel Width="{Binding ActualWidth, ElementName=HeaderContainer}" HorizontalAlignment="Center">
+                            <StackPanel HorizontalAlignment="Stretch">
                                 <l:VerticalTreeAncestorLine Height="40" Stroke="#FF00AAAA" Fill="#FF00AAAA" StrokeThickness="1" Visibility="{Binding IsRoot, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:VisibilityConverter.InvertCollapsed}}"
                                                             HasLeftSibling="{Binding IsFirstItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:BooleanInverterConverter.Default}}"
                                                             HasRightSibling="{Binding IsLastItem, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={x:Static f:BooleanInverterConverter.Default}}"/>

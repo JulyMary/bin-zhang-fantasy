@@ -53,6 +53,10 @@
     </Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/participantpanel/participant/contextmenu">
         <Button ID="ACL" Text="Security Settings" Icon="/Fantasy.Studio.BusinessEngine;component/images/acl.png" ParameterSource="Owner" Command="{New sbe:OpenParticipantACLEditorCommand}" />
+        <Button ID="Clear" Text="Clear All" Command="{Command ClearParticipants}" />
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/applicationeditor/participantpanel/commandbindings">
+        <CommandBinding ID="ClearAll" Command="{Command ClearParticipants}" Handler="{New sbe:ClearParticipantsCommandHandler}" />
     </Extension>
     <Extension Path="fantasy/studio/businessengine/associationeditor/commandbindings"></Extension>
     <Extension Path="fantasy/studio/businessengine/associationeditor/panels">
@@ -659,6 +663,7 @@
         <RoutedUICommand ID="SyncExternalEnum" Text="Sync" />
         <RoutedUICommand ID="MoveUp" Text="Move Up" />
         <RoutedUICommand ID="MoveDown" Text="Move Down" />
+        <RoutedUICommand ID="ClearParticipants" Text="Clear All" />
     </Extension>
     <Extension Path="fantasy/studio/workbench/commandbindings">
         <CommandBinding ID="Save" Command="Save" Handler="{New sbe:SaveAllCommandHandler}" />
@@ -730,4 +735,6 @@
             </ToolBoxItemBuilder.Builder>
         </ToolBoxItemBuilder>
     </Extension>
+
+
 </AddIn>

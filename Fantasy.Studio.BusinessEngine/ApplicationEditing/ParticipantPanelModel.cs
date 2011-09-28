@@ -6,6 +6,7 @@ using Fantasy.BusinessEngine;
 using System.Collections.ObjectModel;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Studio.Services;
+using Fantasy.ServiceModel;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
@@ -125,7 +126,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             IMenuService ms = this.Site.GetRequiredService<IMenuService>();
 
-     
+           
             ParticipantNode rs = new ParticipantNode() { Class = @class};
             rs.ContextMenu = ms.CreateContextMenu("fantasy/studio/businessengine/applicationeditor/participantpanel/participant/contextmenu", rs, this.Site);
             rs.IsCheckedChanged += new EventHandler(NodeIsCheckedChanged);
@@ -157,17 +158,35 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
 
             BusinessClass @class = node.Class;
-            var relatives =
-                (from prop in @class.AllProperties() where prop.DataClassType != null 
-                     from cls in prop.DataClassType.Flatten(c=>c.ChildClasses)
-                     select cls)
-                .Union(from assn in @class.AllLeftAssociations()
-                           from cls in assn.RightClass.Flatten(c => c.ChildClasses)
-                           select cls)
-                .Union(from assn in @class.AllRightAssociations()
-                           from cls in assn.LeftClass.Flatten(c =>c.ChildClasses)
-                           select cls)
-                .Distinct();
+
+            var childClasses = @class.Flatten(c => c.ChildClasses).Where(c=>c != @class);
+
+            var propClass = from prop in
+                                @class.AllProperties()
+                                .Union(from childClass in childClasses
+                                    from prop in childClass.Properties 
+                                    select prop)
+                            where prop.DataClassType != null
+                            from cls in prop.DataClassType.Flatten(c => c.ChildClasses)
+                            select cls;
+
+            var leftAssnClass = from assn in
+                                    @class.AllLeftAssociations()
+                                        .Union(from childClass in childClasses
+                                               from assn in childClass.LeftAssociations
+                                               select assn)
+                                from cls in assn.RightClass.Flatten(c => c.ChildClasses)
+                                select cls;
+
+            var rightAssnClass = from assn in
+                                     @class.AllRightAssociations()
+                                         .Union(from childClass in childClasses
+                                                from assn in childClass.RightAssociations
+                                                select assn)
+                                 from cls in assn.LeftClass.Flatten(c => c.ChildClasses)
+                                 select cls;
+
+            var relatives = childClasses.Concat(propClass).Concat(leftAssnClass).Concat(rightAssnClass).Distinct();
                 
             var added = from root in this.Items
                         from n in root.Flatten(n => n.ChildNodes)
@@ -214,6 +233,18 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             this._allParticipants.IntersectWith(this._application.Participants);
            
+        }
+
+        public  void ClearRootNode()
+        {
+            ParticipantNode root = this.Items[0];
+            this.ClearChildNodes(root);
+            this._application.Participants.Remove(root.Participant);
+            root.Participant.Application = null;
+
+            this.Items.Clear();
+
+
         }
     }
 }

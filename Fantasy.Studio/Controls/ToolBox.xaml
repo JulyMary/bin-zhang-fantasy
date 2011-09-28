@@ -12,9 +12,9 @@
         <v:ListView x:Key="listView">
             <v:ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                    <Image Source="{Binding Icon}" Width="16" Height="16" />
-                    <TextBlock Text="{Binding Text}" />
+                    <StackPanel Orientation="Horizontal" Margin="1">
+                    <Image Source="{Binding Icon}" Width="16" Height="16" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Text}" Margin="2" VerticalAlignment="Center" />
                     </StackPanel>
                 </DataTemplate>
             </v:ListView.ItemTemplate>
