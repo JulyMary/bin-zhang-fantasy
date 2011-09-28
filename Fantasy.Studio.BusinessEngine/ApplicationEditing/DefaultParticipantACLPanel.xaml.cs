@@ -50,7 +50,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             {
                 foreach (BusinessApplicationACL acl in this.Entity.ACLs)
                 {
-                    acl.Security.Sync(this.Entity.Class, null);
+                    acl.Security.Sync(this.Entity.Class, null, null);
                    
                 }
             }
@@ -168,7 +168,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
                 foreach (BusinessApplicationACL acl in this.Entity.ACLs)
                 {
-                    acl.Security.Sync(this.Entity.Class, null);
+                    acl.Security.Sync(this.Entity.Class, null, null);
                     es.SaveOrUpdate(acl);
                 }
                 es.EndUpdate(true);
@@ -253,7 +253,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessApplicationACL acl = es.AddBusinessApplicationACL(this.Entity, role, null);
-            BusinessObjectSecurity sec = BusinessObjectSecurity.Create(this.Entity.Class, BusinessObjectAccess.None, BusinessObjectAccess.None);
+            BusinessObjectSecurity sec = BusinessObjectSecurity.Create(this.Entity.Class, null, null, null, null);
             acl.Security = sec;
             DefaultParticipantACLModel model = this.DataContext as DefaultParticipantACLModel;
             model.SelectedItem = acl;

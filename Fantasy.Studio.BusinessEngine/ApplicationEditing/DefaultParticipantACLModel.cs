@@ -49,38 +49,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                 {
                     _selectedItem = value;
                     this.OnPropertyChanged("SelectedItem");
-                    if (_selectedItem != null)
-                    {
-                        this.SelectedSecurityModel = new ObjectSecurityEditorModel(_selectedItem.Security);
-                    }
-                    else
-                    {
-                        this.SelectedSecurityModel = null;
-                    }
                 }
             }
         }
-
-        private ObjectSecurityEditorModel _selectedSecurityModel;
-
-        public ObjectSecurityEditorModel SelectedSecurityModel
-        {
-            get { return _selectedSecurityModel; }
-            private set
-            {
-                if (_selectedSecurityModel != value)
-                {
-                    _selectedSecurityModel = value;
-                    this.OnPropertyChanged("SelectedSecurityModel");
-                }
-            }
-        }
-
-
-
-      
-
-
-
     }
 }

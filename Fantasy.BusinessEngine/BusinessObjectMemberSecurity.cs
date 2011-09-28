@@ -42,18 +42,33 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        [XAttribute("access")]
-        private BusinessObjectAccess? _propertyAccess;
+        [XAttribute("canRead")]
+        private bool? _canRead;
 
-        public BusinessObjectAccess? PropertyAccess
+        public bool? CanRead
         {
-            get { return _propertyAccess; }
+            get { return _canRead; }
             set
             {
-                if (_propertyAccess != value)
+                if (_canRead != value)
                 {
-                    _propertyAccess = value;
-                    this.OnPropertyChanged("PropertyAccess");
+                    _canRead = value;
+                    this.OnPropertyChanged("CanRead");
+                }
+            }
+        }
+
+        private bool? _canWrite;
+
+        public bool? CanWrite
+        {
+            get { return _canWrite; }
+            set
+            {
+                if (_canWrite != value)
+                {
+                    _canWrite = value;
+                    this.OnPropertyChanged("CanWrite");
                 }
             }
         }

@@ -227,8 +227,6 @@
     <Compile Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml.cs">
       <DependentUpon>ObjectSecurityEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ObjectSecurityEditing\ObjectSecurityEditorModel.cs" />
-    <Compile Include="ObjectSecurityEditing\ObjectSecurityPropertyModel.cs" />
     <Compile Include="PackageEditing\IPackageSubfolder.cs" />
     <Compile Include="PackageEditing\AddPackageCommand.cs" />
     <Compile Include="PackageEditing\ChildPackagesProvider.cs" />

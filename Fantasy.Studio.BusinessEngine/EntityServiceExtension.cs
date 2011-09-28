@@ -227,7 +227,7 @@ namespace Fantasy.Studio.BusinessEngine
             rs.Role = role;
             rs.State = state;
             BusinessObjectSecurity security = new BusinessObjectSecurity();
-            security.Sync(participant.Class, null);
+            security.Sync(participant.Class, null, null);
 
             participant.ACLs.Add(rs);
 

@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Fantasy.Windows;
 using Fantasy.Studio.Controls;
+using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
 {
@@ -37,28 +38,7 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
 
         }
 
-        private void PropertyInheritedChecked(object sender, RoutedEventArgs e)
-        {
-            if (!this._updating)
-            {
-                this._updating = true;
-                try
-                {
-                    CheckBox checkBox = (CheckBox)sender;
-
-                    foreach (ObjectSecurityPropertyModel prop in this.PropertyListView.SelectedItems)
-                    {
-                        prop.IsInherited = (bool)checkBox.IsChecked;
-                    }
-  
-                }
-
-                finally
-                {
-                    this._updating = false;
-                }
-            }
-        }
+       
 
         private void PropertyWriteChecked(object sender, RoutedEventArgs e)
         {
@@ -69,9 +49,9 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                 {
                     CheckBox checkBox = (CheckBox)sender;
 
-                    foreach (ObjectSecurityPropertyModel prop in this.PropertyListView.SelectedItems)
+                    foreach (BusinessObjectMemberSecurity prop in this.PropertyListView.SelectedItems)
                     {
-                        prop.CanWrite = (bool)checkBox.IsChecked;
+                        prop.CanWrite = checkBox.IsChecked;
                     }
                 }
                 finally
@@ -90,9 +70,9 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                 {
                     CheckBox checkBox = (CheckBox)sender;
 
-                    foreach (ObjectSecurityPropertyModel prop in this.PropertyListView.SelectedItems)
+                    foreach (BusinessObjectMemberSecurity prop in this.PropertyListView.SelectedItems)
                     {
-                        prop.CanRead = (bool)checkBox.IsChecked;
+                        prop.CanRead = checkBox.IsChecked;
                     }
                 }
                 finally
