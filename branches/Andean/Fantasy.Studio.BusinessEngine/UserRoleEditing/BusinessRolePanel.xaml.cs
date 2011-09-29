@@ -17,6 +17,7 @@ using Fantasy.BusinessEngine.Services;
 using Fantasy.Windows;
 using System.Collections.Specialized;
 using Fantasy.AddIns;
+using Fantasy.Utils;
 
 namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 {
@@ -284,6 +285,19 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         private void NameTextBox_GotMouseCapture(object sender, MouseEventArgs e)
         {
             ((TextBox)sender).SelectAll();
+        }
+
+        private void NameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string oname = this.Entity.Name;
+            this.Entity.Name = ((TextBox)sender).Text;
+           
+
+            string ocname = UniqueNameGenerator.GetCodeName(oname) + Properties.Resources.DefaultUserRoleCodeNameSuffix;
+            if (ocname == this.Entity.CodeName)
+            {
+                this.Entity.CodeName = UniqueNameGenerator.GetCodeName(this.Entity.Name) + Properties.Resources.DefaultUserRoleCodeNameSuffix;
+            }
         }
 
        

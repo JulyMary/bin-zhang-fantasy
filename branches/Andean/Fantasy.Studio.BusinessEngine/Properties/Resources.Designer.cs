@@ -22,7 +22,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Fantasy.Studio.BusinessEngine.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Assembly File |*.dll.
         /// </summary>
-        internal static string AddReferenceDialogFilter {
+        public static string AddReferenceDialogFilter {
             get {
                 return ResourceManager.GetString("AddReferenceDialogFilter", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Add Reference.
         /// </summary>
-        internal static string AddReferenceDialogTitle {
+        public static string AddReferenceDialogTitle {
             get {
                 return ResourceManager.GetString("AddReferenceDialogTitle", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Applications.
         /// </summary>
-        internal static string ApplicationFolderName {
+        public static string ApplicationFolderName {
             get {
                 return ResourceManager.GetString("ApplicationFolderName", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Associations.
         /// </summary>
-        internal static string AssociationFolderName {
+        public static string AssociationFolderName {
             get {
                 return ResourceManager.GetString("AssociationFolderName", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Properties.
         /// </summary>
-        internal static string BusinessPropertyEditorTitle {
+        public static string BusinessPropertyEditorTitle {
             get {
                 return ResourceManager.GetString("BusinessPropertyEditorTitle", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
-        internal static string BusinessRolePanelTitle {
+        public static string BusinessRolePanelTitle {
             get {
                 return ResourceManager.GetString("BusinessRolePanelTitle", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
-        internal static string BusinessUserPanelTitle {
+        public static string BusinessUserPanelTitle {
             get {
                 return ResourceManager.GetString("BusinessUserPanelTitle", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Diagram.
         /// </summary>
-        internal static string ClassDiagramPanelTitle {
+        public static string ClassDiagramPanelTitle {
             get {
                 return ResourceManager.GetString("ClassDiagramPanelTitle", resourceCulture);
             }
@@ -135,16 +135,25 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Class View.
         /// </summary>
-        internal static string ClassViewPadTitle {
+        public static string ClassViewPadTitle {
             get {
                 return ResourceManager.GetString("ClassViewPadTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Handler.
+        /// </summary>
+        public static string DefaultApplicationCodeNameSuffix {
+            get {
+                return ResourceManager.GetString("DefaultApplicationCodeNameSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Application.
         /// </summary>
-        internal static string DefaultNewBusinessApplicationName {
+        public static string DefaultNewBusinessApplicationName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessApplicationName", resourceCulture);
             }
@@ -153,7 +162,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Association.
         /// </summary>
-        internal static string DefaultNewBusinessAssociationName {
+        public static string DefaultNewBusinessAssociationName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessAssociationName", resourceCulture);
             }
@@ -162,7 +171,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Class Diagram.
         /// </summary>
-        internal static string DefaultNewBusinessClassDiagramName {
+        public static string DefaultNewBusinessClassDiagramName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessClassDiagramName", resourceCulture);
             }
@@ -171,7 +180,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Class.
         /// </summary>
-        internal static string DefaultNewBusinessClassName {
+        public static string DefaultNewBusinessClassName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessClassName", resourceCulture);
             }
@@ -180,7 +189,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Enum.
         /// </summary>
-        internal static string DefaultNewBusinessEnumName {
+        public static string DefaultNewBusinessEnumName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessEnumName", resourceCulture);
             }
@@ -189,7 +198,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Value.
         /// </summary>
-        internal static string DefaultNewBusinessEnumValueName {
+        public static string DefaultNewBusinessEnumValueName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessEnumValueName", resourceCulture);
             }
@@ -198,7 +207,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Package.
         /// </summary>
-        internal static string DefaultNewBusinessPackageName {
+        public static string DefaultNewBusinessPackageName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessPackageName", resourceCulture);
             }
@@ -207,7 +216,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to New Property.
         /// </summary>
-        internal static string DefaultNewBusinessPropertyName {
+        public static string DefaultNewBusinessPropertyName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessPropertyName", resourceCulture);
             }
@@ -216,7 +225,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to NewRole.
         /// </summary>
-        internal static string DefaultNewBusinessRoleName {
+        public static string DefaultNewBusinessRoleName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessRoleName", resourceCulture);
             }
@@ -225,7 +234,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to NewUser.
         /// </summary>
-        internal static string DefaultNewBusinessUserName {
+        public static string DefaultNewBusinessUserName {
             get {
                 return ResourceManager.GetString("DefaultNewBusinessUserName", resourceCulture);
             }
@@ -234,16 +243,25 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
-        internal static string DefaultParticipantACLPanelTitle {
+        public static string DefaultParticipantACLPanelTitle {
             get {
                 return ResourceManager.GetString("DefaultParticipantACLPanelTitle", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Handler.
+        /// </summary>
+        public static string DefaultUserRoleCodeNameSuffix {
+            get {
+                return ResourceManager.GetString("DefaultUserRoleCodeNameSuffix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Business Model.
         /// </summary>
-        internal static string DocumentPadTitle {
+        public static string DocumentPadTitle {
             get {
                 return ResourceManager.GetString("DocumentPadTitle", resourceCulture);
             }
@@ -252,7 +270,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Values.
         /// </summary>
-        internal static string EnumValuesPanelTitle {
+        public static string EnumValuesPanelTitle {
             get {
                 return ResourceManager.GetString("EnumValuesPanelTitle", resourceCulture);
             }
@@ -261,7 +279,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Object Model.
         /// </summary>
-        internal static string ObjectModelFolderName {
+        public static string ObjectModelFolderName {
             get {
                 return ResourceManager.GetString("ObjectModelFolderName", resourceCulture);
             }
@@ -270,7 +288,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Participants.
         /// </summary>
-        internal static string ParticipantPanelTitle {
+        public static string ParticipantPanelTitle {
             get {
                 return ResourceManager.GetString("ParticipantPanelTitle", resourceCulture);
             }
@@ -279,7 +297,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to General.
         /// </summary>
-        internal static string PropertyGridEditorDefaultTitle {
+        public static string PropertyGridEditorDefaultTitle {
             get {
                 return ResourceManager.GetString("PropertyGridEditorDefaultTitle", resourceCulture);
             }
@@ -288,7 +306,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Roles.
         /// </summary>
-        internal static string RoleFolderName {
+        public static string RoleFolderName {
             get {
                 return ResourceManager.GetString("RoleFolderName", resourceCulture);
             }
@@ -297,7 +315,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Users.
         /// </summary>
-        internal static string UserFolderName {
+        public static string UserFolderName {
             get {
                 return ResourceManager.GetString("UserFolderName", resourceCulture);
             }
@@ -306,7 +324,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Users and Roles.
         /// </summary>
-        internal static string UserRoleFolderName {
+        public static string UserRoleFolderName {
             get {
                 return ResourceManager.GetString("UserRoleFolderName", resourceCulture);
             }

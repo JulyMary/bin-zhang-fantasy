@@ -31,5 +31,7 @@ namespace Fantasy.BusinessEngine.Services
         void UpdateClassColumn(BusinessProperty property);
 
         void DropClassColumn(BusinessProperty property);
+
+        long GetRecordCount(BusinessClass @class);
     }
 }

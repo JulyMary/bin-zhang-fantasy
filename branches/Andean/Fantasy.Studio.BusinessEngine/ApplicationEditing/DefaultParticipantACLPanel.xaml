@@ -56,6 +56,17 @@
                     </Style>
                 </Button.Style>
             </Button>
+            <TextBlock HorizontalAlignment="Center" Margin="10, 50, 6, 0"  Text="Drag a role here or click 'Add' button to set the access control for the role." VerticalAlignment="Top" TextWrapping="Wrap" FontStyle="Italic" Foreground="DarkGray" >
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock" >
+                        <Style.Triggers >
+                            <DataTrigger Binding="{Binding HasItems, ElementName=ACLListBox}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
         <GridSplitter HorizontalAlignment="Right" Width="2" />
         <os:ObjectSecurityEditor Grid.Column="1" x:Name="objectSecurityEditor" Margin="6" DataContext="{Binding SelectedItem.Security}">

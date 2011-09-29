@@ -115,6 +115,7 @@
     <Compile Include="AssociationEditing\AddAssociationCommand.cs" />
     <Compile Include="AssociationEditing\AssociationEditor.cs" />
     <Compile Include="AssociationEditing\AssociationFolder.cs" />
+    <Compile Include="AssociationEditing\BusinessClassNameSetAction.cs" />
     <Compile Include="AssociationEditing\PackageAssociationsProvider.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationLeftRoleNameSetAction.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationRightRoleNameSetAction.cs" />
@@ -198,10 +199,11 @@
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\IConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />
-    <Compile Include="CodeEditing\CSCodeEditorPanel.xaml.cs">
-      <DependentUpon>CSCodeEditorPanel.xaml</DependentUpon>
+    <Compile Include="CodeEditing\CSharpEditor.xaml.cs">
+      <DependentUpon>CSharpEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="CodeEditing\EntityScript.cs" />
+    <Compile Include="Conditions\ClassHasRecord.cs" />
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
@@ -343,7 +345,7 @@
     <Compile Include="UserRoleEditing\UserRoleFolder.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -399,7 +401,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CodeEditing\CSCodeEditorPanel.xaml">
+    <Page Include="CodeEditing\CSharpEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

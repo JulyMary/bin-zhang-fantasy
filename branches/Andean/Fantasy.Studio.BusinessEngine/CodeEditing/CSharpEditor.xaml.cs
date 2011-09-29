@@ -18,22 +18,24 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
     /// <summary>
     /// Interaction logic for CSCodeEditorPanel.xaml
     /// </summary>
-    public partial class CSCodeEditorPanel : UserControl, IObjectWithSite,
+    public partial class CSharpEditor : UserControl, IObjectWithSite
     {
-        public CSCodeEditorPanel()
+        public CSharpEditor()
         {
             InitializeComponent();
             this.TextDocument = new TextDocument();
         }
 
+        public IServiceProvider Site { get; set; } 
+
         public TextDocument TextDocument
         {
-            get { return (TextDocument)GetValue(TextDocumentProperty); }
-            private set { SetValue(TextDocumentProperty, value); }
+            get { return (TextDocument)GetValue(TextDocumentPropertyKey.DependencyProperty); }
+            private set { SetValue(TextDocumentPropertyKey, value); }
         }
 
         // Using a DependencyProperty as the backing store for TextDocument.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TextDocumentProperty =
-            DependencyProperty.Register("TextDocument", typeof(TextDocument), typeof(CSCodeEditorPanel), new UIPropertyMetadata(null));
+        public static readonly DependencyPropertyKey TextDocumentPropertyKey =
+            DependencyProperty.RegisterReadOnly("TextDocument", typeof(TextDocument), typeof(CSharpEditor), new UIPropertyMetadata(null));
     }
 }

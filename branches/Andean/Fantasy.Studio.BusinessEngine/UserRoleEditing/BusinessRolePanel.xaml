@@ -25,14 +25,17 @@
         <StackPanel Orientation="Vertical" >
             <Label Content="This is a system role and cannot be edit." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label6" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsSystem, Converter={x:Static f:VisibilityConverter.Collapsed}}">
             </Label>
-            <GroupBox Header="General" Height="201" HorizontalAlignment="Left" Name="groupBox1" VerticalAlignment="Top" Width="497">
+            <GroupBox Header="General" Height="247" HorizontalAlignment="Left" Name="groupBox1" VerticalAlignment="Top" Width="497">
                 <Grid>
                     <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="4,4,0,0" Name="label1" VerticalAlignment="Top" />
-                    <TextBox Height="23" Margin="118,6,0,0" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" Name="NameTextBox" GotKeyboardFocus="NameTextBox_GotKeyboardFocus" GotMouseCapture="NameTextBox_GotMouseCapture" />
-                    <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="4,33,0,0" Name="label5" VerticalAlignment="Top" />
-                    <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="118,35,0,0" Text="{Binding Description, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
-                    <CheckBox Content="Role is disabled" Height="16" HorizontalAlignment="Left" Margin="4,152,0,0" IsChecked="{Binding IsDisabled, Mode=TwoWay}" VerticalAlignment="Top" />
-                </Grid>
+                    <TextBox Height="23" Margin="118,6,0,0" Text="{Binding Name}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" Name="NameTextBox" GotKeyboardFocus="NameTextBox_GotKeyboardFocus" GotMouseCapture="NameTextBox_GotMouseCapture" TextChanged="NameTextBox_TextChanged" />
+                    <Label Content="Code Name:" Height="28" HorizontalAlignment="Left" Margin="4,33,0,0" VerticalAlignment="Top" />
+                    <TextBox Height="23" HorizontalAlignment="Left" Margin="118,35,0,0" Text="{Binding CodeName}" VerticalAlignment="Top" Width="361" GotKeyboardFocus="NameTextBox_GotKeyboardFocus" GotMouseCapture="NameTextBox_GotMouseCapture" />
+
+                    <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="4,62,0,0" Name="label5" VerticalAlignment="Top" />
+                    <TextBox Height="111" TextWrapping="Wrap" AcceptsReturn="true" VerticalScrollBarVisibility="Auto" Margin="118,64,0,0" Text="{Binding Description, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="361" />
+                    <CheckBox Content="Role is disabled" Height="16" HorizontalAlignment="Left" Margin="4,181,0,0" IsChecked="{Binding IsDisabled, Mode=TwoWay}" VerticalAlignment="Top" />
+                                   </Grid>
             </GroupBox>
             <Label Content="This is a computed role and cannot add members." Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Foreground="DarkGray" FontStyle="Italic" Visibility="{Binding IsComputed, Converter={x:Static f:VisibilityConverter.Collapsed}}">
             </Label>
@@ -50,7 +53,7 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Image Width="24" Height="24" Source="/Fantasy.Studio.BusinessEngine;component/images/role.png" VerticalAlignment="Center" />
+                                                <Image Width="24" Height="24" Source="/Fantasy.Studio.BusinessEngine;component/images/user.png" VerticalAlignment="Center" />
                                                 <TextBlock Text="{Binding Name}" Margin="2,0,0,0" VerticalAlignment="Center" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -80,6 +83,17 @@
                             </Style>
                         </Button.Style>
                     </Button>
+                    <TextBlock HorizontalAlignment="Center" Margin="0, 20, 0, 0"  Text="Drag a user here or click 'Add' button to add a user for this role." VerticalAlignment="Top" TextWrapping="Wrap" FontStyle="Italic" Foreground="DarkGray" >
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock" >
+                                    <Style.Triggers >
+                                        <DataTrigger Binding="{Binding HasItems, ElementName=MembersListView}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                    </TextBlock>
                 </Grid>
             </GroupBox>
         </StackPanel>

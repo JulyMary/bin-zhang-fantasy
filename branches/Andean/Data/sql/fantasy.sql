@@ -1,9 +1,15 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     28/09/2011 3:41:38 PM                        */
+/* Created on:     29/09/2011 9:42:47 AM                        */
 /*==============================================================*/
+use fantasy
+go
 
-use Fantasy
+if exists (select 1
+          from sysobjects
+          where id = object_id('"CLR TRIGGER_BUSINESSPACKAGE"')
+          and type = 'TR')
+   drop trigger "CLR TRIGGER_BUSINESSPACKAGE"
 go
 
 if exists (select 1
@@ -116,6 +122,13 @@ if exists (select 1
    where r.fkeyid = object_id('BUSINESSENUMVALUE') and o.name = 'FK_BUSNIESS_ENUM_ENUMVALUES')
 alter table BUSINESSENUMVALUE
    drop constraint FK_BUSNIESS_ENUM_ENUMVALUES
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BUSINESSEXTRASCRIPT') and o.name = 'FK_BUSINESS_PACKAGE_SCRIPT')
+alter table BUSINESSEXTRASCRIPT
+   drop constraint FK_BUSINESS_PACKAGE_SCRIPT
 go
 
 if exists (select 1
@@ -407,6 +420,22 @@ if exists (select 1
            where  id = object_id('BUSINESSENUMVALUE')
             and   type = 'U')
    drop table BUSINESSENUMVALUE
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BUSINESSEXTRASCRIPT')
+            and   name  = 'PACKAGEEXTRASCRIPTS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BUSINESSEXTRASCRIPT.PACKAGEEXTRASCRIPTS_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BUSINESSEXTRASCRIPT')
+            and   type = 'U')
+   drop table BUSINESSEXTRASCRIPT
 go
 
 if exists (select 1
@@ -911,6 +940,30 @@ ENUMID ASC
 go
 
 /*==============================================================*/
+/* Table: BUSINESSEXTRASCRIPT                                   */
+/*==============================================================*/
+create table BUSINESSEXTRASCRIPT (
+   ID                   T_GUID               not null,
+   PACKAGEID            T_GUID               not null,
+   MODIFICATIONTIME     datetime             not null,
+   CREATIONTIME         datetime             not null,
+   ISSYSTEM             bit                  not null,
+   NAME                 T_NAME               not null,
+   PROJECTTYPE          int                  not null,
+   SCRIPT               text                 null,
+   constraint PK_BUSINESSEXTRASCRIPT primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: PACKAGEEXTRASCRIPTS_FK                                */
+/*==============================================================*/
+create index PACKAGEEXTRASCRIPTS_FK on BUSINESSEXTRASCRIPT (
+PACKAGEID ASC
+)
+go
+
+/*==============================================================*/
 /* Table: BUSINESSOBJECT                                        */
 /*==============================================================*/
 create table BUSINESSOBJECT (
@@ -1191,6 +1244,11 @@ alter table BUSINESSENUMVALUE
          on delete cascade
 go
 
+alter table BUSINESSEXTRASCRIPT
+   add constraint FK_BUSINESS_PACKAGE_SCRIPT foreign key (PACKAGEID)
+      references BUSINESSPACKAGE (ID)
+go
+
 alter table BUSINESSOBJECT
    add constraint FK_BUSINESS_BUSINESSC_BUSINESS foreign key (CLASSID)
       references BUSINESSCLASS (ID)
@@ -1243,4 +1301,5 @@ alter table BUSINESSUSERROLE
       references BUSINESSUSER (ID)
          on delete cascade
 go
+
 
