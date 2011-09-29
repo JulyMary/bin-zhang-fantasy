@@ -7,7 +7,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.PackageEditing
 {
-    public class PackageSubfolderAdpterFactory : ObjectWithSite, IAdapterFactory
+    public class PackageSubfolderAdapterFactory : ObjectWithSite, IAdapterFactory
     {
         #region IAdapterFactory Members
 

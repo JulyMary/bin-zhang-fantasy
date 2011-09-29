@@ -147,6 +147,9 @@
   <data name="DefaultApplicationCodeNameSuffix" xml:space="preserve">
     <value>Handler</value>
   </data>
+  <data name="DefaultCodePanelTitle" xml:space="preserve">
+    <value>Code</value>
+  </data>
   <data name="DefaultNewBusinessApplicationName" xml:space="preserve">
     <value>New Application</value>
   </data>

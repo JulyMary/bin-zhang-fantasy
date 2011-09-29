@@ -37,5 +37,19 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         // Using a DependencyProperty as the backing store for TextDocument.  This enables animation, styling, binding, etc...
         public static readonly DependencyPropertyKey TextDocumentPropertyKey =
             DependencyProperty.RegisterReadOnly("TextDocument", typeof(TextDocument), typeof(CSharpEditor), new UIPropertyMetadata(null));
+
+
+
+        public bool IsReadOnly
+        {
+            get { return (bool)GetValue(IsReadOnlyProperty); }
+            set { SetValue(IsReadOnlyProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty IsReadOnlyProperty =
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(CSharpEditor), new UIPropertyMetadata(false));
+
+
     }
 }

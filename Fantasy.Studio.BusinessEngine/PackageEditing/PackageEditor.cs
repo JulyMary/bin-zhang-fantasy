@@ -13,11 +13,13 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
         public override string EditingPanelPath
         {
             get { return "fantasy/studio/businessengine/packageeditor/panels"; }
+           
         }
 
         public override string CommandBindingPath
         {
             get { return "fantasy/studio/businessengine/packageeditor/commandbindings"; }
+           
         }
 
         public override string DocumentName
