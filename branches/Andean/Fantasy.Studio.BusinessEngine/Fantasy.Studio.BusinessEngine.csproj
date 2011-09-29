@@ -325,6 +325,10 @@
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="CodeGenerating\BusinessClassT4Service.cs" />
+    <Compile Include="CodeGenerating\BusinessClassT4Listener.cs" />
+    <Compile Include="CodeGenerating\BusinessClassT4EngineHost.cs" />
+    <Compile Include="CodeGenerating\IBusinessClassT4Service.cs" />
     <Compile Include="UserRoleEditing\AddRoleCommand.cs" />
     <Compile Include="UserRoleEditing\AddUserCommand.cs" />
     <Compile Include="UserRoleEditing\BusinessRolePikcerModel.cs" />

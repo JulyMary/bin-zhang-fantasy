@@ -29,5 +29,8 @@
     <Setting Name="DefaultParticipantACLPanelLeftColumnWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
     </Setting>
+    <Setting Name="BusinessClassT4FilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\TextTemplating\BusinessClass.tt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
