@@ -9,7 +9,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties
 {
     partial class Settings 
     {
-        private string ExtractToFullPath(string value)
+        public static string ExtractToFullPath(string value)
         {
             string rs = Environment.ExpandEnvironmentVariables(value);
 

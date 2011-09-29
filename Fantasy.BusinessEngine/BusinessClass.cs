@@ -10,7 +10,7 @@ namespace Fantasy.BusinessEngine
     {
         public BusinessClass()
         {
-            
+  
         }
 
         public virtual string Name
@@ -45,7 +45,6 @@ namespace Fantasy.BusinessEngine
                 return this.Package != null && this.Package.Id != BusinessPackage.RootPackageId ? this.Package.Name + "." + this.Name : this.Name;
             }
         }
-
 
         public virtual string FullCodeName
         {
@@ -91,8 +90,6 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("ParentClass", value);
             }
         }
-
-
 
         private IObservableList<BusinessClass> _persistedChildClasses = new ObservableList<BusinessClass>();
         protected internal virtual IObservableList<BusinessClass> PersistedChildClasses
@@ -290,10 +287,6 @@ namespace Fantasy.BusinessEngine
                 }
             }
         }
-
-
-        
-
 
         private ObservableListView<BusinessAssociation> _rightAssociations;
         public virtual IObservableList<BusinessAssociation> RightAssociations
