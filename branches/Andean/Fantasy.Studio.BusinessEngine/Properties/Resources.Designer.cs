@@ -151,6 +151,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string DefaultCodePanelTitle {
+            get {
+                return ResourceManager.GetString("DefaultCodePanelTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Application.
         /// </summary>
         public static string DefaultNewBusinessApplicationName {

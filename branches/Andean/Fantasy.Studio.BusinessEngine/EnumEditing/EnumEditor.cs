@@ -13,11 +13,13 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
         public override string EditingPanelPath
         {
             get { return "fantasy/studio/businessengine/enumeditor/panels"; }
+            
         }
 
         public override string CommandBindingPath
         {
             get { return "fantasy/studio/businessengine/enumeditor/commandbindings"; }
+            
         }
 
         public override string DocumentName

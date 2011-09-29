@@ -31,7 +31,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         public abstract string EditingPanelPath { get; }
 
-        public abstract string CommandBindingPath { get;}
+        public abstract string CommandBindingPath { get; }
             
 
       

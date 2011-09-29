@@ -40,6 +40,14 @@
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\External\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Microsoft.VisualStudio.TextTemplating.10.0.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.Interfaces.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External\Microsoft.VisualStudio.TextTemplating.Interfaces.10.0.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\Microsoft.WindowsAPICodePack.dll</HintPath>
@@ -195,14 +203,22 @@
     <Compile Include="ClassEditing\AddClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionAdorner.cs" />
     <Compile Include="ClassEditing\BusinessClassNameSetAction.cs" />
-    <Compile Include="ClassEditing\ClassScript.cs" />
+    <Compile Include="ClassEditing\BusinessClassScript.cs" />
+    <Compile Include="ClassEditing\BusinessClassAutoScript.cs" />
+    <Compile Include="ClassEditing\ClassAutoScriptProvider.cs" />
+    <Compile Include="CodeEditing\ScriptEditor.cs" />
+    <Compile Include="ClassEditing\ClassScriptProvider.cs" />
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
     <Compile Include="ClassDiagramEditing\Connection\IConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ConnectionArgs.cs" />
     <Compile Include="CodeEditing\CSharpEditor.xaml.cs">
       <DependentUpon>CSharpEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CodeEditing\EntityScript.cs" />
+    <Compile Include="CodeEditing\EntityScriptAdapterFactory.cs" />
+    <Compile Include="CodeEditing\IEntityScript.cs" />
+    <Compile Include="CodeEditing\EntityScriptEditingPanel.xaml.cs">
+      <DependentUpon>EntityScriptEditingPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Conditions\ClassHasRecord.cs" />
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
@@ -256,7 +272,7 @@
     <Compile Include="ClassEditing\PackageClassesProvider.cs" />
     <Compile Include="ClassEditing\PackageObjectModelFolderProvider.cs" />
     <Compile Include="PackageEditing\DeletePackageCommand.cs" />
-    <Compile Include="PackageEditing\PackageSubfolderAdpterFactory.cs" />
+    <Compile Include="PackageEditing\PackageSubfolderAdapterFactory.cs" />
     <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
     <Compile Include="InvokerMemberConverter.cs" />
@@ -384,6 +400,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\csharpfile.png" />
+    <Resource Include="images\csharpfilesmall.png" />
     <Resource Include="images\Properties.ico" />
     <Resource Include="images\acl.png" />
     <Resource Include="images\classacl.png" />
@@ -402,6 +420,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CodeEditing\CSharpEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CodeEditing\EntityScriptEditingPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

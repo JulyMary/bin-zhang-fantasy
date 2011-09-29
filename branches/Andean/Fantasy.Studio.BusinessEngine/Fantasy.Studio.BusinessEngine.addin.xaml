@@ -29,9 +29,15 @@
         </Adapter>
         <Adapter ID="PackageSubFolder">
             <Adapter.Factory>
-                <sbe:PackageSubfolderAdpterFactory />
+                <sbe:PackageSubfolderAdapterFactory />
             </Adapter.Factory>
             <x:Type Type="{x:Type sbe:IPackageSubfolder}" />
+        </Adapter>
+        <Adapter ID="EntityScript">
+            <Adapter.Factory>
+                <sbe:EntityScriptAdapterFactory />
+            </Adapter.Factory>
+            <x:Type Type="{x:Type sbe:IEntityScript}" />
         </Adapter>
     </Extension>
     <Extension Path="fantasy/applicationsettings">
@@ -433,6 +439,7 @@
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
+            <TreeNodeChildProvider ID="script" Provider="{New sbe:ClassScriptProvider}" />
         </TreeNode>
         <TreeNode ID="classDiagram" TargetType="{x:Type be:BusinessClassDiagram}" Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/classdiagram/contextmenu"></TreeNode>
         <TreeNode ID="enum" TargetType="{x:Type be:BusinessEnum}" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/enum/contextmenu">
@@ -479,6 +486,12 @@
             <TreeNodeChildProvider ID="acls" Provider="{New sbe:ApplicationParticipantACLProvider}" />
         </TreeNode>
         <TreeNode ID="ParticipantACL" TargetType="{x:Type sbe:ParticipantACL}" Icon="/Fantasy.Studio.BusinessEngine;component/images/acl.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/participantACL/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}"></TreeNode>
+        <TreeNode ID="ClassScript" TargetType="{x:Type sbe:BusinessClassScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
+            <TreeNodeChildProvider ID="ClassAutoScript" Provider="{New sbe:ClassAutoScriptProvider}"/>
+        </TreeNode>
+        <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
+
+        </TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
@@ -656,6 +669,15 @@
             </Object.Conditional>
             <sbe:ParticipantACLEditor />
         </Object>
+        <Object ID="ScriptEditor">
+            <Object.Conditional>
+                <Or>
+                    <IsTypeOf Type="{x:Type sbe:BusinessClassScript}" />
+                    <IsTypeOf Type="{x:Type sbe:BusinessClassAutoScript}" />
+                </Or>
+            </Object.Conditional>
+            <sbe:ScriptEditor/>
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
@@ -736,5 +758,13 @@
         </ToolBoxItemBuilder>
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/scripteditor/panels">
+        <Object ID="ScriptPanel">
+            <sbe:EntityScriptEditingPanel />
+        </Object>
+    </Extension>
+    <Extension Path="fantasy/studio/businessengine/scripteditor/commandbindings">
+        
+    </Extension>
 
 </AddIn>
