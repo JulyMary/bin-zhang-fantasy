@@ -6,6 +6,8 @@ using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Studio.BusinessEngine.Properties;
 using Fantasy.Utils;
+using Fantasy.Studio.BusinessEngine.ApplicationEditing;
+using Fantasy.Studio.BusinessEngine.UserRoleEditing;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -166,6 +168,16 @@ namespace Fantasy.Studio.BusinessEngine
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             rs.FieldName = rs.CodeName.ToUpper();
             rs.Class = @class;
+            if (es is IObjectWithSite)
+            {
+                IBusinessDataTypeRepository dtr = ((IObjectWithSite)es).Site.GetRequiredService<IBusinessDataTypeRepository>();
+                rs.DataType = dtr.Int32;
+                rs.FieldType = rs.DataType.DefaultDatabaseType;
+                rs.Length = rs.DataType.DefaultLength;
+                rs.Precision = rs.DataType.DefaultPrecision; 
+
+            }
+           
             @class.Properties.Add(rs);
 
             return rs;
@@ -178,6 +190,7 @@ namespace Fantasy.Studio.BusinessEngine
                         from u in p.Users
                         select u.Name;
             rs.Name = rs.FullName = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessUserName, query);
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultUserRoleCodeNameSuffix;
             rs.Package = package;
             package.Users.Add(rs);
 
@@ -191,7 +204,7 @@ namespace Fantasy.Studio.BusinessEngine
                         from role in p.Roles
                         select role.Name;
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessRoleName, query);
-
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultUserRoleCodeNameSuffix;
             rs.Package = package;
             package.Roles.Add(rs);
             return rs;
@@ -203,6 +216,7 @@ namespace Fantasy.Studio.BusinessEngine
             BusinessApplication rs = es.CreateEntity<BusinessApplication>();
            
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessApplicationName, package.Enums.Select(c => c.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultApplicationCodeNameSuffix;
             package.Applications.Add(rs);
             rs.Package = package;
             return rs;

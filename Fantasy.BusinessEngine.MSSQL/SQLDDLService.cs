@@ -221,5 +221,25 @@ namespace Fantasy.BusinessEngine.MSSQL
             this.ExecuteSql(sql);
         }
 
+        public long GetRecordCount(BusinessClass @class)
+        {
+            string sql = String.Format("if exists (select 1 from sys.tables where object_id=object_id('{0}.{1}')) select count(*) from [{0}].[{1}]", @class.TableSchema, @class.TableName);
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            using (IDbCommand cmd = es.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                object rs = cmd.ExecuteScalar();
+                if (rs is DBNull)
+                {
+                    return -1;
+                }
+                else
+                {
+                    return Convert.ToInt64(rs);
+                }
+            }
+
+        }
+
     }
 }

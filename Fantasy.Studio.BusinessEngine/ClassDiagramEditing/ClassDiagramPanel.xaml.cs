@@ -50,6 +50,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
                     if (query.Count() > 0)
                     {
+                        
 
                         this._selectionService.SetSelectedComponents(query.ToArray(), SelectionTypes.Replace);
                         this._selectionService.IsReadOnly = query.OfType<Model.ClassGlyph>().Any(n => n.IsShortCut)
@@ -84,14 +85,20 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     {
                         if (Array.IndexOf(selected, shape.DataContext) < 0)
                         {
-                            this.diagramView.SelectionList.Remove(shape);
+                            ((ICommon)shape).IsSelected = false;
+                            //this.diagramView.SelectionList.Remove(shape);
                         }
                     }
 
                     var query = from shape in this.diagramControlModel.Nodes.Cast<ContentControl>().Union(this.diagramControlModel.Connections.Cast<ContentControl>())
                                 where Array.IndexOf(selected, shape.DataContext) >= 0 && this.diagramView.SelectionList.IndexOf(shape) < 0
                                 select shape;
-                    this.diagramView.SelectionList.AddRange(query.ToArray());
+
+                    foreach (ICommon com in query.Cast<ICommon>())
+                    {
+                        com.IsSelected = true;
+                    }
+                   
                 }
                 finally
                 {
@@ -272,11 +279,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             if (parent != null)
             {
 
+                IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
                 Connection.ConnectionAdorner adorner = (Connection.ConnectionAdorner)sender;
 
                 Model.ClassGlyph child = (Model.ClassGlyph)adorner.FirstNode.DataContext;
 
-                if (child.Entity.EntityState == EntityState.New)
+                if (child.Entity.EntityState == EntityState.New || ddl.GetRecordCount(child.Entity) <= 0)
                 {
                     isValid = !parent.Entity.Flatten(c => c.ParentClass).Any(c => c == child.Entity);
                 }

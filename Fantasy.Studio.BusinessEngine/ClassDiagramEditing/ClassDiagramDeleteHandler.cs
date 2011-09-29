@@ -60,9 +60,6 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             Model.ClassDiagram diagram = this.Site.GetRequiredService<Model.ClassDiagram>();
            
-
-           
-
             foreach (object o in selected)
             {
 
@@ -189,6 +186,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             List<object> deletable = new List<object>();
             ISelectionService svc = this.Site.GetRequiredService<ISelectionService>();
+
+            IDDLService ddl = this.Site.GetRequiredService<IDDLService>();
             
             object[] selected = svc.GetSelectedComponents().Cast<object>().ToArray();
            
@@ -206,7 +205,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 else if (o is Model.InheritanceGlyph)
                 {
                     Model.InheritanceGlyph inheritance = (Model.InheritanceGlyph)o;
-                    if (inheritance.DerivedClass.Entity.EntityState != EntityState.New)
+                    if (ddl.GetRecordCount(inheritance.DerivedClass.Entity) > 0)
                     {
                         return false;
                     }
