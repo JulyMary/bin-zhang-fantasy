@@ -6,6 +6,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
     {
         void RegisterClass(BusinessClass @class);
         void UpdateAutoScript(BusinessClass @class);
-        void Update
+        void UpdateScript(BusinessClass @class);
+       
     }
 }
