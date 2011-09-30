@@ -18,7 +18,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             this.Entity = @class;
             this.IsReadOnly = true;
-            this.Name = this.Entity.Name + ".design.cs";
+            this.Name = this.Entity.Name + ".Designer.cs";
             PropertyChangedEventManager.AddListener(this.Entity, this, "AutoScript");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
         }
@@ -62,7 +62,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
                    this.OnPropertyChanged("Content");
                    return true;
                 case "Name":
-                    this.Name = this.Entity.Name + ".design.cs";
+                    this.Name = this.Entity.Name + ".Designer.cs";
                     return true;
 
                 default:

@@ -17,25 +17,206 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
+using System;
+using Fantasy.BusinessEngine;
+using Fantasy.BusinessEngine.Collections;
+
+
 namespace <#=_class.Package.FullCodeName#>
 {
-    public partial class <#=_class.CodeName#>
+    public partial class <#=_class.CodeName#> : <#=_class.ParentClass.FullCodeName#>
 	{
 <#
 foreach(BusinessProperty property in _class.Properties)
-{#>  
-		public virtual <#=property.DataTypeName#> <#=property.CodeName#>
+{
+	string type = GetDataType(property);
+	string name = property.CodeName;
+	#>  
+		public virtual <#=type#> <#=name#>
 		{
 		    get
             {
-                return (<#=property.DataTypeName#>)this.GetValue("<#=property.CodeName#>");
+                return (<#=type#>)this.GetValue("<#=name#>");
             }
             set
             {
-                this.SetValue("<#=property.CodeName#>", value);
+			    <#=type#> old = this.<#=name#>;
+			    if(!Object.Equals(old, value))
+				{
+				    EntityPropertyChangingEventArgs e1 = new EntityPropertyChangingEventArgs(this, "<#=name#>", value, old);
+				    this.On<#=name#>Changing(e1);
+					if(!e1.Cancel)
+					{
+                        if(this.SetValue("<#=name#>", value))
+						{
+					        this.On<#=name#>Changed(new EntityPropertyChangedEventArgs(this, propertyName, value, old));
+						}
+					}
+				}
             }
 		}
-<#}#>	
+		
+		partial void On<#=name#>Changed(EntityPropertyChangedEventArgs e);
+		
+		partial void On<#=name#>Changing(EntityPropertyChangingEventArgs e);
+		
+<#}
+foreach(BusinessAssociation assn in _class.LeftAssociations)
+{
+	string name = assn.RightRoleCode;
+	string type = assn.RightClass.FullCodeName;
+	Cardinality card = new Cardinality(assn.RightCardinality);
+	if(card.IsSingleton)
+	{
+	#>
+		public virtual <#=type#> <#=name#>
+		{
+		    get
+            {
+                return (<#=type#>)this.GetValue("<#=name#>");
+            }
+            set
+            {
+			    <#=type#> old = this.<#=name#>;
+			    if(!Object.Equals(old, value))
+				{
+				    EntityPropertyChangingEventArgs e1 = new EntityPropertyChangingEventArgs(this, "<#=name#>", value, old);
+				    this.On<#=name#>Changing(e1);
+					if(!e1.Cancel)
+					{
+                        if(this.SetValue("<#=name#>", value))
+						{
+					        this.On<#=name#>Changed(new EntityPropertyChangedEventArgs(this, propertyName, value, old));
+						}
+					}
+				}
+            }
+		}
+		
+		partial void On<#=name#>Changed(EntityPropertyChangedEventArgs e);
+		
+		partial void On<#=name#>Changing(EntityPropertyChangingEventArgs e);
+		<#
+	}
+	else
+	{
+	#>
+        protected virtual ObservableList<#=lt()#><#=type#>> Persisted<#=name#>
+        {
+            get
+			{ 
+			    return GetPersistedCollection<#=lt()#><#=type#>>("<#=name#>"); 
+			}
+            private set
+            {
+                SetPersistedCollection("<#=name#>", value);
+            }
+        }
+
+        public virtual BusinessObjectCollection<#=lt()#><#=_class.CodeName#>, <#=type#>> <#=name#>
+        {
+            get
+            {
+               return GetCollection<#=lt()#><#=_class.CodeName#>, <#=type#>>("<#=name#>");
+            }
+        }
+	<#
 	}
 
 }
+
+foreach(BusinessAssociation assn in _class.RightAssociations)
+{
+	string name = assn.LeftRoleCode;
+	string type = assn.LeftClass.FullCodeName;
+	Cardinality card = new Cardinality(assn.LeftCardinality);
+	if(card.IsSingleton)
+	{
+	#>
+		public virtual <#=type#> <#=name#>
+		{
+		    get
+            {
+                return (<#=type#>)this.GetValue("<#=name#>");
+            }
+            set
+            {
+			    <#=type#> old = this.<#=name#>;
+			    if(!Object.Equals(old, value))
+				{
+				    EntityPropertyChangingEventArgs e1 = new EntityPropertyChangingEventArgs(this, "<#=name#>", value, old);
+				    this.On<#=name#>Changing(e1);
+					if(!e1.Cancel)
+					{
+                        if(this.SetValue("<#=name#>", value))
+						{
+					        this.On<#=name#>Changed(new EntityPropertyChangedEventArgs(this, propertyName, value, old));
+						}
+					}
+				}
+            }
+		}
+		
+		partial void On<#=name#>Changed(EntityPropertyChangedEventArgs e);
+		
+		partial void On<#=name#>Changing(EntityPropertyChangingEventArgs e);
+		<#
+	}
+	else
+	{
+	#>
+        protected virtual ObservableList<#=lt()#><#=type#>> Persisted<#=name#>
+        {
+            get
+			{ 
+			    return GetPersistedCollection<#=lt()#><#=type#>>("<#=name#>"); 
+			}
+            private set
+            {
+                SetPersistedCollection("<#=name#>", value);
+            }
+        }
+
+        public virtual BusinessObjectCollection<#=lt()#><#=_class.CodeName#>, <#=type#>> <#=name#>
+        {
+            get
+            {
+               return GetCollection<#=lt()#><#=_class.CodeName#>, <#=type#>>("<#=name#>");
+            }
+        }
+	<#
+	}
+
+}
+#>	
+
+	}
+
+}
+
+<#+
+private string GetDataType(BusinessProperty property)
+{
+	BusinessDataType dataType = property.DataType;
+	if(dataType.Id == BusinessDataType.WellknownIds.Class)
+	{
+		return property.DataClassType.FullCodeName;
+	}
+	else if(dataType.Id == BusinessDataType.WellknownIds.Enum)
+	{
+		return property.DataEnumType.FullCodeName;
+	}
+	else	
+	{
+		return dataType.CodeName;
+	}
+}
+private string lt()
+{
+	return "<";
+}
+public string gt()
+{
+	return ">";
+}
+#>
