@@ -30,7 +30,7 @@
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="BusinessClassT4FilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.\TextTemplating\BusinessClass.tt</Value>
+      <Value Profile="(Default)">.\CodeGenerating\BusinessClass.tt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

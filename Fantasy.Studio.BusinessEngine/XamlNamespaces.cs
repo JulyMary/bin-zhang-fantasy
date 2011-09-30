@@ -18,13 +18,17 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.ApplicationEditing")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.CodeEditing")]
 
+
 [assembly: XmlnsDefinition(XamlNamespaces.DiagramModel, "Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model")]
+[assembly: XmlnsDefinition(XamlNamespaces.CodeGenerating, "Fantasy.Studio.BusinessEngine.CodeGenerating")]  
 
 internal class XamlNamespaces
 {
     public const string Namespace = "urn:schema-fantasy:studio-business-engine";
 
     public const string DiagramModel = "urn:schema-fantasy:studio-business-engine-class-diagram-model";
+
+    public const string CodeGenerating = "urn:schema-fantasy:studio-business-engine-code-generating";
 }
 
 

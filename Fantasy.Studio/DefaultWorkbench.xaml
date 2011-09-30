@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:p="clr-namespace:Fantasy.Studio.Properties"
         Title="Fantasy Studio" 
-        Height="{Binding Path=WorkbenchState.Height, Source={x:Static p:Settings.Default}, Mode=TwoWay}" 
-        Width="{Binding Path=WorkbenchState.Width, Source={x:Static p:Settings.Default},  Mode=TwoWay}" 
-        WindowState="{Binding Path=WorkbenchState.WindowState, Source={x:Static p:Settings.Default},Mode=OneWay}"
-        Icon="/Fantasy.Studio;component/images/fantasy.ico" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="300" d:DesignWidth="400" SizeToContent="Manual" StateChanged="Window_StateChanged">
+        
+        Icon="/Fantasy.Studio;component/images/fantasy.ico" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="300" d:DesignWidth="400" SizeToContent="Manual" SizeChanged="Window_SizeChanged" StateChanged="Window_StateChanged">
     <DockPanel LastChildFill="true" >
         <Border Name="MainMenuTray" DockPanel.Dock="Top"/>
         <ToolBarTray Name="ToolBarTray" DockPanel.Dock="Top" ></ToolBarTray>

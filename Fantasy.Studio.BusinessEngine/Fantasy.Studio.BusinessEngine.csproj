@@ -326,8 +326,8 @@
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="CodeGenerating\BusinessClassT4Service.cs" />
-    <Compile Include="CodeGenerating\BusinessClassT4Listener.cs" />
-    <Compile Include="CodeGenerating\BusinessClassT4EngineHost.cs" />
+    <Compile Include="CodeGenerating\CodeClassChangedHandler.cs" />
+    <Compile Include="CodeGenerating\T4EngineHost.cs" />
     <Compile Include="CodeGenerating\IBusinessClassT4Service.cs" />
     <Compile Include="UserRoleEditing\AddRoleCommand.cs" />
     <Compile Include="UserRoleEditing\AddUserCommand.cs" />
@@ -369,6 +369,11 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="CodeGenerating\BusinessClass.tt">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>BusinessClass.txt</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>None</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -1,4 +1,13 @@
-﻿<AddIn xmlns="urn:schema-fantasy:xaml" xmlns:be="urn:schema-fantasy:business-engine" xmlns:sbe="urn:schema-fantasy:studio-business-engine" xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/presentation" Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
+﻿<AddIn xmlns="urn:schema-fantasy:xaml" xmlns:be="urn:schema-fantasy:business-engine" 
+       xmlns:sbe="urn:schema-fantasy:studio-business-engine" 
+       xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+       xmlns:p="http://schemas.microsoft.com/netfx/2009/xaml/presentation" 
+       xmlns:code="urn:schema-fantasy:studio-business-engine-code-generating"
+       Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" 
+       Name="BusinessEngineStudio" 
+       
+       Version="1.0">
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine" />
     </AddIn.Import>
@@ -44,6 +53,9 @@
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}" />
     </Extension>
     <Extension Path="fantasy/services">
+        <Object ID="BusinessClassT4Service" InsertBefore="nhprovider">
+            <code:BusinessClassT4Service />
+        </Object>
         <Object ID="UpdateLocalAssembliesService" InsertAfter="nhprovider">
             <be:UpdateLocalAssembliesService />
         </Object>
@@ -765,6 +777,28 @@
     </Extension>
     <Extension Path="fantasy/studio/businessengine/scripteditor/commandbindings">
         
+    </Extension>
+
+
+    <Extension Path="fantasy/businessengine/entityhandlers/create">
+
+        <Object ID="CodeClassChanged" InsertAfter="defaultcreatehandler">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessClass}"/>
+            </Object.Conditional>
+            <code:CodeClassChangedHandler/>
+        </Object>
+    </Extension>
+
+
+
+    <Extension Path="fantasy/businessengine/entityhandlers/load">
+        <Object ID="CodeClassChanged" InsertAfter="defaultloadhandler">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessClass}"/>
+            </Object.Conditional>
+            <code:CodeClassChangedHandler/>
+        </Object>
     </Extension>
 
 </AddIn>

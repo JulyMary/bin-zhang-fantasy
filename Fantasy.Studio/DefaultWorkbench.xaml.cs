@@ -15,6 +15,7 @@ using Fantasy.Studio.Services;
 using Fantasy.AddIns;
 using Fantasy.Studio.Properties;
 using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace Fantasy.Studio
 {
@@ -38,8 +39,6 @@ namespace Fantasy.Studio
 
         public virtual void InitializeService()
         {
-
-
             this._messageBox = this.Site.GetRequiredService<IMessageBoxService>();
 
             IMenuService menuSvc = this.Site.GetRequiredService<IMenuService>();
@@ -76,6 +75,83 @@ namespace Fantasy.Studio
                 this.Initialize(this, EventArgs.Empty);
             }
 
+
+            LoadWindowLocation();
+            
+
+            //RectangleF 
+
+        }
+
+        private void LoadWindowLocation()
+        {
+
+            WindowStateSetting setting = Settings.Default.WorkbenchState;
+
+
+            System.Drawing.Rectangle windowRect = Settings.Default.WorkbenchState.GetBounds();
+
+            var query = from screen in System.Windows.Forms.Screen.AllScreens
+                        select screen.Bounds;
+            if (!query.Any(b => b.IntersectsWith(windowRect)))
+            {
+                setting.Left = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Left;
+                setting.Top = System.Windows.Forms.Screen.PrimaryScreen.Bounds.Top;
+            }
+
+            //this.WindowState = setting.WindowState;
+            if (this.Left != setting.Left || this.Top != setting.Top)
+            {
+                this.Left = setting.Left;
+                this.Top = setting.Top;
+                EventHandler handler = null;
+                handler = (sender, e) =>
+                    {
+                        this.WindowState = setting.WindowState;
+                        this.LocationChanged -= handler;
+                        this.LocationChanged += new EventHandler(Window_LocationChanged);
+                    };
+                this.LocationChanged += handler;
+            }
+            else
+            {
+                this.LocationChanged += new EventHandler(Window_LocationChanged);
+            }
+           
+            this.Width = setting.Width;
+            this.Height = setting.Height;
+
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
+            {
+                if (this.WindowState == System.Windows.WindowState.Normal)
+                {
+                    WindowStateSetting setting = Settings.Default.WorkbenchState;
+                    setting.Left = this.Left;
+                    setting.Top = this.Top;
+                }
+            }));
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState != System.Windows.WindowState.Minimized)
+            {
+                Settings.Default.WorkbenchState.WindowState = this.WindowState;
+            }
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (this.WindowState == System.Windows.WindowState.Normal)
+            {
+                WindowStateSetting setting = Settings.Default.WorkbenchState;
+                setting.Width = this.Width;
+                setting.Height = this.Height;
+            }
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -84,10 +160,14 @@ namespace Fantasy.Studio
 
             e.Cancel = !this.CloseAllViews();
 
-            if (!e.Cancel && this.Layout != null)
+            if (!e.Cancel)
             {
-                this.Layout.Save();
+                if (this.Layout != null)
+                {
+                    this.Layout.Save();
+                }
             }
+           
         }
 
 
@@ -207,15 +287,6 @@ namespace Fantasy.Studio
             this.OnActiveWorkbenchWindowChanged(e);
         }
 
-
-
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            if (this.WindowState != System.Windows.WindowState.Minimized)
-            {
-                Settings.Default.WorkbenchState.WindowState = this.WindowState;
-            }
-        }
 
 
 
@@ -466,5 +537,8 @@ namespace Fantasy.Studio
         }
 
         #endregion
+
+       
+        
     }
 }
