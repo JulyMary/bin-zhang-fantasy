@@ -64,6 +64,7 @@ namespace Fantasy.BusinessEngine
                 {
                     _entityState = value;
                     this.OnEntityStateChanged(EventArgs.Empty);
+                    this.OnNotifyPropertyChangedPropertyChanged("EntityState");
                 }
             }
         }
@@ -245,6 +246,34 @@ namespace Fantasy.BusinessEngine
         public override int GetHashCode()
         {
             return this.Id.GetHashCode();
+        }
+
+
+        public static bool operator == (BusinessEntity x, BusinessEntity y)
+        {
+            if (Object.Equals(x, null) && Object.Equals(x, null))
+            {
+                return true;
+            }
+            else if (Object.Equals(x, null))
+            {
+                return false;
+
+            }
+            else if (Object.Equals(y, null))
+            {
+                return false;
+            }
+            else
+            {
+                return x.Id == y.Id;
+            }
+
+        }
+
+        public static bool operator !=(BusinessEntity x, BusinessEntity y)
+        {
+            return !(x == y);
         }
 
 

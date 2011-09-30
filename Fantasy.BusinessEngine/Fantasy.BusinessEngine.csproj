@@ -69,6 +69,7 @@
     <Compile Include="BusinessEntity.cs" />
     <Compile Include="BusinessEnum.cs" />
     <Compile Include="BusinessEnumValue.cs" />
+    <Compile Include="BusinessObject.cs" />
     <Compile Include="BusinessObjectAccess.cs" />
     <Compile Include="BusinessObjectMemberTypes.cs" />
     <Compile Include="BusinessObjectSecurity.cs" />
@@ -77,6 +78,8 @@
     <Compile Include="BusinessProperty.cs" />
     <Compile Include="BusinessRole.cs" />
     <Compile Include="BusinessUser.cs" />
+    <Compile Include="Cardinality.cs" />
+    <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />
     <Compile Include="Collections\IObservableSet.cs" />
     <Compile Include="Collections\ObservableList.cs" />
