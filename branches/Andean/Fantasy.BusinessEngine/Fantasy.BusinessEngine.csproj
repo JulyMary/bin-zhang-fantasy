@@ -70,7 +70,6 @@
     <Compile Include="BusinessEnum.cs" />
     <Compile Include="BusinessEnumValue.cs" />
     <Compile Include="BusinessObject.cs" />
-    <Compile Include="BusinessObjectAccess.cs" />
     <Compile Include="BusinessObjectMemberTypes.cs" />
     <Compile Include="BusinessObjectSecurity.cs" />
     <Compile Include="BusinessObjectMemberSecurity.cs" />
@@ -88,6 +87,7 @@
     <Compile Include="BusinessAssociation.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="Encryption.cs" />
+    <Compile Include="EntityPropertyChangedEventManager.cs" />
     <Compile Include="Events\BusinessAssociationCreateOrderHandler.cs" />
     <Compile Include="Events\BusinessAssociationCreateTableHandler.cs" />
     <Compile Include="Events\BusinessAssociationDropTableHandler.cs" />

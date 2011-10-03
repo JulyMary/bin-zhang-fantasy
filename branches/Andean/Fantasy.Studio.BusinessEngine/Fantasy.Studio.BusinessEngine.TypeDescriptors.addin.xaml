@@ -7,8 +7,7 @@
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine"/>
     </AddIn.Import>
-    
-    
+
     <Extension Path="fantasy/studio/typedescriptors">
         <TypeDescriptor ID="businessPackage" TargetType="{x:Type be:BusinessPackage}">
             <TypeDescriptor.Conditional>
@@ -339,6 +338,11 @@
         </TypeDescriptor>
 
         <TypeDescriptor ID="ParticipantACL" TargetType="{x:Type sbe:ParticipantACL}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
+            
+        </TypeDescriptor>
+
+        <TypeDescriptor ID="IEntityScript" TargetType="{x:Type sbe:IEntityScript}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
         </TypeDescriptor>
     </Extension>

@@ -7,7 +7,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 {
-    public class CodeClassChangedHandler : ObjectWithSite, IEntityEventHandler
+    public class ClassChangedHandler : ObjectWithSite, IEntityEventHandler
     {
 
         #region IEntityEventHandler Members
@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
         {
             BusinessClass @class = (BusinessClass)e.Entity;
 
-            IBusinessClassT4Service svc = this.Site.GetRequiredService<IBusinessClassT4Service>();
+            IBusinessClassCodeGenerator svc = this.Site.GetRequiredService<IBusinessClassCodeGenerator>();
             if (!@class.IsSystem)
             {
                 svc.RegisterClass(@class);

@@ -53,8 +53,14 @@
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}" />
     </Extension>
     <Extension Path="fantasy/services">
-        <Object ID="BusinessClassT4Service" InsertBefore="nhprovider">
-            <code:BusinessClassT4Service />
+        <Object ID="RefactoryService">
+            <code:RefactoryService/>
+        </Object>
+        <Object ID="T4Service">
+            <code:T4Service/>
+        </Object>
+        <Object ID="BusinessClassCodeGenerator" InsertBefore="nhprovider">
+            <code:BusinessClassCodeGenerator />
         </Object>
         <Object ID="UpdateLocalAssembliesService" InsertAfter="nhprovider">
             <be:UpdateLocalAssembliesService />

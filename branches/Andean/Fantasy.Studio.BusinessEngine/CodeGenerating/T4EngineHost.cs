@@ -6,13 +6,15 @@ using Microsoft.VisualStudio.TextTemplating;
 using System.Reflection;
 using Fantasy.IO;
 using System.CodeDom.Compiler;
+using Fantasy.ServiceModel;
 
 namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 {
-    public class T4EngineHost : ObjectWithSite, ITextTemplatingEngineHost
+    public class T4EngineHost : ServiceContainer, ITextTemplatingEngineHost
     {
 
-        public T4EngineHost()
+        public T4EngineHost(IServiceProvider parentServices)
+            : base(parentServices)
         {
             this.OutputEncoding = Encoding.Unicode;
         }

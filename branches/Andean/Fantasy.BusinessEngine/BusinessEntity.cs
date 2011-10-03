@@ -29,9 +29,9 @@ namespace Fantasy.BusinessEngine
             return this._values.GetValueOrDefault(propertyName, defaultValue);
         }
 
-        protected virtual void SetValue(string propertyName, object value)
+        protected virtual bool SetValue(string propertyName, object value)
         {
-
+            bool rs = false;
             PropertyInfo prop = this.GetType().GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.GetProperty);
             object old = prop.GetValue(this, null);
             if (old != value)
@@ -46,10 +46,13 @@ namespace Fantasy.BusinessEngine
                     }
 
                     this._values[propertyName] = value;
+                    rs = true;
                     this.OnPropertyChanged(new EntityPropertyChangedEventArgs(this, propertyName, value, old));
                 }
                
             }
+
+            return rs;
         }
 
 
@@ -251,7 +254,7 @@ namespace Fantasy.BusinessEngine
 
         public static bool operator == (BusinessEntity x, BusinessEntity y)
         {
-            if (Object.Equals(x, null) && Object.Equals(x, null))
+            if (Object.Equals(x, null) && Object.Equals(y, null))
             {
                 return true;
             }
