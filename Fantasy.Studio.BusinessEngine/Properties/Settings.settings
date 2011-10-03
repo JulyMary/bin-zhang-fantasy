@@ -29,8 +29,11 @@
     <Setting Name="DefaultParticipantACLPanelLeftColumnWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
     </Setting>
-    <Setting Name="BusinessClassT4FilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.\CodeGenerating\BusinessClass.tt</Value>
+    <Setting Name="BusinessClassAutoScriptT4Path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\CodeGenerating\BusinessClass.Designer.tt</Value>
+    </Setting>
+    <Setting Name="NewBusinessClassT4Path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\CodeGenerating\NewBusinessClass.tt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

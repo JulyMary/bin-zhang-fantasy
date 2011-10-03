@@ -7,5 +7,7 @@ namespace Fantasy.BusinessEngine
 {
     public class BusinessObject : BusinessEntity
     {
+
+
     }
 }

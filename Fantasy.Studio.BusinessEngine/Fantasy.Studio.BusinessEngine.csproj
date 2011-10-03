@@ -40,6 +40,12 @@
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\External\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\External\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory.CSharp">
+      <HintPath>..\External\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TextTemplating.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\External\Microsoft.VisualStudio.TextTemplating.10.0.dll</HintPath>
@@ -219,6 +225,14 @@
     <Compile Include="CodeEditing\EntityScriptEditingPanel.xaml.cs">
       <DependentUpon>EntityScriptEditingPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CodeGenerating\PackageChangedHandler.cs" />
+    <Compile Include="CodeGenerating\IBusinessPackageCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\INewClassCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\IRefactoryService.cs" />
+    <Compile Include="CodeGenerating\IT4Service.cs" />
+    <Compile Include="CodeGenerating\NodeExtension.cs" />
+    <Compile Include="CodeGenerating\RefactoryService.cs" />
+    <Compile Include="CodeGenerating\T4Service.cs" />
     <Compile Include="Conditions\ClassHasRecord.cs" />
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
@@ -325,10 +339,10 @@
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="CodeGenerating\BusinessClassT4Service.cs" />
-    <Compile Include="CodeGenerating\CodeClassChangedHandler.cs" />
+    <Compile Include="CodeGenerating\BusinessClassCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\ClassChangedHandler.cs" />
     <Compile Include="CodeGenerating\T4EngineHost.cs" />
-    <Compile Include="CodeGenerating\IBusinessClassT4Service.cs" />
+    <Compile Include="CodeGenerating\IBusinessClassCodeGenerator.cs" />
     <Compile Include="UserRoleEditing\AddRoleCommand.cs" />
     <Compile Include="UserRoleEditing\AddUserCommand.cs" />
     <Compile Include="UserRoleEditing\BusinessRolePikcerModel.cs" />
@@ -369,9 +383,14 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="CodeGenerating\BusinessClass.tt">
+    <None Include="CodeGenerating\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="CodeGenerating\NewBusinessClass.tt">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
