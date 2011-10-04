@@ -17,7 +17,7 @@ using System.Windows.Media;
 
 namespace Syncfusion.Windows.Diagram
 {
-    internal partial class ScrollableGrid : Grid, IScrollInfo
+    public partial class ScrollableGrid : Grid, IScrollInfo
     {
         DiagramView view = null;
 
