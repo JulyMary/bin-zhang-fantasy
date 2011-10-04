@@ -72,6 +72,10 @@
     <Compile Include="Conditions\ActiveWindow.cs" />
     <Compile Include="Conditions\SelectionType.cs" />
     <Compile Include="Controls\DoubleClickToggleButton.cs" />
+    <Compile Include="Controls\ExtendableScrollViewer.cs" />
+    <Compile Include="Controls\Previewer.xaml.cs">
+      <DependentUpon>Previewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
     </Compile>
@@ -258,6 +262,10 @@
     <Page Include="Controls\DefaultTooBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Previewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ToolBox.xaml">
       <SubType>Designer</SubType>

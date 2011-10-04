@@ -4,18 +4,104 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:f="urn:schema-fantasy:xaml"
+             
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=diagramControl}" GotKeyboardFocus="UserControl_GotKeyboardFocus" Background="Black">
+             d:DesignHeight="300" d:DesignWidth="300" f:EnhancedFocusScope.IsEnhancedFocusScope="True" FocusManager.FocusedElement="{Binding ElementName=diagramControl}" GotKeyboardFocus="UserControl_GotKeyboardFocus" Background="Black" FontSize="11">
+    <UserControl.Resources>
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" x:Key="ZoomButtonStyle">
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+        <Style TargetType="sf:DiagramView" >
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type sf:DiagramView}">
+                        <Border  Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid x:Name="PART_RulerGrid">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <f:ExtendableScrollViewer  x:Name="PART_ScrollViewer" Grid.Row="1" Grid.Column="1" IsDeferredScrollingEnabled="False" CanContentScroll="True" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Loaded="PART_ScrollViewer_Loaded">
+                                    <sf:ScrollableGrid x:Name="viewgrid">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="{Binding ElementName=PART_Page, Path=Content.Top}"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="{Binding ElementName=PART_Page, Path=Content.Left}"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Rectangle Grid.ColumnSpan="2" Grid.RowSpan="2" x:Name="PART_PageBackground" Fill="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:DiagramView}}, Path=PageBackground}"/>
+                                        <sf:DiagramViewGrid Grid.ColumnSpan="3" Grid.RowSpan="3" x:Name="PART_Grid"/>
+                                        <ContentPresenter Grid.Column="1" Grid.Row="1" x:Name="PART_Page" ContentSource="Page"  Content="{TemplateBinding Page}" />
+                                    </sf:ScrollableGrid>
+                                    <f:ExtendableScrollViewer.VerticalBottom>
+                                        <StackPanel Orientation="Vertical">
+                                            <StackPanel.Resources>
+                                               
+                                            </StackPanel.Resources>
+                                            <Button Command="{x:Static sf:ZoomCommands.ZoomIn}" Style="{StaticResource ZoomButtonStyle}" ToolTip="Zoom in on the diagram">
+                                               
+                                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/zoomin.png"  />
+                                            </Button>
+                                            <Button Command="{x:Static sf:ZoomCommands.Reset}" Style="{StaticResource ZoomButtonStyle}" ToolTip="Zoom the diagram to 100%">
+                                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/zoom100.png" />
+                                            </Button>
+                                            <Button Command="{x:Static sf:ZoomCommands.ZoomOut}" Style="{StaticResource ZoomButtonStyle}">
+                                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/zoomout.png" ToolTip="Zoom out on the diagram" />
+                                            </Button>
+                                        </StackPanel>
+
+                                    </f:ExtendableScrollViewer.VerticalBottom>
+                                    <f:ExtendableScrollViewer.Intersection>
+                                        <Button Style="{StaticResource ZoomButtonStyle}" ToolTip="Launches the thumbnail view" Click="PreviewButton_Click" >
+                                            <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/preview.png"  />
+                                        </Button>
+                                    </f:ExtendableScrollViewer.Intersection>
+                                </f:ExtendableScrollViewer>
+                                <Border  Name="PART_HorizontalRuler" BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:HorizontalRuler}},Path=BorderBrush}" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:HorizontalRuler}},Path=Background}" BorderThickness="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:HorizontalRuler}},Path=BorderThickness}" Grid.Row="0" Grid.Column="1">
+                                    <ContentPresenter   Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:DiagramView}},Path=HorizontalRuler}" />
+                                </Border>
+                                <Border Name="PART_VerticalRuler" BorderBrush="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:VerticalRuler}},Path=BorderBrush}" Background="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:VerticalRuler}},Path=Background}" BorderThickness="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:VerticalRuler}},Path=BorderThickness}" Grid.Row="1" Grid.Column="0">
+                                    <ContentPresenter   Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type sf:DiagramView}},Path=VerticalRuler}" />
+                                </Border>
+                                <Border Background="WhiteSmoke" Grid.Column="0" Grid.Row="0"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </UserControl.Resources>
     <Grid>
+
         <sf:DiagramControl x:Name="diagramControl">
             <sf:DiagramControl.Model>
                 <sf:DiagramModel x:Name="diagramControlModel" />
             </sf:DiagramControl.Model>
-           
             <sf:DiagramControl.View>
                 <sf:DiagramView FocusManager.IsFocusScope="False"   IsZoomEnabled="True" Bounds="0,0,1200,1200" Name="diagramView"
-                    DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop"></sf:DiagramView>
+                    DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                </sf:DiagramView>
             </sf:DiagramControl.View>
         </sf:DiagramControl>
+        <Popup Name="PreviewWindow" Width="200" Height="200" StaysOpen="False" PlacementTarget="{Binding ElementName=diagramView}" Placement="Custom" >
+            <Grid Background="red">
+                <f:Previewer Name="DiagramPreviewer" Visibility="Collapsed" >
+                
+            </f:Previewer>
+            </Grid>
+            
+        </Popup>
     </Grid>
 </UserControl>

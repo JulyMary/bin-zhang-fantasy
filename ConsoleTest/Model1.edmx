@@ -76,7 +76,7 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="Model1" >
+      <Diagram Name="Model1" ZoomLevel="100" >
         <EntityTypeShape EntityType="Model1.Entity1" Width="1.375" PointX="11.125" PointY="4.25" Height="1.211080729166667" />
         <EntityTypeShape EntityType="Model1.Entity2" Width="1.5" PointX="5.875" PointY="5.875" Height="1.0187792968749996" IsExpanded="true" />
         <InheritanceConnector EntityType="Model1.Entity2" ManuallyRouted="false">

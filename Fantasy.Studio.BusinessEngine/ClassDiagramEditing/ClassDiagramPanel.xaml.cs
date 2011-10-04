@@ -22,6 +22,7 @@ using Fantasy.XSerialization;
 using System.Xml.Linq;
 using Syncfusion.Windows.Diagram;
 using System.Diagnostics;
+using System.Windows.Controls.Primitives;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 {
@@ -34,7 +35,23 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             InitializeComponent();
 
+            this.PreviewWindow.CustomPopupPlacementCallback = new System.Windows.Controls.Primitives.CustomPopupPlacementCallback(PlacePreviewWindow);
+
         }
+
+        public CustomPopupPlacement[] PlacePreviewWindow(Size popupSize,
+                                             Size targetSize,
+                                             Point offset)
+        {
+            CustomPopupPlacement placement1 =
+               new CustomPopupPlacement(new Point(targetSize.Width - popupSize.Width, targetSize.Height - popupSize.Height), PopupPrimaryAxis.None);
+
+        
+            CustomPopupPlacement[] ttplaces =
+                    new CustomPopupPlacement[] { placement1};
+            return ttplaces;
+        }
+
 
 
         private bool _selecting = false;
@@ -69,6 +86,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 }
             }
         }
+
+
+
 
         void SelectionService_SelectionChanged(object sender, EventArgs e)
         {
@@ -608,6 +628,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         }
 
+        private void PreviewButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.PreviewWindow.IsOpen = true;
+           
+        }
+
+
+        private void PART_ScrollViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScrollViewer scrollViewer = (ScrollViewer)sender;
+            this.DiagramPreviewer.View = scrollViewer;
+        }
 
     }
 }

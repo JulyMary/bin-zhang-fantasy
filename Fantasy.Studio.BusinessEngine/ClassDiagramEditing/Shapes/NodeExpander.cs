@@ -17,7 +17,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
 
         public NodeExpander()
         {
-
+            
         }
+
+
+
+
+
+        
+
+
     }
 }

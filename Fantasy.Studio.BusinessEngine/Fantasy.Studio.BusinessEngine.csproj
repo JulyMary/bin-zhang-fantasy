@@ -432,6 +432,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\preview.png" />
+    <Resource Include="images\zoom100.png" />
+    <Resource Include="images\zoomin.png" />
+    <Resource Include="images\zoomout.png" />
     <Resource Include="images\csharpfile.png" />
     <Resource Include="images\csharpfilesmall.png" />
     <Resource Include="images\Properties.ico" />
