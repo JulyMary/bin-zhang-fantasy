@@ -21,10 +21,10 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
     public class BusinessClassCodeGenerator : ServiceBase, IBusinessClassCodeGenerator
     {
         private Dictionary<object, BusinessClass> _listenedCollections = new Dictionary<object, BusinessClass>();
-      
+
         public override void InitializeService()
         {
-          
+
             this._classChangedListener = new WeakEventListener(this.ClassChanged);
             this._classDeletedListener = new WeakEventListener(this.ClassDeleted);
             this._propertyCollectionChangedListener = new WeakEventListener(this.PropertyCollectionChanged);
@@ -32,7 +32,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             this._leftAssnChangedListener = new WeakEventListener(this.LeftAssnChanged);
             this._leftAssnCollectionChangedListener = new WeakEventListener(this.LeftAssnCollectionChanged);
             this._rightAssnChangedListener = new WeakEventListener(this.RightAssnChanged);
-            this._rightAssnCollectionChangedListener = new WeakEventListener(this.RightAssnCollectionChanged); 
+            this._rightAssnCollectionChangedListener = new WeakEventListener(this.RightAssnCollectionChanged);
             base.InitializeService();
         }
 
@@ -43,10 +43,10 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 EntityPropertyChangedEventManager.AddListener(@class, this._classChangedListener, propertyName);
             }
 
-           
+
             CollectionChangedEventManager.AddListener(@class.Properties, this._propertyCollectionChangedListener);
             this._listenedCollections.Add(@class.Properties, @class);
-            
+
 
             foreach (BusinessProperty property in @class.Properties)
             {
@@ -64,7 +64,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             {
                 foreach (string propertyName in ListenedLeftAssnProperties)
                 {
-                    EntityPropertyChangedEventManager.AddListener(assn, this._leftAssnChangedListener, propertyName); 
+                    EntityPropertyChangedEventManager.AddListener(assn, this._leftAssnChangedListener, propertyName);
                 }
             }
 
@@ -80,11 +80,11 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             }
 
 
-            EntityStateChangedEventManager.AddListener(@class, _classDeletedListener);  
+            EntityStateChangedEventManager.AddListener(@class, _classDeletedListener);
         }
 
-        private static readonly string[] ListenedClassProperties = new string[] {"CodeName", "Package", "ParentClass"};
-        private static readonly string[] ListenedPropertyProperties = new string[] {"CodeName", "DataTypeName", "IsNullable", "IsCalculated"};
+        private static readonly string[] ListenedClassProperties = new string[] { "CodeName", "Package", "ParentClass" };
+        private static readonly string[] ListenedPropertyProperties = new string[] { "CodeName", "DataType", "DataClassType", "DataEnumType", "IsNullable", "IsCalculated" };
         private static readonly string[] ListenedLeftAssnProperties = new string[] { "RightRoleCode", "RightCardinality" };
         private static readonly string[] ListenedRightAssnProperties = new string[] { "LeftRoleCode", "LeftCardinality" };
 
@@ -140,7 +140,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 }
             }
 
-           
+
             BusinessClass @class = this._listenedCollections[sender];
             UpdateAutoScript(@class);
             return true;
@@ -224,15 +224,15 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                     }
                 }
 
-                EntityStateChangedEventManager.RemoveListener(@class, _classDeletedListener); 
- 
+                EntityStateChangedEventManager.RemoveListener(@class, _classDeletedListener);
+
             }
             return true;
         }
 
         private bool PropertyCollectionChanged(Type managerType, object sender, EventArgs e)
         {
-           
+
             NotifyCollectionChangedEventArgs args = (NotifyCollectionChangedEventArgs)e;
             if (args.Action != NotifyCollectionChangedAction.Move)
             {
@@ -257,7 +257,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                     }
                 }
             }
-            
+
             IObservableList<BusinessProperty> collection = (IObservableList<BusinessProperty>)sender;
             BusinessClass @class = this._listenedCollections[collection];
             UpdateAutoScript(@class);
@@ -280,11 +280,11 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 {
                     this.Rename(@class);
                 }
-                    
+
 
             }
             UpdateAutoScript(@class);
-            
+
             return true;
 
         }
@@ -336,13 +336,15 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                     IEntityService es = this.Site.GetRequiredService<IEntityService>();
                     IBusinessDataTypeRepository dts = this.Site.GetRequiredService<IBusinessDataTypeRepository>();
                     BusinessDataType classType = dts.Class;
+
                     var q1 = @class.ChildClasses
                         .Union(from assn in @class.LeftAssociations select assn.RightClass)
                         .Union(from assn in @class.RightAssociations select assn.LeftClass)
-                        .Union(from prop in es.Query<BusinessProperty>()
-                             where prop.DataType == classType && prop.DataClassType == @class
-                             select prop.Class)
-                        .Distinct().Except(new BusinessClass[] {@class});
+                        .Union(from cls in es.GetRootClass().Flatten(c => c.ChildClasses)
+                               from prop in cls.Properties
+                               where prop.DataType == classType && prop.DataClassType == @class
+                               select prop.Class)
+                        .Distinct().Except(new BusinessClass[] { @class });
                     foreach (BusinessClass relative in q1.ToArray())
                     {
                         this.UpdateAutoScript(relative);
@@ -351,6 +353,6 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
             }
         }
-       
+
     }
 }

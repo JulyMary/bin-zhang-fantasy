@@ -59,6 +59,12 @@
         <Object ID="T4Service">
             <code:T4Service/>
         </Object>
+        <Object ID="BusinessPackageCodeGenerator" >
+            <code:BusinessPackageCodeGenerator/> 
+        </Object>
+        <Object ID="BusinessEnumCodeGenerator">
+            <code:BusinessEnumCodeGenerator/>
+        </Object>
         <Object ID="BusinessClassCodeGenerator" InsertBefore="nhprovider">
             <code:BusinessClassCodeGenerator />
         </Object>
@@ -792,7 +798,19 @@
             <Object.Conditional>
                 <IsTypeOf Type="{x:Type be:BusinessClass}"/>
             </Object.Conditional>
-            <code:CodeClassChangedHandler/>
+            <code:ClassChangedHandler/>
+        </Object>
+        <Object ID="CodePackageChanged">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessPackage}" />
+            </Object.Conditional>
+            <code:PackageChangedHandler />
+        </Object>
+        <Object ID="CodeEnumChanged">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessEnum}" />
+            </Object.Conditional>
+            <code:EnumChangedHandler />
         </Object>
     </Extension>
 
@@ -803,7 +821,19 @@
             <Object.Conditional>
                 <IsTypeOf Type="{x:Type be:BusinessClass}"/>
             </Object.Conditional>
-            <code:CodeClassChangedHandler/>
+            <code:ClassChangedHandler/>
+        </Object>
+        <Object ID="CodePackageChanged">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessPackage}" />
+            </Object.Conditional>
+            <code:PackageChangedHandler />
+        </Object>
+        <Object ID="CodeEnumChanged">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessEnum}" />
+            </Object.Conditional>
+            <code:EnumChangedHandler />
         </Object>
     </Extension>
 
