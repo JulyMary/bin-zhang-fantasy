@@ -46,7 +46,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             CustomPopupPlacement placement1 =
                new CustomPopupPlacement(new Point(targetSize.Width - popupSize.Width, targetSize.Height - popupSize.Height), PopupPrimaryAxis.None);
 
-        
+            //CustomPopupPlacement placement1 =
+            //   new CustomPopupPlacement(new Point(0, 0), PopupPrimaryAxis.None);
             CustomPopupPlacement[] ttplaces =
                     new CustomPopupPlacement[] { placement1};
             return ttplaces;
