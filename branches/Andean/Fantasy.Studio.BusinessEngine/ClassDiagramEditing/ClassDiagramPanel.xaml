@@ -96,7 +96,7 @@
             </sf:DiagramControl.View>
         </sf:DiagramControl>
         <Popup Name="PreviewWindow" Width="200" Height="200" StaysOpen="False" PlacementTarget="{Binding ElementName=diagramView}" Placement="Custom" >
-            <Border BorderThickness="1" BorderBrush="Black">
+            <Border BorderThickness="1" BorderBrush="{x:Static SystemColors.GradientActiveCaptionBrush }" Background="{x:Static SystemColors.AppWorkspaceBrush}">
                 <f:Previewer Name="DiagramPreviewer" />
             </Border>
         </Popup>

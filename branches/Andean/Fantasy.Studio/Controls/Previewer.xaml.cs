@@ -76,8 +76,8 @@ namespace Fantasy.Studio.Controls
         {
             this.ViewPortThumb.Width = this.View.ViewportWidth * this._scale;
             this.ViewPortThumb.Height = this.View.ViewportHeight * this._scale;
-            double vptLeft = this.View.HorizontalOffset * _scale + this._previewLeft;
-            double vptTop = this.View.VerticalOffset * _scale + this._previewTop;
+            double vptLeft = this.View.HorizontalOffset * _scale;
+            double vptTop = this.View.VerticalOffset * _scale;
 
             
             Canvas.SetLeft(this.ViewPortThumb, vptLeft);
@@ -145,15 +145,15 @@ namespace Fantasy.Studio.Controls
 
             Debug.WriteLine(e.HorizontalChange + ", " + e.VerticalChange);
 
-            double offSetX = (e.HorizontalChange / this.PreviewBorder.ActualWidth) * this.View.ExtentWidth + this.View.HorizontalOffset; 
-            offSetX = Math.Max(0, offSetX);
-            offSetX = Math.Min(offSetX, this.View.ExtentWidth - this.View.ViewportWidth);
+            double offsetX = (e.HorizontalChange / this.PreviewBorder.ActualWidth) * this.View.ExtentWidth + this.View.HorizontalOffset; 
+            offsetX = Math.Max(0, offsetX);
+            offsetX = Math.Min(offsetX, this.View.ExtentWidth - this.View.ViewportWidth);
 
             double offsetY = (e.VerticalChange / this.PreviewBorder.ActualHeight) * this.View.ExtentHeight + this.View.VerticalOffset;
             offsetY = Math.Max(0, offsetY);
             offsetY = Math.Min(offsetY, this.View.ExtentHeight - this.View.ViewportHeight);
 
-            this.View.ScrollToHorizontalOffset(offSetX);
+            this.View.ScrollToHorizontalOffset(offsetX);
             this.View.ScrollToVerticalOffset(offsetY);
 
             
@@ -167,6 +167,36 @@ namespace Fantasy.Studio.Controls
                 this.BindingView(this.View);
             }
         }
+
+        private void PreviewBorder_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Point center = e.GetPosition(this.PreviewBorder);
+            double x = center.X - this.ViewPortThumb.Width / 2;
+            double y = center.Y - this.ViewPortThumb.Height / 2;
+
+            if (x < 0)
+            {
+                x = 0;
+            }
+            if (y < 0)
+            {
+                y = 0;
+            }
+
+            double offsetX = x / this._scale;
+            double offsetY = y / this._scale;
+
+            this.View.ScrollToHorizontalOffset(offsetX);
+            this.View.ScrollToVerticalOffset(offsetY);
+ 
+
+        }
+
+
+
+
+
+        
         
     }
 }
