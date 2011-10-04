@@ -4,9 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200" SizeChanged="UserControl_SizeChanged">
-    <Canvas>
-        <Rectangle Name="PreviewRect" Width="100" Height="100"></Rectangle>
-        <Thumb Name="ViewPortThumb" Width="100" Height="100" BorderBrush="Red" Background="{x:Null}" Panel.ZIndex="1" OverridesDefaultStyle="True" BorderThickness="2" DragStarted="ViewPortThumb_DragStarted" DragDelta="ViewPortThumb_DragDelta" />
+             d:DesignHeight="200" d:DesignWidth="200" SizeChanged="UserControl_SizeChanged" Background="White">
+    <UserControl.Resources>
+
+        <Style x:Key="ThumbStyle" TargetType="{x:Type Thumb}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Thumb}">
+                        <Rectangle Width="{TemplateBinding ActualWidth}" Height="{TemplateBinding ActualHeight}" Stroke="Black" StrokeThickness="1"  Opacity="0.4" Fill="LimeGreen"></Rectangle>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Canvas Background="DarkGray">
+        <Border  Name="PreviewBorder" Width="200" Height="200" Background="White" Panel.ZIndex="0" >
+            <Rectangle Name="PreviewRect" ></Rectangle>
+        </Border>
+        
+        <Thumb Name="ViewPortThumb" Width="100" Height="100"  Panel.ZIndex="1" Style="{StaticResource ThumbStyle}"  OverridesDefaultStyle="False"  DragDelta="ViewPortThumb_DragDelta" />
     </Canvas>
 </UserControl>

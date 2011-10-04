@@ -96,12 +96,9 @@
             </sf:DiagramControl.View>
         </sf:DiagramControl>
         <Popup Name="PreviewWindow" Width="200" Height="200" StaysOpen="False" PlacementTarget="{Binding ElementName=diagramView}" Placement="Custom" >
-            <Grid Background="red">
-                <f:Previewer Name="DiagramPreviewer" Visibility="Collapsed" >
-                
-            </f:Previewer>
-            </Grid>
-            
+            <Border BorderThickness="1" BorderBrush="Black">
+                <f:Previewer Name="DiagramPreviewer" />
+            </Border>
         </Popup>
     </Grid>
 </UserControl>
