@@ -108,7 +108,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
                     IEnumerable<object> selected = svc.GetSelectedComponents().Cast<object>();
 
                     var query = from n in this.EnumValueListBox.SelectedItems.Cast<m.EnumValueNode>()
-                                where !selected.Any(o => o == n.Entity)
+                                where !selected.Any(o => Object.Equals(o, n.Entity))
                                 select n;
 
                     foreach (object o in query.ToArray())

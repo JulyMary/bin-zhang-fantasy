@@ -82,7 +82,6 @@
                             <Setter Property="Content" >
                                 <Setter.Value>
                                     <Path Data="M 2,5 H 8 M 5,2 V 8" Stroke="#FF00AAAA" />
-                                    
                                 </Setter.Value>
                             </Setter>
                             <Style.Triggers>
@@ -101,7 +100,7 @@
                     </ToggleButton.Style>
                     
                 </ToggleButton>
-                <ListBox ItemsSource="{Binding Members}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended" BorderBrush="#FF00AAAA">
+                <ListBox ItemsSource="{Binding Members}" MinHeight="23" Name="PropertyListBox" SelectionChanged="PropertyListBox_SelectionChanged" SelectionMode="Extended" BorderBrush="#FF00AAAA" Margin="2">
                     <ListBox.Background>
                         <SolidColorBrush />
                     </ListBox.Background>
@@ -112,14 +111,12 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>  
-                            <Grid Height="23">
-                                <Border Margin="2,2,2,2">
+                            <Grid>
+                                <Border Margin="0">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource mc}}">
+                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource mc}}" VerticalAlignment="Center">
                                         </Image>
-
-
-                                        <TextBlock Text="{Binding Name}">
+                                        <TextBlock Text="{Binding Name}" Margin="2,0,0,0" VerticalAlignment="Center">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
                                                     <Style.Triggers>
@@ -134,7 +131,7 @@
                                 </Border>
                                 <StackPanel Orientation="Horizontal" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center" Name="UpDownPanel">
                                     <StackPanel.Resources>
-                                        <Style TargetType="Image">
+                                        <Style TargetType="f:AutoGrayImage">
                                             <Setter Property="Width" Value="16" />
                                             <Setter Property="Height" Value="16" />
                                         </Style>
