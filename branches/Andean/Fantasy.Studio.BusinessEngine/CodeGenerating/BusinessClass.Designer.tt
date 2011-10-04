@@ -71,21 +71,52 @@ foreach(BusinessAssociation assn in _class.RightAssociations)
 }
 
 <#+
+
+private static readonly Guid[] ValueDataTypeIds = new Guid[] {
+	BusinessDataType.WellknownIds.Boolean,
+	BusinessDataType.WellknownIds.Byte,
+	BusinessDataType.WellknownIds.DateTime, 
+	BusinessDataType.WellknownIds.DateTimeOffset,
+	BusinessDataType.WellknownIds.Decimal,
+	BusinessDataType.WellknownIds.Double,
+	BusinessDataType.WellknownIds.Float, 
+	BusinessDataType.WellknownIds.Guid, 
+	BusinessDataType.WellknownIds.Int16, 
+	BusinessDataType.WellknownIds.Int32, 
+	BusinessDataType.WellknownIds.Int64, 
+	BusinessDataType.WellknownIds.UInt16, 
+	BusinessDataType.WellknownIds.UInt32, 
+	BusinessDataType.WellknownIds.UInt64, 
+	BusinessDataType.WellknownIds.Enum 
+};
+
+private bool IsValueType(BusinessDataType dataType)
+{
+	return Array.IndexOf(ValueDataTypeIds, dataType.Id) >= 0;
+}
+
 private string GetDataType(BusinessProperty property)
 {
 	BusinessDataType dataType = property.DataType;
+	string rs;
 	if(dataType.Id == BusinessDataType.WellknownIds.Class)
 	{
-		return property.DataClassType.FullCodeName;
+		rs = property.DataClassType.FullCodeName;
 	}
 	else if(dataType.Id == BusinessDataType.WellknownIds.Enum)
 	{
-		return property.DataEnumType.FullCodeName;
+		rs = property.DataEnumType.FullCodeName;
 	}
 	else	
 	{
-		return dataType.CodeName;
+		rs = dataType.CodeName;
 	}
+	
+	if(property.IsNullable &&　Array.IndexOf(ValueDataTypeIds, dataType.Id) >= 0)
+	{
+		rs += "?";
+	}
+	return rs;
 }
 
 private void RenderScalar(string name, string type)
@@ -145,5 +176,7 @@ private void RenderCollection(string name, string type)
         }
 <#+
 }
+
+
 
 #>

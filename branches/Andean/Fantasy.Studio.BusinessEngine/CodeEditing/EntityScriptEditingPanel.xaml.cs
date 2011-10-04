@@ -44,8 +44,6 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             this._entityScript = (IEntityScript)document;
             this.csEditor.TextDocument.Text = this._entityScript.Content ?? string.Empty;
             this.IsContentReadOnly  = this.IsReadOnly ||  this._entityScript.IsReadOnly;
-
-
             _entityScriptListener = new WeakEventListener((t, sender, e)=>
                 {
                     switch (((PropertyChangedEventArgs)e).PropertyName )
@@ -80,23 +78,29 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             this.csEditor.TextDocument.TextChanged += new EventHandler(TextDocumentTextChanged);
         }
 
-        void SourceScriptIsReadOnlyChanged(object sender, EventArgs e)
-        {
-            
-        }
-
+       
         void TextDocumentTextChanged(object sender, EventArgs e)
         {
-            this.DirtyState = EditingState.Dirty;
+            if (!this._syncing)
+            {
+                this._syncing = true;
+
+                try
+                {
+                    this._entityScript.Content = this.csEditor.TextDocument.Text;
+                    this.DirtyState = EditingState.Dirty;
+                }
+                finally
+                {
+                    this._syncing = false;
+                }
+            }
+           
         }
 
 
         private bool _syncing = false;
 
-        void SourceScriptChanged(object sender, EventArgs e)
-        {
-            
-        }
 
         private EditingState _dirtyState = EditingState.Clean;
         public virtual EditingState DirtyState
@@ -128,16 +132,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         public void Save()
         {
-            this._syncing = true;
-            try
-            {
-                this._entityScript.Content = this.csEditor.TextDocument.Text;
- 
-            }
-            finally
-            {
-                this._syncing = false;
-            }
+            
             this.DirtyState = EditingState.Clean;
         }
 

@@ -225,6 +225,10 @@
     <Compile Include="CodeEditing\EntityScriptEditingPanel.xaml.cs">
       <DependentUpon>EntityScriptEditingPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CodeGenerating\BusinessPackageCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\EnumChangedHandler.cs" />
+    <Compile Include="CodeGenerating\BusinessEnumCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\IBusinessEnumCodeGenerator.cs" />
     <Compile Include="CodeGenerating\PackageChangedHandler.cs" />
     <Compile Include="CodeGenerating\IBusinessPackageCodeGenerator.cs" />
     <Compile Include="CodeGenerating\INewClassCodeGenerator.cs" />
