@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="200" SizeChanged="UserControl_SizeChanged" Background="White">
+             d:DesignHeight="200" d:DesignWidth="200" SizeChanged="UserControl_SizeChanged">
     <UserControl.Resources>
 
         <Style x:Key="ThumbStyle" TargetType="{x:Type Thumb}">
@@ -18,11 +18,14 @@
         </Style>
 
     </UserControl.Resources>
-    <Canvas Background="DarkGray">
-        <Border  Name="PreviewBorder" Width="200" Height="200" Background="White" Panel.ZIndex="0" >
-            <Rectangle Name="PreviewRect" ></Rectangle>
-        </Border>
-        
-        <Thumb Name="ViewPortThumb" Width="100" Height="100"  Panel.ZIndex="1" Style="{StaticResource ThumbStyle}"  OverridesDefaultStyle="False"  DragDelta="ViewPortThumb_DragDelta" />
+    <Canvas>
+        <Border Background="White"  Name="PreviewBorder" Width="200" Height="200"  Panel.ZIndex="0" PreviewMouseLeftButtonDown="PreviewBorder_PreviewMouseLeftButtonDown">
+            <Grid>
+                <Rectangle Name="PreviewRect"  Panel.ZIndex="0"  ></Rectangle>
+                <Canvas  Panel.ZIndex="1" >
+                    <Thumb Name="ViewPortThumb" Width="100" Height="100" Style="{StaticResource ThumbStyle}"  OverridesDefaultStyle="False"  DragDelta="ViewPortThumb_DragDelta" />
+                </Canvas>
+            </Grid>
+        </Border> 
     </Canvas>
 </UserControl>
