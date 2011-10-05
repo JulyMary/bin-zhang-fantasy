@@ -84,6 +84,9 @@
             <Button ID="SEP1" Text="-" />
             <Button ID="Close" Text="Close"/>
         </Button>
+        <Button ID="Tools" Text="Tools">
+            <Button ID="Options" Text="Options..." Command="{New ShowOptionsWindowCommand}"/>
+        </Button>
     </Extension>
     <Extension Path="fantasy/studio/workbench/toolbars">
         <ToolBar ID="standard" Text="Standard" >
@@ -121,5 +124,11 @@
 
     <Extension Path="fantasy/studio/documents/builders">
         
+    </Extension>
+
+    <Extension Path="fantasy/sutdio/options">
+        <Option ID="environment" Caption="Environment">
+            
+        </Option>
     </Extension>
 </AddIn>

@@ -69,10 +69,15 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Codons\Option.cs" />
+    <Compile Include="Codons\OptionBuilder.cs" />
     <Compile Include="Conditions\ActiveWindow.cs" />
     <Compile Include="Conditions\SelectionType.cs" />
     <Compile Include="Controls\DoubleClickToggleButton.cs" />
     <Compile Include="Controls\ExtendableScrollViewer.cs" />
+    <Compile Include="Controls\IOptionBuilder.cs" />
+    <Compile Include="Controls\IOptionPanel.cs" />
+    <Compile Include="Controls\OptionNode.cs" />
     <Compile Include="Controls\Previewer.xaml.cs">
       <DependentUpon>Previewer.xaml</DependentUpon>
     </Compile>
@@ -103,6 +108,10 @@
     <Compile Include="Controls\AutoGrayImage.cs" />
     <Compile Include="Controls\Views\PlainView.cs" />
     <Compile Include="Descriptor\ListBoxDropDownTypeEditor.cs" />
+    <Compile Include="OptionsWindow.xaml.cs">
+      <DependentUpon>OptionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsWindowModel.cs" />
     <Compile Include="ParameterSource.cs" />
     <Compile Include="CommandTargetProvider.cs" />
     <Compile Include="Controls\DefaultTooBar.xaml.cs">
@@ -195,6 +204,7 @@
     <Compile Include="Services\WPFMonitorSelectionService.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Controls\ToolBoxModel.cs" />
+    <Compile Include="ShowOptionsWindowCommand.cs" />
     <Compile Include="ToolBoxPad.xaml.cs">
       <DependentUpon>ToolBoxPad.xaml</DependentUpon>
     </Compile>
@@ -272,6 +282,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DefaultWorkbench.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="OptionsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

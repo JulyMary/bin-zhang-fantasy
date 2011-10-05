@@ -29,9 +29,9 @@ namespace <#=_class.Package.FullCodeName#>
 <#
 foreach(BusinessProperty property in _class.Properties)
 {
-	    string type = GetDataType(property);
-	    string name = property.CodeName;
-        RenderScalar(name, type);
+    string type = GetDataType(property);
+	string name = property.CodeName;
+    RenderScalar(name, type);
 }
 foreach(BusinessAssociation assn in _class.LeftAssociations)
 {
@@ -44,7 +44,7 @@ foreach(BusinessAssociation assn in _class.LeftAssociations)
 	}
 	else
 	{
-            RenderCollection(name, type);
+        RenderCollection(name, type);
 	}
 
 }
@@ -121,6 +121,7 @@ private string GetDataType(BusinessProperty property)
 
 private void RenderScalar(string name, string type)
 {#>  
+		
 		public virtual <#=type#> <#=name#>
 		{
 		    get
@@ -155,7 +156,8 @@ private void RenderScalar(string name, string type)
 
 private void RenderCollection(string name, string type)
 {#>
-        protected virtual ObservableList<<#=type#>> Persisted<#=name#>
+       
+		protected virtual ObservableList<<#=type#>> Persisted<#=name#>
         {
             get
 			{ 

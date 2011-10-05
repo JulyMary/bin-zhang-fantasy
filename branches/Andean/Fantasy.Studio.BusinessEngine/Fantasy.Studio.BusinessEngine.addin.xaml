@@ -837,4 +837,17 @@
         </Object>
     </Extension>
 
+
+    <Extension Path="fantasy/sutdio/options">
+        <Option ID="ProjectsAndSolutions" Caption="Projects and Solutions">
+            <Option ID="SolutionPath" Caption="Solution Path" Panel="{New sbe:ProjectsPathOptionPanel}"/>
+        </Option>
+    </Extension>
+    
+    <Extension Path="fantasy/sutdio/options/environment">
+        <Option ID="Font" Caption="Font and Colors" Panel="{New sbe:FontAndColorsOptionPanel}">
+            
+        </Option>
+    </Extension>
+
 </AddIn>
