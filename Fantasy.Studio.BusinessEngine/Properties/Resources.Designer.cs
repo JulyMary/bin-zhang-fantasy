@@ -322,6 +322,24 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Solution File | *.sln.
+        /// </summary>
+        public static string SolutionFileDialogFilter {
+            get {
+                return ResourceManager.GetString("SolutionFileDialogFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select solution file path.
+        /// </summary>
+        public static string SolutionFileDialogTitle {
+            get {
+                return ResourceManager.GetString("SolutionFileDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Users.
         /// </summary>
         public static string UserFolderName {

@@ -850,4 +850,8 @@
         </Option>
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/build/projectexporter/itemsgenerators">
+        
+    </Extension>
+
 </AddIn>

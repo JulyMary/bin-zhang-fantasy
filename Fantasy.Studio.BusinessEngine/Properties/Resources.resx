@@ -204,6 +204,12 @@
   <data name="RoleFolderName" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="SolutionFileDialogFilter" xml:space="preserve">
+    <value>Solution File | *.sln</value>
+  </data>
+  <data name="SolutionFileDialogTitle" xml:space="preserve">
+    <value>Select solution file path</value>
+  </data>
   <data name="UserFolderName" xml:space="preserve">
     <value>Users</value>
   </data>

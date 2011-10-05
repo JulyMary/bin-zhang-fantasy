@@ -50,5 +50,8 @@
     <Setting Name="WebAssemblyName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Fantasy.Web</Value>
     </Setting>
+    <Setting Name="ClassLibraryTemplatePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\CodeGenerating\ClassLibraryTemplate.csproj</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
