@@ -35,5 +35,20 @@
     <Setting Name="NewBusinessClassT4Path" Type="System.String" Scope="User">
       <Value Profile="(Default)">.\CodeGenerating\NewBusinessClass.tt</Value>
     </Setting>
+    <Setting Name="CodeEditorFontFamily" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Consolas</Value>
+    </Setting>
+    <Setting Name="CodeEditorFontSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">11</Value>
+    </Setting>
+    <Setting Name="SolutionPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RuntimeAssemblyName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Fantasy.Runtime</Value>
+    </Setting>
+    <Setting Name="WebAssemblyName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Fantasy.Web</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

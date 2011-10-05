@@ -136,6 +136,14 @@
     <Compile Include="AssociationEditing\CardinalityEditor.cs" />
     <Compile Include="AssociationEditing\DeleteAssociationCommand.cs" />
     <Compile Include="AssociationEditing\PackageAssociationFolderProvider.cs" />
+    <Compile Include="Build\IProjectItemsGenerator.cs" />
+    <Compile Include="Build\ProjectExporter.cs" />
+    <Compile Include="Build\ProjectExportOptions.cs" />
+    <Compile Include="Build\ProjectsPathOptionPanelModel.cs" />
+    <Compile Include="Build\Projects.cs" />
+    <Compile Include="Build\ProjectsPathOptionPanel.xaml.cs">
+      <DependentUpon>ProjectsPathOptionPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModeCommand.cs" />
@@ -212,6 +220,10 @@
     <Compile Include="ClassEditing\BusinessClassScript.cs" />
     <Compile Include="ClassEditing\BusinessClassAutoScript.cs" />
     <Compile Include="ClassEditing\ClassAutoScriptProvider.cs" />
+    <Compile Include="CodeEditing\FontAndColorsOptionPanel.xaml.cs">
+      <DependentUpon>FontAndColorsOptionPanel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CodeEditing\FontAndColorsOptionPanelModel.cs" />
     <Compile Include="CodeEditing\ScriptEditor.cs" />
     <Compile Include="ClassEditing\ClassScriptProvider.cs" />
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
@@ -455,11 +467,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Build\ProjectsPathOptionPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CodeEditing\CSharpEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CodeEditing\EntityScriptEditingPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CodeEditing\FontAndColorsOptionPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

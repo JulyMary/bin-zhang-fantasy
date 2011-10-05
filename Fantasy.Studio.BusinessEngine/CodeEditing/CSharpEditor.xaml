@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:props="clr-namespace:Fantasy.Studio.BusinessEngine.Properties"
              Background="{x:Static SystemColors.GradientActiveCaptionBrush}"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <Style TargetType="avalonEdit:TextEditor">
             <Setter Property="SyntaxHighlighting" Value="C#"/>
-            <Setter Property="FontFamily" Value="Consolas" />
-            <Setter Property="FontSize" Value="10pt"/>
+            <Setter Property="FontFamily" Value="{Binding CodeEditorFontFamily, Source={x:Static props:Settings.Default}}" />
+            <Setter Property="FontSize" Value="{Binding CodeEditorFontSize, Source={x:Static props:Settings.Default}}" />
             <Setter Property="Document" Value="{Binding TextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
             <Setter Property="IsReadOnly" Value="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" />
         </Style>
