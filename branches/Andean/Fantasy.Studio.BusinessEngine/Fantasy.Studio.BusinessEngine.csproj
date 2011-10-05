@@ -399,6 +399,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="CodeGenerating\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
@@ -590,6 +591,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <None Include="CodeGenerating\ClassLibraryTemplate.csproj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Content Include="Fantasy.Studio.BusinessEngine.TypeDescriptors.addin.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

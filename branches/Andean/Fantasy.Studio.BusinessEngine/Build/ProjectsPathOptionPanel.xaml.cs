@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Fantasy.Studio.Controls;
+using Microsoft.Win32;
 
 namespace Fantasy.Studio.BusinessEngine.Build
 {
@@ -66,5 +67,21 @@ namespace Fantasy.Studio.BusinessEngine.Build
         public event EventHandler DirtyStateChanged;
 
         #endregion
+
+        private void BrowsSolutionButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.DefaultExt = ".sln"; // Default file extension
+            dlg.Filter = Properties.Resources.SolutionFileDialogFilter; // Filter files by extension
+            dlg.Title = Properties.Resources.SolutionFileDialogTitle;
+            dlg.FileName = this._model.SolutionPath;
+            dlg.AddExtension = true;
+            if ((bool)dlg.ShowDialog())
+            {
+                this._model.SolutionPath = dlg.FileName;
+            }
+        }
+
+      
     }
 }
