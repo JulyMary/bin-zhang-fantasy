@@ -1,0 +1,39 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="Fantasy.Base"#>
+<#@ assembly name="Fantasy.BusinessEngine" #>
+<#@ import namespace="Fantasy"#>
+<#@ import namespace="Fantasy.BusinessEngine"#>
+<#@ import namespace="Fantasy.BusinessEngine.Services"#>
+<#
+    IServiceProvider services = (IServiceProvider)Host;
+	XElement root = services.GetRequiredService<XElement>();
+#>
+
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+<#foreach(XElement project in root.Elements())
+	string name= (string)project.Attribute("name");
+{#>
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<#=name#>", "<#=name + "\\" + name#>.csproj", "<#=(string)project.Attribute("id")#>"
+EndProject
+<#}#>
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<#foreach(XElement project in root.Elements())
+{
+	string id = (string)project.Attribute("id");#>
+        <#=id#>.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		<#=id#>.Debug|Any CPU.Build.0 = Debug|Any CPU
+		<#=id#>.Release|Any CPU.ActiveCfg = Release|Any CPU
+		<#=id#>.Release|Any CPU.Build.0 = Release|Any CPU	
+<#}#>
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
+

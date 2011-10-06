@@ -15,7 +15,7 @@ namespace Fantasy.Studio
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        event EventHandler ICommand.CanExecuteChanged {add {} remove{}}
 
         public void Execute(object parameter)
         {

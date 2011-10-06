@@ -12,7 +12,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
         public ProjectsPathOptionPanelModel()
         {
             this._solutionPath = Settings.Default.SolutionPath;
-            this._runtimeAssemblyName = Settings.Default.RuntimeAssemblyName;
+            this._businessDataAssemblyName = Settings.Default.BusinessDataAssemblyName;
             this._webAssemblyName = Settings.Default.WebAssemblyName;
         }
 
@@ -32,17 +32,17 @@ namespace Fantasy.Studio.BusinessEngine.Build
             }
         }
 
-        private string _runtimeAssemblyName;
+        private string _businessDataAssemblyName;
 
-        public string RuntimeAssemblyName
+        public string BusinessDataAssemblyName
         {
-            get { return _runtimeAssemblyName; }
+            get { return _businessDataAssemblyName; }
             set
             {
-                if (_runtimeAssemblyName != value)
+                if (_businessDataAssemblyName != value)
                 {
-                    _runtimeAssemblyName = value;
-                    this.OnPropertyChanged("RuntimeAssemblyName");
+                    _businessDataAssemblyName = value;
+                    this.OnPropertyChanged("BusinessDataAssemblyName");
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
         public void Save()
         {
             Settings.Default.SolutionPath = this._solutionPath;
-            Settings.Default.RuntimeAssemblyName = this._runtimeAssemblyName;
+            Settings.Default.BusinessDataAssemblyName = this._businessDataAssemblyName;
             Settings.Default.WebAssemblyName = this._webAssemblyName;
         }
     }

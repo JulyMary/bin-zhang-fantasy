@@ -8,6 +8,12 @@ namespace Fantasy.Studio.BusinessEngine.Build
 {
     public class ProjectExportOptions
     {
+
+        public ProjectExportOptions()
+        {
+            this.WriteFile = true;
+        }
+
         public Projects Project { get; set; }
 
         public string SolutionPath { get; set; }
@@ -29,6 +35,8 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 return LongPath.GetDirectoryName(ProjectPath);
             }
         }
+
+        public bool WriteFile { get; set; }
 
 
     }

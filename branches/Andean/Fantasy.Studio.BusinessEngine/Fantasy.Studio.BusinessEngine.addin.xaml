@@ -851,6 +851,19 @@
     </Extension>
 
     <Extension Path="fantasy/studio/businessengine/build/projectexporter/itemsgenerators">
+        <Object ID="reference">
+            <sbe:ReferenceItemsGenerator/>
+        </Object>
+        <Object ID="classes">
+            <sbe:BusinessClassItemsGenerator/>
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/workbench/toolbars/standard">
+
+        <Button ID="ImportProject" Text="Import Project" InsertAfter="Save"  Icon="/Fantasy.Studio.BusinessEngine;component/images/ImportProject.png" />
+        <Button ID="ExportProject" Text="Export Project"  Icon="/Fantasy.Studio.BusinessEngine;component/images/ExportProject.png"
+                Command="{New sbe:ExportProjectCommand}"/>
         
     </Extension>
 
