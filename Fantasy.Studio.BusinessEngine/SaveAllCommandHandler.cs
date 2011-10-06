@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -34,6 +35,13 @@ namespace Fantasy.Studio.BusinessEngine
                         ev.Save();
                     }
                 }
+
+                //foreach (BusinessAssemblyReference reference in es.GetAssemblyReferenceGroup().References)
+                //{
+                //    es.SaveOrUpdate(reference);
+                //}
+
+               
                 es.EndUpdate(true);
             }
             catch

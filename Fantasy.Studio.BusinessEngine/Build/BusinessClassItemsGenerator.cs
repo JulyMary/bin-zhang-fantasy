@@ -31,10 +31,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 XElement item = new XElement(Consts.MSBuildNamespace + "Compile");
                 item.SetAttributeValue("Include", itemName);
                 itemsGroup.Add(item);
-                if (options.WriteFile)
-                {
-                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, itemName), @class.Script, Encoding.Unicode);
-                }
+               
 
                 string designerItemName = itemsFolder + "\\" + @class.CodeName + ".Designer.cs";
                 XElement designerItem = new XElement(Consts.MSBuildNamespace + "Compile");
@@ -45,8 +42,8 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
                 if (options.WriteFile)
                 {
-                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, itemName), @class.Script, Encoding.Unicode);
-                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, designerItemName), @class.AutoScript, Encoding.Unicode); 
+                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, itemName), @class.Script, Encoding.UTF8);
+                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, designerItemName), @class.AutoScript, Encoding.UTF8); 
                 }
 
                 itemsGroup.Add(designerItem); 

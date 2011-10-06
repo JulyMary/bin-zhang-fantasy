@@ -8,12 +8,13 @@
     IServiceProvider services = (IServiceProvider)Host;
 	XElement root = services.GetRequiredService<XElement>();
 #>
-
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 <#foreach(XElement project in root.Elements())
-	string name= (string)project.Attribute("name");
-{#>
+	
+{
+        string name = (string)project.Attribute("name");
+#>
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "<#=name#>", "<#=name + "\\" + name#>.csproj", "<#=(string)project.Attribute("id")#>"
 EndProject
 <#}#>

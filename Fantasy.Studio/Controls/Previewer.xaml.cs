@@ -143,7 +143,7 @@ namespace Fantasy.Studio.Controls
         private void ViewPortThumb_DragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
 
-            Debug.WriteLine(e.HorizontalChange + ", " + e.VerticalChange);
+           
 
             double offsetX = (e.HorizontalChange / this.PreviewBorder.ActualWidth) * this.View.ExtentWidth + this.View.HorizontalOffset; 
             offsetX = Math.Max(0, offsetX);

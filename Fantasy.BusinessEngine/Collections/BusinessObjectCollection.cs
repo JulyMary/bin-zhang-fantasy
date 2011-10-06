@@ -5,16 +5,16 @@ using System.Text;
 
 namespace Fantasy.BusinessEngine.Collections
 {
-    public class BusinessObjectCollection<TParent, TChild> : ObservableListView<TChild> 
-        where TParent : BusinessObject 
+    public class BusinessObjectCollection<TChild> : ObservableListView<TChild> 
+      
         where TChild : BusinessObject
     {
-        public BusinessObjectCollection(TParent parent, IObservableList<TChild> initialSource)
+        public BusinessObjectCollection(IObservableList<TChild> initialSource)
             : base(initialSource)
         {
-            this.Owner = parent;
+            
         }
 
-        public virtual TParent Owner { get; protected set; }
+       
     }
 }

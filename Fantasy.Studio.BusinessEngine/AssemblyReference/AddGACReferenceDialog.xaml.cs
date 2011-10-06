@@ -14,6 +14,9 @@ using System.Reflection;
 using System.GAC;
 using System.Collections;
 using Fantasy.Studio.Controls;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Fantasy.IO;
 
 namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 {
@@ -51,67 +54,35 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
         private GridViewLayoutSetting _propertyGridLayout = new GridViewLayoutSetting();
 
-        private static List<Assembly> _assemblies = null;
+        private static ObservableCollection<Assembly> _assemblies = null;
 
-        public IEnumerable<Assembly> Assemblies
+        public ObservableCollection<Assembly> Assemblies
         {
             get
             {
                 if (_assemblies == null)
                 {
-                    _assemblies = new List<Assembly>();
-
-
-                    IAssemblyEnum enumerator = AssemblyCache.CreateGACEnum();
-                    IAssemblyName ian;
-
-                    StringBuilder sb = new StringBuilder(1024);
-                    while (enumerator.GetNextAssembly(IntPtr.Zero, out ian, 0) == 0)
-                    {
-                        uint len = 1024;
-
-                        ian.GetDisplayName(sb, ref len, ASM_DISPLAY_FLAGS.VERSION | ASM_DISPLAY_FLAGS.CULTURE | ASM_DISPLAY_FLAGS.PUBLIC_KEY_TOKEN);
-
-                        string name = sb.ToString(0, (int)len - 1);
-
-                        try
+                    _assemblies = new ObservableCollection<Assembly>();
+                    System.Windows.Threading.Dispatcher disptacher = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+                    Task.Factory.StartNew(() => 
+                    { 
+                        string dir = Environment.ExpandEnvironmentVariables(@"%windir%\Microsoft.NET\assembly\GAC_MSIL");
+                        foreach(string file in LongPathDirectory.EnumerateAllFiles(dir, "*.dll"))
                         {
-                            Assembly assembly = Assembly.ReflectionOnlyLoad(name);
-                          
-                            _assemblies.Add(assembly);
-                        }
-                        catch
-                        {
-                        }
-                    }
-
-                    _assemblies.Sort((x, y) =>
-                    {
-                        AssemblyName xn = x.GetName();
-                        AssemblyName yn = y.GetName();
-
-                        int cp = Comparer.Default.Compare(xn.Name, yn.Name);
-                        if (cp == 0)
-                        {
-                            foreach (int[] pair in new int[][] {new int[] {xn.Version.Major, yn.Version.Major},
-                            new int[] {xn.Version.Minor, yn.Version.Minor},
-                            new int[] {xn.Version.Build, yn.Version.Build},
-                            new int[] {xn.Version.Revision, yn.Version.Revision}})
+                            Assembly assembly = Assembly.ReflectionOnlyLoadFrom(file);
+                            int pos = _assemblies.BinarySearchBy(assembly.FullName, asm => asm.FullName);
+                            if (pos < 0)
                             {
-                                cp = Comparer.Default.Compare(pair[0], pair[1]);
-                                if (cp != 0)
-                                {
-                                    break;
-                                }
+                                pos = ~pos;
                             }
 
+                            disptacher.Invoke(new Action(() => _assemblies.Insert(pos, assembly)));
+                            
                         }
-
-                        return cp;
-
                     });
-                }
 
+
+                }
                 return _assemblies;
             }
         }
