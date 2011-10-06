@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using Fantasy.Studio.BusinessEngine.Properties;
 using Fantasy.Studio.BusinessEngine.CodeGenerating;
 using System.CodeDom.Compiler;
+using System.IO;
 
 namespace Fantasy.Studio.BusinessEngine.Build
 {
@@ -27,9 +28,18 @@ namespace Fantasy.Studio.BusinessEngine.Build
             IT4Service t4 = this.Site.GetRequiredService<IT4Service>();
             CompilerErrorCollection errors;
             string solutionContent = t4.ProcessTemplate(Settings.ExtractToFullPath(Settings.Default.SolutionTemplatePath), solution, out errors);
-            LongPathFile.WriteAllText(Settings.ExtractToFullPath(Settings.Default.SolutionPath), solutionContent, Encoding.Unicode); 
-  
 
+            Stream fs = new FileStream(Settings.ExtractToFullPath(Settings.Default.SolutionPath), FileMode.Create);
+            fs.WriteByte(239);
+            fs.WriteByte(187);
+            fs.WriteByte(191);
+            fs.WriteByte(13);
+            fs.WriteByte(10);
+            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
+            sw.Write(solutionContent);
+            sw.Close();
+
+            //LongPathFile.WriteAllText(Settings.ExtractToFullPath(Settings.Default.SolutionPath), solutionContent, Encoding.UTF8); 
         }
 
         private void ExportBusinessDataProject(IProjectItemsGenerator[] generators)

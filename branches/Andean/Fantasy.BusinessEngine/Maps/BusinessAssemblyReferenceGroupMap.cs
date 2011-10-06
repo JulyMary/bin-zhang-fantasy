@@ -11,7 +11,7 @@ namespace Fantasy.BusinessEngine.Maps
         public BusinessAssemblyReferenceGroupMap()
         {
             this.Table("ASSEMBLYREFERENCEGROUP");
-            this.HasMany(x => x.PersistedReferences).CollectionType<ObservableList<BusinessAssemblyReference>>().KeyColumn("GROUPID").Cascade.None().Inverse();
+            this.HasMany(x => x.PersistedReferences).CollectionType<ObservableList<BusinessAssemblyReference>>().KeyColumn("GROUPID").Cascade.AllDeleteOrphan().Inverse();
         }
 
 

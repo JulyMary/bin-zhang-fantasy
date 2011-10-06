@@ -6,6 +6,7 @@ using Fantasy.AddIns;
 using System.Xml;
 using System.Xaml;
 using System.Diagnostics;
+using System.IO;
 
 namespace ConsoleTest
 {
@@ -13,19 +14,11 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            AddInParser parser = new AddInParser();
-            XmlReader reader = XmlReader.Create("test.addin.xaml");
-            AddIn addIn = parser.Parse(reader);
-            reader.Close();
+            FileStream fs = new FileStream(@"e:\Bin\Desktop\ClassLibrary1\ClassLibrary1.sln", FileMode.Open);
+            BinaryReader r = new BinaryReader(fs);
+            byte[] b = r.ReadBytes((int)fs.Length);
+            fs.Close();
 
-            //DefaultAddInTree.Initialize(new string[] { "test.addin.xaml" });
-            //object[] rs = AddInTree.Tree.GetTreeNode("fantasy/services").BuildChildItems<object>(null).ToArray();
-
-            //XamlXmlReader reader = new XamlXmlReader("test.addin.xaml");
-            //while (reader.Read())
-            //{
-
-            //}
 
         }
     }

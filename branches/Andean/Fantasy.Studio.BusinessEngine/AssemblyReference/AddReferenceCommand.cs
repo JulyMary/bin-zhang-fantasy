@@ -39,7 +39,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             {
 
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
-                es.BeginUpdate();
+              
                
                     _loader = new AssemblyLoader();
 
