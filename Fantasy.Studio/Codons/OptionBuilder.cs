@@ -27,7 +27,7 @@ namespace Fantasy.Studio.Codons
             }
         }
 
-        private ObjectBuilder _builder;
+        private ObjectBuilder _builder = null;
         [Template("_builder")]
         public IOptionBuilder Builder { get; set; }
     }

@@ -481,14 +481,15 @@ namespace Fantasy.IO {
             }
         }
 
-        public static void WriteAllText(string path, string text)
+
+        public static void WriteAllText(string path, string text, Encoding encoding)
         {
             FileStream fs = Open(path, FileMode.Create, FileAccess.Write);
             try
             {
                 if (text != null)
                 {
-                    byte[] bytes = Encoding.Default.GetBytes(text);
+                    byte[] bytes = encoding.GetBytes(text);
                     fs.Write(bytes, 0, bytes.Length);
                 }
             }
@@ -496,6 +497,11 @@ namespace Fantasy.IO {
             {
                 fs.Close();
             }
+        }
+
+        public static void WriteAllText(string path, string text)
+        {
+            WriteAllText(path, text, Encoding.Default);
         }
 
         public static string ReadAllText(string path)

@@ -7,7 +7,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 {
     public enum Projects
     {
-        Runtime,
+        BusinessData,
         Web
     }
 }

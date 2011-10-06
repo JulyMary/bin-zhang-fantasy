@@ -31,7 +31,7 @@ namespace Fantasy.Studio.Codons
             return rs;
         }
 
-        private ObjectBuilder _panelBuilder;
+        private ObjectBuilder _panelBuilder = null;
         [Template("_panelBuilder")]
         public IOptionPanel Panel { get; set; }
 

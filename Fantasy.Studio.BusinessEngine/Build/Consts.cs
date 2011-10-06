@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Fantasy.BusinessEngine;
 using System.Xml.Linq;
 
 namespace Fantasy.Studio.BusinessEngine.Build
 {
-    public interface IProjectItemsGenerator
+    public static  class Consts
     {
-        void CreateItems(BusinessPackage package, XElement projectElement, ProjectExportOptions options);
+        public static readonly XNamespace MSBuildNamespace = "http://schemas.microsoft.com/developer/msbuild/2003";
     }
 }

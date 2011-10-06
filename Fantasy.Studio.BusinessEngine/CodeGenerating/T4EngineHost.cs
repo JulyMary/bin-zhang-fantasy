@@ -139,6 +139,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                     "System",
                     "System.Collections.Generic",
                     "System.Linq",
+                    "System.Xml.Linq",
                     "System.Text"
                 };
             }

@@ -30,10 +30,10 @@
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="BusinessClassAutoScriptT4Path" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.\CodeGenerating\BusinessClass.Designer.tt</Value>
+      <Value Profile="(Default)">.\Templates\BusinessClass.Designer.tt</Value>
     </Setting>
     <Setting Name="NewBusinessClassT4Path" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.\CodeGenerating\NewBusinessClass.tt</Value>
+      <Value Profile="(Default)">.\Templates\NewBusinessClass.tt</Value>
     </Setting>
     <Setting Name="CodeEditorFontFamily" Type="System.String" Scope="User">
       <Value Profile="(Default)">Consolas</Value>
@@ -44,14 +44,20 @@
     <Setting Name="SolutionPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="RuntimeAssemblyName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Fantasy.Runtime</Value>
+    <Setting Name="BusinessDataAssemblyName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Fantasy.BusinessData</Value>
     </Setting>
     <Setting Name="WebAssemblyName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Fantasy.Web</Value>
     </Setting>
     <Setting Name="ClassLibraryTemplatePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">.\CodeGenerating\ClassLibraryTemplate.csproj</Value>
+      <Value Profile="(Default)">.\Templates\ClassLibraryTemplate.csproj</Value>
+    </Setting>
+    <Setting Name="SolutionTemplatePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Templates\SolutionTemplate.tt</Value>
+    </Setting>
+    <Setting Name="BusinessDataProjectId" Type="System.String" Scope="User">
+      <Value Profile="(Default)">{4CDABEB6-2016-476B-8692-4ED84EBC606D}</Value>
     </Setting>
   </Settings>
 </SettingsFile>

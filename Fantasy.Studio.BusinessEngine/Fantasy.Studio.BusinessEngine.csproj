@@ -136,6 +136,10 @@
     <Compile Include="AssociationEditing\CardinalityEditor.cs" />
     <Compile Include="AssociationEditing\DeleteAssociationCommand.cs" />
     <Compile Include="AssociationEditing\PackageAssociationFolderProvider.cs" />
+    <Compile Include="Build\BusinessClassItemsGenerator.cs" />
+    <Compile Include="Build\BusinessPackageExtension.cs" />
+    <Compile Include="Build\Consts.cs" />
+    <Compile Include="Build\ExportProjectCommand.cs" />
     <Compile Include="Build\IProjectItemsGenerator.cs" />
     <Compile Include="Build\ProjectExporter.cs" />
     <Compile Include="Build\ProjectExportOptions.cs" />
@@ -144,6 +148,7 @@
     <Compile Include="Build\ProjectsPathOptionPanel.xaml.cs">
       <DependentUpon>ProjectsPathOptionPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Build\ReferenceItemsGenerator.cs" />
     <Compile Include="ClassDiagramEditing\AddClassDiagramCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessPropertyCommand.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramModeCommand.cs" />
@@ -399,13 +404,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="CodeGenerating\BusinessClass.Designer.tt">
+    <None Include="Templates\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="CodeGenerating\NewBusinessClass.tt">
+    <None Include="Templates\NewBusinessClass.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -420,6 +424,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Settings.settings.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\SolutionTemplate.tt">
+      <LastGenOutput>SolutionTemplate.cs</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -445,6 +453,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\ExportProject.png" />
+    <Resource Include="images\ImportProject.png" />
     <Resource Include="images\preview.png" />
     <Resource Include="images\zoom100.png" />
     <Resource Include="images\zoomin.png" />
@@ -591,8 +601,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <None Include="CodeGenerating\ClassLibraryTemplate.csproj">
+    <None Include="Templates\ClassLibraryTemplate.csproj">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Fantasy.Studio.BusinessEngine.TypeDescriptors.addin.xaml">
       <SubType>Designer</SubType>
