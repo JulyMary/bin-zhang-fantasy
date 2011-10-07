@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
                     XElement reference = new XElement(Consts.MSBuildNamespace + "Reference");
                     reference.SetAttributeValue("Include", br.Name);
-                    if (br.CopyLocal)
+                    if (br.Source == BusinessAssemblyReferenceSources.Local)
                     {
                         string path = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, br.Name + ".dll");
                         string hintPath = LongPath.GetRelativePath(options.ProjectDirectory + "\\", path);

@@ -27,7 +27,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
                 if (reference != null)
                 {
                     Assembly asm = null;
-                    if (reference.CopyLocal)
+                    if (reference.Source != BusinessAssemblyReferenceSources.GAC)
                     {
                         string path = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, @enum.ExternalAssemblyName + ".dll");
                         if (LongPathFile.Exists(path))

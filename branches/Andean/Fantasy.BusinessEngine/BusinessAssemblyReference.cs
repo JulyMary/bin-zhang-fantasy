@@ -198,15 +198,15 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        public virtual bool CopyLocal
+        public virtual BusinessAssemblyReferenceSources Source
         {
             get
             {
-                return (bool)this.GetValue("CopyLocal", false);
+                return (BusinessAssemblyReferenceSources)this.GetValue("Source", BusinessAssemblyReferenceSources.Local);
             }
             set
             {
-                this.SetValue("CopyLocal", value);
+                this.SetValue("Source", value);
             }
         }
 
