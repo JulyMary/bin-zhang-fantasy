@@ -1,16 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     29/09/2011 9:42:47 AM                        */
+/* Created on:     7/10/2011 10:26:33 AM                        */
 /*==============================================================*/
-use fantasy
-go
 
-if exists (select 1
-          from sysobjects
-          where id = object_id('"CLR TRIGGER_BUSINESSPACKAGE"')
-          and type = 'TR')
-   drop trigger "CLR TRIGGER_BUSINESSPACKAGE"
-go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -185,20 +177,6 @@ if exists (select 1
    where r.fkeyid = object_id('BUSINESSUSER') and o.name = 'FK_BUSINESS_USER_PACKAGE')
 alter table BUSINESSUSER
    drop constraint FK_BUSINESS_USER_PACKAGE
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BUSINESSUSERROLE') and o.name = 'FK_BUSINESSUSERROLE_ROLE')
-alter table BUSINESSUSERROLE
-   drop constraint FK_BUSINESSUSERROLE_ROLE
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BUSINESSUSERROLE') and o.name = 'FK_BUSINESS_USERROLE_USER')
-alter table BUSINESSUSERROLE
-   drop constraint FK_BUSINESS_USERROLE_USER
 go
 
 if exists (select 1
@@ -548,28 +526,19 @@ go
 if exists (select 1
             from  sysindexes
            where  id    = object_id('BUSINESSUSERROLE')
-            and   name  = 'BUSINESSUSERROLE_PK'
+            and   name  = 'BUSINESSUSERROLE_FK2'
             and   indid > 0
             and   indid < 255)
-   drop index BUSINESSUSERROLE.BUSINESSUSERROLE_PK
+   drop index BUSINESSUSERROLE.BUSINESSUSERROLE_FK2
 go
 
 if exists (select 1
             from  sysindexes
            where  id    = object_id('BUSINESSUSERROLE')
-            and   name  = 'USERROLE_FK2'
+            and   name  = 'BUSINESSUSERROLE_FK'
             and   indid > 0
             and   indid < 255)
-   drop index BUSINESSUSERROLE.USERROLE_FK2
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('BUSINESSUSERROLE')
-            and   name  = 'USERROLE_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index BUSINESSUSERROLE.USERROLE_FK
+   drop index BUSINESSUSERROLE.BUSINESSUSERROLE_FK
 go
 
 if exists (select 1
@@ -624,7 +593,7 @@ create table ASSEMBLYREFERENCE (
    FULLNAME             varchar(255)         not null,
    RAWASSEMBLY          image                null,
    RAWHASH              varchar(32)          null,
-   COPYLOCAL            bit                  not null,
+   SOURCE               int                  not null,
    constraint PK_ASSEMBLYREFERENCE primary key (ID)
 )
 go
@@ -690,6 +659,7 @@ create table BUSINESSAPPLICATIONACL (
    STATEID              T_GUID               null,
    ROLEID               T_GUID               not null,
    PARTICIPANTID        T_GUID               not null,
+   BUS_ID               T_GUID               null,
    MODIFICATIONTIME     datetime             not null,
    CREATIONTIME         datetime             not null,
    ISSYSTEM             bit                  not null,
@@ -702,7 +672,7 @@ go
 /* Index: CLASSACCESSCONTROLROLE_FK                             */
 /*==============================================================*/
 create index CLASSACCESSCONTROLROLE_FK on BUSINESSAPPLICATIONACL (
-ROLEID ASC
+BUS_ID ASC
 )
 go
 
@@ -951,6 +921,8 @@ create table BUSINESSEXTRASCRIPT (
    NAME                 T_NAME               not null,
    PROJECTTYPE          int                  not null,
    SCRIPT               text                 null,
+   BUILDACTION          T_NAME               null,
+   METADATA             varchar(1024)        null,
    constraint PK_BUSINESSEXTRASCRIPT primary key (ID)
 )
 go
@@ -1126,34 +1098,25 @@ go
 /* Table: BUSINESSUSERROLE                                      */
 /*==============================================================*/
 create table BUSINESSUSERROLE (
-   USERID               uniqueidentifier     not null,
-   ROLEID               uniqueidentifier     not null,
-   constraint PK_BUSINESSUSERROLE primary key nonclustered (USERID, ROLEID)
+   USERID               T_GUID               not null,
+   ROLEID               T_GUID               not null,
+   constraint PK_BUSINESSUSERROLE primary key (USERID, ROLEID)
 )
 go
 
 /*==============================================================*/
-/* Index: USERROLE_FK                                           */
+/* Index: BUSINESSUSERROLE_FK                                   */
 /*==============================================================*/
-create index USERROLE_FK on BUSINESSUSERROLE (
+create index BUSINESSUSERROLE_FK on BUSINESSUSERROLE (
+ROLEID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: BUSINESSUSERROLE_FK2                                  */
+/*==============================================================*/
+create index BUSINESSUSERROLE_FK2 on BUSINESSUSERROLE (
 USERID ASC
-)
-go
-
-/*==============================================================*/
-/* Index: USERROLE_FK2                                          */
-/*==============================================================*/
-create index USERROLE_FK2 on BUSINESSUSERROLE (
-ROLEID ASC
-)
-go
-
-/*==============================================================*/
-/* Index: BUSINESSUSERROLE_PK                                   */
-/*==============================================================*/
-create index BUSINESSUSERROLE_PK on BUSINESSUSERROLE (
-USERID ASC,
-ROLEID ASC
 )
 go
 
@@ -1185,7 +1148,7 @@ alter table BUSINESSAPPLICATIONACL
 go
 
 alter table BUSINESSAPPLICATIONACL
-   add constraint FK_BUSINESS_APPLICATIONACL_ROLE foreign key (ROLEID)
+   add constraint FK_BUSINESS_APPLICATIONACL_ROLE foreign key (BUS_ID)
       references BUSINESSROLE (ID)
          on delete cascade
 go
@@ -1289,17 +1252,4 @@ alter table BUSINESSUSER
    add constraint FK_BUSINESS_USER_PACKAGE foreign key (PACKAGEID)
       references BUSINESSPACKAGE (ID)
 go
-
-alter table BUSINESSUSERROLE
-   add constraint FK_BUSINESSUSERROLE_ROLE foreign key (ROLEID)
-      references BUSINESSROLE (ID)
-         on delete cascade
-go
-
-alter table BUSINESSUSERROLE
-   add constraint FK_BUSINESS_USERROLE_USER foreign key (USERID)
-      references BUSINESSUSER (ID)
-         on delete cascade
-go
-
 
