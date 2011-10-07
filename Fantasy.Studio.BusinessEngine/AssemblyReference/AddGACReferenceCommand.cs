@@ -31,7 +31,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                         reference.FullName = assembly.FullName;
                         reference.Group = group;
                         group.References.Add(reference);
-                        reference.CopyLocal = false;
+                        reference.Source = BusinessAssemblyReferenceSources.GAC;
                         es.SaveOrUpdate(reference);
                     }
                 }

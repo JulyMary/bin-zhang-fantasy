@@ -27,7 +27,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             }
 
 
-            if (reference.CopyLocal)
+            if (reference.Source == BusinessAssemblyReferenceSources.Local)
             {
                 string fileName = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
 

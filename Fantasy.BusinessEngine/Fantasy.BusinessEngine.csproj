@@ -62,6 +62,7 @@
     <Compile Include="BusinessApplicationParticipant.cs" />
     <Compile Include="BusinessAssemblyReference.cs" />
     <Compile Include="BusinessAssemblyReferenceGroup.cs" />
+    <Compile Include="BusinessAssemblyReferenceSources.cs" />
     <Compile Include="BusinessClass.cs" />
     <Compile Include="BusinessClassDiagram.cs" />
     <Compile Include="BusinessClassExtension.cs" />

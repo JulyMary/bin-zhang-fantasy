@@ -89,7 +89,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
                     if (!assembly.GlobalAssemblyCache)
                     {
-                        reference.CopyLocal = true;
+                        reference.Source = BusinessAssemblyReferenceSources.Local;
                         string filename = new Uri(assembly.CodeBase).LocalPath;
                         byte[] bytes = File.ReadAllBytes(filename);
                         reference.RawAssembly = bytes;
@@ -99,11 +99,11 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                     }
                     else
                     {
-                        reference.CopyLocal = false;
+                        reference.Source = BusinessAssemblyReferenceSources.GAC;
                     }
                     es.SaveOrUpdate(reference);
 
-                    if (reference.CopyLocal)
+                    if (reference.Source == BusinessAssemblyReferenceSources.Local)
                     {
 
                         this.AddReferenceAssemblies(assembly);

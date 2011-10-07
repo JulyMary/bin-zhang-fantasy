@@ -31,7 +31,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
             foreach (BusinessAssemblyReference reference in es.GetAssemblyReferenceGroup().References.OrderBy(r=>r.Name))
             {
                 Assembly asm = null;
-                if (reference.CopyLocal)
+                if (reference.Source != BusinessAssemblyReferenceSources.GAC)
                 {
                     string file = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
                     if (LongPathFile.Exists(file))
