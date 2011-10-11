@@ -109,6 +109,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings.settings.tt</DependentUpon>
     </Compile>
+    <Compile Include="ScriptOptions.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />

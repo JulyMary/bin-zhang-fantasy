@@ -190,7 +190,7 @@
             <PropertyDescriptor ID="Version" Name="Version" Caption="Version" Category="General" />
             <PropertyDescriptor ID="CultureInfo" Name="CultureInfo" Caption="Culture" Category="General" />
             <PropertyDescriptor ID="PublicToken" Name="PublicToken" Caption="Public Token" Category="General" />
-            <PropertyDescriptor ID="CopyLocal" Name="CopyLocal" Caption="Copy Local" Category="General" />
+            <PropertyDescriptor ID="Source" Name="Source" Caption="Source" Category="General" />
         </TypeDescriptor>
 
 

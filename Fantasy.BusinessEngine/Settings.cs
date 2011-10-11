@@ -10,7 +10,7 @@ namespace Fantasy.BusinessEngine.Properties
 {
     partial class Settings 
     {
-        private string ExtractToFullPath(string value)
+        public static string ExtractToFullPath(string value)
         {
             string rs = Environment.ExpandEnvironmentVariables(value);
 
@@ -26,7 +26,7 @@ namespace Fantasy.BusinessEngine.Properties
         {
             get
             {
-                return this.ExtractToFullPath(this.ReferencesPath);
+                return ExtractToFullPath(this.ReferencesPath);
             }
         }
     }

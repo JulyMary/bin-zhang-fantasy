@@ -16,8 +16,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
             BusinessClass @class = (BusinessClass)am.GetAdapter<IBusinessEntity>(parent);
+            return (@class.ScriptOptions & ScriptOptions.NoScript) != ScriptOptions.NoScript ?
 
-            return new object[] { new BusinessClassAutoScript(@class) };
+                new object[] { new BusinessClassAutoScript(@class) } : new object[0];
 
         }
 

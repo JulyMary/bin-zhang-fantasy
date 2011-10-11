@@ -301,6 +301,19 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+
+        public virtual ScriptOptions ScriptOptions
+        {
+            get
+            {
+                return (ScriptOptions)this.GetValue("ScriptOptions", ScriptOptions.Default);
+            }
+            set
+            {
+                this.SetValue("ScriptOptions", value);
+            }
+        }
+
       
     }
 }

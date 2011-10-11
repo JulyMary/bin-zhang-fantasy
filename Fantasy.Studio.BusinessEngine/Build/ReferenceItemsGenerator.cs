@@ -31,6 +31,12 @@ namespace Fantasy.Studio.BusinessEngine.Build
                         string hintPath = LongPath.GetRelativePath(options.ProjectDirectory + "\\", path);
                         reference.SetElementValue(Consts.MSBuildNamespace + "HintPath", hintPath);
                     }
+                    else if (br.Source == BusinessAssemblyReferenceSources.System)
+                    {
+                        string path = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.ExtractToFullPath(Fantasy.BusinessEngine.Properties.Settings.Default.SystemReferencesPath), br.Name + ".dll");
+                        string hintPath = LongPath.GetRelativePath(options.ProjectDirectory + "\\", path);
+                        reference.SetElementValue(Consts.MSBuildNamespace + "HintPath", hintPath);
+                    }
                     itemsGroup.Add(reference); 
                 }
 
