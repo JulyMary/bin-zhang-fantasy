@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
             XElement itemsGroup = new XElement(Consts.MSBuildNamespace + "ItemGroup");
 
-            foreach (BusinessClass @class in package.Classes.Where(c=>! c.IsSimple))
+            foreach (BusinessClass @class in package.Classes.Where(c=>(c.ScriptOptions & ScriptOptions.NoScript ) != ScriptOptions.NoScript  ))
             {
                 string itemName = itemsFolder + "\\" + @class.CodeName + ".cs";
                 XElement item = new XElement(Consts.MSBuildNamespace + "Compile");
@@ -49,7 +49,11 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 itemsGroup.Add(designerItem); 
             }
 
-            projectElement.Add(itemsGroup);
+            if (itemsGroup.Elements().Count() > 0)
+            {
+
+                projectElement.Add(itemsGroup);
+            }
         }
 
         #endregion

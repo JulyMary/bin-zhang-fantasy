@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             BusinessClass @class = (BusinessClass)e.Entity;
 
             IBusinessClassCodeGenerator svc = this.Site.GetRequiredService<IBusinessClassCodeGenerator>();
-            if (!@class.IsSystem)
+            if ((@class.ScriptOptions & ScriptOptions.NoScript) != ScriptOptions.NoScript)
             {
                 svc.RegisterClass(@class);
             }

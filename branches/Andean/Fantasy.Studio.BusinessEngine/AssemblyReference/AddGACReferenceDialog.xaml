@@ -10,17 +10,28 @@
         <l:AssemblyProcessArchitectureConverter x:Key="PlatformConverter" />
     </Window.Resources>
     <Grid>
-        <ListView Margin="12,12,12,41" Name="AssemblyList" ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Assemblies}" SelectionChanged="AssemblyList_SelectionChanged">
+        <ListView Margin="12,12,12,41" Name="AssemblyList" ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Assemblies}" SelectionChanged="AssemblyList_SelectionChanged" MouseDoubleClick="AssemblyList_MouseDoubleClick">
             <ListView.View>
                 <GridView AllowsColumnReorder="true" x:Name="AssemblyGridView">
                     <GridViewColumn DisplayMemberBinding="{Binding Converter={StaticResource NameConverter}}" Header="Name" f:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>
                     <GridViewColumn Header="Version" DisplayMemberBinding="{Binding Converter={StaticResource VersionConverter}}" f:GridViewLayout.ColumnId="VersionColumn" />
-                    <GridViewColumn Header="Runtime Version" DisplayMemberBinding="{Binding ImageRuntimeVersion}"  f:GridViewLayout.ColumnId="RunTimeVersionColumn" />
-                    <GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Converter={StaticResource PlatformConverter }}"  f:GridViewLayout.ColumnId="PlatformColumn" />
+                    <GridViewColumn Header="Runtime" DisplayMemberBinding="{Binding ImageRuntimeVersion}"  f:GridViewLayout.ColumnId="RunTimeVersionColumn" />
+                    <!--<GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Converter={StaticResource PlatformConverter }}"  f:GridViewLayout.ColumnId="PlatformColumn" />-->
+                    <GridViewColumn Header="Location" DisplayMemberBinding="{Binding Location }"  f:GridViewLayout.ColumnId="LocationColumn" />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="OK" HorizontalAlignment="Right" Margin="0,0,93,12" Name="OkButton" Width="75" IsDefault="True" Click="OkButton_Click" IsEnabled="{Binding IsOKEnabled}" Height="23" VerticalAlignment="Bottom" />
+        <Button Content="OK" HorizontalAlignment="Right" Margin="0,0,93,12" Name="OkButton" Width="75" IsDefault="True" Click="OkButton_Click" IsEnabled="{Binding IsOKEnabled}" Height="23" VerticalAlignment="Bottom">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding SelectedItem, ElementName=AssemblyList}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <Button Content="Cancel" Height="23" Margin="0,0,12,12" Name="CancelButton" VerticalAlignment="Bottom" IsCancel="True" Click="CancelButton_Click" HorizontalAlignment="Right" Width="75" />
     </Grid>
 </Window>
