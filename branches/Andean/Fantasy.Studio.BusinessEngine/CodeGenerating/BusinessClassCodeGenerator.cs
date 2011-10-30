@@ -130,7 +130,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 }
                 if (args.NewItems != null)
                 {
-                    foreach (BusinessProperty assn in args.NewItems)
+                    foreach (BusinessAssociation assn in args.NewItems)
                     {
                         foreach (string propertyName in ListenedLeftAssnProperties)
                         {
@@ -164,7 +164,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 }
                 if (args.NewItems != null)
                 {
-                    foreach (BusinessProperty assn in args.NewItems)
+                    foreach (BusinessAssociation assn in args.NewItems)
                     {
                         foreach (string propertyName in ListenedRightAssnProperties)
                         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fantasy.BusinessEngine.Events
+namespace Fantasy.BusinessEngine
 {
     public class EntityEventArgs : EventArgs
     {

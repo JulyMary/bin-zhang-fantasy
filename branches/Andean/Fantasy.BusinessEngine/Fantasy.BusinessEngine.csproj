@@ -67,6 +67,7 @@
     <Compile Include="BusinessClassDiagram.cs" />
     <Compile Include="BusinessClassExtension.cs" />
     <Compile Include="BusinessDataType.cs" />
+    <Compile Include="BusinessEngineContext.cs" />
     <Compile Include="BusinessEntity.cs" />
     <Compile Include="BusinessEnum.cs" />
     <Compile Include="BusinessEnumValue.cs" />
@@ -125,8 +126,8 @@
     <Compile Include="Events\MonitorEntityPropertyChangeHandler.cs" />
     <Compile Include="Events\NHPreDeleteEventListener.cs" />
     <Compile Include="Events\EntityCancelEventArgs.cs" />
-    <Compile Include="Events\EntityEventArgs.cs" />
-    <Compile Include="Events\EntityPropertyChangedEventArgs.cs" />
+    <Compile Include="EntityEventArgs.cs" />
+    <Compile Include="EntityPropertyChangedEventArgs.cs" />
     <Compile Include="EntityState.cs" />
     <Compile Include="IBusinessEntity.cs" />
     <Compile Include="IEntity.cs" />
@@ -149,7 +150,7 @@
     <Compile Include="Events\NHPostInsertEventListener.cs" />
     <Compile Include="Events\NHPostUpdateEventListener.cs" />
     <Compile Include="Events\NHPreInsertEventListener.cs" />
-    <Compile Include="Events\EntityPropertyChangingEventArgs.cs" />
+    <Compile Include="EntityPropertyChangingEventArgs.cs" />
     <Compile Include="Events\NHPreUpdateEventListener.cs" />
     <Compile Include="Maps\BusinessPropertyMap.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

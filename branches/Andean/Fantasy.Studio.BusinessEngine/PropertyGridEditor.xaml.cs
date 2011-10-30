@@ -56,13 +56,13 @@ namespace Fantasy.Studio.BusinessEngine
         {
             this._entity = (IBusinessEntity)data;
             this._entity.EntityStateChanged += new EventHandler(EntityStateChanged);
-            this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
+            this._entity.PropertyChanged += new EventHandler<Fantasy.BusinessEngine.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
             object descriptor = this.Site.GetRequiredService<IAdapterManager>().GetAdapter(this._entity, typeof(ICustomTypeDescriptor));
             this.propertyGrid.SelectedObject = descriptor;
             this.DirtyState = this._entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty; 
         }
 
-        void Entity_PropertyChanged(object sender, Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs e)
+        void Entity_PropertyChanged(object sender, Fantasy.BusinessEngine.EntityPropertyChangedEventArgs e)
         {
             this.propertyGrid.Refresh();
         }
@@ -137,7 +137,7 @@ namespace Fantasy.Studio.BusinessEngine
         public void Closed()
         {
             this._entity.EntityStateChanged -= new EventHandler(EntityStateChanged);
-            this._entity.PropertyChanged -= new EventHandler<Fantasy.BusinessEngine.Events.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
+            this._entity.PropertyChanged -= new EventHandler<Fantasy.BusinessEngine.EntityPropertyChangedEventArgs>(Entity_PropertyChanged);
         }
 
         #endregion

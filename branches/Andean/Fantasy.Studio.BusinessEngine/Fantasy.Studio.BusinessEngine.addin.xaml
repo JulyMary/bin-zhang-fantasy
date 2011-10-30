@@ -857,6 +857,9 @@
         <Object ID="classes">
             <sbe:BusinessClassItemsGenerator/>
         </Object>
+        <Object ID="enums">
+            <sbe:BusinessEnumItemsGenerator/>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/studio/workbench/toolbars/standard">

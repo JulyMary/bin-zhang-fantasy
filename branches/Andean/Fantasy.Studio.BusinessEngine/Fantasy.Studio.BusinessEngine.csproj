@@ -138,6 +138,7 @@
     <Compile Include="AssociationEditing\DeleteAssociationCommand.cs" />
     <Compile Include="AssociationEditing\PackageAssociationFolderProvider.cs" />
     <Compile Include="Build\BusinessClassItemsGenerator.cs" />
+    <Compile Include="Build\BusinessEnumItemsGenerator.cs" />
     <Compile Include="Build\BusinessPackageExtension.cs" />
     <Compile Include="Build\Consts.cs" />
     <Compile Include="Build\ExportProjectCommand.cs" />
@@ -405,9 +406,14 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Templates\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\BusinessEnum.tt">
+      <LastGenOutput>BusinessEnum.txt</LastGenOutput>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Templates\NewBusinessClass.tt">

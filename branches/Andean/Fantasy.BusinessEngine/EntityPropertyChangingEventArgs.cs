@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fantasy.BusinessEngine.Events
+namespace Fantasy.BusinessEngine
 {
-    public class EntityPropertyChangedEventArgs : EventArgs 
+    public class EntityPropertyChangingEventArgs : EventArgs
     {
-        public EntityPropertyChangedEventArgs(IEntity entity, string propertyName, object newValue, object oldValue)
+        public EntityPropertyChangingEventArgs(IEntity entity,string propertyName, object newValue, object oldValue)
         {
             this.Entity = entity;
             this.PropertyName = propertyName;
@@ -22,5 +22,7 @@ namespace Fantasy.BusinessEngine.Events
         public object OldValue { get; private set; }
 
         public object NewValue { get; private set; }
+
+        public bool Cancel { get; set; }
     }
 }
