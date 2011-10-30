@@ -157,7 +157,7 @@
     <value>New Association</value>
   </data>
   <data name="DefaultNewBusinessClassDiagramName" xml:space="preserve">
-    <value>Class Diagram</value>
+    <value>{0} Class Diagram</value>
   </data>
   <data name="DefaultNewBusinessClassName" xml:space="preserve">
     <value>New Class</value>

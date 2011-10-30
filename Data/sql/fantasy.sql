@@ -2,6 +2,7 @@
 /* DBMS name:      Microsoft SQL Server 2008                    */
 /* Created on:     7/10/2011 10:26:33 AM                        */
 /*==============================================================*/
+use Fantasy
 
 
 if exists (select 1

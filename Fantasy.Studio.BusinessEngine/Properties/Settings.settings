@@ -59,5 +59,8 @@
     <Setting Name="BusinessDataProjectId" Type="System.String" Scope="User">
       <Value Profile="(Default)">{4CDABEB6-2016-476B-8692-4ED84EBC606D}</Value>
     </Setting>
+    <Setting Name="BusinessEnumT4Path" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Templates\BusinessEnum.tt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

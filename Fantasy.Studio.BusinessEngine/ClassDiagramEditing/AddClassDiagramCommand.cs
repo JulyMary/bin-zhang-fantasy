@@ -33,7 +33,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessClassDiagram diagram = es.CreateEntity<BusinessClassDiagram>();
            
-            diagram.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessClassDiagramName, parent.ClassDiagrams.Select(c=>c.Name));
+            diagram.Name = UniqueNameGenerator.GetName(String.Format(Resources.DefaultNewBusinessClassDiagramName, parent.Name), parent.ClassDiagrams.Select(c=>c.Name));
             parent.ClassDiagrams.Add(diagram);
             diagram.Package = parent;
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();

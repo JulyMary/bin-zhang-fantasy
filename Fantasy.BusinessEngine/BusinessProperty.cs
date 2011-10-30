@@ -77,7 +77,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        protected override void OnPropertyChanged(Events.EntityPropertyChangedEventArgs e)
+        protected override void OnPropertyChanged(EntityPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
             switch (e.PropertyName)

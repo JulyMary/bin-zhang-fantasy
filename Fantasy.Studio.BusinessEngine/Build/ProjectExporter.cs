@@ -54,7 +54,10 @@ namespace Fantasy.Studio.BusinessEngine.Build
             }
             XElement projectElement = XElement.Load(Settings.ExtractToFullPath(Settings.Default.ClassLibraryTemplatePath));
 
-            projectElement.Element(Consts.MSBuildNamespace + "PropertyGroup").SetElementValue(Consts.MSBuildNamespace + "ProjectGuid", Settings.Default.BusinessDataProjectId);
+            XElement firstGroup = projectElement.Element(Consts.MSBuildNamespace + "PropertyGroup");
+            firstGroup.SetElementValue(Consts.MSBuildNamespace + "ProjectGuid", Settings.Default.BusinessDataProjectId);
+            firstGroup.SetElementValue(Consts.MSBuildNamespace +"AssemblyName", Settings.Default.BusinessDataAssemblyName);
+
 
             foreach (BusinessPackage package in es.GetRootPackage().Flatten(p => p.ChildPackages))
             {

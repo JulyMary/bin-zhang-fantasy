@@ -29,9 +29,10 @@ namespace <#=_class.Package.FullCodeName#>
 <#
 foreach(BusinessProperty property in _class.Properties)
 {
-    string type = GetDataType(property);
 	string name = property.CodeName;
-    RenderScalar(name, type);
+	string type = this.GetDataType(property);
+    string defaultValue = this.GetDefaultValue(property);
+    RenderScalar(name, type, defaultValue);
 }
 foreach(BusinessAssociation assn in _class.LeftAssociations)
 {
@@ -40,7 +41,7 @@ foreach(BusinessAssociation assn in _class.LeftAssociations)
 	Cardinality card = new Cardinality(assn.RightCardinality);
 	if(card.IsSingleton)
 	{
-	    RenderScalar(name, type);
+	    RenderScalar(name, type, "null");
 	}
 	else
 	{
@@ -56,7 +57,7 @@ foreach(BusinessAssociation assn in _class.RightAssociations)
 	Cardinality card = new Cardinality(assn.LeftCardinality);
 	if(card.IsSingleton)
 	{
-	    RenderScalar(name, type);
+	    RenderScalar(name, type, "null");
 	}
 	else
 	{
@@ -119,14 +120,56 @@ private string GetDataType(BusinessProperty property)
 	return rs;
 }
 
-private void RenderScalar(string name, string type)
-{#>  
+private string GetDefaultValue(BusinessProperty property)
+{
+	if(String.IsNullOrEmpty(property.DefaultValue))
+	{
+		return String.Format("default({0})",GetDataType(property));
+		
+	}
+	else 
+	{
+	    Guid tid = property.DataType.Id;
+		if(tid == BusinessDataType.WellknownIds.String || tid == BusinessDataType.WellknownIds.Text)
+		{
+			return String.Format("@\"{0}\"", property.DefaultValue);
+		}
+		else if(tid == BusinessDataType.WellknownIds.DateTime)
+		{
+			DateTime t = DateTime.Parse(property.DefaultValue);
+			return String.Format("new DateTime({0}, {1}, {2}, {3}, {4}, {5})", t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); 
+		}
+		else if(tid == BusinessDataType.WellknownIds.DateTimeOffset)
+		{
+			DateTime t = DateTime.Parse(property.DefaultValue);
+			return String.Format("new DateTimeOffset({0}, {1}, {2}, {3}, {4}, {5}, TimeZoneInfo.BaseUtcOffset)", t.Year, t.Month, t.Day, t.Hour, t.Minute, t.Second); 
+		}
+		else if(tid == BusinessDataType.WellknownIds.Enum)
+		{
+			return String.Format("{0}.{1}",GetDataType(property), property.DefaultValue);
+			
+		}
+		else if(tid == BusinessDataType.WellknownIds.Class)
+		{
+			//TODO: GetObject by context;
+			return "null";
+		}
+		else
+		{
+			return property.DefaultValue;
+		}
+	}
+}
+
+private void RenderScalar(string name, string type, string defaultValue)
+{
+	#>  
 		
 		public virtual <#=type#> <#=name#>
 		{
 		    get
             {
-                return (<#=type#>)this.GetValue("<#=name#>");
+                return (<#=type#>)this.GetValue("<#=name#>",<#=defaultValue#>);
             }
             set
             {
@@ -139,7 +182,7 @@ private void RenderScalar(string name, string type)
 					{
                         if(this.SetValue("<#=name#>", value))
 						{
-					        this.On<#=name#>Changed(new EntityPropertyChangedEventArgs(this, propertyName, value, old));
+					        this.On<#=name#>Changed(new EntityPropertyChangedEventArgs(this, "<#=name#>", value, old));
 						}
 					}
 				}
