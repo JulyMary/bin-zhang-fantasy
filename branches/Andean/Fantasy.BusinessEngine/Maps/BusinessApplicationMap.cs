@@ -6,10 +6,12 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine.Maps
 {
-    public class BusinessApplicationMap : BusinessEntityMap<BusinessApplication>
+    public class BusinessApplicationMap : BusinessEntityMap<BusinessApplicationData>
     {
         public BusinessApplicationMap()
         {
+            this.Table("BUSINESSAPPLICATION");
+
             this.Map(x => x.Name).Not.Nullable();
 
             this.Map(x => x.EntryObjectId);

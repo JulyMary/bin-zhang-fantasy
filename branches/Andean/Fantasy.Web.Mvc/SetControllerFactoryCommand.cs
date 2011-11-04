@@ -5,7 +5,7 @@ using System.Text;
 using Fantasy.ServiceModel;
 using System.Web.Mvc;
 
-namespace Fantasy.Web
+namespace Fantasy.Web.Mvc
 {
     public class SetControllerFactoryCommand : ObjectWithSite, ICommand
     {

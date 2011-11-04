@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         public object Execute(object args)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessApplication app = (BusinessApplication)args;
+            BusinessApplicationData app = (BusinessApplicationData)args;
             app.Package.Applications.Remove(app);
             app.Package = null;
             es.Delete(app);

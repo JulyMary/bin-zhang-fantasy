@@ -102,12 +102,12 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
       
 
         private ParticipantPanelModel _model;
-        public BusinessApplication Entity { get; private set; }
+        public BusinessApplicationData Entity { get; private set; }
 
 
         public void Load(object entity)
         {
-            this.Entity = (BusinessApplication)entity;
+            this.Entity = (BusinessApplicationData)entity;
             this.DirtyState = this.Entity.Participants.Any(p => p.EntityState != EntityState.Clean) ? EditingState.Dirty : EditingState.Clean;
 
             this._participantsChangedListener = new WeakEventListener((t, sender, e) =>

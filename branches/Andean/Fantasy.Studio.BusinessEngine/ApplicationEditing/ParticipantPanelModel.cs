@@ -13,7 +13,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
     public class ParticipantPanelModel : ObjectWithSite
     {
 
-        public ParticipantPanelModel(BusinessApplication application, IServiceProvider site)
+        public ParticipantPanelModel(BusinessApplicationData application, IServiceProvider site)
         {
             this.Site = site;
 
@@ -89,7 +89,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private HashSet<BusinessApplicationParticipant> _allParticipants = new HashSet<BusinessApplicationParticipant>();
 
-        private BusinessApplication _application;
+        private BusinessApplicationData _application;
 
         public void AddRootNodeForClass(BusinessClass @class)
         {

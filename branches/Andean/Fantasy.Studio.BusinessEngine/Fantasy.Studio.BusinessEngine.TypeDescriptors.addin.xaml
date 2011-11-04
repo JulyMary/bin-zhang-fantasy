@@ -315,8 +315,8 @@
         <TypeDescriptor ID="ApplicationFolder" TargetType="{x:Type sbe:ApplicationFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
         </TypeDescriptor>
-        
-        <TypeDescriptor ID="BusinessApplication" TargetType="{x:Type be:BusinessApplication}">
+
+        <TypeDescriptor ID="BusinessApplicationData" TargetType="{x:Type be:BusinessApplicationData}">
             <TypeDescriptor.Conditional >
                 <Not Action="Disable">
                     <sbe:IsSystemEntity />

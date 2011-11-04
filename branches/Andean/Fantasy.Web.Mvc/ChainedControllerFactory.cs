@@ -8,7 +8,7 @@ using System.Web.Routing;
 using System.Web;
 using Fantasy.AddIns;
 
-namespace Fantasy.Web
+namespace Fantasy.Web.Mvc
 {
     public class ChainedControllerFactory : ServiceBase, IControllerFactory 
     {

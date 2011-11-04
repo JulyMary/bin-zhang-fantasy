@@ -10,7 +10,10 @@
         <Object ID="connectionstring">
             <be:DebugConnectionStringProvider/>
         </Object>
-        <Object ID="nhprovider" InsertAfter="registerAdaption">
+        <Object ID="nhCfg">
+            <be:NHConfigurationService/>
+        </Object>
+        <Object ID="entityservice" InsertAfter="registerAdaption">
             <be:DefaultEntityService/>
         </Object>
         <Object ID="BusinessDataTypeRepository">

@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
 
-            BusinessApplication application = am.GetAdapter<BusinessApplication>(parent);
+            BusinessApplicationData application = am.GetAdapter<BusinessApplicationData>(parent);
 
             System.Collections.IEnumerable rs = new ObservableAdapterCollection<ParticipantACL>(application.Participants, (p => new ParticipantACL((BusinessApplicationParticipant)p))).ToSorted("Name");
 

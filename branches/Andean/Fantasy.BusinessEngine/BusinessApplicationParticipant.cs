@@ -41,11 +41,11 @@ namespace Fantasy.BusinessEngine
 
         private WeakEventListener _classStateListener;
 
-        public virtual BusinessApplication Application
+        public virtual BusinessApplicationData Application
         {
             get
             {
-                return (BusinessApplication)this.GetValue("Application", null);
+                return (BusinessApplicationData)this.GetValue("Application", null);
             }
             set
             {

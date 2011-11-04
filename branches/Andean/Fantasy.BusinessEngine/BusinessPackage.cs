@@ -249,8 +249,8 @@ namespace Fantasy.BusinessEngine
 
 
 
-        private IObservableList<BusinessApplication> _persistedApplications = new ObservableList<BusinessApplication>();
-        protected internal virtual IObservableList<BusinessApplication> PersistedApplications
+        private IObservableList<BusinessApplicationData> _persistedApplications = new ObservableList<BusinessApplicationData>();
+        protected internal virtual IObservableList<BusinessApplicationData> PersistedApplications
         {
             get { return _persistedApplications; }
             private set
@@ -266,14 +266,14 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private ObservableListView<BusinessApplication> _applications;
-        public virtual IObservableList<BusinessApplication> Applications
+        private ObservableListView<BusinessApplicationData> _applications;
+        public virtual IObservableList<BusinessApplicationData> Applications
         {
             get
             {
                 if (this._applications == null)
                 {
-                    this._applications = new ObservableListView<BusinessApplication>(this._persistedApplications);
+                    this._applications = new ObservableListView<BusinessApplicationData>(this._persistedApplications);
                 }
                 return _applications;
             }
