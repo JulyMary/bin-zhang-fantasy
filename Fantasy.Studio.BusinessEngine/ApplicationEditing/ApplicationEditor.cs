@@ -28,7 +28,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public override string DocumentName
         {
-            get { return this.Data != null ? ((BusinessApplication)this.Data).FullName : string.Empty; }
+            get { return this.Data != null ? ((BusinessApplicationData)this.Data).FullName : string.Empty; }
         }
 
         public override string DocumentType

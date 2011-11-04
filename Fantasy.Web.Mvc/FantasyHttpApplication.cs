@@ -9,7 +9,7 @@ using Fantasy.IO;
 using Fantasy.AddIns;
 using Fantasy.ServiceModel;
 
-namespace Fantasy.Web
+namespace Fantasy.Web.Mvc
 {
     public class FantasyHttpApplication : HttpApplication
     {

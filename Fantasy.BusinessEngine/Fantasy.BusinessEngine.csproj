@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessApplication.cs" />
+    <Compile Include="BusinessApplicationData.cs" />
     <Compile Include="BusinessApplicationACL.cs" />
     <Compile Include="BusinessApplicationParticipant.cs" />
     <Compile Include="BusinessAssemblyReference.cs" />
@@ -111,6 +112,10 @@
       <DependentUpon>Settings.settings.tt</DependentUpon>
     </Compile>
     <Compile Include="ScriptOptions.cs" />
+    <Compile Include="Services\IMetaDataService.cs" />
+    <Compile Include="Services\INHConfigurationService.cs" />
+    <Compile Include="Services\MetaDataService.cs" />
+    <Compile Include="Services\NHConfigurationService.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />

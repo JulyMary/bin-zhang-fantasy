@@ -32,7 +32,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
             BusinessPackage parent = am.GetAdapter<BusinessPackage>(parameter);
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessApplication user = es.AddBusinessApplication(parent);
+            BusinessApplicationData user = es.AddBusinessApplication(parent);
 
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
             IViewContent content = documentService.OpenView(user);

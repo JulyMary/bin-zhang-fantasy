@@ -196,5 +196,35 @@ namespace Fantasy.AddIns
         public string[] InsertAfter { get; set; }
 
         #endregion
+
+        #region IAddInTreeNode Members
+
+
+        public object BuildItem(object caller, IServiceProvider site)
+        {
+            object rs = null;
+            if (this.Codon.HandleCondition || this.Condition.GetCurrentConditionFailedAction(caller, site) == ConditionFailedAction.Nothing)
+            {
+                IEnumerable subItems = this.BuildChildItems(caller, site);
+                rs = this.Codon.BuildItem(caller, subItems, this.Condition, site);
+                if (rs != null)
+                {
+                    if (rs is IObjectWithSite)
+                    {
+                        ((IObjectWithSite)rs).Site = site;
+                    }
+                  
+                }
+            }
+
+            return rs;
+        }
+
+        public T BuildItem<T>(object caller, IServiceProvider site)
+        {
+            return (T)BuildItem(caller, site);
+        }
+
+        #endregion
     }
 }

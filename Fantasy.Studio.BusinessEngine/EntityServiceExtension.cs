@@ -211,9 +211,9 @@ namespace Fantasy.Studio.BusinessEngine
 
         }
 
-        public static BusinessApplication AddBusinessApplication(this IEntityService es, BusinessPackage package)
+        public static BusinessApplicationData AddBusinessApplication(this IEntityService es, BusinessPackage package)
         {
-            BusinessApplication rs = es.CreateEntity<BusinessApplication>();
+            BusinessApplicationData rs = es.CreateEntity<BusinessApplicationData>();
            
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessApplicationName, package.Enums.Select(c => c.Name));
             rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultApplicationCodeNameSuffix;
@@ -223,7 +223,7 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
 
-        public static BusinessApplicationParticipant AddBusinessApplicationParticipant(this IEntityService es, BusinessApplication application, BusinessClass @class)
+        public static BusinessApplicationParticipant AddBusinessApplicationParticipant(this IEntityService es, BusinessApplicationData application, BusinessClass @class)
         {
             BusinessApplicationParticipant rs = es.CreateEntity<BusinessApplicationParticipant>();
             rs.Application = application;

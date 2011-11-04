@@ -20,6 +20,10 @@ namespace Fantasy.AddIns
 
         IEnumerable<T> BuildChildItems<T>(object caller, IServiceProvider site);
 
+        object BuildItem(object caller, IServiceProvider site);
+
+        T BuildItem<T>(object caller, IServiceProvider site);
+
         
     }
 }

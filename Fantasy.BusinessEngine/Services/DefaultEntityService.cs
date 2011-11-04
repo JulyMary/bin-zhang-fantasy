@@ -20,8 +20,9 @@ namespace Fantasy.BusinessEngine.Services
 
         public override void InitializeService()
         {
-            this._configuration = new NHibernate.Cfg.Configuration();
-            this._configuration.SetProperty("connection.connection_string", this.Site.GetRequiredService<IConnectionStringProvider>().ConnectionString);
+
+            INHConfigurationService cs = this.Site.GetRequiredService<INHConfigurationService>();
+
             FluentNHibernate.Diagnostics.NullDiagnosticsLogger logger = new FluentNHibernate.Diagnostics.NullDiagnosticsLogger();
             MappingConfiguration mc = new MappingConfiguration(logger);
             mc.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly());
@@ -31,25 +32,15 @@ namespace Fantasy.BusinessEngine.Services
                 mc.FluentMappings.AddFromAssembly(asm);
             }
 
-            mc.Apply(this._configuration);
+            mc.Apply(cs.Configuration);
 
 
-            this._configuration.EventListeners.PostLoadEventListeners = new IPostLoadEventListener[] { new NHPostLoadEventListener() {Site=this.Site},
-                new DefaultPostLoadEventListener() };
-            this._configuration.EventListeners.PreInsertEventListeners = new IPreInsertEventListener[] { new NHPreInsertEventListener() {Site=this.Site}};
-            this._configuration.EventListeners.PostInsertEventListeners = new IPostInsertEventListener[] { new NHPostInsertEventListener() { Site = this.Site } };
-            this._configuration.EventListeners.PreUpdateEventListeners = new IPreUpdateEventListener[] { new NHPreUpdateEventListener() { Site = this.Site } };
-            this._configuration.EventListeners.PostUpdateEventListeners = new IPostUpdateEventListener[] { new NHPostUpdateEventListener() { Site = this.Site } };
-
+           
             this._preDeleteEventListener = new NHPreDeleteEventListener() { Site = this.Site };
             this._postDeleteEventListener = new NHPostDeleteEventListener() { Site = this.Site };
-
-            this._configuration.EventListeners.PreDeleteEventListeners = new IPreDeleteEventListener[] { this._preDeleteEventListener };
-            this._configuration.EventListeners.PostDeleteEventListeners = new IPostDeleteEventListener[] { this._postDeleteEventListener };
-
             this._createListener = new EntityCreateEventListener() { Site = this.Site };
 
-            this._sessionFactory = this._configuration.BuildSessionFactory();
+            this._sessionFactory = cs.Configuration.BuildSessionFactory();
 
             base.InitializeService();
         }
@@ -91,11 +82,7 @@ namespace Fantasy.BusinessEngine.Services
             get { return _sessionFactory; }
         }
 
-        private NHibernate.Cfg.Configuration _configuration;
-        public NHibernate.Cfg.Configuration Configuration
-        {
-            get { return _configuration; }
-        }
+
 
         private EntityCreateEventListener _createListener;
 
