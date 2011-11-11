@@ -17,9 +17,8 @@ namespace Fantasy.BusinessEngine.Services
             {
                 if (_connectionString == null)
                 {
-                    string entryDir = LongPath.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().CodeBase);
-                    string dbFile = LongPath.Combine(entryDir, @"..\data\fantasy.mdf");
-                    _connectionString = string.Format("AttachDbFilename={0};Data Source=.\\SQLEXPRESS;Initial Catalog=Fantasy;Integrated Security=True;", dbFile);
+                   
+                    _connectionString = "Data Source=.\\SQLEXPRESS;Database=Fantasy;Initial Catalog=Fantasy;Integrated Security=True;";
                 }
                 return _connectionString;
             }
