@@ -99,6 +99,7 @@
     <Compile Include="Events\BusinessPropertyCreateColumnHandler.cs" />
     <Compile Include="Events\BusinessPropertyDropColumnHandler.cs" />
     <Compile Include="Events\BusinessPropertyUpdateColumnHandler.cs" />
+    <Compile Include="IBusinessEngineContextProvider.cs" />
     <Compile Include="IGernateCodeBusinessEntity.cs" />
     <Compile Include="Maps\BusinessApplicationACLMap.cs" />
     <Compile Include="Maps\BusinessApplicationMap.cs" />

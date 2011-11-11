@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine
 {
@@ -27,6 +28,31 @@ namespace Fantasy.BusinessEngine
 
         public BusinessApplication Application { get; set; }
 
-        public static BusinessEngineContext Current { get; set; }
+        public static BusinessEngineContext Current
+        {
+            get
+            {
+                return ContextProvider.GetCurrent();
+            }
+            set
+            {
+                ContextProvider.SetCurrent(value);
+            }
+        }
+
+        private static IBusinessEngineContextProvider _contextProvider;
+
+        private static IBusinessEngineContextProvider ContextProvider
+        {
+            get
+            {
+                if (_contextProvider == null)
+                {
+                    _contextProvider = AddInTree.Tree.GetTreeNode("fantasy/businessengine/contextprovider").BuildItem<IBusinessEngineContextProvider>(null, null);
+
+                }
+                return _contextProvider;
+            }
+        }
     }
 }

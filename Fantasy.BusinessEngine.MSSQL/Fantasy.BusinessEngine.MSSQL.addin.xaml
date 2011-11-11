@@ -7,7 +7,7 @@
     </AddIn.Import>
     
     <Extension Path="fantasy/services">
-        <Object ID="SequenceService" InsertAfter="nhprovider">
+        <Object ID="SequenceService" InsertAfter="entityservice">
             <mssql:SqlSequenceService />
         </Object>
         <Object ID="DDLService">
