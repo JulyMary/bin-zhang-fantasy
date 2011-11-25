@@ -11,7 +11,7 @@ namespace Fantasy.BusinessEngine
         {
             this.Entity = entity;
             this.PropertyName = propertyName;
-            this.NewValue = NewValue;
+            this.NewValue = newValue;
             this.OldValue = oldValue;
         }
 

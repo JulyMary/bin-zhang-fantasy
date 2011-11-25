@@ -23,8 +23,9 @@ namespace Fantasy.BusinessEngine.Maps
             this.HasMany(x => x.PersistedUsers).CollectionType<ObservableList<BusinessUser>>().KeyColumn("PackageID").Cascade.None().Inverse().LazyLoad();
             this.HasMany(x => x.PersistedRoles).CollectionType<ObservableList<BusinessRole>>().KeyColumn("PackageID").Cascade.None().Inverse().LazyLoad();
             this.HasMany(x => x.PersistedApplications).CollectionType<ObservableList<BusinessApplicationData>>().KeyColumn("PackageID").Cascade.None().Inverse().LazyLoad();
-
-
+            this.HasMany(x => x.PersistedWebFolders).CollectionType<ObservableList<BusinessWebFolder>>().KeyColumn("PackageID").Cascade.None().Inverse().LazyLoad();
+            
+            
            
         }
     }

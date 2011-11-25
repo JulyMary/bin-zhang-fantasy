@@ -2,17 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Input;
 using Fantasy.BusinessEngine;
-using Fantasy.ServiceModel;
-using Fantasy.Studio.Services;
-using Fantasy.Utils;
-using Fantasy.Studio.BusinessEngine.Properties;
 using Fantasy.BusinessEngine.Services;
 
-namespace Fantasy.Studio.BusinessEngine.PackageEditing
+namespace Fantasy.Studio.BusinessEngine.Web
 {
-    public class AddPackageCommand : System.Windows.Input.ICommand
+    class AddWebFolderCommand : ObjectWithSite, System.Windows.Input.ICommand
     {
         #region ICommand Members
 
@@ -32,10 +27,8 @@ namespace Fantasy.Studio.BusinessEngine.PackageEditing
         public void Execute(object parameter)
         {
             BusinessPackage parent = (BusinessPackage)parameter;
-            IEntityService es = ServiceManager.Services.GetRequiredService<IEntityService>();
-            BusinessPackage child = es.AddBusinessPackage(parent);
-            IEditingService documentService = ServiceManager.Services.GetRequiredService<IEditingService>();
-            documentService.OpenView(child); 
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            BusinessWebFolder folder = es.AddStandardWebFolder(parent);
         }
 
         #endregion

@@ -18,6 +18,7 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.ApplicationEditing")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.CodeEditing")]
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.Build")]
+[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Studio.BusinessEngine.Web")]
 
 [assembly: XmlnsDefinition(XamlNamespaces.DiagramModel, "Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model")]
 [assembly: XmlnsDefinition(XamlNamespaces.CodeGenerating, "Fantasy.Studio.BusinessEngine.CodeGenerating")]  
