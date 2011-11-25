@@ -345,5 +345,27 @@
         <TypeDescriptor ID="IEntityScript" TargetType="{x:Type sbe:IEntityScript}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
         </TypeDescriptor>
+        
+        <TypeDescriptor ID="BusinessWebFolder" TargetType="{x:Type be:BusinessWebFolder}">
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" >
+                <PropertyDescriptor.Conditional>
+                    <Not>
+                        <sbe:IsRootWebFolder Action="Disable"></sbe:IsRootWebFolder>
+                    </Not>
+                </PropertyDescriptor.Conditional>
+                <PropertyDescriptor.Set>
+                    <sbe:EntityCodeNameSetAction />
+                </PropertyDescriptor.Set>
+            </PropertyDescriptor>
+            <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" />
+            <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
+            <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" />
+        </TypeDescriptor>
     </Extension>
+    
+    
 </AddIn>

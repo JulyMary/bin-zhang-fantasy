@@ -250,6 +250,27 @@ namespace Fantasy.Studio.BusinessEngine
 
         }
 
+        public static BusinessWebFolder AddStandardWebFolder(this IEntityService es, BusinessPackage parent)
+        {
+            BusinessWebFolder rs = es.CreateEntity<BusinessWebFolder>();
+           
+            rs.Name = Resources.DefaultStandardWebFolderName;
+            rs.CodeName = "Web";
+            rs.Package = parent;
+            parent.WebFolders.Add(rs);
+
+            foreach (string subName in new string[] { "Content", "Controllers", "Models", "Images", "Scripts", "Views"})
+            {
+                BusinessWebFolder sub = es.CreateEntity<BusinessWebFolder>();
+                sub.Name = sub.CodeName = subName;
+                sub.ParentFolder = rs;
+                rs.ChildFolders.Add(sub);
+            }
+
+            return rs;
+
+        }
+
         
     }
 }

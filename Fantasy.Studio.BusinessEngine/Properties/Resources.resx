@@ -183,6 +183,9 @@
   <data name="DefaultParticipantACLPanelTitle" xml:space="preserve">
     <value>Default</value>
   </data>
+  <data name="DefaultStandardWebFolderName" xml:space="preserve">
+    <value>Web</value>
+  </data>
   <data name="DefaultUserRoleCodeNameSuffix" xml:space="preserve">
     <value>Handler</value>
   </data>

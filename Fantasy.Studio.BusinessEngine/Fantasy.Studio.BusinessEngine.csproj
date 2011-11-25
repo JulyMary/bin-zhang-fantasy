@@ -260,6 +260,7 @@
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
+    <Compile Include="Conditions\IsRootWebFolder.cs" />
     <Compile Include="EntityCodeNameSetAction.cs" />
     <Compile Include="EntityEditingViewContent.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
@@ -400,6 +401,9 @@
     <Compile Include="UserRoleEditing\UserEditor.cs" />
     <Compile Include="UserRoleEditing\UserFolder.cs" />
     <Compile Include="UserRoleEditing\UserRoleFolder.cs" />
+    <Compile Include="Web\AddWebFolderCommand.cs" />
+    <Compile Include="Web\ChildWebFolderProvider.cs" />
+    <Compile Include="Web\PackageWebFolderProvider.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

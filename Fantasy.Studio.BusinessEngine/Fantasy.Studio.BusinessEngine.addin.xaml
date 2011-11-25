@@ -409,6 +409,7 @@
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
         <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner"></Button>
+        <Button ID="AddWebFolder" Text="Add Web Folder" Command="{New sbe:AddWebFolderCommand}" ParameterSource="Owner" />
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
         <Button ID="Delete" Text="Delete" Command="{New sbe:DeletePackageCommand}" ParameterSource="Owner">
             <Button.Conditional>
@@ -451,6 +452,7 @@
             <TreeNodeChildProvider ID="objectModel" Provider="{New sbe:PackageObjectModelFolderProvider}" />
             <TreeNodeChildProvider ID="applicationFolder" Provider="{New sbe:PackageApplicationFolderProvider}" />
             <TreeNodeChildProvider ID="UserRoles" Provider="{New sbe:PackageUserRoleFolderProvider }" />
+            <TreeNodeChildProvider ID="Web" Provider="{New sbe:PackageWebFolderProvider}" />
             <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
         <TreeNode ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/objectmodelfolder.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/objectmodelfolder/contextmenu">
@@ -515,6 +517,10 @@
         </TreeNode>
         <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
 
+        </TreeNode>
+
+        <TreeNode ID="WebFolder" TargetType="{x:Type be:BusinessWebFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
+            <TreeNodeChildProvider ID="childfolders" Provider="{New sbe:ChildWebFolderProvider}" />
         </TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
