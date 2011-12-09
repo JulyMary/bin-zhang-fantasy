@@ -339,6 +339,33 @@ namespace Fantasy.BusinessEngine
     
         }
 
+        private IObservableList<BusinessScript> _persistedScripts = new ObservableList<BusinessScript>();
+        protected internal virtual IObservableList<BusinessScript> PersistedScripts
+        {
+            get { return _persistedScripts; }
+            private set
+            {
+                if (_persistedScripts != value)
+                {
+                    _persistedScripts = value;
+                    _scripts.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessScript> _scripts;
+        public virtual IObservableList<BusinessScript> Scripts
+        {
+            get
+            {
+                if (this._scripts == null)
+                {
+                    this._scripts = new ObservableListView<BusinessScript>(this._persistedScripts);
+                }
+                return _scripts;
+            }
+        }
+
         public readonly static Guid RootPackageId = new Guid("28f26cdc-9ce5-4d0a-814d-08ce58105e25");
        
     }

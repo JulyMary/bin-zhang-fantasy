@@ -7,7 +7,7 @@ using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine.Web
 {
-    class AddWebFolderCommand : ObjectWithSite, System.Windows.Input.ICommand
+    public class AddChildWebFolderCommand : ObjectWithSite, System.Windows.Input.ICommand
     {
         #region ICommand Members
 
@@ -17,8 +17,8 @@ namespace Fantasy.Studio.BusinessEngine.Web
             {
                 return false;
             }
-            BusinessPackage package = (BusinessPackage)parameter;
-            return !(package.EntityState == EntityState.New || package.EntityState == EntityState.Deleted || package.WebFolders.Count > 0);
+            BusinessWebFolder parent = (BusinessWebFolder)parameter;
+            return !(parent.EntityState == EntityState.New || parent.EntityState == EntityState.Deleted);
         
         }
 
@@ -26,11 +26,14 @@ namespace Fantasy.Studio.BusinessEngine.Web
 
         public void Execute(object parameter)
         {
-            BusinessPackage parent = (BusinessPackage)parameter;
+            BusinessWebFolder parent = (BusinessWebFolder)parameter;
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessWebFolder folder = es.AddRootWebFolder(parent);
+            BusinessWebFolder folder = es.AddChildWebFolder(parent);
+
+           
         }
 
         #endregion
     }
+   
 }
