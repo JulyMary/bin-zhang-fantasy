@@ -18,6 +18,7 @@ namespace Fantasy.BusinessEngine.Maps
 
             this.HasMany(x => x.PersistedChildFolders).CollectionType<ObservableList<BusinessWebFolder>>().KeyColumn("PARENTFOLDERID").Cascade.AllDeleteOrphan().Inverse().LazyLoad();
 
+            this.HasMany(x => x.PersistedScripts).CollectionType<ObservableList<BusinessWebScript>>().KeyColumn("WebFolderID").Cascade.None().Inverse().LazyLoad();
         }
     }
 }

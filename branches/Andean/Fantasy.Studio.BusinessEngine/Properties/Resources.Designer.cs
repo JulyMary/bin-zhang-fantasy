@@ -151,6 +151,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NewFolder.
+        /// </summary>
+        public static string DefaultChildWebFolderName {
+            get {
+                return ResourceManager.GetString("DefaultChildWebFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string DefaultCodePanelTitle {

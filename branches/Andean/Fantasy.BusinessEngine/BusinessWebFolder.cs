@@ -129,5 +129,34 @@ namespace Fantasy.BusinessEngine
         }
 
         #endregion
+
+        private IObservableList<BusinessWebScript> _persistedScripts = new ObservableList<BusinessWebScript>();
+        protected internal virtual IObservableList<BusinessWebScript> PersistedScripts
+        {
+            get { return _persistedScripts; }
+            private set
+            {
+                if (_persistedScripts != value)
+                {
+                    _persistedScripts = value;
+                    _scripts.Source = value;
+                }
+            }
+        }
+
+        private ObservableListView<BusinessWebScript> _scripts;
+        public virtual IObservableList<BusinessWebScript> Scripts
+        {
+            get
+            {
+                if (this._scripts == null)
+                {
+                    this._scripts = new ObservableListView<BusinessWebScript>(this._persistedScripts);
+                }
+                return _scripts;
+            }
+        }
     }
+
+
 }

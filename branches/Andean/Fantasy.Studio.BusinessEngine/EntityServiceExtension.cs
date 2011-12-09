@@ -250,7 +250,7 @@ namespace Fantasy.Studio.BusinessEngine
 
         }
 
-        public static BusinessWebFolder AddStandardWebFolder(this IEntityService es, BusinessPackage parent)
+        public static BusinessWebFolder AddRootWebFolder(this IEntityService es, BusinessPackage parent)
         {
             BusinessWebFolder rs = es.CreateEntity<BusinessWebFolder>();
            
@@ -266,6 +266,17 @@ namespace Fantasy.Studio.BusinessEngine
                 sub.ParentFolder = rs;
                 rs.ChildFolders.Add(sub);
             }
+
+            return rs;
+
+        }
+
+        public static BusinessWebFolder AddChildWebFolder(this IEntityService es, BusinessWebFolder parent)
+        {
+            BusinessWebFolder rs = es.CreateEntity<BusinessWebFolder>();
+            rs.Name = rs.CodeName = UniqueNameGenerator.GetName(Resources.DefaultChildWebFolderName, parent.ChildFolders.Select(f => f.Name));
+            rs.ParentFolder = parent;
+            parent.ChildFolders.Add(rs);
 
             return rs;
 
