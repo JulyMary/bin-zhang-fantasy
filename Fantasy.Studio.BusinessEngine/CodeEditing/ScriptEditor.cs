@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using Fantasy.Windows;
 using System.ComponentModel;
 using Fantasy.Studio.BusinessEngine.CodeEditing;
+using Fantasy.Adaption;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -43,7 +44,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         public override void Load(object entity)
         {
             base.Load(entity);
-            IEntityScript script = (IEntityScript)entity;
+            IEntityScript script = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IEntityScript>(entity);
 
             this.Title = script.Name;
 
@@ -57,6 +58,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             PropertyChangedEventManager.AddListener(((INotifyPropertyChanged)script.Entity), this._nameListener, "Name");
 
         }
+
+      
 
         public override string DocumentType
         {

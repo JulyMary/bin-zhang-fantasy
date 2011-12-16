@@ -365,6 +365,9 @@
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General" />
             <PropertyDescriptor ID="FullCodeName" Name="FullCodeName" Caption="Full Code Name" Category="General" />
         </TypeDescriptor>
+        <TypeDescriptor ID="ScriptFolder" TargetType="{x:Type sbe:ScriptFolder}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" ReadOnly="true" Category="General" />
+        </TypeDescriptor>
     </Extension>
     
     
