@@ -452,6 +452,7 @@
             <TreeNodeChildProvider ID="objectModel" Provider="{New sbe:PackageObjectModelFolderProvider}" />
             <TreeNodeChildProvider ID="applicationFolder" Provider="{New sbe:PackageApplicationFolderProvider}" />
             <TreeNodeChildProvider ID="UserRoles" Provider="{New sbe:PackageUserRoleFolderProvider }" />
+            <TreeNodeChildProvider ID="scripts" Provider="{New sbe:PackageScriptFolderProvider}" />
             <TreeNodeChildProvider ID="Web" Provider="{New sbe:PackageWebFolderProvider}" />
             <TreeNodeChildProvider ID="References" Provider="{New sbe:RootPackageReferenceGroupProvider}" />
         </TreeNode>
@@ -521,6 +522,9 @@
 
         <TreeNode ID="WebFolder" TargetType="{x:Type be:BusinessWebFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
             <TreeNodeChildProvider ID="childfolders" Provider="{New sbe:ChildWebFolderProvider}" />
+        </TreeNode>
+        <TreeNode ID="ScriptFolder" TargetType="{x:Type sbe:ScriptFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}">
+            
         </TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">

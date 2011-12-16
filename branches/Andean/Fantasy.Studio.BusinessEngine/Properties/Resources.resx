@@ -210,6 +210,9 @@
   <data name="RoleFolderName" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="ScriptFolderName" xml:space="preserve">
+    <value>Scripts</value>
+  </data>
   <data name="SolutionFileDialogFilter" xml:space="preserve">
     <value>Solution File | *.sln</value>
   </data>

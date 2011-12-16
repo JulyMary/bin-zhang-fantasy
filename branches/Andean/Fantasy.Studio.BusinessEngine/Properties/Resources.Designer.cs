@@ -340,6 +340,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scripts.
+        /// </summary>
+        public static string ScriptFolderName {
+            get {
+                return ResourceManager.GetString("ScriptFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Solution File | *.sln.
         /// </summary>
         public static string SolutionFileDialogFilter {

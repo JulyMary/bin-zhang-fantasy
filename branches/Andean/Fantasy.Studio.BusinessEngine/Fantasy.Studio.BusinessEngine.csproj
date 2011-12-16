@@ -227,10 +227,13 @@
     <Compile Include="ClassEditing\BusinessClassScript.cs" />
     <Compile Include="ClassEditing\BusinessClassAutoScript.cs" />
     <Compile Include="ClassEditing\ClassAutoScriptProvider.cs" />
+    <Compile Include="CodeEditing\BusinessScriptAdapter.cs" />
+    <Compile Include="CodeEditing\BusinessScriptAdapterFactory.cs" />
     <Compile Include="CodeEditing\FontAndColorsOptionPanel.xaml.cs">
       <DependentUpon>FontAndColorsOptionPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="CodeEditing\FontAndColorsOptionPanelModel.cs" />
+    <Compile Include="CodeEditing\PackageScriptsProvider.cs" />
     <Compile Include="CodeEditing\ScriptEditor.cs" />
     <Compile Include="ClassEditing\ClassScriptProvider.cs" />
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
@@ -362,8 +365,8 @@
     <Compile Include="ClassEditing\SaveBusinessClassViewContentCommand.cs" />
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
-    <Compile Include="Scripting\PackageScriptsProvider.cs" />
-    <Compile Include="Scripting\ScriptFolder.cs" />
+    <Compile Include="CodeEditing\PackageScriptFolderProvider.cs" />
+    <Compile Include="CodeEditing\ScriptFolder.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="CodeGenerating\BusinessClassCodeGenerator.cs" />
     <Compile Include="CodeGenerating\ClassChangedHandler.cs" />

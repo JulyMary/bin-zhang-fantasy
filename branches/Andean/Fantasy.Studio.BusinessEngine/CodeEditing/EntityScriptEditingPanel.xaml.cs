@@ -13,6 +13,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Fantasy.Windows;
 using System.ComponentModel;
+using Fantasy.Studio.Services;
+using Fantasy.Adaption;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -28,6 +31,21 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         public IServiceProvider Site { get; set; }
 
+
+        private SelectionService _selection = new SelectionService(null);
+
+      
+
+        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            base.OnGotKeyboardFocus(e);
+            if (this.Site != null)
+            {
+                IMonitorSelectionService monitor = this.Site.GetRequiredService<IMonitorSelectionService>();
+                monitor.CurrentSelectionService = this._selection;
+            }
+        }
+
         #region IDocumentEditingPanel Members
 
         public void Initialize()
@@ -41,7 +59,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         public void Load(object document)
         {
-            this._entityScript = (IEntityScript)document;
+            this._entityScript = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IEntityScript>(document);
             this.csEditor.TextDocument.Text = this._entityScript.Content ?? string.Empty;
             this.IsContentReadOnly  = this.IsReadOnly ||  this._entityScript.IsReadOnly;
             _entityScriptListener = new WeakEventListener((t, sender, e)=>
@@ -76,6 +94,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "IsReadOnly");
             
             this.csEditor.TextDocument.TextChanged += new EventHandler(TextDocumentTextChanged);
+
+            this._selection.SetSelectedComponents(new object[] { document });
         }
 
        
@@ -132,7 +152,22 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         public void Save()
         {
-            
+
+
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+
+            es.BeginUpdate();
+            try
+            {
+                es.SaveOrUpdate(this._entityScript.Entity);
+                es.EndUpdate(true);
+            }
+            catch
+            {
+                es.EndUpdate(false);
+                throw;
+            }
+         
             this.DirtyState = EditingState.Clean;
         }
 
