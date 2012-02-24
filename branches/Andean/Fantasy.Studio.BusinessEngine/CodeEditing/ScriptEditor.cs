@@ -63,7 +63,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         public override string DocumentType
         {
-            get { return "cs"; }
+            get { return "code"; }
         }
 
         private ImageSource _icon =  new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/csharpfile.png", UriKind.Relative));
