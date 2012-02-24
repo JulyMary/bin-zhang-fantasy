@@ -82,10 +82,8 @@
     <Compile Include="BusinessScript.cs" />
     <Compile Include="BusinessScriptBase.cs" />
     <Compile Include="BusinessUser.cs" />
-    <Compile Include="BusinessWebFolder.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BusinessWebScript.cs" />
+    <Compile Include="BusinessWebController.cs" />
+    <Compile Include="BusinessWebView.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />
@@ -114,7 +112,6 @@
     <Compile Include="Maps\BusinessRoleMap.cs" />
     <Compile Include="Maps\BusinessScriptMaps.cs" />
     <Compile Include="Maps\BusinessUserMap.cs" />
-    <Compile Include="Maps\BusinessWebFolderMap.cs" />
     <Compile Include="Properties\Settings.settings.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

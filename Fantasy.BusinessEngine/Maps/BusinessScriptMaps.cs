@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine.Maps
 {
@@ -21,17 +22,34 @@ namespace Fantasy.BusinessEngine.Maps
         public BusinessScriptMap()
         {
             this.Table("BUSINESSEXTRASCRIPT");
-            this.References(x => x.Package);
+            this.References(x => x.Package).Column("PackageID");
+           
+
         }
 
     }
 
-    public class BusinessWebScriptMap : BusinessScriptBaseMap<BusinessWebScript>
+    public class BusinessWebControllerMap : BusinessScriptBaseMap<BusinessWebController>
     {
-        public BusinessWebScriptMap()
+        public BusinessWebControllerMap()
         {
-            this.Table("BUSINESSWEBSCRIPT");
-            this.References(x => x.WebFolder);
+            this.Table("BUSINESSWEBCONTROLLER");
+            this.References(x => x.Package).Column("PackageID");
+            this.HasMany(x => x.PersistedViews).CollectionType<ObservableList<BusinessWebView>>().KeyColumn("ControllerID").Cascade.None().Inverse().LazyLoad();
+        }
+
+    }
+
+    public class BusinessWebViewMap : BusinessScriptBaseMap<BusinessWebView>
+    {
+        public BusinessWebViewMap()
+        {
+            this.Table("BUSINESSWEBVIEW");
+            this.References(x => x.Controller).Column("ControllerID");
+
         }
     }
+
+
+ 
 }

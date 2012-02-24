@@ -13,7 +13,6 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         string Content { get; set; }
         bool IsReadOnly { get; }
         IBusinessEntity Entity { get; }
-        
-
+        string Extension { get; }
     }
 }

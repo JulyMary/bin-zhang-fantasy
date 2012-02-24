@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             this.Entity = script;
             this.IsReadOnly = script.IsSystem;
-            this.Name = this.Entity.Name + ".cs";
+            this.Name = this.Entity.Name;
             PropertyChangedEventManager.AddListener(this.Entity, this, "Script");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
         }
@@ -59,7 +59,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                    this.OnPropertyChanged("Content");
                    return true;
                 case "Name":
-                    this.Name = this.Entity.Name + ".cs";
+                    this.Name = this.Entity.Name;
                     return true;
 
                 default:
@@ -101,5 +101,16 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             get { return this.Entity; }
         }
+
+
+        #region IEntityScript Members
+
+
+        public string Extension
+        {
+            get { return this.Name.Substring(this.Name.LastIndexOf('.') + 1);}
+        }
+
+        #endregion
     }
 }

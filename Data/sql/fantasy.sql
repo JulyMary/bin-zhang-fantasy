@@ -1,8 +1,7 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     30/11/2011 11:52:58 AM                       */
+/* Created on:     24/01/2012 3:06:36 PM                        */
 /*==============================================================*/
-
 use Fantasy
 
 if exists (select 1
@@ -182,23 +181,16 @@ go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BusinessWebFolder') and o.name = 'FK_BUSINESS_CHILDWEBFOLDERS')
-alter table BusinessWebFolder
-   drop constraint FK_BUSINESS_CHILDWEBFOLDERS
+   where r.fkeyid = object_id('BusinessWebController') and o.name = 'FK_BUSINESS_WEBCONTROLLER_PACKAGE')
+alter table BusinessWebController
+   drop constraint FK_BUSINESS_WEBCONTROLLER_PACKAGE
 go
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BusinessWebFolder') and o.name = 'FK_BUSINESS_PACKAGE_WEBFOLDER')
-alter table BusinessWebFolder
-   drop constraint FK_BUSINESS_PACKAGE_WEBFOLDER
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BusinessWebScript') and o.name = 'FK_BUSINESS_WEBFOLDER_SCRIPT')
-alter table BusinessWebScript
-   drop constraint FK_BUSINESS_WEBFOLDER_SCRIPT
+   where r.fkeyid = object_id('BusinessWebView') and o.name = 'FK_BUSINESS_WEB_CONTROLLER_VIEW')
+alter table BusinessWebView
+   drop constraint FK_BUSINESS_WEB_CONTROLLER_VIEW
 go
 
 if exists (select 1
@@ -572,43 +564,34 @@ go
 
 if exists (select 1
             from  sysindexes
-           where  id    = object_id('BusinessWebFolder')
-            and   name  = 'CHILDWEBFOLDERS_FK'
+           where  id    = object_id('BusinessWebController')
+            and   name  = 'PACKAGEWEBCONTROLLERS_FK'
             and   indid > 0
             and   indid < 255)
-   drop index BusinessWebFolder.CHILDWEBFOLDERS_FK
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('BusinessWebFolder')
-            and   name  = 'PACKAGEWEBFOLDER_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index BusinessWebFolder.PACKAGEWEBFOLDER_FK
+   drop index BusinessWebController.PACKAGEWEBCONTROLLERS_FK
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('BusinessWebFolder')
+           where  id = object_id('BusinessWebController')
             and   type = 'U')
-   drop table BusinessWebFolder
+   drop table BusinessWebController
 go
 
 if exists (select 1
             from  sysindexes
-           where  id    = object_id('BusinessWebScript')
-            and   name  = 'WEBFOLDERSCRIPTS_FK'
+           where  id    = object_id('BusinessWebView')
+            and   name  = 'WEBCONTROLLERVIEWS_FK'
             and   indid > 0
             and   indid < 255)
-   drop index BusinessWebScript.WEBFOLDERSCRIPTS_FK
+   drop index BusinessWebView.WEBCONTROLLERVIEWS_FK
 go
 
 if exists (select 1
             from  sysobjects
-           where  id = object_id('BusinessWebScript')
+           where  id = object_id('BusinessWebView')
             and   type = 'U')
-   drop table BusinessWebScript
+   drop table BusinessWebView
 go
 
 if exists(select 1 from systypes where name='T_DBEntity')
@@ -1048,7 +1031,7 @@ go
 /*==============================================================*/
 create table BusinessProperty (
    ID                   T_Guid               not null,
-   CLASSID              T_Guid               null,
+   CLASSID              T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
@@ -1066,7 +1049,7 @@ create table BusinessProperty (
    DefaultValue         varchar(64)          null,
    ScriptOptions        int                  null,
    DisplayOrder         bigint               not null,
-   constraint PK_BUSINESSPROPERTY primary key (ID)
+   constraint PK_BUSINESSPROPERTY primary key (ID, CLASSID)
 )
 go
 
@@ -1184,60 +1167,54 @@ ROLEID ASC
 go
 
 /*==============================================================*/
-/* Table: BusinessWebFolder                                     */
+/* Table: BusinessWebController                                 */
 /*==============================================================*/
-create table BusinessWebFolder (
+create table BusinessWebController (
    ID                   T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
    PackageID            T_Guid               null,
-   ParentFolderID       T_Guid               null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
-   constraint PK_BUSINESSWEBFOLDER primary key (ID)
+   Script               text                 null,
+   BuildAction          T_Name               null,
+   MetaData             varchar(1024)        null,
+   constraint PK_BUSINESSWEBCONTROLLER primary key (ID)
 )
 go
 
 /*==============================================================*/
-/* Index: PACKAGEWEBFOLDER_FK                                   */
+/* Index: PACKAGEWEBCONTROLLERS_FK                              */
 /*==============================================================*/
-create index PACKAGEWEBFOLDER_FK on BusinessWebFolder (
+create index PACKAGEWEBCONTROLLERS_FK on BusinessWebController (
 PackageID ASC
 )
 go
 
 /*==============================================================*/
-/* Index: CHILDWEBFOLDERS_FK                                    */
+/* Table: BusinessWebView                                       */
 /*==============================================================*/
-create index CHILDWEBFOLDERS_FK on BusinessWebFolder (
-ParentFolderID ASC
-)
-go
-
-/*==============================================================*/
-/* Table: BusinessWebScript                                     */
-/*==============================================================*/
-create table BusinessWebScript (
+create table BusinessWebView (
    ID                   T_Guid               not null,
-   WebFolderID          T_Guid               null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
+   ControllerID         T_Guid               null,
    Name                 T_Name               not null,
-   ProjectType          int                  not null,
+   CodeName             T_Name               not null,
    Script               text                 null,
    BuildAction          T_Name               null,
    MetaData             varchar(1024)        null,
-   constraint PK_BUSINESSWEBSCRIPT primary key (ID)
+   constraint PK_BUSINESSWEBVIEW primary key (ID)
 )
 go
 
 /*==============================================================*/
-/* Index: WEBFOLDERSCRIPTS_FK                                   */
+/* Index: WEBCONTROLLERVIEWS_FK                                 */
 /*==============================================================*/
-create index WEBFOLDERSCRIPTS_FK on BusinessWebScript (
-WebFolderID ASC
+create index WEBCONTROLLERVIEWS_FK on BusinessWebView (
+ControllerID ASC
 )
 go
 
@@ -1370,19 +1347,13 @@ alter table BusinessUserRole
       references BusinessRole (ID)
 go
 
-alter table BusinessWebFolder
-   add constraint FK_BUSINESS_CHILDWEBFOLDERS foreign key (ParentFolderID)
-      references BusinessWebFolder (ID)
-go
-
-alter table BusinessWebFolder
-   add constraint FK_BUSINESS_PACKAGE_WEBFOLDER foreign key (PackageID)
+alter table BusinessWebController
+   add constraint FK_BUSINESS_WEBCONTROLLER_PACKAGE foreign key (PackageID)
       references BusinessPackage (ID)
-         on delete cascade
 go
 
-alter table BusinessWebScript
-   add constraint FK_BUSINESS_WEBFOLDER_SCRIPT foreign key (WebFolderID)
-      references BusinessWebFolder (ID)
+alter table BusinessWebView
+   add constraint FK_BUSINESS_WEB_CONTROLLER_VIEW foreign key (ControllerID)
+      references BusinessWebController (ID)
 go
 

@@ -5,18 +5,20 @@ using System.Text;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessWebScript : BusinessScriptBase
+    public class BusinessWebView : BusinessScriptBase
     {
-        public virtual BusinessWebFolder WebFolder
+        public virtual BusinessWebController Controller
         {
             get
             {
-                return (BusinessWebFolder)this.GetValue("WebFolder", null);
+                return (BusinessWebController)this.GetValue("Controller", null);
             }
             set
             {
-                this.SetValue("WebFolder", value);
+                this.SetValue("Controller", value);
             }
         }
+
+
     }
 }

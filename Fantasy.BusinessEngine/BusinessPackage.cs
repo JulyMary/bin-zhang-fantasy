@@ -293,30 +293,30 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        private IObservableList<BusinessWebFolder> _persistedWebFolders = new ObservableList<BusinessWebFolder>();
-        protected internal virtual IObservableList<BusinessWebFolder> PersistedWebFolders
+        private IObservableList<BusinessWebController> _persistedWebControllers = new ObservableList<BusinessWebController>();
+        protected internal virtual IObservableList<BusinessWebController> PersistedWebControllers
         {
-            get { return _persistedWebFolders; }
+            get { return _persistedWebControllers; }
             private set
             {
-                if (_persistedWebFolders != value)
+                if (_persistedWebControllers != value)
                 {
-                    _persistedWebFolders = value;
-                    _webFolders.Source = value;
+                    _persistedWebControllers = value;
+                    _webControllers.Source = value;
                 }
             }
         }
 
-        private ObservableListView<BusinessWebFolder> _webFolders;
-        public virtual IObservableList<BusinessWebFolder> WebFolders
+        private ObservableListView<BusinessWebController> _webControllers;
+        public virtual IObservableList<BusinessWebController> WebControllers
         {
             get
             {
-                if (this._webFolders == null)
+                if (this._webControllers == null)
                 {
-                    this._webFolders = new ObservableListView<BusinessWebFolder>(this._persistedWebFolders);
+                    this._webControllers = new ObservableListView<BusinessWebController>(this._persistedWebControllers);
                 }
-                return _webFolders;
+                return _webControllers;
             }
         }
 

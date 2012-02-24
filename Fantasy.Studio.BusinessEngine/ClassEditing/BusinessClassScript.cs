@@ -104,6 +104,16 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             get { return this.Entity; }
         }
 
+
+
       
+
+
+        public string Extension
+        {
+            get { return "cs"; }
+        }
+
+        
     }
 }
