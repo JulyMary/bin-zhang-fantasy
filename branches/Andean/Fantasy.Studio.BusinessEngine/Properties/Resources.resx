@@ -225,4 +225,7 @@
   <data name="UserRoleFolderName" xml:space="preserve">
     <value>Users and Roles</value>
   </data>
+  <data name="WebFolderName" xml:space="preserve">
+    <value>Web</value>
+  </data>
 </root>

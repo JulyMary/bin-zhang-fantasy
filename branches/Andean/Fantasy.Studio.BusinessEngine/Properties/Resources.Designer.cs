@@ -383,5 +383,14 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
                 return ResourceManager.GetString("UserRoleFolderName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Web.
+        /// </summary>
+        public static string WebFolderName {
+            get {
+                return ResourceManager.GetString("WebFolderName", resourceCulture);
+            }
+        }
     }
 }
