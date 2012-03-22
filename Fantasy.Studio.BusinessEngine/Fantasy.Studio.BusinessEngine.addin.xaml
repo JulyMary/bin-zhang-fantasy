@@ -409,7 +409,7 @@
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
         <Button ID="AddPackage" Text="Add Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner"></Button>
-        <Button ID="AddWebFolder" Text="Add Web Folder" Command="{New sbe:AddWebFolderCommand}" ParameterSource="Owner" />
+        
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
         <Button ID="Delete" Text="Delete" Command="{New sbe:DeletePackageCommand}" ParameterSource="Owner">
             <Button.Conditional>
@@ -520,8 +520,8 @@
 
         </TreeNode>
 
-        <TreeNode ID="WebFolder" TargetType="{x:Type be:BusinessWebFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
-            <TreeNodeChildProvider ID="childfolders" Provider="{New sbe:ChildWebFolderProvider}" />
+        <TreeNode ID="WebFolder" TargetType="{x:Type sbe:WebFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
+            <TreeNodeChildProvider ID="controllers" Provider="{New sbe:PackageWebFolderProvider}" />
         </TreeNode>
         <TreeNode ID="ScriptFolder" TargetType="{x:Type sbe:ScriptFolder}" Icon="/Fantasy.Studio.BusinessEngine;component/images/folder.png" Text="{Binding Path=Name}">
             

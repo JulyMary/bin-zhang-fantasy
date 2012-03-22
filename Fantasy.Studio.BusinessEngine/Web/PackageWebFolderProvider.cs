@@ -18,11 +18,16 @@ namespace Fantasy.Studio.BusinessEngine.Web
         {
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
 
-            BusinessPackage package =  am.GetAdapter<BusinessPackage>(parent);
+            BusinessPackage package = am.GetAdapter<BusinessPackage>(parent);
 
-
-
-            return package.WebFolders;
+            if (package.Id != BusinessPackage.RootPackageId)
+            {
+                return new object[] { new WebFolder(package) };
+            }
+            else
+            {
+                return new object[0];
+            }
 
         }
 
