@@ -227,13 +227,24 @@
     <Compile Include="ClassEditing\BusinessClassScript.cs" />
     <Compile Include="ClassEditing\BusinessClassAutoScript.cs" />
     <Compile Include="ClassEditing\ClassAutoScriptProvider.cs" />
+    <Compile Include="CodeEditing\AddScriptCommand.cs" />
+    <Compile Include="CodeEditing\AddScriptDialog.xaml.cs">
+      <DependentUpon>AddScriptDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CodeEditing\AddScriptDialogModel.cs" />
     <Compile Include="CodeEditing\BusinessScriptAdapter.cs" />
     <Compile Include="CodeEditing\BusinessScriptAdapterFactory.cs" />
+    <Compile Include="CodeEditing\ScriptTemplateItem.cs" />
+    <Compile Include="CodeEditing\ScriptTemplateRepository.cs" />
+    <Compile Include="Consts.cs" />
     <Compile Include="CodeEditing\FontAndColorsOptionPanel.xaml.cs">
       <DependentUpon>FontAndColorsOptionPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="CodeEditing\FontAndColorsOptionPanelModel.cs" />
     <Compile Include="CodeEditing\PackageScriptsProvider.cs" />
+    <Compile Include="CodeEditing\RenameWindow.xaml.cs">
+      <DependentUpon>RenameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CodeEditing\ScriptEditor.cs" />
     <Compile Include="ClassEditing\ClassScriptProvider.cs" />
     <Compile Include="ClassEditing\DeleteClassCommand.cs" />
@@ -247,6 +258,7 @@
     <Compile Include="CodeEditing\EntityScriptEditingPanel.xaml.cs">
       <DependentUpon>EntityScriptEditingPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CodeEditing\ScriptTemplate.cs" />
     <Compile Include="CodeGenerating\BusinessPackageCodeGenerator.cs" />
     <Compile Include="CodeGenerating\EnumChangedHandler.cs" />
     <Compile Include="CodeGenerating\BusinessEnumCodeGenerator.cs" />
@@ -364,7 +376,6 @@
     <Compile Include="ClassEditing\SaveBusinessClassViewContentCommand.cs" />
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
-    <Compile Include="CodeEditing\PackageScriptFolderProvider.cs" />
     <Compile Include="CodeEditing\ScriptFolder.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="CodeGenerating\BusinessClassCodeGenerator.cs" />
@@ -405,17 +416,12 @@
     <Compile Include="UserRoleEditing\UserEditor.cs" />
     <Compile Include="UserRoleEditing\UserFolder.cs" />
     <Compile Include="UserRoleEditing\UserRoleFolder.cs" />
-    <Compile Include="Web\PackageWebControllersProvider.cs" />
-    <Compile Include="Web\PackageWebFolderProvider.cs" />
-    <Compile Include="Web\WebControllerViewsProvider.cs" />
-    <Compile Include="Web\WebFolder.cs" />
     <Compile Include="XamlNamespaces.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Templates\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
@@ -498,6 +504,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CodeEditing\AddScriptDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CodeEditing\CSharpEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -507,6 +517,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CodeEditing\FontAndColorsOptionPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CodeEditing\RenameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -621,6 +635,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Resource Include="ItemTemplates\Class.template.xml" />
     <Content Include="Fantasy.Studio.BusinessEngine.TypeDescriptors.addin.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

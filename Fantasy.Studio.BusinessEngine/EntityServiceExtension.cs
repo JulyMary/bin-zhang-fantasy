@@ -8,6 +8,11 @@ using Fantasy.Studio.BusinessEngine.Properties;
 using Fantasy.Utils;
 using Fantasy.Studio.BusinessEngine.ApplicationEditing;
 using Fantasy.Studio.BusinessEngine.UserRoleEditing;
+using Fantasy.Studio.BusinessEngine.CodeEditing;
+using System.IO;
+using System.Xml.Linq;
+using Fantasy.Studio.BusinessEngine.CodeGenerating;
+using System.CodeDom.Compiler;
 
 namespace Fantasy.Studio.BusinessEngine
 {
@@ -249,6 +254,79 @@ namespace Fantasy.Studio.BusinessEngine
 
 
         }
+
+        public static BusinessScript[] AddBusinessScript(this IEntityService es, BusinessPackage package, ScriptTemplate template, string fileName)
+        {
+            List<BusinessScript> rs = new List<BusinessScript>();
+            Dictionary<string, string> replacements = new Dictionary<string, string>() 
+            { 
+                {"fileName", fileName }, 
+                {"fileNameWithoutExtension", Path.GetFileNameWithoutExtension(fileName)}, 
+                {"extension", Path.GetExtension(fileName)},
+                { "namespace", package.FullCodeName } 
+            };  
+
+            foreach (ScriptTemplateItem item in template.Items)
+            {
+                BusinessScript script = es.CreateEntity<BusinessScript>();
+                script.Package = package;
+                package.Scripts.Add(script);
+                script.Name = RepleaceTemplateItem(item.Include, replacements);
+                XElement meta = new XElement(item.Name);
+                foreach (KeyValuePair<string, string> pair in item.MetaData)
+                {
+                    meta.Add(new XElement(pair.Key, RepleaceTemplateItem(pair.Value, replacements)));
+                }
+                script.MetaData = meta.ToString();
+                IT4Service t4 = ((IObjectWithSite)es).Site.GetRequiredService<IT4Service>();
+                CompilerErrorCollection errors;
+                script.Script = t4.ProcessTemplate(item.TTContent, script, out errors);
+                rs.Add(script);
+            }
+
+            return rs.ToArray();
+
+
+
+        }
+
+
+        private static string RepleaceTemplateItem(string text, Dictionary<string, string> replacements)
+        {
+            string rs = text;
+            foreach (KeyValuePair<string, string> pair in replacements)
+            {
+                rs = CaseInsensitiveReplace(rs, "$" + pair.Key + "$", pair.Value);
+            }
+            return rs;
+        }
+
+        private static string CaseInsensitiveReplace(string original,
+                    string pattern, string replacement)
+        {
+            int count, position0, position1;
+            count = position0 = position1 = 0;
+            string upperString = original.ToUpper();
+            string upperPattern = pattern.ToUpper();
+            int inc = (original.Length / pattern.Length) *
+                      (replacement.Length - pattern.Length);
+            char[] chars = new char[original.Length + Math.Max(0, inc)];
+            while ((position1 = upperString.IndexOf(upperPattern,
+                                              position0)) != -1)
+            {
+                for (int i = position0; i < position1; ++i)
+                    chars[count++] = original[i];
+                for (int i = 0; i < replacement.Length; ++i)
+                    chars[count++] = replacement[i];
+                position0 = position1 + pattern.Length;
+            }
+            if (position0 == 0) return original;
+            for (int i = position0; i < original.Length; ++i)
+                chars[count++] = original[i];
+            return new string(chars, 0, count);
+        }
+
+      
 
        
 

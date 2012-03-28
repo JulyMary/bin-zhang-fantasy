@@ -12,7 +12,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
     public class BusinessScriptAdapter : NotifyPropertyChangedObject, IEntityScript, IWeakEventListener
     {
 
-        public BusinessScriptAdapter(BusinessScriptBase script)
+        public BusinessScriptAdapter(BusinessScript script)
         {
             this.Entity = script;
             this.IsReadOnly = script.IsSystem;
@@ -21,7 +21,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
         }
 
-        public BusinessScriptBase Entity { get; set; }
+        public BusinessScript Entity { get; set; }
 
         public string Content
         {

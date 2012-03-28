@@ -183,6 +183,9 @@
   <data name="DefaultNewBusinessUserName" xml:space="preserve">
     <value>NewUser</value>
   </data>
+  <data name="DefaultNewBusinessWebControllerName" xml:space="preserve">
+    <value>NewController</value>
+  </data>
   <data name="DefaultParticipantACLPanelTitle" xml:space="preserve">
     <value>Default</value>
   </data>

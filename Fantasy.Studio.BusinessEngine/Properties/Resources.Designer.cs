@@ -259,6 +259,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NewController.
+        /// </summary>
+        public static string DefaultNewBusinessWebControllerName {
+            get {
+                return ResourceManager.GetString("DefaultNewBusinessWebControllerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default.
         /// </summary>
         public static string DefaultParticipantACLPanelTitle {

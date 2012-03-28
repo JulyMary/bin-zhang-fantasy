@@ -62,5 +62,8 @@
     <Setting Name="BusinessEnumT4Path" Type="System.String" Scope="User">
       <Value Profile="(Default)">.\Templates\BusinessEnum.tt</Value>
     </Setting>
+    <Setting Name="ItemTemplatesPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\ItemTemplates</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

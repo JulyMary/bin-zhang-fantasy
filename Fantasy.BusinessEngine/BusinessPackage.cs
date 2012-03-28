@@ -293,32 +293,8 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        private IObservableList<BusinessWebController> _persistedWebControllers = new ObservableList<BusinessWebController>();
-        protected internal virtual IObservableList<BusinessWebController> PersistedWebControllers
-        {
-            get { return _persistedWebControllers; }
-            private set
-            {
-                if (_persistedWebControllers != value)
-                {
-                    _persistedWebControllers = value;
-                    _webControllers.Source = value;
-                }
-            }
-        }
 
-        private ObservableListView<BusinessWebController> _webControllers;
-        public virtual IObservableList<BusinessWebController> WebControllers
-        {
-            get
-            {
-                if (this._webControllers == null)
-                {
-                    this._webControllers = new ObservableListView<BusinessWebController>(this._persistedWebControllers);
-                }
-                return _webControllers;
-            }
-        }
+      
 
 
         public virtual string FullName

@@ -13,7 +13,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         public object GetAdapter(object adaptee, Type targetType)
         {
-            BusinessScriptBase entity = adaptee as BusinessScriptBase;
+            BusinessScript entity = adaptee as BusinessScript;
             if (entity != null)
             {
                 return new BusinessScriptAdapter(entity);
