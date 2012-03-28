@@ -43,7 +43,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
                     IT4Service t4svc = this.Site.GetRequiredService<IT4Service>();
                     CompilerErrorCollection errors;
 
-                    string script = t4svc.ProcessTemplate(Settings.ExtractToFullPath(Settings.Default.BusinessEnumT4Path), @enum, out errors, this.Site);
+                    string script = t4svc.ProcessTemplateFile(Settings.ExtractToFullPath(Settings.Default.BusinessEnumT4Path), @enum, out errors, this.Site);
                     LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, itemName), script, Encoding.UTF8);
                    
                 }

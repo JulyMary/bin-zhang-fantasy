@@ -80,10 +80,7 @@
     <Compile Include="BusinessProperty.cs" />
     <Compile Include="BusinessRole.cs" />
     <Compile Include="BusinessScript.cs" />
-    <Compile Include="BusinessScriptBase.cs" />
     <Compile Include="BusinessUser.cs" />
-    <Compile Include="BusinessWebController.cs" />
-    <Compile Include="BusinessWebView.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />

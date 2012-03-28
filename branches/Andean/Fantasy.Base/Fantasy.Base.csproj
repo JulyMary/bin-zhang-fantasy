@@ -184,6 +184,7 @@
     <Compile Include="Collections\Generic.UnionedObservableCollection.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\Key.cs" />
+    <Compile Include="Drawing\IconReader.cs" />
     <Compile Include="GAC\GAC.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="NumericalComparisonOperator.cs" />

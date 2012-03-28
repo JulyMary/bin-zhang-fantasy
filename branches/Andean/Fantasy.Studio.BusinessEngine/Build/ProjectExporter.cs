@@ -27,7 +27,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
                     new XAttribute("name", Settings.Default.BusinessDataAssemblyName)));
             IT4Service t4 = this.Site.GetRequiredService<IT4Service>();
             CompilerErrorCollection errors;
-            string solutionContent = t4.ProcessTemplate(Settings.ExtractToFullPath(Settings.Default.SolutionTemplatePath), solution, out errors);
+            string solutionContent = t4.ProcessTemplateFile(Settings.ExtractToFullPath(Settings.Default.SolutionTemplatePath), solution, out errors);
 
             Stream fs = new FileStream(Settings.ExtractToFullPath(Settings.Default.SolutionPath), FileMode.Create);
             fs.WriteByte(239);

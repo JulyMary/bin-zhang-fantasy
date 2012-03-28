@@ -34,9 +34,9 @@
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" ReadOnly="true" />
         </TypeDescriptor>
         
-        <TypeDescriptor ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}">
+        <!--<TypeDescriptor ID="ObjectModelFolder" TargetType="{x:Type sbe:ObjectModelFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
-        </TypeDescriptor>
+        </TypeDescriptor>-->
 
         <TypeDescriptor ID="InheritanceGlyph" TargetType="{x:Type dm:InheritanceGlyph}" >
             <PropertyDescriptor ID="Base" Name="BaseTypeName" Caption="Base Type" />
@@ -259,7 +259,7 @@
             <PropertyDescriptor ID="Association" Name="Entity" Caption="Association" Category="General" Converter="{New sbe:EntityFullNameConverter}" />
             <PropertyDescriptor ID="Cardinality" Name="Cardinality" Caption="Cardinality" Category="General" Editor="{New sbe:CardinalityEditor}"/>
         </TypeDescriptor>
-        <TypeDescriptor ID="UserRoleFolder" TargetType="{x:Type sbe:UserRoleFolder}">
+        <!--<TypeDescriptor ID="UserRoleFolder" TargetType="{x:Type sbe:UserRoleFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
         </TypeDescriptor>
         <TypeDescriptor ID="UserFolder" TargetType="{x:Type sbe:UserFolder}">
@@ -267,7 +267,7 @@
         </TypeDescriptor>
         <TypeDescriptor ID="RoleFolder" TargetType="{x:Type sbe:RoleFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
-        </TypeDescriptor>
+        </TypeDescriptor>-->
         <TypeDescriptor ID="BusinessUser" TargetType="{x:Type be:BusinessUser}">
             <TypeDescriptor.Conditional >
                 <Not Action="Disable">
@@ -312,9 +312,9 @@
             <PropertyDescriptor ID="IsComputed" Name="IsComputed" Caption="Is Computed" Category="General" />
         </TypeDescriptor>
 
-        <TypeDescriptor ID="ApplicationFolder" TargetType="{x:Type sbe:ApplicationFolder}">
+        <!--<TypeDescriptor ID="ApplicationFolder" TargetType="{x:Type sbe:ApplicationFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General"/>
-        </TypeDescriptor>
+        </TypeDescriptor>-->
 
         <TypeDescriptor ID="BusinessApplicationData" TargetType="{x:Type be:BusinessApplicationData}">
             <TypeDescriptor.Conditional >
@@ -346,13 +346,13 @@
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
         </TypeDescriptor>
 
-        <TypeDescriptor ID="WebFolder" TargetType="{x:Type sbe:WebFolder}">
+        <!--<TypeDescriptor ID="WebFolder" TargetType="{x:Type sbe:WebFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" ReadOnly="true" Category="General" />
-        </TypeDescriptor>
+        </TypeDescriptor>-->
 
-        <TypeDescriptor ID="ScriptFolder" TargetType="{x:Type sbe:ScriptFolder}">
+        <!--<TypeDescriptor ID="ScriptFolder" TargetType="{x:Type sbe:ScriptFolder}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" ReadOnly="true" Category="General" />
-        </TypeDescriptor>
+        </TypeDescriptor>-->
     </Extension>
     
     

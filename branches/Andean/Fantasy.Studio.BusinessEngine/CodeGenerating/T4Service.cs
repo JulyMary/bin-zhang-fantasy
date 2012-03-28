@@ -9,13 +9,14 @@ using Fantasy.IO;
 
 namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 {
-    public class T4Service : ServiceBase, Fantasy.Studio.BusinessEngine.CodeGenerating.IT4Service
+    public class T4Service : ServiceBase, IT4Service
     {
 
-        public string ProcessTemplate(string templateFile, object args, out CompilerErrorCollection errors, IServiceProvider services = null)
+        public string ProcessTemplateFile(string templateFile, object args, out CompilerErrorCollection errors, IServiceProvider services = null)
         {
-            
-            T4EngineHost host = new T4EngineHost(services??this.Site)
+
+
+            T4EngineHost host = new T4EngineHost(services ?? this.Site)
             {
 
                 TemplateFile = templateFile,
@@ -32,10 +33,31 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             errors = host.CompilerErrors;
 
             return output;
-
             
 
             
         }
+
+
+
+        #region IT4Service Members
+
+
+        public string ProcessTemplate(string templateContent, object args, out CompilerErrorCollection errors, IServiceProvider services = null)
+        {
+            T4EngineHost host = new T4EngineHost(services ?? this.Site);
+
+            host.AddService(args);
+
+            Engine engine = new Engine();
+
+            string output = engine.ProcessTemplate(templateContent, host);
+
+            errors = host.CompilerErrors;
+
+            return output;
+        }
+
+        #endregion
     }
 }

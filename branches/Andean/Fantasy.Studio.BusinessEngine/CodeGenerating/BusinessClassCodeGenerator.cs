@@ -296,7 +296,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             {
                 IT4Service t4 = this.Site.GetRequiredService<IT4Service>();
                 CompilerErrorCollection errors;
-                string output = t4.ProcessTemplate(Settings.ExtractToFullPath(Settings.Default.BusinessClassAutoScriptT4Path), @class, out errors);
+                string output = t4.ProcessTemplateFile(Settings.ExtractToFullPath(Settings.Default.BusinessClassAutoScriptT4Path), @class, out errors);
 
                 @class.AutoScript = output;
 
@@ -317,7 +317,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 {
                     IT4Service t4 = this.Site.GetRequiredService<IT4Service>();
                     CompilerErrorCollection errors;
-                    string output = t4.ProcessTemplate(Settings.ExtractToFullPath(Settings.Default.NewBusinessClassT4Path), @class, out errors);
+                    string output = t4.ProcessTemplateFile(Settings.ExtractToFullPath(Settings.Default.NewBusinessClassT4Path), @class, out errors);
 
                     @class.Script = output;
 
