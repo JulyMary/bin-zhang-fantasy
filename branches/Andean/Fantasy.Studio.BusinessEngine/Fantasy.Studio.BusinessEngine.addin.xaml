@@ -71,6 +71,9 @@
         <Object ID="UpdateLocalAssembliesService" InsertAfter="nhprovider">
             <be:UpdateLocalAssembliesService />
         </Object>
+        <Object ID="ScriptTemplateRepository">
+            <sbe:ScriptTemplateRepository/>
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/commandbindings"></Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/panels">

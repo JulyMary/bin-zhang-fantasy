@@ -11,8 +11,8 @@ using System.Windows.Interop;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
-using System.IO.Packaging;
 using System.IO;
+using Ionic.Zip;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -53,7 +53,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             foreach(XElement itemElement in element.Elements())
             {
                 ScriptTemplateItem item = new ScriptTemplateItem();
-                ser.Deserialize(element, item);
+                ser.Deserialize(itemElement, item);
                 this.Items.Add(item);
             }
         }
@@ -69,49 +69,48 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         public static ScriptTemplate LoadFrom(string path)
         {
             ScriptTemplate rs;
-            Package zip = ZipPackage.Open(path, System.IO.FileMode.Open, System.IO.FileAccess.Read);
-            try
+            using (ZipFile zip = ZipFile.Read(path))
             {
-                PackagePartCollection parts = zip.GetParts();
-                PackagePart templatePart = parts.Single(p => p.Uri.ToString().EndsWith(".template.xml"));
-                
-                
-                Stream templateStream =  templatePart.GetStream();
-                try
-                {
-                    XSerializer ser = new XSerializer(typeof(ScriptTemplate));
-                    XElement templateElement;
-                    templateElement = XElement.Load(templateStream);
-                    rs = (ScriptTemplate)ser.Deserialize(templateElement);
-                }
-                finally
-                {
-                    templateStream.Close();
-                }
+                ZipEntry templateEntry = zip.Single(e => e.FileName.ToLower().EndsWith(".template.xml")); 
+                MemoryStream templateStream = new MemoryStream();
+                templateEntry.Extract(templateStream);
+                templateStream.Position = 0;
 
-                LoadIcon(rs, parts);
+                XSerializer ser = new XSerializer(typeof(ScriptTemplate));
+                XElement templateElement;
+                templateElement = XElement.Load(templateStream);
+                rs = (ScriptTemplate)ser.Deserialize(templateElement);
 
-                LoadTTs(rs, parts);
+                LoadIcon(rs, zip);
 
-
-                
+                LoadTTs(rs, zip);
             }
-            finally
-            {
-                zip.Close();
-            }
-
+          
+               
             return rs;
         }
 
-        private static void LoadTTs(ScriptTemplate rs, PackagePartCollection parts)
+
+        private static string NormalizeFileName(string path)
+        {
+            if (path.StartsWith(".\\"))
+            {
+                path = path.Substring(2);
+            }
+
+            return path.ToLower();
+        }
+
+        private static void LoadTTs(ScriptTemplate rs, ZipFile zip)
         {
             foreach (ScriptTemplateItem item in rs.Items)
             {
                 if (!string.IsNullOrEmpty(item.TT))
                 {
-                    PackagePart part = parts.Single(p => p.Uri == new Uri(rs.IconPath, UriKind.RelativeOrAbsolute));
-                    Stream stream = part.GetStream();
+                    ZipEntry entry = zip.Single(e => NormalizeFileName(e.FileName) == NormalizeFileName(item.TT));
+                    Stream stream = new MemoryStream();
+                    entry.Extract(stream);
+                    stream.Position = 0;
                     try
                     {
                         StreamReader reader = new StreamReader(stream);
@@ -125,30 +124,18 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             }
         }
 
-        private static void LoadIcon(ScriptTemplate rs, PackagePartCollection parts)
+        private static void LoadIcon(ScriptTemplate rs, ZipFile zip)
         {
             if (!string.IsNullOrEmpty(rs.IconPath))
             {
-                PackagePart part = parts.Single(p => p.Uri == new Uri(rs.IconPath, UriKind.RelativeOrAbsolute));
-                MemoryStream ms = new MemoryStream();
-                Stream partStream = part.GetStream();
-                int b;
-                do
-                {
-                    b = partStream.ReadByte();
-                    if (b != -1)
-                    {
-                        ms.WriteByte((byte)b);
-                    }
-
-                } while (b >= 0);
-                partStream.Close();
-
-                ms.Position = 0;
+                ZipEntry entry = zip.Single(e => NormalizeFileName(e.FileName) == NormalizeFileName(rs.IconPath));
+                Stream stream = new MemoryStream();
+                entry.Extract(stream);
+                stream.Position = 0;
 
                 rs.Icon = new BitmapImage();
                 rs.Icon.BeginInit();
-                rs.Icon.StreamSource = ms;
+                rs.Icon.StreamSource = stream;
                 rs.Icon.EndInit();
 
 
