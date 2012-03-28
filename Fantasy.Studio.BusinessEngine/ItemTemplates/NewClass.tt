@@ -1,0 +1,21 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="Fantasy.Base"#>
+<#@ assembly name="Fantasy.BusinessEngine" #>
+<#@ import namespace="Fantasy"#>
+<#@ import namespace="Fantasy.BusinessEngine"#>
+<#@ import namespace="Fantasy.BusinessEngine.Services"#>
+<#
+    IServiceProvider services = (IServiceProvider)Host;
+	BusinessScript script = services.GetRequiredService<BusinessScript>();
+#>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace <#=  script.Package.FullCodeName #>
+{
+    class <#= script.CodeName #>
+    {
+    }
+}

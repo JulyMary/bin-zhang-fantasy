@@ -37,7 +37,6 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             {
                 this.MetaData[meta.Name.LocalName] = (string)meta;
             }
-            
 
         }
 
