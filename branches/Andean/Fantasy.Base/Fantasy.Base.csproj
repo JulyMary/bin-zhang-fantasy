@@ -184,6 +184,7 @@
     <Compile Include="Collections\Generic.UnionedObservableCollection.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\Key.cs" />
+    <Compile Include="Configuration\XSettingsConfigurationHandler.cs" />
     <Compile Include="Drawing\IconReader.cs" />
     <Compile Include="GAC\GAC.cs" />
     <Compile Include="IEventHandler.cs" />
@@ -197,11 +198,6 @@
     <Compile Include="Windows\WeakEventListener.cs" />
     <Compile Include="CommandArgsHelper.cs" />
     <Compile Include="Configuration\ComparsionHelper.cs" />
-    <Compile Include="Configuration\sample.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>sample.settings</DependentUpon>
-    </Compile>
     <Compile Include="System.Data\DbCommandExtension.cs" />
     <Compile Include="IObjectWithSite.cs" />
     <Compile Include="IO\CopyProgressRoutineHelper.cs" />
@@ -324,7 +320,7 @@
   <ItemGroup>
     <None Include="Configuration\sample.settings">
       <SubType>Designer</SubType>
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>None</Generator>
       <LastGenOutput>sample.Designer.cs</LastGenOutput>
     </None>
     <None Include="Configuration\sample.settings.tt">

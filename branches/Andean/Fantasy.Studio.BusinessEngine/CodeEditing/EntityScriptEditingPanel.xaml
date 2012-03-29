@@ -6,5 +6,6 @@
              xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.CodeEditing"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <l:CSharpEditor x:Name="csEditor" IsReadOnly="{Binding IsContentReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"></l:CSharpEditor>
+    <l:TextEditor x:Name="csEditor" IsReadOnly="{Binding IsContentReadOnly, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                  SyntaxHighlighting="{Binding SyntaxHighlighting, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}" ></l:TextEditor>
 </UserControl>

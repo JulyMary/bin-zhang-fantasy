@@ -33,9 +33,9 @@ Option Explicit On
 
 Namespace <#=classNamespace#>
     Partial Friend NotInheritable Class <#=className#>
-	    Inherits  ClickView.Configuration.SettingsBase
+	    Inherits  Fantasy.Configuration.SettingsBase
 		
-		Private Shared _default as <#=className#> = CType(ClickView.Configuration.SettingStorage.Load(new <#=className#>()), <#=className#>)
+		Private Shared _default as <#=className#> = CType(Fantasy.Configuration.SettingStorage.Load(new <#=className#>()), <#=className#>)
 		public Shared Readonly Property [Default]
 		    Get
 			    Return _default
@@ -55,9 +55,17 @@ foreach(XElement setting in query)
 	}
 	string propertyName = (string)setting.Attribute("Name");
 	XElement value = setting.Element(sn + "Value");
-	bool readOnly = propertyType == "System.Collections.Specialized.StringCollection";
+	bool readOnly = propertyType == "System.Collections.Specialized.StringCollection" || (string)setting.Attribute("Scope") == "Application";
 	if(value != null && !value.IsEmpty)
 	{
+		if((string)setting.Attribute("Scope") == "Application")
+	{#>
+		<System.Configuration.ApplicationScopedSettin>_
+    <#}
+    else
+	{#>
+	    <System.Configuration.UserScopedSetting> _
+	<#}
 		#>
 		<System.Configuration.DefaultSettingValueAttribute(<#=ToVBString((string)value)#>)> _
 <#}#>

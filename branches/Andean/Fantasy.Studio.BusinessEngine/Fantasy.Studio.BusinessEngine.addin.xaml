@@ -12,7 +12,7 @@
         <Assembly Name="Fantasy.Studio.BusinessEngine" />
     </AddIn.Import>
     <Extension Path="fantasy/adaption">
-        <Adapter ID="ClassGlyph" InsertBefore="TypeDescriptor">
+        <Adapter ID="ClassGlyph" >
             <Adapter.Factory>
                 <dm:ClassGlyphAdapterFactory />
             </Adapter.Factory>
@@ -42,15 +42,23 @@
             </Adapter.Factory>
             <x:Type Type="{x:Type sbe:IPackageSubfolder}" />
         </Adapter>
-        <Adapter ID="EntityScript">
+       
+        <Adapter ID="EntityScript" InsertBefore="TypeDescriptor">
             <Adapter.Factory>
                 <sbe:EntityScriptAdapterFactory />
             </Adapter.Factory>
             <x:Type Type="{x:Type sbe:IEntityScript}" />
-        </Adapter>
+        </Adapter>        
     </Extension>
     <Extension Path="fantasy/applicationsettings">
         <Object ID="businessengine" Template="{x:Static sbe:Settings.Default}" />
+    </Extension>
+
+    <Extension Path="fantasy/startup">
+        <Object ID="syntaxHighlight" InsertBefore="RunApp">
+            <sbe:RegisterSyntaxHighlightingsCommand />
+        </Object>
+      
     </Extension>
     <Extension Path="fantasy/services">
         <Object ID="RefactoryService">
@@ -413,6 +421,7 @@
             <Button ID="AddApp" Command="{New sbe:AddApplicationCommand}" Text="New Application" ParameterSource="Owner" />
             <Button ID="AddUser" Command="{New sbe:AddUserCommand}" Text="New User" ParameterSource="Owner" />
             <Button ID="AddRole" Command="{New sbe:AddRoleCommand}" Text="New Role" ParameterSource="Owner" />
+            <Button ID="AddScript" Command="{New sbe:AddScriptCommand}" Text="New Script" ParameterSource="Owner"/>
             
         </Button>
         
@@ -463,7 +472,8 @@
             <TreeNodeChildProvider ID="enum" Provider="{New sbe:PackageEnumsProvider}" />
             <TreeNodeChildProvider ID="applications" Provider="{New sbe:PackageApplicationsProvider}" />
             <TreeNodeChildProvider ID="users" Provider="{New sbe:PackageUsersProvider}" />
-            <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageRolesProvider}" />           
+            <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageRolesProvider}" />
+            <TreeNodeChildProvider ID="scripts" Provider="{New sbe:PackageScriptsProvider}"/>
         </TreeNode>
       
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
@@ -509,7 +519,7 @@
         </TreeNode>
         <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
         </TreeNode>
-
+        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{Binding Path=Name}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
@@ -693,6 +703,7 @@
                 <Or>
                     <IsTypeOf Type="{x:Type sbe:BusinessClassScript}" />
                     <IsTypeOf Type="{x:Type sbe:BusinessClassAutoScript}" />
+                    <IsTypeOf Type="{x:Type be:BusinessScript}"/>
                 </Or>
             </Object.Conditional>
             <sbe:ScriptEditor/>

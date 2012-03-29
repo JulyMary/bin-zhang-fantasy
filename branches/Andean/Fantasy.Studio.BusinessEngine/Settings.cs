@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Reflection;
+using Fantasy.Studio.BusinessEngine.CodeEditing;
+using System.Configuration;
 
 namespace Fantasy.Studio.BusinessEngine.Properties
 {
@@ -21,6 +23,28 @@ namespace Fantasy.Studio.BusinessEngine.Properties
             }
 
             return new Uri(rs).LocalPath;
+        }
+
+
+        private List<FileSyntaxHighlight> _fileSyntax = new List<FileSyntaxHighlight>();
+        [UserScopedSetting]
+        public List<FileSyntaxHighlight> FileSyntax
+        {
+            get
+            {
+                return _fileSyntax;
+            }
+        }
+
+
+        private List<FileSyntaxHighlight> _systemFileSyntax = new List<FileSyntaxHighlight>();
+        [ApplicationScopedSetting] 
+        public List<FileSyntaxHighlight> SystemFileSyntax
+        {
+            get
+            {
+                return _systemFileSyntax;
+            }
         }
 
        

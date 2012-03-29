@@ -49,10 +49,18 @@ foreach(XElement setting in query)
 	}
 	string propertyName = (string)setting.Attribute("Name");
 	XElement value = setting.Element(sn + "Value");
+	if((string)setting.Attribute("Scope") == "Application")
+	{#>
+		[System.Configuration.ApplicationScopedSetting]
+    <#}
+    else
+	{#>
+	    [System.Configuration.UserScopedSetting]
+		<#}
 	if(value != null && !value.IsEmpty)
-	{
-		#>
-		[System.Configuration.DefaultSettingValueAttribute(@"<#=((string)value).Replace("\"", "\"\"")#>")]
+	{#>
+        
+        [System.Configuration.DefaultSettingValueAttribute(@"<#=((string)value).Replace("\"", "\"\"")#>")]
 <#}#>
         public <#=propertyType#> <#=propertyName#>
 		{
@@ -60,7 +68,7 @@ foreach(XElement setting in query)
 			{
 			    return (<#=propertyType#>)this.GetValue("<#=propertyName#>");
 			}
-<# if(propertyType != "System.Collections.Specialized.StringCollection")
+<# if(propertyType != "System.Collections.Specialized.StringCollection" && (string)setting.Attribute("Scope") == "User")
 {#>
 			set
 			{

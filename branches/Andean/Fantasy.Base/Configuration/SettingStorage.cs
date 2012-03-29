@@ -14,32 +14,42 @@ namespace Fantasy.Configuration
 {
     public class SettingStorage
     {
-
+        private static XElement AppRoot;
         private static XElement Root;
+
+        static SettingStorage()
+        {
+            if (AppRoot == null)
+            {
+                AppRoot = (XElement)ConfigurationManager.GetSection("xsettings");
+                if (AppRoot == null)
+                {
+                    AppRoot = new XElement("xsettings");
+                }
+
+
+                _location = (string)AppRoot.Attribute("customPath");
+                string cfg = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+                if (string.IsNullOrEmpty(_location))
+                {
+                    _location = Path.ChangeExtension(cfg, "xsettings");
+
+                }
+                _location = Environment.ExpandEnvironmentVariables(_location);
+
+                string defaultDir = LongPath.GetDirectoryName(cfg);
+
+                _location = LongPath.Combine(defaultDir, _location);
+            }
+        }
+
+
         private static string _location = null;
         public static string Location
         {
             get
             {
-                if (_location == null)
-                {
-
-                    _location = ConfigurationManager.AppSettings["fantasySettingsFile"];
-                    string cfg = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
-                    if (string.IsNullOrEmpty(_location))
-                    {
-                        _location = Path.ChangeExtension(cfg, "xsettings");
-
-                    }
-                    _location = Environment.ExpandEnvironmentVariables(_location);
-
-                    string defaultDir = LongPath.GetDirectoryName(cfg);
-
-                    _location = LongPath.Combine(defaultDir, _location);
-
-
-                }
-
+               
                 return _location;
             }
 
@@ -48,6 +58,8 @@ namespace Fantasy.Configuration
 
         public static SettingsBase Load(SettingsBase data)
         {
+            
+
             if (Root == null)
             {
                 if (File.Exists(Location))
@@ -62,11 +74,15 @@ namespace Fantasy.Configuration
                         new XAttribute("version", 0));
                 }
             }
-
-            XElement settings = Root.XPathSelectElement(String.Format("settings[@type=\"{0}\"]", data.GetType().FullName));
-            if (settings != null)
+            XElement appSettings = AppRoot.XPathSelectElement(String.Format("settings[@type=\"{0}\"]", data.GetType().FullName));
+            if (appSettings != null)
             {
-                data.Load(settings.ToString());
+                data.Load(appSettings.ToString());
+            }
+            XElement userSettings = Root.XPathSelectElement(String.Format("settings[@type=\"{0}\"]", data.GetType().FullName));
+            if (userSettings != null)
+            {
+                data.Load(userSettings.ToString());
             }
             return data;
         }

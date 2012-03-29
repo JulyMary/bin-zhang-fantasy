@@ -6,6 +6,7 @@ using Fantasy.Windows;
 using Fantasy.BusinessEngine;
 using System.Windows;
 using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -17,11 +18,16 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             this.Entity = script;
             this.IsReadOnly = script.IsSystem;
             this.Name = this.Entity.Name;
+
+            _metadata = XElement.Parse(this.Entity.MetaData);
+
             PropertyChangedEventManager.AddListener(this.Entity, this, "Script");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
         }
 
         public BusinessScript Entity { get; set; }
+
+        private XElement _metadata;
 
         public string Content
         {
@@ -92,6 +98,67 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                     _isReadOnly = value;
                     this.OnPropertyChanged("IsReadOnly");
                 }
+            }
+        }
+
+        public string BuildAction
+        {
+            get
+            {
+                return this._metadata.Name.LocalName;
+            }
+            set
+            {
+                XElement newMetadata = new XElement(value);
+                foreach (XElement child in _metadata.Elements().ToArray())
+                {
+                    child.Remove();
+                    newMetadata.Add(child);
+                }
+
+                this._metadata = newMetadata;
+
+                this.Entity.MetaData = this._metadata.ToString();
+            }
+
+        }
+
+        public string CopyTo
+        {
+            get
+            {
+                return (string)this._metadata.Element("CopyToOutputDirectory");
+            }
+            set
+            {
+                this._metadata.SetElementValue("CopyToOutputDirectory", value);
+                this.Entity.MetaData = this._metadata.ToString();
+            }
+        }
+
+        public string Generator
+        {
+            get
+            {
+                return (string)this._metadata.Element("Generator");
+            }
+            set
+            {
+                this._metadata.SetElementValue("Generator", value);
+                this.Entity.MetaData = this._metadata.ToString();
+            }
+        }
+
+        public string CustomToolNamespace
+        {
+            get
+            {
+                return (string)this._metadata.Element("CustomToolNamespace");
+            }
+            set
+            {
+                this._metadata.SetElementValue("CustomToolNamespace", value);
+                this.Entity.MetaData = this._metadata.ToString();
             }
         }
 

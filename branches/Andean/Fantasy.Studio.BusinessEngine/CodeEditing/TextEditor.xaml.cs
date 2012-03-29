@@ -12,15 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Highlighting;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
     /// <summary>
     /// Interaction logic for CSCodeEditorPanel.xaml
     /// </summary>
-    public partial class CSharpEditor : UserControl, IObjectWithSite
+    public partial class TextEditor : UserControl, IObjectWithSite
     {
-        public CSharpEditor()
+        public TextEditor()
         {
             InitializeComponent();
             this.TextDocument = new TextDocument();
@@ -36,7 +37,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         // Using a DependencyProperty as the backing store for TextDocument.  This enables animation, styling, binding, etc...
         public static readonly DependencyPropertyKey TextDocumentPropertyKey =
-            DependencyProperty.RegisterReadOnly("TextDocument", typeof(TextDocument), typeof(CSharpEditor), new UIPropertyMetadata(null));
+            DependencyProperty.RegisterReadOnly("TextDocument", typeof(TextDocument), typeof(TextEditor), new UIPropertyMetadata(null));
 
 
 
@@ -48,7 +49,18 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         // Using a DependencyProperty as the backing store for IsReadOnly.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(CSharpEditor), new UIPropertyMetadata(false));
+            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(TextEditor), new UIPropertyMetadata(false));
+
+
+        public IHighlightingDefinition SyntaxHighlighting
+        {
+            get { return (IHighlightingDefinition)GetValue(SyntaxHighlightingProperty); }
+            set { SetValue(SyntaxHighlightingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SyntaxHighlighting.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SyntaxHighlightingProperty =
+            DependencyProperty.Register("SyntaxHighlighting", typeof(IHighlightingDefinition), typeof(TextEditor), new UIPropertyMetadata(null));
 
 
     }

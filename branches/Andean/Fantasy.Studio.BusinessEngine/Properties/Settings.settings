@@ -14,25 +14,25 @@
     <Setting Name="ObjectSecurityPropertyGridViewLayout" Type="Fantasy.Studio.Controls.GridViewLayoutSetting" Scope="User">
       <Value Profile="(Default)">&lt;GridViewLayoutSetting/&gt;</Value>
     </Setting>
-    <Setting Name="DefaultTableSchema" Type="System.String" Scope="User">
+    <Setting Name="DefaultTableSchema" Type="System.String" Scope="Application">
       <Value Profile="(Default)">dbo</Value>
     </Setting>
-    <Setting Name="DefaultClassTablePrefix" Type="System.String" Scope="User">
+    <Setting Name="DefaultClassTablePrefix" Type="System.String" Scope="Application">
       <Value Profile="(Default)">CLS</Value>
     </Setting>
-    <Setting Name="DefaultAssociationTablePrefix" Type="System.String" Scope="User">
+    <Setting Name="DefaultAssociationTablePrefix" Type="System.String" Scope="Application">
       <Value Profile="(Default)">ASSN</Value>
     </Setting>
-    <Setting Name="DefaultTableSpace" Type="System.String" Scope="User">
+    <Setting Name="DefaultTableSpace" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DefaultParticipantACLPanelLeftColumnWidth" Type="System.Double" Scope="User">
       <Value Profile="(Default)">300</Value>
     </Setting>
-    <Setting Name="BusinessClassAutoScriptT4Path" Type="System.String" Scope="User">
+    <Setting Name="BusinessClassAutoScriptT4Path" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Templates\BusinessClass.Designer.tt</Value>
     </Setting>
-    <Setting Name="NewBusinessClassT4Path" Type="System.String" Scope="User">
+    <Setting Name="NewBusinessClassT4Path" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Templates\NewBusinessClass.tt</Value>
     </Setting>
     <Setting Name="CodeEditorFontFamily" Type="System.String" Scope="User">
@@ -50,19 +50,19 @@
     <Setting Name="WebAssemblyName" Type="System.String" Scope="User">
       <Value Profile="(Default)">Fantasy.Web</Value>
     </Setting>
-    <Setting Name="ClassLibraryTemplatePath" Type="System.String" Scope="User">
+    <Setting Name="ClassLibraryTemplatePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Templates\ClassLibraryTemplate.csproj</Value>
     </Setting>
-    <Setting Name="SolutionTemplatePath" Type="System.String" Scope="User">
+    <Setting Name="SolutionTemplatePath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Templates\SolutionTemplate.tt</Value>
     </Setting>
-    <Setting Name="BusinessDataProjectId" Type="System.String" Scope="User">
+    <Setting Name="BusinessDataProjectId" Type="System.String" Scope="Application">
       <Value Profile="(Default)">{4CDABEB6-2016-476B-8692-4ED84EBC606D}</Value>
     </Setting>
-    <Setting Name="BusinessEnumT4Path" Type="System.String" Scope="User">
+    <Setting Name="BusinessEnumT4Path" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Templates\BusinessEnum.tt</Value>
     </Setting>
-    <Setting Name="ItemTemplatesPath" Type="System.String" Scope="User">
+    <Setting Name="ItemTemplatesPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\ItemTemplates</Value>
     </Setting>
   </Settings>

@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ClickView.Configuration" GeneratedClassName="sample">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fantasy.Configuration" GeneratedClassName="sample">
   <Profiles />
   <Settings>
     <Setting Name="JobTemplateDirectory" Type="System.String" Scope="Application">
@@ -23,7 +23,7 @@
     <Setting Name="ScheduleDirectory" Type="System.String" Scope="Application">
       <Value Profile="(Default)">%ALLUSERSPROFILE%\Application Data\Schedule</Value>
     </Setting>
-    <Setting Name="ScheduleTemplateDirectory" Type="System.String" Scope="Application">
+    <Setting Name="ScheduleTemplateDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">%ALLUSERSPROFILE%\Application Data\ScheduleTemplate</Value>
     </Setting>
     <Setting Name="strings" Type="System.Collections.Specialized.StringCollection" Scope="Application">

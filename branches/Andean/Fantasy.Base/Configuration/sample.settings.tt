@@ -24,9 +24,9 @@
 //------------------------------------------------------------------------------
 namespace <#=classNamespace#>
 {
-    public partial class <#=className#> : ClickView.Configuration.SettingsBase
+    public partial class <#=className#> : Fantasy.Configuration.SettingsBase
 	{
-	    private static <#=className#> _default = (<#=className#>)ClickView.Configuration.SettingStorage.Load(new <#=className#>());
+	    private static <#=className#> _default = (<#=className#>)Fantasy.Configuration.SettingStorage.Load(new <#=className#>());
 		
 		public static <#=className#> Default
 		{
@@ -49,10 +49,17 @@ foreach(XElement setting in query)
 	}
 	string propertyName = (string)setting.Attribute("Name");
 	XElement value = setting.Element(sn + "Value");
+	if((string)setting.Attribute("Scope") == "Application")
+	{#>
+		[System.Configuration.ApplicationScopedSetting]
+    <#}
+    else
+	{#>
+	    [System.Configuration.UserScopedSetting]
+	<#}
 	if(value != null && !value.IsEmpty)
-	{
-		#>
-		[System.Configuration.DefaultSettingValueAttribute(@"<#=((string)value).Replace("\"", "\"\"")#>")]
+	{#>
+    [System.Configuration.DefaultSettingValueAttribute(@"<#=((string)value).Replace("\"", "\"\"")#>")]
 <#}#>
         public <#=propertyType#> <#=propertyName#>
 		{
@@ -60,7 +67,7 @@ foreach(XElement setting in query)
 			{
 			    return (<#=propertyType#>)this.GetValue("<#=propertyName#>");
 			}
-<# if(propertyType != "System.Collections.Specialized.StringCollection")
+<# if(propertyType != "System.Collections.Specialized.StringCollection" && (string)setting.Attribute("Scope") == "User")
 {#>
 			set
 			{
