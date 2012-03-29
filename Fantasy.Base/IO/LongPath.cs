@@ -159,8 +159,8 @@ namespace Fantasy.IO
 
         public static string GetFileName(string path)
         {
-            Uri uri = new Uri(path);
-            return uri.Segments.Last();
+           return Path.GetFileName(path);
+
         }
 
         public static string GetFileNameWithoutExtension(string path)

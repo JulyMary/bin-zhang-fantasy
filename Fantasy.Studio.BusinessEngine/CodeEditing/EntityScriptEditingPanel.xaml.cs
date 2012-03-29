@@ -16,6 +16,8 @@ using System.ComponentModel;
 using Fantasy.Studio.Services;
 using Fantasy.Adaption;
 using Fantasy.BusinessEngine.Services;
+using ICSharpCode.AvalonEdit.Highlighting;
+using Fantasy.IO;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -62,10 +64,14 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             this._entityScript = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IEntityScript>(document);
             this.csEditor.TextDocument.Text = this._entityScript.Content ?? string.Empty;
             this.IsContentReadOnly  = this.IsReadOnly ||  this._entityScript.IsReadOnly;
+            this.FindHighlight();
             _entityScriptListener = new WeakEventListener((t, sender, e)=>
                 {
                     switch (((PropertyChangedEventArgs)e).PropertyName )
                     {
+                        case "Name":
+                            this.FindHighlight();
+                            return true;
                         case "Content":
                             if (!this._syncing)
                             {
@@ -89,13 +95,19 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                     }
                 });
 
-
+            PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "Name");
             PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "Content");
             PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "IsReadOnly");
             
             this.csEditor.TextDocument.TextChanged += new EventHandler(TextDocumentTextChanged);
 
             this._selection.SetSelectedComponents(new object[] { document });
+        }
+
+        private void FindHighlight()
+        {
+            string ext = LongPath.GetExtension(this._entityScript.Name);
+            this.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(ext);
         }
 
        
@@ -232,7 +244,18 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             EntityScriptEditingPanel panel = ((EntityScriptEditingPanel)d);
             ((EntityScriptEditingPanel)d).IsContentReadOnly =  (bool)e.NewValue || panel._entityScript.IsReadOnly;  
         }
- 
+
+
+
+        public IHighlightingDefinition SyntaxHighlighting
+        {
+            get { return (IHighlightingDefinition)GetValue(SyntaxHighlightingProperty); }
+            set { SetValue(SyntaxHighlightingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SyntaxHighlighting.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SyntaxHighlightingProperty =
+            DependencyProperty.Register("SyntaxHighlighting", typeof(IHighlightingDefinition), typeof(EntityScriptEditingPanel), new UIPropertyMetadata(null));
 
     }
 }

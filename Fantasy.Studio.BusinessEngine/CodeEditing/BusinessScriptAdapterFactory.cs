@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.Adaption;
 using Fantasy.BusinessEngine;
+using System.ComponentModel;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -16,14 +17,21 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             BusinessScript entity = adaptee as BusinessScript;
             if (entity != null)
             {
-                return new BusinessScriptAdapter(entity);
+                if(targetType == typeof(IEntityScript))
+                {
+                    return new BusinessScriptAdapter(entity);
+                }
+                else if (targetType == typeof(ICustomTypeDescriptor))
+                {
+                    return this.Site.GetRequiredService<IAdapterManager>().GetAdapter(new BusinessScriptAdapter(entity), typeof(ICustomTypeDescriptor)); 
+                }
             }
             return null;
         }
 
         public Type[] GetTargetTypes()
         {
-            return new Type[] { typeof(IEntityScript) };
+            return new Type[] { typeof(IEntityScript), typeof(ICustomTypeDescriptor) };
         }
 
         #endregion

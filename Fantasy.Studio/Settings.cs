@@ -14,6 +14,7 @@ namespace Fantasy.Studio.Properties {
         
 
         [DebuggerNonUserCodeAttribute()]
+        [UserScopedSetting]
         [DefaultSettingValue("<ToolBarSettings/>")]
         public ToolBarSettings ToolBarSettings
         {
@@ -26,6 +27,7 @@ namespace Fantasy.Studio.Properties {
         }
 
         [DebuggerNonUserCodeAttribute()]
+        [UserScopedSetting]
         [DefaultSettingValue("<WindowStateSetting/>")]
         public WindowStateSetting WorkbenchState
         {

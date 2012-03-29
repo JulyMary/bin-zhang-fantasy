@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Fantasy.Studio.BusinessEngine.CodeEditing.CSharpEditor"
+﻿<UserControl x:Class="Fantasy.Studio.BusinessEngine.CodeEditing.TextEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -10,7 +10,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <Style TargetType="avalonEdit:TextEditor">
-            <Setter Property="SyntaxHighlighting" Value="C#"/>
+            <Setter Property="SyntaxHighlighting" Value="{Binding SyntaxHighlighting, RelativeSource={RelativeSource AncestorType=UserControl, Mode=FindAncestor}}"/>
             <Setter Property="FontFamily" Value="{Binding CodeEditorFontFamily, Source={x:Static props:Settings.Default}}" />
             <Setter Property="FontSize" Value="{Binding CodeEditorFontSize, Source={x:Static props:Settings.Default}}" />
             <Setter Property="Document" Value="{Binding TextDocument, RelativeSource={RelativeSource AncestorType=UserControl}}"/>

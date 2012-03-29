@@ -24,9 +24,9 @@
 //------------------------------------------------------------------------------
 namespace <#=classNamespace#>
 {
-    public partial class <#=className#> : Fantasy.Configuration.SettingsBase
+    public partial class <#=className#> : ClickView.Configuration.SettingsBase
 	{
-	    private static <#=className#> _default = (<#=className#>)Fantasy.Configuration.SettingStorage.Load(new <#=className#>());
+	    private static <#=className#> _default = (<#=className#>)ClickView.Configuration.SettingStorage.Load(new <#=className#>());
 		
 		public static <#=className#> Default
 		{
@@ -56,10 +56,10 @@ foreach(XElement setting in query)
     else
 	{#>
 	    [System.Configuration.UserScopedSetting]
-<#}
+	<#}
 	if(value != null && !value.IsEmpty)
 	{#>
-        [System.Configuration.DefaultSettingValueAttribute(@"<#=((string)value).Replace("\"", "\"\"")#>")]
+    [System.Configuration.DefaultSettingValueAttribute(@"<#=((string)value).Replace("\"", "\"\"")#>")]
 <#}#>
         public <#=propertyType#> <#=propertyName#>
 		{

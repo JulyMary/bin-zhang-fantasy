@@ -93,23 +93,26 @@ namespace Fantasy.Configuration
 
         public virtual void Renew(string xml)
         {
-            List<string> changed = new List<string>();
+            List<string> changedNames = new List<string>();
             lock (_syncRoot)
             {
                 
                 Dictionary<string, object> newValues = new Dictionary<string, object>();
                 LoadXmlToDictionary(xml, newValues);
 
-                var query = from p in this.GetType().GetProperties() where p.DeclaringType.IsSubclassOf(typeof(SettingsBase)) select p;   
+                var query = from p in this.GetType().GetProperties() where p.DeclaringType.IsSubclassOf(typeof(SettingsBase)) && p.IsDefined(typeof(UserScopedSettingAttribute), true) select p;   
 
                 foreach (PropertyInfo prop in query)
                 {
                     bool cx = _values.ContainsKey(prop.Name);
                     bool cy = newValues.ContainsKey(prop.Name);
+
+                    bool changed = false;
                     if (cx && cy)
                     {
                         object x = _values[prop.Name];
                         object y = newValues[prop.Name];
+                       
                         if (x!= null && y != null && 
                             typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) && prop.PropertyType != typeof(string))
                         {
@@ -127,7 +130,7 @@ namespace Fantasy.Configuration
                                 {
                                     if (!object.Equals(xe.Current, ye.Current))
                                     {
-                                        changed.Add(prop.Name);
+                                        changed = true;
                                         break;
                                     }
                                 }
@@ -135,26 +138,32 @@ namespace Fantasy.Configuration
 
                             if (nextX ^ nextY)
                             {
-                                changed.Add(prop.Name);
+                                changed = true;
                             }
                         }
                         else
                         {
                             if (!object.Equals(x, y))
                             {
-                                changed.Add(prop.Name);
+                                changed = true;
                             }
                         }
                     }
                     else if (cx ^ cy)
                     {
-                        changed.Add(prop.Name);
+                        changed = true;
                     }
+                    if (changed)
+                    {
+                        changedNames.Add(prop.Name);
+                        this._values[prop.Name] = newValues[prop.Name];
+                    }
+                   
                 }
-                this._values = newValues;
+                
             }
 
-            foreach (string name in changed)
+            foreach (string name in changedNames)
             {
                 this.OnPropertyChanged(name);
             }
@@ -178,7 +187,7 @@ namespace Fantasy.Configuration
                 {
                     Type t = prop.PropertyType;
                     object value = LoadValueFromElement(t, element);
-                    dict.Add(prop.Name, value);
+                    dict[prop.Name] = value;
                 }
             }
         }
@@ -306,7 +315,7 @@ namespace Fantasy.Configuration
             }
         }
 
-        public virtual string ToXml()
+        public virtual string ToXml(bool includeAppSettings = false)
         {
             XmlDocument doc = new XmlDocument();
             doc.AppendChild(doc.CreateElement("settings"));
@@ -317,7 +326,7 @@ namespace Fantasy.Configuration
                 foreach (KeyValuePair<string, object> kv in this._values)
                 {
                     PropertyInfo prop = this.GetType().GetProperty(kv.Key);
-                    if (prop != null)
+                    if (prop != null && (prop.IsDefined(typeof(UserScopedSettingAttribute), true) || includeAppSettings))
                     {
                         XmlElement element = this.SaveValueToElement(prop.Name, prop.PropertyType, kv.Value, doc);
                         doc.DocumentElement.AppendChild(element);
