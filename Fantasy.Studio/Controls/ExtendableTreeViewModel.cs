@@ -42,7 +42,7 @@ namespace Fantasy.Studio.Controls
                 ((IObjectWithSite)rs).Site = this.Site;
             }
 
-            rs.Icon = builder.Codon._icon != null ? builder.Codon._text.Build<IValueProvider>() : builder.Codon.Icon;
+            rs.Icon = builder.Codon._icon != null ? builder.Codon._icon.Build<IValueProvider>() : builder.Codon.Icon;
             if (rs.Icon != null)
             {
                 rs.Icon.Source = item;

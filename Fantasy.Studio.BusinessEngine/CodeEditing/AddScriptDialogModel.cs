@@ -39,18 +39,23 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                     this.OnPropertyChanged("SelectedItem");
                     if (value != null)
                     {
-                        string ext = LongPath.GetExtension(this._selectedItem.DefaultFileName);
                         string newName;
-                        if (!string.IsNullOrEmpty(this.Name))
+                        string ext = LongPath.GetExtension(this._selectedItem.DefaultFileName);
+                        if (this._isDefaultName || string.IsNullOrEmpty(this.Name))
                         {
-                            
-                            newName = LongPath.GetFileNameWithoutExtension(this.Name);
+                            newName = LongPath.GetFileNameWithoutExtension(this.SelectedItem.DefaultFileName);
                         }
                         else
                         {
-                            newName = LongPath.GetFileNameWithoutExtension(this._selectedItem.DefaultFileName);
+                           
+                           
+                            newName = LongPath.GetFileNameWithoutExtension(this.Name);
+                            
+                           
                         }
+                        this._lockName = true;
                         this.Name = GetName(newName, ext);
+                        this._lockName = false;
                     }
 
 
@@ -65,7 +70,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             for (int i = 0; ; i++)
             {
-                string rs = i == 0 ? defaultName + "." + ext : string.Format("{0}{1}.{2}", defaultName, i, ext);
+                string rs = i == 0 ? defaultName  + ext : string.Format("{0}{1}{2}", defaultName, i, ext);
                 if (!this._package.Scripts.Any(s => string.Compare(rs, s.Name, true) == 0))
                 {
                     return rs;
@@ -77,6 +82,9 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         private string _name;
 
+        private bool _isDefaultName = true;
+        private bool _lockName = false;
+
         public string Name
         {
             get { return _name; }
@@ -85,8 +93,13 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                 if (_name != value)
                 {
                     _name = value;
+                    if (!_lockName)
+                    {
+                        _isDefaultName = false;
+                    }
 
                     this.OnPropertyChanged("Name");
+                    CheckIsValid();
                     
                 }
             }

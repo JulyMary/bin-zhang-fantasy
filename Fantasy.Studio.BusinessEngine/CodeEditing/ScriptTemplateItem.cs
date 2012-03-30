@@ -18,14 +18,19 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         public string Name { get; set; }
         [XAttribute("include")]
         public string Include { get; set; }
-        [XAttribute("tt")]
-        public string TT { get; set; }
+        [XAttribute("useT4")]
+        public bool UseT4 { get; set; }
+        [XAttribute("src")]
+        public string Src { get; set; }
         public IDictionary<string, string> MetaData { get; private set; }
+
 
         [XAttribute("autoOpen")]
         public bool AutoOpen { get; set; }
 
-        public string TTContent { get; set; }
+
+
+        public string Content { get; set; }
 
         #region IXSerializable Members
 

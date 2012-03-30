@@ -13,7 +13,7 @@ namespace Fantasy.BusinessEngine.Maps
         {
             this.Table("BUSINESSEXTRASCRIPT");
             this.References(x => x.Package).Column("PackageID");
-            this.Map(x => x.BuildAction);
+           
             this.Map(x => x.MetaData);
             this.Map(x => x.Script);
             this.Map(x => x.Name);

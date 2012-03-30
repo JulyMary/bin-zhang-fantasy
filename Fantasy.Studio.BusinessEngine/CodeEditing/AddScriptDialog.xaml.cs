@@ -33,6 +33,15 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             this.DialogResult = false;
         }
 
+        private void TemplatesListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AddScriptDialogModel model = (AddScriptDialogModel)this.DataContext;
+            if (model.IsValid)
+            {
+                this.DialogResult = true;
+            }
+        }
+
        
 
 

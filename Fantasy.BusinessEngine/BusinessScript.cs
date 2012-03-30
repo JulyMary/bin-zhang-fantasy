@@ -33,17 +33,7 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual string BuildAction
-        {
-            get
-            {
-                return (string)this.GetValue("BuildAction", null);
-            }
-            set
-            {
-                this.SetValue("BuildAction", value);
-            }
-        }
+       
 
         public virtual string MetaData
         {

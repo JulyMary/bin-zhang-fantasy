@@ -18,6 +18,7 @@ using Fantasy.Adaption;
 using Fantasy.BusinessEngine.Services;
 using ICSharpCode.AvalonEdit.Highlighting;
 using Fantasy.IO;
+using System.Text.RegularExpressions;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -62,6 +63,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         public void Load(object document)
         {
             this._entityScript = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IEntityScript>(document);
+            this.DirtyState = this._entityScript.DirtyState;
             this.csEditor.TextDocument.Text = this._entityScript.Content ?? string.Empty;
             this.IsContentReadOnly  = this.IsReadOnly ||  this._entityScript.IsReadOnly;
             this.FindHighlight();
@@ -89,7 +91,9 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                         case "IsReadOnly":
                             this.IsContentReadOnly = this.IsReadOnly || this._entityScript.IsReadOnly;
                             return true;
-
+                        case "DirtyState":
+                            this.DirtyState = this._entityScript.DirtyState;
+                            return true;
                         default:
                             return false;
                     }
@@ -98,16 +102,24 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "Name");
             PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "Content");
             PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "IsReadOnly");
+            PropertyChangedEventManager.AddListener(this._entityScript, this._entityScriptListener, "DirtyState");
             
             this.csEditor.TextDocument.TextChanged += new EventHandler(TextDocumentTextChanged);
 
             this._selection.SetSelectedComponents(new object[] { document });
         }
 
+        private Regex _xmlDeclarationRegex = new Regex(@"^<\?xml[^\?^>]*\?>");
+
         private void FindHighlight()
         {
             string ext = LongPath.GetExtension(this._entityScript.Name);
-            this.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(ext);
+            IHighlightingDefinition hd = HighlightingManager.Instance.GetDefinitionByExtension(ext);
+            if (hd == null && this._entityScript.Content != null && _xmlDeclarationRegex.IsMatch(this._entityScript.Content))
+            {
+                hd = HighlightingManager.Instance.GetDefinition("XML");
+            }
+            this.SyntaxHighlighting = hd;
         }
 
        

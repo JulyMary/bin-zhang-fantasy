@@ -294,14 +294,35 @@ namespace Fantasy.Studio.BusinessEngine
 
         public IServiceProvider Site { get; set; }
 
+
+        private ImageSource _icon;
+
         public virtual ImageSource Icon
         {
-            get
-            {
-                return null;
+            get { return _icon; }
+            set 
+            {  
+                
+                if (this._icon != value)
+                {
+                    this._icon = value;
+                    this.OnIconChanged(EventArgs.Empty);
+                }
             }
         }
 
+        public event EventHandler IconChanged;
+
+        protected virtual void OnIconChanged(EventArgs e)
+        {
+            if (this.IconChanged != null)
+            {
+                this.IconChanged(this, e);
+            }
+        }
+
+
+       
 
 
 

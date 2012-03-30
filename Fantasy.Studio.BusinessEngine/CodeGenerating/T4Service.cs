@@ -45,7 +45,10 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
         public string ProcessTemplate(string templateContent, object args, out CompilerErrorCollection errors, IServiceProvider services = null)
         {
-            T4EngineHost host = new T4EngineHost(services ?? this.Site);
+            T4EngineHost host = new T4EngineHost(services ?? this.Site)
+                {
+                    TemplateFile = "anonymous.tt"
+                };
 
             host.AddService(args);
 

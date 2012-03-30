@@ -7,6 +7,7 @@ using Fantasy.IO;
 using Fantasy.AddIns;
 using Fantasy.ServiceModel;
 using Fantasy;
+using System.Windows;
 
 namespace FantasyDeveloper
 {
@@ -28,6 +29,7 @@ namespace FantasyDeveloper
             }
 
             ServiceManager.Services.UninitializeServices();
+            
 
         }
     }

@@ -42,7 +42,12 @@
             </Adapter.Factory>
             <x:Type Type="{x:Type sbe:IPackageSubfolder}" />
         </Adapter>
-       
+        <Adapter ID="BusinessScript">
+            <Adapter.Factory >
+                <sbe:BusinessScriptAdapterFactory/>
+            </Adapter.Factory>
+            <x:Type Type="{x:Type be:BusinessScript}"/>
+        </Adapter>
         <Adapter ID="EntityScript" InsertBefore="TypeDescriptor">
             <Adapter.Factory>
                 <sbe:EntityScriptAdapterFactory />
@@ -412,7 +417,7 @@
         
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
-        <Button ID="Add">
+        <Button ID="Add" Text="Add">
             <Button ID="AddPackage" Text="New Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner"></Button>
             <Button ID="AddClass" Text="New Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner"/>
             <Button ID="AddClassDiagram" Text="New Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner" />
@@ -519,7 +524,7 @@
         </TreeNode>
         <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
         </TreeNode>
-        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{Binding Path=Name}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
+        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{New sbe:ScriptIconProvider}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
