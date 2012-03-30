@@ -336,8 +336,8 @@
 
         <TypeDescriptor ID="ScriptAdapter" TargetType="{x:Type sbe:BusinessScriptAdapter}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
-            <PropertyDescriptor ID="CopyTo" Name="CopyTo" Caption="Copy to Output Directory" Category="Advanced"/>
-            <PropertyDescriptor ID="BuildAction" Name="BuildAction" Caption="BuildAction" Category="Advanced" />
+            <PropertyDescriptor ID="CopyTo" Name="CopyTo" Caption="Copy to Output Directory" Category="Advanced" Editor="{New EnumTypeEditor}"/>
+            <PropertyDescriptor ID="BuildAction" Name="BuildAction" Caption="BuildAction" Category="Advanced" Editor="{New sbe:ScriptBuildActionEditor}" />
             <PropertyDescriptor ID="Generator" Name="Generator" Caption="Custom Tool" Category="Advanced"/>
             <PropertyDescriptor ID="CustomToolNamespace" Name="CustomToolNamespace" Caption="Custom Tool Namespace" Category="Advanced"/>
 
@@ -356,6 +356,12 @@
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" ReadOnly="true" Category="General" />
         </TypeDescriptor>-->
     </Extension>
-    
-    
+
+    <Extension Path="fantasy/studio/enums">
+        <Enum ID="CopyToOptions" TargetType="{x:Type sbe:CopyToOptions}">
+            <EnumField ID="None" Name="None" Caption="Do not copy"/>
+            <EnumField ID="PreserveNewest" Name="PreserveNewest" Caption="Copy if newer"/>
+            <EnumField ID="Always" Name="Always" Caption="Copy always"/>
+        </Enum>
+    </Extension>
 </AddIn>

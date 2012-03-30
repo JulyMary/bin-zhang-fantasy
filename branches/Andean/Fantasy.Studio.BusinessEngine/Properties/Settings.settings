@@ -65,5 +65,21 @@
     <Setting Name="ItemTemplatesPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\ItemTemplates</Value>
     </Setting>
+    <Setting Name="ScriptBuildActions" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;None&lt;/string&gt;
+  &lt;string&gt;Content&lt;/string&gt;
+  &lt;string&gt;EmbeddedResource&lt;/string&gt;
+  &lt;string&gt;CodeAnalysisDictionary&lt;/string&gt;
+  &lt;string&gt;ApplicationDefinition&lt;/string&gt;
+  &lt;string&gt;Page&lt;/string&gt;
+  &lt;string&gt;Resource&lt;/string&gt;
+  &lt;string&gt;SplashScreen&lt;/string&gt;
+  &lt;string&gt;DesignData&lt;/string&gt;
+  &lt;string&gt;DesignDataWithDesignTimeCreatableTypes&lt;/string&gt;
+  &lt;string&gt;EntityDeploy&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
