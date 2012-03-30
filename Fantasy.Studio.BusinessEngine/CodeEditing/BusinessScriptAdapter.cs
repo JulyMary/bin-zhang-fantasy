@@ -139,7 +139,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             }
             set
             {
-                if (this.BuildAction != value)
+
+                if (this.BuildAction != value && value != null)
                 {
                     XElement newMetadata = new XElement(value);
                     foreach (XElement child in _metadata.Elements().ToArray())
@@ -157,17 +158,36 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         }
 
-        public string CopyTo
+        public CopyToOptions CopyTo
         {
             get
             {
-                return (string)this._metadata.Element("CopyToOutputDirectory");
+                if (this._metadata.Element("CopyToOutputDirectory") == null)
+                {
+                    return CopyToOptions.None;
+                }
+                else
+                {
+                    return (CopyToOptions)Enum.Parse(typeof(CopyToOptions), (string)this._metadata.Element("CopyToOutputDirectory"));
+                }
+                
             }
             set
             {
                 if (this.CopyTo != value)
                 {
-                    this._metadata.SetElementValue("CopyToOutputDirectory", value);
+                    if (value == CopyToOptions.None)
+                    {
+                        XElement copyElement = this._metadata.Element("CopyToOutputDirectory");
+                        if (copyElement != null)
+                        {
+                            copyElement.Remove();
+                        }
+                    }
+                    else
+                    {
+                        this._metadata.SetElementValue("CopyToOutputDirectory", value);
+                    }
                     this.Entity.MetaData = this._metadata.ToString();
                     this.OnPropertyChanged("CopyTo");
                 }

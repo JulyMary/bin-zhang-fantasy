@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Reflection;
+using Fantasy.AddIns;
 
 namespace Fantasy.Studio.Descriptor
 {
@@ -38,9 +39,18 @@ namespace Fantasy.Studio.Descriptor
             _converter = converter;
             _canResetValue = canResetValue;
             _defaultValueProvider = defaultValueProvider;
+           
         }
 
+        private bool IsEnumDescriptorDefined()
+        {
+            if (this.PropertyType.IsEnum)
+            {
+                return AddInTree.Tree.GetTreeNode("fantasy/studio/enums").BuildChildItems<Fantasy.Studio.Codons.Enum>(null, this.Site).Any(e => e.TargetType == this.PropertyType);
+            }
 
+            return false;
+        }
 
         public override Type ComponentType
         {
@@ -166,7 +176,18 @@ namespace Fantasy.Studio.Descriptor
 
         public override TypeConverter Converter
         {
-            get { return _converter; }
+            get
+            {
+                if (this.IsEnumDescriptorDefined())
+                {
+                    if (this._converter == null)
+                    {
+                        this._converter = new EnumConverter(this.PropertyType);
+                    }
+                    
+                }
+                return _converter; 
+            }
         }
 
         private string _description = null;
@@ -197,6 +218,14 @@ namespace Fantasy.Studio.Descriptor
 
         public override object GetEditor(Type editorBaseType)
         {
+            if (this.IsEnumDescriptorDefined())
+            {
+                if (this._editor == null)
+                {
+                    this._editor = new EnumTypeEditor();
+                }
+
+            }
             return !this.IsReadOnly ? _editor : null ;
         }
 

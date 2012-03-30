@@ -236,8 +236,10 @@
       <DependentUpon>AddScriptDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CodeEditing\AddScriptDialogModel.cs" />
+    <Compile Include="CodeEditing\ScriptBuildActionEditor.cs" />
     <Compile Include="CodeEditing\BusinessScriptAdapter.cs" />
     <Compile Include="CodeEditing\BusinessScriptAdapterFactory.cs" />
+    <Compile Include="CodeEditing\CopyToOptions.cs" />
     <Compile Include="CodeEditing\FileSyntaxHighlight.cs" />
     <Compile Include="CodeEditing\RegisterSyntaxHighlightingsCommand.cs" />
     <Compile Include="CodeEditing\ScriptIconProvider.cs" />
@@ -429,6 +431,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="ItemTemplates\NewClass\NewClass.png" />
     <None Include="ItemTemplates\NewClass\NewClass.template.xml" />
     <None Include="ItemTemplates\NewClass\NewClass.tt">
