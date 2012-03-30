@@ -1,8 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     24/01/2012 3:06:36 PM                        */
+/* Created on:     30/03/2012 5:13:36 PM                        */
 /*==============================================================*/
-use Fantasy
+
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -964,9 +964,7 @@ create table BusinessExtraScript (
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
    Name                 T_Name               not null,
-   ProjectType          int                  not null,
    Script               text                 null,
-   BuildAction          T_Name               null,
    MetaData             varchar(1024)        null,
    constraint PK_BUSINESSEXTRASCRIPT primary key (ID)
 )

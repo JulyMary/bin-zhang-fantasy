@@ -29,8 +29,8 @@ namespace Fantasy.Drawing
 			/// Specify small icon - 16 pixels by 16 pixels.
 			/// </summary>
 			Small = 1,
-            ExtraLarge = 0x2,
-            Jumbo = 0x4
+            //ExtraLarge = 0x2,
+            //Jumbo = 0x4
 		}
         
 		/// <summary>

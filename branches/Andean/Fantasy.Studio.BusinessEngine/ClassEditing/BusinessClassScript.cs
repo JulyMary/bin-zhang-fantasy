@@ -8,6 +8,8 @@ using Fantasy.Studio.BusinessEngine.Properties;
 using System.Windows;
 using System.ComponentModel;
 using Fantasy.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Fantasy.Studio.BusinessEngine.ClassEditing
 {
@@ -21,6 +23,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             this.Name = this.Entity.Name + ".cs";
             PropertyChangedEventManager.AddListener(this.Entity, this, "Script");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
+            PropertyChangedEventManager.AddListener(this.Entity, this, "EntityState");
+            this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
         }
 
         public BusinessClass Entity { get; set; }
@@ -62,6 +66,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
                    return true;
                 case "Name":
                     this.Name = this.Entity.Name + ".cs";
+                    return true;
+                case "EntityState":
+                    this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
                     return true;
 
                 default:
@@ -114,6 +121,31 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
             get { return "cs"; }
         }
 
+        private EditingState _dirtyState;
+
+        public EditingState DirtyState
+        {
+            get { return _dirtyState; }
+            set
+            {
+                if (_dirtyState != value)
+                {
+                    _dirtyState = value;
+                    this.OnPropertyChanged("DirtyState");
+                }
+            }
+        }
+
+        private ImageSource _icon = new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/csharpfile.png", UriKind.Relative));
+        public ImageSource Icon
+        {
+
+            get
+            {
+                return _icon;
+            }
+
+        }
         
     }
 }

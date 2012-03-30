@@ -7,6 +7,9 @@ using Fantasy.BusinessEngine;
 using System.Windows;
 using System.ComponentModel;
 using System.Xml.Linq;
+using Fantasy.IO;
+using System.Windows.Media;
+using Fantasy.Drawing;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -23,6 +26,9 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
             PropertyChangedEventManager.AddListener(this.Entity, this, "Script");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
+            PropertyChangedEventManager.AddListener(this.Entity, this, "EntityState");
+            this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
+
         }
 
         public BusinessScript Entity { get; set; }
@@ -50,8 +56,29 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             {
                 if (_name != value)
                 {
+                    string oldExt = this._name != null ? LongPath.GetExtension(this._name) : null;
                     _name = value;
+
                     this.OnPropertyChanged("Name");
+                    
+                    string newExt = this._name != null ? LongPath.GetExtension(this._name) : null;
+                    if (oldExt != newExt)
+                    {
+                        this.OnPropertyChanged("Extension");
+                        if (!string.IsNullOrEmpty(newExt))
+                        {
+                            System.Drawing.Icon ico = IconReader.GetFileIcon(newExt, IconReader.IconSize.Small, false);
+                            this.Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(ico.Handle, System.Windows.Int32Rect.Empty, System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+
+                        }
+                        else
+                        {
+                            this.Icon = null;
+                        }
+                       
+                    }
+
+                    this.Entity.Name = this.Name;
                 }
             }
         }
@@ -66,6 +93,9 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
                    return true;
                 case "Name":
                     this.Name = this.Entity.Name;
+                    return true;
+                case "EntityState":
+                    this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
                     return true;
 
                 default:
@@ -109,16 +139,20 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             }
             set
             {
-                XElement newMetadata = new XElement(value);
-                foreach (XElement child in _metadata.Elements().ToArray())
+                if (this.BuildAction != value)
                 {
-                    child.Remove();
-                    newMetadata.Add(child);
+                    XElement newMetadata = new XElement(value);
+                    foreach (XElement child in _metadata.Elements().ToArray())
+                    {
+                        child.Remove();
+                        newMetadata.Add(child);
+                    }
+
+                    this._metadata = newMetadata;
+
+                    this.Entity.MetaData = this._metadata.ToString();
+                    this.OnPropertyChanged("BuildAction");
                 }
-
-                this._metadata = newMetadata;
-
-                this.Entity.MetaData = this._metadata.ToString();
             }
 
         }
@@ -131,8 +165,12 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             }
             set
             {
-                this._metadata.SetElementValue("CopyToOutputDirectory", value);
-                this.Entity.MetaData = this._metadata.ToString();
+                if (this.CopyTo != value)
+                {
+                    this._metadata.SetElementValue("CopyToOutputDirectory", value);
+                    this.Entity.MetaData = this._metadata.ToString();
+                    this.OnPropertyChanged("CopyTo");
+                }
             }
         }
 
@@ -144,8 +182,12 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             }
             set
             {
-                this._metadata.SetElementValue("Generator", value);
-                this.Entity.MetaData = this._metadata.ToString();
+                if (this.Generator != value)
+                {
+                    this._metadata.SetElementValue("Generator", value);
+                    this.Entity.MetaData = this._metadata.ToString();
+                    this.OnPropertyChanged("Generator");
+                }
             }
         }
 
@@ -157,8 +199,12 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             }
             set
             {
-                this._metadata.SetElementValue("CustomToolNamespace", value);
-                this.Entity.MetaData = this._metadata.ToString();
+                if (this.CustomToolNamespace != value)
+                {
+                    this._metadata.SetElementValue("CustomToolNamespace", value);
+                    this.Entity.MetaData = this._metadata.ToString();
+                    this.OnPropertyChanged("CustomToolNamespace");
+                }
             }
         }
 
@@ -179,5 +225,35 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         }
 
         #endregion
+
+        private EditingState _dirtyState;
+
+        public EditingState DirtyState
+        {
+            get { return _dirtyState; }
+            set
+            {
+                if (_dirtyState != value)
+                {
+                    _dirtyState = value;
+                    this.OnPropertyChanged("DirtyState");
+                }
+            }
+        }
+
+        private ImageSource _icon;
+
+        public ImageSource Icon
+        {
+            get { return _icon; }
+            set
+            {
+                if (_icon != value)
+                {
+                    _icon = value;
+                    this.OnPropertyChanged("Icon");
+                }
+            }
+        }
     }
 }

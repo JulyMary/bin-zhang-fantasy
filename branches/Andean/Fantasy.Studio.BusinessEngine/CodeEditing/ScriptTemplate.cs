@@ -105,16 +105,16 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             foreach (ScriptTemplateItem item in rs.Items)
             {
-                if (!string.IsNullOrEmpty(item.TT))
+                if (!string.IsNullOrEmpty(item.Src))
                 {
-                    ZipEntry entry = zip.Single(e => NormalizeFileName(e.FileName) == NormalizeFileName(item.TT));
+                    ZipEntry entry = zip.Single(e => NormalizeFileName(e.FileName) == NormalizeFileName(item.Src));
                     Stream stream = new MemoryStream();
                     entry.Extract(stream);
                     stream.Position = 0;
                     try
                     {
                         StreamReader reader = new StreamReader(stream);
-                        item.TTContent = reader.ReadToEnd();
+                        item.Content = reader.ReadToEnd();
                     }
                     finally
                     {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace Fantasy.Studio.BusinessEngine.CodeEditing
 {
@@ -14,5 +15,9 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         bool IsReadOnly { get; }
         IBusinessEntity Entity { get; }
         string Extension { get; }
+        EditingState DirtyState { get; }
+
+        ImageSource Icon { get; }
+        
     }
 }

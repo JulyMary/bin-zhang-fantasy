@@ -278,9 +278,16 @@ namespace Fantasy.Studio.BusinessEngine
                     meta.Add(new XElement(pair.Key, RepleaceTemplateItem(pair.Value, replacements)));
                 }
                 script.MetaData = meta.ToString();
-                IT4Service t4 = ((IObjectWithSite)es).Site.GetRequiredService<IT4Service>();
-                CompilerErrorCollection errors;
-                script.Script = t4.ProcessTemplate(item.TTContent, script, out errors);
+                if (item.UseT4)
+                {
+                    IT4Service t4 = ((IObjectWithSite)es).Site.GetRequiredService<IT4Service>();
+                    CompilerErrorCollection errors;
+                    script.Script = t4.ProcessTemplate(item.Content, script, out errors);
+                }
+                else
+                {
+                    script.Script = item.Content;
+                }
                 rs.Add(script);
             }
 

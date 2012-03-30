@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
+          name="XML File"
+          description="An blank XML file."
+          icon="xml.ico"
+          defaultFileName="XMLFile.xml">
+
+    <Compile include="$FileName$" src="XMLFile.xml" useT4="false" autoOpen="true"/>
+</template> 

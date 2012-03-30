@@ -39,23 +39,38 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
 
         private WeakEventListener _nameListener;
 
-    
+        IEntityScript _script; 
 
         public override void Load(object entity)
         {
             base.Load(entity);
-            IEntityScript script = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IEntityScript>(entity);
+            _script = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<IEntityScript>(entity);
 
-            this.Title = script.Name;
+            this.Title = _script.Name;
+            this.Icon = _script.Icon;
 
 
             this._nameListener = new WeakEventListener((type, sender, e) =>
             {
-                this.Title = script.Name;
-                return true;
+                PropertyChangedEventArgs args = (PropertyChangedEventArgs)e;
+                switch (args.PropertyName)
+                {
+                    case "Name":
+                        this.Title = _script.Name;
+                        return true;
+                    case "Icon":
+                        this.Icon = _script.Icon;
+                        return true;
+                    default:
+                        return false;
+                }
+                
             });
-
-            PropertyChangedEventManager.AddListener(((INotifyPropertyChanged)script.Entity), this._nameListener, "Name");
+            if (_script is INotifyPropertyChanged)
+            {
+                PropertyChangedEventManager.AddListener(((INotifyPropertyChanged)_script), this._nameListener, "Name");
+                PropertyChangedEventManager.AddListener(((INotifyPropertyChanged)_script), this._nameListener, "Icon");
+            }
 
         }
 
@@ -66,16 +81,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             get { return "code"; }
         }
 
-        private ImageSource _icon =  new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/csharpfile.png", UriKind.Relative));
-        public override ImageSource Icon
-        {
-            
-            get
-            {
-                return _icon;
-            }
-            
-        }
+       
     }
 
 }

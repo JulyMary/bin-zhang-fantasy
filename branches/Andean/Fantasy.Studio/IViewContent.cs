@@ -62,5 +62,7 @@ namespace Fantasy.Studio
         string DocumentType { get;}
 
         ImageSource Icon { get; }
+
+        event EventHandler IconChanged;
     }
 }

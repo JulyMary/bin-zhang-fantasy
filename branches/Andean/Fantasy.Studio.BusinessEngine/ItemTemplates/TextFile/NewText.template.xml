@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
+          name="Text File"
+          description="An empty text file."
+          icon="txt.ico"
+          defaultFileName="TextFile.txt">
+
+    <Compile include="$FileName$" autoOpen="true"/>
+</template> 

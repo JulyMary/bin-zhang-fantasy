@@ -29,6 +29,8 @@ namespace Fantasy.Studio.Workbench.Layout
             this._view = view;
             this.Title = GetDisplayTitle();
             view.TitleChanged += new EventHandler(ViewTitleChanged);
+
+            view.IconChanged += new EventHandler(ViewIconChanged);
             this.Icon = view.Icon;
             if (view is IEditingViewContent)
             {
@@ -37,6 +39,11 @@ namespace Fantasy.Studio.Workbench.Layout
             this.Content = view.Element;
             this.IsActiveDocumentChanged +=new EventHandler(OnIsActiveDocumentChanged);
             view.WorkbenchWindow = this;
+        }
+
+        void ViewIconChanged(object sender, EventArgs e)
+        {
+            this.Icon = this._view.Icon;
         }
 
         void ViewTitleChanged(object sender, EventArgs e)

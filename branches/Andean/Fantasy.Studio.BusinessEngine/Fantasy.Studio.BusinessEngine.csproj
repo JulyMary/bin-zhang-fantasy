@@ -240,6 +240,7 @@
     <Compile Include="CodeEditing\BusinessScriptAdapterFactory.cs" />
     <Compile Include="CodeEditing\FileSyntaxHighlight.cs" />
     <Compile Include="CodeEditing\RegisterSyntaxHighlightingsCommand.cs" />
+    <Compile Include="CodeEditing\ScriptIconProvider.cs" />
     <Compile Include="CodeEditing\SyntaxHightlingOptionPanel.xaml.cs">
       <DependentUpon>SyntaxHightlingOptionPanel.xaml</DependentUpon>
     </Compile>
@@ -428,7 +429,16 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="ItemTemplates\NewClass\NewClass.tt" />
+    <None Include="ItemTemplates\NewClass\NewClass.png" />
+    <None Include="ItemTemplates\NewClass\NewClass.template.xml" />
+    <None Include="ItemTemplates\NewClass\NewClass.tt">
+      <Generator>None</Generator>
+      <LastGenOutput>NewClass.cs</LastGenOutput>
+    </None>
+    <None Include="ItemTemplates\TextFile\NewText.template.xml" />
+    <None Include="ItemTemplates\XMLFile\xml.ico" />
+    <None Include="ItemTemplates\XMLFile\XMLFile.template.xml" />
+    <None Include="ItemTemplates\XMLFile\XMLFile.xml" />
     <None Include="Templates\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
@@ -482,8 +492,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="ItemTemplates\NewClass\NewClass.png" />
-    <Resource Include="ItemTemplates\NewClass\NewClass.template.xml" />
     <Resource Include="images\ExportProject.png" />
     <Resource Include="images\ImportProject.png" />
     <Resource Include="images\preview.png" />
@@ -652,6 +660,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <None Include="ItemTemplates\TextFile\txt.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\package.png" />

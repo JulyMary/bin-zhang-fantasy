@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
           name="Class"
-          description="An empty class definition"
-          icon="newclass.png"
-          defaultFileName="class.cs">
+          description="An empty class definition."
+          icon="NewClass.png"
+          defaultFileName="NewClass.cs">
 
-    <Compile include="$FileName$" tt="newclass.tt" autoOpen="true"/>
+    <Compile include="$FileName$" src="newclass.tt" useT4="true" autoOpen="true"/>
 </template> 

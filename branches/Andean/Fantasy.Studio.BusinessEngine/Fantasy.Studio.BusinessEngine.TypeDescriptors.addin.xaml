@@ -336,12 +336,16 @@
 
         <TypeDescriptor ID="ScriptAdapter" TargetType="{x:Type sbe:BusinessScriptAdapter}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" />
-                 
-           
+            <PropertyDescriptor ID="CopyTo" Name="CopyTo" Caption="Copy to Output Directory" Category="Advanced"/>
+            <PropertyDescriptor ID="BuildAction" Name="BuildAction" Caption="BuildAction" Category="Advanced" />
+            <PropertyDescriptor ID="Generator" Name="Generator" Caption="Custom Tool" Category="Advanced"/>
+            <PropertyDescriptor ID="CustomToolNamespace" Name="CustomToolNamespace" Caption="Custom Tool Namespace" Category="Advanced"/>
+
         </TypeDescriptor>
         
         <TypeDescriptor ID="IEntityScript" TargetType="{x:Type sbe:IEntityScript}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
+           
         </TypeDescriptor>
 
         <!--<TypeDescriptor ID="WebFolder" TargetType="{x:Type sbe:WebFolder}">
