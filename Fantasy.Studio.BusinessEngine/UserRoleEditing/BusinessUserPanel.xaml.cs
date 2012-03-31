@@ -53,11 +53,11 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         }
 
       
-        public BusinessUser Entity { get; private set; }
+        public BusinessUserData Entity { get; private set; }
 
         public void Load(object entity)
         {
-            this.Entity = (BusinessUser)entity;
+            this.Entity = (BusinessUserData)entity;
             this.Entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this.DataContext = this.Entity;
 
@@ -200,7 +200,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             BusinessRolePicker picker = new BusinessRolePicker() { DataContext = model };
             if ((bool)picker.ShowDialog())
             {
-                BusinessRole role = model.SelectedItem;
+                BusinessRoleData role = model.SelectedItem;
                 if (this.Entity.Roles.IndexOf(role) < 0)
                 {
                     this.Entity.Roles.Add(role);
@@ -212,7 +212,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         private void RemoveRoleButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BusinessRole role in this.MemberOfListView.SelectedItems.Cast<BusinessRole>().ToArray())
+            foreach (BusinessRoleData role in this.MemberOfListView.SelectedItems.Cast<BusinessRoleData>().ToArray())
             {
                 role.Users.Remove(this.Entity);
                 this.Entity.Roles.Remove(role);
@@ -345,10 +345,10 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
                 this.Entity.FullName = this.Entity.Name;
             }
 
-            string ocname = UniqueNameGenerator.GetCodeName(oname) + Properties.Resources.DefaultUserRoleCodeNameSuffix;
+            string ocname = UniqueNameGenerator.GetCodeName(oname);
             if (ocname == this.Entity.CodeName)
             {
-                this.Entity.CodeName = UniqueNameGenerator.GetCodeName(this.Entity.Name) + Properties.Resources.DefaultUserRoleCodeNameSuffix;
+                this.Entity.CodeName = UniqueNameGenerator.GetCodeName(this.Entity.Name);
             }
         }
 

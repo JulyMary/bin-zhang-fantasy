@@ -55,13 +55,13 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         }
 
 
-        public BusinessRole Entity { get; private set; }
+        public BusinessRoleData Entity { get; private set; }
 
         private WeakEventListener _rolesChangedListener;
 
         public void Load(object entity)
         {
-            this.Entity = (BusinessRole)entity;
+            this.Entity = (BusinessRoleData)entity;
             this.Entity.EntityStateChanged += new EventHandler(EntityStateChanged);
             this.DataContext = this.Entity;
             this.DirtyState = this.Entity.EntityState == EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
@@ -182,7 +182,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             BusinessUserPicker picker = new BusinessUserPicker() { DataContext = model };
             if ((bool)picker.ShowDialog())
             {
-                BusinessUser user = model.SelectedItem;
+                BusinessUserData user = model.SelectedItem;
                 if (this.Entity.Users.IndexOf(user) < 0)
                 {
                     this.Entity.Users.Add(user);
@@ -193,7 +193,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         private void RemoveUserButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BusinessUser user in this.MembersListView.SelectedItems.Cast<BusinessUser>().ToArray())
+            foreach (BusinessUserData user in this.MembersListView.SelectedItems.Cast<BusinessUserData>().ToArray())
             {
                 user.Roles.Remove(this.Entity);
                 this.Entity.Users.Remove(user);
@@ -291,12 +291,12 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         {
             string oname = this.Entity.Name;
             this.Entity.Name = ((TextBox)sender).Text;
-           
 
-            string ocname = UniqueNameGenerator.GetCodeName(oname) + Properties.Resources.DefaultUserRoleCodeNameSuffix;
+
+            string ocname = UniqueNameGenerator.GetCodeName(oname);
             if (ocname == this.Entity.CodeName)
             {
-                this.Entity.CodeName = UniqueNameGenerator.GetCodeName(this.Entity.Name) + Properties.Resources.DefaultUserRoleCodeNameSuffix;
+                this.Entity.CodeName = UniqueNameGenerator.GetCodeName(this.Entity.Name);
             }
         }
 

@@ -48,60 +48,82 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
             if (package.ParentPackage != null)
             {
-                IEntityService es = this.Site.GetRequiredService<IEntityService>();
-
-                BusinessProperty[] clsProperties = (from cls in es.GetRootClass().Flatten(c => c.ChildClasses)
-                                                    from prop in cls.Properties
-                                                    where prop.DataType.Id == BusinessDataType.WellknownIds.Class
-                                                    select prop).ToArray();
+                UpdateClassScripts(package);
+                UpdateAppScripts(package);
 
 
-                IBusinessClassCodeGenerator classGenerator = this.Site.GetRequiredService<IBusinessClassCodeGenerator>();
-
-                BusinessClass[] descClasses = (from childPackage in package.Flatten(p => p.ChildPackages)
-                                               from @class in childPackage.Classes
-                                               select @class).ToArray();
-                foreach (BusinessClass @class in descClasses)
-                {
-                    classGenerator.Rename(@class);
-                    classGenerator.UpdateAutoScript(@class);
-                }
-
-
-                BusinessEnum[] enums = (from childPackage in package.Flatten(p => p.ChildPackages)
-                                       from @enum in childPackage.Enums
-                                       select @enum).ToArray();
-
-                BusinessProperty[] enumProperties = (from cls in es.GetRootClass().Flatten(c => c.ChildClasses)
-                                                     from prop in cls.Properties
-                                                     where prop.DataType.Id == BusinessDataType.WellknownIds.Enum
-                                                     select prop).ToArray();
-
-
-                var relClasses = (from @class in descClasses
-                                  from childClass in @class.ChildClasses
-                                  select childClass)
-                    .Union(from @class in descClasses
-                           from assn in @class.LeftAssociations
-                           select assn.RightClass)
-                    .Union(from @class in descClasses
-                           from assn in @class.RightAssociations
-                           select assn.LeftClass)
-                    .Union(from @class in descClasses
-                           from prop in clsProperties
-                           where prop.DataClassType == @class
-                           select prop.Class)
-                    .Union(from @enum in enums
-                               from prop in enumProperties
-                               where prop.DataEnumType == @enum
-                               select prop.Class)
-                    .Distinct().Except(descClasses);
-                foreach (BusinessClass @class in relClasses)
-                {
-                    classGenerator.UpdateAutoScript(@class);
-                }
+               
             }
             return true;
+        }
+
+        private void UpdateAppScripts(BusinessPackage package)
+        {
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            IApplicationCodeGenerator gen = this.Site.GetRequiredService<IApplicationCodeGenerator>();
+            var apps = from childPackage in package.Flatten(p => p.ChildPackages)
+                       from app in childPackage.Applications
+                       select app;
+            foreach (BusinessApplicationData app in apps)
+            {
+                gen.Rename(app);
+            }
+        }
+
+        private void UpdateClassScripts(BusinessPackage package)
+        {
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+
+            BusinessProperty[] clsProperties = (from cls in es.GetRootClass().Flatten(c => c.ChildClasses)
+                                                from prop in cls.Properties
+                                                where prop.DataType.Id == BusinessDataType.WellknownIds.Class
+                                                select prop).ToArray();
+
+
+            IBusinessClassCodeGenerator classGenerator = this.Site.GetRequiredService<IBusinessClassCodeGenerator>();
+
+            BusinessClass[] descClasses = (from childPackage in package.Flatten(p => p.ChildPackages)
+                                           from @class in childPackage.Classes
+                                           select @class).ToArray();
+            foreach (BusinessClass @class in descClasses)
+            {
+                classGenerator.Rename(@class);
+                classGenerator.UpdateAutoScript(@class);
+            }
+
+
+            BusinessEnum[] enums = (from childPackage in package.Flatten(p => p.ChildPackages)
+                                    from @enum in childPackage.Enums
+                                    select @enum).ToArray();
+
+            BusinessProperty[] enumProperties = (from cls in es.GetRootClass().Flatten(c => c.ChildClasses)
+                                                 from prop in cls.Properties
+                                                 where prop.DataType.Id == BusinessDataType.WellknownIds.Enum
+                                                 select prop).ToArray();
+
+
+            var relClasses = (from @class in descClasses
+                              from childClass in @class.ChildClasses
+                              select childClass)
+                .Union(from @class in descClasses
+                       from assn in @class.LeftAssociations
+                       select assn.RightClass)
+                .Union(from @class in descClasses
+                       from assn in @class.RightAssociations
+                       select assn.LeftClass)
+                .Union(from @class in descClasses
+                       from prop in clsProperties
+                       where prop.DataClassType == @class
+                       select prop.Class)
+                .Union(from @enum in enums
+                       from prop in enumProperties
+                       where prop.DataEnumType == @enum
+                       select prop.Class)
+                .Distinct().Except(descClasses);
+            foreach (BusinessClass @class in relClasses)
+            {
+                classGenerator.UpdateAutoScript(@class);
+            }
         }
 
         private bool PackageDeleted(Type managerType, object sender, EventArgs e)

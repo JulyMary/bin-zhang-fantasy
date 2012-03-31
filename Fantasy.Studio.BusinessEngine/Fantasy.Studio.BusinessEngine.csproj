@@ -97,6 +97,8 @@
     <Compile Include="ApplicationEditing\ApplicationEditor.cs" />
     <Compile Include="ApplicationEditing\ApplicationFolder.cs" />
     <Compile Include="ApplicationEditing\ApplicationParticipantACLProvider.cs" />
+    <Compile Include="ApplicationEditing\ApplicationScriptProvider.cs" />
+    <Compile Include="ApplicationEditing\BusinessApplicationScript.cs" />
     <Compile Include="ApplicationEditing\ClearParticipantsCommandHandler.cs" />
     <Compile Include="ApplicationEditing\DefaultParticipantACLModel.cs" />
     <Compile Include="ApplicationEditing\DefaultParticipantACLPanel.xaml.cs">
@@ -150,7 +152,6 @@
     <Compile Include="Build\ProjectExporter.cs" />
     <Compile Include="Build\ProjectExportOptions.cs" />
     <Compile Include="Build\ProjectsPathOptionPanelModel.cs" />
-    <Compile Include="Build\Projects.cs" />
     <Compile Include="Build\ProjectsPathOptionPanel.xaml.cs">
       <DependentUpon>ProjectsPathOptionPanel.xaml</DependentUpon>
     </Compile>
@@ -251,6 +252,15 @@
     </Compile>
     <Compile Include="CodeEditing\ScriptTemplateItem.cs" />
     <Compile Include="CodeEditing\ScriptTemplateRepository.cs" />
+    <Compile Include="CodeGenerating\ApplicationChangedHandler.cs" />
+    <Compile Include="CodeGenerating\ApplicationCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\IBusinessRoleCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\RoleChangedHandler.cs" />
+    <Compile Include="CodeGenerating\BusinessRoleCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\IBusinessUserCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\UserChangedHandler.cs" />
+    <Compile Include="CodeGenerating\BusinessUserCodeGenerator.cs" />
+    <Compile Include="CodeGenerating\IApplicationCodeGenerator.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="CodeEditing\FontAndColorsOptionPanel.xaml.cs">
       <DependentUpon>FontAndColorsOptionPanel.xaml</DependentUpon>
@@ -393,6 +403,10 @@
     <Compile Include="CodeGenerating\IBusinessClassCodeGenerator.cs" />
     <Compile Include="UserRoleEditing\AddRoleCommand.cs" />
     <Compile Include="UserRoleEditing\AddUserCommand.cs" />
+    <Compile Include="UserRoleEditing\BusinessRoleScript.cs" />
+    <Compile Include="UserRoleEditing\RoleScriptProvider.cs" />
+    <Compile Include="UserRoleEditing\UserScriptProvider.cs" />
+    <Compile Include="UserRoleEditing\BusinessUserScript.cs" />
     <Compile Include="UserRoleEditing\BusinessRolePikcerModel.cs" />
     <Compile Include="UserRoleEditing\BusinessRolePanel.xaml.cs">
       <DependentUpon>BusinessRolePanel.xaml</DependentUpon>
@@ -431,7 +445,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="ItemTemplates\NewClass\NewClass.png" />
     <None Include="ItemTemplates\NewClass\NewClass.template.xml" />
     <None Include="ItemTemplates\NewClass\NewClass.tt">
@@ -445,16 +458,31 @@
     <None Include="Templates\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Templates\BusinessEnum.tt">
       <LastGenOutput>BusinessEnum.txt</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\NewBusinessRole.tt">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\NewBusinessUser.tt">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\NewBusinessApplication.tt">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Templates\NewBusinessClass.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>None</Generator>
@@ -469,7 +497,7 @@
     </None>
     <None Include="Templates\SolutionTemplate.tt">
       <LastGenOutput>SolutionTemplate.cs</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -652,7 +680,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Include="Templates\ClassLibraryTemplate.csproj">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
     <Content Include="Fantasy.Studio.BusinessEngine.TypeDescriptors.addin.xaml">

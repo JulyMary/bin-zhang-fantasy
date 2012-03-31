@@ -14,7 +14,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             this.WriteFile = true;
         }
 
-        public Projects Project { get; set; }
+       
 
         public string SolutionPath { get; set; }
 

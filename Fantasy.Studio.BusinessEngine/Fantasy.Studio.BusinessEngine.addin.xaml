@@ -78,15 +78,25 @@
         <Object ID="BusinessEnumCodeGenerator">
             <code:BusinessEnumCodeGenerator/>
         </Object>
-        <Object ID="BusinessClassCodeGenerator" InsertBefore="nhprovider">
+        <Object ID="BusinessApplicationCodeGenerator">
+            <code:ApplicationCodeGenerator/>
+        </Object>
+        <Object ID="BusinessUserCodeGenerator">
+            <code:BusinessUserCodeGenerator/>
+        </Object>
+        <Object ID="BusinessRoleCodeGenerator">
+            <code:BusinessRoleCodeGenerator/>
+        </Object>
+        <Object ID="BusinessClassCodeGenerator" InsertBefore="entityservice">
             <code:BusinessClassCodeGenerator />
         </Object>
         <Object ID="UpdateLocalAssembliesService" InsertAfter="nhprovider">
             <be:UpdateLocalAssembliesService />
         </Object>
-        <Object ID="ScriptTemplateRepository">
+        <Object ID="ScriptTemplateRepository" InsertBefore="workbench">
             <sbe:ScriptTemplateRepository/>
         </Object>
+       
     </Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/commandbindings"></Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/panels">
@@ -152,14 +162,14 @@
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
             <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageNoComputedRolesProvider}" />
         </TreeNode>
-        <TreeNode ID="roles" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}"></TreeNode>
+        <TreeNode ID="roles" TargetType="{x:Type be:BusinessRoleData}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}"></TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/businessrolepicker/treeview">
         <TreeNode ID="package" TargetType="{x:Type be:BusinessPackage}" Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png" Text="{Binding Path=Name}">
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
             <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageRolesProvider}" />
         </TreeNode>
-        <TreeNode ID="roles" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}"></TreeNode>
+        <TreeNode ID="roles" TargetType="{x:Type be:BusinessRoleData}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}"></TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/businessuserpanel/memberof/dragdrop/drophandlers">
         <Object ID="role">
@@ -182,7 +192,7 @@
             <TreeNodeChildProvider ID="childpackage" Provider="{New sbe:ChildPackagesProvider}" />
             <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageUsersProvider}" />
         </TreeNode>
-        <TreeNode ID="users" TargetType="{x:Type be:BusinessUser}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=Name}"></TreeNode>
+        <TreeNode ID="users" TargetType="{x:Type be:BusinessUserData}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=Name}"></TreeNode>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classdiagrameditor/commandbindings"></Extension>
     <Extension Path="fantasy/studio/businessengine/classdiagrameditor/panels">
@@ -499,23 +509,28 @@
         <TreeNode ID="Reference" TargetType="{x:Type be:BusinessAssemblyReference}" Icon="/Fantasy.Studio.BusinessEngine;component/images/Reference.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/reference/contextmenu"></TreeNode>
        
         <TreeNode ID="Association" TargetType="{x:Type be:BusinessAssociation}" Icon="/Fantasy.Studio.BusinessEngine;component/images/association.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/association/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}">
+            
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
+            
         </TreeNode>
 
-        <TreeNode ID="User" TargetType="{x:Type be:BusinessUser}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/user/contextmenu">
+        <TreeNode ID="User" TargetType="{x:Type be:BusinessUserData}" Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/user/contextmenu">
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
+            <TreeNodeChildProvider ID="script" Provider="{New sbe:UserScriptProvider}"/>
         </TreeNode>
-        <TreeNode ID="Role" TargetType="{x:Type be:BusinessRole}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/role/contextmenu">
+        <TreeNode ID="Role" TargetType="{x:Type be:BusinessRoleData}" Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/role/contextmenu">
             <TreeNode.DoDragDrop>
                 <DoDragDropDataContextHandler AllowedEffects="All" />
             </TreeNode.DoDragDrop>
+            <TreeNodeChildProvider ID="script" Provider="{New sbe:RoleScriptProvider}"/>
         </TreeNode>
        
         <TreeNode ID="Application" TargetType="{x:Type be:BusinessApplicationData}" Icon="/Fantasy.Studio.BusinessEngine;component/images/application.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/application/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}">
+            <TreeNodeChildProvider ID="Script" Provider="{New sbe:ApplicationScriptProvider}"/>
             <TreeNodeChildProvider ID="acls" Provider="{New sbe:ApplicationParticipantACLProvider}" />
         </TreeNode>
         <TreeNode ID="ParticipantACL" TargetType="{x:Type sbe:ParticipantACL}" Icon="/Fantasy.Studio.BusinessEngine;component/images/acl.png" Text="{Binding Path=Name}" ContextMenu="fantasy/studio/businessengine/documentpad/participantACL/contextmenu" DoubleClick="{New sbe:OpenEntityViewCommand}"></TreeNode>
@@ -525,6 +540,9 @@
         <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
         </TreeNode>
         <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{New sbe:ScriptIconProvider}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
+        <TreeNode ID="AppScript" TargetType="{x:Type sbe:BusinessApplicationScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
+        <TreeNode ID="UserScript" TargetType="{x:Type sbe:BusinessUserScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
+        <TreeNode ID="RoleScript" TargetType="{x:Type sbe:BusinessRoleScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
@@ -681,13 +699,13 @@
         </Object>
         <Object ID="usereditor">
             <Object.Conditional>
-                <IsTypeOf Type="{x:Type be:BusinessUser}" />
+                <IsTypeOf Type="{x:Type be:BusinessUserData}" />
             </Object.Conditional>
             <sbe:UserEditor />
         </Object>
         <Object ID="roleeditor">
             <Object.Conditional>
-                <IsTypeOf Type="{x:Type be:BusinessRole}" />
+                <IsTypeOf Type="{x:Type be:BusinessRoleData}" />
             </Object.Conditional>
             <sbe:RoleEditor />
         </Object>
@@ -709,6 +727,9 @@
                     <IsTypeOf Type="{x:Type sbe:BusinessClassScript}" />
                     <IsTypeOf Type="{x:Type sbe:BusinessClassAutoScript}" />
                     <IsTypeOf Type="{x:Type be:BusinessScript}"/>
+                    <IsTypeOf Type="{x:Type sbe:BusinessApplicationScript}"/>
+                    <IsTypeOf Type="{x:Type sbe:BusinessUserScript}"/>
+                    <IsTypeOf Type="{x:Type sbe:BusinessRoleScript}"/>
                 </Or>
             </Object.Conditional>
             <sbe:ScriptEditor/>
@@ -845,6 +866,27 @@
                 <IsTypeOf Type="{x:Type be:BusinessEnum}" />
             </Object.Conditional>
             <code:EnumChangedHandler />
+        </Object>
+    </Extension>
+
+    <Extension Path="fantasy/businessengine/entityhandlers/propertychanged">
+        <Object ID="CodeApplicationChanged">
+            <Object.Conditional >
+                <IsTypeOf Type="{x:Type be:BusinessApplicationData}"/>
+            </Object.Conditional>
+            <code:ApplicationChangedHandler/> 
+        </Object>
+        <Object ID="CodeUserChanged">
+            <Object.Conditional >
+                <IsTypeOf Type="{x:Type be:BusinessUserData}"/>
+            </Object.Conditional>
+            <code:UserChangedHandler/>
+        </Object>
+        <Object ID="CodeRoleChanged">
+            <Object.Conditional >
+                <IsTypeOf Type="{x:Type be:BusinessRoleData}"/>
+            </Object.Conditional>
+            <code:RoleChangedHandler/>
         </Object>
     </Extension>
 

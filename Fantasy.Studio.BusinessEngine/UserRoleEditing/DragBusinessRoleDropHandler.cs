@@ -15,13 +15,13 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         public void HandleEvent(object sender, DragEventArgs e)
         {
 
-            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            BusinessRoleData role = e.Data.GetDataByType<BusinessRoleData>();
             if (role != null && ! role.IsComputed )
             {
                 e.Effects = DragDropEffects.Copy;
                 e.Handled = true;
 
-                BusinessUser user = this.Site.GetRequiredService<BusinessUser>();
+                BusinessUserData user = this.Site.GetRequiredService<BusinessUserData>();
 
                 if (user.Roles.IndexOf(role) < 0)
                 {

@@ -15,7 +15,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         public void HandleEvent(object sender, DragEventArgs e)
         {
-            BusinessRole data = e.Data.GetDataByType<BusinessRole>();
+            BusinessRoleData data = e.Data.GetDataByType<BusinessRoleData>();
             if (data != null && ! data.IsComputed)
             {
                 e.Effects = DragDropEffects.Copy;

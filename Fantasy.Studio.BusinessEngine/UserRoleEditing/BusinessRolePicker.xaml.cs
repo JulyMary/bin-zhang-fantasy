@@ -38,7 +38,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         private void extendableTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             ITreeViewItem item = e.NewValue as ITreeViewItem;
-            BusinessRole entity = item != null ? item.DataContext as BusinessRole : null;
+            BusinessRoleData entity = item != null ? item.DataContext as BusinessRoleData : null;
             ((BusinessRolePikcerModel)this.DataContext).SelectedItem = entity;
         }
 
