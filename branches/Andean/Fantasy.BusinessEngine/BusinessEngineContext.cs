@@ -24,7 +24,7 @@ namespace Fantasy.BusinessEngine
 
         #endregion
 
-        public BusinessUser User { get; set; }
+        public BusinessUserData User { get; set; }
 
         public BusinessApplication Application { get; set; }
 

@@ -260,7 +260,7 @@
             <PropertyDescriptor ID="Cardinality" Name="Cardinality" Caption="Cardinality" Category="General" Editor="{New sbe:CardinalityEditor}"/>
         </TypeDescriptor>
        
-        <TypeDescriptor ID="BusinessUser" TargetType="{x:Type be:BusinessUser}">
+        <TypeDescriptor ID="BusinessUser" TargetType="{x:Type be:BusinessUserData}">
             <TypeDescriptor.Conditional >
                 <Not Action="Disable">
                     <sbe:IsSystemEntity />
@@ -272,7 +272,7 @@
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General">
                 <PropertyDescriptor.Set>
-                    <sbe:EntityCodeNameSetAction Suffix="{x:Static sbe:Resources.DefaultUserRoleCodeNameSuffix}" />
+                    <sbe:EntityCodeNameSetAction  />
                 </PropertyDescriptor.Set>
             </PropertyDescriptor>
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General"/>
@@ -281,7 +281,7 @@
             <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" />
             <PropertyDescriptor ID="IsDisabled" Name="IsDisabled" Caption="Is Disabled" Category="General" />
         </TypeDescriptor>
-        <TypeDescriptor ID="BusinessRole" TargetType="{x:Type be:BusinessRole}">
+        <TypeDescriptor ID="BusinessRoleData" TargetType="{x:Type be:BusinessRoleData}">
             <TypeDescriptor.Conditional >
                 <Not Action="Disable">
                     <sbe:IsSystemEntity />
@@ -293,7 +293,7 @@
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General">
                 <PropertyDescriptor.Set>
-                    <sbe:EntityCodeNameSetAction Suffix="{x:Static sbe:Resources.DefaultUserRoleCodeNameSuffix}" />
+                    <sbe:EntityCodeNameSetAction />
                 </PropertyDescriptor.Set>
             </PropertyDescriptor>
            
@@ -320,7 +320,7 @@
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" >
                 <PropertyDescriptor.Set>
-                    <sbe:EntityCodeNameSetAction Suffix="{x:Static sbe:Resources.DefaultApplicationCodeNameSuffix}" />
+                    <sbe:EntityCodeNameSetAction />
                 </PropertyDescriptor.Set>
             </PropertyDescriptor>
             <PropertyDescriptor ID="FullName" Name="FullName" Caption="Full Name" Category="General" />

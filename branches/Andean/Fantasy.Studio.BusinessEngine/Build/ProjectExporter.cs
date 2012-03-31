@@ -45,7 +45,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
         private void ExportBusinessDataProject(IProjectItemsGenerator[] generators)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            ProjectExportOptions dataOptions = new ProjectExportOptions() { Project = Projects.BusinessData, SolutionPath = Settings.Default.SolutionPath };
+            ProjectExportOptions dataOptions = new ProjectExportOptions() {SolutionPath = Settings.Default.SolutionPath };
             dataOptions.ProjectPath = LongPath.Combine(dataOptions.SolutionDirectory, Settings.Default.BusinessDataAssemblyName,  Settings.Default.BusinessDataAssemblyName + ".csproj");
 
             if (!LongPathDirectory.Exists(dataOptions.ProjectDirectory))

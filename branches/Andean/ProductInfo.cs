@@ -10,7 +10,7 @@ using System.Windows;
 
 [assembly: AssemblyCompany("Fantasy")]
 [assembly: AssemblyProduct("Fantasy")]
-[assembly: AssemblyCopyright("Copyright © Fantasy 2011")]
+[assembly: AssemblyCopyright("Copyright © Fantasy 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,4 +24,4 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.122")]
+[assembly: AssemblyVersion("1.0.0.123")]

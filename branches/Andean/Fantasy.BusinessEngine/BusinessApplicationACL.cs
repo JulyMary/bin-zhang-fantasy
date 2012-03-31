@@ -52,11 +52,11 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        public virtual BusinessRole Role
+        public virtual BusinessRoleData Role
         {
             get
             {
-                return (BusinessRole)this.GetValue("Role", null);
+                return (BusinessRoleData)this.GetValue("Role", null);
             }
             set
             {

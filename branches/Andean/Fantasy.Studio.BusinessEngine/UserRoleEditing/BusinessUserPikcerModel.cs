@@ -28,9 +28,9 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         }
 
-        private BusinessUser _selectedItem;
+        private BusinessUserData _selectedItem;
 
-        public BusinessUser SelectedItem
+        public BusinessUserData SelectedItem
         {
             get { return _selectedItem; }
             set
@@ -73,13 +73,13 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         public class SelectedItemChangeingEventArgs : CancelEventArgs
         {
-            internal SelectedItemChangeingEventArgs(BusinessUser user)
+            internal SelectedItemChangeingEventArgs(BusinessUserData user)
             {
                 this.User = user;
             }
 
 
-            public BusinessUser User { get; private set; }
+            public BusinessUserData User { get; private set; }
 
 
         }

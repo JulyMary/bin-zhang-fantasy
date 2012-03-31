@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine.Maps
 {
-    public class BusinessRoleMap : BusinessEntityMap<BusinessRole>
+    public class BusinessRoleMap : BusinessEntityMap<BusinessRoleData>
     {
         public BusinessRoleMap()
         {
@@ -18,7 +18,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.CodeName).Not.Nullable();
             this.Map(x => x.Script);
             this.References(x => x.Package).Column("PackageId");
-            this.HasManyToMany<BusinessUser>(x => x.PersistedUsers).Table("BUSINESSUSERROLE").CollectionType<ObservableList<BusinessUser>>().ParentKeyColumn("ROLEID").ChildKeyColumn("USERID").Cascade.None();
+            this.HasManyToMany<BusinessUserData>(x => x.PersistedUsers).Table("BUSINESSUSERROLE").CollectionType<ObservableList<BusinessUserData>>().ParentKeyColumn("ROLEID").ChildKeyColumn("USERID").Cascade.None();
         }
     }
 }

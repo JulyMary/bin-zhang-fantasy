@@ -81,5 +81,14 @@
   &lt;string&gt;EntityDeploy&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="NewBusinessApplicationT4Path" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Templates\NewBusinessApplication.tt</Value>
+    </Setting>
+    <Setting Name="NewBusinessUserT4Path" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Templates\NewBusinessUser.tt</Value>
+    </Setting>
+    <Setting Name="NewBusinessRoleT4Path" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Templates\NewBusinessRole.tt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

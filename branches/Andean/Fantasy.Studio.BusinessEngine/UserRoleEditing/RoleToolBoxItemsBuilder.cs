@@ -34,12 +34,12 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
         private class DoDragRoleEventHandler : IEventHandler<DoDragDropEventArgs>
         {
-            public DoDragRoleEventHandler(BusinessRole role)
+            public DoDragRoleEventHandler(BusinessRoleData role)
             {
                 this._role = role;
             }
 
-            private BusinessRole _role;
+            private BusinessRoleData _role;
 
             #region IEventHandler<DoDragDropEventArgs> Members
 

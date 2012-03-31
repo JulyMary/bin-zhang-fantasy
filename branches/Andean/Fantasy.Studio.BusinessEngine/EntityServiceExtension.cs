@@ -188,30 +188,32 @@ namespace Fantasy.Studio.BusinessEngine
             return rs;
         }
 
-        public static BusinessUser AddBusinessUser(this IEntityService es, BusinessPackage package)
+        public static BusinessUserData AddBusinessUser(this IEntityService es, BusinessPackage package)
         {
-            BusinessUser rs = es.CreateEntity<BusinessUser>();
+            BusinessUserData rs = es.CreateEntity<BusinessUserData>();
             var query = from p in es.GetRootPackage().Flatten(p => p.ChildPackages)
                         from u in p.Users
                         select u.Name;
-            rs.Name = rs.FullName = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessUserName, query);
-            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultUserRoleCodeNameSuffix;
+            
             rs.Package = package;
+            rs.Name = rs.FullName = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessUserName, query);
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             package.Users.Add(rs);
 
             return rs;
         }
 
-        public static BusinessRole AddBusinessRole(this IEntityService es, BusinessPackage package)
+        public static BusinessRoleData AddBusinessRole(this IEntityService es, BusinessPackage package)
         {
-            BusinessRole rs = es.CreateEntity<BusinessRole>();
+            BusinessRoleData rs = es.CreateEntity<BusinessRoleData>();
             var query = from p in es.GetRootPackage().Flatten(p=>p.ChildPackages)
                         from role in p.Roles
                         select role.Name;
-            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessRoleName, query);
-            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultUserRoleCodeNameSuffix;
+            
             rs.Package = package;
             package.Roles.Add(rs);
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessRoleName, query);
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             return rs;
 
         }
@@ -220,10 +222,11 @@ namespace Fantasy.Studio.BusinessEngine
         {
             BusinessApplicationData rs = es.CreateEntity<BusinessApplicationData>();
            
-            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessApplicationName, package.Enums.Select(c => c.Name));
-            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name) + Resources.DefaultApplicationCodeNameSuffix;
+            
             package.Applications.Add(rs);
             rs.Package = package;
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessApplicationName, package.Enums.Select(c => c.Name));
+            rs.CodeName = UniqueNameGenerator.GetCodeName(rs.Name);
             return rs;
         }
 
@@ -239,7 +242,7 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
 
-        public static BusinessApplicationACL AddBusinessApplicationACL(this IEntityService es, BusinessApplicationParticipant participant, BusinessRole role, BusinessEnumValue state)
+        public static BusinessApplicationACL AddBusinessApplicationACL(this IEntityService es, BusinessApplicationParticipant participant, BusinessRoleData role, BusinessEnumValue state)
         {
             BusinessApplicationACL rs = es.CreateEntity<BusinessApplicationACL>();
             rs.Participant = participant;

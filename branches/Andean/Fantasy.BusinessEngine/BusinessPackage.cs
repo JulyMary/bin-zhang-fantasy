@@ -186,8 +186,8 @@ namespace Fantasy.BusinessEngine
 
 
 
-        private IObservableList<BusinessUser> _persistedUsers = new ObservableList<BusinessUser>();
-        protected internal virtual IObservableList<BusinessUser> PersistedUsers
+        private IObservableList<BusinessUserData> _persistedUsers = new ObservableList<BusinessUserData>();
+        protected internal virtual IObservableList<BusinessUserData> PersistedUsers
         {
             get { return _persistedUsers; }
             private set
@@ -203,22 +203,22 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private ObservableListView<BusinessUser> _users;
-        public virtual IObservableList<BusinessUser> Users
+        private ObservableListView<BusinessUserData> _users;
+        public virtual IObservableList<BusinessUserData> Users
         {
             get
             {
                 if (this._users == null)
                 {
-                    this._users = new ObservableListView<BusinessUser>(this._persistedUsers);
+                    this._users = new ObservableListView<BusinessUserData>(this._persistedUsers);
                 }
                 return _users;
             }
         }
 
 
-        private IObservableList<BusinessRole> _persistedRoles = new ObservableList<BusinessRole>();
-        protected internal virtual IObservableList<BusinessRole> PersistedRoles
+        private IObservableList<BusinessRoleData> _persistedRoles = new ObservableList<BusinessRoleData>();
+        protected internal virtual IObservableList<BusinessRoleData> PersistedRoles
         {
             get { return _persistedRoles; }
             private set
@@ -234,14 +234,14 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        private ObservableListView<BusinessRole> _roles;
-        public virtual IObservableList<BusinessRole> Roles
+        private ObservableListView<BusinessRoleData> _roles;
+        public virtual IObservableList<BusinessRoleData> Roles
         {
             get
             {
                 if (this._roles == null)
                 {
-                    this._roles = new ObservableListView<BusinessRole>(this._persistedRoles);
+                    this._roles = new ObservableListView<BusinessRoleData>(this._persistedRoles);
                 }
                 return _roles;
             }

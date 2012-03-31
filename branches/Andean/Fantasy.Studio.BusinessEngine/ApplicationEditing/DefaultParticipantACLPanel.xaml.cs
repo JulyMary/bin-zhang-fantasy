@@ -244,12 +244,12 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
             if ((bool)rolePicker.ShowDialog())
             {
-                BusinessRole role = rm.SelectedItem;
+                BusinessRoleData role = rm.SelectedItem;
                 AddACL(role);
             }
         }
 
-        private void AddACL(BusinessRole role)
+        private void AddACL(BusinessRoleData role)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessApplicationACL acl = es.AddBusinessApplicationACL(this.Entity, role, null);
@@ -267,7 +267,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private void ACLListBox_Drop(object sender, DragEventArgs e)
         {
-            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            BusinessRoleData role = e.Data.GetDataByType<BusinessRoleData>();
             if (role != null && !this.Entity.ACLs.Any(a => a.Role == role))
             {
                 e.Effects = DragDropEffects.Copy;
@@ -279,7 +279,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private void ACLListBox_DragOver(object sender, DragEventArgs e)
         {
-            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            BusinessRoleData role = e.Data.GetDataByType<BusinessRoleData>();
             if (role != null && !this.Entity.ACLs.Any(a => a.Role == role))
             {
                 e.Effects = DragDropEffects.Copy;
@@ -300,7 +300,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         private void ACLListBox_DragEnter(object sender, DragEventArgs e)
         {
-            BusinessRole role = e.Data.GetDataByType<BusinessRole>();
+            BusinessRoleData role = e.Data.GetDataByType<BusinessRoleData>();
             if (role != null && !this.Entity.ACLs.Any(a => a.Role == role))
             {
                 e.Effects = DragDropEffects.Copy;

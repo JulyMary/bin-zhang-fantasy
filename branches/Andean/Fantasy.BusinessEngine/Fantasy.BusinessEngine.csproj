@@ -79,8 +79,10 @@
     <Compile Include="BusinessPackage.cs" />
     <Compile Include="BusinessProperty.cs" />
     <Compile Include="BusinessRole.cs" />
+    <Compile Include="BusinessRoleData.cs" />
     <Compile Include="BusinessScript.cs" />
     <Compile Include="BusinessUser.cs" />
+    <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />

@@ -32,7 +32,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
             BusinessPackage parent = am.GetAdapter<BusinessPackage>(parameter);
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessRole role = es.AddBusinessRole(parent);
+            BusinessRoleData role = es.AddBusinessRole(parent);
 
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
             IViewContent content = documentService.OpenView(role);

@@ -15,13 +15,13 @@ namespace Fantasy.BusinessEngine.Services
 
         BusinessApplication FindApplication(Guid id);
 
-        IEnumerable<BusinessUser> AllUsers { get; }
+        IEnumerable<BusinessUserData> AllUsers { get; }
 
-        IEnumerable<BusinessRole> AllRoles { get; }
+        IEnumerable<BusinessRoleData> AllRoles { get; }
 
-        BusinessUser FindUser(Guid id);
+        BusinessUserData FindUser(Guid id);
 
-        BusinessRole FindRole(Guid id);
+        BusinessRoleData FindRole(Guid id);
 
 
 

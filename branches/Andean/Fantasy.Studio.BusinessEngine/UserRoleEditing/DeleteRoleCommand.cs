@@ -16,13 +16,13 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         public object Execute(object args)
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessRole role = (BusinessRole)args;
+            BusinessRoleData role = (BusinessRoleData)args;
 
 
             role.Package.Roles.Remove(role);
             role.Package = null;
 
-            foreach (BusinessUser user in role.Users.ToArray())
+            foreach (BusinessUserData user in role.Users.ToArray())
             {
                 user.Roles.Remove(role);
 

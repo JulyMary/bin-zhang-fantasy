@@ -65,22 +65,22 @@ namespace Fantasy.BusinessEngine.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<BusinessUser> AllUsers
+        public IEnumerable<BusinessUserData> AllUsers
         {
             get { throw new NotImplementedException(); }
         }
 
-        public IEnumerable<BusinessRole> AllRoles
+        public IEnumerable<BusinessRoleData> AllRoles
         {
             get { throw new NotImplementedException(); }
         }
 
-        public BusinessUser FindUser(Guid id)
+        public BusinessUserData FindUser(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public BusinessRole FindRole(Guid id)
+        public BusinessRoleData FindRole(Guid id)
         {
             throw new NotImplementedException();
         }

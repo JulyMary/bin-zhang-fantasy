@@ -144,12 +144,6 @@
   <data name="ClassViewPadTitle" xml:space="preserve">
     <value>Class View</value>
   </data>
-  <data name="DefaultApplicationCodeNameSuffix" xml:space="preserve">
-    <value>Handler</value>
-  </data>
-  <data name="DefaultChildWebFolderName" xml:space="preserve">
-    <value>NewFolder</value>
-  </data>
   <data name="DefaultCodePanelTitle" xml:space="preserve">
     <value>Code</value>
   </data>
@@ -191,9 +185,6 @@
   </data>
   <data name="DefaultStandardWebFolderName" xml:space="preserve">
     <value>Web</value>
-  </data>
-  <data name="DefaultUserRoleCodeNameSuffix" xml:space="preserve">
-    <value>Handler</value>
   </data>
   <data name="DocumentPadTitle" xml:space="preserve">
     <value>Business Model</value>
