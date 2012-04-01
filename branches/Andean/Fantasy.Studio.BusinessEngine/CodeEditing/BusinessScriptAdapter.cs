@@ -135,23 +135,14 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             get
             {
-                return this._metadata.Name.LocalName;
+                return this.Entity["BuildAction"];
             }
             set
             {
 
                 if (this.BuildAction != value && value != null)
                 {
-                    XElement newMetadata = new XElement(value);
-                    foreach (XElement child in _metadata.Elements().ToArray())
-                    {
-                        child.Remove();
-                        newMetadata.Add(child);
-                    }
-
-                    this._metadata = newMetadata;
-
-                    this.Entity.MetaData = this._metadata.ToString();
+                    this.Entity["BuildAction"] = value;
                     this.OnPropertyChanged("BuildAction");
                 }
             }
@@ -162,13 +153,15 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             get
             {
-                if (this._metadata.Element("CopyToOutputDirectory") == null)
+                string s = this.Entity["CopyToOutputDirectory"];
+                
+                if (String.IsNullOrEmpty(s))
                 {
                     return CopyToOptions.None;
                 }
                 else
                 {
-                    return (CopyToOptions)Enum.Parse(typeof(CopyToOptions), (string)this._metadata.Element("CopyToOutputDirectory"));
+                    return (CopyToOptions)Enum.Parse(typeof(CopyToOptions), s);
                 }
                 
             }
@@ -176,19 +169,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             {
                 if (this.CopyTo != value)
                 {
-                    if (value == CopyToOptions.None)
-                    {
-                        XElement copyElement = this._metadata.Element("CopyToOutputDirectory");
-                        if (copyElement != null)
-                        {
-                            copyElement.Remove();
-                        }
-                    }
-                    else
-                    {
-                        this._metadata.SetElementValue("CopyToOutputDirectory", value);
-                    }
-                    this.Entity.MetaData = this._metadata.ToString();
+                    string s = value == CopyToOptions.None ? null : value.ToString();
+                    this.Entity["CopyToOutputDirectory"] = s;
                     this.OnPropertyChanged("CopyTo");
                 }
             }
@@ -198,14 +180,13 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             get
             {
-                return (string)this._metadata.Element("Generator");
+                return this.Entity["Generator"];
             }
             set
             {
                 if (this.Generator != value)
                 {
-                    this._metadata.SetElementValue("Generator", value);
-                    this.Entity.MetaData = this._metadata.ToString();
+                    this.Entity["Generator"] = value;
                     this.OnPropertyChanged("Generator");
                 }
             }
@@ -215,14 +196,14 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         {
             get
             {
-                return (string)this._metadata.Element("CustomToolNamespace");
+                return this.Entity["CustomToolNamespace"];
+               
             }
             set
             {
                 if (this.CustomToolNamespace != value)
                 {
-                    this._metadata.SetElementValue("CustomToolNamespace", value);
-                    this.Entity.MetaData = this._metadata.ToString();
+                    this.Entity["CustomToolNamespace"] = value;
                     this.OnPropertyChanged("CustomToolNamespace");
                 }
             }

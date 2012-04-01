@@ -6,7 +6,7 @@ using Fantasy.BusinessEngine.Collections;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessRoleData : BusinessEntity, INamedBusinessEntity
+    public class BusinessRoleData : BusinessEntity, INamedBusinessEntity, IScriptable
     {
         public virtual string Name
         {
@@ -140,5 +140,17 @@ namespace Fantasy.BusinessEngine
         }
 
         #endregion
+
+        public virtual ScriptOptions ScriptOptions
+        {
+            get
+            {
+                return (ScriptOptions)this.GetValue("ScriptOptions", ScriptOptions.Default);
+            }
+            set
+            {
+                this.SetValue("ScriptOptions", value);
+            }
+        }
     }
 }

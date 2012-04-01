@@ -104,6 +104,7 @@
     <Compile Include="Events\BusinessPropertyUpdateColumnHandler.cs" />
     <Compile Include="IBusinessEngineContextProvider.cs" />
     <Compile Include="IGernateCodeBusinessEntity.cs" />
+    <Compile Include="IScriptable.cs" />
     <Compile Include="Maps\BusinessApplicationACLMap.cs" />
     <Compile Include="Maps\BusinessApplicationMap.cs" />
     <Compile Include="Maps\BusinessApplicationParticipantMap.cs" />
