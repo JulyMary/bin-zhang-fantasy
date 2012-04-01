@@ -37,6 +37,9 @@
     <Reference Include="Accessibility">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit">
       <HintPath>..\External\ICSharpCode.AvalonEdit.dll</HintPath>
     </Reference>
@@ -143,14 +146,21 @@
     <Compile Include="AssociationEditing\CardinalityEditor.cs" />
     <Compile Include="AssociationEditing\DeleteAssociationCommand.cs" />
     <Compile Include="AssociationEditing\PackageAssociationFolderProvider.cs" />
+    <Compile Include="Build\BusinessApplicationItemsGenerator.cs" />
     <Compile Include="Build\BusinessClassItemsGenerator.cs" />
     <Compile Include="Build\BusinessEnumItemsGenerator.cs" />
     <Compile Include="Build\BusinessPackageExtension.cs" />
+    <Compile Include="Build\BusinessRoleItemsGenerator.cs" />
+    <Compile Include="Build\BusinessScriptItemsGenerator.cs" />
+    <Compile Include="Build\BusinessUserItemsGenerator.cs" />
     <Compile Include="Build\Consts.cs" />
     <Compile Include="Build\ExportProjectCommand.cs" />
     <Compile Include="Build\IProjectItemsGenerator.cs" />
+    <Compile Include="Build\IProjectItemsReader.cs" />
+    <Compile Include="Build\MsdevManager.cs" />
     <Compile Include="Build\ProjectExporter.cs" />
     <Compile Include="Build\ProjectExportOptions.cs" />
+    <Compile Include="Build\ProjectImporter.cs" />
     <Compile Include="Build\ProjectsPathOptionPanelModel.cs" />
     <Compile Include="Build\ProjectsPathOptionPanel.xaml.cs">
       <DependentUpon>ProjectsPathOptionPanel.xaml</DependentUpon>
@@ -243,6 +253,7 @@
     <Compile Include="CodeEditing\CopyToOptions.cs" />
     <Compile Include="CodeEditing\FileSyntaxHighlight.cs" />
     <Compile Include="CodeEditing\RegisterSyntaxHighlightingsCommand.cs" />
+    <Compile Include="CodeEditing\ScriptDependentUpProvider.cs" />
     <Compile Include="CodeEditing\ScriptIconProvider.cs" />
     <Compile Include="CodeEditing\SyntaxHightlingOptionPanel.xaml.cs">
       <DependentUpon>SyntaxHightlingOptionPanel.xaml</DependentUpon>

@@ -1,8 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     30/03/2012 5:13:36 PM                        */
+/* Created on:     2012/4/1 8:37:58                             */
 /*==============================================================*/
-
+use fantasy
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -677,6 +677,7 @@ create table BusinessApplication (
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    Script               text                 null,
+   ScriptOptions        int                  null,
    constraint PK_BUSINESSAPPLICATION primary key (ID)
 )
 go
@@ -1098,6 +1099,7 @@ create table BusinessRole (
    IsComputed           bit                  not null,
    IsDisabled           bit                  null,
    Script               text                 null,
+   ScriptOptions        int                  null,
    constraint PK_BUSINESSROLE primary key (ID)
 )
 go
@@ -1126,6 +1128,7 @@ create table BusinessUser (
    Password             varchar(128)         null,
    IsDisabled           bit                  not null,
    Script               text                 null,
+   ScriptOptions        int                  null,
    constraint PK_BUSINESSUSER primary key (ID)
 )
 go

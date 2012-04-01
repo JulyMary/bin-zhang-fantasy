@@ -539,7 +539,9 @@
         </TreeNode>
         <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
         </TreeNode>
-        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{New sbe:ScriptIconProvider}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
+        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{New sbe:ScriptIconProvider}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}">
+            <!--<TreeNodeChildProvider ID="DependentUpon" Provider="{New sbe:ScriptDependentUpProvider}"/>-->
+        </TreeNode>
         <TreeNode ID="AppScript" TargetType="{x:Type sbe:BusinessApplicationScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
         <TreeNode ID="UserScript" TargetType="{x:Type sbe:BusinessUserScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
         <TreeNode ID="RoleScript" TargetType="{x:Type sbe:BusinessRoleScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
@@ -912,6 +914,18 @@
         </Object>
         <Object ID="enums">
             <sbe:BusinessEnumItemsGenerator/>
+        </Object>
+        <Object ID="Apps">
+            <sbe:BusinessApplicationItemsGenerator/>
+        </Object>
+        <Object ID="Users">
+            <sbe:BusinessUserItemsGenerator/>
+        </Object>
+        <Object ID="Roles">
+            <sbe:BusinessRoleItemsGenerator/>
+        </Object>
+        <Object ID="Scripts">
+            <sbe:BusinessScriptItemsGenerator/>
         </Object>
     </Extension>
 

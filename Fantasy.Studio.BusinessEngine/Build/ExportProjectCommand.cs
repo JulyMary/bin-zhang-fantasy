@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace Fantasy.Studio.BusinessEngine.Build
 {
@@ -34,10 +35,22 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 }
             }
 
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.SolutionPath))
+            string slnPath = Properties.Settings.ExtractToFullPath(Properties.Settings.Default.SolutionPath);
+
+            if (!string.IsNullOrEmpty(slnPath))
             {
                 ProjectExporter exporter = new ProjectExporter() { Site = this.Site };
                 exporter.Run();
+            }
+
+            EnvDTE.DTE dte = Msdev.GetIDEInstance(slnPath);
+            if (dte != null)
+            {
+                Msdev.ShowIDE(dte);
+            }
+            else
+            {
+                Process.Start(slnPath);
             }
         }
 
