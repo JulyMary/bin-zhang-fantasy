@@ -36,11 +36,15 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 itemsGroup.Add(item);
 
 
-
+                string hintPath = script["HintPath"];
+                if (String.IsNullOrEmpty(hintPath))
+                {
+                    hintPath = itemName;
+                }
 
                 if (options.WriteFile)
                 {
-                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, itemName), script.Script, Encoding.UTF8);
+                    LongPathFile.WriteAllText(LongPath.Combine(options.ProjectDirectory, hintPath), script.Script, Encoding.UTF8);
 
                 }
 

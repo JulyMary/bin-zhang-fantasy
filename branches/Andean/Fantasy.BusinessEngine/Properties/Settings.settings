@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fantasy.BusinessEngine.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ReferencesPath" Type="System.String" Scope="User">
+    <Setting Name="ReferencesPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\</Value>
     </Setting>
-    <Setting Name="SystemReferencesPath" Type="System.String" Scope="User">
+    <Setting Name="SystemReferencesPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\</Value>
     </Setting>
   </Settings>

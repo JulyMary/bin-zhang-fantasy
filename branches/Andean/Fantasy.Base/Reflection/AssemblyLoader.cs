@@ -60,6 +60,21 @@ namespace Fantasy.Reflection
             return CreateDomainLoader().ReflectionOnlyGetType(assembly, typeName, throwErrors, ignoreCase );
         }
 
+        public AssemblyName ReflectionOnlyLoadNameFrom(string assemblyFile)
+        {
+            return CreateDomainLoader().RefectionOnlyLoadNameFrom(assemblyFile);
+        }
+
+        public bool ReflectionOnlyIsInGAC(AssemblyName assemblyRef)
+        {
+            return CreateDomainLoader().ReflectionOnlyIsInGAC(assemblyRef);
+        }
+
+        public AssemblyName[] ReflectionOnlyGetReferenceAssemblyNames(AssemblyName assemblyRef)
+        {
+            return CreateDomainLoader().ReflectionOnlyGetReferenceAssemblyNames(assemblyRef);
+        }
+
 
         #region IDisposable Members
 
@@ -69,6 +84,8 @@ namespace Fantasy.Reflection
         }
 
         #endregion
+
+       
     }
 
     public class DomainAssemblyLoader : MarshalByRefObject
@@ -87,6 +104,11 @@ namespace Fantasy.Reflection
         public Assembly ReflectionOnlyLoadFrom(string assemblyFile)
         {
             return Assembly.ReflectionOnlyLoadFrom(assemblyFile);
+        }
+
+        public AssemblyName RefectionOnlyLoadNameFrom(string assemblyFile)
+        {
+            return Assembly.ReflectionOnlyLoadFrom(assemblyFile).GetName();
         }
 
 
@@ -121,6 +143,18 @@ namespace Fantasy.Reflection
         public Type ReflectionOnlyGetType(Assembly assembly, string typeName, bool throwErrors, bool ignoreCase)
         {
             return assembly.GetType(typeName, throwErrors, ignoreCase);
+        }
+
+        public bool ReflectionOnlyIsInGAC(AssemblyName assemblyRef)
+        {
+            Assembly asm = Assembly.ReflectionOnlyLoadFrom(assemblyRef.CodeBase);
+            return asm.GlobalAssemblyCache;
+        }
+
+        public AssemblyName[] ReflectionOnlyGetReferenceAssemblyNames(AssemblyName assemblyRef)
+        {
+            Assembly assembly = Assembly.ReflectionOnlyLoadFrom(assemblyRef.CodeBase);
+            return assembly.GetReferencedAssemblies();
         }
     }
 }

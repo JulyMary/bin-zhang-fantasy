@@ -19,11 +19,11 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             if (dlg.ShowDialog() == true)
             {
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
-                BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
+               
 
                 foreach (Assembly assembly in dlg.SelectedAssemblies)
                 {
-
+                    BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
                     string name = assembly.GetName().Name;
                     if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
                     {
