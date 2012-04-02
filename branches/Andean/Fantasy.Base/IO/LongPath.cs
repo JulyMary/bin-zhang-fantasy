@@ -34,27 +34,33 @@ namespace Fantasy.IO
 
         public static string GetDirectoryName(string path)
         {
-           
-            Uri uri = new Uri(path);
-
-            string rs = uri.LocalPath;
-
-            
-            if (rs.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            Uri uri;
+            string rs;
+            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
             {
-                rs.Remove(rs.Length - 1);
+                rs = uri.LocalPath;
+            }
+            else
+            {
+                rs = path;
             }
 
+           
+            rs = rs.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+
+           
+
             int index = rs.LastIndexOf(Path.DirectorySeparatorChar);
-            if (index > 0)
+            if (index >= 0)
             {
                 rs = rs.Remove(index);
             }
-
-            if (rs.StartsWith(@"file:\\"))
+            else
             {
-                rs = rs.Substring("file:".Length);
+                rs = string.Empty;
             }
+
+           
 
             return rs;
         }

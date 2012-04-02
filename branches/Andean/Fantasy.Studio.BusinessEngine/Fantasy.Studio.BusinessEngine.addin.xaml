@@ -946,6 +946,9 @@
         <Object ID="folder">
             <sbe:FolderItemsReader />
         </Object>
+        <Object ID="reference">
+            <sbe:ReferenceItemsReader />
+        </Object>
         <Object ID="class">
             <sbe:BusinessClassItemsReader/> 
         </Object>

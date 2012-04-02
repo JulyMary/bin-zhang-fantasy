@@ -68,8 +68,8 @@ namespace Fantasy.Studio.BusinessEngine.Build
                         {
                             view.Save();
                         }
-                        ProjectExporter exporter = new ProjectExporter() { Site = this.Site };
-                        exporter.Run();
+                        ProjectImporter importer = new ProjectImporter() { Site = this.Site };
+                        importer.Run();
                     }
                     finally
                     {

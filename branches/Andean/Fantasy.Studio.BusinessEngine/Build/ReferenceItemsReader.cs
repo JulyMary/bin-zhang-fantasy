@@ -25,7 +25,9 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 }
                 else
                 {
-                    Assembly assembly = Assembly.Load((string)options.ItemElement.Attribute("Include"));
+#pragma warning disable  0618
+                    Assembly assembly = Assembly.LoadWithPartialName((string)options.ItemElement.Attribute("Include"));
+#pragma warning restore  0618
                     es.AddGACAssemblyReference(assembly);
                 }
                

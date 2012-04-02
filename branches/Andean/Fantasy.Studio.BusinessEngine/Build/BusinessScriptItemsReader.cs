@@ -24,8 +24,9 @@ namespace Fantasy.Studio.BusinessEngine.Build
             {
                 script = es.CreateEntity<BusinessScript>();
                 script.Package = options.Package;
-                options.Package.Scripts.Add(script);
                 script.Name = name;
+                options.Package.Scripts.Add(script);
+                
             }
 
            
@@ -33,7 +34,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             XElement meta = new XElement(options.ItemElement.Name.LocalName);
             foreach (XElement child in options.ItemElement.Elements())
             {
-                meta.Add(new XElement(child.Name.LocalName), child.Value);
+                meta.Add(new XElement(child.Name.LocalName, child.Value));
             }
             script.MetaData = meta.ToString(SaveOptions.OmitDuplicateNamespaces);
 
