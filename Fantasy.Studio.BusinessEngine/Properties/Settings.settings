@@ -30,10 +30,10 @@
       <Value Profile="(Default)">300</Value>
     </Setting>
     <Setting Name="BusinessClassAutoScriptT4Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\BusinessClass.Designer.tt</Value>
+      <Value Profile="(Default)">.\AppData\Templates\BusinessClass.Designer.tt</Value>
     </Setting>
     <Setting Name="NewBusinessClassT4Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\NewBusinessClass.tt</Value>
+      <Value Profile="(Default)">.\AppData\Templates\NewBusinessClass.tt</Value>
     </Setting>
     <Setting Name="CodeEditorFontFamily" Type="System.String" Scope="User">
       <Value Profile="(Default)">Consolas</Value>
@@ -44,26 +44,17 @@
     <Setting Name="SolutionPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="BusinessDataAssemblyName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Fantasy.BusinessData</Value>
-    </Setting>
-    <Setting Name="WebAssemblyName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Fantasy.Web</Value>
-    </Setting>
-    <Setting Name="ClassLibraryTemplatePath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\ClassLibraryTemplate.csproj</Value>
+    <Setting Name="BusinessDataProjectTemplatePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\AppData\Templates\Fantasy.BusinessData.csproj</Value>
     </Setting>
     <Setting Name="SolutionTemplatePath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\SolutionTemplate.tt</Value>
-    </Setting>
-    <Setting Name="BusinessDataProjectId" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">{4CDABEB6-2016-476B-8692-4ED84EBC606D}</Value>
+      <Value Profile="(Default)">.\AppData\Templates\Fantasy.BusinessData.sln</Value>
     </Setting>
     <Setting Name="BusinessEnumT4Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\BusinessEnum.tt</Value>
+      <Value Profile="(Default)">.\AppData\Templates\BusinessEnum.tt</Value>
     </Setting>
     <Setting Name="ItemTemplatesPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\ItemTemplates</Value>
+      <Value Profile="(Default)">.\AppData\ItemTemplates</Value>
     </Setting>
     <Setting Name="ScriptBuildActions" Type="System.Collections.Specialized.StringCollection" Scope="Application">
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
@@ -82,13 +73,13 @@
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="NewBusinessApplicationT4Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\NewBusinessApplication.tt</Value>
+      <Value Profile="(Default)">.\AppData\Templates\NewBusinessApplication.tt</Value>
     </Setting>
     <Setting Name="NewBusinessUserT4Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\NewBusinessUser.tt</Value>
+      <Value Profile="(Default)">.\AppData\Templates\NewBusinessUser.tt</Value>
     </Setting>
     <Setting Name="NewBusinessRoleT4Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.\Templates\NewBusinessRole.tt</Value>
+      <Value Profile="(Default)">.\AppData\Templates\NewBusinessRole.tt</Value>
     </Setting>
   </Settings>
 </SettingsFile>

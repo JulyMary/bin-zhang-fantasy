@@ -15,7 +15,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
     {
         #region IProjectItemsGenerator Members
 
-        public void CreateItems(BusinessPackage package, XElement projectElement, ProjectExportOptions options)
+        public void CreateItems(BusinessPackage package, XElement projectElement, XElement insertBefore, ProjectExportOptions options)
         {
             string itemsFolder = package.GetItemsFolder();
             string itemsFolderFullPath = LongPath.Combine(options.ProjectDirectory, itemsFolder);
@@ -51,7 +51,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
             if (itemsGroup.Elements().Count() > 0)
             {
-                projectElement.Add(itemsGroup);
+                insertBefore.AddBeforeSelf(itemsGroup);
             }
         }
 

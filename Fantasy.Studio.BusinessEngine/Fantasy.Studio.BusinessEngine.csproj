@@ -247,6 +247,7 @@
       <DependentUpon>AddScriptDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="CodeEditing\AddScriptDialogModel.cs" />
+    <Compile Include="CodeEditing\DeleteScriptCommand.cs" />
     <Compile Include="CodeEditing\ScriptBuildActionEditor.cs" />
     <Compile Include="CodeEditing\BusinessScriptAdapter.cs" />
     <Compile Include="CodeEditing\BusinessScriptAdapterFactory.cs" />
@@ -456,41 +457,41 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="ItemTemplates\NewClass\NewClass.png" />
-    <None Include="ItemTemplates\NewClass\NewClass.template.xml" />
-    <None Include="ItemTemplates\NewClass\NewClass.tt">
+    <None Include="AppData\ItemTemplates\NewClass\NewClass.png" />
+    <None Include="AppData\ItemTemplates\NewClass\NewClass.template.xml" />
+    <None Include="AppData\ItemTemplates\NewClass\NewClass.tt">
       <Generator>None</Generator>
       <LastGenOutput>NewClass.cs</LastGenOutput>
     </None>
-    <None Include="ItemTemplates\TextFile\NewText.template.xml" />
-    <None Include="ItemTemplates\XMLFile\xml.ico" />
-    <None Include="ItemTemplates\XMLFile\XMLFile.template.xml" />
-    <None Include="ItemTemplates\XMLFile\XMLFile.xml" />
-    <None Include="Templates\BusinessClass.Designer.tt">
+    <None Include="AppData\ItemTemplates\TextFile\NewText.template.xml" />
+    <None Include="AppData\ItemTemplates\XMLFile\xml.ico" />
+    <None Include="AppData\ItemTemplates\XMLFile\XMLFile.template.xml" />
+    <None Include="AppData\ItemTemplates\XMLFile\XMLFile.xml" />
+    <None Include="AppData\Templates\BusinessClass.Designer.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>BusinessClass.txt</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\BusinessEnum.tt">
+    <None Include="AppData\Templates\BusinessEnum.tt">
       <LastGenOutput>BusinessEnum.txt</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\NewBusinessRole.tt">
+    <None Include="AppData\Templates\NewBusinessRole.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\NewBusinessUser.tt">
+    <None Include="AppData\Templates\NewBusinessUser.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\NewBusinessApplication.tt">
+    <None Include="AppData\Templates\NewBusinessApplication.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\NewBusinessClass.tt">
+    <None Include="AppData\Templates\NewBusinessClass.tt">
       <Generator>%28none%29</Generator>
       <LastGenOutput>NewBusinessClass.cs</LastGenOutput>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -505,10 +506,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Settings.settings.cs</LastGenOutput>
-    </None>
-    <None Include="Templates\SolutionTemplate.tt">
-      <LastGenOutput>SolutionTemplate.cs</LastGenOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -534,6 +531,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AppData\Templates\Fantasy.BusinessData.csproj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AppData\Templates\Fantasy.BusinessData.sln">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="images\ExportProject.png" />
     <Resource Include="images\ImportProject.png" />
     <Resource Include="images\preview.png" />
@@ -690,10 +693,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <None Include="Templates\ClassLibraryTemplate.csproj">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Fantasy.Studio.BusinessEngine.TypeDescriptors.addin.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -702,7 +701,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <None Include="ItemTemplates\TextFile\txt.ico" />
+    <None Include="AppData\ItemTemplates\TextFile\txt.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\package.png" />
@@ -720,7 +719,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(ProjectDir)\Fantasy.ZipItemTemplate.exe" "$(ProjectDir)\ItemTemplates" "$(TargetDir)\ItemTemplates"</PostBuildEvent>
+    <PostBuildEvent>"$(ProjectDir)\Fantasy.ZipItemTemplate.exe" "$(ProjectDir)\AppData\ItemTemplates" "$(TargetDir)\AppData\ItemTemplates"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

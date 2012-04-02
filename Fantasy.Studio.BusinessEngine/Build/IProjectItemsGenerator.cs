@@ -9,6 +9,6 @@ namespace Fantasy.Studio.BusinessEngine.Build
 {
     public interface IProjectItemsGenerator
     {
-        void CreateItems(BusinessPackage package, XElement projectElement, ProjectExportOptions options);
+        void CreateItems(BusinessPackage package, XElement projectElement, XElement insertBefore, ProjectExportOptions options);
     }
 }
