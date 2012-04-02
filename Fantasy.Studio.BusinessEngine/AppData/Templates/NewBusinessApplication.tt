@@ -1,0 +1,25 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="Fantasy.Base"#>
+<#@ assembly name="Fantasy.BusinessEngine" #>
+<#@ import namespace="Fantasy"#>
+<#@ import namespace="Fantasy.BusinessEngine"#>
+<#@ import namespace="Fantasy.BusinessEngine.Services"#>
+<#
+    IServiceProvider services = (IServiceProvider)Host;
+	BusinessApplicationData app = services.GetRequiredService<BusinessApplicationData>();
+#>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Fantasy;
+using Fantasy.BusinessEngine;
+
+namespace <#=app.Package.FullCodeName#>
+{
+    public partial class <#=app.CodeName#> : Fantasy.BusinessEngine.BusinessApplication
+	{
+
+    }
+}
