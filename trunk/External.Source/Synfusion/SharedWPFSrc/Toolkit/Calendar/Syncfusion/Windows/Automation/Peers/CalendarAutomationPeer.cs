@@ -287,7 +287,7 @@ namespace Syncfusion.Windows.Automation.Peers
                     }
             }
 
-            // TODO: update when Jolt 23302 is fixed
+            // update when Jolt 23302 is fixed
             // throw new ArgumentOutOfRangeException("viewId", Resource.Calendar_OnDisplayModePropertyChanged_InvalidValue);
             return String.Empty;
         }

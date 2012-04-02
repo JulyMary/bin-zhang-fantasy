@@ -615,7 +615,7 @@ namespace Syncfusion.Windows.Controls
 
         #region SelectedDates
 
-        // TODO: Should it be of type ObservableCollection?
+        // Should it be of type ObservableCollection?
 
         /// <summary>
         /// Gets the dates that are currently selected.
