@@ -371,7 +371,7 @@ namespace Fantasy.Studio.BusinessEngine
                     if (!loader.ReflectionOnlyIsInGAC(assemblyName))
                     {
 
-                        string filename = assemblyName.CodeBase;
+                        string filename = new Uri(assemblyName.CodeBase).LocalPath;
                         string sysRefPath = Fantasy.BusinessEngine.Properties.Settings.ExtractToFullPath(Fantasy.BusinessEngine.Properties.Settings.Default.SystemReferencesPath);
                         if (filename.ToLower().StartsWith(sysRefPath.ToLower()))
                         {
@@ -429,9 +429,21 @@ namespace Fantasy.Studio.BusinessEngine
             {
                 string file = LongPath.Combine(dir, ran.Name + ".dll");
                
-                if (LongPathFile.Exists(file) && !loader.ReflectionOnlyIsInGAC(ran))
+                if (LongPathFile.Exists(file))
+
                 {
-                   rs.AddRange(CreateAssemblyReference(es, ran, loader, false));
+                    try
+                    {
+                        AssemblyName an2 = loader.ReflectionOnlyLoadNameFrom(file);
+                        if (!loader.ReflectionOnlyIsInGAC(an2))
+                        {
+                            rs.AddRange(CreateAssemblyReference(es, an2, loader, false));
+                        }
+                    }
+                    catch
+                    {
+                    }
+                   
                 }
 
                 

@@ -96,7 +96,7 @@ namespace Fantasy.BusinessEngine
                     XElement child = newMetadata.Elements().Where(c => String.Equals(c.Name.LocalName, name, StringComparison.OrdinalIgnoreCase)).SingleOrDefault();
                     if (child == null && !string.IsNullOrEmpty(value))
                     {
-                        newMetadata.Add(new XElement("name"), value);
+                        newMetadata.Add(new XElement("name", value));
                     }
                     else
                     {

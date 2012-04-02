@@ -22,14 +22,15 @@ namespace Fantasy.Studio.BusinessEngine.Build
             XElement projectElement = XElement.Load(projPath);
 
 
-            string rootNamespace = (string)(from ele in projectElement.Elements("PropertyGroup")
+            string rootNamespace = (string)(from ele in projectElement.Elements(Consts.MSBuildNamespace + "PropertyGroup")
                                             from prop in ele.Elements()
                                             where prop.Name == Consts.MSBuildNamespace + "RootNamespace"
                                             select prop).SingleOrDefault();
 
             IProjectItemsReader[] readers = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/build/projectimporter/itemsreaders").BuildChildItems<IProjectItemsReader>(this, this.Site).ToArray();
-            var itemElements = from ele in projectElement.Elements(Consts.MSBuildNamespace + "ItemGroup")
-                               select ele.Elements();
+            var itemElements = from itemGroup in projectElement.Elements(Consts.MSBuildNamespace + "ItemGroup")
+                               from item in itemGroup.Elements()
+                               select item;
 
 
             this._allPackages = this.Site.GetRequiredService<IEntityService>().Query<BusinessPackage>().ToList();
@@ -66,7 +67,8 @@ namespace Fantasy.Studio.BusinessEngine.Build
         {
             string include = (string)itemElement.Attribute("Include");
             string dir = LongPath.GetDirectoryName(include);
-            string packageFullCodeName = rootNamespace + "." + dir.Replace('\\', '.');
+            
+            string packageFullCodeName = !String.IsNullOrEmpty(dir) ?  rootNamespace + "." + dir.Replace('\\', '.') : rootNamespace;
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             return this.FindOrCreatePackageRecursive(packageFullCodeName);
             
@@ -79,7 +81,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             {
                 int dotIndex = packageFullCodeName.LastIndexOf('.');
                 string parentFullCodeName = packageFullCodeName.Substring(0, dotIndex);
-                string codeName = parentFullCodeName.Substring(dotIndex + 1);
+                string codeName = packageFullCodeName.Substring(dotIndex + 1);
                 BusinessPackage parent = this.FindOrCreatePackageRecursive(parentFullCodeName);
                 IEntityService es = this.Site.GetRequiredService<IEntityService>();
                 rs = es.CreateEntity<BusinessPackage>();
@@ -88,6 +90,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
                
                 parent.ChildPackages.Add(rs);
                 rs.ParentPackage = parent;
+                es.SaveOrUpdate(rs);
                 this._allPackages.Add(rs);
                
             }

@@ -14,10 +14,8 @@ namespace ConsoleTest
     {
         static void Main(string[] args)
         {
-            FileStream fs = new FileStream(@"e:\Bin\Desktop\ClassLibrary1\ClassLibrary1.sln", FileMode.Open);
-            BinaryReader r = new BinaryReader(fs);
-            byte[] b = r.ReadBytes((int)fs.Length);
-            fs.Close();
+            string s = Path.GetDirectoryName("abc\\");
+            Console.WriteLine(s);
 
 
         }

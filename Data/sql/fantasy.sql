@@ -1,8 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2012/4/1 8:37:58                             */
+/* Created on:     2012/4/2 21:08:58                            */
 /*==============================================================*/
-use fantasy
+
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -638,7 +638,7 @@ create table AssemblyReference (
    IsSystem             bit                  not null,
    FullName             varchar(255)         not null,
    Source               int                  not null,
-   RawAssembly          varbinary            null,
+   RawAssembly          varbinary(Max)       null,
    RawHash              varchar(32)          null,
    constraint PK_ASSEMBLYREFERENCE primary key (ID)
 )
