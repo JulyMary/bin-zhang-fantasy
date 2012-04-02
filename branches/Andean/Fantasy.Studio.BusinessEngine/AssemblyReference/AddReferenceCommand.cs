@@ -18,8 +18,6 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
     {
         #region ICommand Members
 
-
-
         private AssemblyLoader _loader;
 
         public object Execute(object args)
