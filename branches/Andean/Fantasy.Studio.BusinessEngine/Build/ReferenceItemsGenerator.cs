@@ -13,7 +13,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
     {
         #region IProjectItemsGenerator Members
 
-        public void CreateItems(Fantasy.BusinessEngine.BusinessPackage package, System.Xml.Linq.XElement projectElement, ProjectExportOptions options)
+        public void CreateItems(Fantasy.BusinessEngine.BusinessPackage package, System.Xml.Linq.XElement projectElement, XElement insertBefore, ProjectExportOptions options)
         {
             if (package.Id == BusinessPackage.RootPackageId)
             {
@@ -40,7 +40,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
                     itemsGroup.Add(reference); 
                 }
 
-                projectElement.Add(itemsGroup);
+                insertBefore.AddBeforeSelf(itemsGroup);
             }
         }
 

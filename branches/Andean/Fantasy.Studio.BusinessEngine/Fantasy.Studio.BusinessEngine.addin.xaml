@@ -539,8 +539,8 @@
         </TreeNode>
         <TreeNode ID="ClassAutoScript" TargetType="{x:Type sbe:BusinessClassAutoScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" >
         </TreeNode>
-        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{New sbe:ScriptIconProvider}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}">
-            <!--<TreeNodeChildProvider ID="DependentUpon" Provider="{New sbe:ScriptDependentUpProvider}"/>-->
+        <TreeNode ID="BusinessScript" TargetType="{x:Type be:BusinessScript}" Icon="{New sbe:ScriptIconProvider}" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/script/contextmenu">
+            <TreeNodeChildProvider ID="DependentUpon" Provider="{New sbe:ScriptDependentUpProvider}"/>
         </TreeNode>
         <TreeNode ID="AppScript" TargetType="{x:Type sbe:BusinessApplicationScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
         <TreeNode ID="UserScript" TargetType="{x:Type sbe:BusinessUserScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
@@ -557,7 +557,11 @@
         </Button>
     </Extension>
 
- 
+    <Extension Path="fantasy/studio/businessengine/documentpad/script/contextmenu">
+        <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
+        <Button ID="Delete" Text="Delete" Command="{New sbe:DeleteScriptCommand}" ParameterSource="Owner">
+        </Button>
+    </Extension>
     
   
     <Extension Path="fantasy/studio/businessengine/enumeditor/commandbindings"></Extension>

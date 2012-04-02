@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using EnvDTE;
 using Microsoft.Win32;
 
+#pragma warning disable  0618
 namespace Fantasy.Studio.BusinessEngine.Build
 {
     /// <summary>
@@ -337,4 +338,6 @@ namespace Fantasy.Studio.BusinessEngine.Build
             }
         }
     }
+
 }
+#pragma warning restore 0618

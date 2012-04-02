@@ -19,62 +19,52 @@ namespace Fantasy.Studio.BusinessEngine.Build
         public void Run()
         {
             IProjectItemsGenerator[] generators = AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/build/projectexporter/itemsgenerators").BuildChildItems<IProjectItemsGenerator>(this, this.Site).ToArray();
-            ExportBusinessDataProject(generators);
-
-            XElement solution = new XElement("solution",
-                new XElement("project",
-                    new XAttribute("id", Settings.Default.BusinessDataProjectId),
-                    new XAttribute("name", Settings.Default.BusinessDataAssemblyName)));
-            IT4Service t4 = this.Site.GetRequiredService<IT4Service>();
-            CompilerErrorCollection errors;
-            string solutionContent = t4.ProcessTemplateFile(Settings.ExtractToFullPath(Settings.Default.SolutionTemplatePath), solution, out errors);
-
-            Stream fs = new FileStream(Settings.ExtractToFullPath(Settings.Default.SolutionPath), FileMode.Create);
-            fs.WriteByte(239);
-            fs.WriteByte(187);
-            fs.WriteByte(191);
-            fs.WriteByte(13);
-            fs.WriteByte(10);
-            StreamWriter sw = new StreamWriter(fs, Encoding.UTF8);
-            sw.Write(solutionContent);
-            sw.Close();
-
-            //LongPathFile.WriteAllText(Settings.ExtractToFullPath(Settings.Default.SolutionPath), solutionContent, Encoding.UTF8); 
-        }
-
-        private void ExportBusinessDataProject(IProjectItemsGenerator[] generators)
-        {
-            IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            ProjectExportOptions dataOptions = new ProjectExportOptions() {SolutionPath = Settings.Default.SolutionPath };
-            dataOptions.ProjectPath = LongPath.Combine(dataOptions.SolutionDirectory, Settings.Default.BusinessDataAssemblyName,  Settings.Default.BusinessDataAssemblyName + ".csproj");
-
-            if (!LongPathDirectory.Exists(dataOptions.ProjectDirectory))
+            string slnPath = Settings.ExtractToFullPath(Settings.Default.SolutionPath);
+            if (!LongPathFile.Exists(slnPath))
             {
-                LongPathDirectory.Create(dataOptions.ProjectDirectory);
+                string slnDir = LongPath.GetDirectoryName(slnPath);
+                if(!LongPathDirectory.Exists(slnDir))
+                {
+                    LongPathDirectory.Create(slnDir);
+                }
+
+                LongPathFile.Copy(Settings.ExtractToFullPath(Settings.Default.SolutionTemplatePath), slnPath); 
             }
-            XElement projectElement = XElement.Load(Settings.ExtractToFullPath(Settings.Default.ClassLibraryTemplatePath));
 
-            XElement firstGroup = projectElement.Element(Consts.MSBuildNamespace + "PropertyGroup");
-            firstGroup.SetElementValue(Consts.MSBuildNamespace + "ProjectGuid", Settings.Default.BusinessDataProjectId);
-            firstGroup.SetElementValue(Consts.MSBuildNamespace +"AssemblyName", Settings.Default.BusinessDataAssemblyName);
+            string projDir = LongPath.Combine(LongPath.GetDirectoryName(slnPath), LongPath.GetFileNameWithoutExtension(Settings.Default.BusinessDataProjectTemplatePath));
+            string projPath = LongPath.Combine(projDir,  LongPath.GetFileName(Settings.Default.BusinessDataProjectTemplatePath));
+            if (!LongPathFile.Exists(projPath))
+            {
+                if(!LongPathDirectory.Exists(projDir))
+                {
+                    LongPathDirectory.Create(projDir);
+                }
 
+                LongPathFile.Copy(Settings.ExtractToFullPath(Settings.Default.BusinessDataProjectTemplatePath), projPath); 
+            }
 
+            XElement projectElement = XElement.Load(projPath);
+            //Remove Old Items
+            foreach (XElement itemGroup in projectElement.Elements(Consts.MSBuildNamespace + "ItemGroup").ToArray())
+            {
+                itemGroup.Remove();
+            }
+
+            XElement insertBefore = projectElement.Element(Consts.MSBuildNamespace + "Import");
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            ProjectExportOptions dataOptions = new ProjectExportOptions() { SolutionPath = slnPath, ProjectPath=projPath, WriteFile=true };
             foreach (BusinessPackage package in es.GetRootPackage().Flatten(p => p.ChildPackages))
             {
                 foreach (IProjectItemsGenerator generator in generators)
                 {
-                    generator.CreateItems(package, projectElement, dataOptions);
+                    generator.CreateItems(package, projectElement, insertBefore, dataOptions);
                 }
             }
-           
-            projectElement.Add(new XElement(Consts.MSBuildNamespace + "Import", new XAttribute("Project", "$(MSBuildToolsPath)\\Microsoft.CSharp.targets")));  
 
-            projectElement.Save(dataOptions.ProjectPath);
+            projectElement.Save(projPath);
 
-
-          
-
-            
         }
+
+        
     }
 }

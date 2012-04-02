@@ -10,7 +10,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 {
     public class BusinessScriptItemsGenerator : ObjectWithSite, IProjectItemsGenerator
     {
-        public void CreateItems(Fantasy.BusinessEngine.BusinessPackage package, XElement projectElement, ProjectExportOptions options)
+        public void CreateItems(Fantasy.BusinessEngine.BusinessPackage package, XElement projectElement, XElement insertBefore, ProjectExportOptions options)
         {
 
             string itemsFolder = package.GetItemsFolder();
@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
             foreach (BusinessScript script in package.Scripts)
             {
-                string itemName = itemsFolder + "\\" + script.CodeName + ".cs";
+                string itemName = itemsFolder + "\\" + script.Name;
                 XElement meta = !string.IsNullOrEmpty(script.MetaData) ? XElement.Parse(script.MetaData) : new XElement("None"); 
                 XElement item = new XElement(Consts.MSBuildNamespace + meta.Name.LocalName);
                 item.SetAttributeValue("Include", itemName);
@@ -50,7 +50,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             if (itemsGroup.Elements().Count() > 0)
             {
 
-                projectElement.Add(itemsGroup);
+                insertBefore.AddBeforeSelf(itemsGroup);
             }
         }
     }
