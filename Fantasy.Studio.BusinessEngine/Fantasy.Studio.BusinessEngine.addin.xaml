@@ -935,10 +935,35 @@
 
     <Extension Path="fantasy/studio/workbench/toolbars/standard">
 
-        <Button ID="ImportProject" Text="Import Project" InsertAfter="Save"  Icon="/Fantasy.Studio.BusinessEngine;component/images/ImportProject.png" />
-        <Button ID="ExportProject" Text="Export Project"  Icon="/Fantasy.Studio.BusinessEngine;component/images/ExportProject.png"
+        <Button ID="ImportProject" Text="Import Project" InsertAfter="Save"  Icon="/Fantasy.Studio.BusinessEngine;component/images/ImportProject.png"
+                Command="{New sbe:ImportProjectCommand}"/>
+        <Button ID="ExportProject" Text="Export Project" Icon="/Fantasy.Studio.BusinessEngine;component/images/ExportProject.png"
                 Command="{New sbe:ExportProjectCommand}"/>
         
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/build/projectimporter/itemsreaders">
+        <Object ID="folder">
+            <sbe:FolderItemsReader />
+        </Object>
+        <Object ID="class">
+            <sbe:BusinessClassItemsReader/> 
+        </Object>
+        <Object ID="enum">
+            <sbe:BusinessEnumItemsReader />
+        </Object>
+        <Object ID="app">
+            <sbe:BusinessApplicationItemsReader />
+        </Object>
+        <Object ID="user">
+            <sbe:BusinessUserItemsReader />
+        </Object>
+        <Object ID="role">
+            <sbe:BusinessRoleItemsReader/>
+        </Object>
+        <Object ID="script">
+            <sbe:BusinessScriptItemsReader />
+        </Object>
     </Extension>
 
 </AddIn>

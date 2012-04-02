@@ -113,7 +113,7 @@ namespace Fantasy.BusinessEngine
 
                 }
 
-                this.MetaData = newMetadata.ToString();
+                this.MetaData = newMetadata.ToString(SaveOptions.OmitDuplicateNamespaces); 
 
                 
             }

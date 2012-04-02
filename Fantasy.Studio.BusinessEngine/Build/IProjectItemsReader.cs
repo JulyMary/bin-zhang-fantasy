@@ -8,5 +8,6 @@ namespace Fantasy.Studio.BusinessEngine.Build
     public interface IProjectItemsReader
     {
 
+        void Read(ProjectImportOptions options);
     }
 }

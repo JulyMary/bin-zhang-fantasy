@@ -144,6 +144,9 @@
   <data name="ClassViewPadTitle" xml:space="preserve">
     <value>Class View</value>
   </data>
+  <data name="ConfirmImportProjectMessage" xml:space="preserve">
+    <value>You should save following changes before import Visual Studio project:</value>
+  </data>
   <data name="DefaultCodePanelTitle" xml:space="preserve">
     <value>Code</value>
   </data>
