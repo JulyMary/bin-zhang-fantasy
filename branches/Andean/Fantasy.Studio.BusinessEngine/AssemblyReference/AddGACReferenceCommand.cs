@@ -7,6 +7,7 @@ using Fantasy.BusinessEngine.Services;
 using System.Reflection;
 using Fantasy.BusinessEngine;
 using System.Windows.Threading;
+using Fantasy.GAC;
 
 namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 {
@@ -25,10 +26,11 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                 {
                     BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
                     string name = assembly.GetName().Name;
+                    
                     if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
                     {
                         BusinessAssemblyReference reference = es.CreateEntity<BusinessAssemblyReference>();
-                        reference.FullName = assembly.FullName;
+                        reference.FullName = GlobalAssemblyCache.IsInFramework(assembly) ? name : assembly.FullName; 
                         reference.Group = group;
                         group.References.Add(reference);
                         reference.Source = BusinessAssemblyReferenceSources.GAC;

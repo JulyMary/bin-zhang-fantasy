@@ -152,5 +152,17 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("ScriptOptions", value);
             }
         }
+
+        public virtual string ExternalType
+        {
+            get
+            {
+                return (string)this.GetValue("ExternalType", null);
+            }
+            set
+            {
+                this.SetValue("ExternalType", value);
+            }
+        }
     }
 }

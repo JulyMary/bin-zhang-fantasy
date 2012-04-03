@@ -7,72 +7,108 @@ using Fantasy.IO;
 
 namespace Fantasy.Reflection
 {
+    
     public class AssemblyLoader : IDisposable
     {
-        private AppDomain _domain;
+        //private AppDomain _domain;
 
         private static int _index = 0;
         public AssemblyLoader()
         {
-            AppDomainSetup domainSetup = new AppDomainSetup();
+            //AppDomainSetup domainSetup = new AppDomainSetup();
 
-            domainSetup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
-            domainSetup.ShadowCopyFiles = "true";
-            string name;
-            lock (typeof(AssemblyLoader))
-            {
-                name =  "AssemblyLoader" + _index.ToString();
-                _index++;
-            }
+            //domainSetup.ApplicationBase = AppDomain.CurrentDomain.BaseDirectory;
+            //domainSetup.ShadowCopyFiles = "false";
+            //string name;
+            //lock (typeof(AssemblyLoader))
+            //{
+            //    name =  "AssemblyLoader" + _index.ToString();
+            //    _index++;
+            //}
 
-            _domain = AppDomain.CreateDomain(name, null, domainSetup);
-            AssemblyName currentAssembly = Assembly.GetExecutingAssembly().GetName();
-            _domain.Load(Assembly.GetExecutingAssembly().GetName());
-
-        }
-
-        private DomainAssemblyLoader CreateDomainLoader()
-        {
-            DomainAssemblyLoader rs = (DomainAssemblyLoader)_domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().GetName().FullName, typeof(DomainAssemblyLoader).FullName);
-            return rs;
+            //_domain = AppDomain.CreateDomain(name, null, domainSetup);
+            ////_domain.ReflectionOnlyAssemblyResolve += new ResolveEventHandler(ReflectionOnlyAssemblyResolve);
+            //AssemblyName currentAssembly = Assembly.GetExecutingAssembly().GetName();
+            //_domain.Load(Assembly.GetExecutingAssembly().GetName());
 
         }
+
+        //private DomainAssemblyLoader CreateDomainLoader()
+        //{
+        //    DomainAssemblyLoader rs = (DomainAssemblyLoader)_domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().GetName().FullName, typeof(DomainAssemblyLoader).FullName);
+        //    return rs;
+
+        //}
 
 
 
         public Assembly ReflectionOnlyLoad(string assemblyString)
         {
-            return CreateDomainLoader().ReflectionOnlyLoad(assemblyString);
+            //return CreateDomainLoader().ReflectionOnlyLoad(assemblyString);
+            return Assembly.Load(assemblyString);
         }
 
         public Assembly ReflectionOnlyLoadFrom(string assemblyFile)
         {
-            return CreateDomainLoader().ReflectionOnlyLoadFrom(assemblyFile);
+            //return CreateDomainLoader().ReflectionOnlyLoadFrom(assemblyFile);
+            return Assembly.LoadFrom(assemblyFile);
         }
 
         public Type[] ReflectionOnlyGetTypes(Assembly assembly)
         {
-            return CreateDomainLoader().ReflectionOnlyGetTypes(assembly); 
+            ////AssemblyName name = assembly.GetName();
+            ////return CreateDomainLoader().ReflectionOnlyGetTypes(name);
+            //lock (typeof(AssemblyLoader))
+            //{
+            //    AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += new ResolveEventHandler(ReflectionOnlyAssemblyResolve);
+            //    try
+            //    {
+            //        if (!assembly.ReflectionOnly)
+            //        {
+            //            assembly = Assembly.ReflectionOnlyLoadFrom(assembly.CodeBase);
+            //        }
+            //       
+                    
+            //    }
+            //    finally
+            //    {
+            //        AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve -= new ResolveEventHandler(ReflectionOnlyAssemblyResolve);
+            //    }
+            //}
+
+            try
+            {
+                return assembly.GetTypes();
+            }
+            catch
+            {
+                return new Type[0];
+            }
         }
 
         public Type ReflectionOnlyGetType(Assembly assembly, string typeName, bool throwErrors = false, bool ignoreCase = false)
         {
-            return CreateDomainLoader().ReflectionOnlyGetType(assembly, typeName, throwErrors, ignoreCase );
+            return assembly.GetType(typeName, throwErrors, ignoreCase);
+
+            //return CreateDomainLoader().ReflectionOnlyGetType(assembly, typeName, throwErrors, ignoreCase );
         }
 
         public AssemblyName ReflectionOnlyLoadNameFrom(string assemblyFile)
         {
-            return CreateDomainLoader().RefectionOnlyLoadNameFrom(assemblyFile);
+            //return CreateDomainLoader().RefectionOnlyLoadNameFrom(assemblyFile);
+            return Assembly.LoadFrom(assemblyFile).GetName();
         }
 
         public bool ReflectionOnlyIsInGAC(AssemblyName assemblyRef)
         {
-            return CreateDomainLoader().ReflectionOnlyIsInGAC(assemblyRef);
+            return Assembly.Load(assemblyRef.FullName).GlobalAssemblyCache;
         }
 
         public AssemblyName[] ReflectionOnlyGetReferenceAssemblyNames(AssemblyName assemblyRef)
         {
-            return CreateDomainLoader().ReflectionOnlyGetReferenceAssemblyNames(assemblyRef);
+            Assembly assembly = Assembly.LoadFrom(assemblyRef.CodeBase);
+            return assembly.GetReferencedAssemblies();
+            //return CreateDomainLoader().ReflectionOnlyGetReferenceAssemblyNames(assemblyRef);
         }
 
 
@@ -80,10 +116,34 @@ namespace Fantasy.Reflection
 
         public void Dispose()
         {
-            AppDomain.Unload(_domain);
+            //AppDomain.Unload(_domain);
         }
 
         #endregion
+
+
+        private static Assembly ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Assembly rs = null;
+
+            if (!args.RequestingAssembly.GlobalAssemblyCache)
+            {
+                string dir = LongPath.GetDirectoryName(args.RequestingAssembly.CodeBase);
+                AssemblyName an = new AssemblyName(args.Name);
+                string file = LongPath.Combine(dir, an.Name + ".dll");
+                if (LongPathFile.Exists(file))
+                {
+                    rs = Assembly.ReflectionOnlyLoadFrom(file);
+                }
+
+            }
+            if (rs == null)
+            {
+                return Assembly.ReflectionOnlyLoad(args.Name);
+            }
+
+            return rs;
+        }
 
        
     }
@@ -94,6 +154,29 @@ namespace Fantasy.Reflection
         {
             AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += new ResolveEventHandler(ReflectionOnlyAssemblyResolve);
           
+        }
+
+        private static Assembly ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            Assembly rs = null;
+
+            if (!args.RequestingAssembly.GlobalAssemblyCache)
+            {
+                string dir = LongPath.GetDirectoryName(args.RequestingAssembly.CodeBase);
+                AssemblyName an = new AssemblyName(args.Name);
+                string file = LongPath.Combine(dir, an.Name + ".dll");
+                if (LongPathFile.Exists(file))
+                {
+                    rs = Assembly.ReflectionOnlyLoadFrom(file);
+                }
+
+            }
+            if (rs == null)
+            {
+                return Assembly.ReflectionOnlyLoad(args.Name);
+            }
+
+            return rs;
         }
        
         public Assembly ReflectionOnlyLoad(string assemblyString)
@@ -112,33 +195,14 @@ namespace Fantasy.Reflection
         }
 
 
-        public Type[] ReflectionOnlyGetTypes(Assembly assembly)
+        public Type[] ReflectionOnlyGetTypes(AssemblyName assemblyRef)
         {
-             return assembly.GetTypes();
+
+            Assembly assembly = assemblyRef.CodeBase != null ? Assembly.ReflectionOnlyLoadFrom(assemblyRef.CodeBase) : Assembly.ReflectionOnlyLoad(assemblyRef.FullName); 
+            return assembly.GetTypes();
         }
 
-        private Assembly ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            Assembly rs = null;
-
-            if (!args.RequestingAssembly.GlobalAssemblyCache)
-            {
-                string dir = LongPath.GetDirectoryName(args.RequestingAssembly.CodeBase);
-                AssemblyName an = new AssemblyName(args.Name);
-                string file = LongPath.Combine(dir, an.Name + ".dll");
-                if (LongPathFile.Exists(file))
-                {
-                    rs = Assembly.ReflectionOnlyLoadFrom(file);
-                }
-
-            }
-            if(rs == null)
-            {
-                return Assembly.ReflectionOnlyLoad(args.Name); 
-            }
-
-            return rs;
-        }
+        
 
         public Type ReflectionOnlyGetType(Assembly assembly, string typeName, bool throwErrors, bool ignoreCase)
         {

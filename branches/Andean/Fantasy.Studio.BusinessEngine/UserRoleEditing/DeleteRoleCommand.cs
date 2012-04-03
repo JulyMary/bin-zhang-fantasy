@@ -18,7 +18,8 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessRoleData role = (BusinessRoleData)args;
 
-
+            this.Site.GetRequiredService<IEditingService>().CloseView(new BusinessRoleScript(role), true);
+            this.Site.GetRequiredService<IEditingService>().CloseView(role, true);
             role.Package.Roles.Remove(role);
             role.Package = null;
 
@@ -31,7 +32,8 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
 
             es.Delete(role);
 
-            this.Site.GetRequiredService<IEditingService>().CloseView(role, true);
+           
+            
 
             return null;
         }

@@ -19,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             
            
 
-            BusinessApplicationData app = options.Package.Applications.FirstOrDefault(a => a.CodeName == codeName && (a.ScriptOptions & ScriptOptions.NoScript) == 0);
+            BusinessApplicationData app = options.Package.Applications.FirstOrDefault(a => a.CodeName == codeName && a.ScriptOptions == ScriptOptions.Default);
             if (app != null)
             {
                 options.Handled = true;

@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Reflection;
-using System.GAC;
+
 using System.Collections;
 using Fantasy.Studio.Controls;
 using System.Collections.ObjectModel;
@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Fantasy.IO;
 using Fantasy.Reflection;
 using Microsoft.Win32;
+using Fantasy.GAC;
 
 namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 {
@@ -52,16 +53,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             }
         }
 
-        static string ProgramFilesx86()
-        {
-            if (8 == IntPtr.Size
-                || (!String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PROCESSOR_ARCHITEW6432"))))
-            {
-                return Environment.GetEnvironmentVariable("ProgramFiles(x86)");
-            }
-
-            return Environment.GetEnvironmentVariable("ProgramFiles");
-        }
+        
 
 
         private GridViewLayoutSetting _propertyGridLayout = new GridViewLayoutSetting();
@@ -80,17 +72,9 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
                     Task.Factory.StartNew(() =>
                     {
-                        List<string> dirs = new List<string>();
-                        dirs.Add(Environment.ExpandEnvironmentVariables(ProgramFilesx86() + @"\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0"));
-                        RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
-                        RegistryKey assmex = hklm.OpenSubKey(@"SOFTWARE\Microsoft\.NETFramework\v4.0.30319\AssemblyFoldersEx");
-                        foreach (string subKeyName in assmex.GetSubKeyNames())
-                        {
-                            RegistryKey subKey = assmex.OpenSubKey(subKeyName);
-                            dirs.Add((string)subKey.GetValue(string.Empty));
-                        }
 
-                        foreach (string dir in dirs)
+
+                        foreach (string dir in GlobalAssemblyCache.GetGACFolders())
                         {
                             if (LongPathDirectory.Exists(dir))
                             {

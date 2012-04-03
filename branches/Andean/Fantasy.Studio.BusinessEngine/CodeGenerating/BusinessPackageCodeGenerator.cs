@@ -50,11 +50,38 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             {
                 UpdateClassScripts(package);
                 UpdateAppScripts(package);
-
-
-               
+                UpdateUserScripts(package);
+                UpdateRoleScripts(package);
             }
             return true;
+        }
+
+        private void UpdateRoleScripts(BusinessPackage package)
+        {
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            IBusinessRoleCodeGenerator gen = this.Site.GetRequiredService<IBusinessRoleCodeGenerator>();
+            var roles = from childPackage in package.Flatten(p => p.ChildPackages)
+                        from role in childPackage.Roles
+                        where role.ScriptOptions == ScriptOptions.Default
+                        select role;
+            foreach (BusinessRoleData role in roles)
+            {
+                gen.Rename(role);
+            }
+        }
+
+        private void UpdateUserScripts(BusinessPackage package)
+        {
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            IBusinessUserCodeGenerator gen = this.Site.GetRequiredService<IBusinessUserCodeGenerator>();
+            var users = from childPackage in package.Flatten(p => p.ChildPackages)
+                       from user in childPackage.Users
+                       where user.ScriptOptions == ScriptOptions.Default
+                       select user;
+            foreach (BusinessUserData user in users)
+            {
+                gen.Rename(user);
+            }
         }
 
         private void UpdateAppScripts(BusinessPackage package)
@@ -63,7 +90,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
             IApplicationCodeGenerator gen = this.Site.GetRequiredService<IApplicationCodeGenerator>();
             var apps = from childPackage in package.Flatten(p => p.ChildPackages)
                        from app in childPackage.Applications
-                       select app;
+                       where app.ScriptOptions == ScriptOptions.Default select app;
             foreach (BusinessApplicationData app in apps)
             {
                 gen.Rename(app);
@@ -84,11 +111,15 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
             BusinessClass[] descClasses = (from childPackage in package.Flatten(p => p.ChildPackages)
                                            from @class in childPackage.Classes
+                                          
                                            select @class).ToArray();
             foreach (BusinessClass @class in descClasses)
             {
-                classGenerator.Rename(@class);
-                classGenerator.UpdateAutoScript(@class);
+                if (@class.ScriptOptions == ScriptOptions.Default)
+                {
+                    classGenerator.Rename(@class);
+                    classGenerator.UpdateAutoScript(@class);
+                }
             }
 
 
@@ -122,7 +153,10 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
                 .Distinct().Except(descClasses);
             foreach (BusinessClass @class in relClasses)
             {
-                classGenerator.UpdateAutoScript(@class);
+                if (@class.ScriptOptions == ScriptOptions.Default)
+                {
+                    classGenerator.UpdateAutoScript(@class);
+                }
             }
         }
 

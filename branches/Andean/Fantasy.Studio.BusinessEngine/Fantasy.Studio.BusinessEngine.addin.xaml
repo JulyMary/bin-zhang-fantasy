@@ -428,15 +428,72 @@
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/package/contextmenu">
         <Button ID="Add" Text="Add">
-            <Button ID="AddPackage" Text="New Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner"></Button>
-            <Button ID="AddClass" Text="New Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner"/>
-            <Button ID="AddClassDiagram" Text="New Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner" />
-            <Button ID="AddEnum" Text="New Enum" Command="{New sbe:AddEnumCommand}" ParameterSource="Owner"  />
-            <Button ID="AddEnumFromAssembly" Text="New Enum From Assembly..." Command="{New sbe:ImportEnumCommand}" ParameterSource="Owner"/>
-            <Button ID="AddApp" Command="{New sbe:AddApplicationCommand}" Text="New Application" ParameterSource="Owner" />
-            <Button ID="AddUser" Command="{New sbe:AddUserCommand}" Text="New User" ParameterSource="Owner" />
-            <Button ID="AddRole" Command="{New sbe:AddRoleCommand}" Text="New Role" ParameterSource="Owner" />
-            <Button ID="AddScript" Command="{New sbe:AddScriptCommand}" Text="New Script" ParameterSource="Owner"/>
+            <Button ID="AddPackage" Text="New Package" Command="{New sbe:AddPackageCommand}" ParameterSource="Owner"
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/package.png"/>
+            
+            <Button ID="AddClass" Text="New Class" Command="{New sbe:AddClassCommand}" ParameterSource="Owner" 
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png">
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddClassDiagram" Text="New Class Diagram" Command="{New sbe:AddClassDiagramCommand}" ParameterSource="Owner"
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/ClassDiagram.png">
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddEnum" Text="New Enum" Command="{New sbe:AddEnumCommand}" ParameterSource="Owner" Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif"  >
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddEnumFromAssembly" Text="New Enum From Assembly..." Command="{New sbe:ImportEnumCommand}" ParameterSource="Owner"
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/enum.gif">
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddApp" Command="{New sbe:AddApplicationCommand}" Text="New Application" ParameterSource="Owner"
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/application.png">
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddUser" Command="{New sbe:AddUserCommand}" Text="New User" ParameterSource="Owner"
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/user.png" >
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddRole" Command="{New sbe:AddRoleCommand}" Text="New Role" ParameterSource="Owner" 
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/role.png">
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
+            <Button ID="AddScript" Command="{New sbe:AddScriptCommand}" Text="New Script" ParameterSource="Owner"
+                    Icon="/Fantasy.Studio.BusinessEngine;component/images/Script.ico">
+                <Button.Conditional>
+                    <Not>
+                        <sbe:IsRootPackage/>
+                    </Not>
+                </Button.Conditional>
+            </Button>
             
         </Button>
         

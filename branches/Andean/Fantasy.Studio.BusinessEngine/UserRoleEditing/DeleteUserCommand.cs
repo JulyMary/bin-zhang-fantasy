@@ -17,7 +17,8 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessUserData user = (BusinessUserData)args;
-
+            this.Site.GetRequiredService<IEditingService>().CloseView(user, true);
+            this.Site.GetRequiredService<IEditingService>().CloseView(new BusinessUserScript(user), true);
 
             user.Package.Users.Remove(user);
             user.Package = null;

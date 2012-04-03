@@ -25,7 +25,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
             XElement itemsGroup = new XElement(Consts.MSBuildNamespace + "ItemGroup");
 
-            foreach (BusinessClass @class in package.Classes.Where(c=>(c.ScriptOptions & ScriptOptions.NoScript ) != ScriptOptions.NoScript  ))
+            foreach (BusinessClass @class in package.Classes.Where(c=>c.ScriptOptions == ScriptOptions.Default))
             {
                 string itemName = itemsFolder + "\\" + @class.CodeName + ".cs";
                 XElement item = new XElement(Consts.MSBuildNamespace + "Compile");

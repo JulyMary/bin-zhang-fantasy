@@ -135,6 +135,18 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+        public virtual string ExternalType
+        {
+            get
+            {
+                return (string)this.GetValue("ExternalType", null);
+            }
+            set
+            {
+                this.SetValue("ExternalType", value);
+            }
+        }
+
       
     }
 }
