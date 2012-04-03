@@ -29,14 +29,9 @@ namespace Fantasy.Reflection
         }
 
 
-        public static bool IsInFramework(AssemblyName assembly)
-        {
-            DirectoryInfo d1 = new DirectoryInfo(ProgramFilesx86());
-            DirectoryInfo d2 = new DirectoryInfo(LongPath.GetDirectoryName(assembly.CodeBase));
+       
 
-            bool rs = d1 == d2;
-            return rs;
-        }
+      
 
         public static String FrameworkFolder
         {

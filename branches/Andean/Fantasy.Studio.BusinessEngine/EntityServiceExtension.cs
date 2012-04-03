@@ -364,9 +364,8 @@ namespace Fantasy.Studio.BusinessEngine
                 if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     BusinessAssemblyReference reference = es.CreateEntity<BusinessAssemblyReference>();
-                    reference.FullName = assemblyName.FullName;
                     reference.Group = group;
-                    group.References.Add(reference);
+                   
 
                     if (!loader.IsInGAC(assemblyName))
                     {
@@ -375,10 +374,12 @@ namespace Fantasy.Studio.BusinessEngine
                         string sysRefPath = Fantasy.BusinessEngine.Properties.Settings.ExtractToFullPath(Fantasy.BusinessEngine.Properties.Settings.Default.SystemReferencesPath);
                         if (filename.ToLower().StartsWith(sysRefPath.ToLower()))
                         {
+                            reference.FullName = assemblyName.Name;
                             reference.Source = BusinessAssemblyReferenceSources.System;
                         }
                         else
                         {
+                            reference.FullName = assemblyName.Name;
                             reference.Source = BusinessAssemblyReferenceSources.Local;
                             byte[] bytes = File.ReadAllBytes(filename);
                             reference.RawAssembly = bytes;
@@ -389,11 +390,12 @@ namespace Fantasy.Studio.BusinessEngine
                     }
                     else
                     {
-                         
 
+                        reference.FullName = loader.IsInFramework(assemblyName) ? assemblyName.Name : assemblyName.FullName;
                         reference.Source = BusinessAssemblyReferenceSources.GAC;
                     }
-                    
+
+                    group.References.Add(reference);
                     es.SaveOrUpdate(reference);
                     
                     rs.Add(reference);
@@ -455,19 +457,22 @@ namespace Fantasy.Studio.BusinessEngine
 
         public static BusinessAssemblyReference AddGACAssemblyReference(this IEntityService es, AssemblyName assembly)
         {
-            BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
-            string name = assembly.Name;
-            BusinessAssemblyReference rs = group.References.FirstOrDefault(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase));
-            if (rs == null)
+            using (AssemblyLoader loader = new AssemblyLoader())
             {
-                rs = es.CreateEntity<BusinessAssemblyReference>();
-                rs.FullName = assembly.FullName;
-                rs.Group = group;
-                group.References.Add(rs);
-                rs.Source = BusinessAssemblyReferenceSources.GAC;
-                es.SaveOrUpdate(rs);
+                BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
+                string name = assembly.Name;
+                BusinessAssemblyReference rs = group.References.FirstOrDefault(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase));
+                if (rs == null)
+                {
+                    rs = es.CreateEntity<BusinessAssemblyReference>();
+                    rs.FullName = loader.IsInFramework(assembly) ? assembly.Name : assembly.FullName;
+                    rs.Group = group;
+                    group.References.Add(rs);
+                    rs.Source = BusinessAssemblyReferenceSources.GAC;
+                    es.SaveOrUpdate(rs);
+                }
+                return rs;
             }
-            return rs;
         }
 
         
