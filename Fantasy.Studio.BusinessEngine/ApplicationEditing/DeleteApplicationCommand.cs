@@ -17,9 +17,6 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             BusinessApplicationData app = (BusinessApplicationData)args;
-            app.Package.Applications.Remove(app);
-            app.Package = null;
-            es.Delete(app);
 
             IEditingService editingService = this.Site.GetRequiredService<IEditingService>();
             foreach (BusinessApplicationParticipant participant in app.Participants)
@@ -27,6 +24,15 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                 editingService.CloseView(new ParticipantACL(participant), true);
             }
             editingService.CloseView(app, true);
+
+            BusinessApplicationScript script = new BusinessApplicationScript(app);
+            editingService.CloseView(script, true);
+
+            app.Package.Applications.Remove(app);
+            app.Package = null;
+            es.Delete(app);
+
+           
 
             return null;
         }

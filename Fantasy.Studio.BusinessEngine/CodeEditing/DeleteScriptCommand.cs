@@ -33,8 +33,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
             BusinessScript[] scripts = script.Flatten(s=>package.Scripts.Where(s1=>String.Equals(s1["DependentUpon"], s.Name, StringComparison.OrdinalIgnoreCase))).ToArray(); 
             foreach(BusinessScript s in scripts)
             {
-                package.Scripts.Remove(script);
-                es.Delete(script);
+                package.Scripts.Remove(s);
+                es.Delete(s);
                 edtingSvc.CloseView(s, true);
 
             }

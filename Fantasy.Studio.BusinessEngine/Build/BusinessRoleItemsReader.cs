@@ -17,7 +17,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             string include = (string)options.ItemElement.Attribute("Include");
             string codeName = LongPath.GetFileNameWithoutExtension(include);
             
-            BusinessRoleData role = options.Package.Roles.FirstOrDefault(r => r.CodeName == codeName && (r.ScriptOptions & ScriptOptions.NoScript) == 0);
+            BusinessRoleData role = options.Package.Roles.FirstOrDefault(r => r.CodeName == codeName && r.ScriptOptions == ScriptOptions.Default);
             if (role != null)
             {
                 options.Handled = true;

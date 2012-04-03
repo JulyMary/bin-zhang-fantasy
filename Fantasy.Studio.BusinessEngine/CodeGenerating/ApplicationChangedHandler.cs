@@ -15,8 +15,12 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
         {
             if (e.PropertyName == "CodeName")
             {
-                IApplicationCodeGenerator gen = this.Site.GetRequiredService<IApplicationCodeGenerator>();
-                gen.Rename((BusinessApplicationData)e.Entity);
+                BusinessApplicationData app = (BusinessApplicationData)e.Entity;
+                if (app.ScriptOptions == ScriptOptions.Default)
+                {
+                    IApplicationCodeGenerator gen = this.Site.GetRequiredService<IApplicationCodeGenerator>();
+                    gen.Rename(app);
+                }
             }
         }
 

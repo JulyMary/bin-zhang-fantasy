@@ -5,11 +5,12 @@ using System.Text;
 
 namespace Fantasy.BusinessEngine
 {
-    [Flags]
+    
     public enum ScriptOptions
     {
         Default = 0,
-        NoScript = 1
+        None = 1,
+        External = 2
 
     }
 }

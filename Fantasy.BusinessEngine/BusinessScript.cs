@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Fantasy.BusinessEngine
 {
-    public class BusinessScript : BusinessEntity, IGernateCodeBusinessEntity
+    public class BusinessScript : BusinessEntity, IGernateCodeBusinessEntity, IScriptable
     {
         public virtual BusinessPackage Package
         {
@@ -156,5 +156,25 @@ namespace Fantasy.BusinessEngine
             }
 
         }
+
+        #region IScriptable Members
+
+        private ScriptOptions _scriptOptions = ScriptOptions.Default;
+        ScriptOptions IScriptable.ScriptOptions
+        {
+            get
+            {
+                return ScriptOptions.Default;
+            }
+            set
+            {
+               
+            }
+        }
+
+        string IScriptable.ExternalType { get; set; }
+       
+
+        #endregion
     }
 }

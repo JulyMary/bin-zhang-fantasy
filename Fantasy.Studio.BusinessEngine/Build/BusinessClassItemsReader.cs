@@ -29,7 +29,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 codeName = name;
             }
 
-            BusinessClass @class = options.Package.Classes.FirstOrDefault(c => c.CodeName == codeName && (c.ScriptOptions & ScriptOptions.NoScript) == 0 );
+            BusinessClass @class = options.Package.Classes.FirstOrDefault(c => c.CodeName == codeName && c.ScriptOptions == ScriptOptions.Default );
             if (@class != null)
             {
                 options.Handled = true;

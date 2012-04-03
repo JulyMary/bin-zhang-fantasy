@@ -23,15 +23,12 @@ namespace Fantasy.Studio.BusinessEngine.Build
 
             XElement itemsGroup = new XElement(Consts.MSBuildNamespace + "ItemGroup");
 
-            foreach (BusinessRoleData role in package.Roles.Where(r => (r.ScriptOptions & ScriptOptions.NoScript) != ScriptOptions.NoScript))
+            foreach (BusinessRoleData role in package.Roles.Where(r => r.ScriptOptions == ScriptOptions.Default))
             {
                 string itemName = itemsFolder + "\\" + role.CodeName + ".cs";
                 XElement item = new XElement(Consts.MSBuildNamespace + "Compile");
                 item.SetAttributeValue("Include", itemName);
                 itemsGroup.Add(item);
-
-
-
 
                 if (options.WriteFile)
                 {

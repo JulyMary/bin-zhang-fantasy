@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.IO;
 using System.Reflection;
+using Fantasy.GAC;
 
 namespace Fantasy.Studio.BusinessEngine.Build
 {
@@ -25,10 +26,10 @@ namespace Fantasy.Studio.BusinessEngine.Build
                 }
                 else
                 {
-#pragma warning disable  0618
-                    Assembly assembly = Assembly.LoadWithPartialName((string)options.ItemElement.Attribute("Include"));
-#pragma warning restore  0618
-                    es.AddGACAssemblyReference(assembly);
+
+                    AssemblyName assemblyRef = new AssemblyName((string)options.ItemElement.Attribute("Include"));
+                    es.AddGACAssemblyReference(assemblyRef);
+                   
                 }
                
                 options.Handled = true;

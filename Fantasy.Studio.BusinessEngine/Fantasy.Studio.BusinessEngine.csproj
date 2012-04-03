@@ -283,6 +283,7 @@
     <Compile Include="CodeGenerating\UserChangedHandler.cs" />
     <Compile Include="CodeGenerating\BusinessUserCodeGenerator.cs" />
     <Compile Include="CodeGenerating\IApplicationCodeGenerator.cs" />
+    <Compile Include="Conditions\IsRootPackage.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="CodeEditing\FontAndColorsOptionPanel.xaml.cs">
       <DependentUpon>FontAndColorsOptionPanel.xaml</DependentUpon>
@@ -547,6 +548,7 @@
     <Content Include="AppData\Templates\Fantasy.BusinessData.sln">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="images\Script.ico" />
     <Resource Include="images\ExportProject.png" />
     <Resource Include="images\ImportProject.png" />
     <Resource Include="images\preview.png" />

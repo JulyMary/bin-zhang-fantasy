@@ -29,5 +29,14 @@ namespace Fantasy.BusinessEngine.Properties
                 return ExtractToFullPath(this.ReferencesPath);
             }
         }
+
+        public string FullSystemReferencesPath
+        {
+            get
+            {
+                return ExtractToFullPath(this.SystemReferencesPath);
+            }
+        }
+
     }
 }

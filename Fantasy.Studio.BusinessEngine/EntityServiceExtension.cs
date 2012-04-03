@@ -453,10 +453,10 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
 
-        public static BusinessAssemblyReference AddGACAssemblyReference(this IEntityService es, Assembly assembly)
+        public static BusinessAssemblyReference AddGACAssemblyReference(this IEntityService es, AssemblyName assembly)
         {
             BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
-            string name = assembly.GetName().Name;
+            string name = assembly.Name;
             BusinessAssemblyReference rs = group.References.FirstOrDefault(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase));
             if (rs == null)
             {

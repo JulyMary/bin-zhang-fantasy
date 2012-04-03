@@ -51,10 +51,13 @@ namespace Fantasy.Studio.BusinessEngine
 
         private void treeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ITreeViewItem item = (ITreeViewItem)this.treeView.SelectedItem;
-            object data = item.DataContext;
+            ITreeViewItem item = this.treeView.SelectedItem as ITreeViewItem;
+            if (item != null)
+            {
+                object data = item.DataContext;
 
-            _selectionService.SetSelectedComponents(new object[] { data }, SelectionTypes.Primary);
+                _selectionService.SetSelectedComponents(new object[] { data }, SelectionTypes.Primary);
+            }
         }
 
         UIElement IPadContent.Content

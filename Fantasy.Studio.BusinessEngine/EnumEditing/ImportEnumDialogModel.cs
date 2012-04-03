@@ -9,6 +9,10 @@ using Fantasy.BusinessEngine;
 using System.Reflection;
 using Fantasy.IO;
 using Fantasy.Reflection;
+using Fantasy.GAC;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Fantasy.Studio.BusinessEngine.EnumEditing
 {
@@ -19,40 +23,74 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 
         }
 
-
+       
         private AssemblyLoader _assemblyLoader = new AssemblyLoader();
 
         public ImportEnumDialogModel(IServiceProvider site)
         {
+           
             this.Site = site;
-            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+            
 
-            List<AssemblyNode> assemblies = new List<AssemblyNode>();
-            foreach (BusinessAssemblyReference reference in es.GetAssemblyReferenceGroup().References.OrderBy(r=>r.Name))
-            {
-                Assembly asm = null;
-                if (reference.Source != BusinessAssemblyReferenceSources.GAC)
-                {
-                    string file = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
-                    if (LongPathFile.Exists(file))
-                    {
-                        asm = Assembly.ReflectionOnlyLoadFrom(file);
-                    }
-                }
-
-                if (asm == null)
-                {
-                    asm = Assembly.Load(reference.FullName); 
-                }
-
-                assemblies.Add(new AssemblyNode(asm, this._assemblyLoader));
-            }
-
-            this.Assemblies = assemblies.ToArray();
-
+           
         }
 
-        public AssemblyNode[] Assemblies { get; private set; }
+
+        private ObservableCollection<AssemblyNode> _assemblies;
+        public ObservableCollection<AssemblyNode> Assemblies
+        {
+            get
+            {
+                if (_assemblies == null)
+                {
+                    _assemblies = new ObservableCollection<AssemblyNode>();
+                    IEntityService es = this.Site.GetRequiredService<IEntityService>();
+                    System.Windows.Threading.Dispatcher disptacher = System.Windows.Threading.Dispatcher.CurrentDispatcher;
+
+                    Task.Factory.StartNew(() =>
+                    {
+
+                        foreach (BusinessAssemblyReference reference in es.GetAssemblyReferenceGroup().References.OrderBy(r => r.Name))
+                        {
+                            Assembly asm = null;
+
+                            switch (reference.Source)
+                            {
+
+                                case BusinessAssemblyReferenceSources.Local:
+                                    {
+                                        string file = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
+                                        if (LongPathFile.Exists(file))
+                                        {
+                                            asm = Assembly.LoadFrom(file);
+                                        }
+                                    }
+                                    break;
+                                case BusinessAssemblyReferenceSources.GAC:
+#pragma warning disable 0618
+                                    asm = Assembly.LoadWithPartialName(reference.FullName);
+#pragma warning restore 0618
+                                    break;
+                                case BusinessAssemblyReferenceSources.System:
+                                    {
+                                        string file = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullSystemReferencesPath, reference.Name + ".dll");
+                                        if (LongPathFile.Exists(file))
+                                        {
+                                            asm = Assembly.LoadFrom(file);
+                                        }
+                                    }
+                                    break;
+
+                            }
+
+
+                            disptacher.Invoke(DispatcherPriority.Background, new Action(() => { _assemblies.Add(new AssemblyNode(asm, this._assemblyLoader)); })); ;
+                        }
+                    });
+                }
+                return _assemblies;
+            }
+        }
 
         private EnumNode _selectedEnum;
 

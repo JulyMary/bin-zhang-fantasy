@@ -19,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.Build
             
            
 
-            BusinessUserData user = options.Package.Users.FirstOrDefault(u => u.CodeName == codeName && (u.ScriptOptions & ScriptOptions.NoScript) == 0);
+            BusinessUserData user = options.Package.Users.FirstOrDefault(u => u.CodeName == codeName && u.ScriptOptions == ScriptOptions.Default);
             if (user != null)
             {
                 options.Handled = true;

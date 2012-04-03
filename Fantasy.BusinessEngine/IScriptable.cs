@@ -10,5 +10,7 @@ namespace Fantasy.BusinessEngine
         string Script { get; set; }
 
         ScriptOptions ScriptOptions { get; set; }
+
+        string ExternalType { get; set; }
     }
 }
