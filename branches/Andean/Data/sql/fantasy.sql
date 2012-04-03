@@ -1,8 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2012/4/2 21:08:58                            */
+/* Created on:     3/04/2012 11:10:10 AM                        */
 /*==============================================================*/
-
+use fantasy
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -177,20 +177,6 @@ if exists (select 1
    where r.fkeyid = object_id('BusinessUserRole') and o.name = 'FK_BUSINESS_ROLE_USERS')
 alter table BusinessUserRole
    drop constraint FK_BUSINESS_ROLE_USERS
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BusinessWebController') and o.name = 'FK_BUSINESS_WEBCONTROLLER_PACKAGE')
-alter table BusinessWebController
-   drop constraint FK_BUSINESS_WEBCONTROLLER_PACKAGE
-go
-
-if exists (select 1
-   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
-   where r.fkeyid = object_id('BusinessWebView') and o.name = 'FK_BUSINESS_WEB_CONTROLLER_VIEW')
-alter table BusinessWebView
-   drop constraint FK_BUSINESS_WEB_CONTROLLER_VIEW
 go
 
 if exists (select 1
@@ -562,38 +548,6 @@ if exists (select 1
    drop table BusinessUserRole
 go
 
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('BusinessWebController')
-            and   name  = 'PACKAGEWEBCONTROLLERS_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index BusinessWebController.PACKAGEWEBCONTROLLERS_FK
-go
-
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('BusinessWebController')
-            and   type = 'U')
-   drop table BusinessWebController
-go
-
-if exists (select 1
-            from  sysindexes
-           where  id    = object_id('BusinessWebView')
-            and   name  = 'WEBCONTROLLERVIEWS_FK'
-            and   indid > 0
-            and   indid < 255)
-   drop index BusinessWebView.WEBCONTROLLERVIEWS_FK
-go
-
-if exists (select 1
-            from  sysobjects
-           where  id = object_id('BusinessWebView')
-            and   type = 'U')
-   drop table BusinessWebView
-go
-
 if exists(select 1 from systypes where name='T_DBEntity')
    drop type T_DBEntity
 go
@@ -678,6 +632,7 @@ create table BusinessApplication (
    CodeName             T_Name               not null,
    Script               text                 null,
    ScriptOptions        int                  null,
+   ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSAPPLICATION primary key (ID)
 )
 go
@@ -844,6 +799,7 @@ create table BusinessClass (
    Script               text                 null,
    ScriptOptions        int                  null,
    IsAbstract           bit                  not null,
+   ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSCLASS primary key (ID)
 )
 go
@@ -1100,6 +1056,7 @@ create table BusinessRole (
    IsDisabled           bit                  null,
    Script               text                 null,
    ScriptOptions        int                  null,
+   ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSROLE primary key (ID)
 )
 go
@@ -1129,6 +1086,7 @@ create table BusinessUser (
    IsDisabled           bit                  not null,
    Script               text                 null,
    ScriptOptions        int                  null,
+   ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSUSER primary key (ID)
 )
 go
@@ -1164,58 +1122,6 @@ go
 /*==============================================================*/
 create index USERS_FK on BusinessUserRole (
 ROLEID ASC
-)
-go
-
-/*==============================================================*/
-/* Table: BusinessWebController                                 */
-/*==============================================================*/
-create table BusinessWebController (
-   ID                   T_Guid               not null,
-   ModificationTime     datetime             not null,
-   CreationTime         datetime             not null,
-   IsSystem             bit                  not null,
-   PackageID            T_Guid               null,
-   Name                 T_Name               not null,
-   CodeName             T_Name               not null,
-   Script               text                 null,
-   BuildAction          T_Name               null,
-   MetaData             varchar(1024)        null,
-   constraint PK_BUSINESSWEBCONTROLLER primary key (ID)
-)
-go
-
-/*==============================================================*/
-/* Index: PACKAGEWEBCONTROLLERS_FK                              */
-/*==============================================================*/
-create index PACKAGEWEBCONTROLLERS_FK on BusinessWebController (
-PackageID ASC
-)
-go
-
-/*==============================================================*/
-/* Table: BusinessWebView                                       */
-/*==============================================================*/
-create table BusinessWebView (
-   ID                   T_Guid               not null,
-   ModificationTime     datetime             not null,
-   CreationTime         datetime             not null,
-   IsSystem             bit                  not null,
-   ControllerID         T_Guid               null,
-   Name                 T_Name               not null,
-   CodeName             T_Name               not null,
-   Script               text                 null,
-   BuildAction          T_Name               null,
-   MetaData             varchar(1024)        null,
-   constraint PK_BUSINESSWEBVIEW primary key (ID)
-)
-go
-
-/*==============================================================*/
-/* Index: WEBCONTROLLERVIEWS_FK                                 */
-/*==============================================================*/
-create index WEBCONTROLLERVIEWS_FK on BusinessWebView (
-ControllerID ASC
 )
 go
 
@@ -1346,15 +1252,5 @@ go
 alter table BusinessUserRole
    add constraint FK_BUSINESS_ROLE_USERS foreign key (ROLEID)
       references BusinessRole (ID)
-go
-
-alter table BusinessWebController
-   add constraint FK_BUSINESS_WEBCONTROLLER_PACKAGE foreign key (PackageID)
-      references BusinessPackage (ID)
-go
-
-alter table BusinessWebView
-   add constraint FK_BUSINESS_WEB_CONTROLLER_VIEW foreign key (ControllerID)
-      references BusinessWebController (ID)
 go
 
