@@ -9,7 +9,7 @@ using Fantasy.BusinessEngine;
 using System.Reflection;
 using Fantasy.IO;
 using Fantasy.Reflection;
-using Fantasy.GAC;
+
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -52,7 +52,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 
                         foreach (BusinessAssemblyReference reference in es.GetAssemblyReferenceGroup().References.OrderBy(r => r.Name))
                         {
-                            Assembly asm = null;
+                            AssemblyName asm = null;
 
                             switch (reference.Source)
                             {
@@ -62,21 +62,19 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
                                         string file = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, reference.Name + ".dll");
                                         if (LongPathFile.Exists(file))
                                         {
-                                            asm = Assembly.LoadFrom(file);
+                                            asm = _assemblyLoader.LoadFrom(file);
                                         }
                                     }
                                     break;
                                 case BusinessAssemblyReferenceSources.GAC:
-#pragma warning disable 0618
-                                    asm = Assembly.LoadWithPartialName(reference.FullName);
-#pragma warning restore 0618
+                                    asm = _assemblyLoader.Load(reference.FullName);
                                     break;
                                 case BusinessAssemblyReferenceSources.System:
                                     {
                                         string file = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullSystemReferencesPath, reference.Name + ".dll");
                                         if (LongPathFile.Exists(file))
                                         {
-                                            asm = Assembly.LoadFrom(file);
+                                            asm = _assemblyLoader.LoadFrom(file);
                                         }
                                     }
                                     break;
