@@ -82,6 +82,11 @@ namespace Fantasy.Reflection
             return CreateDomainLoader().IsInGAC(assemblyRef);
         }
 
+        public bool IsInFramework(AssemblyName assemblyRef)
+        {
+            return CreateDomainLoader().IsInFramework(assemblyRef);
+        }
+
         public AssemblyName[] ReflectionOnlyGetReferenceAssemblyNames(AssemblyName assemblyRef)
         {
             
@@ -128,8 +133,25 @@ namespace Fantasy.Reflection
 
         public bool IsInGAC(AssemblyName assemblyRef)
         {
-            Assembly assembly = Assembly.Load(assemblyRef);
-            return assembly.GlobalAssemblyCache;
+            var query = from dir in GlobalAssemblyCache.GetGACFolders()
+                        let file = LongPath.Combine(dir, assemblyRef.Name + ".dll")
+                        where LongPathFile.Exists(file) && Assembly.ReflectionOnlyLoadFrom(file).FullName == assemblyRef.FullName
+                        select file;
+            return query.Any();
+        }
+
+        public bool IsInFramework(AssemblyName assemblyRef)
+        {
+            bool rs = false;
+            string file = LongPath.Combine(GlobalAssemblyCache.FrameworkFolder, assemblyRef.Name + ".dll");
+            if (LongPathFile.Exists(file))
+            {
+                rs = Assembly.ReflectionOnlyLoadFrom(file).FullName == assemblyRef.FullName;
+            }
+
+            return rs;
+
+
         }
 
         public AssemblyName[] GetReferenceAssemblyNames(AssemblyName assemblyRef)
