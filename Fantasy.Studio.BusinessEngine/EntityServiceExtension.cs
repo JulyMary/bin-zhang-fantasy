@@ -344,7 +344,7 @@ namespace Fantasy.Studio.BusinessEngine
         {
             using (AssemblyLoader loader = new AssemblyLoader())
             {
-                AssemblyName assemblyName = loader.ReflectionOnlyLoadNameFrom(path);
+                AssemblyName assemblyName = loader.LoadFrom(path);
 
 
                 return CreateAssemblyReference(es, assemblyName, loader, true).ToArray();
@@ -368,7 +368,7 @@ namespace Fantasy.Studio.BusinessEngine
                     reference.Group = group;
                     group.References.Add(reference);
 
-                    if (!loader.ReflectionOnlyIsInGAC(assemblyName))
+                    if (!loader.IsInGAC(assemblyName))
                     {
 
                         string filename = new Uri(assemblyName.CodeBase).LocalPath;
@@ -434,8 +434,8 @@ namespace Fantasy.Studio.BusinessEngine
                 {
                     try
                     {
-                        AssemblyName an2 = loader.ReflectionOnlyLoadNameFrom(file);
-                        if (!loader.ReflectionOnlyIsInGAC(an2))
+                        AssemblyName an2 = loader.LoadFrom(file);
+                        if (!loader.IsInGAC(an2))
                         {
                             rs.AddRange(CreateAssemblyReference(es, an2, loader, false));
                         }

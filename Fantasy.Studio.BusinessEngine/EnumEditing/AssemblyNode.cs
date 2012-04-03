@@ -9,23 +9,23 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 {
     public class AssemblyNode
     {
-        public AssemblyNode(Assembly assembly, AssemblyLoader loader)
+        public AssemblyNode(AssemblyName assemblyRef, AssemblyLoader loader)
         {
-            this.Assembly = assembly;
+            this.AssemblyRef = assemblyRef;
             this._loader = loader;
 
         }
 
         private AssemblyLoader _loader;
 
-        public Assembly Assembly { get; private set; }
+        public AssemblyName AssemblyRef { get; private set; }
 
 
         public string Name
         {
             get
             {
-                return this.Assembly.GetName().Name;
+                return AssemblyRef.Name;
             }
         }
 
@@ -37,7 +37,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
             {
                 if (_namespaces == null)
                 {
-                    var query = from type in this._loader.ReflectionOnlyGetTypes(this.Assembly)
+                    var query = from type in this._loader.GetTypes(this.AssemblyRef)
                                 where type.IsEnum
                                 group type by type.Namespace into g
                                 orderby g.Key
@@ -49,10 +49,6 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
                 return _namespaces;
             }
         }
-
-
-
-
 
     }
 }

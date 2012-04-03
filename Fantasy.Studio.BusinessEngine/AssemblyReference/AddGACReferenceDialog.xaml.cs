@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using Fantasy.IO;
 using Fantasy.Reflection;
 using Microsoft.Win32;
-using Fantasy.GAC;
+
 
 namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 {
@@ -44,8 +44,8 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
             this.DialogResult = false;
         }
 
-        private Assembly[] _selectedAssemblies = new Assembly[0];
-        public Assembly[] SelectedAssemblies
+        private AssemblyModel[] _selectedAssemblies = new AssemblyModel[0];
+        public AssemblyModel[] SelectedAssemblies
         {
             get
             {
@@ -58,56 +58,65 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
         private GridViewLayoutSetting _propertyGridLayout = new GridViewLayoutSetting();
 
-        private static ObservableCollection<Assembly> _assemblies = null;
-        //private static AssemblyLoader _assemblyloader = new AssemblyLoader();
+        private static ObservableCollection<AssemblyModel> _assemblies = null;
 
-        public ObservableCollection<Assembly> Assemblies
+
+        public ObservableCollection<AssemblyModel> Assemblies
         {
             get
             {
                 if (_assemblies == null)
                 {
-                    _assemblies = new ObservableCollection<Assembly>();
+                    _assemblies = new ObservableCollection<AssemblyModel>();
                     System.Windows.Threading.Dispatcher disptacher = System.Windows.Threading.Dispatcher.CurrentDispatcher;
 
                     Task.Factory.StartNew(() =>
                     {
 
-
-                        foreach (string dir in GlobalAssemblyCache.GetGACFolders())
+                        AssemblyLoader assemblyloader = new AssemblyLoader();
+                        try
                         {
-                            if (LongPathDirectory.Exists(dir))
+                            foreach (string dir in GlobalAssemblyCache.GetGACFolders())
                             {
-                                foreach (string file in LongPathDirectory.EnumerateFiles(dir, "*.dll"))
+                                if (LongPathDirectory.Exists(dir))
                                 {
-                                    Assembly assembly = null;
+                                    foreach (string file in LongPathDirectory.EnumerateFiles(dir, "*.dll"))
+                                    {
+                                        
+                                        AssemblyModel model = null;
 
-                                    try
-                                    {
-                                        assembly = Assembly.ReflectionOnlyLoadFrom(file);
-                                    }
-                                    catch
-                                    {
-
-                                    }
-                                    if (assembly != null)
-                                    {
-                                        int pos = _assemblies.BinarySearchBy(assembly.FullName, asm => asm.FullName);
-                                        if (pos < 0)
+                                        try
                                         {
-                                            pos = ~pos;
+                                            AssemblyName assemblyRef = assemblyloader.LoadFrom(file);
+                                            string version = assemblyloader.GetImageRuntimeVersion(assemblyRef);
+                                            model = new AssemblyModel() { AssemblyName = assemblyRef, ImageRuntimeVersion = version, Location = file };
+                                            
                                         }
-                                        disptacher.Invoke(new Action(() => _assemblies.Insert(pos, assembly)));
+                                        catch
+                                        {
 
+                                        }
+                                        if (model != null)
+                                        {
+                                            int pos = _assemblies.BinarySearchBy(model.AssemblyName.FullName, asm => asm.AssemblyName.FullName);
+                                            if (pos < 0)
+                                            {
+                                                pos = ~pos;
+                                            }
+                                            disptacher.Invoke(new Action(() => _assemblies.Insert(pos, model)));
+
+                                        }
                                     }
                                 }
                             }
                         }
+                        finally
+                        {
+                            assemblyloader.Dispose();
+                        }
+                        
 
                     });
-
-                  
-
                 }
                 return _assemblies;
 
@@ -123,11 +132,12 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
         {
             this._propertyGridLayout.SaveLayout(this.AssemblyGridView);
             Properties.Settings.Default.AddGACReferenceDialogGridViewLayout = this._propertyGridLayout;
+           
         }
 
         private void AssemblyList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            this._selectedAssemblies = this.AssemblyList.SelectedItems.Cast<Assembly>().ToArray();
+            this._selectedAssemblies = this.AssemblyList.SelectedItems.Cast<AssemblyModel>().ToArray();
         }
 
         private void AssemblyList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -137,5 +147,7 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
                 this.DialogResult = true;
             }
         }
+
+
     }
 }

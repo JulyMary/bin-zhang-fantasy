@@ -5,7 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.IO;
 using System.Reflection;
-using Fantasy.GAC;
+using Fantasy.Reflection;
 
 namespace Fantasy.Studio.BusinessEngine.Build
 {

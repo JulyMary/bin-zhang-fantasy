@@ -159,7 +159,7 @@ namespace Fantasy.BusinessEngine
 
         #region IScriptable Members
 
-        private ScriptOptions _scriptOptions = ScriptOptions.Default;
+      
         ScriptOptions IScriptable.ScriptOptions
         {
             get

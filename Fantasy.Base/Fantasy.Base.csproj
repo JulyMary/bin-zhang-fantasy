@@ -186,11 +186,11 @@
     <Compile Include="Collections\Key.cs" />
     <Compile Include="Configuration\XSettingsConfigurationHandler.cs" />
     <Compile Include="Drawing\IconReader.cs" />
-    <Compile Include="GAC\GlobalAssemblyCache.cs" />
+    <Compile Include="Reflection\GlobalAssemblyCache.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="NumericalComparisonOperator.cs" />
     <Compile Include="ServiceModel\ServiceContainer.cs" />
-    <Compile Include="Reflection\AssemblyLoader.cs" />
+    <Compile Include="Reflection\DomainAssemblyLoader.cs" />
     <Compile Include="Windows\BooleanInverterConverter.cs" />
     <Compile Include="Windows\CurrentProcessIcon.cs" />
     <Compile Include="Windows\DataObjectExtension.cs" />

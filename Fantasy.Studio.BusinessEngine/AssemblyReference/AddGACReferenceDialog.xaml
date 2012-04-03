@@ -5,18 +5,15 @@
         xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.AssemblyReference"
         Title="Add Reference" Height="600" Width="800"  Loaded="Window_Loaded" Closing="Window_Closing" WindowStartupLocation="CenterScreen">
     <Window.Resources>
-        <l:AssemblyNameConverter x:Key="NameConverter" />
-        <l:AssemblyVersionConverter x:Key="VersionConverter" />
-        <l:AssemblyProcessArchitectureConverter x:Key="PlatformConverter" />
+       
     </Window.Resources>
     <Grid>
         <ListView Margin="12,12,12,41" Name="AssemblyList" ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}, Path=Assemblies}" SelectionChanged="AssemblyList_SelectionChanged" MouseDoubleClick="AssemblyList_MouseDoubleClick">
             <ListView.View>
                 <GridView AllowsColumnReorder="true" x:Name="AssemblyGridView">
-                    <GridViewColumn DisplayMemberBinding="{Binding Converter={StaticResource NameConverter}}" Header="Name" f:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>
-                    <GridViewColumn Header="Version" DisplayMemberBinding="{Binding Converter={StaticResource VersionConverter}}" f:GridViewLayout.ColumnId="VersionColumn" />
+                    <GridViewColumn DisplayMemberBinding="{Binding AssemblyName.Name}" Header="Name" f:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>
+                    <GridViewColumn Header="Version" DisplayMemberBinding="{Binding AssemblyName.Version}" f:GridViewLayout.ColumnId="VersionColumn" />
                     <GridViewColumn Header="Runtime" DisplayMemberBinding="{Binding ImageRuntimeVersion}"  f:GridViewLayout.ColumnId="RunTimeVersionColumn" />
-                    <!--<GridViewColumn Header="Platform" DisplayMemberBinding="{Binding Converter={StaticResource PlatformConverter }}"  f:GridViewLayout.ColumnId="PlatformColumn" />-->
                     <GridViewColumn Header="Location" DisplayMemberBinding="{Binding Location }"  f:GridViewLayout.ColumnId="LocationColumn" />
                 </GridView>
             </ListView.View>

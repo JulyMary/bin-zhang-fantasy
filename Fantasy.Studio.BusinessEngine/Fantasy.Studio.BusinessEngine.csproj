@@ -129,11 +129,9 @@
       <DependentUpon>AddGACReferenceDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="AssemblyReference\AddReferenceCommand.cs" />
+    <Compile Include="AssemblyReference\AssemblyModel.cs" />
     <Compile Include="AssemblyReference\ReferenceLocation.cs" />
-    <Compile Include="AssemblyReference\AssemblyNameConverter.cs" />
-    <Compile Include="AssemblyReference\AssemblyProcessArchitectureConverter.cs" />
     <Compile Include="AssemblyReference\AssemblyReferenceProvider.cs" />
-    <Compile Include="AssemblyReference\AssemblyVersionConverter.cs" />
     <Compile Include="AssemblyReference\DeleteReferenceCommand.cs" />
     <Compile Include="AssemblyReference\RootPackageReferenceGroupProvider.cs" />
     <Compile Include="AssociationEditing\AddAssociationCommand.cs" />

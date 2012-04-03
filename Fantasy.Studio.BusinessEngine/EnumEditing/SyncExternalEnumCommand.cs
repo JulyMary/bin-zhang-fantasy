@@ -26,13 +26,13 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
                 BusinessAssemblyReference reference = es.GetAssemblyReferenceGroup().References.Where(r=>r.Name == @enum.ExternalAssemblyName).SingleOrDefault();
                 if (reference != null)
                 {
-                    Assembly asm = null;
+                    AssemblyName asm = null;
                     if (reference.Source != BusinessAssemblyReferenceSources.GAC)
                     {
                         string path = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, @enum.ExternalAssemblyName + ".dll");
                         if (LongPathFile.Exists(path))
                         {
-                            asm = loader.ReflectionOnlyLoadFrom(path);
+                            asm = loader.LoadFrom(path);
                         }
 
 
@@ -40,10 +40,10 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
 
                     if (asm == null)
                     {
-                        asm = loader.ReflectionOnlyLoad(reference.FullName);
+                        asm = loader.Load(reference.FullName);
                     }
 
-                    Type enumType = loader.ReflectionOnlyGetType(asm, @enum.FullCodeName);
+                    Type enumType = loader.GetType(asm, @enum.FullCodeName);
 
                     es.SyncExternalEnum(@enum, enumType);
                 }
