@@ -63,12 +63,84 @@ namespace Fantasy.Drawing
             Icon rs;
             if (!_icons.TryGetValue(key, out rs))
             {
-                rs = GetFileIconInternal(name, size, linkOverlay);
+                //if (size == IconSize.ExtraLarge || size == IconSize.Jumbo)
+                //{
+                //    rs = GetLargeIcon(name, size, linkOverlay);
+                //}
+                //else
+                {
+                   rs = GetFileIconInternal(name, size, linkOverlay);
+                }
                 _icons.Add(key, rs);
             }
 
             return rs;
 		}
+
+
+
+        public static Icon GetLargeIcon(string name, IconSize size, bool linkOverlay)
+        {
+
+            Shell32.SHFILEINFO shfi = new Shell32.SHFILEINFO();
+
+            //uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
+            uint SHGFI_SYSICONINDEX = 0x4000;
+            uint flags;
+            flags = SHGFI_SYSICONINDEX;
+
+
+            Shell32.SHGetFileInfo(name,
+               unchecked((uint)-1),
+               ref shfi,
+               (uint)System.Runtime.InteropServices.Marshal.SizeOf(shfi),
+               flags);
+
+
+            int iconIndex = shfi.iIcon;
+
+
+
+            // Get the System IImageList object from the Shell:
+            Guid iidImageList = new Guid("46EB5926-582E-4017-9FDF-E8998DAA0950");
+
+            Shell32.IImageList iml;
+        
+            var hres = Shell32.SHGetImageList((int)size, ref iidImageList, out  iml); // writes iml
+            if (hres != 0)
+            {
+                throw new Win32Exception();
+            }
+
+            if(linkOverlay)
+            {
+                int overlay = iconIndex;
+                iml.GetOverlayImage(overlay, ref iconIndex);
+            }
+
+
+            IntPtr hIcon = IntPtr.Zero;
+            int ILD_TRANSPARENT = 1;
+            hres = iml.GetIcon(iconIndex, ILD_TRANSPARENT, ref hIcon);
+            if (hres != 0)
+            {
+                throw new Win32Exception();
+            }
+
+            Icon myIcon = System.Drawing.Icon.FromHandle(hIcon);
+            
+           
+
+            Icon rs = (Icon)myIcon.Clone();
+            myIcon.Dispose();
+            User32.DestroyIcon(hIcon);
+
+            return rs;
+
+        }
+  
+
+
 
         private static Icon GetFileIconInternal(string name, IconSize size, bool linkOverlay)
         {
@@ -121,11 +193,11 @@ namespace Fantasy.Drawing
 
 			// Get the folder icon
 			Shell32.SHFILEINFO shfi = new Shell32.SHFILEINFO();
-			Shell32.SHGetFileInfo(	null, 
+			Shell32.SHGetFileInfo(null, 
 				Shell32.FILE_ATTRIBUTE_DIRECTORY, 
 				ref shfi, 
 				(uint) System.Runtime.InteropServices.Marshal.SizeOf(shfi), 
-				flags );
+				flags);
 
 			System.Drawing.Icon.FromHandle(shfi.hIcon);	// Load the icon from an HICON handle
 
@@ -235,6 +307,178 @@ namespace Fantasy.Drawing
 			uint cbFileInfo,
 			uint uFlags
 			);
+
+        [DllImport("shell32.dll", EntryPoint = "#727")]
+        internal extern static int SHGetImageList(
+            int iImageList,
+            ref Guid riid,
+            out IImageList ppv
+            );
+
+
+      
+        [ComImportAttribute()]
+        [GuidAttribute("46EB5926-582E-4017-9FDF-E8998DAA0950")]
+        [InterfaceTypeAttribute(ComInterfaceType.InterfaceIsIUnknown)]
+        //helpstring("Image List"),
+        internal interface IImageList
+        {
+            [PreserveSig]
+            int Add(
+                IntPtr hbmImage,
+                IntPtr hbmMask,
+                ref int pi);
+
+            [PreserveSig]
+            int ReplaceIcon(
+                int i,
+                IntPtr hicon,
+                ref int pi);
+
+            [PreserveSig]
+            int SetOverlayImage(
+                int iImage,
+                int iOverlay);
+
+            [PreserveSig]
+            int Replace(
+                int i,
+                IntPtr hbmImage,
+                IntPtr hbmMask);
+
+            [PreserveSig]
+            int AddMasked(
+                IntPtr hbmImage,
+                int crMask,
+                ref int pi);
+
+            [PreserveSig]
+            int Draw(
+                /*ref IMAGELISTDRAWPARAMS pimldp*/);
+
+            [PreserveSig]
+            int Remove(
+            int i);
+
+            [PreserveSig]
+            int GetIcon(
+                int i,
+                int flags,
+                ref IntPtr picon);
+
+            [PreserveSig]
+            int GetImageInfo(
+                /*int i,
+                ref IMAGEINFO pImageInfo*/);
+
+            [PreserveSig]
+            int Copy(
+                int iDst,
+                IImageList punkSrc,
+                int iSrc,
+                int uFlags);
+
+            [PreserveSig]
+            int Merge(
+                int i1,
+                IImageList punk2,
+                int i2,
+                int dx,
+                int dy,
+                ref Guid riid,
+                ref IntPtr ppv);
+
+            [PreserveSig]
+            int Clone(
+                ref Guid riid,
+                ref IntPtr ppv);
+
+            [PreserveSig]
+            int GetImageRect(
+                /*int i,
+                ref RECT prc*/);
+
+            [PreserveSig]
+            int GetIconSize(
+                ref int cx,
+                ref int cy);
+
+            [PreserveSig]
+            int SetIconSize(
+                int cx,
+                int cy);
+
+            [PreserveSig]
+            int GetImageCount(
+            ref int pi);
+
+            [PreserveSig]
+            int SetImageCount(
+                int uNewCount);
+
+            [PreserveSig]
+            int SetBkColor(
+                int clrBk,
+                ref int pclr);
+
+            [PreserveSig]
+            int GetBkColor(
+                ref int pclr);
+
+            [PreserveSig]
+            int BeginDrag(
+                int iTrack,
+                int dxHotspot,
+                int dyHotspot);
+
+            [PreserveSig]
+            int EndDrag();
+
+            [PreserveSig]
+            int DragEnter(
+                IntPtr hwndLock,
+                int x,
+                int y);
+
+            [PreserveSig]
+            int DragLeave(
+                IntPtr hwndLock);
+
+            [PreserveSig]
+            int DragMove(
+                int x,
+                int y);
+
+            [PreserveSig]
+            int SetDragCursorImage(
+                ref IImageList punk,
+                int iDrag,
+                int dxHotspot,
+                int dyHotspot);
+
+            [PreserveSig]
+            int DragShowNolock(
+                int fShow);
+
+            [PreserveSig]
+            int GetDragImage(
+                /*ref POINT ppt,
+                ref POINT pptHotspot,
+                ref Guid riid,
+                ref IntPtr ppv*/);
+
+            [PreserveSig]
+            int GetItemFlags(
+                int i,
+                ref int dwFlags);
+
+            [PreserveSig]
+            int GetOverlayImage(
+                int iOverlay,
+                ref int piIndex);
+        }
+
+
 	}
 
 	/// <summary>

@@ -29,7 +29,14 @@ namespace Fantasy.Reflection
         }
 
 
-       
+
+        public static bool IsInFramework(string location)
+        {
+            string dir = LongPath.GetDirectoryName(location);
+            return string.Equals(dir, GlobalAssemblyCache.FrameworkFolder, StringComparison.OrdinalIgnoreCase);
+        }
+
+
 
       
 

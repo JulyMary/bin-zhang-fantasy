@@ -540,6 +540,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="AppData\ItemTemplates\HtmlPage\HTMLPage.template.xml" />
+    <Resource Include="AppData\ItemTemplates\HtmlPage\htm.ico" />
+    <Content Include="AppData\ItemTemplates\HtmlPage\HTMLPage.htm" />
     <Content Include="AppData\Templates\Fantasy.BusinessData.csproj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -729,40 +732,25 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent></PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>-->
   <Target Name="AfterBuild">
-
-
-     
-    <MSBuild
-        Projects="$(SolutionDir)Fantasy.BusinessEngine\Fantasy.BusinessEngine.csproj"
-        Targets="%(_MSBuildProjectReferenceExistent.Targets);GetTargetPath"
-        BuildInParallel="$(BuildInParallel)"
-        Properties="%(_MSBuildProjectReferenceExistent.SetConfiguration); %(_MSBuildProjectReferenceExistent.SetPlatform)"
-        Condition="'%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and ('$(BuildingInsideVisualStudio)' == 'true' or '$(BuildProjectReferences)' != 'true') and '@(_MSBuildProjectReferenceExistent)' != ''"
-        ContinueOnError="!$(BuildingProject)"
-        >
-        <Output TaskParameter="TargetOutputs" ItemName="BusinessEngineOutputs" />
+    <MSBuild Projects="$(SolutionDir)Fantasy.BusinessEngine\Fantasy.BusinessEngine.csproj" Targets="%(_MSBuildProjectReferenceExistent.Targets);GetTargetPath" BuildInParallel="$(BuildInParallel)" Properties="%(_MSBuildProjectReferenceExistent.SetConfiguration); %(_MSBuildProjectReferenceExistent.SetPlatform)" Condition="'%(_MSBuildProjectReferenceExistent.BuildReference)' == 'true' and '@(ProjectReferenceWithConfiguration)' != '' and ('$(BuildingInsideVisualStudio)' == 'true' or '$(BuildProjectReferences)' != 'true') and '@(_MSBuildProjectReferenceExistent)' != ''" ContinueOnError="!$(BuildingProject)">
+      <Output TaskParameter="TargetOutputs" ItemName="BusinessEngineOutputs" />
     </MSBuild>
-      <ItemGroup>
-          <BusinessEnginePath Include="%(BusinessEngineOutputs.RelativeDir)*.dll"/>
-      </ItemGroup>
-      <Copy SourceFiles="@(BusinessEnginePath)"
-             DestinationFolder="$(TargetDir)AppData\SystemReferenceAssemblies"
-            SkipUnchangedFiles ="true"/>
-      <ItemGroup >
-          <ExternalSystemReferenceAssembly Include="$(SolutionDir)External\SystemReferenceAssemblies\*.dll"/>
-      </ItemGroup>
-      <Copy SourceFiles="@(ExternalSystemReferenceAssembly)" DestinationFolder="$(TargetDir)AppData\SystemReferenceAssemblies" SkipUnchangedFiles="true"/>
-      <Exec Command='"$(ProjectDir)\Fantasy.ZipItemTemplate.exe" "$(ProjectDir)\AppData\ItemTemplates" "$(TargetDir)\AppData\ItemTemplates"'/>
-      
+    <ItemGroup>
+      <BusinessEnginePath Include="%(BusinessEngineOutputs.RelativeDir)*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(BusinessEnginePath)" DestinationFolder="$(TargetDir)AppData\SystemReferenceAssemblies" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <ExternalSystemReferenceAssembly Include="$(SolutionDir)External\SystemReferenceAssemblies\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(ExternalSystemReferenceAssembly)" DestinationFolder="$(TargetDir)AppData\SystemReferenceAssemblies" SkipUnchangedFiles="true" />
+    <Exec Command="&quot;$(ProjectDir)\Fantasy.ZipItemTemplate.exe&quot; &quot;$(ProjectDir)\AppData\ItemTemplates&quot; &quot;$(TargetDir)\AppData\ItemTemplates&quot;" />
   </Target>
-  
-    
-    
 </Project>
