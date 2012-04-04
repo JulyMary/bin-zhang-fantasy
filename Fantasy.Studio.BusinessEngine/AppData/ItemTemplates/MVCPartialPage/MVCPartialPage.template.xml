@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
+          name="MVC 4 Partial Page (Razor)"
+          description="MVC 4 Partial Page with Razor syntax (CSHTML)"
+          icon="cshtml.ico"
+          defaultFileName="_PartialPage.cshtml">
+
+    <Compile include="$FileName$"  autoOpen="true"/>
+</template> 

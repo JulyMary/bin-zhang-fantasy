@@ -466,7 +466,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="AppData\ItemTemplates\NewClass\NewClass.png" />
+    <None Include="AppData\ItemTemplates\MVCController\MVCController.tt">
+      <Generator>None</Generator>
+      <LastGenOutput>NewClass.cs</LastGenOutput>
+    </None>
+    <None Include="AppData\ItemTemplates\MVCLayoutPage\_LayoutPage.cshtml" />
+    <None Include="AppData\ItemTemplates\MVCViewPage\ViewPage.cshtml" />
     <None Include="AppData\ItemTemplates\NewClass\NewClass.template.xml" />
     <None Include="AppData\ItemTemplates\NewClass\NewClass.tt">
       <Generator>None</Generator>
@@ -543,6 +548,17 @@
     <Resource Include="AppData\ItemTemplates\HtmlPage\HTMLPage.template.xml" />
     <Resource Include="AppData\ItemTemplates\HtmlPage\htm.ico" />
     <Content Include="AppData\ItemTemplates\HtmlPage\HTMLPage.htm" />
+    <Resource Include="AppData\ItemTemplates\NewClass\cs.ico" />
+    <None Include="AppData\ItemTemplates\MVCController\cs.ico" />
+    <None Include="AppData\ItemTemplates\MVCController\MVCController.template.xml" />
+    <None Include="AppData\ItemTemplates\MVCLayoutPage\cshtml.ico" />
+    <None Include="AppData\ItemTemplates\MVCLayoutPage\MVCLayoutPage.template.xml" />
+    <None Include="AppData\ItemTemplates\MVCPartialPage\cshtml.ico" />
+    <None Include="AppData\ItemTemplates\MVCPartialPage\MVCPartialPage.template.xml" />
+    <None Include="AppData\ItemTemplates\MVCViewPage\cshtml.ico" />
+    <None Include="AppData\ItemTemplates\MVCViewPage\MVCViewPage.template.xml" />
+    <Resource Include="AppData\ItemTemplates\JScriptFile\js.ico" />
+    <Resource Include="AppData\ItemTemplates\JScriptFile\JScriptFile.template.xml" />
     <Content Include="AppData\Templates\Fantasy.BusinessData.csproj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

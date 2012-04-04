@@ -2,7 +2,7 @@
 <template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
           name="Class"
           description="An empty class definition."
-          icon="NewClass.png"
+          icon="cs.ico"
           defaultFileName="NewClass.cs">
 
     <Compile include="$FileName$" src="newclass.tt" useT4="true" autoOpen="true"/>

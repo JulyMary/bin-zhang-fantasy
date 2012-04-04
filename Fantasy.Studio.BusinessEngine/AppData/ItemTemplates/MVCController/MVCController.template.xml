@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
+          name="MVC 4 Controller Class"
+          description="MVC Application Controller Class (ASP.NET MVC Framework requires Controller names to be suffixed with 'Controller')"
+          icon="cs.ico"
+          defaultFileName="DefaultController.cs">
+
+    <Compile include="$FileName$"
+             src="MVCController.tt"
+             useT4="true"
+             autoOpen="true"/>
+</template>
