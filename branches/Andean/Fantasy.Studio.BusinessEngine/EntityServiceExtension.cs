@@ -340,60 +340,61 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
 
-        public static BusinessAssemblyReference[] AddBusinessAssemblyReference(this IEntityService es, string path)
+        public static BusinessAssemblyReference[] AddBusinessAssemblyReference(this IEntityService es, string location)
         {
-            using (AssemblyLoader loader = new AssemblyLoader())
+
+            string directory = LongPath.GetDirectoryName(location);
+            if (!GlobalAssemblyCache.GetGACFolders().Any(f => string.Equals(f, directory, StringComparison.OrdinalIgnoreCase)))
             {
-                AssemblyName assemblyName = loader.LoadFrom(path);
+                using (AssemblyLoader loader = new AssemblyLoader())
+                {
 
+                    return CreateAssemblyReference(es, location, loader, true).ToArray();
+                }
+            }
+            else
+            {
 
-                return CreateAssemblyReference(es, assemblyName, loader, true).ToArray();
+                return new BusinessAssemblyReference[] { AddGACAssemblyReference(es, location) };
+                
             }
         }
 
-        private static List<BusinessAssemblyReference> CreateAssemblyReference(IEntityService es, AssemblyName assemblyName, AssemblyLoader loader, bool throwError)
+        private static List<BusinessAssemblyReference> CreateAssemblyReference(IEntityService es, string location, AssemblyLoader loader, bool throwError)
         {
             List<BusinessAssemblyReference> rs = new List<BusinessAssemblyReference>();
 
             try
             {
-                string name = assemblyName.Name;
+                AssemblyName assemblyRef = loader.LoadFrom(location);
+               
 
                 BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
 
-                if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
+                if (!group.References.Any(r => string.Equals(assemblyRef.Name, r.Name, StringComparison.OrdinalIgnoreCase)))
                 {
                     BusinessAssemblyReference reference = es.CreateEntity<BusinessAssemblyReference>();
                     reference.Group = group;
-                   
 
-                    if (!loader.IsInGAC(assemblyName))
+
+
+                    reference.FullName = assemblyRef.Name;
+                    string sysRefPath = Fantasy.BusinessEngine.Properties.Settings.ExtractToFullPath(Fantasy.BusinessEngine.Properties.Settings.Default.SystemReferencesPath);
+                    if (location.ToLower().StartsWith(sysRefPath.ToLower()))
                     {
-
-                        string filename = new Uri(assemblyName.CodeBase).LocalPath;
-                        string sysRefPath = Fantasy.BusinessEngine.Properties.Settings.ExtractToFullPath(Fantasy.BusinessEngine.Properties.Settings.Default.SystemReferencesPath);
-                        if (filename.ToLower().StartsWith(sysRefPath.ToLower()))
-                        {
-                            reference.FullName = assemblyName.Name;
-                            reference.Source = BusinessAssemblyReferenceSources.System;
-                        }
-                        else
-                        {
-                            reference.FullName = assemblyName.Name;
-                            reference.Source = BusinessAssemblyReferenceSources.Local;
-                            byte[] bytes = File.ReadAllBytes(filename);
-                            reference.RawAssembly = bytes;
-
-                            string copyPath = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, LongPath.GetFileName(filename));
-                            LongPathFile.Copy(filename, copyPath, true);
-                        }
+                        
+                        reference.Source = BusinessAssemblyReferenceSources.System;
                     }
                     else
                     {
-
-                        reference.FullName = loader.IsInFramework(assemblyName) ? assemblyName.Name : assemblyName.FullName;
-                        reference.Source = BusinessAssemblyReferenceSources.GAC;
+                        
+                        reference.Source = BusinessAssemblyReferenceSources.Local;
+                        byte[] bytes = File.ReadAllBytes(location);
+                        reference.RawAssembly = bytes;
+                        string copyPath = LongPath.Combine(Fantasy.BusinessEngine.Properties.Settings.Default.FullReferencesPath, LongPath.GetFileName(location));
+                        LongPathFile.Copy(location, copyPath, true);
                     }
+                   
 
                     group.References.Add(reference);
                     es.SaveOrUpdate(reference);
@@ -403,7 +404,7 @@ namespace Fantasy.Studio.BusinessEngine
                     if (reference.Source == BusinessAssemblyReferenceSources.Local)
                     {
 
-                        rs.AddRange(AddReferenceAssemblies(es, assemblyName, loader));
+                        rs.AddRange(AddReferenceAssemblies(es, location, loader));
                     }
 
                 }
@@ -421,31 +422,19 @@ namespace Fantasy.Studio.BusinessEngine
 
         }
 
-        private static List<BusinessAssemblyReference> AddReferenceAssemblies(IEntityService es, AssemblyName assembly, AssemblyLoader loader)
+        private static List<BusinessAssemblyReference> AddReferenceAssemblies(IEntityService es, string location, AssemblyLoader loader)
         {
             List<BusinessAssemblyReference> rs = new List<BusinessAssemblyReference>();
-            string dir = LongPath.GetDirectoryName(assembly.CodeBase);
+            string dir = LongPath.GetDirectoryName(location);
             BusinessAssemblyReferenceGroup ag = es.GetAssemblyReferenceGroup();
-            var query = from ran in loader.ReflectionOnlyGetReferenceAssemblyNames(assembly) where ag.References.Any(r=>!String.Equals(r.Name, ran.Name, StringComparison.OrdinalIgnoreCase) )select ran;
+            var query = from ran in loader.ReflectionOnlyGetReferenceAssemblyNames(location) where ag.References.Any(r => !String.Equals(r.Name, ran.Name, StringComparison.OrdinalIgnoreCase)) select ran;
             foreach (AssemblyName ran in query)
             {
                 string file = LongPath.Combine(dir, ran.Name + ".dll");
                
                 if (LongPathFile.Exists(file))
-
                 {
-                    try
-                    {
-                        AssemblyName an2 = loader.LoadFrom(file);
-                        if (!loader.IsInGAC(an2))
-                        {
-                            rs.AddRange(CreateAssemblyReference(es, an2, loader, false));
-                        }
-                    }
-                    catch
-                    {
-                    }
-                   
+                    rs.AddRange(CreateAssemblyReference(es, file, loader, false));
                 }
 
                 
@@ -455,17 +444,50 @@ namespace Fantasy.Studio.BusinessEngine
         }
 
 
-        public static BusinessAssemblyReference AddGACAssemblyReference(this IEntityService es, AssemblyName assembly)
+        public static BusinessAssemblyReference AddGACAssemblyReference(this IEntityService es, string location)
         {
             using (AssemblyLoader loader = new AssemblyLoader())
             {
                 BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
-                string name = assembly.Name;
-                BusinessAssemblyReference rs = group.References.FirstOrDefault(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase));
+                AssemblyName assemblyRef = loader.LoadFrom(location);
+
+                BusinessAssemblyReference rs = group.References.FirstOrDefault(r => string.Equals(assemblyRef.Name, r.Name, StringComparison.OrdinalIgnoreCase));
                 if (rs == null)
                 {
                     rs = es.CreateEntity<BusinessAssemblyReference>();
-                    rs.FullName = loader.IsInFramework(assembly) ? assembly.Name : assembly.FullName;
+                    rs.FullName = GlobalAssemblyCache.IsInFramework(location) ? assemblyRef.Name : assemblyRef.FullName;
+                    rs.Group = group;
+                    group.References.Add(rs);
+                    rs.Source = BusinessAssemblyReferenceSources.GAC;
+                    es.SaveOrUpdate(rs);
+                }
+                return rs;
+            }
+        }
+
+
+        public static BusinessAssemblyReference AddGACAssemblyReference(this IEntityService es, AssemblyName assemblyRef)
+        {
+            using (AssemblyLoader loader = new AssemblyLoader())
+            {
+                BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
+               
+
+                BusinessAssemblyReference rs = group.References.FirstOrDefault(r => string.Equals(assemblyRef.Name, r.Name, StringComparison.OrdinalIgnoreCase));
+                if (rs == null)
+                {
+                    rs = es.CreateEntity<BusinessAssemblyReference>();
+
+                    string file = LongPath.Combine(GlobalAssemblyCache.FrameworkFolder, assemblyRef.Name + ".dll");
+                    rs.FullName = assemblyRef.FullName;
+                    if (LongPathFile.Exists(file))
+                    {
+                        AssemblyName assemblyRef2 = loader.LoadFrom(file);
+                        if (assemblyRef2.FullName == assemblyRef.FullName)
+                        {
+                            rs.FullName = assemblyRef.Name;
+                        }
+                    }
                     rs.Group = group;
                     group.References.Add(rs);
                     rs.Source = BusinessAssemblyReferenceSources.GAC;

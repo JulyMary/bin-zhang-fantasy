@@ -16,6 +16,8 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
         public object Execute(object args)
         {
 
+            List<BusinessAssemblyReference> rs = new List<BusinessAssemblyReference>();
+
             AddGACReferenceDialog dlg = new AddGACReferenceDialog();
             if (dlg.ShowDialog() == true)
             {
@@ -24,24 +26,15 @@ namespace Fantasy.Studio.BusinessEngine.AssemblyReference
 
                 foreach (AssemblyModel model in dlg.SelectedAssemblies)
                 {
-                    BusinessAssemblyReferenceGroup group = es.GetAssemblyReferenceGroup();
-                    string name = model.AssemblyName.Name;
-                    
-                    if (!group.References.Any(r => string.Equals(name, r.Name, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        BusinessAssemblyReference reference = es.CreateEntity<BusinessAssemblyReference>();
-                        reference.FullName = model.Location.ToLower().StartsWith(GlobalAssemblyCache.FrameworkFolder.ToLower()) ? name : model.AssemblyName.FullName; 
-                        reference.Group = group;
-                        group.References.Add(reference);
-                        reference.Source = BusinessAssemblyReferenceSources.GAC;
-                        es.SaveOrUpdate(reference);
-                    }
+
+                    BusinessAssemblyReference reference = es.AddGACAssemblyReference(model.Location);
+                    rs.Add(reference); 
                 }
 
 
             }
 
-            return null;
+            return rs.ToArray();
         }
 
 

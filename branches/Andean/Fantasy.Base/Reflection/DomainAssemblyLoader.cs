@@ -82,15 +82,14 @@ namespace Fantasy.Reflection
             return CreateDomainLoader().IsInGAC(assemblyRef);
         }
 
-        public bool IsInFramework(AssemblyName assemblyRef)
-        {
-            return CreateDomainLoader().IsInFramework(assemblyRef);
-        }
+      
 
-        public AssemblyName[] ReflectionOnlyGetReferenceAssemblyNames(AssemblyName assemblyRef)
+       
+
+        public AssemblyName[] ReflectionOnlyGetReferenceAssemblyNames(string location)
         {
-            
-            return CreateDomainLoader().GetReferenceAssemblyNames(assemblyRef);
+
+            return CreateDomainLoader().GetReferenceAssemblyNames(location);
         }
 
 
@@ -154,9 +153,9 @@ namespace Fantasy.Reflection
 
         }
 
-        public AssemblyName[] GetReferenceAssemblyNames(AssemblyName assemblyRef)
+        public AssemblyName[] GetReferenceAssemblyNames(string location)
         {
-            Assembly assembly = Assembly.Load(assemblyRef);
+            Assembly assembly = Assembly.Load(location);
             return assembly.GetReferencedAssemblies();
         }
 
