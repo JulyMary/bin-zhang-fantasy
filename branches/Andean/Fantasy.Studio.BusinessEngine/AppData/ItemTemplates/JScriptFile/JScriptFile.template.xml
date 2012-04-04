@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
+          name="JScript File"
+          description="A script file containing JScript Code"
+          icon="js.ico"
+          defaultFileName="JScript.js">
+
+    <Compile include="$FileName$"
+            
+             autoOpen="true"/>
+</template>

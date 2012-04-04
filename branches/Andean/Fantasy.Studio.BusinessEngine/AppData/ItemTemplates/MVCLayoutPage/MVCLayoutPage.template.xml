@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template xmlns="urn:schema-fantasy:studio-businessengine:script-template"
+          name="MVC 4 Layout Page (Razor)"
+          description="MVC 4 Layout Page with Razor syntax (CSHTML)"
+          icon="cshtml.ico"
+          defaultFileName="_LayoutPage.cshtml">
+
+    <Compile include="$FileName$" src="_LayoutPage.cshtml" useT4="false" autoOpen="true"/>
+</template> 
