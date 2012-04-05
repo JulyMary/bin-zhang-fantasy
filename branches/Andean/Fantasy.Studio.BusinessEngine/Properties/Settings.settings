@@ -81,5 +81,8 @@
     <Setting Name="NewBusinessRoleT4Path" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\AppData\Templates\NewBusinessRole.tt</Value>
     </Setting>
+    <Setting Name="RazorGeneratorTargetsPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\AppData\RazorGenerator\RazorGenerator.targets</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -17,7 +17,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.Description);
             this.Map(x => x.IsDisabled);
             this.Map(x => x.CodeName).Not.Nullable();
-            this.Map(x => x.Script);
+            this.Map(x => x.Script).CustomType("StringClob").LazyLoad();
             this.Map(x => x.ExternalType);
             this.Map(x => x.ScriptOptions).CustomType<Int32>();
             this.References(x => x.Package).Column("PackageId");

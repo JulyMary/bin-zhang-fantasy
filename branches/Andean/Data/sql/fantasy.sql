@@ -1,8 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     3/04/2012 11:10:10 AM                        */
+/* Created on:     5/04/2012 1:43:01 PM                         */
 /*==============================================================*/
-use fantasy
+
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -630,7 +630,7 @@ create table BusinessApplication (
    EntryObjectId        T_Guid               null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
-   Script               text                 null,
+   Script               varchar(max)         null,
    ScriptOptions        int                  null,
    ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSAPPLICATION primary key (ID)
@@ -795,8 +795,8 @@ create table BusinessClass (
    TableSpace           T_DBEntity           null,
    IsSimple             bit                  not null,
    Implements           varchar(4096)        null,
-   AutoScript           text                 null,
-   Script               text                 null,
+   AutoScript           varchar(max)         null,
+   Script               varchar(max)         null,
    ScriptOptions        int                  null,
    IsAbstract           bit                  not null,
    ExternalType         varchar(1024)        null,
@@ -921,7 +921,7 @@ create table BusinessExtraScript (
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
    Name                 T_Name               not null,
-   Script               text                 null,
+   Script               varchar(max)         null,
    MetaData             varchar(1024)        null,
    constraint PK_BUSINESSEXTRASCRIPT primary key (ID)
 )
@@ -1054,7 +1054,7 @@ create table BusinessRole (
    Description          varchar(1024)        null,
    IsComputed           bit                  not null,
    IsDisabled           bit                  null,
-   Script               text                 null,
+   Script               varchar(max)         null,
    ScriptOptions        int                  null,
    ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSROLE primary key (ID)
@@ -1084,7 +1084,7 @@ create table BusinessUser (
    Description          varchar(1024)        null,
    Password             varchar(128)         null,
    IsDisabled           bit                  not null,
-   Script               text                 null,
+   Script               varchar(max)         null,
    ScriptOptions        int                  null,
    ExternalType         varchar(1024)        null,
    constraint PK_BUSINESSUSER primary key (ID)

@@ -60,6 +60,9 @@
     </Extension>
 
     <Extension Path="fantasy/startup">
+        <Object ID="RegisterRazorGenerator">
+            <sbe:RegisterRazorGeneratorTargetsCommand/>
+        </Object>
         <Object ID="syntaxHighlight" InsertBefore="RunApp">
             <sbe:RegisterSyntaxHighlightingsCommand />
         </Object>
