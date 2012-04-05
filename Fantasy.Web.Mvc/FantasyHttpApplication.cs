@@ -11,6 +11,7 @@ using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine;
 using System.IO;
 using System.Text.RegularExpressions;
+using Fantasy.Web.Mvc.Properties;
 
 namespace Fantasy.Web.Mvc
 {
@@ -52,7 +53,7 @@ namespace Fantasy.Web.Mvc
 
             Regex regex = new Regex(@"(?<dir>.*)\\?(?<filter>[^\\]*)$", RegexOptions.RightToLeft);
 
-            foreach (string path in DependencyPathSettings.Default.Path.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string path in Settings.Default.DependencyPath.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 Match match = regex.Match(path);
 
