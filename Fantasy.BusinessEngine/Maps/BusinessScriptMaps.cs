@@ -15,7 +15,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.References(x => x.Package).Column("PackageID");
            
             this.Map(x => x.MetaData);
-            this.Map(x => x.Script);
+            this.Map(x => x.Script).CustomType("StringClob").LazyLoad();
             this.Map(x => x.Name);
            
 

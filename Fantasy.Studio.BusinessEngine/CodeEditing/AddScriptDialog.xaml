@@ -5,23 +5,48 @@
         Title="Add New Script" Height="600" Width="800" WindowStartupLocation="CenterScreen"
         Icon="{x:Static f:CurrentProcessIcon.Icon}">
     <Grid>
-        <ListBox Margin="12,12,12,64" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Name="TemplatesListBox" MouseDoubleClick="TemplatesListBox_MouseDoubleClick">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+        <ListView Margin="12,12,12,64" ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"  Name="TemplatesListBox" MouseDoubleClick="TemplatesListBox_MouseDoubleClick" SelectionMode="Single"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0, 3, 0, 3"/>
                 </Style>
-            </ListBox.ItemContainerStyle>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                
+                <GridView >
+                    <GridView.ColumnHeaderContainerStyle>
+                        <Style TargetType="GridViewColumnHeader">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </Style>
+                    </GridView.ColumnHeaderContainerStyle>
+                    <GridViewColumn Header="Icon">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Source="{Binding Icon}" Width="32" Height="32" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                            
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" Margin="0,0,40,0" VerticalAlignment="Center" FontSize="16"/>
+                            </DataTemplate>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel Margin="6" >
-                        <Image Source="{Binding Icon}" Width="32" Height="32" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Name}" Margin="6,0,0,0" VerticalAlignment="Center" FontSize="16"/>
-                        <TextBlock Text="{Binding Description}" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right" TextWrapping="Wrap" />
-                    </DockPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Description">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Description}" VerticalAlignment="Center" TextWrapping="WrapWithOverflow" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+        </ListView>
         <TextBox Margin="85,0,12,35" Name="textBox1" Height="23" VerticalAlignment="Bottom" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock HorizontalAlignment="Left" Margin="12,0,0,35" Name="textBlock1" Text="Name:" Height="23" VerticalAlignment="Bottom" />
         <Button Content="OK" Margin="0,0,93,6" Name="button1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" IsDefault="True" IsEnabled="{Binding IsValid}" Click="OKButtonClick" />

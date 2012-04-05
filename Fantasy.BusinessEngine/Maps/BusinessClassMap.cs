@@ -22,8 +22,8 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.TableSpace);
             this.Map(x => x.IsSimple).Not.Nullable();
             this.Map(x => x.IsAbstract).Not.Nullable();
-            this.Map(x => x.Script).LazyLoad();
-            this.Map(x => x.AutoScript).LazyLoad();
+            this.Map(x => x.Script).CustomType("StringClob").LazyLoad();
+            this.Map(x => x.AutoScript).CustomType("StringClob").LazyLoad();
             this.Map(x => x.ScriptOptions).CustomType<Int32>() ;
             this.Map(x => x.ExternalType);
 
