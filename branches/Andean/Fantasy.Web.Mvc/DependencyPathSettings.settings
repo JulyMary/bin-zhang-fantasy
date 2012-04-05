@@ -1,9 +1,0 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fantasy.Web.Mvc" GeneratedClassName="DependencyPathSettings">
-  <Profiles />
-  <Settings>
-    <Setting Name="Path" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">*.addin.xaml</Value>
-    </Setting>
-  </Settings>
-</SettingsFile>

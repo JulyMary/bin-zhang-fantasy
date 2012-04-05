@@ -47,15 +47,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ProductInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessDataViewEngine.cs" />
     <Compile Include="ChainedControllerFactory.cs" />
     <Compile Include="ChainedViewEngine.cs" />
-    <Compile Include="DependencyPathSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>DependencyPathSettings.settings</DependentUpon>
-    </Compile>
     <Compile Include="FantasyHttpApplication.cs" />
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
+    <Compile Include="Properties\Settings.settings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.settings.tt</DependentUpon>
+    </Compile>
     <Compile Include="SetControllerFactoryCommand.cs" />
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
@@ -69,15 +73,20 @@
       <Name>Fantasy.BusinessEngine</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="Properties\Settings.settings">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>Settings.cs</LastGenOutput>
+    </None>
+    <None Include="Properties\Settings.settings.tt">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <LastGenOutput>Settings.settings.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="DependencyPathSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>DependencyPathSettings.Designer.cs</LastGenOutput>
-    </None>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
