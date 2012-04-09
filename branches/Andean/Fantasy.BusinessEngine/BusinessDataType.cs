@@ -69,6 +69,19 @@ namespace Fantasy.BusinessEngine
         }
 
 
+        public virtual string NHType
+        {
+            get
+            {
+                return (string)this.GetValue("NHType", null);
+            }
+            set
+            {
+                this.SetValue("NHType", value);
+            }
+        }
+
+
         public static class WellknownIds
         {
             public static readonly Guid Binary = new Guid("192d0683-3c32-44b2-bf6f-51cb88e98445");

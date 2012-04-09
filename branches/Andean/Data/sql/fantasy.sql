@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     5/04/2012 1:43:01 PM                         */
+/* Created on:     2012/4/9 11:34:39                            */
 /*==============================================================*/
 
 
@@ -414,6 +414,13 @@ if exists (select 1
            where  id = object_id('BusinessExtraScript')
             and   type = 'U')
    drop table BusinessExtraScript
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BusinessLastUpdateTimestamp')
+            and   type = 'U')
+   drop table BusinessLastUpdateTimestamp
 go
 
 if exists (select 1
@@ -839,7 +846,7 @@ go
 /* Index: PACKAGECLASSDIAGRAMS_FK                               */
 /*==============================================================*/
 create index PACKAGECLASSDIAGRAMS_FK on BusinessClassDiagram (
-ID ASC
+PACKAGEID ASC
 )
 go
 
@@ -851,6 +858,7 @@ create table BusinessDataType (
    DefaultDBType        T_Name               null,
    DefaultLength        int                  null,
    DefaultPrecision     int                  null,
+   NHType               T_Name               null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    ModificationTime     datetime             not null,
@@ -932,6 +940,15 @@ go
 /*==============================================================*/
 create index PACKAGEEXTRASCRIPTS_FK on BusinessExtraScript (
 PackageID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: BusinessLastUpdateTimestamp                           */
+/*==============================================================*/
+create table BusinessLastUpdateTimestamp (
+   Name                 T_Name               null,
+   Seconds              bigint               null
 )
 go
 
@@ -1184,7 +1201,7 @@ alter table BusinessClass
 go
 
 alter table BusinessClassDiagram
-   add constraint FK_BUSINESS_PACKAGE_CLASSDIAGRAM foreign key (ID)
+   add constraint FK_BUSINESS_PACKAGE_CLASSDIAGRAM foreign key (PACKAGEID)
       references BusinessPackage (ID)
 go
 

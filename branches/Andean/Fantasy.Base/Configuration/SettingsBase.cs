@@ -74,7 +74,7 @@ namespace Fantasy.Configuration
 
         private bool IsReadOnlyList(PropertyInfo prop)
         {
-            return !prop.CanWrite && typeof(IEnumerable).IsAssignableFrom(prop.PropertyType); 
+            return !prop.CanWrite && prop.PropertyType != typeof(string) && typeof(IEnumerable).IsAssignableFrom(prop.PropertyType) ; 
         }
 
         public virtual void SetValue(string name, object value)

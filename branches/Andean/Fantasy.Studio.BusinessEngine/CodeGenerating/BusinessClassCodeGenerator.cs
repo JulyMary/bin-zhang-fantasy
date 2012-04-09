@@ -85,8 +85,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
         private static readonly string[] ListenedClassProperties = new string[] { "CodeName", "Package", "ParentClass" };
         private static readonly string[] ListenedPropertyProperties = new string[] { "CodeName", "DataType", "DataClassType", "DataEnumType", "IsNullable", "IsCalculated" };
-        private static readonly string[] ListenedLeftAssnProperties = new string[] { "RightRoleCode", "RightCardinality" };
-        private static readonly string[] ListenedRightAssnProperties = new string[] { "LeftRoleCode", "LeftCardinality" };
+        private static readonly string[] ListenedLeftAssnProperties = new string[] { "RightRoleCode", "RightCardinality", "RightNavigatable" };
+        private static readonly string[] ListenedRightAssnProperties = new string[] { "LeftRoleCode", "LeftCardinality", "LeftNavigatable" };
 
 
 

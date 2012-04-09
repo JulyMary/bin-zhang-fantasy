@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine.Collections;
+using System.Collections;
+using System.Reflection;
 
 namespace Fantasy.BusinessEngine
 {
@@ -17,34 +19,84 @@ namespace Fantasy.BusinessEngine
             object rs;
             if(!this._collections.TryGetValue(name, out rs))
             {
-                ObservableList<T> persisted = this.GetPersistedCollection<T>(name);
+                ObservableList<T> persisted = (ObservableList<T>)this.GetPersistedCollection(name);
                 rs = new BusinessObjectCollection<T>(persisted);
                 this._collections.Add(name, rs);
             }
             return (BusinessObjectCollection<T>)rs;
         }
 
-        protected virtual ObservableList<T> GetPersistedCollection<T>(string name) where T : BusinessObject
+        internal object GetPersistedCollection(string name)
         {
             object rs;
+
             if (!this._persistedCollections.TryGetValue(name, out rs))
             {
-                rs = new ObservableList<T>();
+                PropertyInfo propInfo = this.GetType().GetProperty(name);
+                Type elementType = propInfo.PropertyType.GetGenericArguments()[0];
+                Type t = typeof(ObservableList<>).MakeGenericType(elementType);
+
+                rs = Activator.CreateInstance(t);
                 this._persistedCollections.Add(name, rs);
             }
-            return (ObservableList<T>)rs;
+            return rs;
         }
 
-        protected virtual void SetPersistedCollection<T>(string name, ObservableList<T> value) where T : BusinessObject
+        internal void SetPersistedCollection(string name, object value)
         {
             this._persistedCollections[name] = value;
             object oc = this._collections.GetValueOrDefault(name);
             if (oc != null)
             {
-                ((BusinessObjectCollection<T>)oc).Source = value;
+                ((IObservableListView)oc).Source = (IObservableList)value;
             }
            
         }
+
+
+        protected virtual T GetManyToOneValue<T>(string name) where T: BusinessObject
+        {
+            BusinessObjectCollection<T> col = this.GetCollection<T>(name);
+            return col.FirstOrDefault();
+ 
+        }
+
+        protected virtual bool SetManyToOneValue<T>(string name, T value) where T: BusinessObject
+        {
+            bool rs = false;
+            BusinessObjectCollection<T> col = this.GetCollection<T>(name);
+            T oldValue = col.FirstOrDefault();
+            if (oldValue != value)
+            {
+                EntityPropertyChangingEventArgs e = new EntityPropertyChangingEventArgs(this, name, value, oldValue);
+                this.OnPropertyChanging(e);
+                if (!e.Cancel)
+                {
+                    rs = true;
+                    col.Clear();
+                    col.Add(value);
+
+                    this.OnPropertyChanged(new EntityPropertyChangedEventArgs(this, name, value, oldValue));
+                }
+            }
+
+            return rs;
+        }
+
+
+        public virtual Guid ClassId
+        {
+            get
+            {
+                return (Guid)this.GetValue("ClassId", Guid.Empty);
+            }
+            set
+            {
+                this.SetValue("ClassId", value);
+            }
+        }
+
+
 
     }
 }

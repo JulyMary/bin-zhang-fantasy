@@ -66,11 +66,12 @@
     <Compile Include="BusinessAssemblyReferenceSources.cs" />
     <Compile Include="BusinessClass.cs" />
     <Compile Include="BusinessClassDiagram.cs" />
-    <Compile Include="BusinessClassExtension.cs" />
+    <Compile Include="BusinessClassExtensions.cs" />
     <Compile Include="BusinessDataType.cs" />
     <Compile Include="BusinessEngineContext.cs" />
     <Compile Include="BusinessEntity.cs" />
     <Compile Include="BusinessEnum.cs" />
+    <Compile Include="BusinessEnumExtensions.cs" />
     <Compile Include="BusinessEnumValue.cs" />
     <Compile Include="BusinessObject.cs" />
     <Compile Include="BusinessObjectMemberTypes.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Cardinality.cs" />
     <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />
+    <Compile Include="Collections\IObservableListView.cs" />
     <Compile Include="Collections\IObservableSet.cs" />
     <Compile Include="Collections\ObservableList.cs" />
     <Compile Include="Collections\ObservableListView.cs" />
@@ -118,10 +120,16 @@
       <DependentUpon>Settings.settings.tt</DependentUpon>
     </Compile>
     <Compile Include="ScriptOptions.cs" />
-    <Compile Include="Services\IMetaDataService.cs" />
+    <Compile Include="Services\BusinessUserRoleExtensions.cs" />
+    <Compile Include="Services\BusinessUserRoleService.cs" />
+    <Compile Include="Services\IBusinessUserRoleService.cs" />
+    <Compile Include="Services\IObjectModelService.cs" />
     <Compile Include="Services\INHConfigurationService.cs" />
-    <Compile Include="Services\MetaDataService.cs" />
+    <Compile Include="Services\ILastUpdateTimestampService.cs" />
+    <Compile Include="Services\ManyToOneAccessor.cs" />
+    <Compile Include="Services\ObjectModelService.cs" />
     <Compile Include="Services\NHConfigurationService.cs" />
+    <Compile Include="Services\ManyToManyAccessor.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
@@ -179,7 +187,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\DefaultEntityService.cs" />
     <Compile Include="Services\ISequenceService.cs" />
+    <Compile Include="Services\WellknownRoles.cs" />
     <Compile Include="Services\WellknownSequences.cs" />
+    <Compile Include="Services\WellknownUsers.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
@@ -205,6 +215,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

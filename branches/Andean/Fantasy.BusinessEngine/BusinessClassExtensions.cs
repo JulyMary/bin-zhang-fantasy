@@ -2,12 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Fantasy.BusinessEngine.Properties;
 
 namespace Fantasy.BusinessEngine
 {
-    public static class BusinessClassExtension
+    public static class BusinessClassExtensions
     {
-        public static IEnumerable<BusinessProperty>  AllProperties(this BusinessClass @class)
+        public static Type EntityType(this BusinessClass @class)
+        {
+            if (@class.ScriptOptions == ScriptOptions.External)
+            {
+                return Type.GetType(@class.ExternalType, true);
+            }
+            else
+            {
+                return Type.GetType(@class.FullCodeName + ", " + Settings.Default.BusinessDataAssemblyName, true);
+            }
+        }
+
+
+        public static IEnumerable<BusinessProperty> AllProperties(this BusinessClass @class)
         {
             var query = from ancestor in @class.Flatten(x => x.ParentClass).Reverse()
                         from property in ancestor.Properties

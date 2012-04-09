@@ -15,7 +15,8 @@ namespace Fantasy.Studio.BusinessEngine.CodeEditing
         public System.Collections.IEnumerable GetChildren(object parent)
         {
             BusinessScript script = this.Site.GetRequiredService<IAdapterManager>().GetAdapter<BusinessScript>(parent);
-            return script.Package.Scripts.ToFiltered(s => String.Equals(s["DependentUpon"], script.Name, StringComparison.OrdinalIgnoreCase)).ToSorted("Name");
+            return script.Package.Scripts.ToFiltered(s =>
+                !String.IsNullOrEmpty(s["DependentUpon"]) && ! String.IsNullOrEmpty(script.Name) && String.Equals(s["DependentUpon"], script.Name, StringComparison.OrdinalIgnoreCase)).ToSorted("Name");
 
         }
 

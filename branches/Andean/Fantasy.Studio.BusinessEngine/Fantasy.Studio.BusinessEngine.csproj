@@ -467,7 +467,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="AppData\ItemTemplates\MVCController\MVCController.tt">
       <Generator>None</Generator>
       <LastGenOutput>NewClass.cs</LastGenOutput>

@@ -36,16 +36,19 @@ foreach(BusinessProperty property in _class.Properties)
 }
 foreach(BusinessAssociation assn in _class.LeftAssociations)
 {
-	string name = assn.RightRoleCode;
-	string type = assn.RightClass.FullCodeName;
-	Cardinality card = new Cardinality(assn.RightCardinality);
-	if(card.IsSingleton)
+	if(assn.RightNavigatable)
 	{
-	    RenderScalar(name, type, "null");
-	}
-	else
-	{
-        RenderCollection(name, type);
+	    string name = assn.RightRoleCode;
+	    string type = assn.RightClass.FullCodeName;
+	    Cardinality card = new Cardinality(assn.RightCardinality);
+	    if(card.IsSingleton)
+	    {
+	        RenderManyToOne(name, type);
+	    }
+	    else
+	    {
+            RenderCollection(name, type);
+	    }
 	}
 
 }
@@ -55,13 +58,16 @@ foreach(BusinessAssociation assn in _class.RightAssociations)
 	string name = assn.LeftRoleCode;
 	string type = assn.LeftClass.FullCodeName;
 	Cardinality card = new Cardinality(assn.LeftCardinality);
-	if(card.IsSingleton)
+	if(assn.LeftNavigatable)
 	{
-	    RenderScalar(name, type, "null");
-	}
-	else
-	{
-        RenderCollection(name, type);
+	    if(card.IsSingleton)
+	    {
+	        RenderManyToOne(name, type);
+	    }
+	    else
+	    {
+            RenderCollection(name, type);
+	    }
 	}
 
 }
@@ -159,6 +165,52 @@ private string GetDefaultValue(BusinessProperty property)
 			return property.DefaultValue;
 		}
 	}
+}
+
+
+private void RenderManyToOne(string name, string type)
+{
+	#>  
+	    protected virtual ObservableList<<#=type#>> Persisted<#=name#>
+        {
+            get
+			{ 
+			    return GetPersistedCollection<<#=type#>>("<#=name#>"); 
+			}
+            private set
+            {
+                SetPersistedCollection("<#=name#>", value);
+            }
+        }
+		
+		public virtual <#=type#> <#=name#>
+		{
+		    get
+            {
+                return this.GetManyToOneValue<<#=type#>>("<#=name#>");
+            }
+            set
+            {
+			    <#=type#> old = this.<#=name#>;
+			    if(!Object.Equals(old, value))
+				{
+				    EntityPropertyChangingEventArgs e1 = new EntityPropertyChangingEventArgs(this, "<#=name#>", value, old);
+				    this.On<#=name#>Changing(e1);
+					if(!e1.Cancel)
+					{
+                        if(this.SetManyToOneValue("<#=name#>", value))
+						{
+					        this.On<#=name#>Changed(new EntityPropertyChangedEventArgs(this, "<#=name#>", value, old));
+						}
+					}
+				}
+            }
+		}
+		
+		partial void On<#=name#>Changed(EntityPropertyChangedEventArgs e);
+		
+		partial void On<#=name#>Changing(EntityPropertyChangingEventArgs e);
+<#+ 
 }
 
 private void RenderScalar(string name, string type, string defaultValue)

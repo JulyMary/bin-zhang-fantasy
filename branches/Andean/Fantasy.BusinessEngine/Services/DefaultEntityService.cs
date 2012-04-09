@@ -35,7 +35,7 @@ namespace Fantasy.BusinessEngine.Services
             mc.Apply(cs.Configuration);
 
 
-           
+
             this._preDeleteEventListener = new NHPreDeleteEventListener() { Site = this.Site };
             this._postDeleteEventListener = new NHPostDeleteEventListener() { Site = this.Site };
             this._createListener = new EntityCreateEventListener() { Site = this.Site };
@@ -57,7 +57,7 @@ namespace Fantasy.BusinessEngine.Services
             base.UninitializeService();
         }
 
-       
+
 
         public ISession OpenSession()
         {
@@ -95,7 +95,7 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
-        private  int _updateLevel = 0;
+        private int _updateLevel = 0;
 
         private object _updateSyncRoot = new object();
 
@@ -125,7 +125,7 @@ namespace Fantasy.BusinessEngine.Services
 
                 if (_updateLevel == 0)
                 {
-                   
+
                     try
                     {
 
@@ -136,7 +136,7 @@ namespace Fantasy.BusinessEngine.Services
                         {
                             this.DefaultSession.Flush();
                             this.DefaultSession.Transaction.Commit();
-                            this.OnCommitted(EventArgs.Empty); 
+                            this.OnCommitted(EventArgs.Empty);
                         }
                         else
                         {
@@ -155,7 +155,7 @@ namespace Fantasy.BusinessEngine.Services
                         throw;
                     }
                 }
-                
+
             }
         }
 
@@ -197,7 +197,7 @@ namespace Fantasy.BusinessEngine.Services
             this.DefaultSession.SaveOrUpdate(entity);
         }
 
-        public IQueryable<T> Query<T>()
+        public IQueryable<T> Query<T>() where T : IEntity
         {
             return this.DefaultSession.Query<T>();
         }
@@ -223,5 +223,17 @@ namespace Fantasy.BusinessEngine.Services
                 this.Committed(this, e);
             }
         }
+
+        public void Evict(object obj)
+        {
+            this._defaultSession.Evict(obj);
+
+        }
+
+        public void Evict(Type type)
+        {
+            this.SessionFactory.Evict(type);
+        }
+
     }
 }

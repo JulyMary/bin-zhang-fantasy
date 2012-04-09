@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.Specialized;
+using System.Collections;
 
 namespace Fantasy.BusinessEngine.Collections
 {
-    public class ObservableListView<T> : IObservableList<T>
+    public class ObservableListView<T> : IObservableListView<T>, IObservableListView, IObservableList<T>, IObservableList
     {
 
         private IObservableList<T> _source;
@@ -45,16 +46,13 @@ namespace Fantasy.BusinessEngine.Collections
             this.Source = initialSource;
         }
 
-        #region IObservableList<T> Members
 
         public void Swap(int x, int y)
         {
             this._source.Swap(x, y);
         }
 
-        #endregion
-
-        #region IList<T> Members
+      
 
         public int IndexOf(T item)
         {
@@ -83,9 +81,7 @@ namespace Fantasy.BusinessEngine.Collections
             }
         }
 
-        #endregion
-
-        #region ICollection<T> Members
+       
 
         public void Add(T item)
         {
@@ -122,27 +118,21 @@ namespace Fantasy.BusinessEngine.Collections
             return this._source.Remove(item);
         }
 
-        #endregion
-
-        #region IEnumerable<T> Members
+       
 
         public IEnumerator<T> GetEnumerator()
         {
             return this._source.GetEnumerator();
         }
 
-        #endregion
-
-        #region IEnumerable Members
+       
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
         }
 
-        #endregion
-
-        #region INotifyCollectionChanged Members
+      
 
         protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -155,6 +145,96 @@ namespace Fantasy.BusinessEngine.Collections
 
         public event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
 
-        #endregion
+      
+
+        int IList.Add(object value)
+        {
+            this.Add((T)value);
+            return this.Count - 1;
+        }
+
+        bool IList.Contains(object value)
+        {
+            return this.Contains((T)value);
+        }
+
+        int IList.IndexOf(object value)
+        {
+            return this.IndexOf((T)value);
+        }
+
+        void IList.Insert(int index, object value)
+        {
+            this.Insert(index, (T)value);
+        }
+
+        bool IList.IsFixedSize
+        {
+            get { return false; }
+        }
+
+        void IList.Remove(object value)
+        {
+            this.Remove((T)value);
+        }
+
+        object System.Collections.IList.this[int index]
+        {
+            get
+            {
+                return (T)this[index];
+            }
+            set
+            {
+                this[index] = (T)value;
+            }
+        }
+
+      
+
+        void ICollection.CopyTo(Array array, int index)
+        {
+
+            int copyLenth = Math.Min(array.Length - index, this.Count);
+
+            for (int i = 0; i < copyLenth; i++)
+            {
+                array.SetValue(this[i], index + i);
+            }
+        }
+
+        bool ICollection.IsSynchronized
+        {
+            get { return false; }
+        }
+
+
+        private object _syncRoot = new object();
+
+        object ICollection.SyncRoot
+        {
+            get { return _syncRoot; }
+        }
+
+       
+
+        IObservableList IObservableListView.Source
+        {
+            get
+            {
+                return (IObservableList)this.Source;
+            }
+            set
+            {
+                this.Source = (IObservableList<T>)value;
+            }
+        }
+
+      
+
+      
+
+       
+       
     }
 }

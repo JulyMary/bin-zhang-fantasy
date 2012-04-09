@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using NHibernate.UserTypes;
+using System.Collections;
 
 namespace Fantasy.BusinessEngine.Collections
 {
@@ -18,7 +19,12 @@ namespace Fantasy.BusinessEngine.Collections
     /// <typeparam name="T">Type of item to be stored in the list.</typeparam>
     public interface IObservableList<T> : IList<T>, INotifyCollectionChanged
     {
+        void Swap(int x, int y);
+    }
 
+
+    public interface IObservableList : IList, INotifyCollectionChanged
+    {
         void Swap(int x, int y);
     }
 }
