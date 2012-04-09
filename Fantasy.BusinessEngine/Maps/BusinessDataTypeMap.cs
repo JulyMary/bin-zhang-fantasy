@@ -14,7 +14,9 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.CodeName).Not.Nullable();
             this.Map(x => x.DefaultDatabaseType).Column("DEFAULTDBTYPE").Not.Nullable();
             this.Map(x => x.DefaultLength);
-            this.Map(x => x.DefaultPrecision); 
+            this.Map(x => x.DefaultPrecision);
+            this.Map(x => x.NHType).Column("NHType");
+
 	    }
        
     }

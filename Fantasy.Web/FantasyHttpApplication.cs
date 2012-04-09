@@ -13,16 +13,14 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Fantasy.Web.Mvc.Properties;
 
-namespace Fantasy.Web.Mvc
+namespace Fantasy.Web
 {
     public class FantasyHttpApplication : HttpApplication
     {
 
         protected virtual void Application_Start()
         {
-
-
-            WatchDependencyPaths();
+           
 
             string dir = LongPath.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
 
@@ -36,48 +34,9 @@ namespace Fantasy.Web.Mvc
                 command.Execute(null);
             }
 
-           
-            AreaRegistration.RegisterAllAreas();
-            RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes);
-
             this.BeginRequest += new EventHandler(Application_BeginRequest);
             this.EndRequest += new EventHandler(Application_EndRequest);
         }
-
-        List<FileSystemWatcher> _dependencyWatchers = new List<FileSystemWatcher>();
-
-        private void WatchDependencyPaths()
-        {
-            string root = LongPath.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
-
-            Regex regex = new Regex(@"(?<dir>.*)\\?(?<filter>[^\\]*)$", RegexOptions.RightToLeft);
-
-            foreach (string path in Settings.Default.DependencyPath.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                Match match = regex.Match(path);
-
-                string fullPath = LongPath.Combine(root, match.Groups["dir"].Value);
-                string filter = match.Groups["filter"].Value;
-                FileSystemWatcher watcher = new FileSystemWatcher(fullPath, filter);
-                watcher.Changed += new FileSystemEventHandler(DependencyFileChanged);
-                watcher.Created += new FileSystemEventHandler(DependencyFileChanged);
-                watcher.Deleted += new FileSystemEventHandler(DependencyFileChanged);
-                watcher.EnableRaisingEvents = true;
-                _dependencyWatchers.Add(watcher);
-
-            }
-        }
-        private bool _unloaded = false;
-        void DependencyFileChanged(object sender, FileSystemEventArgs e)
-        {
-            if (!_unloaded)
-            {
-                _unloaded = true;
-                HttpRuntime.UnloadAppDomain();
-            }
-        }
-
 
         void Application_EndRequest(object sender, EventArgs e)
         {
@@ -114,15 +73,6 @@ namespace Fantasy.Web.Mvc
 
         }
 
-        protected virtual void RegisterGlobalFilters(GlobalFilterCollection filters)
-        {
-           
-        }
-
-        protected virtual void RegisterRoutes(RouteCollection routes)
-        {
-            
-
-        }
+       
     }
 }

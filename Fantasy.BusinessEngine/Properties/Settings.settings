@@ -8,5 +8,8 @@
     <Setting Name="SystemReferencesPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\</Value>
     </Setting>
+    <Setting Name="BusinessDataAssemblyName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Fantasy.BusinessData</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

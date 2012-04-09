@@ -48,13 +48,29 @@
             <fw:ChainedControllerFactory/>
         </Object>
     </Extension>
-    
-    
-    
-    
+
+
+    <Extension Path="fantasy/businessengine">
+        <Object ID="contextprovider">
+            <fw:HttpContextBusinessEngineContextProvider/>
+        </Object>
+    </Extension>
+
     <Extension Path="fantasy/startup">
         <Object ID="SetControllerFactory">
             <fw:SetControllerFactoryCommand />
+        </Object>
+        <Object ID="RegisterAllArea">
+            <fw:RegisterAllAreasCommand/>
+        </Object>
+        <Object ID="RegisterSystemGlobalFilters">
+            <fw:RegisterSystemGlobalFiltersCommand/>
+        </Object>
+        <Object ID="IgnoreSystemRout">
+            <fw:IgnoreSystemRouteCommand/>
+        </Object>
+        <Object ID="WatchDependencyPath">
+            <fw:WatchDependencyPathCommand/>
         </Object>
     </Extension>
 
@@ -140,4 +156,6 @@
             <be:DefaultEntityDeletedHandler/>
         </Object>
     </Extension>
+    
+    
 </AddIn>

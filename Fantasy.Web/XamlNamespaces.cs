@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Markup;
 
 [assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Web.Mvc")]
+[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Web")]
 
 internal class XamlNamespaces
 {

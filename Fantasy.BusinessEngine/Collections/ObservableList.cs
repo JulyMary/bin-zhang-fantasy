@@ -15,7 +15,7 @@ namespace Fantasy.BusinessEngine.Collections
     /// changed.
     /// </summary>
     /// <typeparam name="T">Type of item to be stored in the list.</typeparam>
-    public class ObservableList<T> : List<T>, IObservableList<T>, IUserCollectionType
+    public class ObservableList<T> : List<T>, IObservableList<T>, IObservableList, IUserCollectionType
     {
         public new void Add(T item)
         {

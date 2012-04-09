@@ -5,7 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine;
 using System.Web;
 
-namespace Fantasy.Web.Mvc
+namespace Fantasy.Web
 {
     public class HttpContextBusinessEngineContextProvider : IBusinessEngineContextProvider
     {

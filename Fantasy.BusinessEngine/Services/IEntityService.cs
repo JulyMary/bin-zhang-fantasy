@@ -26,11 +26,15 @@ namespace Fantasy.BusinessEngine.Services
 
         IDbCommand CreateCommand();
 
-        IQueryable<T> Query<T>();
+        IQueryable<T> Query<T>() where T : IEntity;
 
         event CancelEventHandler Committing;
 
         event EventHandler Committed;
+
+        void Evict(object obj);
+      
+        void Evict(Type type);
 
 
 

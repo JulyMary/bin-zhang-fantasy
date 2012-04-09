@@ -20,6 +20,6 @@ namespace <#=role.Package.FullCodeName#>
 {
     public partial class <#=role.CodeName#> : Fantasy.BusinessEngine.BusinessRole
 	{
-
+	   
     }
 }

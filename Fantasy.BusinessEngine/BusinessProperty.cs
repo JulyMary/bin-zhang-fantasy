@@ -62,8 +62,6 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("DataType", value);
-               
-                
             }
         }
 
