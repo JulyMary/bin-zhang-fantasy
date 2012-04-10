@@ -9,20 +9,11 @@ namespace Fantasy.BusinessEngine.Services
     {
         IEnumerable<BusinessClass> AllClasses { get; }
 
-        BusinessClass FindClass(Guid id);
+        BusinessClass FindBusinessClass(Guid id);
 
-        //IEnumerable<BusinessApplication> AllApplications { get; }
+        BusinessClass FindBusinessClassForType(Type type);
 
-        //BusinessApplication FindApplication(Guid id);
-
-        //IEnumerable<BusinessUserData> AllUsers { get; }
-
-        //IEnumerable<BusinessRoleData> AllRoles { get; }
-
-        //BusinessUserData FindUser(Guid id);
-
-        //BusinessRoleData FindRole(Guid id);
-
+        BusinessClass RootClass { get; }
 
 
         

@@ -28,7 +28,7 @@
                   type="Boolean" />
     </class>
     <subclass name="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              extends="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+              extends="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null"
               discriminator-value="b17cc38f-50f8-48c5-97d7-ea1fcf0ce183">
         <join table="CLS_PERSON"
               schema="dbo">
@@ -37,13 +37,13 @@
                       column="AGE"
                       type="Int32" />
             <bag name="Department"
-                 table="ASSN_DEPARTMENT_PERSON"
+                 table="CLS_DEPARTMENT_STAFFS"
                  schema="dbo"
                  lazy="true"
-                 inverse="true"
+                 inverse="false"
                  cascade="none"
-                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
-                 access="Fantasy.BusinessEngine.Services.ManyToOneAccessor, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null">
+                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null"
+                 access="Fantasy.BusinessEngine.Services.ManyToOneAccessor, Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null">
                 <key column="RIGHTID" />
                 <many-to-many class="Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
                               column="LEFTID" />
@@ -51,31 +51,31 @@
         </join>
     </subclass>
     <subclass name="Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              extends="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+              extends="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null"
               discriminator-value="71903459-c248-4b9e-b493-efb438b689c7">
         <join table="CLS_DEPARTMENT"
               schema="dbo">
             <key column="ID" />
+            <bag name="Staffs"
+                 table="CLS_DEPARTMENT_STAFFS"
+                 schema="dbo"
+                 lazy="true"
+                 inverse="false"
+                 cascade="none"
+                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null"
+                 access="Fantasy.BusinessEngine.Services.ManyToManyAccessor, Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null">
+                <key column="LEFTID" />
+                <many-to-many class="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                              column="RIGHTID" />
+            </bag>
             <bag name="Leader"
                  table="ASSN_DEPARTMENT_LEADER"
                  schema="dbo"
                  lazy="true"
                  inverse="true"
                  cascade="none"
-                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
-                 access="Fantasy.BusinessEngine.Services.ManyToOneAccessor, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null">
-                <key column="LEFTID" />
-                <many-to-many class="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-                              column="RIGHTID" />
-            </bag>
-            <bag name="Staffs"
-                 table="ASSN_DEPARTMENT_PERSON"
-                 schema="dbo"
-                 lazy="true"
-                 inverse="true"
-                 cascade="none"
-                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
-                 access="Fantasy.BusinessEngine.Services.ManyToManyAccessor, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null">
+                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null"
+                 access="Fantasy.BusinessEngine.Services.ManyToOneAccessor, Fantasy.BusinessEngine, Version=1.0.0.137, Culture=neutral, PublicKeyToken=null">
                 <key column="LEFTID" />
                 <many-to-many class="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
                               column="RIGHTID" />
