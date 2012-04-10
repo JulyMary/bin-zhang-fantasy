@@ -120,4 +120,7 @@
   <data name="AssemblyReferenceGroupName" xml:space="preserve">
     <value>References</value>
   </data>
+  <data name="EntityNotFoundExceptionMessage" xml:space="preserve">
+    <value>Entity {0} ({1}) does not exist.</value>
+  </data>
 </root>

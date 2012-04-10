@@ -11,7 +11,7 @@ using Fantasy.IO;
 using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine.Services;
 using Fantasy;
-using Fantasy.Testing;
+//using Fantasy.Testing;
 
 namespace ConsoleTest
 {
@@ -36,24 +36,24 @@ namespace ConsoleTest
             es.BeginUpdate();
             try
             {
-                Department department = es.CreateEntity<Department>();
+                //Department department = es.CreateEntity<Department>();
                 
                
                
                 
-                department.Name = "Development";
+                //department.Name = "Development";
 
-                Person leader = es.CreateEntity<Person>();
+                //Person leader = es.CreateEntity<Person>();
                
-                leader.Name = "Bush";
-                leader.Age = 30;
-                department.Staffs.Add(leader);
-                leader.Department = department;
-                department.Leader = leader;
+                //leader.Name = "Bush";
+                //leader.Age = 30;
+                //department.Staffs.Add(leader);
+                //leader.Department = department;
+                //department.Leader = leader;
                
                 
-                es.SaveOrUpdate(department);
-                es.SaveOrUpdate(leader);
+                //es.SaveOrUpdate(department);
+                //es.SaveOrUpdate(leader);
                 
                 
             }

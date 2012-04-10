@@ -7,10 +7,9 @@ namespace Fantasy.BusinessEngine.Services
 {
     public interface IBusinessApplicationService
     {
-        IEnumerable<BusinessApplication> AllApplications { get; }
 
-        BusinessApplication FindBusinessApplication(Guid id);
+        BusinessApplication Create(Guid id);
 
-        BusinessApplication FindBusinessApplicationForType(Type t);
+        BusinessApplication Create(Type t);
     }
 }

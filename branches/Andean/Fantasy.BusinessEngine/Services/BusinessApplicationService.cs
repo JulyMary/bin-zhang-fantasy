@@ -13,17 +13,15 @@ namespace Fantasy.BusinessEngine.Services
         public override void InitializeService()
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessApplicationData[] datas = es.Query<BusinessApplicationData>().ToArray();
-            foreach (BusinessApplicationData data in datas)
-            {
-                
-            }
-
-
+            this._datas = es.Query<BusinessApplicationData>().OrderBy(a=>a.Id).ToArray();
+           
             base.InitializeService();
         }
 
-        private static Type EntityType(this BusinessApplicationData data)
+        private BusinessApplicationData[] _datas;
+       
+
+        private Type EntityType(BusinessApplicationData data)
         {
             Type rs;
             switch (data.ScriptOptions)
@@ -47,23 +45,31 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
+        private BusinessApplication Create(BusinessApplicationData data, Type type)
+        {
+            BusinessApplication rs = (BusinessApplication)Activator.CreateInstance(type);
+            rs.Data = data;
+            return rs;
 
-       
+        }
 
         #region IBusinessApplicationService Members
 
-        public IEnumerable<BusinessApplication> AllApplications
+        public BusinessApplication Create(Guid id)
         {
-            get { return _allApps; }
+            int pos = this._datas.BinarySearchBy(id, a=>a.Id);
+            if(pos >= 0)
+            {
+                BusinessApplicationData data = this._datas[pos];
+                return this.Create(data, this.EntityType(data));
+            }
+            else
+            {
+                throw new EntityNotFoundException(typeof(BusinessApplication), id);
+            }
         }
 
-        public BusinessApplication FindBusinessApplication(Guid id)
-        {
-            int pos = _allApps.BinarySearchBy(id, a => a.Data.Id);
-            return pos >= 0 ? _allApps[pos] : null;
-        }
-
-        public BusinessApplication FindBusinessApplicationForType(Type t)
+        public BusinessApplication Create(Type t)
         {
             throw new NotImplementedException();
         }
