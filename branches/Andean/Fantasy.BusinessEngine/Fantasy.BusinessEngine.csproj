@@ -127,7 +127,7 @@
     <Compile Include="Services\INHConfigurationService.cs" />
     <Compile Include="Services\ILastUpdateTimestampService.cs" />
     <Compile Include="Services\ManyToOneAccessor.cs" />
-    <Compile Include="Services\ObjectModelService.cs" />
+    <Compile Include="Services\MapBusinessClassService.cs" />
     <Compile Include="Services\NHConfigurationService.cs" />
     <Compile Include="Services\ManyToManyAccessor.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
@@ -198,12 +198,6 @@
       <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
       <Name>Fantasy.Base</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Fantasy.BusinessEngine.addin.xaml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Codons\" />

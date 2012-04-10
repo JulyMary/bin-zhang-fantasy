@@ -19,33 +19,34 @@ namespace Fantasy.BusinessEngine
             object rs;
             if(!this._collections.TryGetValue(name, out rs))
             {
-                ObservableList<T> persisted = (ObservableList<T>)this.GetPersistedCollection(name);
+                IObservableList<T> persisted = (IObservableList<T>)GetPersistedCollection(this, name, typeof(T));
                 rs = new BusinessObjectCollection<T>(persisted);
                 this._collections.Add(name, rs);
             }
             return (BusinessObjectCollection<T>)rs;
+
+           
         }
 
-        internal object GetPersistedCollection(string name)
+        internal static object GetPersistedCollection(BusinessObject obj, string name, Type elementType)
         {
             object rs;
 
-            if (!this._persistedCollections.TryGetValue(name, out rs))
+            if (!obj._persistedCollections.TryGetValue(name, out rs))
             {
-                PropertyInfo propInfo = this.GetType().GetProperty(name);
-                Type elementType = propInfo.PropertyType.GetGenericArguments()[0];
+                
                 Type t = typeof(ObservableList<>).MakeGenericType(elementType);
 
                 rs = Activator.CreateInstance(t);
-                this._persistedCollections.Add(name, rs);
+                obj._persistedCollections.Add(name, rs);
             }
             return rs;
         }
 
-        internal void SetPersistedCollection(string name, object value)
+        internal static void SetPersistedCollection(BusinessObject obj, string name, object value)
         {
-            this._persistedCollections[name] = value;
-            object oc = this._collections.GetValueOrDefault(name);
+            obj._persistedCollections[name] = value;
+            object oc = obj._collections.GetValueOrDefault(name);
             if (oc != null)
             {
                 ((IObservableListView)oc).Source = (IObservableList)value;
@@ -93,6 +94,18 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("ClassId", value);
+            }
+        }
+
+        public virtual string Name
+        {
+            get
+            {
+                return (string)this.GetValue("Name", null);
+            }
+            set
+            {
+                this.SetValue("Name", value);
             }
         }
 

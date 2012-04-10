@@ -23,19 +23,6 @@ namespace Fantasy.BusinessEngine.Services
 
             INHConfigurationService cs = this.Site.GetRequiredService<INHConfigurationService>();
 
-            FluentNHibernate.Diagnostics.NullDiagnosticsLogger logger = new FluentNHibernate.Diagnostics.NullDiagnosticsLogger();
-            MappingConfiguration mc = new MappingConfiguration(logger);
-            mc.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly());
-
-            foreach (Assembly asm in AddIns.AddInTree.Tree.GetTreeNode("fantasy/nhibernate/assemblies").BuildChildItems(this, this.Site))
-            {
-                mc.FluentMappings.AddFromAssembly(asm);
-            }
-
-            mc.Apply(cs.Configuration);
-
-
-
             this._preDeleteEventListener = new NHPreDeleteEventListener() { Site = this.Site };
             this._postDeleteEventListener = new NHPostDeleteEventListener() { Site = this.Site };
             this._createListener = new EntityCreateEventListener() { Site = this.Site };
@@ -59,28 +46,22 @@ namespace Fantasy.BusinessEngine.Services
 
 
 
-        public ISession OpenSession()
-        {
-            return _sessionFactory != null ? _sessionFactory.OpenSession() : null;
-        }
+       
         private ISession _defaultSession = null;
-        public ISession DefaultSession
+        private ISession DefaultSession
         {
             get
             {
                 if (_defaultSession == null)
                 {
-                    _defaultSession = this.OpenSession();
+                    _defaultSession = _sessionFactory.OpenSession();
                 }
                 return _defaultSession;
             }
         }
 
         private ISessionFactory _sessionFactory;
-        public ISessionFactory SessionFactory
-        {
-            get { return _sessionFactory; }
-        }
+       
 
 
 
@@ -232,7 +213,7 @@ namespace Fantasy.BusinessEngine.Services
 
         public void Evict(Type type)
         {
-            this.SessionFactory.Evict(type);
+            this._defaultSession.Evict(type);
         }
 
     }

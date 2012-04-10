@@ -1,13 +1,85 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
-    <joined-subclass table="asdf"  >
-        <key></key>
-        <bag   >
-            <key>
-                
-            </key>
-            
-        </bag>
-       
-    </joined-subclass>
+﻿<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+    <class name="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine"
+           table="BusinessObject"
+           discriminator-value="bf0aa7f4-588f-4556-963d-33242e649d57"
+           schema="dbo">
+        <id name="Id"
+            column="ID">
+            <generator class="assigned" />
+        </id>
+        <discriminator column="CLASSID"
+                       type="Guid"
+                       insert="false" />
+        <property name="Name"
+                  column="Name"
+                  type="String" />
+        <property name="ClassId"
+                  column="ClassId"
+                  type="Guid"
+                  update="false" />
+        <property name="CreationTime"
+                  column="CreationTime"
+                  type="DateTime" />
+        <property name="ModificationTime"
+                  column="ModificationTime"
+                  type="DateTime" />
+        <property name="IsSystem"
+                  column="IsSystem"
+                  type="Boolean" />
+    </class>
+    <subclass name="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              extends="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+              discriminator-value="b17cc38f-50f8-48c5-97d7-ea1fcf0ce183">
+        <join table="CLS_PERSON"
+              schema="dbo">
+            <key column="ID" />
+            <property name="Age"
+                      column="AGE"
+                      type="Int32" />
+            <bag name="Department"
+                 table="ASSN_DEPARTMENT_PERSON"
+                 schema="dbo"
+                 lazy="true"
+                 inverse="true"
+                 cascade="none"
+                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+                 access="Fantasy.BusinessEngine.Services.ManyToOneAccessor, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null">
+                <key column="RIGHTID" />
+                <many-to-many class="Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                              column="LEFTID" />
+            </bag>
+        </join>
+    </subclass>
+    <subclass name="Fantasy.Testing.Department, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              extends="Fantasy.BusinessEngine.BusinessObject, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+              discriminator-value="71903459-c248-4b9e-b493-efb438b689c7">
+        <join table="CLS_DEPARTMENT"
+              schema="dbo">
+            <key column="ID" />
+            <bag name="Leader"
+                 table="ASSN_DEPARTMENT_LEADER"
+                 schema="dbo"
+                 lazy="true"
+                 inverse="true"
+                 cascade="none"
+                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+                 access="Fantasy.BusinessEngine.Services.ManyToOneAccessor, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null">
+                <key column="LEFTID" />
+                <many-to-many class="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                              column="RIGHTID" />
+            </bag>
+            <bag name="Staffs"
+                 table="ASSN_DEPARTMENT_PERSON"
+                 schema="dbo"
+                 lazy="true"
+                 inverse="true"
+                 cascade="none"
+                 collection-type="Fantasy.BusinessEngine.Collections.ObservableList`1[[Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null"
+                 access="Fantasy.BusinessEngine.Services.ManyToManyAccessor, Fantasy.BusinessEngine, Version=1.0.0.136, Culture=neutral, PublicKeyToken=null">
+                <key column="LEFTID" />
+                <many-to-many class="Fantasy.Testing.Person, Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                              column="RIGHTID" />
+            </bag>
+        </join>
+    </subclass>
 </hibernate-mapping>

@@ -19,12 +19,12 @@ namespace Fantasy.BusinessEngine.Services
 
         public IGetter GetGetter(Type theClass, string propertyName)
         {
-            throw new NotImplementedException();
+            return new Getter(theClass, propertyName);
         }
 
         public ISetter GetSetter(Type theClass, string propertyName)
         {
-            throw new NotImplementedException();
+            return new Setter(theClass, propertyName);
         }
 
 
@@ -36,7 +36,8 @@ namespace Fantasy.BusinessEngine.Services
                
                 this.PropertyName = propertyName;
                 PropertyInfo propInfo = type.GetProperty(propertyName);
-                this.ReturnType = typeof(ObservableList<>).MakeGenericType(propInfo.PropertyType);
+                this._elementType = propInfo.PropertyType;
+                this.ReturnType = typeof(ObservableList<>).MakeGenericType(this._elementType);
 
             }
 
@@ -44,7 +45,7 @@ namespace Fantasy.BusinessEngine.Services
 
             public object Get(object target)
             {
-                return ((BusinessObject)target).GetPersistedCollection(this.PropertyName);
+                return BusinessObject.GetPersistedCollection((BusinessObject)target, this.PropertyName, this._elementType);
             }
 
             public object GetForInsert(object owner, System.Collections.IDictionary mergeMap, NHibernate.Engine.ISessionImplementor session)
@@ -59,7 +60,7 @@ namespace Fantasy.BusinessEngine.Services
 
             public string PropertyName { get; private set; }
 
-
+            private Type _elementType;
             public Type ReturnType { get; private set; }
             
 
@@ -86,7 +87,8 @@ namespace Fantasy.BusinessEngine.Services
 
             public void Set(object target, object value)
             {
-                ((BusinessObject)target).SetPersistedCollection(this.PropertyName, value);
+                BusinessObject.SetPersistedCollection((BusinessObject)target, this.PropertyName, value);
+               
             }
 
            
