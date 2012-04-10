@@ -120,8 +120,10 @@
       <DependentUpon>Settings.settings.tt</DependentUpon>
     </Compile>
     <Compile Include="ScriptOptions.cs" />
+    <Compile Include="Services\BusinessApplicationService.cs" />
     <Compile Include="Services\BusinessUserRoleExtensions.cs" />
     <Compile Include="Services\BusinessUserRoleService.cs" />
+    <Compile Include="Services\IBusinessApplicationService.cs" />
     <Compile Include="Services\IBusinessUserRoleService.cs" />
     <Compile Include="Services\IObjectModelService.cs" />
     <Compile Include="Services\INHConfigurationService.cs" />
