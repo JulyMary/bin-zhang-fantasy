@@ -36,21 +36,22 @@ namespace ConsoleTest
             es.BeginUpdate();
             try
             {
-                Department department = es.Query<Department>().First();
-                Person leader = es.Query<Person>().First();
-                //department.Leader = leader;
-                leader.LeadingDepartment = department;
-                //department.ClassId = new Guid("71903459-c248-4b9e-b493-efb438b689c7");
-                //department.Name = "Development";
-
-                //Person leader = es.CreateEntity<Person>();
-                //leader.ClassId = new Guid("b17cc38f-50f8-48c5-97d7-ea1fcf0ce183");
-                //leader.Name = "Bush";
-                //leader.Age = 30;
-                //department.Staffs.Add(leader);
-                //leader.Department = department;
+                Department department = es.CreateEntity<Department>();
+                
                
-                //department.Leader = leader;
+               
+                
+                department.Name = "Development";
+
+                Person leader = es.CreateEntity<Person>();
+               
+                leader.Name = "Bush";
+                leader.Age = 30;
+                department.Staffs.Add(leader);
+                leader.Department = department;
+                department.Leader = leader;
+               
+                
                 es.SaveOrUpdate(department);
                 es.SaveOrUpdate(leader);
                 

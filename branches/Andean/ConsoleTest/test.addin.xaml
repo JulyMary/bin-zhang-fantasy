@@ -45,6 +45,9 @@
         <Object ID="BusinessDataTypeRepository">
             <be:DefaultBusinessDataTypeRepository/>
         </Object>
+        <Object ID="ObjectModelService">
+            <be:ObjectModelService/>
+        </Object>
        
     </Extension>
     
@@ -53,10 +56,17 @@
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/create">
+        
+        <Object ID="SetBusinessObjectClassId">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessObject}"/>
+            </Object.Conditional>
+            <be:SetBusinessObjectClassId/>
+        </Object>
         <Object ID="monitorpropertychange">
             <be:MonitorEntityPropertyChangeHandler/>
         </Object>
-
+        
         <Object ID="defaultcreatehandler">
             <be:DefaultEntityCreateHandler/>
         </Object>
