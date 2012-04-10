@@ -39,7 +39,7 @@
             <be:NHConfigurationService/>
         </Object>
         <Object ID="MetaData">
-            <be:MetaDataService/>
+            
         </Object>
         <Object ID="BusinessDataTypeRepository">
             <be:DefaultBusinessDataTypeRepository/>

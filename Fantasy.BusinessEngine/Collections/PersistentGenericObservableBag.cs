@@ -12,7 +12,7 @@ namespace Fantasy.BusinessEngine.Collections
     /// collection's contents have changed.
     /// </summary>
     /// <typeparam name="T">Type of item to be stored in the list.</typeparam>
-    public class PersistentGenericObservableBag<T> : PersistentGenericBag<T>, IObservableList<T>, IList<T>
+    public class PersistentGenericObservableBag<T> : PersistentGenericBag<T>, IObservableList<T>, IObservableList, IList<T>
     {
         public PersistentGenericObservableBag(ISessionImplementor session, ObservableList<T> list) : base(session, list)
         {

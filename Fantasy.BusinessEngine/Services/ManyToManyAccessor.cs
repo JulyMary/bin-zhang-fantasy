@@ -39,14 +39,14 @@ namespace Fantasy.BusinessEngine.Services
                     throw new MissingMemberException(type.AssemblyQualifiedName, propertyName);
                 }
 
-                Type elementType = propInfo.PropertyType.GetGenericArguments()[0];
-                this.ReturnType = typeof(ObservableList<>).MakeGenericType(elementType);
+                this._elementType = propInfo.PropertyType.GetGenericArguments()[0];
+                this.ReturnType = typeof(ObservableList<>).MakeGenericType(this._elementType);
 
             }
 
             public object Get(object target)
             {
-                return ((BusinessObject)target).GetPersistedCollection(this.PropertyName);
+                return BusinessObject.GetPersistedCollection((BusinessObject)target, this.PropertyName, this._elementType);
             }
 
             public object GetForInsert(object owner, System.Collections.IDictionary mergeMap, NHibernate.Engine.ISessionImplementor session)
@@ -61,7 +61,9 @@ namespace Fantasy.BusinessEngine.Services
 
             public string PropertyName { get; private set; }
 
-          
+           
+            private Type _elementType;
+
             public Type ReturnType
             {
                 get;private set;
@@ -88,7 +90,7 @@ namespace Fantasy.BusinessEngine.Services
 
             public void Set(object target, object value)
             {
-                ((BusinessObject)target).SetPersistedCollection(this.PropertyName, value);
+                BusinessObject.SetPersistedCollection((BusinessObject)target, this.PropertyName, value);
             }
         }
 

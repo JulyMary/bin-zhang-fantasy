@@ -170,19 +170,7 @@ private string GetDefaultValue(BusinessProperty property)
 
 private void RenderManyToOne(string name, string type)
 {
-	#>  
-	    protected virtual ObservableList<<#=type#>> Persisted<#=name#>
-        {
-            get
-			{ 
-			    return GetPersistedCollection<<#=type#>>("<#=name#>"); 
-			}
-            private set
-            {
-                SetPersistedCollection("<#=name#>", value);
-            }
-        }
-		
+	#> 
 		public virtual <#=type#> <#=name#>
 		{
 		    get
@@ -251,19 +239,6 @@ private void RenderScalar(string name, string type, string defaultValue)
 
 private void RenderCollection(string name, string type)
 {#>
-       
-		protected virtual ObservableList<<#=type#>> Persisted<#=name#>
-        {
-            get
-			{ 
-			    return GetPersistedCollection<<#=type#>>("<#=name#>"); 
-			}
-            private set
-            {
-                SetPersistedCollection("<#=name#>", value);
-            }
-        }
-
         public virtual BusinessObjectCollection<<#=type#>> <#=name#>
         {
             get

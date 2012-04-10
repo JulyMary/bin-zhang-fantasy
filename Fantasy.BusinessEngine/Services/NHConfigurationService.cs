@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.ServiceModel;
+using NHibernate;
+using System.Reflection;
+using FluentNHibernate.Cfg;
 using NHibernate.Event;
-using Fantasy.BusinessEngine.Events;
 using NHibernate.Event.Default;
+using Fantasy.BusinessEngine.Events;
+using System.Data;
+using NHibernate.Linq;
+using System.ComponentModel;
+
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -25,7 +32,6 @@ namespace Fantasy.BusinessEngine.Services
             this._configuration = new NHibernate.Cfg.Configuration();
             this._configuration.SetProperty("connection.connection_string", this.Site.GetRequiredService<IConnectionStringProvider>().ConnectionString);
 
-
             this._configuration.EventListeners.PostLoadEventListeners = new IPostLoadEventListener[] { new NHPostLoadEventListener() {Site=this.Site},
                 new DefaultPostLoadEventListener() };
             this._configuration.EventListeners.PreInsertEventListeners = new IPreInsertEventListener[] { new NHPreInsertEventListener() { Site = this.Site } };
@@ -35,6 +41,18 @@ namespace Fantasy.BusinessEngine.Services
 
             this._configuration.EventListeners.PreDeleteEventListeners = new IPreDeleteEventListener[] {new NHPreDeleteEventListener() { Site = this.Site }};
             this._configuration.EventListeners.PostDeleteEventListeners = new IPostDeleteEventListener[] { new NHPostDeleteEventListener() { Site = this.Site } };
+
+
+            FluentNHibernate.Diagnostics.NullDiagnosticsLogger logger = new FluentNHibernate.Diagnostics.NullDiagnosticsLogger();
+            MappingConfiguration mc = new MappingConfiguration(logger);
+            mc.FluentMappings.AddFromAssembly(Assembly.GetExecutingAssembly());
+
+            foreach (Assembly asm in AddIns.AddInTree.Tree.GetTreeNode("fantasy/nhibernate/assemblies").BuildChildItems(this, this.Site))
+            {
+                mc.FluentMappings.AddFromAssembly(asm);
+            }
+
+            mc.Apply(this._configuration);
             base.InitializeService();
         }
     }

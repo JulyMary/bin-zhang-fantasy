@@ -67,8 +67,9 @@
     <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AvalonDock">
-      <HintPath>..\External\AvalonDock.dll</HintPath>
+    <Reference Include="Fantasy.BusinessData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Fantasy.BusinessData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -97,6 +98,14 @@
       <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
       <Name>Fantasy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fantasy.BusinessEngine.MSSQL\Fantasy.BusinessEngine.MSSQL.csproj">
+      <Project>{100447FB-8D38-4EB0-8A97-B5DB6ECDBAA2}</Project>
+      <Name>Fantasy.BusinessEngine.MSSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fantasy.BusinessEngine\Fantasy.BusinessEngine.csproj">
+      <Project>{FEEDE1C2-C196-4A85-98A3-A5547C4A8D93}</Project>
+      <Name>Fantasy.BusinessEngine</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="test.addin.xaml">
@@ -108,15 +117,12 @@
     <None Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <EntityDeploy Include="Model1.edmx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
