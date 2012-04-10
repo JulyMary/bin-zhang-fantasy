@@ -19,7 +19,7 @@ namespace Fantasy.BusinessEngine.Services
    
         private XNamespace _nhns = "urn:nhibernate-mapping-2.2";
 
-        private Guid _businessObjectClassId = new Guid("bf0aa7f4-588f-4556-963d-33242e649d57");
+      
 
         public override void InitializeService()
         {
@@ -34,9 +34,9 @@ namespace Fantasy.BusinessEngine.Services
 
                 foreach (BusinessClass @class in classes)
                 {
-                    if (@class.Id == _businessObjectClassId)
+                    if (@class.Id == BusinessClass.RootClassId)
                     {
-                        mappingElement.Add(this.CreateBusinessObjectMap(@class));
+                        mappingElement.Add(this.CreateRootClassMap(@class));
                     }
                     else if (!@class.IsSimple)
                     {
@@ -98,7 +98,7 @@ namespace Fantasy.BusinessEngine.Services
 
             foreach (BusinessAssociation assn in @class.LeftAssociations.Where(w=>w.RightNavigatable))
             {
-                join.Add(this.CreateAssnMap(assn.RightRoleCode, assn.TableName, assn.TableSchema, assn.RightClass, new Cardinality(assn.RightCardinality).IsSingleton, "LEFTID", "RIGHTID", !assn.LeftNavigatable )); 
+                join.Add(this.CreateAssnMap(assn.RightRoleCode, assn.TableName, assn.TableSchema, assn.RightClass, new Cardinality(assn.RightCardinality).IsSingleton, "LEFTID", "RIGHTID", assn.LeftNavigatable )); 
 
             }
 
@@ -145,7 +145,7 @@ namespace Fantasy.BusinessEngine.Services
             return rs;
         }
 
-        private XElement CreateBusinessObjectMap(BusinessClass @class)
+        private XElement CreateRootClassMap(BusinessClass @class)
         {
             XElement classElement = new XElement(_nhns + "class",
                 new XAttribute("name", @class.ExternalType),

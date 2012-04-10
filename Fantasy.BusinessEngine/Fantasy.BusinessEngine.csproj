@@ -130,6 +130,7 @@
     <Compile Include="Services\MapBusinessClassService.cs" />
     <Compile Include="Services\NHConfigurationService.cs" />
     <Compile Include="Services\ManyToManyAccessor.cs" />
+    <Compile Include="Services\ObjectModelService.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Services\WellknownRoles.cs" />
     <Compile Include="Services\WellknownSequences.cs" />
     <Compile Include="Services\WellknownUsers.cs" />
+    <Compile Include="SetBusinessObjectClassId.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
