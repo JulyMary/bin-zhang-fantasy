@@ -32,7 +32,15 @@ namespace Fantasy.BusinessEngine.Services
         public BusinessClass FindBusinessClass(Guid id)
         {
             int pos = _allClasses.BinarySearchBy(id, c => c.Id);
-            return pos >= 0 ? _allClasses[pos] : null;
+            if (pos >= 0)
+            {
+                return _allClasses[pos];
+            }
+            else
+            {
+                throw new EntityNotFoundException(typeof(BusinessClass), id);
+            }
+            
         }
 
         public BusinessClass FindBusinessClassForType(Type type)

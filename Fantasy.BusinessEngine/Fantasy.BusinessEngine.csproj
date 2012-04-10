@@ -95,6 +95,7 @@
     <Compile Include="BusinessAssociation.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="Encryption.cs" />
+    <Compile Include="EntityNotFoundException.cs" />
     <Compile Include="EntityPropertyChangedEventManager.cs" />
     <Compile Include="Events\BusinessAssociationCreateOrderHandler.cs" />
     <Compile Include="Events\BusinessAssociationCreateTableHandler.cs" />
