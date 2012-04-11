@@ -13,13 +13,14 @@ namespace Fantasy.BusinessEngine.Services
         {
 
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            this._allClasses = es.Query<BusinessClass>().OrderBy(c => c.Id).ToArray();
+            this._allClasses = es.Query<BusinessClass>().ToList();
+            _allClasses.SortBy(c => c.Id);
             this._typeClasses = this._allClasses.ToDictionary(c => c.EntityType());
             this.RootClass = this.FindBusinessClass(BusinessClass.RootClassId);
             base.InitializeService();
         }
 
-        private BusinessClass[] _allClasses;
+        private IList<BusinessClass> _allClasses;
         private Dictionary<Type, BusinessClass> _typeClasses;
         public IEnumerable<BusinessClass> AllClasses
         {

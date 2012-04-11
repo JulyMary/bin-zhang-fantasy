@@ -13,12 +13,13 @@ namespace Fantasy.BusinessEngine.Services
         public override void InitializeService()
         {
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            this._datas = es.Query<BusinessApplicationData>().OrderBy(a=>a.Id).ToArray();
+            this._datas = es.Query<BusinessApplicationData>().ToList();
+            this._datas.SortBy(a => a.Id);
            
             base.InitializeService();
         }
 
-        private BusinessApplicationData[] _datas;
+        private List<BusinessApplicationData> _datas;
        
 
         private Type EntityType(BusinessApplicationData data)
@@ -71,7 +72,15 @@ namespace Fantasy.BusinessEngine.Services
 
         public BusinessApplication Create(Type t)
         {
-            throw new NotImplementedException();
+            BusinessApplicationData data = this._datas.FirstOrDefault(a => this.EntityType(a) == t);
+            if (data != null)
+            {
+                return this.Create(data, t);
+            }
+            else
+            {
+                throw new ApplicationException(String.Format("Application does not exist for type {0}", t.AssemblyQualifiedName)); 
+            }
         }
 
         #endregion
