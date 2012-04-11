@@ -129,11 +129,13 @@
     <Compile Include="Services\IObjectModelService.cs" />
     <Compile Include="Services\INHConfigurationService.cs" />
     <Compile Include="Services\ILastUpdateTimestampService.cs" />
+    <Compile Include="Services\ISecurityService.cs" />
     <Compile Include="Services\ManyToOneAccessor.cs" />
     <Compile Include="Services\MapBusinessClassService.cs" />
     <Compile Include="Services\NHConfigurationService.cs" />
     <Compile Include="Services\ManyToManyAccessor.cs" />
     <Compile Include="Services\ObjectModelService.cs" />
+    <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
     <Compile Include="Events\BusinessPropertyCreateOrderHandler.cs" />
