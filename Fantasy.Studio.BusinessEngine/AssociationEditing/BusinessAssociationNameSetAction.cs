@@ -30,7 +30,7 @@ namespace Fantasy.Studio.BusinessEngine.AssociationEditing
                 }
                 if (assn.EntityState == EntityState.New && assn.TableName == otname)
                 {
-                    assn.TableName = (Settings.Default.DefaultClassTablePrefix + "_" + cname).ToUpper();
+                    assn.TableName = (Settings.Default.DefaultAssociationTablePrefix + "_" + cname).ToUpper();
                 }
 
             }

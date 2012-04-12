@@ -57,6 +57,7 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Applications\AdministrativeApplication.cs" />
     <Compile Include="BusinessApplication.cs" />
     <Compile Include="BusinessApplicationData.cs" />
     <Compile Include="BusinessApplicationACL.cs" />

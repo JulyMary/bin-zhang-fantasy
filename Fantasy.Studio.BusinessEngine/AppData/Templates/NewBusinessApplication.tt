@@ -20,9 +20,6 @@ namespace <#=app.Package.FullCodeName#>
 {
     public partial class <#=app.CodeName#> : Fantasy.BusinessEngine.BusinessApplication
 	{
-	    public <#=app.CodeName#>(Fantasy.BusinessEngine.BusinessApplicationData data)
-		    : base(data)
-		{
-		}
+	   
     }
 }

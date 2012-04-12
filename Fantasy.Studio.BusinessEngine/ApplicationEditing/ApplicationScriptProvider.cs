@@ -18,7 +18,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             IAdapterManager am = this.Site.GetRequiredService<IAdapterManager>();
             BusinessApplicationData app = am.GetAdapter<BusinessApplicationData>(parent);
 
-            return new BusinessApplicationScript[] { new BusinessApplicationScript(app) };
+            return app.ScriptOptions == ScriptOptions.Default ? new BusinessApplicationScript[] { new BusinessApplicationScript(app) } : new BusinessApplicationScript[0];
         }
 
         #endregion
