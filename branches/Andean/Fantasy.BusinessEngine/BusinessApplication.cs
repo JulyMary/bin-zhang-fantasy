@@ -55,6 +55,14 @@ namespace Fantasy.BusinessEngine
         }
 
 
+        public virtual BusinessObjectSecurity GetClassSecurity(BusinessClass @class)
+        {
+            BusinessUser user = BusinessEngineContext.Current.User;
+            ClassSecurityArgs args = new ClassSecurityArgs() { Application = this, Class=@class, User = user };
+            return BusinessEngineContext.Current.GetRequiredService<ISecurityService>().GetClassSecurity(args);
+        }
+
+
 
 
     }

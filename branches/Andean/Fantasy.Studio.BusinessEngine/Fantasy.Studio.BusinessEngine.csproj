@@ -137,7 +137,7 @@
     <Compile Include="AssociationEditing\AddAssociationCommand.cs" />
     <Compile Include="AssociationEditing\AssociationEditor.cs" />
     <Compile Include="AssociationEditing\AssociationFolder.cs" />
-    <Compile Include="AssociationEditing\BusinessClassNameSetAction.cs" />
+    <Compile Include="AssociationEditing\BusinessAssociationNameSetAction.cs" />
     <Compile Include="AssociationEditing\PackageAssociationsProvider.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationLeftRoleNameSetAction.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationRightRoleNameSetAction.cs" />
