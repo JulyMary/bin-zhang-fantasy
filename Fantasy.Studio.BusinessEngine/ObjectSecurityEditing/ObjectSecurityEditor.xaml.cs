@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using Fantasy.Windows;
 using Fantasy.Studio.Controls;
 using Fantasy.BusinessEngine;
+using Fantasy.BusinessEngine.Security;
 
 namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
 {

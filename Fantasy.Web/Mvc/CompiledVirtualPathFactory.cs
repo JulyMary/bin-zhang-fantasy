@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.WebPages;
-using Fantasy.Web.Mvc.Properties;
+using Fantasy.Web.Properties;
 using System.Reflection;
 
 namespace Fantasy.Web.Mvc

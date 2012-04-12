@@ -11,7 +11,8 @@ using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine;
 using System.IO;
 using System.Text.RegularExpressions;
-using Fantasy.Web.Mvc.Properties;
+using Fantasy.Web.Properties;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.Web
 {
@@ -20,8 +21,6 @@ namespace Fantasy.Web
 
         protected virtual void Application_Start()
         {
-           
-
             string dir = LongPath.GetDirectoryName(AppDomain.CurrentDomain.SetupInformation.ConfigurationFile);
 
             DefaultAddInTree.Initialize(LongPathDirectory.EnumerateAllFiles(dir, "*.addin.xaml"));
@@ -49,6 +48,9 @@ namespace Fantasy.Web
             services.UninitializeServices();
         }
 
+
+        
+
         private const string BusinessEngineContextServicesKey = "BUSINESSENGINECONTEXTSERVICES";
 
         void Application_BeginRequest(object sender, EventArgs e)
@@ -61,6 +63,17 @@ namespace Fantasy.Web
 
             BusinessEngineContext.Current = context;
 
+
+            IBusinessUserRoleService userRoleSvc = ServiceManager.Services.GetRequiredService<IBusinessUserRoleService>();
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                context.User = userRoleSvc.UserByName(HttpContext.Current.User.Identity.Name);
+            }
+            else
+            {
+                context.User = userRoleSvc.WellknownUsers.Guest;
+            }
+
             foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/start").BuildChildItems<ICommand>(null, ServiceManager.Services))
             {
                 command.Execute(null);
@@ -72,6 +85,8 @@ namespace Fantasy.Web
             ServiceManager.Services.UninitializeServices();
 
         }
+
+      
 
        
     }

@@ -9,7 +9,7 @@ namespace Fantasy.BusinessEngine.Services
     {
         public static BusinessUser UserByName(this IBusinessUserRoleService svc, string name)
         {
-            return svc.Users.SingleOrDefault(u => u.Name == name);
+            return svc.Users.SingleOrDefault(u => String.Equals(u.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         public static BusinessUser UserById(this IBusinessUserRoleService svc, Guid id)
@@ -19,7 +19,7 @@ namespace Fantasy.BusinessEngine.Services
 
         public static BusinessRole RoleByName(this IBusinessUserRoleService svc, string name)
         {
-            return svc.Roles.SingleOrDefault(r => r.Name == name);
+            return svc.Roles.SingleOrDefault(r => String.Equals(r.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         public static BusinessRole RoleById(this IBusinessUserRoleService svc, Guid id)

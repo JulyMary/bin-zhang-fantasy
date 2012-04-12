@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.BusinessEngine.Security;
 
 namespace Fantasy.BusinessEngine
 {
@@ -46,7 +47,11 @@ namespace Fantasy.BusinessEngine
 
         public virtual BusinessObjectSecurity GetObjectSecurity(BusinessObject obj)
         {
-            return BusinessEngineContext.Current.GetRequiredService<ISecurityService>().GetObjectSecurity(obj);
+
+            BusinessUser user = BusinessEngineContext.Current.User;
+            ObjectSecurityArgs args = new ObjectSecurityArgs() { Application = this, Object = obj, User = user };
+
+            return BusinessEngineContext.Current.GetRequiredService<ISecurityService>().GetObjectSecurity(args);
         }
 
 

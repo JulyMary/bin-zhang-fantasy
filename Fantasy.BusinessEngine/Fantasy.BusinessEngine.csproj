@@ -74,9 +74,6 @@
     <Compile Include="BusinessEnumExtensions.cs" />
     <Compile Include="BusinessEnumValue.cs" />
     <Compile Include="BusinessObject.cs" />
-    <Compile Include="BusinessObjectMemberTypes.cs" />
-    <Compile Include="BusinessObjectSecurity.cs" />
-    <Compile Include="BusinessObjectMemberSecurity.cs" />
     <Compile Include="BusinessPackage.cs" />
     <Compile Include="BusinessProperty.cs" />
     <Compile Include="BusinessRole.cs" />
@@ -108,6 +105,10 @@
     <Compile Include="IBusinessEngineContextProvider.cs" />
     <Compile Include="IGernateCodeBusinessEntity.cs" />
     <Compile Include="IScriptable.cs" />
+    <Compile Include="Security\BusinessObjectMemberSecurity.cs" />
+    <Compile Include="Security\BusinessObjectMemberTypes.cs" />
+    <Compile Include="Security\BusinessObjectSecurity.cs" />
+    <Compile Include="Security\ISecurityProvider.cs" />
     <Compile Include="Maps\BusinessApplicationACLMap.cs" />
     <Compile Include="Maps\BusinessApplicationMap.cs" />
     <Compile Include="Maps\BusinessApplicationParticipantMap.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Services\NHConfigurationService.cs" />
     <Compile Include="Services\ManyToManyAccessor.cs" />
     <Compile Include="Services\ObjectModelService.cs" />
+    <Compile Include="Security\SecurityArgs.cs" />
     <Compile Include="Services\SecurityService.cs" />
     <Compile Include="Services\UpdateLocalAssembliesService.cs" />
     <Compile Include="EntityStateChangedEventManager.cs" />
