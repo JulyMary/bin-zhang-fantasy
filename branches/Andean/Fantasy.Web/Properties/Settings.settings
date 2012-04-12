@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fantasy.Web.Mvc.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Fantasy.Web.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="DependencyPath" Type="System.String" Scope="Application">
@@ -11,6 +11,9 @@
   &lt;string&gt;Fantasy.BusinessData&lt;/string&gt;
   &lt;string&gt;Fantasy.Web.Mvc&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="ApplicationName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Fantasy.Web</Value>
     </Setting>
   </Settings>
 </SettingsFile>

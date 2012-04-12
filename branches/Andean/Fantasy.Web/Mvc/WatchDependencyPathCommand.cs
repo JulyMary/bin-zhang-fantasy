@@ -5,7 +5,7 @@ using System.Web;
 using System.IO;
 using Fantasy.IO;
 using System.Text.RegularExpressions;
-using Fantasy.Web.Mvc.Properties;
+using Fantasy.Web.Properties;
 using Fantasy.ServiceModel;
 
 namespace Fantasy.Web.Mvc

@@ -17,6 +17,7 @@ using System.Collections.Specialized;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Studio.Services;
 using Fantasy.Studio.BusinessEngine.UserRoleEditing;
+using Fantasy.BusinessEngine.Security;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {

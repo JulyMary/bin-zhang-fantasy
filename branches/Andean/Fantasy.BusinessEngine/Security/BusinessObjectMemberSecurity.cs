@@ -5,7 +5,7 @@ using System.Text;
 using Fantasy.XSerialization;
 using Fantasy.Windows;
 
-namespace Fantasy.BusinessEngine
+namespace Fantasy.BusinessEngine.Security
 {
     [XSerializable("property", NamespaceUri=Consts.SecurityNamespace)]
     public class BusinessObjectMemberSecurity : NotifyPropertyChangedObject

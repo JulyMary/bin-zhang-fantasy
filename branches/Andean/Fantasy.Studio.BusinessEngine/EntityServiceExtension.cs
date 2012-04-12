@@ -16,6 +16,7 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using Fantasy.IO;
 using Fantasy.Reflection;
+using Fantasy.BusinessEngine.Security;
 
 namespace Fantasy.Studio.BusinessEngine
 {

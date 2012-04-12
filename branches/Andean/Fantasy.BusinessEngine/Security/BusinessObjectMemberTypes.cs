@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fantasy.BusinessEngine
+namespace Fantasy.BusinessEngine.Security
 {
     public enum BusinessObjectMemberTypes
     {

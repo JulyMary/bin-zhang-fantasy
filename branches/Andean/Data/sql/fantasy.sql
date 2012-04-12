@@ -1,8 +1,9 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     2012/4/9 11:34:39                            */
+/* Created on:     10/04/2012 10:08:15 AM                       */
 /*==============================================================*/
 
+use fantasy
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')

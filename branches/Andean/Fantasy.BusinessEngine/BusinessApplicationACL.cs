@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Fantasy.Windows;
+using Fantasy.BusinessEngine.Security;
 
 namespace Fantasy.BusinessEngine
 {

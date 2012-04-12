@@ -16,6 +16,8 @@ namespace Fantasy.BusinessEngine.Services
 
         IEnumerable<BusinessUser> GetUsersForRole(BusinessRole role);
 
+      
+
         WellknownRoles WellknownRoles { get; }
 
         WellknownUsers WellknownUsers { get; }

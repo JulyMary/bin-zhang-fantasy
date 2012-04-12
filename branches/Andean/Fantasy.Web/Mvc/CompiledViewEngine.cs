@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Mvc;
 using System.Reflection;
 using System.Web.WebPages;
-using Fantasy.Web.Mvc.Properties;
+using Fantasy.Web.Properties;
 
 namespace Fantasy.Web.Mvc
 {
