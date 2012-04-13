@@ -14,7 +14,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
         public void Rename(BusinessApplicationData app)
         {
-            if (app.Package != null && app.EntityState != EntityState.Deleted)
+            if (app.Package != null && app.EntityState != EntityState.Deleted && !!string.IsNullOrEmpty(app.CodeName))
             {
                 if (String.IsNullOrEmpty(app.Script))
                 {

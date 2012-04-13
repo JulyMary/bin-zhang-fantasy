@@ -147,6 +147,19 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+
+        public virtual string ViewSettings
+        {
+            get
+            {
+                return (string)this.GetValue("ViewSettings", null);
+            }
+            set
+            {
+                this.SetValue("ViewSettings", value);
+            }
+        }
+
       
     }
 }
