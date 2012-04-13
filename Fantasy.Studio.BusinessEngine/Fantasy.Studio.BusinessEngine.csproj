@@ -316,6 +316,7 @@
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
+    <Compile Include="Design\IViewDesigner.cs" />
     <Compile Include="EntityCodeNameSetAction.cs" />
     <Compile Include="EntityEditingViewContent.cs" />
     <Compile Include="EntityFullNameConverter.cs" />

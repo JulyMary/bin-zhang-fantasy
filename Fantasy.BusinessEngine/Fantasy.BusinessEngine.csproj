@@ -83,6 +83,7 @@
     <Compile Include="BusinessUser.cs" />
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
+    <Compile Include="Singularity.cs" />
     <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />
     <Compile Include="Collections\IObservableListView.cs" />

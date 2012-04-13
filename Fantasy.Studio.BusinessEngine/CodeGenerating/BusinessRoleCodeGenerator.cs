@@ -14,7 +14,7 @@ namespace Fantasy.Studio.BusinessEngine.CodeGenerating
 
         public void Rename(BusinessRoleData role)
         {
-            if (role.Package != null && role.EntityState != EntityState.Deleted)
+            if (role.Package != null && role.EntityState != EntityState.Deleted && !string.IsNullOrEmpty(role.CodeName))
             {
                 if (String.IsNullOrEmpty(role.Script))
                 {

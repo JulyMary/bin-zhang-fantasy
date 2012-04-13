@@ -1,9 +1,8 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     10/04/2012 10:08:15 AM                       */
+/* Created on:     13/04/2012 4:40:08 PM                        */
 /*==============================================================*/
 
-use fantasy
 
 if exists (select 1
    from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
@@ -641,6 +640,7 @@ create table BusinessApplication (
    Script               varchar(max)         null,
    ScriptOptions        int                  null,
    ExternalType         varchar(1024)        null,
+   ViewSettings         varchar(max)         null,
    constraint PK_BUSINESSAPPLICATION primary key (ID)
 )
 go
