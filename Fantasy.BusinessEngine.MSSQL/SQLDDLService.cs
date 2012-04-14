@@ -194,6 +194,37 @@ namespace Fantasy.BusinessEngine.MSSQL
             }
         }
 
+
+        private const string DeleteAssociationTrigger = @"if exists (select 1 from  sys.objects t join sys.schemas s on t.schema_id = s.schema_id where t.type = 'TR' and s.name='{0}' and t.name= 'CASDEL_{1}_{2}') drop trigger [{0}].[CASDEL_{1}_{2}]"; 
+        private const string CreateAssociationTrigger = 
+@"CREATE TRIGGER {0}.CASDEL_{1}_{2} 
+   ON  {3}.{4} 
+   AFTER DELETE 
+AS 
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @id uniqueidentifier
+	DECLARE @del_cursor cursor  
+ 
+	SET @del_cursor = CURSOR FOR  
+		SELECT ID FROM DELETED
+ 
+	OPEN @del_cursor  
+ 
+	FETCH NEXT FROM @del_cursor INTO @id 
+ 
+	WHILE (@@FETCH_STATUS = 0)  
+	BEGIN  
+		DELETE FROM {0}.{1} WHERE {2}ID = @id
+		FETCH NEXT FROM @del_cursor INTO @id 
+	END  
+ 
+	CLOSE @del_cursor 
+
+END";
+
+
         public void CreateAssoicationTable(BusinessAssociation association)
         {
             string sql = String.Format("create table [{0}].[{1}] ( [LEFTID] uniqueidentifier not null, [RIGHTID] uniqueidentifier not null, CONSTRAINT [PK_{1}] PRIMARY KEY CLUSTERED ([LEFTID], [RIGHTID]) )",
@@ -206,18 +237,24 @@ namespace Fantasy.BusinessEngine.MSSQL
 
             this.ExecuteSql(sql);
 
-            sql = string.Format("alter table [{0}].[{1}] add constraint FK_{1}_LEFT foreign key (LEFTID) references [{2}].[{3}] ([ID]) on delete cascade",
-                association.TableSchema, association.TableName, association.LeftClass.TableSchema, association.LeftClass.TableName);
+            
+            sql = string.Format(CreateAssociationTrigger, association.TableSchema, association.TableName, "LEFT", association.LeftClass.TableSchema, association.LeftClass.TableName);  
             this.ExecuteSql(sql);
 
-            sql = string.Format("alter table [{0}].[{1}] add constraint FK_{1}_RIGHT foreign key (RIGHTID) references [{2}].[{3}] ([ID]) on delete cascade",
-               association.TableSchema, association.TableName, association.RightClass.TableSchema, association.RightClass.TableName);
+            sql = string.Format(CreateAssociationTrigger, association.TableSchema, association.TableName, "RIGHT", association.RightClass.TableSchema, association.RightClass.TableName);
             this.ExecuteSql(sql);
+
         }
 
         public void DropAssociationTable(BusinessAssociation association)
         {
             string sql = String.Format("if exists (select 1 from sys.tables t join sys.schemas s on t.schema_id = s.schema_id where s.name='{0}' and t.name= '{1}') drop table [{0}].[{1}]", association.TableSchema, association.TableName);
+            
+            
+            this.ExecuteSql(sql);
+            sql = string.Format(DeleteAssociationTrigger, association.TableSchema, association.TableName, "LEFT");
+            this.ExecuteSql(sql);
+            sql = string.Format(DeleteAssociationTrigger, association.TableSchema, association.TableName, "RIGHT");
             this.ExecuteSql(sql);
         }
 

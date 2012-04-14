@@ -8,17 +8,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 {
     class NoCursorHandler : IConnectionHandler
     {
-        #region IConnectionHandler Members
+       
 
         public void MouseMove(ConnectionArgs args)
         {
             args.Cursor = Cursors.No;
         }
 
-        public void MouseDown(ConnectionArgs args)
-        {
-            
-        }
+       
 
         public void MouseEnter(ConnectionArgs args)
         {
@@ -30,11 +27,26 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
            
         }
 
-        public void MouseUp(ConnectionArgs args)
+        public void MouseLeftButtonDown(ConnectionArgs args)
         {
-           
+         
         }
 
-        #endregion
+        public void MouseLeftButtonUp(ConnectionArgs args)
+        {
+            
+        }
+
+        public void MouseRightButtonDown(ConnectionArgs args)
+        {
+            
+        }
+
+        public void MouseRightButtonUp(ConnectionArgs args)
+        {
+            
+        }
+
+      
     }
 }

@@ -18,8 +18,10 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public AssociationGlyph()
         {
             this._assocationListener = new WeakEventListener(this.EntityStateChanged);
-            this.IntermediatePoints = new ObservableCollection<Point>();
+           
         }
+
+        
 
         [XAttribute("left")]
         private Guid _leftGlyphId;
@@ -169,9 +171,35 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         }
 
 
+
+        
+
         [XArray,
         XArrayItem(Name = "point", Type = typeof(Point))]
-        public ObservableCollection<Point> IntermediatePoints { get; private set; }
+        private Point[]_persistedIntermediatePoints = new Point[0];
+
+        private ObservableCollection<Point> _intermediatePoints;
+        public ObservableCollection<Point> IntermediatePoints
+        {
+            get
+            {
+                if (this._intermediatePoints == null)
+                {
+                    this._intermediatePoints = new ObservableCollection<Point>(_persistedIntermediatePoints);
+                    this._intermediatePoints.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(IntermediatePoints_CollectionChanged);
+                }
+                return _intermediatePoints;
+            }
+        }
+
+
+        void IntermediatePoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            this._persistedIntermediatePoints = this._intermediatePoints.ToArray();
+            this.EditingState = Studio.EditingState.Dirty;
+
+        }
+        
         
     }
 }

@@ -335,10 +335,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             es.BeginUpdate();
             try
             {
-                XSerializer ser = new XSerializer(typeof(ClassDiagram));
-                this.Entity.Diagram = ser.Serialize(this).ToString(SaveOptions.OmitDuplicateNamespaces);
-
-                es.SaveOrUpdate(this.Entity);
+                
 
                 foreach (IBusinessEntity entity in this.DeletingEntities)
                 {
@@ -368,6 +365,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 {
                     assn.SaveEntity();
                 }
+
+
+                XSerializer ser = new XSerializer(typeof(ClassDiagram));
+                this.Entity.Diagram = ser.Serialize(this).ToString(SaveOptions.OmitDuplicateNamespaces);
+
+                es.SaveOrUpdate(this.Entity);
 
                 es.EndUpdate(true);
                 this.EditingState = EditingState.Clean;

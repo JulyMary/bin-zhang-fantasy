@@ -65,6 +65,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             {
                 PropertyChangedEventManager.RemoveListener(oldValue.Entity, this._entityListener, "RightCardinality");
                 PropertyChangedEventManager.RemoveListener(oldValue.Entity, this._entityListener, "LeftCardinality");
+                PropertyChangedEventManager.RemoveListener(oldValue.Entity, this._entityListener, "RightRoleName");
+                PropertyChangedEventManager.RemoveListener(oldValue.Entity, this._entityListener, "LeftRoleName");
+
             }
 
 
@@ -73,6 +76,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             {
                 PropertyChangedEventManager.AddListener(newValue.Entity, this._entityListener, "RightCardinality");
                 PropertyChangedEventManager.AddListener(newValue.Entity, this._entityListener, "LeftCardinality");
+                PropertyChangedEventManager.AddListener(newValue.Entity, this._entityListener, "RightRoleName");
+                PropertyChangedEventManager.AddListener(newValue.Entity, this._entityListener, "LeftRoleName");
             }
           
         }
@@ -109,7 +114,17 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             {
                 return;
             }
-            string text = isHead ? association.Entity.LeftCardinality : association.Entity.RightCardinality;
+            string text;
+            if(isHead)
+            {
+                text = association.Entity.LeftRoleName + " " + association.Entity.LeftCardinality;
+
+            }
+            else
+            {
+                text = association.Entity.RightRoleName + " " + association.Entity.RightCardinality;
+            }
+            
             FormattedText formatted = new FormattedText(text, CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight, new Typeface("Tahoma"), 12.0, this._lineConnector.LineStyle.Stroke);
            
 

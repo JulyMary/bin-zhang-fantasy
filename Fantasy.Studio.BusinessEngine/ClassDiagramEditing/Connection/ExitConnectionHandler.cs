@@ -16,7 +16,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             
         }
 
-        public void MouseDown(ConnectionArgs args)
+        public void MouseLeftButtonDown(ConnectionArgs args)
+        {
+            args.Owner.Exit();
+        }
+
+
+        public void MouseRightButtonDown(ConnectionArgs args)
         {
             args.Owner.Exit();
         }
@@ -31,9 +37,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             
         }
 
-        public void MouseUp(ConnectionArgs args)
+    
+
+        public void MouseLeftButtonUp(ConnectionArgs args)
         {
            
+        }
+
+       
+
+        public void MouseRightButtonUp(ConnectionArgs args)
+        {
+            args.Owner.Exit();
         }
 
         #endregion

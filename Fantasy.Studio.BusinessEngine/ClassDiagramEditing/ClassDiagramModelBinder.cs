@@ -20,8 +20,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         private Model.ClassDiagram _model;
         private sf.DiagramModel _view;
 
+
+        private bool _viewLoaded = false;
         public ClassDiagramModelBinder(Model.ClassDiagram model, sf.DiagramModel view)
         {
+            
             this._model = model;
             this._view = view;
 
@@ -51,6 +54,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             this._model.Inheritances.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Inheritances_CollectionChanged);
             this._model.Enums.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Enums_CollectionChanged);
             this._model.Associations.CollectionChanged += new NotifyCollectionChangedEventHandler(Associations_CollectionChanged);
+           
+            
 
 
         }
@@ -155,21 +160,21 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             connector.DataContext = association;
 
             association.IntermediatePoints.CollectionChanged += new NotifyCollectionChangedEventHandler(IntermediatePoints_CollectionChanged);
-            connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
-            connector.Loaded += (sender, e) =>
+                        connector.Loaded += (sender, e) =>
             {
                 LineConnector cnnt = sender as LineConnector;
                 IDiagramPage page = VisualTreeHelper.GetParent(cnnt) as IDiagramPage;
                 Shapes.CardinalityAdorner lc = new Shapes.CardinalityAdorner(page, cnnt);
+               
+
             };
             this._view.Connections.Add(connector);
 
-            
-
-            
-
-            
-            
+            if (this._viewLoaded)
+            {
+                connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            }
+           
 
         }
 
@@ -205,9 +210,24 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
             connector.DataContext = inheritance;
 
             inheritance.IntermediatePoints.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(IntermediatePoints_CollectionChanged);
-            connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            
             this._view.Connections.Add(connector);
+            if (this._viewLoaded)
+            {
+                connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            }
+            
 
+        }
+
+        public void OnLoaded()
+        {
+            foreach (LineConnector connector in this._view.Connections)
+            {
+               
+                connector.ConnectorPathGeometryUpdated += new EventHandler<EventArgs>(ConnectorPathGeometryUpdated);
+            }
+            this._viewLoaded = true;
         }
 
         void ConnectorPathGeometryUpdated(object sender, EventArgs e)
@@ -221,10 +241,31 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     {
                         LineConnector connector = (LineConnector)sender;
                         Model.IConnectGlyph glyph = (Model.IConnectGlyph)connector.DataContext;
-                        glyph.IntermediatePoints.Clear();
-                        foreach (Point p in connector.IntermediatePoints)
+
+                        bool changed = false;
+                        if (connector.IntermediatePoints.Count != glyph.IntermediatePoints.Count)
                         {
-                            glyph.IntermediatePoints.Add(new Model.Point() { X = p.X, Y = p.Y });
+                            changed = true;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < connector.IntermediatePoints.Count; i++)
+                            {
+                                if (!AlmostEquals(connector.IntermediatePoints[i].X ,glyph.IntermediatePoints[i].X)
+                                    || !AlmostEquals(connector.IntermediatePoints[i].Y , glyph.IntermediatePoints[i].Y))
+                                {
+                                    changed = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (changed)
+                        {
+                            glyph.IntermediatePoints.Clear();
+                            foreach (Point p in connector.IntermediatePoints)
+                            {
+                                glyph.IntermediatePoints.Add(new Model.Point() { X = p.X, Y = p.Y });
+                            }
                         }
                     }
                     finally
@@ -233,6 +274,12 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                     }
                 }
             }
+        }
+
+        private bool AlmostEquals(double x, double y)
+        {
+            bool rs = Math.Round(x, 6, MidpointRounding.AwayFromZero) == Math.Round(y, 6, MidpointRounding.AwayFromZero);
+            return rs;
         }
 
         void IntermediatePoints_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
