@@ -15,11 +15,28 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
         public void MouseMove(ConnectionArgs args)
         {
-            Node shape = HitTest(args);
-            if (shape != null && CanbeFirstNode(args.Owner, shape))
+
+            if (!this._startSelection)
             {
-                args.Cursor = Cursors.Cross;
-                args.Handled = true;
+                Node shape = HitTest(args);
+                if (shape != null && CanbeFirstNode(args.Owner, shape))
+                {
+                    args.Cursor = Cursors.Cross;
+                    args.Handled = true;
+                }
+            }
+            else
+            {
+
+                Point p2 = args.MouseEventArgs.GetPosition(args.Owner.View);
+                if (Math.Abs((p2 - this._selectionPoint).Length) >= 3)
+                {
+                    args.Owner.FirstNode = this._firstNode;
+                    args.Owner.Handlers.Clear();
+                    args.Owner.Handlers.AddRange(new IConnectionHandler[] { new NoCursorHandler(), new SelectSecondNodeHandler() {IsDragMode=true}, new ExitConnectionHandler() });
+                    args.Owner.StartPoint = this._selectionPoint;
+                    args.Handled = true;
+                }
             }
 
         }
@@ -49,24 +66,25 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             return rs;
         }
 
-        public void MouseDown(ConnectionArgs args)
-        {
-            if (args.MouseEventArgs.LeftButton == MouseButtonState.Pressed)
+
+        private bool _startSelection = false;
+        private Point _selectionPoint;
+        private Node _firstNode;
+
+
+
+        public void MouseLeftButtonDown(ConnectionArgs args)
+        { 
+            Node shape = HitTest(args);
+            if (shape != null && CanbeFirstNode(args.Owner, shape))
             {
-                args.Owner.FirstPoint = args.MouseEventArgs.GetPosition(args.Owner.View);
-                Node shape = HitTest(args);
-                if (shape != null && CanbeFirstNode(args.Owner, shape))
-                {
-                    args.Owner.FirstNode = shape;
-
-                    args.Owner.View.CaptureMouse();
-
-                    args.Owner.Handlers.Clear();
-                    args.Owner.Handlers.AddRange(new IConnectionHandler[] { new NoCursorHandler(), new SelectSecondNodeHandler(), new ExitConnectionHandler() });
-                    
-                    args.Handled = true;
-                }
+                this._startSelection = true;
+                this._selectionPoint = args.MouseEventArgs.GetPosition(args.Owner.View);
+                _firstNode = shape;
+                args.Owner.View.CaptureMouse();
+                args.Handled = true;
             }
+            
         }
 
         public void MouseEnter(ConnectionArgs args)
@@ -79,9 +97,29 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             
         }
 
-        public void MouseUp(ConnectionArgs args)
+        public void MouseLeftButtonUp(ConnectionArgs args)
         {
-           
+            if (this._startSelection)
+            {
+                args.Owner.FirstNode = this._firstNode;
+                args.Owner.Handlers.Clear();
+                args.Owner.Handlers.AddRange(new IConnectionHandler[] { new NoCursorHandler(), new SelectSecondNodeHandler() {IsDragMode = false}, new SelectIntermediatePointHandler(), new ExitConnectionHandler() });
+                args.Owner.StartPoint = this._selectionPoint;
+                args.Handled = true;
+            }
+        }
+
+       
+
+
+        public void MouseRightButtonDown(ConnectionArgs args)
+        {
+            
+        }
+
+        public void MouseRightButtonUp(ConnectionArgs args)
+        {
+            
         }
 
         #endregion

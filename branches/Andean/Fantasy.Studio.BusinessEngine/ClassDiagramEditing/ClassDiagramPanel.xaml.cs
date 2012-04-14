@@ -210,6 +210,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 EditingState = EditingState.Dirty,
             };
 
+            foreach (Point p in adorner.IntermediatePoints)
+            {
+                association.IntermediatePoints.Add(new Model.Point() { X = p.X, Y = p.Y });
+            }
+
             BusinessClass leftEntity = association.LeftClass.Entity;
             BusinessClass rightEntity = association.RightClass.Entity;
 
@@ -271,7 +276,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
                 BaseClass = (Model.ClassGlyph)adorner.SecondNode.DataContext,
                 BaseGlyphId = adorner.SecondNode.ID,
                 EditingState = EditingState.Dirty,
+
             };
+
+            foreach (Point p in adorner.IntermediatePoints)
+            {
+                inheritance.IntermediatePoints.Add(new Model.Point() { X = p.X, Y = p.Y });
+            }
+            
 
             BusinessClass childEntity = inheritance.DerivedClass.Entity;
             BusinessClass parentEntity = inheritance.BaseClass.Entity;
@@ -463,6 +475,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
 
         }
 
+       
+
         void ClassDiagramPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "EditingState")
@@ -640,6 +654,14 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing
         {
             ScrollViewer scrollViewer = (ScrollViewer)sender;
             this.DiagramPreviewer.View = scrollViewer;
+        }
+
+      
+
+        private void diagramView_Loaded(object sender, RoutedEventArgs e)
+        {
+             this.Dispatcher.BeginInvoke(new Action(()=>{this._binder.OnLoaded();}), System.Windows.Threading.DispatcherPriority.Background);
+            
         }
 
     }

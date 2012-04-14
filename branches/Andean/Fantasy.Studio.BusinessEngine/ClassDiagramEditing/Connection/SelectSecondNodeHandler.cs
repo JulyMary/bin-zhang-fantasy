@@ -16,7 +16,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
         public void MouseMove(ConnectionArgs args)
         {
 
-            args.Owner.SecondPoint = args.MouseEventArgs.GetPosition(args.Owner.View);
+            args.Owner.CurrentPoint = args.MouseEventArgs.GetPosition(args.Owner.View);
 
             Node shape = HitTest(args);
             if (shape != null && CanbeSecondNode(args.Owner,shape))
@@ -65,23 +65,52 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
         }
 
-        public void MouseUp(ConnectionArgs args)
+
+        private void SetSecondNode(ConnectionArgs args)
         {
-            //if (args.MouseEventArgs.LeftButton == MouseButtonState.Released)
-            //{
-                Node shape = HitTest(args);
-                if (shape != null && CanbeSecondNode(args.Owner,shape))
-                {
-                    args.Owner.SecondNode = shape;
+            Node shape = HitTest(args);
+            if (shape != null && CanbeSecondNode(args.Owner, shape))
+            {
+                args.Owner.SecondNode = shape;
 
-                    args.Owner.OnCreatConnection(EventArgs.Empty);
+                args.Owner.OnCreatConnection(EventArgs.Empty);
 
-                    args.Owner.Exit();
-                    args.Handled = true;
-                }
-            //}
+                args.Owner.Exit();
+                args.Handled = true;
+            }
+        }
+
+        public void MouseLeftButtonUp(ConnectionArgs args)
+        {
+
+            if (IsDragMode)
+            {
+                SetSecondNode(args);
+            }
+          
+        }
+
+        public void MouseLeftButtonDown(ConnectionArgs args)
+        {
+            if (!IsDragMode)
+            {
+                SetSecondNode(args);
+            }
+        }
+
+        public void MouseRightButtonDown(ConnectionArgs args)
+        {
+            
+        }
+
+        public void MouseRightButtonUp(ConnectionArgs args)
+        {
+            
         }
 
         #endregion
+
+
+        public bool IsDragMode { get; set; }
     }
 }

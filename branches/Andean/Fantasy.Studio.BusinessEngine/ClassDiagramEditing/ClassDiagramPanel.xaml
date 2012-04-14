@@ -91,7 +91,7 @@
             </sf:DiagramControl.Model>
             <sf:DiagramControl.View>
                 <sf:DiagramView FocusManager.IsFocusScope="False"   IsZoomEnabled="True" Bounds="0,0,1200,1200" Name="diagramView"
-                    DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+                    DragEnter="DiagramView_DragEnter" DragLeave="DiagramView_DragLeave" DragOver="DiagramView_DragOver" Drop="DiagramView_Drop" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" Loaded="diagramView_Loaded">
                 </sf:DiagramView>
             </sf:DiagramControl.View>
         </sf:DiagramControl>

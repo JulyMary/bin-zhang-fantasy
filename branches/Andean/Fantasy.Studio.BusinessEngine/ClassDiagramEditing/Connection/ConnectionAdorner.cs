@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
 using System.Windows.Media;
+using System.Collections.ObjectModel;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 {
@@ -28,8 +29,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             this.View.AddHandler(Control.MouseEnterEvent, new MouseEventHandler(diagramView_MouseEnter), true);
             this.View.AddHandler(Control.MouseLeaveEvent, new MouseEventHandler(diagramView_MouseLeave), true);
             this.View.AddHandler(Control.MouseMoveEvent, new MouseEventHandler(diagramView_MouseMove), true);
-            this.View.AddHandler(Control.MouseUpEvent, new MouseButtonEventHandler(diagramView_MouseUp), true);
-            this.View.AddHandler(Control.MouseDownEvent, new MouseButtonEventHandler(diagramView_MouseDown), true);
+            this.View.AddHandler(Control.MouseLeftButtonUpEvent, new MouseButtonEventHandler(diagramView_MouseLeftButtonUp), true);
+            this.View.AddHandler(Control.MouseLeftButtonDownEvent, new MouseButtonEventHandler(diagramView_MouseLeftButtonDown), true);
+            this.View.AddHandler(Control.MouseRightButtonUpEvent, new MouseButtonEventHandler(diagramView_MouseRightButtonUp), true);
+            this.View.AddHandler(Control.MouseRightButtonDownEvent, new MouseButtonEventHandler(diagramView_MouseRightButtonDown), true);
+
             this.Unloaded += new RoutedEventHandler(ConnectionAdorner_Unloaded);
 
             this.Handlers.AddRange(new IConnectionHandler[] { new NoCursorHandler(), new SelectFirstNodeHandler(), new ExitConnectionHandler() });   
@@ -38,8 +42,13 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             AdornerLayer layer = AdornerLayer.GetAdornerLayer(this.View);
             layer.Add(this);
 
+            this.IntermediatePoints = new ObservableCollection<Point>();
+            this.IntermediatePoints.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PathChanged);
+
 
         }
+
+       
 
         
         private Cursor _oldCursor;
@@ -81,15 +90,28 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             InvokeHandler((h, args) => { h.MouseMove(args); }, e); 
         }
 
-        void diagramView_MouseUp(object sender, MouseEventArgs e)
+        void diagramView_MouseLeftButtonUp(object sender, MouseEventArgs e)
         {
-            InvokeHandler((h, args) => { h.MouseUp(args); }, e); 
+            InvokeHandler((h, args) => { h.MouseLeftButtonUp(args); }, e); 
         }
 
-        void diagramView_MouseDown(object sender, MouseEventArgs e)
+        void diagramView_MouseLeftButtonDown(object sender, MouseEventArgs e)
         {
-            InvokeHandler((h, args) => { h.MouseDown(args); }, e); 
+            InvokeHandler((h, args) => { h.MouseLeftButtonDown(args); }, e); 
         }
+
+
+        void diagramView_MouseRightButtonUp(object sender, MouseEventArgs e)
+        {
+            InvokeHandler((h, args) => { h.MouseRightButtonUp(args); }, e);
+        }
+
+        void diagramView_MouseRightButtonDown(object sender, MouseEventArgs e)
+        {
+            InvokeHandler((h, args) => { h.MouseRightButtonDown(args); }, e);
+        }
+
+       
 
 
         private List<IConnectionHandler> _handlers = new List<IConnectionHandler>();
@@ -107,27 +129,33 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
 
         public DiagramView View { get; set; }
 
-        private Point? _firstPoint;
+       
 
-        public Point? FirstPoint
+         void PathChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            get { return _firstPoint; }
-            set { _firstPoint = value; }
+            this.InvalidateVisual();
         }
 
-        private Point? _secondPoint = null;
-        public Point? SecondPoint
+
+        public ObservableCollection<Point> IntermediatePoints { get; private set; }
+
+        public Point? StartPoint { get; set; }
+
+        private Point? _currentPoint;
+
+        public Point? CurrentPoint
         {
-            get
+            get { return _currentPoint; }
+            set 
             {
-                return _secondPoint;
-            }
-            set
-            {
-                this._secondPoint = value;
-                this.InvalidateVisual();
+                if (_currentPoint != value)
+                {
+                    _currentPoint = value;
+                    this.InvalidateVisual();
+                }
             }
         }
+
 
 
         private Pen _pen;
@@ -135,10 +163,26 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
         protected override void OnRender(System.Windows.Media.DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-            if (this.FirstPoint != null && this.SecondPoint != null)
+           
+
+            List<Point> points = new List<Point>();
+            if (this.StartPoint != null)
             {
-                drawingContext.DrawLine(this._pen, (Point)FirstPoint, (Point)SecondPoint);
+                points.Add((Point)this.StartPoint);
             }
+            points.AddRange(this.IntermediatePoints);
+
+            if (this.CurrentPoint != null)
+            {
+                points.Add((Point)this.CurrentPoint);
+            }
+
+            for (int i = 0; i < points.Count - 1; i++)
+            {
+                drawingContext.DrawLine(this._pen, points[i], points[i + 1]);
+            }
+           
+           
         }
 
         public IServiceProvider Site { get; set; }
@@ -149,7 +193,11 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
             this.View.RemoveHandler(Control.MouseEnterEvent, new MouseEventHandler(diagramView_MouseEnter));
             this.View.RemoveHandler(Control.MouseLeaveEvent, new MouseEventHandler(diagramView_MouseLeave));
             this.View.RemoveHandler(Control.MouseMoveEvent, new MouseEventHandler(diagramView_MouseMove));
-            this.View.RemoveHandler(Control.MouseUpEvent, new MouseButtonEventHandler(diagramView_MouseUp));
+            this.View.RemoveHandler(Control.MouseLeftButtonUpEvent, new MouseButtonEventHandler(diagramView_MouseLeftButtonUp));
+            this.View.RemoveHandler(Control.MouseLeftButtonDownEvent, new MouseButtonEventHandler(diagramView_MouseLeftButtonDown));
+            this.View.RemoveHandler(Control.MouseRightButtonUpEvent, new MouseButtonEventHandler(diagramView_MouseRightButtonUp));
+            this.View.RemoveHandler(Control.MouseRightButtonDownEvent, new MouseButtonEventHandler(diagramView_MouseRightButtonDown));
+
         }
 
         public void Exit()

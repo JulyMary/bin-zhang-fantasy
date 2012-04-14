@@ -9,12 +9,15 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Connection
     {
         void MouseMove(ConnectionArgs args);
 
-        void MouseDown(ConnectionArgs args);
+        void MouseLeftButtonDown(ConnectionArgs args);
+        void MouseLeftButtonUp(ConnectionArgs args);
 
+        void MouseRightButtonDown(ConnectionArgs args);
+        void MouseRightButtonUp(ConnectionArgs args);
         void MouseEnter(ConnectionArgs args);
 
         void MouseLeave(ConnectionArgs args);
 
-        void MouseUp(ConnectionArgs args);
+        
     }
 }

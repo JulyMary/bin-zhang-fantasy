@@ -188,6 +188,7 @@
     <Compile Include="ClassDiagramEditing\Connection\ExitConnectionHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\NoCursorHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\SelectSecondNodeHandler.cs" />
+    <Compile Include="ClassDiagramEditing\Connection\SelectIntermediatePointHandler.cs" />
     <Compile Include="ClassDiagramEditing\Connection\ValidatNodeArgs.cs" />
     <Compile Include="ClassDiagramEditing\ClassDiagramAddBusinessEnumValueCommand.cs" />
     <Compile Include="ClassDiagramEditing\DragBusinessAssociationOverHandler.cs" />
