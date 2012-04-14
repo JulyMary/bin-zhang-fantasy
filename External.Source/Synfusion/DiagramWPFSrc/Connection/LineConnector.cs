@@ -4726,7 +4726,7 @@ namespace Syncfusion.Windows.Diagram
         {
             if (ConnectorType == ConnectorType.Orthogonal && IntermediatePoints.Count > 2)
             {
-                bool foundDefect = false;
+                bool foundDefect = true;
                 for (int i = 0; i < connectionPoints.Count - 1; i++)
                 {
                     if (!((connectionPoints[i].X == connectionPoints[i + 1].X) ||
@@ -4753,13 +4753,53 @@ namespace Syncfusion.Windows.Diagram
                             connectionPoints[i + 1] = new Point(connectionPoints[i].X, connectionPoints[i + 1].Y);
                         }
                     }
-                    for (int i = 0; i < IntermediatePoints.Count; i++)
-                    {
-                        IntermediatePoints[i] = connectionPoints[i + 1];// MeasureUnitsConverter.FromPixels(connectionPoints[i + 1], MeasurementUnit);
-                    }
-                    this.PxEndPointPosition = connectionPoints[connectionPoints.Count - 1];// MeasureUnitsConverter.FromPixels(connectionPoints[connectionPoints.Count - 1], MeasurementUnit);
+
+                    
                 }
+
+                this.IntermediatePoints.Clear();
+                for (int i = 0; i < connectionPoints.Count - 1; i++)
+                {
+
+                    bool remove = false;
+                    if (i > 0 && i < connectionPoints.Count - 1)
+                    {
+                        Point p1 = connectionPoints[i - 1];
+                        Point p2 = connectionPoints[i];
+                        Point p3 = connectionPoints[i + 1];
+
+                        if (AlmostEquals(p1.X, p2.X, p3.X))
+                        {
+                            connectionPoints[i + 1] = new Point(p1.X, p3.Y);
+                            remove = true;
+                        }
+                        if(AlmostEquals(p1.Y, p2.Y, p3.Y))
+                        {
+                            connectionPoints[i + 1] = new Point(connectionPoints[i + 1].X, p1.Y);
+                            remove = true;
+                        }
+                    }
+                    if (!remove && i != 0)
+                    {
+                        this.IntermediatePoints.Add(connectionPoints[i]);
+                    }
+
+
+                }
+
+                this.PxEndPointPosition = connectionPoints[connectionPoints.Count - 1];// MeasureUnitsConverter.FromPixels(connectionPoints[connectionPoints.Count - 1], MeasurementUnit);
+
+
+
             }
+        }
+
+
+        bool AlmostEquals(double x, double y, double z)
+        {
+            double sub1 = Math.Abs(x - y);
+            double sub2 = Math.Abs(x - z);
+            return sub1 <= 2 && sub2 <= 2;
         }
 
         #endregion
