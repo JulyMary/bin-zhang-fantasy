@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Fantasy.Studio.BusinessEngine.Design
+namespace Fantasy.Web.Design
 {
-    public interface IViewDesigner
+    class StandardNavigationViewDesignerModel
     {
-
     }
 }

@@ -348,5 +348,84 @@ namespace Fantasy
         {
             return new GenericFilteredView<T>(collection, filter);
         }
+
+
+
+        public static int IndexOfBy(this IEnumerable collection, object key, int startIndex = 0, int count = Int32.MaxValue, Func<object, object> keySelector = null, IEqualityComparer comparer = null)
+        {
+            if (keySelector == null)
+            {
+                keySelector = x => x;
+            }
+            if (comparer == null)
+            {
+                comparer = EqualityComparer<object>.Default;
+            }
+
+            int rs = -1;
+            int pos = 0;
+            foreach (object item in collection)
+            {
+                if (pos >= startIndex)
+                {
+                    if (pos - startIndex > count)
+                    {
+                        break;
+                    }
+                    else if (comparer.Equals(key, keySelector(item)))
+                    {
+                        rs = pos;
+                        break;
+                    }
+                }
+
+                pos++;
+            }
+
+            return rs;
+        }
+
+
+
+
+
+        public static int IndexOfBy<TSource, TKey>(this IEnumerable<TSource> collection, TKey key, int startIndex = 0, int count = Int32.MaxValue, Func<TSource, TKey> keySelector = null, IEqualityComparer<TKey> comparer = null)
+        {
+
+            if (keySelector == null)
+            {
+                keySelector = x => (TKey)(object)x;
+            }
+            if (comparer == null)
+            {
+                comparer = EqualityComparer<TKey>.Default;
+            }
+
+            int rs = -1;
+            int pos = 0;
+            foreach (TSource item in collection)
+            {
+                if (pos >= startIndex)
+                {
+                    if (pos - startIndex > count)
+                    {
+                        break;
+                    }
+                    else if (comparer.Equals(key, keySelector(item)))
+                    {
+                        rs = pos;
+                        break;
+                    }
+                }
+
+                pos++;
+            }
+
+            return rs;
+
+        }
+      
+
+        
     }
 }
