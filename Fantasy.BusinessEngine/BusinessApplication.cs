@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.BusinessEngine.Security;
+using Fantasy.Web;
 
 namespace Fantasy.BusinessEngine
 {
@@ -63,7 +64,21 @@ namespace Fantasy.BusinessEngine
         }
 
 
+        public virtual INavigationViewController GetNaviationView()
+        {
+            throw new NotImplementedException();
+        }
 
+
+        public virtual IScalarViewController GetScalarView(BusinessObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual ICollectionViewController GetCollectionView(IEnumerable<BusinessObject> collection)
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }

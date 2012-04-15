@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Markup;
+using Fantasy.Web;
 
-[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Web.Mvc")]
-[assembly: XmlnsDefinition(XamlNamespaces.Namespace, "Fantasy.Web")]
+[assembly: XmlnsDefinition(Consts.Namespace, "Fantasy.Web.Mvc")]
+[assembly: XmlnsDefinition(Consts.Namespace, "Fantasy.Web")]
 
-internal class XamlNamespaces
-{
-    public const string Namespace = "urn:schema-fantasy:web";
-}
+
 
 
 

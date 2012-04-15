@@ -317,7 +317,6 @@
     <Compile Include="Conditions\IsExternalEnum.cs" />
     <Compile Include="ClassDiagramEditing\DragNewBusinessEnumData.cs" />
     <Compile Include="ClassDiagramEditing\Model\IsShortcut.cs" />
-    <Compile Include="Design\IViewDesigner.cs" />
     <Compile Include="EntityCodeNameSetAction.cs" />
     <Compile Include="EntityEditingViewContent.cs" />
     <Compile Include="EntityFullNameConverter.cs" />
@@ -545,6 +544,10 @@
     <ProjectReference Include="..\Fantasy.Studio\Fantasy.Studio.csproj">
       <Project>{5FDF97CF-CBFC-40E0-892B-9C192E7A4CC8}</Project>
       <Name>Fantasy.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fantasy.Web.Design\Fantasy.Web.Design.csproj">
+      <Project>{F2BC544D-1583-4219-9A23-C21FE744CB08}</Project>
+      <Name>Fantasy.Web.Design</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

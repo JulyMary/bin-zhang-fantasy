@@ -62,10 +62,21 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consts.cs" />
     <Compile Include="Controllers\StandardNavigationController.cs" />
+    <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
     <Compile Include="ICollectionViewController.cs" />
     <Compile Include="INavigationViewController.cs" />
     <Compile Include="IScalarViewController.cs" />
+    <Compile Include="Mvc\UI\ClientScriptRegister.cs" />
+    <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
+    <Compile Include="Mvc\UI\HtmlLiteral.cs" />
+    <Compile Include="Mvc\UI\HtmlText.cs" />
+    <Compile Include="Mvc\UI\IClientSideScriptFactory.cs" />
+    <Compile Include="Mvc\UI\IHtmlNode.cs" />
+    <Compile Include="Mvc\UI\ViewComponent.cs" />
+    <Compile Include="Mvc\UI\ViewComponentBuilder.cs" />
+    <Compile Include="Mvc\UI\ViewComponentFactory.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
