@@ -102,7 +102,13 @@
     <Compile Include="ApplicationEditing\ApplicationParticipantACLProvider.cs" />
     <Compile Include="ApplicationEditing\ApplicationScriptProvider.cs" />
     <Compile Include="ApplicationEditing\BusinessApplicationScript.cs" />
+    <Compile Include="ApplicationEditing\BusinessApplicationViewDesignPanel.xaml.cs">
+      <DependentUpon>BusinessApplicationViewDesignPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationEditing\ClearParticipantsCommandHandler.cs" />
+    <Compile Include="ApplicationEditing\DefaultApplicationViewDesigner.xaml.cs">
+      <DependentUpon>DefaultApplicationViewDesigner.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ApplicationEditing\DefaultParticipantACLModel.cs" />
     <Compile Include="ApplicationEditing\DefaultParticipantACLPanel.xaml.cs">
       <DependentUpon>DefaultParticipantACLPanel.xaml</DependentUpon>
@@ -586,6 +592,14 @@
     <Resource Include="images\classacl.png" />
     <Resource Include="images\applicationfolder.png" />
     <Resource Include="images\application.png" />
+    <Page Include="ApplicationEditing\BusinessApplicationViewDesignPanel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ApplicationEditing\DefaultApplicationViewDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ApplicationEditing\DefaultParticipantACLPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
