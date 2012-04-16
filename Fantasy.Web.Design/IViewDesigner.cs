@@ -16,7 +16,7 @@ namespace Fantasy.Web.Design
 
         void LoadSettings(IBusinessEntity entity,XElement setting);
 
-        XElement SaveSettings(XElement setting);
+        XElement SaveSettings();
 
         UIElement UI { get; }
 
