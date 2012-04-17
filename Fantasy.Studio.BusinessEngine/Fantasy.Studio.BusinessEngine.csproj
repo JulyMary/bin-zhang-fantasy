@@ -105,6 +105,7 @@
     <Compile Include="ApplicationEditing\BusinessApplicationViewDesignPanel.xaml.cs">
       <DependentUpon>BusinessApplicationViewDesignPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationEditing\BusinessApplicationViewDesignPanelModel.cs" />
     <Compile Include="ApplicationEditing\ClearParticipantsCommandHandler.cs" />
     <Compile Include="ApplicationEditing\DefaultApplicationViewDesigner.xaml.cs">
       <DependentUpon>DefaultApplicationViewDesigner.xaml</DependentUpon>
