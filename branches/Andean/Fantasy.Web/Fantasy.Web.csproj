@@ -65,9 +65,6 @@
     <Compile Include="Consts.cs" />
     <Compile Include="Controllers\StandardNavigationController.cs" />
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
-    <Compile Include="ICollectionViewController.cs" />
-    <Compile Include="INavigationViewController.cs" />
-    <Compile Include="IScalarViewController.cs" />
     <Compile Include="Mvc\UI\ClientScriptRegister.cs" />
     <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
     <Compile Include="Mvc\UI\HtmlLiteral.cs" />

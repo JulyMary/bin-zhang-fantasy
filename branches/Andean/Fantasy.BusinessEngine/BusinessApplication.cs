@@ -66,7 +66,8 @@ namespace Fantasy.BusinessEngine
 
         public virtual INavigationViewController GetNaviationView()
         {
-            throw new NotImplementedException();
+            Type t = Type.GetType("Fantasy.Web.Controllers.StandardNavigationController, Fantasy.Web", true);
+            return (INavigationViewController)Activator.CreateInstance(t);
         }
 
 
