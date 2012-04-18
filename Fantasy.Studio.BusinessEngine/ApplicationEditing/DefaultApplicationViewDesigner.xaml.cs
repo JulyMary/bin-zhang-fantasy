@@ -48,6 +48,14 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public event EventHandler SettingChanged;
 
+        protected virtual void OnSettingChanged(EventArgs e)
+        {
+            if (this.SettingChanged != null)
+            {
+                this.SettingChanged(this, e);
+            }
+        }
+
         #endregion
 
         #region IObjectWithSite Members

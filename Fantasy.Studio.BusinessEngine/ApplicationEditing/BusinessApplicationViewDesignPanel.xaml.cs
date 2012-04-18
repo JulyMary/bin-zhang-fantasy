@@ -48,6 +48,14 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public event EventHandler DirtyStateChanged;
 
+        protected virtual void OnDirtyStateChanged(EventArgs e)
+        {
+            if (this.DirtyStateChanged != null)
+            {
+                this.DirtyStateChanged(this, e);
+            }
+        }
+
         public void Save()
         {
             throw new NotImplementedException();
