@@ -27,6 +27,9 @@ namespace Fantasy.Web.Testing.Controllers
             ViewBag.Message = "Your quintessential contact page.";
 
             return View();
+
+
+            return this.RedirectToActionPermanent 
         }
     }
 }

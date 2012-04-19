@@ -65,6 +65,8 @@
     <Compile Include="Consts.cs" />
     <Compile Include="Controllers\StandardNavigationController.cs" />
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
+    <Compile Include="Mvc\BusinessApplicationHadler.cs" />
+    <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
     <Compile Include="Mvc\UI\ClientScriptRegister.cs" />
     <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
     <Compile Include="Mvc\UI\HtmlLiteral.cs" />
