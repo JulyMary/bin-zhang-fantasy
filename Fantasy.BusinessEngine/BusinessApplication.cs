@@ -76,7 +76,7 @@ namespace Fantasy.BusinessEngine
             throw new NotImplementedException();
         }
 
-        public virtual ICollectionViewController GetCollectionView(IEnumerable<BusinessObject> collection)
+        public virtual ICollectionViewController GetCollectionView(BusinessObject obj, string propertyName, IEnumerable<BusinessObject> collection)
         {
             throw new NotImplementedException();
         }

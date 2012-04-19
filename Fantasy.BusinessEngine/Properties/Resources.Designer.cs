@@ -61,6 +61,24 @@ namespace Fantasy.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are zero or more than two BusinessApplication have code {0}..
+        /// </summary>
+        internal static string ApplicationByNameExceptionMessage {
+            get {
+                return ResourceManager.GetString("ApplicationByNameExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find a BusinessApplication which type is {0}..
+        /// </summary>
+        internal static string ApplicationByTypeExceptionMessage {
+            get {
+                return ResourceManager.GetString("ApplicationByTypeExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to References.
         /// </summary>
         internal static string AssemblyReferenceGroupName {

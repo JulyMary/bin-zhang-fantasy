@@ -72,17 +72,29 @@ namespace Fantasy.BusinessEngine.Services
 
         public BusinessApplication Create(Type t)
         {
-            BusinessApplicationData data = this._datas.FirstOrDefault(a => this.EntityType(a) == t);
-            if (data != null)
-            {
-                return this.Create(data, t);
-            }
-            else
-            {
-                throw new ApplicationException(String.Format("Application does not exist for type {0}", t.AssemblyQualifiedName)); 
-            }
+            BusinessApplicationData data = this._datas.First(a => this.EntityType(a) == t, String.Format(Resources.ApplicationByTypeExceptionMessage, t.AssemblyQualifiedName));
+           
+            return this.Create(data, t);
+           
+        }
+
+
+        public BusinessApplication Create(string codeName)
+        {
+            BusinessApplicationData data = this._datas.Single(a => string.Equals(a.CodeName, codeName, StringComparison.OrdinalIgnoreCase),String.Format(Resources.ApplicationByNameExceptionMessage, codeName));
+            return this.Create(data, this.EntityType(data));
         }
 
         #endregion
+
+
+        public void ReleaseApplication(BusinessApplication application)
+        {
+            IDisposable disposable = application as IDisposable;
+            if (disposable != null)
+            {
+                disposable.Dispose();
+            }
+        }
     }
 }

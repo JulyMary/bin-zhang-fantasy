@@ -9,7 +9,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Web
 {
-    public interface ICollectionViewController
+    public interface ICollectionViewController : IController
     {
         ViewResult Default(IEnumerable<BusinessObject> collection);
     }

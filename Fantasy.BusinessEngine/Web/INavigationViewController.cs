@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Fantasy.Web
 {
-    public interface INavigationViewController
+    public interface INavigationViewController : IController
     {
         ViewResult Root(BusinessApplication application);
     }
