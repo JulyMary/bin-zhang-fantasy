@@ -7,7 +7,7 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Web
 {
-    public interface IScalarViewController
+    public interface IScalarViewController : IController
     {
         ViewResult Default(BusinessObject obj);
     }

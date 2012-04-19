@@ -179,6 +179,7 @@
     <Compile Include="AddIns\TemplateAttribute.cs" />
     <Compile Include="Collections\Collection.cs" />
     <Compile Include="Collections\CollectionExtensions.cs" />
+    <Compile Include="Collections\EnumerableExtensions.cs" />
     <Compile Include="Collections\UnionedObservableCollection.cs" />
     <Compile Include="Collections\ObservableAdapterCollection.cs" />
     <Compile Include="Collections\Generic.UnionedObservableCollection.cs" />
