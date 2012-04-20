@@ -9,6 +9,6 @@ namespace Fantasy.Web
 {
     public interface INavigationViewController : IController
     {
-        ViewResult Root(BusinessApplication application);
+        ViewResult Default(BusinessApplication application);
     }
 }

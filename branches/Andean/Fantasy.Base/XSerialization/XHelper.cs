@@ -34,12 +34,25 @@ namespace Fantasy.XSerialization
 
         private void LoadXConverters(Assembly assembly)
         {
-            var query = from type in assembly.GetTypes() where type.IsDefined(typeof(XConverterAttribute), false) select type;
-            foreach (Type t in query)
+            Type[] types = null;
+            try
             {
-                XConverterAttribute attr = (XConverterAttribute)t.GetCustomAttributes(typeof(XConverterAttribute), false)[0];
-                this._converters.Add(attr.TargetType, t);
+                var query = from type in assembly.GetTypes() where type.IsDefined(typeof(XConverterAttribute), false) select type;
+                types = query.ToArray();
             }
+            catch
+            {
+            }
+
+            if (types != null)
+            {
+                foreach (Type t in types)
+                {
+                    XConverterAttribute attr = (XConverterAttribute)t.GetCustomAttributes(typeof(XConverterAttribute), false)[0];
+                    this._converters.Add(attr.TargetType, t);
+                }
+            }
+
         }
 
         object _syncRoot = new object();

@@ -6,6 +6,7 @@ using Fantasy.BusinessEngine.Services;
 using Fantasy.BusinessEngine.Security;
 using Fantasy.Web;
 
+
 namespace Fantasy.BusinessEngine
 {
     public class BusinessApplication 
@@ -70,6 +71,11 @@ namespace Fantasy.BusinessEngine
             return (INavigationViewController)Activator.CreateInstance(t);
         }
 
+
+        public virtual ViewType? GetViewType(BusinessObject obj, string propertyName)
+        {
+            return null;
+        }
 
         public virtual IScalarViewController GetScalarView(BusinessObject obj)
         {

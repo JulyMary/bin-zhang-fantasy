@@ -7,15 +7,16 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
+using System.Reflection;
 
 namespace Fantasy.Web.Mvc
 {
-    public class BusinessApplicationHadler : IHttpAsyncHandler, IHttpHandler, IRequiresSessionState
+    public class BusinessApplicationHadler : /*IHttpAsyncHandler,*/ IHttpHandler, IRequiresSessionState
     {
 
         public BusinessApplicationHadler(RequestContext requestContext )
         {
-
+            this.RequestContext = requestContext;
         }
 
 
@@ -48,56 +49,114 @@ namespace Fantasy.Web.Mvc
 
 
         public RequestContext RequestContext { get; private set; }
-
+        
+        
+       
 
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
 
-
-            string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
-            BusinessApplication app = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>().CreateByName(appName);
-            BusinessEngineContext.Current.Application = app;
-            app.Load();
-            ControllerType type = (ControllerType)Enum.Parse(typeof(ControllerType), this.RequestContext.RouteData.GetRequiredString("controllerType"));
+            BusinessApplication app;
             IController controller;
-            switch (type)
-            {
-                case ControllerType.Nav:
-                    controller = app.GetNaviationView();
-                    break;
-                case ControllerType.Obj:
-                    Guid objectId = new Guid(this.RequestContext.RouteData.GetRequiredString("ObjId"));
-                    BusinessObject obj;
-                    if (objectId != Guid.Empty)
-                    {
-                        obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(objectId);
-                    }
-                    else
-                    {
-                        obj = app.EntryObject; 
-                    }
-                    
-
-                    controller = app
-
-                    break;
-                case ControllerType.Col:
-                    break;
-                default:
-                    break;
-            }
-
-
-            this.ProcessRequestInit(httpContext, out controller, out factory);
+            ProcessRequestInit(httpContext, out app, out controller);
             try
             {
                 controller.Execute(this.RequestContext);
             }
             finally
             {
-                factory.ReleaseController(controller);
+                if(controller is IDisposable )
+                {
+                    ((IDisposable)controller).Dispose();
+                }
+                if(app is IDisposable)
+                {
+                    ((IDisposable)app).Dispose();
+                }
             }
 
+        }
+
+        private void ProcessRequestInit(HttpContextBase httpContext, out BusinessApplication app, out IController controller)
+        {
+            //URL Pattern: ~/App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
+            string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
+            app = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>().CreateByName(appName);
+            BusinessEngineContext.Current.Application = app;
+            app.Load();
+            ViewType type = (ViewType)Enum.Parse(typeof(ViewType), this.RequestContext.RouteData.GetRequiredString("ViewType"));
+
+            switch (type)
+            {
+                case ViewType.Nav:
+                    controller = app.GetNaviationView();
+                    break;
+                case ViewType.Obj:
+                    {
+                        BusinessObject obj = GetBusinessObject(app);
+                        controller = app.GetScalarView(obj);
+                    }
+
+                    break;
+                case ViewType.Col:
+                    {
+                        BusinessObject obj = GetBusinessObject(app);
+                        string prop = this.RequestContext.RouteData.GetRequiredString("Property");
+                        IEnumerable<BusinessObject> collection = (IEnumerable<BusinessObject>)obj.GetType().GetProperty(prop, System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public).GetValue(obj, null);
+                        controller = app.GetCollectionView(obj, prop, collection);
+
+                    }
+                    break;
+                default:
+                    throw new Exception("Impossible");
+
+            }
+
+
+            SessionStateAttribute attr = controller.GetType().GetCustomAttribute<SessionStateAttribute>(true);
+            SessionStateBehavior behavior = attr != null ? attr.Behavior : SessionStateBehavior.Default;
+            this.RequestContext.HttpContext.SetSessionStateBehavior(behavior);
+
+            if (!MvcHandler.DisableMvcResponseHeader)
+            {
+                string mvcVersion = (string)typeof(MvcHandler).InvokeMember("MvcVersion", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Static, null, null, null);
+                httpContext.Response.AppendHeader(MvcHandler.MvcVersionHeaderName, mvcVersion);
+
+            }
+
+            this.RemoveOptionalRoutingParameters();
+
+            string controllerName = controller.GetType().Name;
+            controllerName = controllerName.Substring(0, controllerName.Length - "Controller".Length);
+            this.RequestContext.RouteData.Values.Add("controller", controllerName);
+        }
+
+        private void RemoveOptionalRoutingParameters()
+        {
+            RouteValueDictionary values = this.RequestContext.RouteData.Values;
+            foreach (string str in (from entry in values
+                                    where entry.Value == UrlParameter.Optional
+                                    select entry.Key).ToArray<string>())
+            {
+                values.Remove(str);
+            }
+        }
+
+
+
+        private BusinessObject GetBusinessObject(BusinessApplication app)
+        {
+            Guid objectId = new Guid(this.RequestContext.RouteData.GetRequiredString("ObjId"));
+            BusinessObject obj;
+            if (objectId != Guid.Empty)
+            {
+                obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(objectId);
+            }
+            else
+            {
+                obj = app.EntryObject;
+            }
+            return obj;
         }
 
         

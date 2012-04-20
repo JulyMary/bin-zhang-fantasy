@@ -79,13 +79,14 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
-        public BusinessApplication Create(string codeName)
+        public BusinessApplication CreateByName(string codeName)
         {
-            BusinessApplicationData data = this._datas.Single(a => string.Equals(a.CodeName, codeName, StringComparison.OrdinalIgnoreCase),String.Format(Resources.ApplicationByNameExceptionMessage, codeName));
+            BusinessApplicationData data = this._datas.Single(a => string.Equals(a.CodeName, codeName, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(a.CodeName, codeName + "Application", StringComparison.OrdinalIgnoreCase), String.Format(Resources.ApplicationByNameExceptionMessage, codeName));
             return this.Create(data, this.EntityType(data));
         }
 
-        #endregion
+      
 
 
         public void ReleaseApplication(BusinessApplication application)
@@ -96,5 +97,12 @@ namespace Fantasy.BusinessEngine.Services
                 disposable.Dispose();
             }
         }
+
+       
+
+
+       
+
+        #endregion
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine.Security;
+using Fantasy.AddIns;
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -11,7 +12,14 @@ namespace Fantasy.BusinessEngine.Services
     {
 
         ISecurityProvider[] _providers;
- 
+
+
+
+        public override void InitializeService()
+        {
+            this._providers = AddInTree.Tree.GetTreeNode("fantasy/security/securityproviders").BuildChildItems<ISecurityProvider>(this, this.Site).ToArray();
+            base.InitializeService();
+        }
 
 
 

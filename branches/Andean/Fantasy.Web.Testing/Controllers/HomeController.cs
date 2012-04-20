@@ -29,7 +29,7 @@ namespace Fantasy.Web.Testing.Controllers
             return View();
 
 
-            return this.RedirectToActionPermanent 
+            //return this.RedirectToActionPermanent 
         }
     }
 }

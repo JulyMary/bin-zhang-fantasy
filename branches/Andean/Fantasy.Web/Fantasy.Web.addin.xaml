@@ -44,6 +44,11 @@
         <Object ID="BusinessDataTypeRepository">
             <be:DefaultBusinessDataTypeRepository/>
         </Object>
+        
+        <Object ID="AppRouteHandler">
+            <fw:BusinessApplicationRouteHandler />
+        </Object>
+        
         <Object ID="ControllerFactory">
             <fw:ChainedControllerFactory/>
         </Object>
@@ -55,10 +60,17 @@
             <fw:HttpContextBusinessEngineContextProvider/>
         </Object>
     </Extension>
+    
+    <Extension Path="fantasy/security/securityproviders">
+        
+    </Extension>
 
     <Extension Path="fantasy/startup">
         <Object ID="SetControllerFactory">
             <fw:SetControllerFactoryCommand />
+        </Object>
+        <Object ID="RegisterAppRoute">
+            <fw:RegisterAppRouteCommand />
         </Object>
         <Object ID="RegisterAllArea">
             <fw:RegisterAllAreasCommand/>
@@ -91,6 +103,9 @@
     <Extension Path="fantasy/web/request/end">
 
     </Extension>
+    
+    
+    
 
 
     <Extension Path="fantasy/businessengine/entityhandlers/create">
