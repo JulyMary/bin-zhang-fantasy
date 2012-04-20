@@ -9,7 +9,7 @@ namespace Fantasy.Web.Controllers
 
         #region INavigationViewController Members
 
-        public ViewResult Root(BusinessEngine.BusinessApplication application)
+        public ViewResult Default(BusinessEngine.BusinessApplication application)
         {
             throw new System.NotImplementedException();
         }

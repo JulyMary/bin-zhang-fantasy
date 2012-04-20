@@ -20,7 +20,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassEditing
         {
             this.Entity = @class;
             this.IsReadOnly = true;
-            this.Name = this.Entity.Name + ".Designer.cs";
+            this.Name = this.Entity.CodeName + ".Designer.cs";
             PropertyChangedEventManager.AddListener(this.Entity, this, "AutoScript");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
             PropertyChangedEventManager.AddListener(this.Entity, this, "EntityState");

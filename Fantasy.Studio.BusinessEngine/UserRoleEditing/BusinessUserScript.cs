@@ -19,7 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.UserRoleEditing
         {
             this.Entity = user;
             this.IsReadOnly = user.IsSystem;
-            this.Name = this.Entity.Name + ".cs";
+            this.Name = this.Entity.CodeName + ".cs";
             PropertyChangedEventManager.AddListener(this.Entity, this, "Script");
             PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
             PropertyChangedEventManager.AddListener(this.Entity, this, "EntityState");

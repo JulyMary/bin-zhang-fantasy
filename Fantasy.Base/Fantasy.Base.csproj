@@ -192,6 +192,7 @@
     <Compile Include="NumericalComparisonOperator.cs" />
     <Compile Include="ServiceModel\ServiceContainer.cs" />
     <Compile Include="Reflection\DomainAssemblyLoader.cs" />
+    <Compile Include="TypeExtensions.cs" />
     <Compile Include="Windows\BooleanInverterConverter.cs" />
     <Compile Include="Windows\CurrentProcessIcon.cs" />
     <Compile Include="Windows\DataObjectExtension.cs" />
