@@ -10,8 +10,6 @@ namespace Fantasy.BusinessEngine.Services
 {
     public interface IEntityService
     {
-        
-
         T CreateEntity<T>() where T : IEntity;
 
         T Get<T>(object id) where T : IEntity;
@@ -35,6 +33,8 @@ namespace Fantasy.BusinessEngine.Services
         void Evict(object obj);
       
         void Evict(Type type);
+
+        ISession Session { get; }
 
 
 

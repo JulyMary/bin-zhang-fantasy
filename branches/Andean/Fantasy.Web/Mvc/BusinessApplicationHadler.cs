@@ -84,7 +84,7 @@ namespace Fantasy.Web.Mvc
             app = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>().CreateByName(appName);
             BusinessEngineContext.Current.Application = app;
             app.Load();
-            ViewType type = (ViewType)Enum.Parse(typeof(ViewType), this.RequestContext.RouteData.GetRequiredString("ViewType"));
+            ViewType type = (ViewType)this.RequestContext.RouteData.Values["ViewType"];
 
             switch (type)
             {

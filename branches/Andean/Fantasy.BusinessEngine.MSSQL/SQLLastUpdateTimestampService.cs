@@ -15,16 +15,22 @@ namespace Fantasy.BusinessEngine.MSSQL
         public long GetLastUpdateSeconds(string name)
         {
 
-            IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.CreateCommand())
+            lock (_synRoot)
             {
-                cmd.CommandText = String.Format("select seconds from BUSINESSLASTUPDATETIMESTAMP where upper(name) = '{0}'", name);
-                object o = cmd.ExecuteScalar();
+                IEntityService es = this.Site.GetRequiredService<IEntityService>();
 
-                return o is DBNull ? 0L : (long)Convert.ChangeType(o, typeof(Int64)); 
+                using (IDbCommand cmd = es.CreateCommand())
+                {
+                    cmd.CommandText = String.Format("select seconds from BUSINESSLASTUPDATETIMESTAMP where upper(name) = '{0}'", name);
+                    object o = cmd.ExecuteScalar();
+
+                    return o is DBNull ? 0L : (long)Convert.ChangeType(o, typeof(Int64));
+                }
             }
             
         }
+
+        private object _synRoot = new object();
 
         #endregion
     }

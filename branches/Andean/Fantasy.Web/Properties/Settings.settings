@@ -9,7 +9,7 @@
       <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;Fantasy.BusinessData&lt;/string&gt;
-  &lt;string&gt;Fantasy.Web.Mvc&lt;/string&gt;
+  &lt;string&gt;Fantasy.Web&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
     <Setting Name="ApplicationName" Type="System.String" Scope="Application">

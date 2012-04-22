@@ -174,7 +174,9 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                                     @class.AllLeftAssociations()
                                         .Union(from childClass in childClasses
                                                from assn in childClass.LeftAssociations
+                                               
                                                select assn)
+                                where assn.RightNavigatable == true
                                 from cls in assn.RightClass.Flatten(c => c.ChildClasses)
                                 select cls;
 
@@ -183,6 +185,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                                          .Union(from childClass in childClasses
                                                 from assn in childClass.RightAssociations
                                                 select assn)
+                                 where assn.LeftNavigatable == true 
                                  from cls in assn.LeftClass.Flatten(c => c.ChildClasses)
                                  select cls;
 

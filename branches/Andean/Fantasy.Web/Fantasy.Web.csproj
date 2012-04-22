@@ -39,6 +39,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\System32\inetsrv\Microsoft.Web.Administration.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,6 +52,9 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\External\AppData\SystemReferenceAssemblies\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,17 +67,24 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MIMETypes.cs" />
     <Compile Include="Mvc\BusinessApplicationHadler.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="Controllers\StandardNavigationController.cs" />
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
     <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
+    <Compile Include="Mvc\CompiledContentHandler.cs" />
+    <Compile Include="Mvc\CompiledContentRouteHandler.cs" />
+    <Compile Include="Mvc\CompiledContentHandlerFactory.cs" />
     <Compile Include="Mvc\RegisterAppRouteCommand.cs" />
-    <Compile Include="Mvc\UI\ClientScriptRegister.cs" />
+    <Compile Include="Mvc\RegisterCompiledContentHandlerFactoryCommand.cs" />
+    <Compile Include="Mvc\RegisterCompiledContentRouteCommand.cs" />
+    <Compile Include="Mvc\RegisterCompiledViewEngineCommand.cs" />
+    <Compile Include="Mvc\RegisterCompiledViewVirtualPathFactoryCommand.cs" />
+    <Compile Include="Mvc\UI\HtmlAssets.cs" />
     <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
     <Compile Include="Mvc\UI\HtmlLiteral.cs" />
     <Compile Include="Mvc\UI\HtmlText.cs" />
-    <Compile Include="Mvc\UI\IClientSideScriptFactory.cs" />
     <Compile Include="Mvc\UI\IHtmlNode.cs" />
     <Compile Include="Mvc\UI\ViewComponent.cs" />
     <Compile Include="Mvc\UI\ViewComponentBuilder.cs" />
@@ -83,8 +97,7 @@
     <Compile Include="Security\FantasyRoleProvider.cs" />
     <Compile Include="Mvc\CompiledViewEngine.cs" />
     <Compile Include="Mvc\ChainedControllerFactory.cs" />
-    <Compile Include="Mvc\ChainedViewEngine.cs" />
-    <Compile Include="Mvc\CompiledVirtualPathFactory.cs" />
+    <Compile Include="Mvc\CompiledViewVirtualPathFactory.cs" />
     <Compile Include="FantasyHttpApplication.cs" />
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="Mvc\CompiledMvcView.cs" />
@@ -105,6 +118,10 @@
       <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
       <Name>Fantasy.Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fantasy.BusinessEngine.MSSQL\Fantasy.BusinessEngine.MSSQL.csproj">
+      <Project>{100447FB-8D38-4EB0-8A97-B5DB6ECDBAA2}</Project>
+      <Name>Fantasy.BusinessEngine.MSSQL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fantasy.BusinessEngine\Fantasy.BusinessEngine.csproj">
       <Project>{FEEDE1C2-C196-4A85-98A3-A5547C4A8D93}</Project>
       <Name>Fantasy.BusinessEngine</Name>
@@ -123,15 +140,61 @@
       <LastGenOutput>Settings.settings.cs</LastGenOutput>
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <Content Include="Views\StandardNavigation\Root.cshtml" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Scripts\AjaxLogin.js" />
+    <Content Include="Scripts\jquery-1.6.2-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.2.js" />
+    <Content Include="Scripts\jquery-1.6.2.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.js" />
+    <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\knockout-1.3.0beta.debug.js" />
+    <Content Include="Scripts\knockout-1.3.0beta.js" />
+    <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
+    <Content Include="Views\StandardNavigation\Default.cshtml" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Fantasy.Web.addin.xaml">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -140,6 +203,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\External\AppData\RazorGenerator\RazorGenerator.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <ProjectExtensions>
     <VisualStudio>

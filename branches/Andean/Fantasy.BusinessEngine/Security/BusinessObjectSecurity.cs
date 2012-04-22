@@ -174,7 +174,7 @@ namespace Fantasy.BusinessEngine.Security
         private void SyncLeftAssn(BusinessClass @class, bool? canRead, bool? canWrite)
         {
             var toRemove = from ps in this.Properties
-                           where ps.MemberType == BusinessObjectMemberTypes.LeftAssociation && !@class.AllLeftAssociations().Any(p => p.Id == ps.Id)
+                           where ps.MemberType == BusinessObjectMemberTypes.LeftAssociation && !@class.AllLeftAssociations().Any(assn => assn.Id == ps.Id && assn.RightNavigatable == true)
                            select ps;
 
             foreach (BusinessObjectMemberSecurity ps in toRemove.ToArray())
@@ -190,7 +190,7 @@ namespace Fantasy.BusinessEngine.Security
             }
 
             var toAdd = from assn in @class.AllLeftAssociations()
-                        where !this.Properties.Any(p => p.Id == assn.Id && p.MemberType== BusinessObjectMemberTypes.LeftAssociation)
+                        where assn.RightNavigatable == true &&  !this.Properties.Any(p => p.Id == assn.Id && p.MemberType== BusinessObjectMemberTypes.LeftAssociation)
                         select
                             new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.RightRoleName, CanRead=canRead, CanWrite = canWrite, DisplayOrder = assn.RightRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.LeftAssociation };
 
@@ -205,7 +205,7 @@ namespace Fantasy.BusinessEngine.Security
         private void SyncRightAssn(BusinessClass @class, bool? canRead, bool? canWrite)
         {
             var toRemove = from ps in this.Properties
-                           where ps.MemberType == BusinessObjectMemberTypes.RightAssociation && !@class.AllRightAssociations().Any(p => p.Id == ps.Id)
+                           where ps.MemberType == BusinessObjectMemberTypes.RightAssociation && !@class.AllRightAssociations().Any(assn => assn.Id == ps.Id && assn.LeftNavigatable == true)
                            select ps;
 
             foreach (BusinessObjectMemberSecurity ps in toRemove.ToArray())
@@ -221,7 +221,7 @@ namespace Fantasy.BusinessEngine.Security
             }
 
             var toAdd = from assn in @class.AllRightAssociations()
-                        where !this.Properties.Any(p => p.Id == assn.Id && p.MemberType == BusinessObjectMemberTypes.RightAssociation)
+                        where assn.LeftNavigatable == true && !this.Properties.Any(p => p.Id == assn.Id && p.MemberType == BusinessObjectMemberTypes.RightAssociation)
                         select
                             new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.LeftRoleName, CanRead = canRead, CanWrite = canWrite, DisplayOrder = assn.LeftRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.RightAssociation };
 

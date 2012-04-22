@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.ServiceModel;
+using NHibernate;
+using NHibernate.Linq;
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -13,6 +15,7 @@ namespace Fantasy.BusinessEngine.Services
         {
 
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
+
             this._allClasses = es.Query<BusinessClass>().ToList();
             _allClasses.SortBy(c => c.Id);
             this._typeClasses = this._allClasses.ToDictionary(c => c.EntityType());
