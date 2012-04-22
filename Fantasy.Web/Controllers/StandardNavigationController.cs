@@ -11,7 +11,7 @@ namespace Fantasy.Web.Controllers
 
         public ViewResult Default(BusinessEngine.BusinessApplication application)
         {
-            throw new System.NotImplementedException();
+            return View();
         }
 
         #endregion

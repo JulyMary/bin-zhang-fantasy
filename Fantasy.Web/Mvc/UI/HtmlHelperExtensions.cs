@@ -10,7 +10,20 @@ namespace Fantasy.Web.Mvc.UI
     {
         public static ViewComponentFactory BusinessEngine(this HtmlHelper helper)
         {
-            throw new NotImplementedException();
+            ViewContext viewContext = helper.ViewContext;
+            HttpContextBase httpContext = viewContext.HttpContext;
+
+            ViewComponentFactory rs = (ViewComponentFactory)httpContext.Items[ViewComponentFactoryKey];
+
+            if (rs == null)
+            {
+                rs = new ViewComponentFactory(helper);
+            }
+
+            return rs;
         }
+
+
+        private static readonly string ViewComponentFactoryKey = typeof(ViewComponentFactory).AssemblyQualifiedName; 
     }
 }

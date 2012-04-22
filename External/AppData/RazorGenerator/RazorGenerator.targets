@@ -4,17 +4,31 @@
         <RazorViewsCodeGenDirectory Condition=" '$(RazorViewsCodeGenDirectory)' == '' ">$(MsBuildProjectDirectory)\obj\CodeGen\</RazorViewsCodeGenDirectory>
 
         <CompileDependsOn>
+		    CreateRootNamespaceFile;
             PrecompileRazorFiles;
             $(CompileDependsOn);
         </CompileDependsOn>
-    </PropertyGroup>
 
+        <RootNamespaceFile>$(MsBuildProjectDirectory)\obj\CodeGen\RootNamespace.cs</RootNamespaceFile>
+    </PropertyGroup>
+   
     <ItemGroup>
         <RazorSrcFiles Condition=" '@(RazorSrcFiles)' == '' " Include="**\*.cshtml" />
         <RazorOutputFiles Include="@(RazorSrcFiles -> '$(RazorViewsCodeGenDirectory)%(RecursiveDir)%(Filename)%(Extension).cs')" />
+        <Compile Include="@(RazorOutputFiles)" />
+        <Compile Include="$(RootNamespaceFile)"/>
+        <EmbeddedResource Include="Content\**"/>
+        <EmbeddedResource Include="Images\**"/>
+        <EmbeddedResource Include="Scripts\**"/>
     </ItemGroup>
 
     <UsingTask AssemblyFile="$(RazorGeneratorMsBuildPath)" TaskName="RazorCodeGen" />
+	
+	<Target Name="CreateRootNamespaceFile">
+        <MakeDir
+           Directories="$(MsBuildProjectDirectory)\obj\CodeGen"/>
+        <WriteLinesToFile File="$(RootNamespaceFile)" Lines='[assembly:Fantasy.Reflection.RootNamespace("$(RootNamespace)")]' Overwrite="True" />
+    </Target>
     <Target Name="PrecompileRazorFiles"
                     Inputs="@(RazorSrcFiles)"
                     Outputs="@(RazorOutputFiles)">
@@ -24,8 +38,6 @@
                                     RootNamespace="$(RootNamespace)">
             <Output TaskParameter="GeneratedFiles" ItemName="FilesGenerated" />
         </RazorCodeGen>
-        <ItemGroup>
-            <Compile Include="@(FilesGenerated)" />
-        </ItemGroup>
+        
     </Target>
 </Project>

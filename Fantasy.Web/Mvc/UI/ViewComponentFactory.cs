@@ -10,9 +10,9 @@ namespace Fantasy.Web.Mvc.UI
     public class ViewComponentFactory
     {
 
-        public ViewComponentFactory(HtmlHelper htmlHelper, IClientSideScriptFactory clientSideScriptFactory)
+        public ViewComponentFactory(HtmlHelper htmlHelper)
         {
-
+            this.HtmlHelper = htmlHelper;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -23,10 +23,12 @@ namespace Fantasy.Web.Mvc.UI
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public IClientSideScriptFactory ClientSideScriptFactory
+        public HtmlAssets HtmlAssets
         {
-            get;
-            private set;
+            get
+            {
+                return HtmlAssets.GetInstance(this.HtmlHelper); 
+            }
         }
 
         private ViewContext ViewContext

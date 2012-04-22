@@ -7,5 +7,6 @@ namespace Fantasy.Web.Mvc.UI
 {
     public class ViewComponentBuilder
     {
+
     }
 }

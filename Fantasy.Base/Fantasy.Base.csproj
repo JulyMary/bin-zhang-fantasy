@@ -190,6 +190,7 @@
     <Compile Include="Reflection\GlobalAssemblyCache.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="NumericalComparisonOperator.cs" />
+    <Compile Include="Reflection\RootNamespaceAttribute.cs" />
     <Compile Include="ServiceModel\ServiceContainer.cs" />
     <Compile Include="Reflection\DomainAssemblyLoader.cs" />
     <Compile Include="TypeExtensions.cs" />

@@ -37,9 +37,9 @@ namespace Fantasy.BusinessEngine.Services
 
         public override void UninitializeService()
         {
-            if (this._defaultSession != null)
+            if (this._session != null)
             {
-                this._defaultSession.Close();
+                this._session.Close();
             }
             base.UninitializeService();
         }
@@ -47,16 +47,16 @@ namespace Fantasy.BusinessEngine.Services
 
 
        
-        private ISession _defaultSession = null;
-        private ISession DefaultSession
+        private ISession _session = null;
+        public ISession Session
         {
             get
             {
-                if (_defaultSession == null)
+                if (_session == null)
                 {
-                    _defaultSession = _sessionFactory.OpenSession();
+                    _session = _sessionFactory.OpenSession();
                 }
-                return _defaultSession;
+                return _session;
             }
         }
 
@@ -90,7 +90,7 @@ namespace Fantasy.BusinessEngine.Services
 
                 if (_updateLevel == 1)
                 {
-                    this.DefaultSession.BeginTransaction();
+                    this.Session.BeginTransaction();
                 }
 
             }
@@ -115,23 +115,23 @@ namespace Fantasy.BusinessEngine.Services
                         commit = commit & !e.Cancel;
                         if (commit)
                         {
-                            this.DefaultSession.Flush();
-                            this.DefaultSession.Transaction.Commit();
+                            this.Session.Flush();
+                            this.Session.Transaction.Commit();
                             this.OnCommitted(EventArgs.Empty);
                         }
                         else
                         {
-                            if (!this.DefaultSession.IsConnected)
+                            if (!this.Session.IsConnected)
                             {
-                                this.DefaultSession.Transaction.Rollback();
+                                this.Session.Transaction.Rollback();
                             }
                         }
                     }
                     catch
                     {
-                        if (!this.DefaultSession.IsConnected)
+                        if (!this.Session.IsConnected)
                         {
-                            this.DefaultSession.Transaction.Rollback();
+                            this.Session.Transaction.Rollback();
                         }
                         throw;
                     }
@@ -142,14 +142,14 @@ namespace Fantasy.BusinessEngine.Services
 
         public T Get<T>(object id) where T : IEntity
         {
-            return this.DefaultSession.Get<T>(id);
+            return this.Session.Get<T>(id);
         }
 
         public void Delete(IEntity entity)
         {
             if (entity.EntityState != EntityState.New)
             {
-                this.DefaultSession.Delete(entity);
+                this.Session.Delete(entity);
             }
             else
             {
@@ -164,10 +164,10 @@ namespace Fantasy.BusinessEngine.Services
 
         public System.Data.IDbCommand CreateCommand()
         {
-            IDbCommand rs = this.DefaultSession.Connection.CreateCommand();
-            if (this.DefaultSession.Transaction != null && this.DefaultSession.Transaction.IsActive)
+            IDbCommand rs = this.Session.Connection.CreateCommand();
+            if (this.Session.Transaction != null && this.Session.Transaction.IsActive)
             {
-                this.DefaultSession.Transaction.Enlist(rs);
+                this.Session.Transaction.Enlist(rs);
             }
             return rs;
         }
@@ -175,12 +175,12 @@ namespace Fantasy.BusinessEngine.Services
 
         public void SaveOrUpdate(IEntity entity)
         {
-            this.DefaultSession.SaveOrUpdate(entity);
+            this.Session.SaveOrUpdate(entity);
         }
 
         public IQueryable<T> Query<T>() where T : IEntity
         {
-            return this.DefaultSession.Query<T>();
+            return this.Session.Query<T>();
         }
 
 
@@ -207,13 +207,13 @@ namespace Fantasy.BusinessEngine.Services
 
         public void Evict(object obj)
         {
-            this._defaultSession.Evict(obj);
+            this._session.Evict(obj);
 
         }
 
         public void Evict(Type type)
         {
-            this._defaultSession.Evict(type);
+            this._session.Evict(type);
         }
 
     }

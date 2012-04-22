@@ -55,23 +55,7 @@ namespace Fantasy.BusinessEngine.Services
                 SyncRoles(es, businessDataAssembly);
                 SyncUsers(es, businessDataAssembly);
 
-                if (this._wellknownUsers == null)
-                {
-                    this._wellknownUsers = new WellknownUsers()
-                    {
-                        Administrator = this.UserById(new Guid("cee4f357-6985-4beb-bcea-0bcabd232c4a")),
-                        Guest = this.UserById(new Guid("4f2accae-e0ed-4605-adfe-3c1a226a0c0c"))
-
-                    };
-
-                    this._wellknownRoles = new WellknownRoles()
-                    {
-                        Administrators = this.RoleById(new Guid("6d21bc2a-870a-4928-b219-fae9c4c9fd15")),
-                        Users = this.RoleById(new Guid("E8700B4B-7911-470E-8E0E-458507D1F51D")),
-                        Everyone = this.RoleById(new Guid("A51973B2-7CE8-440E-8A9C-1B48B59B0499"))
-
-                    };
-                }
+                
             }
             
         }
@@ -122,7 +106,10 @@ namespace Fantasy.BusinessEngine.Services
                             select role;
                 this._userRoles.Add(user, roles.ToList());
                 this._userRoles[user].Add(WellknownRoles.Everyone);
-                this._userRoles[user].Add(WellknownRoles.Users); 
+                if (user.Id != _guestId)
+                {
+                    this._userRoles[user].Add(WellknownRoles.Users);
+                }
             }
 
             var deleted = from user in this._users where !userDatas.Any(u => u.Id == user.Id) select user;
@@ -130,7 +117,22 @@ namespace Fantasy.BusinessEngine.Services
             {
                 this._users.Remove(user);
             }
+
+            if (this._wellknownUsers == null)
+            {
+                this._wellknownUsers = new WellknownUsers()
+                {
+                    Administrator = this.UserById(_administratorId),
+                    Guest = this.UserById(_guestId)
+
+                };
+
+
+            }
         }
+
+        private static Guid _administratorId = new Guid("cee4f357-6985-4beb-bcea-0bcabd232c4a");
+        private static Guid _guestId = new Guid("4f2accae-e0ed-4605-adfe-3c1a226a0c0c");
 
         private void SyncRoles(IEntityService es, Assembly businessDataAssembly)
         {
@@ -180,6 +182,17 @@ namespace Fantasy.BusinessEngine.Services
             {
                 this._roles.Remove(role);
             }
+
+            if (this._wellknownRoles == null)
+            {
+                this._wellknownRoles = new WellknownRoles()
+                {
+                    Administrators = this.RoleById(new Guid("6d21bc2a-870a-4928-b219-fae9c4c9fd15")),
+                    Users = this.RoleById(new Guid("E8700B4B-7911-470E-8E0E-458507D1F51D")),
+                    Everyone = this.RoleById(new Guid("A51973B2-7CE8-440E-8A9C-1B48B59B0499"))
+
+                };
+            }
         }
 
 
@@ -191,7 +204,7 @@ namespace Fantasy.BusinessEngine.Services
             get 
             {
                 TrySyncData();
-                return this.Users; 
+                return this._users; 
             }
         }
 
@@ -201,7 +214,7 @@ namespace Fantasy.BusinessEngine.Services
             {
                 TrySyncData();
                 {
-                    return this.Roles;
+                    return this._roles;
                 }
             }
         }

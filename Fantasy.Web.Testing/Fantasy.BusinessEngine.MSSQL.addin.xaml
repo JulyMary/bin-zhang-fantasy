@@ -1,0 +1,20 @@
+﻿<AddIn  xmlns="urn:schema-fantasy:xaml"
+        xmlns:mssql="urn:schema-fantasy:business-engine-mssql"
+       
+        Author="Bin Zhang" Description="Fantasy Business Engine MS SQL AddIn" Name="Business Engine - SQL" Version="1.0">
+    <AddIn.Import>
+        <Assembly Name="Fantasy.BusinessEngine.MSSQL" />
+    </AddIn.Import>
+    
+    <Extension Path="fantasy/services">
+        <Object ID="SequenceService" InsertAfter="entityservice">
+            <mssql:SqlSequenceService />
+        </Object>
+        <Object ID="DDLService">
+            <mssql:SqlDDLService/>
+        </Object>
+        <Object ID="lastupdateService">
+            <mssql:SQLLastUpdateTimestampService/>
+        </Object>
+    </Extension>
+</AddIn>

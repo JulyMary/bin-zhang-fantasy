@@ -33,11 +33,11 @@ namespace Fantasy.Web
                 command.Execute(null);
             }
 
-            this.BeginRequest += new EventHandler(Application_BeginRequest);
-            this.EndRequest += new EventHandler(Application_EndRequest);
+            //this.BeginRequest += new EventHandler(Application_BeginRequest);
+            //this.EndRequest += new EventHandler(Application_EndRequest);
         }
 
-        void Application_EndRequest(object sender, EventArgs e)
+        protected virtual void Application_EndRequest(object sender, EventArgs e)
         {
 
             foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/end").BuildChildItems<ICommand>(null, ServiceManager.Services))
@@ -53,7 +53,7 @@ namespace Fantasy.Web
 
         private const string BusinessEngineContextServicesKey = "BUSINESSENGINECONTEXTSERVICES";
 
-        void Application_BeginRequest(object sender, EventArgs e)
+        protected virtual void Application_BeginRequest(object sender, EventArgs e)
         {
             AutoInitServiceContainer services = new AutoInitServiceContainer();
             services.InitializeServices(ServiceManager.Services, AddInTree.Tree.GetTreeNode("fantasy/context/services").BuildChildItems<object>(null, services).ToArray());
@@ -65,7 +65,7 @@ namespace Fantasy.Web
 
 
             IBusinessUserRoleService userRoleSvc = ServiceManager.Services.GetRequiredService<IBusinessUserRoleService>();
-            if (HttpContext.Current.User.Identity.IsAuthenticated)
+            if (HttpContext.Current.User != null)
             {
                 context.User = userRoleSvc.UserByName(HttpContext.Current.User.Identity.Name);
             }

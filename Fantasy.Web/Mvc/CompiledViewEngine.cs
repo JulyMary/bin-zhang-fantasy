@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Reflection;
 using System.Web.WebPages;
 using Fantasy.Web.Properties;
+using Fantasy.Reflection;
 
 namespace Fantasy.Web.Mvc
 {
@@ -35,10 +36,15 @@ namespace Fantasy.Web.Mvc
         private ViewEngineResult FindViewInternal(ControllerContext controllerContext, string viewName)
         {
             ViewEngineResult rs = null;
-            Type viewType = this.FindViewType(controllerContext, viewName);
+            List<string> searchedLocations = new List<string>();
+            Type viewType = this.FindViewType(controllerContext, viewName, searchedLocations);
             if (viewType != null)
             {
                 rs = new ViewEngineResult(new CompiledMvcView(viewType, true, this.FileExtensions), this);
+            }
+            else
+            {
+                return new ViewEngineResult(searchedLocations);
             }
 
             return rs;
@@ -47,7 +53,7 @@ namespace Fantasy.Web.Mvc
 
         public string[] FileExtensions { get; set; }
 
-        private Type FindViewType(ControllerContext controllerContext, string viewName)
+        private Type FindViewType(ControllerContext controllerContext, string viewName, List<string> searchedLocation)
         {
 
             lock (this._viewTypes)
@@ -58,21 +64,25 @@ namespace Fantasy.Web.Mvc
                     Type rs = null;
                     Type controllerType = controllerContext.Controller.GetType();
                     Assembly asm = controllerType.Assembly;
-                    string controllerName = controllerType.Name;
+                    string rootNamespace = ((RootNamespaceAttribute)asm.GetCustomAttributes(typeof(RootNamespaceAttribute), true).Single()).RootNamespace;
+                    string controllerName = controllerType.Name.Substring(0, controllerType.Name.Length - "Controller".Length);
                     string ns = controllerType.Namespace;
-                    if (ns.EndsWith(".Controller"))
+                    if (ns.EndsWith(".Controllers"))
                     {
-                        ns = ns.Substring(0, ns.Length - ".Controller".Length);
+                        ns = ns.Substring(0, ns.Length - ".Controllers".Length);
 
                         string viewTypeName = string.Format("{0}.Views.{1}.{2}", ns, controllerName, viewName);
-
+                        searchedLocation.Add(ViewTypeNameToVirtualPath(viewTypeName, rootNamespace)); 
                         rs = asm.GetType(viewTypeName);
 
                         if (rs == null)
                         {
+                           
+
                             while (rs == null && ns.Length > 0)
                             {
-                                viewTypeName = string.Format("{0}.Views.Shared.{2}", ns, viewName);
+                                viewTypeName = string.Format("{0}.Views.Shared.{1}", ns, viewName);
+                                searchedLocation.Add(ViewTypeNameToVirtualPath(viewTypeName, rootNamespace)); 
                                 rs = asm.GetType(viewTypeName);
                                 if (rs == null)
                                 {
@@ -93,6 +103,14 @@ namespace Fantasy.Web.Mvc
                     return this._viewTypes[key];
                 }
             }
+        }
+
+
+        private string ViewTypeNameToVirtualPath(string typeName, string rootNamespace)
+        {
+            string rs = "~" + typeName.Substring(rootNamespace.Length).Replace('.', '/') + ".cshtml";
+            return rs;
+          
         }
 
         public void ReleaseView(ControllerContext controllerContext, IView view)
