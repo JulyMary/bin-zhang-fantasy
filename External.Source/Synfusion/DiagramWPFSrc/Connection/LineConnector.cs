@@ -1718,13 +1718,20 @@ namespace Syncfusion.Windows.Diagram
         /// <summary>
         /// Called whenever the head node, tail node or position of the node is changed. 
         /// </summary>
+        /// 
+        private bool _updateConnectorPathGeometry = false;
         public override void UpdateConnectorPathGeometry()
         {
             if (!this.IsLoaded || (this.dc != null && this.dc.IsLoadingFromFile))
             {
                 return;
             }
+
+
+
+            if(!_updateConnectorPathGeometry)
             {
+                _updateConnectorPathGeometry = true;
                 //if (this.MeasurementUnit != currentMUSelected)
                 //{
                 //    doRunTimeUnitChange();
@@ -2203,11 +2210,16 @@ namespace Syncfusion.Windows.Diagram
                     //(this.LineAdorner as LineConnectorAdorner).InvalidateVertexs();
                     (this.LineAdorner as LineConnectorAdorner).UpdateVertexsPosition();
                 }
+
+
+                this.bridged = true;
+
+                this.OnConnectorPathGeometryUpdated(EventArgs.Empty);
+
+                this._updateConnectorPathGeometry = false;
             }
 
-            this.bridged = true;
-
-            this.OnConnectorPathGeometryUpdated(EventArgs.Empty);
+            
         }
         //public  void UpdateConnectorPath(LineConnector line)
         //{
@@ -4726,7 +4738,7 @@ namespace Syncfusion.Windows.Diagram
         {
             if (ConnectorType == ConnectorType.Orthogonal && IntermediatePoints.Count > 2)
             {
-                bool foundDefect = true;
+                bool foundDefect = false;
                 for (int i = 0; i < connectionPoints.Count - 1; i++)
                 {
                     if (!((connectionPoints[i].X == connectionPoints[i + 1].X) ||
@@ -4734,9 +4746,10 @@ namespace Syncfusion.Windows.Diagram
                     {
                         double del = Math.Min(Math.Abs(connectionPoints[i].X - connectionPoints[i + 1].X)
                             , Math.Abs(connectionPoints[i].Y - connectionPoints[i + 1].Y));
-                        if (del > 10)
+                        if (del > 2)
                         {
                             foundDefect = true;
+                            break;
                         }
                     }
                 }
@@ -4744,7 +4757,10 @@ namespace Syncfusion.Windows.Diagram
                 {
                     for (int i = 0; i < connectionPoints.Count - 1; i++)
                     {
-                        if (i % 2 != 0)
+                        Point p1 = connectionPoints[i];
+                        Point p2 = connectionPoints[i + 1];
+                        if(Math.Abs(p1.X - p2.X ) >= Math.Abs(p1.Y - p2.Y))
+
                         {
                             connectionPoints[i + 1] = new Point(connectionPoints[i + 1].X, connectionPoints[i].Y);
                         }
