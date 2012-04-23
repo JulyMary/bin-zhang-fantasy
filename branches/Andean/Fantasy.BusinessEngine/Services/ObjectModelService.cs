@@ -66,5 +66,20 @@ namespace Fantasy.BusinessEngine.Services
     
 
         #endregion
+
+        #region IObjectModelService Members
+
+
+        public string GetImageKey(BusinessClass @class)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetImageKey(BusinessClass @class, Enum state)
+        {
+            return @class.FullCodeName + 
+        }
+
+        #endregion
     }
 }

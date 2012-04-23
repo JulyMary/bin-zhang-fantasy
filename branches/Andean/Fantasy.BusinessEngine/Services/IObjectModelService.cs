@@ -16,6 +16,11 @@ namespace Fantasy.BusinessEngine.Services
         BusinessClass RootClass { get; }
 
 
+        string GetImageKey(BusinessClass @class);
+
+        string GetImageKey(BusinessClass @class, Enum state);
+
+
         
     }
 }
