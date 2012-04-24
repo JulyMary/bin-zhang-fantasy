@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.ServiceModel;
+using System.Drawing;
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -10,30 +11,30 @@ namespace Fantasy.BusinessEngine.Services
     {
         #region IImageListService Members
 
-        public void Register(string key, byte[] rawImage)
+        public void Register(string key, Image image)
         {
-            this._images.Add(key, rawImage);
+            this._images.Add(key, image);
         }
 
-        public void Register(string key, Func<byte[]> imageLoader)
+        public void Register(string key, Func<Image> imageLoader)
         {
             this._images.Add(key, imageLoader);
 
             
         }
 
-        public byte[] GetRawImage(string key)
+        public Image GetImage(string key)
         {
             object img = this._images[key];
-            if(img is byte[])
+            if(img is Image)
             {
-                return (byte[])img;
+                return (Image)img;
             }
             else
             {
-                byte[] raw = ((Func<byte[]>)img)(); 
-                this._images[key] = raw;
-                return raw;
+               Image raw = ((Func<Image>)img)(); 
+               this._images[key] = raw;
+               return raw;
             }
         
         }
@@ -47,6 +48,9 @@ namespace Fantasy.BusinessEngine.Services
 
 
         Dictionary<string,object> _images = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-       
+
+
+
+        
     }
 }

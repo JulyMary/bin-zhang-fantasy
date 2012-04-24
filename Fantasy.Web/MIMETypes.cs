@@ -36,22 +36,28 @@ namespace Fantasy.Web
 
         private static void MimeTypesFormConfig()
         {
-            using (ServerManager serverManager = new ServerManager())
+            try
             {
-                // If interested in global mimeMap:
-                Microsoft.Web.Administration.Configuration config = serverManager.GetApplicationHostConfiguration();
-
-
-
-                Microsoft.Web.Administration.ConfigurationSection staticContent = config.GetSection("system.webServer/staticContent");
-                Microsoft.Web.Administration.ConfigurationElementCollection mimeMap = staticContent.GetCollection();
-
-                // Print all mime types
-                foreach (Microsoft.Web.Administration.ConfigurationElement mimeType in mimeMap)
+                using (ServerManager serverManager = new ServerManager())
                 {
-                    _mimeTypes[(string)mimeType["fileExtension"]] = (string)mimeType["mimeType"];
+                    // If interested in global mimeMap:
+                    Microsoft.Web.Administration.Configuration config = serverManager.GetApplicationHostConfiguration();
 
+
+
+                    Microsoft.Web.Administration.ConfigurationSection staticContent = config.GetSection("system.webServer/staticContent");
+                    Microsoft.Web.Administration.ConfigurationElementCollection mimeMap = staticContent.GetCollection();
+
+                    // Print all mime types
+                    foreach (Microsoft.Web.Administration.ConfigurationElement mimeType in mimeMap)
+                    {
+                        _mimeTypes[(string)mimeType["fileExtension"]] = (string)mimeType["mimeType"];
+
+                    }
                 }
+            }
+            catch
+            {
             }
         }
 

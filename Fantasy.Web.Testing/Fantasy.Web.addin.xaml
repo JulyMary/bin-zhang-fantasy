@@ -63,7 +63,9 @@
         <Object ID="CompiledContentRouteHandler">
             <fw:CompiledContentRouteHandler />
         </Object>
-        
+        <Object ID="ImageListRouteHandler">
+            <fw:ImageListRoutHandler/>
+        </Object>
         <Object ID="ControllerFactory">
             <fw:ChainedControllerFactory/>
         </Object>
@@ -106,6 +108,9 @@
         </Object>
         <Object ID="RegisterAppRoute">
             <fw:RegisterAppRouteCommand />
+        </Object>
+        <Object ID="RegisterImageListRouteCommand">
+            <fw:RegisterImageListRouteCommand/>
         </Object>
         <Object ID="RegisterCompiledContentRoute">
             <fw:RegisterCompiledContentRouteCommand />

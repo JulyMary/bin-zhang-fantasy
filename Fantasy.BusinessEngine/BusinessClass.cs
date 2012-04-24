@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine.Collections;
+using System.Drawing;
+using System.IO;
 
 namespace Fantasy.BusinessEngine
 {
@@ -327,8 +329,58 @@ namespace Fantasy.BusinessEngine
         }
 
 
-      
+        protected internal virtual byte[] PersistedIcon
+        {
+            get
+            {
+                return (byte[])this.GetValue("PersistedIcon", null);
+            }
+            set
+            {
+                this.SetValue("PersistedIcon", value);
+            }
+        }
 
-      
+        private Image _icon;
+        public virtual Image Icon
+        {
+            get
+            {
+                return _icon;
+            }
+            set
+            {
+                if (this._icon != value)
+                {
+
+                    this._icon = value;
+                  
+                    if (value != null)
+                    {
+                        MemoryStream stream = new MemoryStream();
+                        value.Save(stream, value.RawFormat);
+
+                        this.PersistedIcon = stream.GetBuffer();
+                    }
+                    else
+                    {
+                        this.PersistedIcon = null;
+                    }
+                    this.OnNotifyPropertyChangedPropertyChanged("Icon");
+                     
+                }
+            }
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            if (this.PersistedIcon != null)
+            {
+                _icon = Image.FromStream(new MemoryStream(this.PersistedIcon));
+            }
+
+            base.OnLoad(e);
+        }
+
     }
 }

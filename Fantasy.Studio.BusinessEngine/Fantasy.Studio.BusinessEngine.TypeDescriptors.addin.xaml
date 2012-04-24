@@ -3,6 +3,7 @@
         xmlns:sbe="urn:schema-fantasy:studio-business-engine"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model"
+        xmlns:draw="clr-namespace:System.Drawing.Design;assembly=System.Drawing.Design"
         Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine"/>
@@ -74,6 +75,7 @@
                     
                 </PropertyDescriptor.Conditional>
             </PropertyDescriptor>
+            <PropertyDescriptor ID="Icon" Name="Icon" Category="General" Editor="{New draw:ImageEditor}" />
             <PropertyDescriptor ID="TableName" Name="TableName" Caption="Table Name" Category="Database" >
                 <PropertyDescriptor.Conditional>
                     <OwnerState StateMember="EntityState" State="New" Action="Disable" />
