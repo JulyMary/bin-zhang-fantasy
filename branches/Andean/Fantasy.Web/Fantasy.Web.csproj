@@ -41,11 +41,12 @@
   <ItemGroup>
     <Reference Include="Microsoft.Web.Administration, Version=7.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\System32\inetsrv\Microsoft.Web.Administration.dll</HintPath>
+      <HintPath>..\External\Microsoft.Web.Administration.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.DynamicData" />
@@ -76,11 +77,14 @@
     <Compile Include="Mvc\CompiledContentHandler.cs" />
     <Compile Include="Mvc\CompiledContentRouteHandler.cs" />
     <Compile Include="Mvc\CompiledContentHandlerFactory.cs" />
+    <Compile Include="Mvc\ImageListHandler.cs" />
+    <Compile Include="Mvc\ImageListRoutHandler.cs" />
     <Compile Include="Mvc\RegisterAppRouteCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledContentHandlerFactoryCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledContentRouteCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledViewEngineCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledViewVirtualPathFactoryCommand.cs" />
+    <Compile Include="Mvc\RegisterImageListRouteCommand.cs" />
     <Compile Include="Mvc\UI\HtmlAssets.cs" />
     <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
     <Compile Include="Mvc\UI\HtmlLiteral.cs" />
@@ -89,6 +93,7 @@
     <Compile Include="Mvc\UI\ViewComponent.cs" />
     <Compile Include="Mvc\UI\ViewComponentBuilder.cs" />
     <Compile Include="Mvc\UI\ViewComponentFactory.cs" />
+    <Compile Include="Mvc\UrlHelperExtensions.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

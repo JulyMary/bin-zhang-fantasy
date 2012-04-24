@@ -26,6 +26,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.AutoScript).CustomType("StringClob").LazyLoad();
             this.Map(x => x.ScriptOptions).CustomType<Int32>() ;
             this.Map(x => x.ExternalType);
+            this.Map(x => x.PersistedIcon).CustomType("BinaryBlob").Column("Icon");
 
             this.HasMany(x => x.PersistedLeftAssociations).CollectionType<ObservableList<BusinessAssociation>>().KeyColumn("LEFTCLASSID").Cascade.AllDeleteOrphan().Inverse();
             this.HasMany(x => x.PersistedRightAssociations).CollectionType<ObservableList<BusinessAssociation>>().KeyColumn("RIGHTCLASSID").Cascade.AllDeleteOrphan().Inverse();

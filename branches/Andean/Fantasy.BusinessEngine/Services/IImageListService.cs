@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Drawing;
 
 namespace Fantasy.BusinessEngine.Services
 {
     public interface IImageListService 
     {
 
-        void Register(string key, byte[] rawImage);
+        void Register(string key, Image image);
 
-        void Register(string key, Func<byte[]> _imageLoader);
+        void Register(string key, Func<Image> _imageLoader);
 
-        byte[] GetRawImage(string key);
+
+
+
+        Image GetImage(string key);
 
         bool ContainsImage(string key);
     }

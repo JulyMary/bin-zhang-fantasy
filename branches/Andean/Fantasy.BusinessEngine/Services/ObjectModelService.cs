@@ -20,6 +20,14 @@ namespace Fantasy.BusinessEngine.Services
             _allClasses.SortBy(c => c.Id);
             this._typeClasses = this._allClasses.ToDictionary(c => c.EntityType());
             this.RootClass = this.FindBusinessClass(BusinessClass.RootClassId);
+
+
+            IImageListService imageList = this.Site.GetRequiredService<IImageListService>();
+            foreach(BusinessClass @class in this._allClasses.Where(c=>c.Icon != null))
+            {
+                imageList.Register(this.GetImageKeyInternal(@class), @class.Icon);
+            }
+
             base.InitializeService();
         }
 
@@ -69,15 +77,31 @@ namespace Fantasy.BusinessEngine.Services
 
         #region IObjectModelService Members
 
-
         public string GetImageKey(BusinessClass @class)
+        {
+            while (@class != null && @class.Icon == null)
+            {
+                @class = @class.ParentClass;
+            }
+
+            return @class != null ? GetImageKeyInternal(@class) : string.Empty;
+        }
+
+
+        public string GetImageKey(BusinessClass @class, Enum state)
         {
             throw new NotImplementedException();
         }
 
-        public string GetImageKey(BusinessClass @class, Enum state)
+
+        private string GetImageKeyInternal(BusinessClass @class)
         {
-            return @class.FullCodeName + 
+            return @class.FullCodeName;
+        }
+
+        private string GetImageKeyInternal(BusinessClass @class, Enum state)
+        {
+            return @class.FullCodeName + "." + state;
         }
 
         #endregion

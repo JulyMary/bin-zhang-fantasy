@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine.Collections;
 using System.Collections;
 using System.Reflection;
+using Fantasy.BusinessEngine.Services;
 
 namespace Fantasy.BusinessEngine
 {
@@ -106,6 +107,19 @@ namespace Fantasy.BusinessEngine
             set
             {
                 this.SetValue("Name", value);
+            }
+        }
+
+
+        public virtual string IconKey
+        {
+
+            get
+            {
+                IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
+                BusinessClass @class = oms.FindBusinessClass(this.ClassId);
+               
+                return oms.GetImageKey(@class);
             }
         }
 
