@@ -216,7 +216,8 @@ namespace RazorGenerator.Core
         protected virtual string GetClassName()
         {
             string filename = Path.GetFileNameWithoutExtension(_baseRelativePath);
-            return ParserHelpers.SanitizeClassName(filename);
+            //return ParserHelpers.SanitizeClassName(filename);
+            return filename;
         }
     }
 }
