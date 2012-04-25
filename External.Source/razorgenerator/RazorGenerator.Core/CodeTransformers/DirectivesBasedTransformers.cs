@@ -36,7 +36,7 @@ namespace RazorGenerator.Core
             if (ReadSwitchValue(directives, TrimLeadingUnderscoresKey) != false)
             {
                 // This should in theory be a different transformer.
-                razorHost.DefaultClassName = razorHost.DefaultClassName.TrimStart('_');
+                //razorHost.DefaultClassName = razorHost.DefaultClassName.TrimStart('_');
             }
 
             base.Initialize(razorHost, directives);
