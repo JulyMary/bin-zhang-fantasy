@@ -15,8 +15,14 @@ namespace Fantasy.Web.Mvc
         public CompiledViewEngine()
         {
             this.FileExtensions = new string[] { "cshtml" };
+
+            this._assemblies = (from assemblyName in Settings.Default.CompiledViewAssemblyNames.Cast<string>()
+#pragma warning disable 0618
+                                select Assembly.LoadWithPartialName(assemblyName)).ToArray();
+#pragma warning restore 0618
         }
 
+        private Assembly[] _assemblies = null;
 
         private Dictionary<string, Type> _viewTypes = new Dictionary<string, Type>();
         
@@ -25,22 +31,22 @@ namespace Fantasy.Web.Mvc
 
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            return FindViewInternal(controllerContext, partialViewName); 
+            return FindViewInternal(controllerContext, partialViewName, false); 
         }
 
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return FindViewInternal(controllerContext, viewName); 
+            return FindViewInternal(controllerContext, viewName, true); 
         }
 
-        private ViewEngineResult FindViewInternal(ControllerContext controllerContext, string viewName)
+        private ViewEngineResult FindViewInternal(ControllerContext controllerContext, string viewName, bool runViewStartPages)
         {
             ViewEngineResult rs = null;
             List<string> searchedLocations = new List<string>();
             Type viewType = this.FindViewType(controllerContext, viewName, searchedLocations);
             if (viewType != null)
             {
-                rs = new ViewEngineResult(new CompiledMvcView(viewType, true, this.FileExtensions), this);
+                rs = new ViewEngineResult(new CompiledMvcView(viewType, runViewStartPages, this.FileExtensions), this);
             }
             else
             {
@@ -88,6 +94,23 @@ namespace Fantasy.Web.Mvc
                                 {
                                     int dotIndex = ns.LastIndexOf('.');
                                     ns = dotIndex > 0 ? ns.Remove(dotIndex) : string.Empty;
+                                }
+                            }
+
+                            if (rs == null)
+                            {
+                                foreach (Assembly asm2 in this._assemblies.Where(a => a != asm))
+                                {
+                                    ns = ((RootNamespaceAttribute)asm2.GetCustomAttributes(typeof(RootNamespaceAttribute), true).Single()).RootNamespace;
+                                    viewTypeName = string.Format("{0}.Views.Shared.{1}", ns, viewName);
+                                    searchedLocation.Add(ViewTypeNameToVirtualPath(viewTypeName, rootNamespace));
+                                    rs = asm2.GetType(viewTypeName);
+                                    if (rs != null)
+                                    {
+                                        break;
+                                    }
+
+
                                 }
                             }
                         }

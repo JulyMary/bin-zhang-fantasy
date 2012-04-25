@@ -54,5 +54,23 @@ namespace Fantasy.BusinessEngine
                 return _contextProvider;
             }
         }
+
+
+        private Dictionary<string, object> _items = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase); 
+
+        public object this[string key]
+        {
+            get
+            {
+                return _items.GetValueOrDefault(key, null);
+            }
+            set
+            {
+                _items[key] = value;
+            }
+        }
+
+
+
     }
 }

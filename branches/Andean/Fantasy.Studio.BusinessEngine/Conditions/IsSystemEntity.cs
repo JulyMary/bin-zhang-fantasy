@@ -13,6 +13,12 @@ namespace Fantasy.Studio.BusinessEngine.Conditions
         public override bool IsValid(object caller, IServiceProvider services)
         {
 
+            if (CommandArgumentsHelper.HasArgument("EditAll"))
+            {
+                return false;
+            }
+
+
             bool rs = false;
             if (caller is IBusinessEntity && ((IBusinessEntity)caller).IsSystem )
             {

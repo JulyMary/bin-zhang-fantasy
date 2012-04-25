@@ -33,6 +33,10 @@ namespace Fantasy.Web.Mvc.UI
             Styles = new ItemRegistrar(ItemRegistrarFormatters.StyleFormat);
             Scripts = new ItemRegistrar(ItemRegistrarFormatters.ScriptFormat);
         }
+
+
+      
+        
     }
 
     public class ItemRegistrar

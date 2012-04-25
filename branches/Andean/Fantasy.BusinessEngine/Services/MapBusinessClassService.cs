@@ -162,14 +162,13 @@ namespace Fantasy.BusinessEngine.Services
                     new XAttribute("type", "Guid"),
                     new XAttribute("insert", "false")));
 
-            Guid idPropertyId = new Guid("c9b092be-fce4-4793-9bba-9f3300ac9427");
-            Guid classIdPropertyId = new Guid("57b4a057-35b6-4e09-89f4-9f3300ac942f");
+            
             foreach (BusinessProperty property in @class.Properties)
             {
-                if (property.Id != idPropertyId)
+                if (property.Id != BusinessProperty.WellKnownIds.Id)
                 {
                     XElement propEle = CreatePropertyMap(property);
-                    if (property.Id == classIdPropertyId)
+                    if (property.Id == BusinessProperty.WellKnownIds.ClassId)
                     {
                         propEle.SetAttributeValue("update", false);
                     }

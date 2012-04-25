@@ -11,7 +11,7 @@ namespace Fantasy.BusinessEngine.Maps
         {
             this.Table("BusinessClassDiagram");
             this.Map(x => x.Name).Not.Nullable();
-            this.Map(x => x.Diagram);
+            this.Map(x => x.Diagram).CustomType("StringClob");
             this.References(x => x.Package).Column("PackageId");
 
 
