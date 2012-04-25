@@ -14,7 +14,6 @@ namespace Fantasy.BusinessEngine
        
         public BusinessApplicationData Data { get; internal set; }
 
-
         private BusinessObject _entryObject = null;
 
         public BusinessObject EntryObject

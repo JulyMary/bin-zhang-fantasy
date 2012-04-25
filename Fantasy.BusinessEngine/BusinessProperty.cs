@@ -263,5 +263,22 @@ namespace Fantasy.BusinessEngine
            
         }
 
+
+        public class WellKnownIds
+        {
+            public readonly static Guid Id = new Guid("C9B092BE-FCE4-4793-9BBA-9F3300AC9427");
+
+            public readonly static Guid ClassId = new Guid("57B4A057-35B6-4E09-89F4-9F3300AC942F");
+
+            public readonly static Guid CreationTime = new Guid("0BE3B780-5B3D-4840-8AAA-9F3300AC942F");
+
+            public readonly static Guid ModificationTime = new Guid("4ED247A4-7E5A-4B2D-9444-9F3300AC942F");
+
+            public readonly static Guid Name = new Guid("E5434005-55E8-482F-A46A-9F3300AC942F");
+
+            public readonly static Guid IsSystem = new Guid("9171981D-4D61-499D-B8A9-9F3300AC942F");
+               
+        }
+
     }
 }

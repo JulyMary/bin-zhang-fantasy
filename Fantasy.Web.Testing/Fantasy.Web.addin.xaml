@@ -47,6 +47,9 @@
         <Object ID="BusinessDataTypeRepository">
             <be:DefaultBusinessDataTypeRepository/>
         </Object>
+        <Object ID="ImageList">
+            <be:ImageListService />
+        </Object>
         <Object ID="ObjectModelService">
             <be:ObjectModelService/>
         </Object>
