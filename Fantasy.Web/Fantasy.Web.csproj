@@ -176,6 +176,11 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\jslayout\layout-default.css" />
+    <Content Include="Content\themes\base\jstree\d.gif" />
+    <Content Include="Content\themes\base\jstree\d.png" />
+    <Content Include="Content\themes\base\jstree\style.css" />
+    <Content Include="Content\themes\base\jstree\throbber.gif" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -205,6 +210,10 @@
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-ui-1.8.19.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.hotkeys.js" />
+    <Content Include="Scripts\jquery.jstree.js" />
+    <Content Include="Scripts\jquery.layout.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
@@ -215,8 +224,11 @@
     <Content Include="Scripts\knockout-1.3.0beta.debug.js" />
     <Content Include="Scripts\knockout-1.3.0beta.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
+    <Content Include="Scripts\standardnavigation.default.js" />
     <Content Include="Views\StandardNavigation\Default.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

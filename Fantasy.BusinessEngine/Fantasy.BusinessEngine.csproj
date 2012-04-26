@@ -86,7 +86,7 @@
     <Compile Include="BusinessUser.cs" />
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
-    <Compile Include="Security\SecurityExtensions.cs" />
+    <Compile Include="Security\BusinessObjectMemberSecurityCollection.cs" />
     <Compile Include="Services\IImageListService.cs" />
     <Compile Include="Services\ImageListService.cs" />
     <Compile Include="Singularity.cs" />

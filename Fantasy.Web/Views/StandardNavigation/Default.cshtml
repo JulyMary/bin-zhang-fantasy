@@ -1,3 +1,20 @@
-﻿
-Hello Fantasy!
+﻿@using Fantasy.Web.Mvc.UI
+@{
+    Html.BusinessEngine().HtmlAssets.Styles.Add(this.Url.Content("~/Content/themes/base/jstree/style.css"));
+    Html.BusinessEngine().HtmlAssets.Styles.Add(this.Url.Content("~/Content/themes/base/jslayout/layout-default.css"));
+    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.jstree.js"));
+    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.layout.js"));
+    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/standardnavigation.default.js"));
+}
+
+<div id="pagelayout" style="color:Red; background-color:Green">
+<div id="navigationpanel" class="ui-layout-west" ><span  style="color:Red; background-color:Green" >tree</span></div>
+<div id="contentpanel" class="ui-layout-center">content</div>
+</div>
+
+
+
+
+
+
 

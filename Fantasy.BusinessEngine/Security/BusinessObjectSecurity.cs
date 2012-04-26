@@ -14,7 +14,7 @@ namespace Fantasy.BusinessEngine.Security
     {
         public BusinessObjectSecurity()
         {
-            ObservableCollection<BusinessObjectMemberSecurity> properties = new ObservableCollection<BusinessObjectMemberSecurity>();
+            BusinessObjectMemberSecurityCollection properties = new BusinessObjectMemberSecurityCollection();
             properties.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PropertiesChanged);
             this.Properties = properties;
 
@@ -83,14 +83,14 @@ namespace Fantasy.BusinessEngine.Security
 
         [XArray,
         XArrayItem(Name = "property", Type=typeof(BusinessObjectMemberSecurity))]
-        public virtual IList<BusinessObjectMemberSecurity> Properties { get; protected set; }
+        public virtual BusinessObjectMemberSecurityCollection Properties { get; protected set; }
 
         private BusinessObjectMemberSecurity GetOrCreatePropertySecurity(BusinessProperty property)
         {
             BusinessObjectMemberSecurity rs = this.Properties.SingleOrDefault(p => p.Id == property.Id);
             if (rs == null)
             {
-                rs = new BusinessObjectMemberSecurity() { Id = property.Id, Name = property.Name };
+                rs = new BusinessObjectMemberSecurity() { Id = property.Id, Name = property.CodeName };
                 this.Properties.Add(rs);
             }
 
@@ -185,14 +185,14 @@ namespace Fantasy.BusinessEngine.Security
             foreach (BusinessObjectMemberSecurity ps in this.Properties.Where(p=>p.MemberType== BusinessObjectMemberTypes.LeftAssociation))
             {
                 BusinessAssociation assn = @class.AllLeftAssociations().First(p => p.Id == ps.Id);
-                ps.Name = assn.RightRoleName;
+                ps.Name = assn.RightRoleCode;
                 ps.DisplayOrder = assn.RightRoleDisplayOrder;
             }
 
             var toAdd = from assn in @class.AllLeftAssociations()
                         where assn.RightNavigatable == true &&  !this.Properties.Any(p => p.Id == assn.Id && p.MemberType== BusinessObjectMemberTypes.LeftAssociation)
                         select
-                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.RightRoleName, CanRead=canRead, CanWrite = canWrite, DisplayOrder = assn.RightRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.LeftAssociation };
+                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.RightRoleCode, CanRead=canRead, CanWrite = canWrite, DisplayOrder = assn.RightRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.LeftAssociation };
 
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
@@ -223,7 +223,7 @@ namespace Fantasy.BusinessEngine.Security
             var toAdd = from assn in @class.AllRightAssociations()
                         where assn.LeftNavigatable == true && !this.Properties.Any(p => p.Id == assn.Id && p.MemberType == BusinessObjectMemberTypes.RightAssociation)
                         select
-                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.LeftRoleName, CanRead = canRead, CanWrite = canWrite, DisplayOrder = assn.LeftRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.RightAssociation };
+                            new BusinessObjectMemberSecurity() { Id = assn.Id, Name = assn.LeftRoleCode, CanRead = canRead, CanWrite = canWrite, DisplayOrder = assn.LeftRoleDisplayOrder, MemberType = BusinessObjectMemberTypes.RightAssociation };
 
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
@@ -246,14 +246,14 @@ namespace Fantasy.BusinessEngine.Security
             foreach (BusinessObjectMemberSecurity ps in this.Properties.Where(p=>p.MemberType == BusinessObjectMemberTypes.Property ))
             {
                 BusinessProperty prop = @class.AllProperties().First(p => p.Id == ps.Id);
-                ps.Name = prop.Name;
+                ps.Name = prop.CodeName;
                 ps.DisplayOrder = prop.DisplayOrder;
             }
 
             var toAdd = from prop in @class.AllProperties()
                         where !this.Properties.Any(p => p.Id == prop.Id)
                         select
-                            new BusinessObjectMemberSecurity() { Id = prop.Id, Name = prop.Name, CanRead=canRead, CanWrite=canWrite, DisplayOrder=prop.DisplayOrder, MemberType= BusinessObjectMemberTypes.Property };
+                            new BusinessObjectMemberSecurity() { Id = prop.Id, Name = prop.CodeName, CanRead=canRead, CanWrite=canWrite, DisplayOrder=prop.DisplayOrder, MemberType= BusinessObjectMemberTypes.Property };
 
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {

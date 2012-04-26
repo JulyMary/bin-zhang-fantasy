@@ -95,5 +95,23 @@ namespace Fantasy.BusinessEngine.Properties {
                 return ResourceManager.GetString("EntityNotFoundExceptionMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot find property &apos;{0}&apos;.
+        /// </summary>
+        internal static string SecurityObjectPropertyNotFoundMessage {
+            get {
+                return ResourceManager.GetString("SecurityObjectPropertyNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Templates can be used only with property access..
+        /// </summary>
+        internal static string TemplateLimitations {
+            get {
+                return ResourceManager.GetString("TemplateLimitations", resourceCulture);
+            }
+        }
     }
 }
