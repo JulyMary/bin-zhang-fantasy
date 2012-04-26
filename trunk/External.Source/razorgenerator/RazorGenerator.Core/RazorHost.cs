@@ -9,6 +9,7 @@ using System.Web.Razor.Generator;
 using System.Web.Razor.Parser;
 using System.Web.Razor.Parser.SyntaxTree;
 using System.Web.WebPages;
+using System.Web.Configuration;
 
 namespace RazorGenerator.Core
 {
@@ -36,9 +37,10 @@ namespace RazorGenerator.Core
         private readonly IDictionary<string, string> _directives;
         private string _defaultClassName;
 
-        public RazorHost(string baseRelativePath, string fullPath, IRazorCodeTransformer codeTransformer, CodeDomProvider codeDomProvider, IDictionary<string, string> directives)
+        public RazorHost(string projectDirectory, string baseRelativePath, string fullPath, IRazorCodeTransformer codeTransformer, CodeDomProvider codeDomProvider, IDictionary<string, string> directives)
             : base(RazorCodeLanguage.GetLanguageByExtension(".cshtml"))
         {
+            this.ProjectDirectory = projectDirectory;
 
             if (codeTransformer == null)
             {
@@ -76,11 +78,27 @@ namespace RazorGenerator.Core
             );
 
             base.DefaultBaseClass = typeof(WebPage).FullName;
+
+
+
+
             foreach (var import in _defaultImports)
             {
                 base.NamespaceImports.Add(import);
             }
+
+
+            foreach (string import in WebConfigDefaultNamespaceLoader.GetDefaultNamespaces(this.ProjectDirectory))
+            {
+                base.NamespaceImports.Add(import);
+            }
+
         }
+
+       
+
+       
+
 
         public string ProjectRelativePath
         {
@@ -91,6 +109,8 @@ namespace RazorGenerator.Core
         {
             get { return _fullPath; }
         }
+
+        public string ProjectDirectory { get; private set; }
 
         public event EventHandler<GeneratorErrorEventArgs> Error;
 

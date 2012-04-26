@@ -48,7 +48,7 @@ namespace RazorGenerator.Core
         {
             var directives = DirectivesParser.ParseDirectives(_baseDirectory, fullPath);
             var codeTransformer = GetRazorCodeTransformer(projectRelativePath, directives);
-            return new RazorHost(projectRelativePath, fullPath, codeTransformer, codeDomProvider, directives);
+            return new RazorHost(this._baseDirectory, projectRelativePath, fullPath, codeTransformer, codeDomProvider, directives);
         }
 
         private IRazorCodeTransformer GetRazorCodeTransformer(string projectRelativePath, IDictionary<string, string> directives)
