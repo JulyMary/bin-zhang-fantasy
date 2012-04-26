@@ -7,8 +7,8 @@ namespace Fantasy.BusinessEngine.Security
 {
     public interface ISecurityProvider
     {
-        BusinessObjectSecurity GetObjectSecurity(SecurityArgs args);
+        BusinessObjectSecurity GetObjectSecurity(ObjectSecurityArgs args);
 
-        BusinessObjectSecurity GetClassSecurty(SecurityArgs args);
+        BusinessObjectSecurity GetClassSecurity(ClassSecurityArgs args);
     }
 }

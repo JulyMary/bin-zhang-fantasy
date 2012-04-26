@@ -93,7 +93,9 @@
     </Extension>
     
     <Extension Path="fantasy/security/securityproviders">
-        
+        <Object ID="appacl">
+            <be: BusinessApplicationACLSecurityProvider/>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/startup">

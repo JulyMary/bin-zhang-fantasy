@@ -45,7 +45,7 @@ namespace Fantasy.BusinessEngine.Services
             BusinessObjectSecurity rs = BusinessObjectSecurity.Create(args.Class, null, null, null, null);
             foreach (ISecurityProvider provider in this._providers)
             {
-                rs &= provider.GetObjectSecurity(args);
+                rs &= provider.GetClassSecurity(args);
             }
 
 

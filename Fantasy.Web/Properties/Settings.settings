@@ -15,5 +15,11 @@
     <Setting Name="ApplicationName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Fantasy.Web</Value>
     </Setting>
+    <Setting Name="Theme" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">base</Value>
+    </Setting>
+    <Setting Name="DefaultTheme" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">base</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
