@@ -85,6 +85,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RazorGeneratorResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="WebConfigDefaultNamespaceLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\RazorGeneratorResources.resx">
