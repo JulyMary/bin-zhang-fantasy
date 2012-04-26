@@ -129,4 +129,10 @@
   <data name="EntityNotFoundExceptionMessage" xml:space="preserve">
     <value>Entity {0} ({1}) does not exist.</value>
   </data>
+  <data name="SecurityObjectPropertyNotFoundMessage" xml:space="preserve">
+    <value>Cannot find property '{0}'</value>
+  </data>
+  <data name="TemplateLimitations" xml:space="preserve">
+    <value>Templates can be used only with property access.</value>
+  </data>
 </root>

@@ -21,6 +21,9 @@ namespace Fantasy.Web.Models
 
         public string Icon { get; set; }
 
-        List<TreeItem> ChildItems { get; private set; }
+        public List<TreeItem> ChildItems { get; private set; }
+
+
+        public string ExpandUrl { get; set; }
     }
 }
