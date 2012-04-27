@@ -7,15 +7,14 @@ using Fantasy.BusinessEngine.Properties;
 
 namespace Fantasy.BusinessEngine.Security
 {
-	public class BusinessObjectMemberSecurityCollection : ObservableCollection<BusinessObjectMemberSecurity>
-	{
-
-        public BusinessObjectMemberSecurity this[string propertyCodeName]
+    public class BusinessObjectMemberSecurityCollection : ObservableCollection<BusinessObjectMemberSecurity>
+    {
+        public BusinessObjectMemberSecurity this[string name]
         {
             get
             {
-                return this.Single(p => String.Equals(p.Name, propertyCodeName, StringComparison.OrdinalIgnoreCase), String.Format(Resources.SecurityObjectPropertyNotFoundMessage, propertyCodeName)); 
+                return this.Single(p => String.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase), string.Format(Resources.SecurityObjectPropertyNotFoundMessage, name)); 
             }
         }
-	}
+    }
 }

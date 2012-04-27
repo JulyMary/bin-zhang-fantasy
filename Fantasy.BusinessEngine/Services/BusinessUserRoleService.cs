@@ -105,15 +105,15 @@ namespace Fantasy.BusinessEngine.Services
                 var roles = from rd in ud.Roles join role in this._roles on rd.Id equals role.Id 
                             select role;
                 this._userRoles.Add(user, roles.ToList());
-                this._userRoles[user].Add(WellknownRoles.Everyone);
+                this._userRoles[user].Add(_wellknownRoles.Everyone);
                 if (user.Id != _guestId)
                 {
-                    this._userRoles[user].Add(WellknownRoles.Users);
+                    this._userRoles[user].Add(_wellknownRoles.Users);
                 }
             }
 
             var deleted = from user in this._users where !userDatas.Any(u => u.Id == user.Id) select user;
-            foreach (BusinessUser user in this._users.ToArray())
+            foreach (BusinessUser user in deleted.ToArray())
             {
                 this._users.Remove(user);
             }
@@ -178,7 +178,7 @@ namespace Fantasy.BusinessEngine.Services
             }
 
             var deleted = from role in this._roles where !roleDatas.Any(u => u.Id == role.Id) select role;
-            foreach (BusinessRole role in this._roles.ToArray())
+            foreach (BusinessRole role in deleted.ToArray())
             {
                 this._roles.Remove(role);
             }

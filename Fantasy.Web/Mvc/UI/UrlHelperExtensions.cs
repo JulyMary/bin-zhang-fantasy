@@ -33,8 +33,9 @@ namespace Fantasy.Web.Mvc
         {
             
             object manager = typeof(VirtualPathFactoryManager).GetProperty("Instance", BindingFlags.GetProperty | BindingFlags.NonPublic | BindingFlags.Static).GetValue(null, null);
-            bool rs = (bool)typeof(VirtualPathFactoryManager).InvokeMember("PageExists", BindingFlags.InvokeMethod | BindingFlags.NonPublic, null, manager, new object[] { path, true });
+            bool rs = (bool)typeof(VirtualPathFactoryManager).InvokeMember("Exists", BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, null, manager, new object[] { path});
             return rs;
+            
         }
     }
 }

@@ -285,8 +285,8 @@ namespace Fantasy.BusinessEngine.Security
 
             foreach (BusinessObjectMemberSecurity ps1 in this.Properties)
             {
-                BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
-                BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name };
+                BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id && p.MemberType == ps1.MemberType);
+                BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name, DisplayOrder=ps1.DisplayOrder, MemberType = ps1.MemberType };
 
                 nps.CanRead = NullableOr(ps1.CanRead, ps2 != null ? ps2.CanRead : null);
                 nps.CanWrite = NullableOr(ps1.CanWrite, ps2 != null ? ps2.CanWrite : null);
@@ -307,8 +307,8 @@ namespace Fantasy.BusinessEngine.Security
 
             foreach (BusinessObjectMemberSecurity ps1 in this.Properties)
             {
-                BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id);
-                BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name };
+                BusinessObjectMemberSecurity ps2 = other.Properties.SingleOrDefault(p => p.Id == ps1.Id && p.MemberType == ps1.MemberType);
+                BusinessObjectMemberSecurity nps = new BusinessObjectMemberSecurity() { Id = ps1.Id, Name = ps1.Name, DisplayOrder = ps1.DisplayOrder, MemberType = ps1.MemberType };
 
                 nps.CanRead = NullableAnd(ps1.CanRead, ps2 != null ? ps2.CanRead : null);
                 nps.CanWrite = NullableAnd(ps1.CanWrite, ps2 != null ? ps2.CanWrite : null);

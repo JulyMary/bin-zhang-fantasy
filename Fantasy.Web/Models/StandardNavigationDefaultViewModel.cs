@@ -8,7 +8,7 @@ namespace Fantasy.Web.Models
 {
     public class StandardNavigationDefaultViewModel
     {
-        public TreeItem RootTreeItem { get; set; }
+        public JsTreeNode RootTreeItem { get; set; }
 
         public BusinessObject EntryObject {get;set;}
     }
