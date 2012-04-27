@@ -59,6 +59,10 @@
         <Object ID="UserRoleService">
             <be:BusinessUserRoleService/>
         </Object>
+        
+        <Object ID="SecurityService">
+            <be:SecurityService />
+        </Object>
 
         <Object ID="AppRouteHandler">
             <fw:BusinessApplicationRouteHandler />
@@ -94,7 +98,7 @@
     
     <Extension Path="fantasy/security/securityproviders">
         <Object ID="appacl">
-            <be: BusinessApplicationACLSecurityProvider/>
+            <be:BusinessApplicationACLSecurityProvider />
         </Object>
     </Extension>
 

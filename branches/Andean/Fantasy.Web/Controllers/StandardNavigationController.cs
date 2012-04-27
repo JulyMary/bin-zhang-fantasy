@@ -19,30 +19,34 @@ namespace Fantasy.Web.Controllers
 
         public ViewResult Default()
         {
-            //BusinessApplication application = BusinessEngineContext.Current.Application;
-            //BusinessObject entryObject = application.EntryObject;
+            BusinessApplication application = BusinessEngineContext.Current.Application;
+            BusinessObject entryObject = application.EntryObject;
 
-            //StandardNavigationDefaultViewModel model = new StandardNavigationDefaultViewModel();
-            //model.RootTreeItem = this.CreateTreeItem(entryObject, 0);
+            StandardNavigationDefaultViewModel model = new StandardNavigationDefaultViewModel();
+            model.RootTreeItem = this.CreateTreeItem(entryObject, 0);
 
-            //if (model == null)
-            //{
-            //    FormsAuthentication.RedirectToLoginPage();
-            //}
+            if (model == null)
+            {
+                FormsAuthentication.RedirectToLoginPage();
+            }
+            model.RootTreeItem.state = JsTreeNode.Open;
+
             
-            
 
-            //return View(model);
-            return View();
+            return View(model);
+           
         }
 
-        private TreeItem CreateTreeItem(BusinessObject obj, int childDeep)
+        private JsTreeNode CreateTreeItem(BusinessObject obj, int childDeep)
         {
             BusinessApplication application = BusinessEngineContext.Current.Application;
             BusinessObjectSecurity security = application.GetObjectSecurity(obj);
             if (security.Properties["Name"].CanRead == true)
             {
-                TreeItem rs = new TreeItem() { Text = obj.Name, Icon = this.Url.ImageList(obj.IconKey) };
+                JsTreeNode rs = new JsTreeNode();
+                rs.data.title = obj.Name;
+                rs.data.icon = this.Url.ImageList(obj.IconKey);
+
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 BusinessClass @class = oms.FindBusinessClass(obj.ClassId);
 
@@ -60,25 +64,25 @@ namespace Fantasy.Web.Controllers
                     if (security.Properties[v.Property].CanRead == true)
                     {
 
-                        TreeItem folderItem = new TreeItem()
-                        {
-                            Text = v.Text
-                        };
-
+                        JsTreeNode folderItem = new JsTreeNode();
+                        folderItem.data.title = v.Property;
+                        folderItem.data.icon = "folder";
+                       
+                        rs.children.Add(folderItem);
                         if (childDeep > 0)
                         {
                            
                             if(v.IsScalar)
                             {
                                 BusinessObject child = (BusinessObject)obj.GetType().GetProperty(v.Property).GetValue(obj, null);
-                                rs.ChildItems.Add(CreateTreeItem(child, childDeep - 1));
+                                folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
                             }
                             else
                             {
                                 IEnumerable childItems = (IEnumerable)obj.GetType().GetProperty(v.Property).GetValue(obj, null);
                                 foreach(BusinessObject child in childItems)
                                 {
-                                    rs.ChildItems.Add(CreateTreeItem(child, childDeep - 1));
+                                    folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
                                 }
                             }
                             

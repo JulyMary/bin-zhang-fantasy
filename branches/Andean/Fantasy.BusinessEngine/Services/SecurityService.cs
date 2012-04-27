@@ -35,8 +35,35 @@ namespace Fantasy.BusinessEngine.Services
 
             }
 
+            this.NormalizeSecirty(rs);
+
 
             return rs;
+        }
+
+
+        private void NormalizeSecirty(BusinessObjectSecurity security)
+        {
+            if (security.CanCreate == null)
+            {
+                security.CanCreate = false;
+            }
+
+            if (security.CanDelete == null)
+            {
+                security.CanDelete = false;
+            }
+            foreach (BusinessObjectMemberSecurity prop in security.Properties)
+            {
+                if (prop.CanRead == null)
+                {
+                    prop.CanRead = false;
+                }
+                if (prop.CanWrite == null)
+                {
+                    prop.CanWrite = false;
+                }
+            }
         }
 
         public BusinessObjectSecurity GetClassSecurity(ClassSecurityArgs args)
@@ -48,7 +75,7 @@ namespace Fantasy.BusinessEngine.Services
                 rs &= provider.GetClassSecurity(args);
             }
 
-
+            this.NormalizeSecirty(rs);
             return rs;
         }
 

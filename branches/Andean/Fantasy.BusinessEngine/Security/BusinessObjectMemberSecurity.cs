@@ -106,5 +106,10 @@ namespace Fantasy.BusinessEngine.Security
         }
 
 
+        public override string ToString()
+        {
+            return string.Format("{0} CanRead: {1}, CanWrite {2}", this.Name, this.CanRead, this.CanWrite); 
+        }
+
     }
 }

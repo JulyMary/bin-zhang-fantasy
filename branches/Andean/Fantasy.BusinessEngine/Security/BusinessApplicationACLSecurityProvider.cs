@@ -49,9 +49,10 @@ namespace Fantasy.BusinessEngine.Security
                             rs |= acl.Security;
                         }
                     }
+                    this._cache.Add(key, rs);
                 }
 
-                this._cache.Add(key, rs);
+                
             }
 
             return rs;

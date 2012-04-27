@@ -47,6 +47,8 @@ namespace Fantasy.Web.Mvc
 
         private void GetResourceName(string virtualPath, out Assembly assembly, out string resourceName)
         {
+            virtualPath = virtualPath.TrimStart('~');
+
             assembly = null;
             resourceName = null;
 
