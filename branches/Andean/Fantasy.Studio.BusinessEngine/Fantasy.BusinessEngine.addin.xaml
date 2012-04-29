@@ -41,6 +41,12 @@
             </Object.Conditional>
             <be:BusinessAssociationCreateOrderHandler/>
         </Object>
+        <Object ID="BusinessMenuItemCreateOrder">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessMenuItem}"/>
+            </Object.Conditional>
+            <be:BusinessMenuItemCreateOrderHander/>
+        </Object>
         <Object ID="defaultcreatehandler">
             <be:DefaultEntityCreateHandler/>
         </Object>

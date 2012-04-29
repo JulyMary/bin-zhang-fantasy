@@ -19,6 +19,7 @@ namespace Fantasy.Web.Mvc
             this.RequestContext = requestContext;
         }
 
+        public RequestContext RequestContext { get; private set; }
 
         #region IHttpAsyncHandler Members
 
@@ -48,7 +49,7 @@ namespace Fantasy.Web.Mvc
         }
 
 
-        public RequestContext RequestContext { get; private set; }
+      
         
         
        
@@ -56,45 +57,49 @@ namespace Fantasy.Web.Mvc
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
 
-            BusinessApplication app;
-            IController controller;
-            ProcessRequestInit(httpContext, out app, out controller);
+            //URL Pattern: ~/App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
+            string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
+            BusinessApplication app = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>().CreateByName(appName);
+            BusinessEngineContext.Current.LoadApplication(app);
+            IController controller = null; 
             try
             {
+                controller = ProcessRequestInit(httpContext, app);
                 controller.Execute(this.RequestContext);
             }
             finally
             {
+                
                 if(controller is IDisposable )
                 {
                     ((IDisposable)controller).Dispose();
                 }
-                if(app is IDisposable)
+
+                if (app != null)
                 {
-                    ((IDisposable)app).Dispose();
+                    BusinessEngineContext.Current.UnloadApplication();
                 }
+                
             }
 
         }
 
-        private void ProcessRequestInit(HttpContextBase httpContext, out BusinessApplication app, out IController controller)
+        private IController ProcessRequestInit(HttpContextBase httpContext, BusinessApplication app)
         {
-            //URL Pattern: ~/App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
-            string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
-            app = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>().CreateByName(appName);
-            BusinessEngineContext.Current.Application = app;
-            app.Load();
+
+            IController rs = null;
+
             ViewType type = (ViewType)this.RequestContext.RouteData.Values["ViewType"];
 
             switch (type)
             {
                 case ViewType.Nav:
-                    controller = app.GetNaviationView();
+                    rs = app.GetNaviationView();
                     break;
                 case ViewType.Obj:
                     {
                         BusinessObject obj = GetBusinessObject(app);
-                        controller = app.GetScalarView(obj);
+                        rs = app.GetScalarView(obj);
                     }
 
                     break;
@@ -103,7 +108,7 @@ namespace Fantasy.Web.Mvc
                         BusinessObject obj = GetBusinessObject(app);
                         string prop = this.RequestContext.RouteData.GetRequiredString("Property");
                         IEnumerable<BusinessObject> collection = (IEnumerable<BusinessObject>)obj.GetType().GetProperty(prop, System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public).GetValue(obj, null);
-                        controller = app.GetCollectionView(obj, prop, collection);
+                        rs = app.GetCollectionView(obj, prop, collection);
 
                     }
                     break;
@@ -113,7 +118,7 @@ namespace Fantasy.Web.Mvc
             }
 
 
-            SessionStateAttribute attr = controller.GetType().GetCustomAttribute<SessionStateAttribute>(true);
+            SessionStateAttribute attr = rs.GetType().GetCustomAttribute<SessionStateAttribute>(true);
             SessionStateBehavior behavior = attr != null ? attr.Behavior : SessionStateBehavior.Default;
             this.RequestContext.HttpContext.SetSessionStateBehavior(behavior);
 
@@ -126,9 +131,11 @@ namespace Fantasy.Web.Mvc
 
             this.RemoveOptionalRoutingParameters();
 
-            string controllerName = controller.GetType().Name;
+            string controllerName = rs.GetType().Name;
             controllerName = controllerName.Substring(0, controllerName.Length - "Controller".Length);
             this.RequestContext.RouteData.Values.Add("controller", controllerName);
+
+            return rs;
         }
 
         private void RemoveOptionalRoutingParameters()

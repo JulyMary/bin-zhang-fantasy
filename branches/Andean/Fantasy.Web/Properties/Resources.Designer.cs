@@ -22,7 +22,7 @@ namespace Fantasy.Web.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Fantasy.Web.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Fantasy.Web.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace Fantasy.Web.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,16 +63,52 @@ namespace Fantasy.Web.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Value cannot be null or an empty string..
         /// </summary>
-        internal static string ArgumentCannotBeNullOrEmpty {
+        public static string ArgumentCannotBeNullOrEmpty {
             get {
                 return ResourceManager.GetString("ArgumentCannotBeNullOrEmpty", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The user name or password provided is incorrect..
+        /// </summary>
+        public static string AuthenticationFailedMessage {
+            get {
+                return ResourceManager.GetString("AuthenticationFailedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string LogInModel_Password {
+            get {
+                return ResourceManager.GetString("LogInModel_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remeber me?.
+        /// </summary>
+        public static string LogInModel_RememberMe {
+            get {
+                return ResourceManager.GetString("LogInModel_RememberMe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User name.
+        /// </summary>
+        public static string LogInModel_UserName {
+            get {
+                return ResourceManager.GetString("LogInModel_UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role &apos;{0}&apos; does not exist.
         /// </summary>
-        internal static string RoleDoesNotExistMessage {
+        public static string RoleDoesNotExistMessage {
             get {
                 return ResourceManager.GetString("RoleDoesNotExistMessage", resourceCulture);
             }
@@ -81,7 +117,7 @@ namespace Fantasy.Web.Properties {
         /// <summary>
         ///   Looks up a localized string similar to User &apos;{0}&apos; does not exist..
         /// </summary>
-        internal static string UserDoesNotExistMessage {
+        public static string UserDoesNotExistMessage {
             get {
                 return ResourceManager.GetString("UserDoesNotExistMessage", resourceCulture);
             }

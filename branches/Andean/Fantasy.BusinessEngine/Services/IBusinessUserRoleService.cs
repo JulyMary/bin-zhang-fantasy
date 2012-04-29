@@ -21,6 +21,12 @@ namespace Fantasy.BusinessEngine.Services
         WellknownRoles WellknownRoles { get; }
 
         WellknownUsers WellknownUsers { get; }
+
+
+        void SetPassword(BusinessUser user, string password);
+        
+        bool VerifyPasswod(BusinessUser user, string password);
+        
         
 
     }

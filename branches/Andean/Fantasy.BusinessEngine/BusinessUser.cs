@@ -29,5 +29,8 @@ namespace Fantasy.BusinessEngine
         {
 
         }
+
+        public string FullName {get;internal set;}
+       
     }
 }

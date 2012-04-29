@@ -16,7 +16,7 @@ namespace Fantasy.BusinessEngine
 
         private BusinessObject _entryObject = null;
 
-        public BusinessObject EntryObject
+        public virtual BusinessObject EntryObject
         {
             get 
             {

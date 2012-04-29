@@ -12,7 +12,7 @@ namespace Fantasy.BusinessEngine.Services
     public class BusinessUserRoleService : ServiceBase, IBusinessUserRoleService
     {
 
-       
+
 
         private long _lastUpdateTime = -1;
         private bool _unloading = false;
@@ -24,11 +24,14 @@ namespace Fantasy.BusinessEngine.Services
             base.UninitializeService();
 
         }
-       
+
 
         private List<BusinessUser> _users = new List<BusinessUser>();
         private List<BusinessRole> _roles = new List<BusinessRole>();
         private Dictionary<BusinessUser, List<BusinessRole>> _userRoles = new Dictionary<BusinessUser, List<BusinessRole>>();
+
+        private List<BusinessUserData> _userDatas = new List<BusinessUserData>();
+
 
         private void TrySyncData()
         {
@@ -55,17 +58,17 @@ namespace Fantasy.BusinessEngine.Services
                 SyncRoles(es, businessDataAssembly);
                 SyncUsers(es, businessDataAssembly);
 
-                
+
             }
-            
+
         }
 
         private void SyncUsers(IEntityService es, Assembly businessDataAssembly)
         {
             es.Evict(typeof(BusinessUserData));
             this._userRoles.Clear();
-            BusinessUserData[] userDatas = es.Query<BusinessUserData>().ToArray();
-            foreach (BusinessUserData ud in userDatas)
+            this._userDatas = es.Query<BusinessUserData>().ToList();
+            foreach (BusinessUserData ud in _userDatas)
             {
                 BusinessUser user;
                 int pos = _users.BinarySearchBy(ud.Id, u => u.Id);
@@ -102,7 +105,9 @@ namespace Fantasy.BusinessEngine.Services
                 }
 
                 user.Name = ud.Name;
-                var roles = from rd in ud.Roles join role in this._roles on rd.Id equals role.Id 
+                user.FullName = ud.FullName; 
+                var roles = from rd in ud.Roles
+                            join role in this._roles on rd.Id equals role.Id
                             select role;
                 this._userRoles.Add(user, roles.ToList());
                 this._userRoles[user].Add(_wellknownRoles.Everyone);
@@ -112,7 +117,7 @@ namespace Fantasy.BusinessEngine.Services
                 }
             }
 
-            var deleted = from user in this._users where !userDatas.Any(u => u.Id == user.Id) select user;
+            var deleted = from user in this._users where !this._userDatas.Any(u => u.Id == user.Id) select user;
             foreach (BusinessUser user in deleted.ToArray())
             {
                 this._users.Remove(user);
@@ -201,10 +206,10 @@ namespace Fantasy.BusinessEngine.Services
 
         public IEnumerable<BusinessUser> Users
         {
-            get 
+            get
             {
                 TrySyncData();
-                return this._users; 
+                return this._users;
             }
         }
 
@@ -258,6 +263,36 @@ namespace Fantasy.BusinessEngine.Services
         #endregion
 
 
-        
+
+
+
+
+        public void SetPassword(BusinessUser user, string password)
+        {
+            BusinessUserData data = this._userDatas.Single(d => d.Id == user.Id);
+            data.SetPassword(password);
+            IEntityService es = this.Site.GetRequiredService<IEntityService>();
+
+            es.BeginUpdate();
+            try
+            {
+                es.SaveOrUpdate(data);
+                es.EndUpdate(true);
+            }
+            catch
+            {
+
+                es.EndUpdate(false);
+                throw;
+            }
+        }
+
+        public bool VerifyPasswod(BusinessUser user, string password)
+        {
+            BusinessUserData data = this._userDatas.Single(d => d.Id == user.Id);
+            return data.VerifyPasswod(password);
+        }
+
+
     }
 }

@@ -19,6 +19,12 @@ namespace Fantasy.BusinessEngine.Services
 
         Image GetImage(string key);
 
+       
+
+        string GetFolderKey(string key);
+
+       
+
         bool ContainsImage(string key);
     }
 }

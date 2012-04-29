@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Applications\AdministrativeApplication.cs" />
+    <Compile Include="Applications\VoidApplication.cs" />
     <Compile Include="BusinessApplication.cs" />
     <Compile Include="BusinessApplicationData.cs" />
     <Compile Include="BusinessApplicationACL.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="BusinessEnum.cs" />
     <Compile Include="BusinessEnumExtensions.cs" />
     <Compile Include="BusinessEnumValue.cs" />
+    <Compile Include="BusinessMenuItem.cs" />
     <Compile Include="BusinessObject.cs" />
     <Compile Include="BusinessObjectMetaDataHelper.cs" />
     <Compile Include="BusinessPackage.cs" />
@@ -86,6 +88,8 @@
     <Compile Include="BusinessUser.cs" />
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
+    <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
+    <Compile Include="Maps\BusinessMenuItemMap.cs" />
     <Compile Include="Security\BusinessApplicationACLSecurityProvider.cs" />
     <Compile Include="Security\BusinessObjectMemberSecurityCollection.cs" />
     <Compile Include="Services\IImageListService.cs" />
@@ -243,6 +247,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

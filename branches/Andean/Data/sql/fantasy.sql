@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      Microsoft SQL Server 2008                    */
-/* Created on:     13/04/2012 4:40:08 PM                        */
+/* Created on:     2012/4/28 18:54:45                           */
 /*==============================================================*/
 
 
@@ -107,6 +107,27 @@ if exists (select 1
    where r.fkeyid = object_id('BusinessExtraScript') and o.name = 'FK_BUSINESS_PACKAGE_SCRIPT')
 alter table BusinessExtraScript
    drop constraint FK_BUSINESS_PACKAGE_SCRIPT
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BusinessMenuItem') and o.name = 'FK_BUSINESS_MENUITEMS_BUSINESS')
+alter table BusinessMenuItem
+   drop constraint FK_BUSINESS_MENUITEMS_BUSINESS
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BusinessMenuItemRole') and o.name = 'FK_BUSINESSMENUITEMROLE_ROLE')
+alter table BusinessMenuItemRole
+   drop constraint FK_BUSINESSMENUITEMROLE_ROLE
+go
+
+if exists (select 1
+   from sys.sysreferences r join sys.sysobjects o on (o.id = r.constid and o.type = 'F')
+   where r.fkeyid = object_id('BusinessMenuItemRole') and o.name = 'FK_MENUITEMROLE_MENUITEM')
+alter table BusinessMenuItemRole
+   drop constraint FK_MENUITEMROLE_MENUITEM
 go
 
 if exists (select 1
@@ -425,6 +446,56 @@ go
 
 if exists (select 1
             from  sysindexes
+           where  id    = object_id('BusinessMenuItem')
+            and   name  = 'MENUITEMCHILDITEMS_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BusinessMenuItem.MENUITEMCHILDITEMS_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BusinessMenuItem')
+            and   name  = 'MENUITEMSTOAPPLICATION_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BusinessMenuItem.MENUITEMSTOAPPLICATION_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BusinessMenuItem')
+            and   type = 'U')
+   drop table BusinessMenuItem
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BusinessMenuItemRole')
+            and   name  = 'ROLE_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BusinessMenuItemRole.ROLE_FK
+go
+
+if exists (select 1
+            from  sysindexes
+           where  id    = object_id('BusinessMenuItemRole')
+            and   name  = 'MENUITEM_FK'
+            and   indid > 0
+            and   indid < 255)
+   drop index BusinessMenuItemRole.MENUITEM_FK
+go
+
+if exists (select 1
+            from  sysobjects
+           where  id = object_id('BusinessMenuItemRole')
+            and   type = 'U')
+   drop table BusinessMenuItemRole
+go
+
+if exists (select 1
+            from  sysindexes
            where  id    = object_id('BusinessObject')
             and   name  = 'BUSINESSCLASSOBJECT_FK'
             and   indid > 0
@@ -593,13 +664,13 @@ go
 /*==============================================================*/
 create table AssemblyReference (
    ID                   T_Guid               not null,
-   GROUPID              T_Guid               not null,
+   GroupID              T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
    FullName             varchar(255)         not null,
    Source               int                  not null,
-   RawAssembly          varbinary(Max)       null,
+   RawAssembly          VBIN                 null,
    RawHash              varchar(32)          null,
    constraint PK_ASSEMBLYREFERENCE primary key (ID)
 )
@@ -609,7 +680,7 @@ go
 /* Index: ASSEMBLYGROUPREFERENCE_FK                             */
 /*==============================================================*/
 create index ASSEMBLYGROUPREFERENCE_FK on AssemblyReference (
-GROUPID ASC
+GroupID ASC
 )
 go
 
@@ -633,11 +704,11 @@ create table BusinessApplication (
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
-   PACKAGEID            T_Guid               not null,
+   PackageId            T_Guid               not null,
    EntryObjectId        T_Guid               null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
-   Script               varchar(max)         null,
+   Script               text                 null,
    ScriptOptions        int                  null,
    ExternalType         varchar(1024)        null,
    ViewSettings         varchar(max)         null,
@@ -657,7 +728,7 @@ go
 /* Index: BUSINESSPACKAGEAPPLICATIONS_FK                        */
 /*==============================================================*/
 create index BUSINESSPACKAGEAPPLICATIONS_FK on BusinessApplication (
-PACKAGEID ASC
+PackageId ASC
 )
 go
 
@@ -666,9 +737,9 @@ go
 /*==============================================================*/
 create table BusinessApplicationACL (
    ID                   T_Guid               not null,
-   STATEID              T_Guid               null,
+   StateID              T_Guid               null,
    PARTICIPANTID        T_Guid               not null,
-   ROLEID               T_Guid               not null,
+   RoleID               T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
@@ -681,7 +752,7 @@ go
 /* Index: CLASSACCESSCONTROLROLE_FK                             */
 /*==============================================================*/
 create index CLASSACCESSCONTROLROLE_FK on BusinessApplicationACL (
-ROLEID ASC
+RoleID ASC
 )
 go
 
@@ -689,7 +760,7 @@ go
 /* Index: BUSINESSAPPLICATIONACLSTATE_FK                        */
 /*==============================================================*/
 create index BUSINESSAPPLICATIONACLSTATE_FK on BusinessApplicationACL (
-STATEID ASC
+StateID ASC
 )
 go
 
@@ -706,7 +777,7 @@ go
 /*==============================================================*/
 create table BusinessApplicationParticipant (
    ID                   T_Guid               not null,
-   CLASSID              T_Guid               not null,
+   ClassID              T_Guid               not null,
    APPLICATIONID        T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
@@ -728,7 +799,7 @@ go
 /* Index: PARTICIPANTCLASS_FK                                   */
 /*==============================================================*/
 create index PARTICIPANTCLASS_FK on BusinessApplicationParticipant (
-CLASSID ASC
+ClassID ASC
 )
 go
 
@@ -738,7 +809,7 @@ go
 create table BusinessAssociation (
    ID                   T_Guid               not null,
    PackageID            T_Guid               not null,
-   LEFTCLASSID          T_Guid               not null,
+   LeftClassID          T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
@@ -766,7 +837,7 @@ go
 /* Index: RELATIONSHIPLEFT_FK                                   */
 /*==============================================================*/
 create index RELATIONSHIPLEFT_FK on BusinessAssociation (
-LEFTCLASSID ASC
+LeftClassID ASC
 )
 go
 
@@ -795,7 +866,7 @@ create table BusinessClass (
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
    PackageID            T_Guid               not null,
-   ParentClassID        T_Guid               null,
+   ParentClassId        T_Guid               null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    TableName            T_DBEntity           not null,
@@ -803,11 +874,12 @@ create table BusinessClass (
    TableSpace           T_DBEntity           null,
    IsSimple             bit                  not null,
    Implements           varchar(4096)        null,
-   AutoScript           varchar(max)         null,
-   Script               varchar(max)         null,
+   AutoScript           text                 null,
+   Script               text                 null,
    ScriptOptions        int                  null,
    IsAbstract           bit                  not null,
    ExternalType         varchar(1024)        null,
+   Icon                 varbinary(max)       null,
    constraint PK_BUSINESSCLASS primary key (ID)
 )
 go
@@ -816,7 +888,7 @@ go
 /* Index: PARENTCLASS_FK                                        */
 /*==============================================================*/
 create index PARENTCLASS_FK on BusinessClass (
-ParentClassID ASC
+ParentClassId ASC
 )
 go
 
@@ -833,13 +905,13 @@ go
 /*==============================================================*/
 create table BusinessClassDiagram (
    ID                   T_Guid               not null,
-   PACKAGEID            T_Guid               not null,
+   PackageID            T_Guid               null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
    Name                 T_Name               not null,
-   Diagram              text                 null,
-   constraint PK_BUSINESSCLASSDIAGRAM primary key (ID, PACKAGEID)
+   Diagram              varchar(max)         null,
+   constraint PK_BUSINESSCLASSDIAGRAM primary key (ID)
 )
 go
 
@@ -847,7 +919,7 @@ go
 /* Index: PACKAGECLASSDIAGRAMS_FK                               */
 /*==============================================================*/
 create index PACKAGECLASSDIAGRAMS_FK on BusinessClassDiagram (
-PACKAGEID ASC
+PackageID ASC
 )
 go
 
@@ -856,7 +928,7 @@ go
 /*==============================================================*/
 create table BusinessDataType (
    ID                   T_Guid               not null,
-   DefaultDBType        T_Name               null,
+   DefaultFieldType     T_Name               null,
    DefaultLength        int                  null,
    DefaultPrecision     int                  null,
    NHType               T_Name               null,
@@ -877,7 +949,7 @@ create table BusinessEnum (
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
-   PACKAGEID            T_Guid               not null,
+   PackageID            T_Guid               not null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    IsFlags              bit                  not null,
@@ -892,7 +964,7 @@ go
 /* Index: PACKAGEENUM_FK                                        */
 /*==============================================================*/
 create index PACKAGEENUM_FK on BusinessEnum (
-PACKAGEID ASC
+PackageID ASC
 )
 go
 
@@ -904,7 +976,7 @@ create table BusinessEnumValue (
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
-   ENUMID               T_Guid               not null,
+   EnumID               T_Guid               not null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    Value                int                  not null,
@@ -916,7 +988,7 @@ go
 /* Index: ENUMVALUES_FK                                         */
 /*==============================================================*/
 create index ENUMVALUES_FK on BusinessEnumValue (
-ENUMID ASC
+EnumID ASC
 )
 go
 
@@ -950,6 +1022,66 @@ go
 create table BusinessLastUpdateTimestamp (
    Name                 T_Name               null,
    Seconds              bigint               null
+)
+go
+
+/*==============================================================*/
+/* Table: BusinessMenuItem                                      */
+/*==============================================================*/
+create table BusinessMenuItem (
+   ID                   T_Guid               not null,
+   ApplicationID        T_Guid               null,
+   ModificationTime     datetime             not null,
+   CreationTime         datetime             not null,
+   IsSystem             bit                  not null,
+   ParentID             T_Guid               null,
+   Name                 T_Name               null,
+   EntryObjectId        T_Guid               null,
+   Icon                 image                null,
+   ExternalUrl          varchar(1024)        null,
+   constraint PK_BUSINESSMENUITEM primary key (ID)
+)
+go
+
+/*==============================================================*/
+/* Index: MENUITEMSTOAPPLICATION_FK                             */
+/*==============================================================*/
+create index MENUITEMSTOAPPLICATION_FK on BusinessMenuItem (
+ApplicationID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: MENUITEMCHILDITEMS_FK                                 */
+/*==============================================================*/
+create index MENUITEMCHILDITEMS_FK on BusinessMenuItem (
+ParentID ASC
+)
+go
+
+/*==============================================================*/
+/* Table: BusinessMenuItemRole                                  */
+/*==============================================================*/
+create table BusinessMenuItemRole (
+   RoleID               T_Guid               not null,
+   MenuItemID           T_Guid               not null,
+   constraint PK_BUSINESSMENUITEMROLE primary key (RoleID, MenuItemID)
+)
+go
+
+/*==============================================================*/
+/* Index: MENUITEM_FK                                           */
+/*==============================================================*/
+create index MENUITEM_FK on BusinessMenuItemRole (
+RoleID ASC
+)
+go
+
+/*==============================================================*/
+/* Index: ROLE_FK                                               */
+/*==============================================================*/
+create index ROLE_FK on BusinessMenuItemRole (
+MenuItemID ASC
 )
 go
 
@@ -1004,7 +1136,7 @@ go
 /*==============================================================*/
 create table BusinessProperty (
    ID                   T_Guid               not null,
-   CLASSID              T_Guid               not null,
+   ClassID              T_Guid               null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
@@ -1022,7 +1154,7 @@ create table BusinessProperty (
    DefaultValue         varchar(64)          null,
    ScriptOptions        int                  null,
    DisplayOrder         bigint               not null,
-   constraint PK_BUSINESSPROPERTY primary key (ID, CLASSID)
+   constraint PK_BUSINESSPROPERTY primary key (ID)
 )
 go
 
@@ -1030,7 +1162,7 @@ go
 /* Index: PROPERTIES_FK                                         */
 /*==============================================================*/
 create index PROPERTIES_FK on BusinessProperty (
-CLASSID ASC
+ClassID ASC
 )
 go
 
@@ -1066,7 +1198,7 @@ create table BusinessRole (
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
    IsSystem             bit                  not null,
-   PACKAGEID            T_Guid               not null,
+   PackageID            T_Guid               not null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    Description          varchar(1024)        null,
@@ -1083,7 +1215,7 @@ go
 /* Index: BUSINESSPACKAGEROLES_FK                               */
 /*==============================================================*/
 create index BUSINESSPACKAGEROLES_FK on BusinessRole (
-PACKAGEID ASC
+PackageID ASC
 )
 go
 
@@ -1094,8 +1226,8 @@ create table BusinessUser (
    ID                   T_Guid               not null,
    ModificationTime     datetime             not null,
    CreationTime         datetime             not null,
+   PackageID            T_Guid               not null,
    IsSystem             bit                  not null,
-   PACKAGEID            T_Guid               not null,
    Name                 T_Name               not null,
    CodeName             T_Name               not null,
    FullName             T_Name               not null,
@@ -1113,7 +1245,7 @@ go
 /* Index: BUSINESSPACKAGEUSERS_FK                               */
 /*==============================================================*/
 create index BUSINESSPACKAGEUSERS_FK on BusinessUser (
-PACKAGEID ASC
+PackageID ASC
 )
 go
 
@@ -1121,9 +1253,9 @@ go
 /* Table: BusinessUserRole                                      */
 /*==============================================================*/
 create table BusinessUserRole (
-   USERID               T_Guid               not null,
-   ROLEID               T_Guid               not null,
-   constraint PK_BUSINESSUSERROLE primary key (USERID, ROLEID)
+   UserID               T_Guid               not null,
+   RoleID               T_Guid               not null,
+   constraint PK_BUSINESSUSERROLE primary key (UserID, RoleID)
 )
 go
 
@@ -1131,7 +1263,7 @@ go
 /* Index: ROLES_FK                                              */
 /*==============================================================*/
 create index ROLES_FK on BusinessUserRole (
-USERID ASC
+UserID ASC
 )
 go
 
@@ -1139,14 +1271,13 @@ go
 /* Index: USERS_FK                                              */
 /*==============================================================*/
 create index USERS_FK on BusinessUserRole (
-ROLEID ASC
+RoleID ASC
 )
 go
 
 alter table AssemblyReference
-   add constraint FK_ASSEMBLYGROUP_ASSEMBLY foreign key (GROUPID)
+   add constraint FK_ASSEMBLYGROUP_ASSEMBLY foreign key (GroupID)
       references AssemblyReferenceGroup (ID)
-         on delete cascade
 go
 
 alter table BusinessApplication
@@ -1155,29 +1286,27 @@ alter table BusinessApplication
 go
 
 alter table BusinessApplication
-   add constraint FK_BUSINESS_PACKAGE_APPLICATION foreign key (PACKAGEID)
+   add constraint FK_BUSINESS_PACKAGE_APPLICATION foreign key (PackageId)
       references BusinessPackage (ID)
 go
 
 alter table BusinessApplicationACL
    add constraint FK_BUSINESS_PARTICIPANT_ACL foreign key (PARTICIPANTID)
       references BusinessApplicationParticipant (ID)
-         on delete cascade
 go
 
 alter table BusinessApplicationACL
-   add constraint FK_BUSINESSAPPACL_STATE foreign key (STATEID)
+   add constraint FK_BUSINESSAPPACL_STATE foreign key (StateID)
       references BusinessEnumValue (ID)
 go
 
 alter table BusinessApplicationACL
-   add constraint FK_BUSINESS_ROLE_ACL foreign key (ROLEID)
+   add constraint FK_BUSINESS_ROLE_ACL foreign key (RoleID)
       references BusinessRole (ID)
-         on delete cascade
 go
 
 alter table BusinessApplicationParticipant
-   add constraint FK_BUSINESS_PARTICIPANT_CLASS foreign key (CLASSID)
+   add constraint FK_BUSINESS_PARTICIPANT_CLASS foreign key (ClassID)
       references BusinessClass (ID)
 go
 
@@ -1197,29 +1326,46 @@ alter table BusinessClass
 go
 
 alter table BusinessClass
-   add constraint FK_BUSINESS_CHILDCLASS foreign key (ParentClassID)
+   add constraint FK_BUSINESS_CHILDCLASS foreign key (ParentClassId)
       references BusinessClass (ID)
 go
 
 alter table BusinessClassDiagram
-   add constraint FK_BUSINESS_PACKAGE_CLASSDIAGRAM foreign key (PACKAGEID)
+   add constraint FK_BUSINESS_PACKAGE_CLASSDIAGRAM foreign key (PackageID)
       references BusinessPackage (ID)
 go
 
 alter table BusinessEnum
-   add constraint FK_BUSINESS_PACKAGE_ENUM foreign key (PACKAGEID)
+   add constraint FK_BUSINESS_PACKAGE_ENUM foreign key (PackageID)
       references BusinessPackage (ID)
 go
 
 alter table BusinessEnumValue
-   add constraint FK_BUSINESS_ENUM_VALUE foreign key (ENUMID)
+   add constraint FK_BUSINESS_ENUM_VALUE foreign key (EnumID)
       references BusinessEnum (ID)
-         on delete cascade
 go
 
 alter table BusinessExtraScript
    add constraint FK_BUSINESS_PACKAGE_SCRIPT foreign key (PackageID)
       references BusinessPackage (ID)
+go
+
+alter table BusinessMenuItem
+   add constraint FK_BUSINESS_MENUITEMS_BUSINESS foreign key (ApplicationID)
+      references BusinessApplication (ID)
+         on delete set null
+go
+
+alter table BusinessMenuItemRole
+   add constraint FK_BUSINESSMENUITEMROLE_ROLE foreign key (RoleID)
+      references BusinessRole (ID)
+         on delete cascade
+go
+
+alter table BusinessMenuItemRole
+   add constraint FK_MENUITEMROLE_MENUITEM foreign key (MenuItemID)
+      references BusinessMenuItem (ID)
+         on delete cascade
 go
 
 alter table BusinessObject
@@ -1233,7 +1379,7 @@ alter table BusinessPackage
 go
 
 alter table BusinessProperty
-   add constraint FK_BUSINESS_CLASS_PROPERTY foreign key (CLASSID)
+   add constraint FK_BUSINESS_CLASS_PROPERTY foreign key (ClassID)
       references BusinessClass (ID)
 go
 
@@ -1253,22 +1399,22 @@ alter table BusinessProperty
 go
 
 alter table BusinessRole
-   add constraint FK_BUSINESS_PACKAGE_ROLE foreign key (PACKAGEID)
+   add constraint FK_BUSINESS_PACKAGE_ROLE foreign key (PackageID)
       references BusinessPackage (ID)
 go
 
 alter table BusinessUser
-   add constraint FK_BUSINESS_PACKAGE_USER foreign key (PACKAGEID)
+   add constraint FK_BUSINESS_PACKAGE_USER foreign key (PackageID)
       references BusinessPackage (ID)
 go
 
 alter table BusinessUserRole
-   add constraint FK_BUSINESS_USER_ROLES foreign key (USERID)
+   add constraint FK_BUSINESS_USER_ROLES foreign key (UserID)
       references BusinessUser (ID)
 go
 
 alter table BusinessUserRole
-   add constraint FK_BUSINESS_ROLE_USERS foreign key (ROLEID)
+   add constraint FK_BUSINESS_ROLE_USERS foreign key (RoleID)
       references BusinessRole (ID)
 go
 

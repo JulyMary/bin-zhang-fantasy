@@ -26,7 +26,30 @@ namespace Fantasy.BusinessEngine
 
         public BusinessUser User { get; set; }
 
-        public BusinessApplication Application { get; set; }
+        public BusinessApplication Application
+        {
+            get
+            {
+                return _applicationStack.Peek();
+            }
+        }
+
+
+        private Stack<BusinessApplication> _applicationStack = new Stack<BusinessApplication>();
+
+
+       
+
+        public BusinessApplication UnloadApplication()
+        {
+            BusinessApplication app = this._applicationStack.Peek();
+            app.Unload();
+            if (app is IDisposable)
+            {
+                ((IDisposable)app).Dispose();
+            }
+            return this._applicationStack.Pop();
+        }
 
         public static BusinessEngineContext Current
         {
@@ -72,5 +95,11 @@ namespace Fantasy.BusinessEngine
 
 
 
+
+        public void LoadApplication(BusinessApplication app)
+        {
+            this._applicationStack.Push(app);
+            app.Load();
+        }
     }
 }

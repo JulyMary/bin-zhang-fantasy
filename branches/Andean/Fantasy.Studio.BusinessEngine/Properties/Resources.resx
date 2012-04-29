@@ -183,6 +183,9 @@
   <data name="DefaultNewBusinessWebControllerName" xml:space="preserve">
     <value>NewController</value>
   </data>
+  <data name="DefaultNewMenuItemName" xml:space="preserve">
+    <value>New application entry</value>
+  </data>
   <data name="DefaultParticipantACLPanelTitle" xml:space="preserve">
     <value>Default</value>
   </data>
@@ -194,6 +197,9 @@
   </data>
   <data name="EnumValuesPanelTitle" xml:space="preserve">
     <value>Values</value>
+  </data>
+  <data name="MenuEditorName" xml:space="preserve">
+    <value>Menu Editor</value>
   </data>
   <data name="ObjectModelFolderName" xml:space="preserve">
     <value>Object Model</value>
