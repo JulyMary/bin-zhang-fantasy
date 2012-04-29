@@ -567,6 +567,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\delete.png" />
     <Resource Include="images\openfile.png" />
     <Resource Include="images\menuedit.png" />
     <Resource Include="AppData\ItemTemplates\HtmlPage\HTMLPage.template.xml" />

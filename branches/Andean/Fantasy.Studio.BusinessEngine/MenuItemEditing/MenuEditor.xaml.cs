@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Fantasy.BusinessEngine;
+using Microsoft.Win32;
 
 namespace Fantasy.Studio.BusinessEngine.MenuItemEditing
 {
@@ -36,6 +38,8 @@ namespace Fantasy.Studio.BusinessEngine.MenuItemEditing
             this.Data = data;
             _model = new MenuEditorModel(this.Site);
             this.DataContext = _model;
+           
+            
         }
 
         private MenuEditorModel _model;
@@ -170,12 +174,55 @@ namespace Fantasy.Studio.BusinessEngine.MenuItemEditing
 
         private void AutoSelectAllByMouse(object sender, MouseEventArgs e)
         {
-
+            ((TextBox)sender).SelectAll();
         }
 
         private void AutoSelectAll(object sender, KeyboardFocusChangedEventArgs e)
         {
+            ((TextBox)sender).SelectAll();
+        }
 
+        private void AddMenuItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            _model.Add(this._model.SelectedItem);
+        }
+
+        private void CanRemoveMenuItem(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this._model.SelectedItem != null && ! this._model.SelectedItem.IsSystem;
+        }
+
+        private void RemoveMenuItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            _model.Remove(this._model.SelectedItem);
+        }
+
+        private void MenuTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BusinessMenuItem item = this.MenuTreeView.SelectedItem as BusinessMenuItem;
+            if (item != null)
+            {
+                this._model.SelectedItem = item;
+            }
+        }
+
+        private void CanAddMenuItem(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = this._model.SelectedItem != null;
+        }
+
+        private void BrowseImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog()
+            {
+
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                System.Drawing.Image image = System.Drawing.Image.FromFile(dlg.FileName);
+                this._model.SelectedItem.Icon = image;
+            }
         }
     }
 }

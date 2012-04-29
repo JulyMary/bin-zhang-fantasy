@@ -197,6 +197,7 @@
     <Compile Include="Windows\BooleanInverterConverter.cs" />
     <Compile Include="Windows\CurrentProcessIcon.cs" />
     <Compile Include="Windows\DataObjectExtension.cs" />
+    <Compile Include="Windows\ImageToBitmapImageConverter.cs" />
     <Compile Include="Windows\MouseUtilities.cs" />
     <Compile Include="Windows\VisualExtensions.cs" />
     <Compile Include="Windows\WeakEventListener.cs" />
