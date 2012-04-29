@@ -51,16 +51,17 @@ namespace Fantasy.Studio.BusinessEngine.MenuItemEditing
         public void Remove(BusinessMenuItem item)
         {
 
-           
-
+            BusinessMenuItem parent = item.Parent;
             foreach (BusinessMenuItem i in item.Flatten(i => i.ChildItems))
             {
                 _toRemoved.Add(i);
                 PropertyChangedEventManager.RemoveListener(item, this, "EntityState");
             }
 
-            item.Parent.ChildItems.Remove(item);
+            parent.ChildItems.Remove(item);
             item.Parent = null;
+
+            this.SelectedItem = parent;
 
             this.EditingState = EditingState.Dirty ;
 

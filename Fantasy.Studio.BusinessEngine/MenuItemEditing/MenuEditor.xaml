@@ -5,45 +5,93 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              xmlns:local="clr-namespace:Fantasy.Studio.BusinessEngine.MenuItemEditing"
+             xmlns:be="urn:schema-fantasy:business-engine"
+             xmlns:f="urn:schema-fantasy:xaml"
              d:DesignHeight="800" d:DesignWidth="800" xmlns:my="urn:schema-fantasy:xaml">
     <UserControl.Resources>
         <local:RoleConverter x:Key="roleConverter"/>
         <local:ApplicationConverter x:Key="appConverter"/>
-        
+        <f:ImageToBitmapImageConverter x:Key="ImageConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <TreeView Margin="12,12,12,12" Name="treeView1" />
+        <TreeView Margin="12,12,12,12" Name="MenuTreeView" ItemsSource="{Binding Root}" SelectedItemChanged="MenuTreeView_SelectedItemChanged">
+            
+            <TreeView.ContextMenu >
+                <ContextMenu>
+                    <ContextMenu.Resources>
+                        <Style TargetType="MenuItem" >
+                            <Setter Property="CommandTarget" Value="{Binding ElementName=MenuTreeView}"></Setter>
+                        </Style>
+                        <Style TargetType="Image" >
+                            <Setter Property="Width" Value="16"></Setter>
+                            <Setter Property="Height" Value="16"></Setter>
+                        </Style>
+                    </ContextMenu.Resources>
+                    <MenuItem  Command="New" >
+                        <MenuItem.Icon>
+                            <Image Source="/Fantasy.Studio.BusinessEngine;component/images/application.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem  Command="Delete">
+                        <MenuItem.Icon>
+                            <Image Source="/Fantasy.Studio.BusinessEngine;component/images/delete.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </TreeView.ContextMenu>
+            
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding ChildItems}" DataType="{x:Type be:BusinessMenuItem}">
+                    <StackPanel Orientation="Horizontal" Margin="1">
+                        <Image Source="{Binding Icon, Converter={StaticResource ImageConverter}}" Width="16" Height="16" />
+                        <TextBlock Text="{Binding Name}" Margin="2,0,0,0" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+            <TreeView.CommandBindings>
+                <CommandBinding Command="New" Executed="AddMenuItem" CanExecute="CanAddMenuItem"/>
+                <CommandBinding Command="Delete" Executed="RemoveMenuItem" CanExecute="CanRemoveMenuItem"/>
+            </TreeView.CommandBindings>
+        </TreeView>
         <GridSplitter Margin="0,0,0,0" Name="gridSplitter1" HorizontalAlignment="Right" Width="5" />
         <ScrollViewer  Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-            <StackPanel Orientation="Vertical" Margin="10,10,10,10" >
+            <StackPanel Orientation="Vertical" Margin="10,10,10,10"  DataContext="{Binding SelectedItem}">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                           
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
                 <Label Content="This is a system menu item and cannot be edit." FontStyle="Italic" Foreground="DarkGray" Height="28" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" Visibility="{Binding IsSystem, Converter={x:Static my:VisibilityConverter.Collapsed}}" />
 
                 <GroupBox Header="General" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox1" VerticalAlignment="Top" Height="302" Width="560">
+                    <GroupBox.Style>
+                        <Style TargetType="GroupBox">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsSystem}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </GroupBox.Style>
                     <Grid>
-                        <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="187,6,0,0" Name="label1" VerticalAlignment="Top" />
-                        <TextBox GotKeyboardFocus="AutoSelectAll" GotMouseCapture="AutoSelectAllByMouse" Height="23" HorizontalAlignment="Left" Margin="271,8,0,0" Name="NameTextBox" Text="{Binding Name}" VerticalAlignment="Top" Width="271" />
-                        <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="6,127,0,0" Name="label5" VerticalAlignment="Top" />
                         <Label Height="28" HorizontalAlignment="Left" Margin="6,6,0,0"  Content="Icon:" VerticalAlignment="Top" />
-                        <TextBox AcceptsReturn="true" Height="111" HorizontalAlignment="Left" Margin="81,129,0,0" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Width="461" />
-                        <CheckBox Content="Menu item is disabled" Height="16" HorizontalAlignment="Left" IsChecked="{Binding IsDisabled, Mode=TwoWay}" Margin="6,257,0,0" VerticalAlignment="Top" />
-                        <Label Content="Application:" Height="28" HorizontalAlignment="Left" Margin="187,40,0,0" Name="label2" VerticalAlignment="Top" />
-                        <ComboBox Height="23" HorizontalAlignment="Left" Margin="271,40,0,0" Name="comboBox1" VerticalAlignment="Top" Width="271" />
-                        <Label Content="Entry Object:" Height="28" HorizontalAlignment="Left" Margin="187,72,0,0" Name="label3" VerticalAlignment="Top" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="271,74,0,0" Name="textBox1" VerticalAlignment="Top" Width="271" />
-                        <Label Content="External URL:" Height="28" HorizontalAlignment="Left" Margin="187,98,0,0" Name="label4" VerticalAlignment="Top" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="271,100,0,0" Name="textBox2" VerticalAlignment="Top" Width="271" />
                         <Border BorderBrush="Silver" Background="White" IsHitTestVisible="True" Name="ImageBorder" BorderThickness="1" Height="100" HorizontalAlignment="Right" Margin="0,8,367,0" VerticalAlignment="Top" Width="100">
                             <Grid>
-                                <Image></Image>
-                                <Button Margin="0,0,6,6" Name="BrowseImageButton" Height="24" Padding="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="24" Opacity="0.7">
+                                <Image Source="{Binding Icon, Converter={StaticResource ImageConverter}}"></Image>
+                                <Button Margin="0,0,6,6" Name="BrowseImageButton" Height="24" Padding="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="24" Opacity="0.7" Click="BrowseImageButton_Click">
                                     <Button.Style>
                                         <Style TargetType="Button" >
-                                            <Setter Property="Visibility" Value="Hidden"/> 
-                                           
+                                            <Setter Property="Visibility" Value="Hidden"/>
+
                                             <Style.Triggers >
                                                 <DataTrigger Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Border}}"  Value="True">
                                                     <Setter Property="Visibility" Value="Visible" />
@@ -55,7 +103,28 @@
                                 </Button>
                             </Grid>
                         </Border>
-                    </Grid>
+
+                        <Label Content="Name:" Height="28" HorizontalAlignment="Left" Margin="187,6,0,0" Name="label1" VerticalAlignment="Top"  />
+                        <TextBox GotKeyboardFocus="AutoSelectAll" GotMouseCapture="AutoSelectAllByMouse" Height="23" HorizontalAlignment="Left" Margin="271,8,0,0" Name="NameTextBox" Text="{Binding Name}" VerticalAlignment="Top" Width="271" />
+                        <Label Content="Description:" Height="28" HorizontalAlignment="Left" Margin="6,127,0,0" Name="label5" VerticalAlignment="Top" />
+                                                <TextBox AcceptsReturn="true" Height="111" HorizontalAlignment="Left" Margin="81,129,0,0" Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Width="461" />
+                        <CheckBox Content="Menu item is disabled" Height="16" HorizontalAlignment="Left" IsChecked="{Binding IsDisabled, Mode=TwoWay}" Margin="6,257,0,0" VerticalAlignment="Top" />
+                        <Label Content="Application:" Height="28" HorizontalAlignment="Left" Margin="187,40,0,0" Name="label2" VerticalAlignment="Top" />
+                        <ComboBox Height="23" HorizontalAlignment="Left" Margin="271,40,0,0" Name="comboBox1" VerticalAlignment="Top" Width="271" SelectedItem="{Binding ApplicationId}" ItemsSource="{Binding RelativeSource={RelativeSource Mode=PreviousData}}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" >
+                                        
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                            
+                        </ComboBox>
+                        <Label Content="Entry Object:" Height="28" HorizontalAlignment="Left" Margin="187,72,0,0" Name="label3" VerticalAlignment="Top" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="271,74,0,0" Name="textBox1" VerticalAlignment="Top" Width="271" />
+                        <Label Content="External URL:" Height="28" HorizontalAlignment="Left" Margin="187,98,0,0" Name="label4" VerticalAlignment="Top" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="271,100,0,0" Name="textBox2" VerticalAlignment="Top" Width="271" />
+                                         </Grid>
                 </GroupBox>
                 <GroupBox Header="Allow roles" Height="324" HorizontalAlignment="Left" Margin="12,12,0,0" VerticalAlignment="Top" Width="560">
                     <Grid>
@@ -104,7 +173,7 @@
                 </GroupBox>
             </StackPanel>
         </ScrollViewer>
-          
-        </Grid>
+        
+    </Grid>
    
 </UserControl>
