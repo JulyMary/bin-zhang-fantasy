@@ -549,6 +549,7 @@
             <TreeNodeChildProvider ID="users" Provider="{New sbe:PackageUsersProvider}" />
             <TreeNodeChildProvider ID="roles" Provider="{New sbe:PackageRolesProvider}" />
             <TreeNodeChildProvider ID="scripts" Provider="{New sbe:PackageScriptsProvider}"/>
+            <TreeNodeChildProvider ID="menuEditor" Provider="{New sbe:PackageMenuEditNodeProvider}"/>
         </TreeNode>
       
         <TreeNode ID="class" TargetType="{x:Type be:BusinessClass}" Icon="/Fantasy.Studio.BusinessEngine;component/images/class.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" ContextMenu="fantasy/studio/businessengine/documentpad/class/contextmenu">
@@ -605,6 +606,7 @@
         <TreeNode ID="AppScript" TargetType="{x:Type sbe:BusinessApplicationScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
         <TreeNode ID="UserScript" TargetType="{x:Type sbe:BusinessUserScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
         <TreeNode ID="RoleScript" TargetType="{x:Type sbe:BusinessRoleScript}" Icon="/Fantasy.Studio.BusinessEngine;component/images/csharpfilesmall.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}"/>
+        <TreeNode ID="MenuEdit" TargetType="{x:Type sbe:MenuEditNode}" Icon="/Fantasy.Studio.BusinessEngine;component/images/menuedit.png" Text="{Binding Path=Name}" DoubleClick="{New sbe:OpenEntityViewCommand}" />
     </Extension>
     <Extension Path="fantasy/studio/businessengine/documentpad/user/contextmenu">
         <Button ID="Open" Text="Open" Command="{New sbe:OpenEntityViewCommand}" ParameterSource="Owner" />
@@ -800,6 +802,12 @@
             </Object.Conditional>
             <sbe:ScriptEditor/>
         </Object>
+        <Object ID="MenuEditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type sbe:MenuEditNode}"/>
+            </Object.Conditional>
+            <sbe:MenuEditor/>
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
@@ -910,6 +918,7 @@
             </Object.Conditional>
             <code:EnumChangedHandler />
         </Object>
+        
     </Extension>
 
 

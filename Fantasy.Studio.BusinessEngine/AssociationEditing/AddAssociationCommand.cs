@@ -29,7 +29,7 @@ namespace Fantasy.Studio.BusinessEngine.AssociationEditing
         {
             BusinessPackage parent = (BusinessPackage)parameter;
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            BusinessAssociation association = es.AddAssociation(parent);
+            BusinessAssociation association = es.AddBusinessAssociation(parent);
            
             IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
             IViewContent content = documentService.OpenView(association);

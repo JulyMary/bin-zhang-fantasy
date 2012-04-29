@@ -23,7 +23,7 @@ namespace Fantasy.Web.Controllers
             BusinessObject entryObject = application.EntryObject;
 
             StandardNavigationDefaultViewModel model = new StandardNavigationDefaultViewModel();
-            model.RootTreeItem = this.CreateTreeItem(entryObject, 0);
+            model.RootTreeItem = this.CreateTreeItem(entryObject, 3);
 
             if (model == null)
             {
@@ -48,15 +48,16 @@ namespace Fantasy.Web.Controllers
                 rs.data.icon = this.Url.ImageList(obj.IconKey);
 
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
+                IImageListService imageList = BusinessEngineContext.Current.GetRequiredService<IImageListService>();
                 BusinessClass @class = oms.FindBusinessClass(obj.ClassId);
 
                 var assns = (from assn in @class.AllLeftAssociations()
                              where assn.RightNavigatable = true
                              
-                             select new { Text = assn.RightRoleName, Property=assn.RightRoleCode, Order = assn.RightRoleDisplayOrder, IsScalar = (new Cardinality(assn.RightCardinality)).IsSingleton  })
+                             select new { Class = assn.RightClass, Text = assn.RightRoleName, Property=assn.RightRoleCode, Order = assn.RightRoleDisplayOrder, IsScalar = (new Cardinality(assn.RightCardinality)).IsSingleton  })
                             .Union(from assn in @class.AllRightAssociations()
                                    where assn.LeftNavigatable
-                                   select new { Text = assn.LeftRoleName, Property = assn.LeftRoleCode, Order = assn.LeftRoleDisplayOrder, IsScalar = (new Cardinality(assn.LeftCardinality)).IsSingleton  }).OrderBy(x => x.Order);
+                                   select new {Class = assn.LeftClass, Text = assn.LeftRoleName, Property = assn.LeftRoleCode, Order = assn.LeftRoleDisplayOrder, IsScalar = (new Cardinality(assn.LeftCardinality)).IsSingleton  }).OrderBy(x => x.Order);
 
                 foreach (var v in assns)
                 {
@@ -66,7 +67,13 @@ namespace Fantasy.Web.Controllers
 
                         JsTreeNode folderItem = new JsTreeNode();
                         folderItem.data.title = v.Property;
-                        folderItem.data.icon = "folder";
+
+
+                        string imageKey = imageList.GetFolderKey(oms.GetImageKey(v.Class));
+
+
+
+                        folderItem.data.icon = this.Url.ImageList(imageKey);
                        
                         rs.children.Add(folderItem);
                         if (childDeep > 0)
@@ -75,7 +82,10 @@ namespace Fantasy.Web.Controllers
                             if(v.IsScalar)
                             {
                                 BusinessObject child = (BusinessObject)obj.GetType().GetProperty(v.Property).GetValue(obj, null);
-                                folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
+                                if (child != null)
+                                {
+                                    folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
+                                }
                             }
                             else
                             {

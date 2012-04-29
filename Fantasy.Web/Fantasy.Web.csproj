@@ -201,7 +201,7 @@
     <Content Include="Scripts\knockout-1.3.0beta.debug.js" />
     <Content Include="Scripts\knockout-1.3.0beta.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
-    <Content Include="Scripts\StandardNavigation.default.js" />
+    <Content Include="Scripts\standardnavigation.default.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -214,33 +214,36 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\ProductInfo.cs" />
     <Compile Include="Consts.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\StandardNavigationController.cs" />
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
     <Compile Include="FantasyHttpApplication.cs" />
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="MIMETypes.cs" />
+    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\StandardNavigationDefaultViewModel.cs" />
     <Compile Include="Models\JsTreeNode.cs" />
-    <Compile Include="Mvc\ApplicationController.cs" />
     <Compile Include="Mvc\BusinessApplicationHadler.cs" />
     <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
     <Compile Include="Mvc\ChainedControllerFactory.cs" />
     <Compile Include="Mvc\CompiledContentHandler.cs" />
     <Compile Include="Mvc\CompiledContentHandlerFactory.cs" />
     <Compile Include="Mvc\CompiledContentRouteHandler.cs" />
+    <Compile Include="Mvc\CompiledControllerFactory.cs" />
     <Compile Include="Mvc\CompiledMvcView.cs" />
     <Compile Include="Mvc\CompiledViewEngine.cs" />
     <Compile Include="Mvc\CompiledViewVirtualPathFactory.cs" />
+    <Compile Include="Mvc\CompiledContentRoute.cs" />
     <Compile Include="Mvc\IgnoreSystemRouteCommand.cs" />
     <Compile Include="Mvc\ImageListHandler.cs" />
     <Compile Include="Mvc\ImageListRoutHandler.cs" />
     <Compile Include="Mvc\RegisterAllAreasCommand.cs" />
     <Compile Include="Mvc\RegisterAppRouteCommand.cs" />
+    <Compile Include="Mvc\RegisterAspNetMvcDefualtRouteCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledContentHandlerFactoryCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledContentRouteCommand.cs" />
     <Compile Include="Mvc\RegisterCompiledViewEngineCommand.cs" />
@@ -270,6 +273,7 @@
       <DependentUpon>Settings.settings.tt</DependentUpon>
     </Compile>
     <Compile Include="Security\FantasyRoleProvider.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -299,10 +303,16 @@
       <LastGenOutput>Settings.settings.cs</LastGenOutput>
       <DependentUpon>Settings.settings</DependentUpon>
     </None>
+    <Content Include="Views\Home\About.cshtml">
+      <LastGenOutput>About.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
@@ -330,7 +340,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>1421</DevelopmentServerPort>
+          <DevelopmentServerPort>22353</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

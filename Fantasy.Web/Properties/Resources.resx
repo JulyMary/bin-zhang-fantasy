@@ -120,6 +120,18 @@
   <data name="ArgumentCannotBeNullOrEmpty" xml:space="preserve">
     <value>Value cannot be null or an empty string.</value>
   </data>
+  <data name="AuthenticationFailedMessage" xml:space="preserve">
+    <value>The user name or password provided is incorrect.</value>
+  </data>
+  <data name="LogInModel_Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="LogInModel_RememberMe" xml:space="preserve">
+    <value>Remeber me?</value>
+  </data>
+  <data name="LogInModel_UserName" xml:space="preserve">
+    <value>User name</value>
+  </data>
   <data name="RoleDoesNotExistMessage" xml:space="preserve">
     <value>Role '{0}' does not exist</value>
   </data>

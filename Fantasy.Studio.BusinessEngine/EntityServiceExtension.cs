@@ -127,7 +127,7 @@ namespace Fantasy.Studio.BusinessEngine
             }
         }
 
-        public static BusinessAssociation AddAssociation(this IEntityService es, BusinessPackage package)
+        public static BusinessAssociation AddBusinessAssociation(this IEntityService es, BusinessPackage package)
         {
             BusinessAssociation rs = es.CreateEntity<BusinessAssociation>();
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewBusinessAssociationName, package.Associations.Select(a => a.Name));
@@ -498,6 +498,14 @@ namespace Fantasy.Studio.BusinessEngine
             }
         }
 
-        
+
+        public static BusinessMenuItem AddBusinessMenuItem(this IEntityService es, BusinessMenuItem parent)
+        {
+            BusinessMenuItem rs = es.CreateEntity<BusinessMenuItem>();
+            rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewMenuItemName, parent.ChildItems.Select(i => i.Name));
+            rs.Parent = parent;
+            parent.ChildItems.Add(rs);
+            return rs;
+        }
     }
 }

@@ -133,6 +133,9 @@
         <Object ID="IgnoreSystemRout">
             <fw:IgnoreSystemRouteCommand/>
         </Object>
+        <Object ID="RegisterAspNetMvcDefualtRoute">
+            <fw:RegisterAspNetMvcDefualtRouteCommand />
+        </Object>
         <Object ID="WatchDependencyPath">
             <fw:WatchDependencyPathCommand/>
         </Object>
@@ -142,6 +145,9 @@
         <Object ID="Default">
             <mvc:DefaultControllerFactory/>
         </Object>
+        <!--<Object ID="compiled">
+            
+        </Object>-->
     </Extension>
 
     <Extension Path="fantasy/context/services">
@@ -156,10 +162,6 @@
 
     </Extension>
     
-    
-    
-
-
     <Extension Path="fantasy/businessengine/entityhandlers/create">
         <Object ID="monitorpropertychange">
             <be:MonitorEntityPropertyChangeHandler/>

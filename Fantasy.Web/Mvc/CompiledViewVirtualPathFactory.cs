@@ -15,16 +15,18 @@ namespace Fantasy.Web.Mvc
         {
             try
             {
-                this._virtualPathTypes = (from assemblyName in Settings.Default.CompiledViewAssemblyNames.Cast<string>()
+                var query = from assemblyName in Settings.Default.CompiledViewAssemblyNames.Cast<string>()
 #pragma warning disable 0618
-                                          let assembly = Assembly.LoadWithPartialName(assemblyName)
+                            let assembly = Assembly.LoadWithPartialName(assemblyName)
 #pragma warning restore 0618
-                                          from type in assembly.GetTypes()
-                                          where typeof(WebPageRenderingBase).IsAssignableFrom(type)
-                                          let pageVirtualPath = type.GetCustomAttributes(inherit: false).OfType<PageVirtualPathAttribute>().FirstOrDefault()
-                                          where pageVirtualPath != null
-                                          select new { path = pageVirtualPath.VirtualPath, type = type }
-                      ).ToDictionary(t => t.path, t => t.type, StringComparer.OrdinalIgnoreCase);
+                            from type in assembly.GetTypes()
+                            where typeof(WebPageRenderingBase).IsAssignableFrom(type)
+                            let pageVirtualPath = type.GetCustomAttributes(inherit: false).OfType<PageVirtualPathAttribute>().FirstOrDefault()
+                            where pageVirtualPath != null
+                            select new { path = pageVirtualPath.VirtualPath, type = type };
+                      
+
+                this._virtualPathTypes = query.ToDictionary(t => t.path, t => t.type, StringComparer.OrdinalIgnoreCase);
             }
             catch(Exception)
             {

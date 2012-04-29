@@ -17,9 +17,8 @@ namespace Fantasy.Web.Mvc
 
             foreach (string s in new string[] {"Content", "Images", "Scripts" })
             {
-                RouteTable.Routes.Add(s, new Route(s + "/{file}",
-                     new RouteValueDictionary(),
-               this.Site.GetRequiredService<CompiledContentRouteHandler>()));
+               RouteTable.Routes.Add(s, new CompiledContentRoute(s,
+               this.Site.GetRequiredService<CompiledContentRouteHandler>()) { Site = this.Site});
             }
 
            

@@ -96,6 +96,13 @@ namespace Fantasy.BusinessEngine.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap FolderTemplate {
+            get {
+                object obj = ResourceManager.GetObject("FolderTemplate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Cannot find property &apos;{0}&apos;.
         /// </summary>

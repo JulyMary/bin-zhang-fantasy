@@ -1818,7 +1818,8 @@
 						if(!m.icon && js.icon) { m.icon = js.icon; }
 						if(m.icon) { 
 							if(m.icon.indexOf("/") === -1) { tmp.children("ins").addClass(m.icon); }
-							else { tmp.children("ins").css("background","url('" + m.icon + "') center center no-repeat"); }
+							else { tmp.children("ins").css("background","url('" + m.icon + "') center center no-repeat");
+                                   tmp.children("ins").css("background-size", "contain"); }
 						}
 						d.append(tmp);
 					});

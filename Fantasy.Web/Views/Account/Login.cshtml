@@ -1,0 +1,41 @@
+@model Fantasy.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.js"));
+    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.unobtrusive.js"));
+}
+
+<hgroup class="title">
+    <h1>@ViewBag.Title.</h1>
+    <br />
+    <h2>Enter your user name and password below.</h2>
+</hgroup>
+
+
+@using(Html.BeginForm()) 
+{
+    @Html.ValidationSummary(true, "Log in was unsuccessful. Please correct the errors and try again.")
+
+    <fieldset>
+        <legend>Log in Form</legend>
+        <ol>
+            <li>
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName)
+                @Html.ValidationMessageFor(m => m.UserName)
+            </li>
+            <li>
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password)
+                @Html.ValidationMessageFor(m => m.Password)
+            </li>
+            <li>
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+            </li>
+        </ol>
+        <input type="submit" value="Log in" />
+    </fieldset>
+
+}

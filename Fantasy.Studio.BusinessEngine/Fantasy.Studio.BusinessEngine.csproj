@@ -352,6 +352,14 @@
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
     <Compile Include="IDocumentEditingPanelContainer.cs" />
+    <Compile Include="MenuItemEditing\ApplicationConverter.cs" />
+    <Compile Include="MenuItemEditing\MenuEditNode.cs" />
+    <Compile Include="MenuItemEditing\MenuEditor.xaml.cs">
+      <DependentUpon>MenuEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MenuItemEditing\MenuEditorModel.cs" />
+    <Compile Include="MenuItemEditing\PackageMenuEditNodeProvider.cs" />
+    <Compile Include="MenuItemEditing\RoleConverter.cs" />
     <Compile Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml.cs">
       <DependentUpon>ObjectSecurityEditor.xaml</DependentUpon>
     </Compile>
@@ -559,6 +567,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\openfile.png" />
+    <Resource Include="images\menuedit.png" />
     <Resource Include="AppData\ItemTemplates\HtmlPage\HTMLPage.template.xml" />
     <Resource Include="AppData\ItemTemplates\HtmlPage\htm.ico" />
     <Content Include="AppData\ItemTemplates\HtmlPage\HTMLPage.htm" />
@@ -642,6 +652,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Include="MenuItemEditing\MenuEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

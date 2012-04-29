@@ -71,7 +71,6 @@ namespace Fantasy.Studio.BusinessEngine.Build
             string packageFullCodeName = !String.IsNullOrEmpty(dir) ?  rootNamespace + "." + dir.Replace('\\', '.') : rootNamespace;
             IEntityService es = this.Site.GetRequiredService<IEntityService>();
             return this.FindOrCreatePackageRecursive(packageFullCodeName);
-            
         }
 
         private BusinessPackage FindOrCreatePackageRecursive(string packageFullCodeName)

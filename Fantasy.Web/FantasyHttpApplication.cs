@@ -13,6 +13,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Fantasy.Web.Properties;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.BusinessEngine.Applications;
 
 namespace Fantasy.Web
 {
@@ -37,19 +38,27 @@ namespace Fantasy.Web
             //this.EndRequest += new EventHandler(Application_EndRequest);
         }
 
-        protected virtual void Application_EndRequest(object sender, EventArgs e)
+       
+
+
+        protected virtual void Application_AuthenticateRequest(object sender, EventArgs e)
         {
 
-            foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/end").BuildChildItems<ICommand>(null, ServiceManager.Services))
-            {
-                command.Execute(null);
-            }
-            AutoInitServiceContainer services = (AutoInitServiceContainer)HttpContext.Current.Items[BusinessEngineContextServicesKey];
-            services.UninitializeServices();
         }
 
-
-        
+        protected virtual void Application_AuthorizeRequest(object sender, EventArgs e)
+        {
+            BusinessEngineContext context = BusinessEngineContext.Current;
+            IBusinessUserRoleService userRoleSvc = ServiceManager.Services.GetRequiredService<IBusinessUserRoleService>();
+            if (HttpContext.Current.User.Identity.IsAuthenticated )
+            {
+                context.User = userRoleSvc.UserByName(HttpContext.Current.User.Identity.Name);
+            }
+            else
+            {
+                context.User = userRoleSvc.WellknownUsers.Guest;
+            }
+        }
 
         private const string BusinessEngineContextServicesKey = "BUSINESSENGINECONTEXTSERVICES";
 
@@ -60,24 +69,33 @@ namespace Fantasy.Web
             BusinessEngineContext context = new BusinessEngineContext(services);
 
             HttpContext.Current.Items[BusinessEngineContextServicesKey] = services; 
+            BusinessApplication voidApp = services.GetRequiredService<IBusinessApplicationService>().Create(VoidApplication.VoidApplicationId);
+            context.LoadApplication(voidApp);
 
             BusinessEngineContext.Current = context;
 
 
-            IBusinessUserRoleService userRoleSvc = ServiceManager.Services.GetRequiredService<IBusinessUserRoleService>();
-            if (HttpContext.Current.User != null)
-            {
-                context.User = userRoleSvc.UserByName(HttpContext.Current.User.Identity.Name);
-            }
-            else
-            {
-                context.User = userRoleSvc.WellknownUsers.Guest;
-            }
+          
 
             foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/start").BuildChildItems<ICommand>(null, ServiceManager.Services))
             {
                 command.Execute(null);
             }
+        }
+
+
+        protected virtual void Application_EndRequest(object sender, EventArgs e)
+        {
+
+            foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/end").BuildChildItems<ICommand>(null, ServiceManager.Services))
+            {
+                command.Execute(null);
+            }
+
+            BusinessEngineContext.Current.UnloadApplication();
+
+            AutoInitServiceContainer services = (AutoInitServiceContainer)HttpContext.Current.Items[BusinessEngineContextServicesKey];
+            services.UninitializeServices();
         }
 
         protected virtual void Application_End()
