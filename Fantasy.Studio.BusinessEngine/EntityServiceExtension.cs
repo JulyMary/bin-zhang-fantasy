@@ -504,6 +504,7 @@ namespace Fantasy.Studio.BusinessEngine
             BusinessMenuItem rs = es.CreateEntity<BusinessMenuItem>();
             rs.Name = UniqueNameGenerator.GetName(Resources.DefaultNewMenuItemName, parent.ChildItems.Select(i => i.Name));
             rs.Parent = parent;
+            rs.Icon = Resources.DefaultMenuItemIcon;
             parent.ChildItems.Add(rs);
             return rs;
         }

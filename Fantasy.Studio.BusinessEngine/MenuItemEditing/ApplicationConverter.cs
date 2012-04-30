@@ -8,40 +8,26 @@ using Fantasy.BusinessEngine;
 
 namespace Fantasy.Studio.BusinessEngine.MenuItemEditing
 {
-    public class ApplicationConverter : IMultiValueConverter
+    public class ApplicationConverter : IValueConverter 
     {
 
         #region IValueConverter Members
 
-        public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            Guid appId = (Guid)values[0];
-            MenuEditorModel model = (MenuEditorModel)values[1];
-            IEntityService es = model.Site.GetRequiredService<IEntityService>();
-            BusinessApplicationData app = es.Get<BusinessApplicationData>(appId);
-
-
-            switch ((string)parameter)
+            if (value != null)
             {
-                case "Name":
-                    return app.Name;
-                case "Package":
-                    return app.Package.FullName; 
-                default:
-                    throw new NotSupportedException();
+                BusinessApplicationData app = (BusinessApplicationData)value;
+                return string.Format("{0} ({1})", app.Name, app.Package.FullName); 
+ 
             }
-
-           
+            else
+            {
+                return string.Empty;
+            }
         }
 
-       
-
-        #endregion
-
-        #region IMultiValueConverter Members
-
-
-        object[] IMultiValueConverter.ConvertBack(object value, Type[] targetTypes, object parameter, System.Globalization.CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }

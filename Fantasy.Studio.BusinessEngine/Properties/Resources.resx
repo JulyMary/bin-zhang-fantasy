@@ -150,6 +150,10 @@
   <data name="DefaultCodePanelTitle" xml:space="preserve">
     <value>Code</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DefaultMenuItemIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\defaultmenuitemicon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="DefaultNewBusinessApplicationName" xml:space="preserve">
     <value>New Application</value>
   </data>
@@ -198,11 +202,20 @@
   <data name="EnumValuesPanelTitle" xml:space="preserve">
     <value>Values</value>
   </data>
+  <data name="InvalidImageFileMessage" xml:space="preserve">
+    <value>{0} is not a valid image file.</value>
+  </data>
   <data name="MenuEditorName" xml:space="preserve">
     <value>Menu Editor</value>
   </data>
+  <data name="NullValueText" xml:space="preserve">
+    <value>(null)</value>
+  </data>
   <data name="ObjectModelFolderName" xml:space="preserve">
     <value>Object Model</value>
+  </data>
+  <data name="OpenFileDialogImageFilter" xml:space="preserve">
+    <value>Image files|*.bmp;*.dib;*.jpg;*.jpeg;*.jpe,*.jfif;*.gif;*.tif;*.tiff;*.png|All files|*.*</value>
   </data>
   <data name="ParticipantPanelTitle" xml:space="preserve">
     <value>Participants</value>

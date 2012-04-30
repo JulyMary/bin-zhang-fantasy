@@ -567,6 +567,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\defaultmenuitemicon.png" />
     <Resource Include="images\delete.png" />
     <Resource Include="images\openfile.png" />
     <Resource Include="images\menuedit.png" />

@@ -880,6 +880,7 @@
                 <Or>
                     <ActiveWindow Type="participantacl" />
                     <ActiveWindow Type="user" />
+                    <ActiveWindow Type="menueditor"/>
                 </Or>
             </ToolBoxItemBuilder.Conditional>
             <ToolBoxItemBuilder.Builder>
