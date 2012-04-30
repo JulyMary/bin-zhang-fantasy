@@ -29,5 +29,11 @@ namespace Fantasy.Web.Controllers
 
             //return this.RedirectToActionPermanent 
         }
+
+        [ChildActionOnly]
+        public ActionResult MainMenu()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

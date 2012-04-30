@@ -1,0 +1,52 @@
+﻿@model Fantasy.Web.Models.MenuItemModel
+@using Fantasy.Web.Models
+
+<table>
+@foreach (MenuItemModel level1 in Model.ChildItems)
+{
+    <tr>
+    <td rowspan=5>
+    <a href="@level1.Url"><img src="@level1.Icon" /><h3>@level1.Name</h3></a>
+    <span>@level1.Description</span>
+    
+    </td>
+    
+
+    </tr>
+    int i = 0;
+    foreach (MenuItemModel level2 in level1.ChildItems)
+    {
+        if (i % 5 == 0)
+        {
+            <tr>
+        }
+        <td>
+        <a href="@level2.Url" >
+        
+        <img src="@level2.Icon" />
+        <br />
+        <h4>@level2.Name</h4></a>
+        <ul>
+            @foreach(MenuItemModel level3 in level2.ChildItems)
+            {
+                <li><a href="@level3.Url">@level3.Name</a></li>
+            } 
+        </ul>
+        </td>
+        i ++
+        if(i % 5 == 0)
+        {
+            </tr> 
+        }
+        
+    }
+
+    if (i % 5 != 0)
+    {
+        </tr>
+    }
+    
+}
+</table>
+
+
