@@ -36,9 +36,12 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 
         public IServiceProvider Site { get; set; }
 
-        private ISelectionService _selectionService = new SelectionService(null);
 
         private PropertyEditorModel _model;
+
+        private ISelectionService _selectionService = new SelectionService(null);
+
+       
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {

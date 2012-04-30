@@ -19,7 +19,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.ExternalUrl);
             this.Map(x => x.PersistedRoles).Column("Roles");
             this.Map(x => x.IsEnabled);
-
+            this.Map(x => x.Description);
             this.HasMany(x => x.PersistedChildItems).CollectionType<ObservableList<BusinessMenuItem>>().KeyColumn("ParentId").Cascade.AllDeleteOrphan().Inverse().OrderBy("DISPLAYORDER");
 
 

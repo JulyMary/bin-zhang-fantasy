@@ -331,6 +331,23 @@
             <PropertyDescriptor ID="EntryObject" Name="EntryObjectId" Caption="Entry Object ID" Category="General" />
         </TypeDescriptor>
 
+
+
+        <TypeDescriptor ID="BusinessMenuItem" TargetType="{x:Type be:BusinessMenuItem}">
+            <TypeDescriptor.Conditional >
+                <Not Action="Disable">
+                    <sbe:IsSystemEntity />
+                </Not>
+            </TypeDescriptor.Conditional>
+            <PropertyDescriptor ID="id" Name="Id" Caption="(Id)" Category="General" ReadOnly="true" />
+            <PropertyDescriptor ID="CreationTime" Name="CreationTime" Caption="Creation Time" Category="System" ReadOnly="true"/>
+            <PropertyDescriptor ID="ModificationTime" Name="ModificationTime" Caption="Modification Time" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="true"  />
+            <PropertyDescriptor ID="EntryObject" Name="EntryObjectId" Caption="Entry Object" Category="General" ReadOnly="true"  />
+            <PropertyDescriptor ID="ExternalUrl" Name="ExternalUrl" Caption="ExternalUrl" Category="General" ReadOnly="true"  />
+        </TypeDescriptor>
+
         <TypeDescriptor ID="ParticipantACL" TargetType="{x:Type sbe:ParticipantACL}">
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True" />
             

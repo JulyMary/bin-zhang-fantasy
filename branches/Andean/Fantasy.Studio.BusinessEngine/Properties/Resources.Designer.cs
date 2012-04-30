@@ -159,6 +159,13 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap DefaultMenuItemIcon {
+            get {
+                object obj = ResourceManager.GetObject("DefaultMenuItemIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to New Application.
         /// </summary>
@@ -304,6 +311,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} is not a valid image file..
+        /// </summary>
+        public static string InvalidImageFileMessage {
+            get {
+                return ResourceManager.GetString("InvalidImageFileMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Menu Editor.
         /// </summary>
         public static string MenuEditorName {
@@ -313,11 +329,29 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to (null).
+        /// </summary>
+        public static string NullValueText {
+            get {
+                return ResourceManager.GetString("NullValueText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Object Model.
         /// </summary>
         public static string ObjectModelFolderName {
             get {
                 return ResourceManager.GetString("ObjectModelFolderName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image files|*.bmp;*.dib;*.jpg;*.jpeg;*.jpe,*.jfif;*.gif;*.tif;*.tiff;*.png|All files|*.*.
+        /// </summary>
+        public static string OpenFileDialogImageFilter {
+            get {
+                return ResourceManager.GetString("OpenFileDialogImageFilter", resourceCulture);
             }
         }
         

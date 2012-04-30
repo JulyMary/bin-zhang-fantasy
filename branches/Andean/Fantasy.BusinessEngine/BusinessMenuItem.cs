@@ -151,6 +151,20 @@ namespace Fantasy.BusinessEngine
 
         protected override void OnLoad(EventArgs e)
         {
+            if (this.PersistedIcon != null)
+            {
+                try
+                {
+                    Image image = Image.FromStream(new MemoryStream(this.PersistedIcon));
+                    this._icon = image;
+                }
+                catch 
+                {
+                    
+                    
+                }
+            }
+
             if (!String.IsNullOrEmpty(this.PersistedRoles))
             {
                 foreach (string s in this.PersistedRoles.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
@@ -194,12 +208,24 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+        public virtual string Description
+        {
+            get
+            {
+                return (string)this.GetValue("Description", null);
+
+            }
+            set
+            {
+                this.SetValue("Description", value);
+            }
+        }
 
         public virtual long DisplayOrder
         {
             get
             {
-                return (int)this.GetValue("DisplayOrder", 0);
+                return (long)this.GetValue("DisplayOrder", 0L);
             }
             set
             {
