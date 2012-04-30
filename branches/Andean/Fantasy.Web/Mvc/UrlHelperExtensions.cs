@@ -33,9 +33,10 @@ namespace Fantasy.Web.Mvc
 
         public static string ApplicationUrl (this UrlHelper url, string appName, object routeValues)
         {
-            RouteValueDictionary values2 = new RouteValueDictionary(routeValues);
-            values2.Add("AppName",appName);
-            
+           
+            string rs = String.Format("~/App/{0}", appName);
+
+            return url.Content(rs);
         }
 
         private static bool PageExists(string path)

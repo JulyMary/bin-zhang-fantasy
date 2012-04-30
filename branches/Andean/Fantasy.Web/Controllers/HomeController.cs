@@ -81,6 +81,11 @@ namespace Fantasy.Web.Controllers
                     IBusinessMenuService ms = BusinessEngineContext.Current.GetRequiredService<IBusinessMenuService>();
                     rs.Icon = this.Url.ImageList(ms.GetIconKey(item));
 
+                    if (string.IsNullOrEmpty(rs.Url))
+                    {
+                        rs.Url = "#";
+                    }
+
                     return rs;
                 }
             }
