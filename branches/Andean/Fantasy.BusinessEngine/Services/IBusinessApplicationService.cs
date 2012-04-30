@@ -15,5 +15,9 @@ namespace Fantasy.BusinessEngine.Services
         BusinessApplication CreateByName(string name);
 
         void ReleaseApplication(BusinessApplication application);
+
+        BusinessApplicationData GetApplicationData(Guid id);
+
+        string GetApplicationFriendlyName(Guid id);
     }
 }

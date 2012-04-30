@@ -104,5 +104,42 @@ namespace Fantasy.BusinessEngine.Services
        
 
         #endregion
+
+        #region IBusinessApplicationService Members
+
+
+        public BusinessApplicationData GetApplicationData(Guid id)
+        {
+            int pos = this._datas.BinarySearchBy(id, a => a.Id);
+            if (pos >= 0)
+            {
+                BusinessApplicationData data = this._datas[pos];
+                return data;
+            }
+            else
+            {
+                throw new EntityNotFoundException(typeof(BusinessApplicationData), id);
+            }
+        }
+
+
+
+        #endregion
+
+        #region IBusinessApplicationService Members
+
+
+        public string GetApplicationFriendlyName(Guid id)
+        {
+            BusinessApplicationData application = this.GetApplicationData(id);
+            string rs = application.CodeName;
+            if (rs.ToLower().EndsWith("application"))
+            {
+                rs = rs.Substring(0, rs.Length - "application".Length);
+            }
+            return rs;
+        }
+
+        #endregion
     }
 }

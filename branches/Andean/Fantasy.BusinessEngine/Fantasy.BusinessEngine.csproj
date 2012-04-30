@@ -92,6 +92,8 @@
     <Compile Include="Maps\BusinessMenuItemMap.cs" />
     <Compile Include="Security\BusinessApplicationACLSecurityProvider.cs" />
     <Compile Include="Security\BusinessObjectMemberSecurityCollection.cs" />
+    <Compile Include="Services\BusinessMenuService.cs" />
+    <Compile Include="Services\IBusinessMenuService.cs" />
     <Compile Include="Services\IImageListService.cs" />
     <Compile Include="Services\ImageListService.cs" />
     <Compile Include="Singularity.cs" />

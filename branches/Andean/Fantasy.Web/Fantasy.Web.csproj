@@ -252,6 +252,7 @@
     <Compile Include="Mvc\RegisterImageListRouteCommand.cs" />
     <Compile Include="Mvc\RegisterSystemGlobalFiltersCommand.cs" />
     <Compile Include="Mvc\SetControllerFactoryCommand.cs" />
+    <Compile Include="Mvc\UI\ApplicationExtensions.cs" />
     <Compile Include="Mvc\UI\HtmlAssets.cs" />
     <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
     <Compile Include="Mvc\UI\HtmlLiteral.cs" />
@@ -261,7 +262,7 @@
     <Compile Include="Mvc\UI\ViewComponent.cs" />
     <Compile Include="Mvc\UI\ViewComponentBuilder.cs" />
     <Compile Include="Mvc\UI\ViewComponentFactory.cs" />
-    <Compile Include="Mvc\UI\UrlHelperExtensions.cs" />
+    <Compile Include="Mvc\UrlHelperExtensions.cs" />
     <Compile Include="Mvc\WatchDependencyPathCommand.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
