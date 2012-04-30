@@ -36,7 +36,7 @@ namespace Fantasy.Web.Mvc
 
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return FindViewInternal(controllerContext, viewName, true); 
+            return FindViewInternal(controllerContext, viewName, !controllerContext.IsChildAction); 
         }
 
         private ViewEngineResult FindViewInternal(ControllerContext controllerContext, string viewName, bool runViewStartPages)

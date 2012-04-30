@@ -1,9 +1,11 @@
 ﻿@model Fantasy.Web.Models.MenuItemModel
 @using Fantasy.Web.Models
 
-<table>
-@foreach (MenuItemModel level1 in Model.ChildItems)
+@if (this.Model != null)
 {
+<table>
+    @foreach (MenuItemModel level1 in Model.ChildItems)
+    {
     <tr>
     <td rowspan=5>
     <a href="@level1.Url"><img src="@level1.Icon" /><h3>@level1.Name</h3></a>
@@ -18,7 +20,7 @@
     {
         if (i % 5 == 0)
         {
-            <tr>
+            @:<tr>
         }
         <td>
         <a href="@level2.Url" >
@@ -27,26 +29,27 @@
         <br />
         <h4>@level2.Name</h4></a>
         <ul>
-            @foreach(MenuItemModel level3 in level2.ChildItems)
+            @foreach (MenuItemModel level3 in level2.ChildItems)
             {
                 <li><a href="@level3.Url">@level3.Name</a></li>
             } 
         </ul>
         </td>
-        i ++
-        if(i % 5 == 0)
-        {
-            </tr> 
+            i++;
+            if (i % 5 == 0)
+            {
+            @:</tr> 
         }
-        
+
     }
 
     if (i % 5 != 0)
     {
-        </tr>
+        @:</tr>
     }
-    
-}
+
+    }
 </table>
+}
 
 

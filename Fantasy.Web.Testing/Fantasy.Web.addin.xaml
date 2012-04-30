@@ -59,7 +59,9 @@
         <Object ID="UserRoleService">
             <be:BusinessUserRoleService/>
         </Object>
-        
+        <Object ID="menuService">
+            <be:BusinessMenuService />
+        </Object>
         <Object ID="SecurityService">
             <be:SecurityService />
         </Object>
@@ -73,6 +75,7 @@
         <Object ID="ImageListRouteHandler">
             <fw:ImageListRoutHandler/>
         </Object>
+        
         <Object ID="ControllerFactory">
             <fw:ChainedControllerFactory/>
         </Object>
