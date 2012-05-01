@@ -12,6 +12,11 @@ namespace Fantasy.BusinessEngine
 
         public Encryption(string saltValue)
         {
+            this._saltValue = Encoding.ASCII.GetBytes(saltValue);
+        }
+
+        public Encryption(byte[] saltValue)
+        {
             this._saltValue = saltValue;
         }
 
@@ -19,7 +24,7 @@ namespace Fantasy.BusinessEngine
 
 
         private static string _passPhrase = "F@nt@5y";        // can be any string
-        private string _saltValue;        // can be any string
+        private byte[] _saltValue;        // can be any string
         private static string _hashAlgorithm = "SHA1";             // can be "MD5"
         private static int _passwordIterations = 2;                  // can be any number
         private static string _initVector = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
@@ -77,7 +82,7 @@ namespace Fantasy.BusinessEngine
             // If strings include Unicode characters, use Unicode, UTF7, or UTF8 
             // encoding.
             byte[] initVectorBytes = Encoding.ASCII.GetBytes(_initVector);
-            byte[] saltValueBytes = Encoding.ASCII.GetBytes(_saltValue);
+            byte[] saltValueBytes =_saltValue;
 
             // Convert our plaintext into a byte array.
             // Let us assume that plaintext contains UTF8-encoded characters.
@@ -194,7 +199,7 @@ namespace Fantasy.BusinessEngine
             // If strings include Unicode characters, use Unicode, UTF7, or UTF8
             // encoding.
             byte[] initVectorBytes = Encoding.ASCII.GetBytes(_initVector);
-            byte[] saltValueBytes = Encoding.ASCII.GetBytes(_saltValue);
+            byte[] saltValueBytes = _saltValue;
 
             // Convert our ciphertext into a byte array.
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);

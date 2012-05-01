@@ -21,8 +21,8 @@ namespace Fantasy.BusinessEngine.Services
         string GetApplicationFriendlyName(Guid id);
 
 
-        string EncryptRootId(Guid applicationId, Guid objectId);
+        string EncryptRootId(string applicationFriendlyName, Guid objectId);
 
-        Guid DecryptRootId(Guid applicationId, string cipherText);
+        Guid DecryptRootId(string ApplicationFriendlyName, string cipherText);
     }
 }

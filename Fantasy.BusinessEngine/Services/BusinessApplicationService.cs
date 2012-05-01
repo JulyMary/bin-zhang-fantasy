@@ -54,7 +54,7 @@ namespace Fantasy.BusinessEngine.Services
 
         }
 
-        #region IBusinessApplicationService Members
+        
 
         public BusinessApplication Create(Guid id)
         {
@@ -79,11 +79,17 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
-        public BusinessApplication CreateByName(string codeName)
+        public BusinessApplication CreateByName(string applicationFriendlyName)
+        {
+            BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName); return this.Create(data, this.EntityType(data));
+        }
+
+        private BusinessApplicationData AppDataByFriendlyName(string codeName)
         {
             BusinessApplicationData data = this._datas.Single(a => string.Equals(a.CodeName, codeName, StringComparison.OrdinalIgnoreCase)
                 || string.Equals(a.CodeName, codeName + "Application", StringComparison.OrdinalIgnoreCase), String.Format(Resources.ApplicationByNameExceptionMessage, codeName));
-            return this.Create(data, this.EntityType(data));
+
+            return data;
         }
 
       
@@ -97,16 +103,6 @@ namespace Fantasy.BusinessEngine.Services
                 disposable.Dispose();
             }
         }
-
-       
-
-
-       
-
-        #endregion
-
-        #region IBusinessApplicationService Members
-
 
         public BusinessApplicationData GetApplicationData(Guid id)
         {
@@ -122,13 +118,6 @@ namespace Fantasy.BusinessEngine.Services
             }
         }
 
-
-
-        #endregion
-
-        #region IBusinessApplicationService Members
-
-
         public string GetApplicationFriendlyName(Guid id)
         {
             BusinessApplicationData application = this.GetApplicationData(id);
@@ -140,23 +129,23 @@ namespace Fantasy.BusinessEngine.Services
             return rs;
         }
 
-        #endregion
-
-        #region IBusinessApplicationService Members
 
 
-        public string EncryptRootId(Guid applicationId, Guid objectId)
+
+        public string EncryptRootId(string applicationFriendlyName, Guid objectId)
         {
-            Encryption encrypt = new Encryption(applicationId.ToString());
+            BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName);
+            Encryption encrypt = new Encryption(data.Id.ToByteArray());
             return encrypt.Encrypt(objectId.ToString());
         }
 
-        public Guid DecryptRootId(Guid applicationId, string cipherText)
+        public Guid DecryptRootId(string applicationFriendlyName, string cipherText)
         {
-            Encryption encrypt = new Encryption(applicationId.ToString());
+            BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName);
+            Encryption encrypt = new Encryption(data.Id.ToByteArray());
             return new Guid(encrypt.Decrypt(cipherText));
         }
 
-        #endregion
+       
     }
 }
