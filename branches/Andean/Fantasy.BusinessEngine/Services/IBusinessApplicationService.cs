@@ -19,5 +19,10 @@ namespace Fantasy.BusinessEngine.Services
         BusinessApplicationData GetApplicationData(Guid id);
 
         string GetApplicationFriendlyName(Guid id);
+
+
+        string EncryptRootId(Guid applicationId, Guid objectId);
+
+        Guid DecryptRootId(Guid applicationId, string cipherText);
     }
 }
