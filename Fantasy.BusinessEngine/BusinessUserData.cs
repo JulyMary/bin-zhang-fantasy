@@ -80,12 +80,12 @@ namespace Fantasy.BusinessEngine
 
         public virtual void SetPassword(string password)
         {
-            this.Password = Encryption.Encrypt(password);
+            this.Password = Encryption.Default.Encrypt(password);
         }
 
         public virtual bool VerifyPasswod(string password)
         {
-            return password == Encryption.Decrypt(this.Password);
+            return password == Encryption.Default.Decrypt(this.Password);
         }
 
         public virtual string Description

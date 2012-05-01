@@ -141,5 +141,22 @@ namespace Fantasy.BusinessEngine.Services
         }
 
         #endregion
+
+        #region IBusinessApplicationService Members
+
+
+        public string EncryptRootId(Guid applicationId, Guid objectId)
+        {
+            Encryption encrypt = new Encryption(applicationId.ToString());
+            return encrypt.Encrypt(objectId.ToString());
+        }
+
+        public Guid DecryptRootId(Guid applicationId, string cipherText)
+        {
+            Encryption encrypt = new Encryption(applicationId.ToString());
+            return new Guid(encrypt.Decrypt(cipherText));
+        }
+
+        #endregion
     }
 }

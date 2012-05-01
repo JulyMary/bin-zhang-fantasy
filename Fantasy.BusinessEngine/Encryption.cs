@@ -7,12 +7,19 @@ using System.Security.Cryptography;
 
 namespace Fantasy.BusinessEngine
 {
-    public static class Encryption
+    public class Encryption
     {
+
+        public Encryption(string saltValue)
+        {
+            this._saltValue = saltValue;
+        }
+
+        public static readonly Encryption Default = new Encryption( "Bu5!ne55Eng!ne");
 
 
         private static string _passPhrase = "F@nt@5y";        // can be any string
-        private static string _saltValue = "Bu5!ne55Eng!ne";        // can be any string
+        private string _saltValue;        // can be any string
         private static string _hashAlgorithm = "SHA1";             // can be "MD5"
         private static int _passwordIterations = 2;                  // can be any number
         private static string _initVector = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
@@ -55,7 +62,7 @@ namespace Fantasy.BusinessEngine
         /// <returns>
         /// Encrypted value formatted as a base64-encoded string.
         /// </returns>
-        public static string Encrypt(string plainText)
+        public string Encrypt(string plainText)
         {
             if (string.IsNullOrEmpty(plainText))
             {
@@ -174,7 +181,7 @@ namespace Fantasy.BusinessEngine
         /// the Encrypt function which was called to generate the
         /// ciphertext.
         /// </remarks>
-        public static string Decrypt(string cipherText)
+        public string Decrypt(string cipherText)
         {
 
             if (string.IsNullOrEmpty(cipherText))
@@ -253,7 +260,7 @@ namespace Fantasy.BusinessEngine
             return plainText;
         }
 
-        public static string Decrypt(string cipherText, bool throwException)
+        public string Decrypt(string cipherText, bool throwException)
         {
             string rs = null;
             try
