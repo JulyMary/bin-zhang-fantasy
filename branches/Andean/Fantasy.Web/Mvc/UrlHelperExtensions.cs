@@ -7,6 +7,9 @@ using Fantasy.Web.Properties;
 using System.Web.WebPages;
 using System.Reflection;
 using System.Web.Routing;
+using System.Text;
+using Fantasy.BusinessEngine.Services;
+using Fantasy.BusinessEngine;
 
 namespace Fantasy.Web.Mvc
 {
@@ -31,12 +34,44 @@ namespace Fantasy.Web.Mvc
         }
 
 
-        public static string ApplicationUrl (this UrlHelper url, string appName, object routeValues)
+        public static string ApplicationUrl (this UrlHelper url, string appName = null, Guid? rootId = null, ViewType? viewType = null, 
+            Guid? objectId = null, string action = null, string property = null,object routeValues = null)
         {
-           
-            string rs = String.Format("~/App/{0}", appName);
 
-            return url.Content(rs);
+            RouteValueDictionary values2 = MergeRouteValue(appName, rootId, viewType, objectId, action, property, routeValues);
+            return url.RouteUrl(values2);
+        }
+
+       
+
+        private static RouteValueDictionary MergeRouteValue(string appName, Guid? rootId, ViewType? viewType, Guid? objectId, string action, string property, object routeValues)
+        {
+            RouteValueDictionary values2 = new RouteValueDictionary(routeValues);
+            if (appName != null)
+            {
+                values2.Add("AppName", appName);
+            }
+            if (rootId != null)
+            {
+                values2.Add("RootId", rootId);
+            }
+            if (viewType != null)
+            {
+                values2.Add("ViewType", viewType);
+            }
+            if (objectId != null)
+            {
+                values2.Add("ObjId", objectId);
+            }
+            if (action != null)
+            {
+                values2.Add("action", action);
+            }
+            if (property != null)
+            {
+                values2.Add("Property", property);
+            }
+            return values2;
         }
 
         private static bool PageExists(string path)

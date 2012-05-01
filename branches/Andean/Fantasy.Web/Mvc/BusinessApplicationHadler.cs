@@ -56,10 +56,25 @@ namespace Fantasy.Web.Mvc
 
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
-
-            //URL Pattern: ~/App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
+            //App/{AppName}/{ObjId}
+            //App/{AppName}/{RootId}/{ObjId}
+            //App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
+            //App/{AppName}/{RootId}/{ViewType}/{Action}/{ObjId}/{Property}
+            RouteData routeData = this.RequestContext.RouteData;
             string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
-            BusinessApplication app = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>().CreateByName(appName);
+            IBusinessApplicationService appSvc = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>();
+            
+            
+            BusinessApplication app = appSvc.CreateByName(appName);
+           
+            if (routeData.Values.ContainsKey("RootId"))
+            {
+
+                Guid rootId = (Guid)routeData.Values["RootId"];
+                BusinessObject entryObj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(rootId);
+                app.EntryObject = entryObj;
+            }
+
             BusinessEngineContext.Current.LoadApplication(app);
             IController controller = null; 
             try

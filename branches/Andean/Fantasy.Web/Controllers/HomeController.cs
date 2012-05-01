@@ -39,60 +39,12 @@ namespace Fantasy.Web.Controllers
         {
             IBusinessMenuService svc = BusinessEngineContext.Current.GetRequiredService<IBusinessMenuService>();
 
-            MenuItemModel root = this.CreateMenuItemRecursive(svc.Root);
+            MenuItemModel root = MenuItemModel.CreateRoot(this.Url);
 
             return View(root);
 
         }
 
-        private MenuItemModel CreateMenuItemRecursive(BusinessMenuItem item)
-        {
-            MenuItemModel rs = new MenuItemModel();
-            IBusinessApplicationService appSvc = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>();
-           
-            foreach (BusinessMenuItem childItem in item.ChildItems)
-            {
-                MenuItemModel childModel = CreateMenuItemRecursive(childItem);
-                if (childModel != null)
-                {
-                    rs.ChildItems.Add(childModel);
-                }
-            }
-
-            if (item.ApplicationId != null)
-            {
-                string appName = appSvc.GetApplicationFriendlyName((Guid)item.ApplicationId);
-                rs.Url = this.Url.ApplicationUrl(appName, item.EntryObjectId != null ? new { entry = (Guid)item.EntryObjectId } : null);
-            }
-            else if(!string.IsNullOrWhiteSpace(item.ExternalUrl))
-            {
-                rs.Url = item.ExternalUrl;
-            }
-
-            IBusinessUserRoleService urs = BusinessEngineContext.Current.GetRequiredService<IBusinessUserRoleService>();
-
-            if (!String.IsNullOrEmpty(rs.Url) || rs.ChildItems.Count > 0)
-            {
-                Guid[] roleId = urs.GetRolesForUser(BusinessEngineContext.Current.User).Select(r => r.Id).ToArray();
-                if (roleId.Any(id => item.Roles.IndexOf(id) >= 0))
-                {
-                    rs.Name = item.Name;
-                    rs.Description = item.Description;
-                    IBusinessMenuService ms = BusinessEngineContext.Current.GetRequiredService<IBusinessMenuService>();
-                    rs.Icon = this.Url.ImageList(ms.GetIconKey(item));
-
-                    if (string.IsNullOrEmpty(rs.Url))
-                    {
-                        rs.Url = "#";
-                    }
-
-                    return rs;
-                }
-            }
-
-            return null;
-
-
-        }
+       
     }
 }

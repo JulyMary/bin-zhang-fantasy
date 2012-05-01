@@ -225,9 +225,10 @@
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="MIMETypes.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\MainMenuModels.cs" />
+    <Compile Include="Models\MenuItemModels.cs" />
     <Compile Include="Models\StandardNavigationDefaultViewModel.cs" />
     <Compile Include="Models\JsTreeNode.cs" />
+    <Compile Include="Mvc\AppRoute.cs" />
     <Compile Include="Mvc\BusinessApplicationHadler.cs" />
     <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
     <Compile Include="Mvc\ChainedControllerFactory.cs" />
