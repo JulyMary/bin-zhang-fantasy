@@ -48,12 +48,6 @@ namespace Fantasy.Web.Mvc
             this.ProcessRequest(base2);
         }
 
-
-      
-        
-        
-       
-
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
             //App/{AppName}/{ObjId}
