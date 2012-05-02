@@ -132,6 +132,9 @@
   <data name="LogInModel_UserName" xml:space="preserve">
     <value>User name</value>
   </data>
+  <data name="PropertyNotFoundMessage" xml:space="preserve">
+    <value>There are no property/association named {0} in business class {1}.</value>
+  </data>
   <data name="RoleDoesNotExistMessage" xml:space="preserve">
     <value>Role '{0}' does not exist</value>
   </data>

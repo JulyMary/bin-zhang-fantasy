@@ -106,6 +106,15 @@ namespace Fantasy.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no property/association named {0} in business class {1}..
+        /// </summary>
+        public static string PropertyNotFoundMessage {
+            get {
+                return ResourceManager.GetString("PropertyNotFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Role &apos;{0}&apos; does not exist.
         /// </summary>
         public static string RoleDoesNotExistMessage {

@@ -39,6 +39,22 @@ namespace Fantasy.Web.Mvc
         {
 
             RouteValueDictionary values2 = MergeRouteValue(appName, rootId, viewType, objectId, action, property, routeValues);
+
+            //Inherit appName, rootId, viewType if appName is not assigned
+            if (!values2.ContainsKey("AppName"))
+            {
+                AppRouteValue current = AppRouteStack.Current.Peek();
+                values2.Add("AppName", current.AppName);
+                if (current.RootId != null && !values2.ContainsKey("RootId"))
+                {
+                    values2.Add("RootId", (Guid)current.RootId);
+                }
+                if (current.ViewType != null && !values2.ContainsKey("ViewType"))
+                {
+                    values2.Add("ViewType", (ViewType)current.ViewType); 
+                }
+            }
+
             return url.RouteUrl(values2);
         }
 

@@ -265,6 +265,22 @@ namespace Fantasy.BusinessEngine
             return plainText;
         }
 
+        public bool TryDecrypt(string ciperText, out string plainText)
+        {
+            bool rs = false;
+            plainText = null;
+            try
+            {
+                plainText = Decrypt(ciperText);
+                rs = true;
+            }
+            catch
+            {
+
+            }
+            return rs;
+        }
+
         public string Decrypt(string cipherText, bool throwException)
         {
             string rs = null;
