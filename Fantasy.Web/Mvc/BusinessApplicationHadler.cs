@@ -76,6 +76,7 @@ namespace Fantasy.Web.Mvc
             }
 
             BusinessEngineContext.Current.LoadApplication(app);
+            AppRouteStack.Current.Push(new AppRouteValue(this.RequestContext.RouteData.Values));
             IController controller = null; 
             try
             {
@@ -92,6 +93,7 @@ namespace Fantasy.Web.Mvc
 
                 if (app != null)
                 {
+                    AppRouteStack.Current.Pop(); 
                     BusinessEngineContext.Current.UnloadApplication();
                 }
                 

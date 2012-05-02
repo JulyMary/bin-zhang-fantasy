@@ -229,6 +229,7 @@
     <Compile Include="Models\StandardNavigationDefaultViewModel.cs" />
     <Compile Include="Models\JsTreeNode.cs" />
     <Compile Include="Mvc\AppRoute.cs" />
+    <Compile Include="Mvc\AppRouteStack.cs" />
     <Compile Include="Mvc\BusinessApplicationHadler.cs" />
     <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
     <Compile Include="Mvc\ChainedControllerFactory.cs" />

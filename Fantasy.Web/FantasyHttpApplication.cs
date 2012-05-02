@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using Fantasy.Web.Properties;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.BusinessEngine.Applications;
+using Fantasy.Web.Mvc;
 
 namespace Fantasy.Web
 {
@@ -69,12 +70,14 @@ namespace Fantasy.Web
             BusinessEngineContext context = new BusinessEngineContext(services);
 
             HttpContext.Current.Items[BusinessEngineContextServicesKey] = services; 
-            BusinessApplication voidApp = services.GetRequiredService<IBusinessApplicationService>().Create(VoidApplication.VoidApplicationId);
+            IBusinessApplicationService appSvc = services.GetRequiredService<IBusinessApplicationService>();
+            BusinessApplication voidApp = appSvc.Create(VoidApplication.VoidApplicationId);
             context.LoadApplication(voidApp);
+           
 
             BusinessEngineContext.Current = context;
 
-
+            AppRouteStack.Current.Push(new AppRouteValue() { AppName = appSvc.GetApplicationFriendlyName(voidApp.Data.Id) });
           
 
             foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/start").BuildChildItems<ICommand>(null, ServiceManager.Services))
@@ -91,9 +94,9 @@ namespace Fantasy.Web
             {
                 command.Execute(null);
             }
-
+            
             BusinessEngineContext.Current.UnloadApplication();
-
+            AppRouteStack.Current.Pop();
             AutoInitServiceContainer services = (AutoInitServiceContainer)HttpContext.Current.Items[BusinessEngineContextServicesKey];
             services.UninitializeServices();
         }

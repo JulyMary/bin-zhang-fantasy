@@ -2,15 +2,17 @@
 @{
     Html.BusinessEngine().HtmlAssets.Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/jstree/style.css"));
     Html.BusinessEngine().HtmlAssets.Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/jslayout/layout-default.css"));
+    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/standardnavigation.default.js"));
     Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.jstree.js"));
     Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.layout.js"));
-    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/standardnavigation.default.js"));
+   
 }
 
 <script type="text/javascript" >
     //<!--
-
+   
     var initNavigationTreeNodes = @JsonHelper.Serialize(this.Model.RootTreeItem);
+    var navigationTreeAjaxUrl = '@this.Url.ApplicationUrl(action:"LoadChildren")';
 
     //-->
 </script>

@@ -21,8 +21,6 @@ namespace Fantasy.Web.Mvc
             
         }
 
-
-
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
             RouteValueDictionary values = this.ParseHttpContext(httpContext);
@@ -162,11 +160,12 @@ namespace Fantasy.Web.Mvc
 
         private void ParseRoot(EnumeratorHelper enumerator, RouteValueDictionary value)
         {
-            if (!enumerator.IsEnd && Regex.IsMatch(enumerator.Current, rootIdPattern))
-            {
-                string appName = (string)value["appName"];
-                Guid rootId = this._applicationService.DecryptRootId(appName, enumerator.Current);
 
+            Guid rootId;
+            string appName = (string)value["appName"];
+            if (!enumerator.IsEnd && _applicationService.TryDecryptRootId(appName, enumerator.Current, out rootId))
+            {
+                
                 value.Add("RootId", rootId);
                 enumerator.MoveNext();
             }
@@ -192,6 +191,7 @@ namespace Fantasy.Web.Mvc
             if (!enumerator.IsEnd && !Regex.IsMatch(enumerator.Current, guidPattern))
             {
                 value.Add("Action", enumerator.Current);
+                enumerator.MoveNext();
             }
             else
             {
@@ -204,6 +204,7 @@ namespace Fantasy.Web.Mvc
             if (!enumerator.IsEnd && Regex.IsMatch(enumerator.Current, guidPattern))
             {
                 value.Add("ObjId", new Guid(enumerator.Current));
+                enumerator.MoveNext();
                 return true;
             }
             else
@@ -217,12 +218,13 @@ namespace Fantasy.Web.Mvc
         {
             if (!enumerator.IsEnd)
             {
-                value.Add("Property", value);
+                value.Add("Property", enumerator.Current);
+                enumerator.MoveNext();
             }
         }
 
 
-        string rootIdPattern = @"^[A-Za-z0-9+/]+={0,2}$";
+       
         string guidPattern = "^[A-Za-z0-9]{8}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{4}-[A-Za-z0-9]{12}$";
 
         private RouteValueDictionary ParseHttpContext(HttpContextBase httpContext)

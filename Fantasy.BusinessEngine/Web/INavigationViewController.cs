@@ -9,6 +9,6 @@ namespace Fantasy.Web
 {
     public interface INavigationViewController : IController
     {
-        ViewResult Default();
+        ViewResult Default(Guid? objId);
     }
 }

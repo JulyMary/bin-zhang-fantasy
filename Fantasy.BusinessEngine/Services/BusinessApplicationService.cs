@@ -146,6 +146,25 @@ namespace Fantasy.BusinessEngine.Services
             return new Guid(encrypt.Decrypt(cipherText));
         }
 
-       
+
+
+        #region IBusinessApplicationService Members
+
+
+        public bool TryDecryptRootId(string applicationFriendlyName, string ciperText, out Guid rootId)
+        {
+            rootId = Guid.Empty;
+            BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName);
+            Encryption encrypt = new Encryption(data.Id.ToByteArray());
+            string plainText;
+            bool rs = encrypt.TryDecrypt(ciperText, out plainText);
+            if (rs)
+            {
+                rootId = new Guid(plainText);
+            }
+            return rs;
+        }
+
+        #endregion
     }
 }
