@@ -11,13 +11,15 @@ namespace Fantasy.BusinessEngine
     {
 
         public Encryption(string saltValue)
+            : this(Encoding.ASCII.GetBytes(saltValue))
         {
-            this._saltValue = Encoding.ASCII.GetBytes(saltValue);
+           
         }
 
         public Encryption(byte[] saltValue)
         {
             this._saltValue = saltValue;
+           
         }
 
         public static readonly Encryption Default = new Encryption( "Bu5!ne55Eng!ne");
@@ -28,7 +30,7 @@ namespace Fantasy.BusinessEngine
         private static string _hashAlgorithm = "SHA1";             // can be "MD5"
         private static int _passwordIterations = 2;                  // can be any number
         private static string _initVector = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
-        private static int _keySize = 256;             // can be 192 or 128
+        private int _keySize = 256;           // can be 256/ 192 or 128
 
         /// <summary>
         /// Encrypts specified plaintext using Rijndael symmetric key algorithm
@@ -60,7 +62,7 @@ namespace Fantasy.BusinessEngine
         /// first block of plaintext data. For RijndaelManaged class IV must be 
         /// exactly 16 ASCII characters long.
         /// </param>
-        /// <param name="keySize">
+        /// <param name="_keySize">
         /// Size of encryption key in bits. Allowed values are: 128, 192, and 256. 
         /// Longer keys are more secure than shorter keys.
         /// </param>
@@ -172,7 +174,7 @@ namespace Fantasy.BusinessEngine
         /// first block of plaintext data. For RijndaelManaged class IV must be
         /// exactly 16 ASCII characters long.
         /// </param>
-        /// <param name="keySize">
+        /// <param name="_keySize">
         /// Size of encryption key in bits. Allowed values are: 128, 192, and 256.
         /// Longer keys are more secure than shorter keys.
         /// </param>

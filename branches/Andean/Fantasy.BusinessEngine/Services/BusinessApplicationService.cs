@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using Fantasy.ServiceModel;
 using Fantasy.BusinessEngine.Properties;
+using System.Security.Cryptography;
+using System.IO;
 
 namespace Fantasy.BusinessEngine.Services
 {
@@ -134,15 +136,26 @@ namespace Fantasy.BusinessEngine.Services
 
         public string EncryptRootId(string applicationFriendlyName, Guid objectId)
         {
+            Encryption encrypt = CreateEncryption(applicationFriendlyName);
+            string rs = encrypt.Encrypt(objectId.ToString());
+            rs = rs.Replace('/', '-');
+            return rs;
+        }
+
+        private Encryption CreateEncryption(string applicationFriendlyName)
+        {
             BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName);
             Encryption encrypt = new Encryption(data.Id.ToByteArray());
-            return encrypt.Encrypt(objectId.ToString());
+            
+            return encrypt;
         }
 
         public Guid DecryptRootId(string applicationFriendlyName, string cipherText)
         {
-            BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName);
-            Encryption encrypt = new Encryption(data.Id.ToByteArray());
+
+            cipherText = cipherText.Replace('-', '/');
+
+            Encryption encrypt = CreateEncryption(applicationFriendlyName);
             return new Guid(encrypt.Decrypt(cipherText));
         }
 
@@ -153,18 +166,25 @@ namespace Fantasy.BusinessEngine.Services
 
         public bool TryDecryptRootId(string applicationFriendlyName, string ciperText, out Guid rootId)
         {
+            bool rs = false;
             rootId = Guid.Empty;
-            BusinessApplicationData data = AppDataByFriendlyName(applicationFriendlyName);
-            Encryption encrypt = new Encryption(data.Id.ToByteArray());
-            string plainText;
-            bool rs = encrypt.TryDecrypt(ciperText, out plainText);
-            if (rs)
+            try
             {
-                rootId = new Guid(plainText);
+                rootId = DecryptRootId(applicationFriendlyName, ciperText);
+                rs = true;
+            }
+            catch
+            {
+
+               
             }
             return rs;
         }
 
         #endregion
+
+
+
+     
     }
 }
