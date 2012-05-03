@@ -219,8 +219,10 @@
     <Compile Include="..\ProductInfo.cs" />
     <Compile Include="Consts.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\StandardCollectionController.cs" />
     <Compile Include="Controllers\StandardNavigationController.cs" />
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
+    <Compile Include="Controllers\StandardScalarController.cs" />
     <Compile Include="FantasyHttpApplication.cs" />
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="MIMETypes.cs" />

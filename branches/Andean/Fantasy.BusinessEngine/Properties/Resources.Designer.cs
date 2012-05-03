@@ -88,6 +88,15 @@ namespace Fantasy.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are more than one class view settings defined for class {0} in application {1}..
+        /// </summary>
+        internal static string DuplicatedClassViewDefined {
+            get {
+                return ResourceManager.GetString("DuplicatedClassViewDefined", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entity {0} ({1}) does not exist..
         /// </summary>
         internal static string EntityNotFoundExceptionMessage {
@@ -100,6 +109,15 @@ namespace Fantasy.BusinessEngine.Properties {
             get {
                 object obj = ResourceManager.GetObject("FolderTemplate", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no property/association named {0} in business class {1}..
+        /// </summary>
+        internal static string PropertyNotFoundMessage {
+            get {
+                return ResourceManager.GetString("PropertyNotFoundMessage", resourceCulture);
             }
         }
         

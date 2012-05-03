@@ -147,4 +147,7 @@
   <data name="DuplicatedCodonText" xml:space="preserve">
     <value>Duplicated codon {0} in add {1} and {2}.</value>
   </data>
+  <data name="CustomAttributeNotDefinedMessage" xml:space="preserve">
+    <value>{0} is not defined on Type {1}.</value>
+  </data>
 </root>
