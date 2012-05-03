@@ -15,30 +15,25 @@ using System.Reflection;
 namespace Fantasy.Web.Controllers
 {
     
-    public class StandardNavigationController : Controller, INavigationViewController
+    [Settings(typeof(StandardNavigationViewSettings))]
+    public class StandardNavigationController : Controller, INavigationViewController, ICustomerizableViewController
     {
-
-        #region INavigationViewController Members
-
-
-        private const int _loadDeep = 0;
-
         public ViewResult Default(Guid? objId)
         {
             BusinessApplication application = BusinessEngineContext.Current.Application;
             BusinessObject entryObject = application.EntryObject;
 
             StandardNavigationDefaultViewModel model = new StandardNavigationDefaultViewModel();
-            model.RootTreeItem = this.CreateTreeItem(entryObject, _loadDeep);
+            model.RootTreeItem = this.CreateTreeItem(entryObject, this._settings.Deep - 1);
 
             if (model == null)
             {
                 FormsAuthentication.RedirectToLoginPage();
             }
-            model.RootTreeItem.state = JsTreeNode.Open;
 
             
-
+            model.RootTreeItem.state = JsTreeNode.Open;
+            
             return View(model);
            
         }
@@ -92,7 +87,7 @@ namespace Fantasy.Web.Controllers
 
                 foreach (BusinessObject child in children)
                 {
-                    JsTreeNode childNode = CreateTreeItem(child, _loadDeep);
+                    JsTreeNode childNode = CreateTreeItem(child, this._settings.Deep - 1);
                     if (childNode != null)
                     {
                         model.Add(childNode);
@@ -149,37 +144,46 @@ namespace Fantasy.Web.Controllers
                         folderItem.data.icon = this.Url.ImageList(imageKey);
                        
                         rs.children.Add(folderItem);
-                        if (childDeep > 0)
+
+                        if (BusinessEngineContext.Current.Application.GetViewType(obj, v.Property) == ViewType.Obj)
                         {
 
-                            IEnumerable childItems;
-                            if(v.IsScalar)
+                            if (childDeep > 0)
                             {
-                                BusinessObject child = (BusinessObject)obj.GetType().GetProperty(v.Property, _bindingFlags).GetValue(obj, null);
-                                childItems = child != null ? new BusinessObject[] { child } : new BusinessObject[0];
-                               
-                            }
-                            else
-                            {
-                               childItems = (IEnumerable)obj.GetType().GetProperty(v.Property, _bindingFlags).GetValue(obj, null);
-                                
-                            }
 
-                            foreach (BusinessObject child in childItems)
-                            {
-                                JsTreeNode childNode = CreateTreeItem(child, childDeep - 1);
-                                if (childNode != null)
+                                IEnumerable childItems;
+                                if (v.IsScalar)
                                 {
-                                    folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
+                                    BusinessObject child = (BusinessObject)obj.GetType().GetProperty(v.Property, _bindingFlags).GetValue(obj, null);
+                                    childItems = child != null ? new BusinessObject[] { child } : new BusinessObject[0];
+
+                                }
+                                else
+                                {
+                                    childItems = (IEnumerable)obj.GetType().GetProperty(v.Property, _bindingFlags).GetValue(obj, null);
+
+                                }
+
+                                foreach (BusinessObject child in childItems)
+                                {
+                                    JsTreeNode childNode = CreateTreeItem(child, childDeep - 1);
+                                    if (childNode != null)
+                                    {
+                                        folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
+                                    }
+
+                                }
+
+                                if (folderItem.children.Count == 0)
+                                {
+                                    folderItem.state = JsTreeNode.Open;
                                 }
 
                             }
-
-                            if (folderItem.children.Count == 0)
-                            {
-                                folderItem.state = JsTreeNode.Open;
-                            }
-                            
+                        }
+                        else
+                        {
+                            //TODO: Add collection view link;
                         }
                     }
                     
@@ -194,6 +198,14 @@ namespace Fantasy.Web.Controllers
            
         }
 
-        #endregion
+
+        private StandardNavigationViewSettings _settings;
+
+        public void LoadSettings(object settings)
+        {
+            this._settings = (StandardNavigationViewSettings)settings;
+        }
+
+      
     }
 }

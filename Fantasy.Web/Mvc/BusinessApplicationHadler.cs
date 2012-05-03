@@ -129,7 +129,7 @@ namespace Fantasy.Web.Mvc
             }
 
 
-            SessionStateAttribute attr = rs.GetType().GetCustomAttribute<SessionStateAttribute>(true);
+            SessionStateAttribute attr = rs.GetType().GetCustomAttribute<SessionStateAttribute>(true, false);
             SessionStateBehavior behavior = attr != null ? attr.Behavior : SessionStateBehavior.Default;
             this.RequestContext.HttpContext.SetSessionStateBehavior(behavior);
 

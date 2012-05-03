@@ -3,11 +3,11 @@
 
 @if (this.Model != null)
 {
-<table>
+<table style="width:100%">
     @foreach (MenuItemModel level1 in Model.ChildItems)
     {
     <tr>
-    <td columnspan=5>
+    <td columnspan="5">
     <a href="@level1.Url"><img src="@level1.Icon" /><h3>@level1.Name</h3></a>
     <span>@level1.Description</span>
     

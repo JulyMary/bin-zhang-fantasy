@@ -15,6 +15,8 @@ namespace Fantasy.Web.Controllers
         public StandardNavigationViewSettings ()
 	    {
             this.ClassSettings = new List<StandardNavigationViewClassSettings>();
+            this.Customized = false;
+            this.Deep = 1;
 	    }
 
         [XAttribute("customized")]
@@ -24,6 +26,10 @@ namespace Fantasy.Web.Controllers
         [XArray,
         XArrayItem(Name="class",Type=typeof(StandardNavigationViewClassSettings))]
         public List<StandardNavigationViewClassSettings> ClassSettings {get;private set;}
+
+
+        [XAttribute("deep")]
+        public int Deep { get; set; }
 
     }
 
@@ -41,13 +47,6 @@ namespace Fantasy.Web.Controllers
 
         [XAttribute("class")]
         public Guid ClassId { get; set; }
-
-        [XAttribute("view")]
-        public string View { get; set; }
-
-        [XElement("settings")]
-        public XElement ViewSettings { get; set; }
-
 
         [XArray,
         XArrayItem(Name="role", Type = typeof(string))]
