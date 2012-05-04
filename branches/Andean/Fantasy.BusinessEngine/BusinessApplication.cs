@@ -127,32 +127,21 @@ namespace Fantasy.BusinessEngine
 
             BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(obj.ClassId);
 
+
+            BusinessObjectDescriptor objDesc = new BusinessObjectDescriptor(obj);
+
+
+            BusinessPropertyDescriptor propDesc = objDesc.Properties[propertyName];
             
 
-            //TODO: Use ObjectDescription to replace of following algorithm
-            var lefts = from assn in @class.AllLeftAssociations()
-                        where string.Equals(propertyName, assn.RightRoleCode, StringComparison.OrdinalIgnoreCase)
-                        select
-                            new { IsScalar = (new Cardinality(assn.RightCardinality)).IsSingleton, @class = assn.RightClass };
-            var desc = lefts.SingleOrDefault();
-
-            if (desc == null)
-            {
-                var rights = from assn in @class.AllRightAssociations()
-                             where string.Equals(propertyName, assn.LeftRoleCode, StringComparison.OrdinalIgnoreCase)
-                             select new { IsScalar = (new Cardinality(assn.LeftCardinality)).IsSingleton, @class=assn.LeftClass };
-
-                desc = rights.Single(string.Format(Resources.PropertyNotFoundMessage, propertyName, @class.FullCodeName));
-            }
-
-            ClassViewSettings settings = this.GetClassViewSettings(desc.@class);
+            ClassViewSettings settings = this.GetClassViewSettings(propDesc.ReferencedClass);
             if (settings != null)
             {
                 return settings.ControllerType.IsAssignableFrom(typeof(IScalarViewController)) ? ViewType.Obj : ViewType.Col;
             }
             else
             {
-                return desc.IsScalar || !desc.@class.IsSimple ? ViewType.Obj : ViewType.Col;
+                return propDesc.IsScalar || !propDesc.ReferencedClass.IsSimple ? ViewType.Obj : ViewType.Col;
             }
            
         }
@@ -201,26 +190,14 @@ namespace Fantasy.BusinessEngine
         public virtual ICollectionViewController GetCollectionView(BusinessObject obj, string propertyName, IEnumerable<BusinessObject> collection)
         {
             BusinessClass parentClass = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(obj.ClassId);
-            BusinessClass childClass;
-            //TODO: Use ObjectDescription to replace of following algorithm
-            var lefts = from assn in parentClass.AllLeftAssociations()
-                        where string.Equals(propertyName, assn.RightRoleCode, StringComparison.OrdinalIgnoreCase)
-                        select assn.RightClass;
-            childClass = lefts.SingleOrDefault();
+
+            BusinessObjectDescriptor objDesc = new BusinessObjectDescriptor(obj);
 
 
+            BusinessPropertyDescriptor propDesc = objDesc.Properties[propertyName];
+        
 
-
-            if (childClass == null)
-            {
-                var rights = from assn in parentClass.AllRightAssociations()
-                             where string.Equals(propertyName, assn.LeftRoleCode, StringComparison.OrdinalIgnoreCase)
-                             select assn.RightClass;
-
-                childClass = rights.Single(string.Format(Resources.PropertyNotFoundMessage, propertyName, parentClass.FullCodeName));
-            }
-
-            return (ICollectionViewController)CreateDetialsViewController(childClass, Type.GetType("Fantasy.Web.Controllers.StandardCollectionController, Fantasy.Web", true));
+            return (ICollectionViewController)CreateDetialsViewController(propDesc.ReferencedClass, Type.GetType("Fantasy.Web.Controllers.StandardCollectionController, Fantasy.Web", true));
 
         }
 
