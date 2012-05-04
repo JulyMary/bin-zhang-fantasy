@@ -6,7 +6,7 @@ using Fantasy.IO;
 
 namespace Fantasy.BusinessEngine.Services
 {
-    public class DebugConnectionStringProvider : IConnectionStringProvider
+    public class DebugConnectionStringProvider : IConnectionFactory
     {
         
         private string _connectionString;
@@ -24,6 +24,20 @@ namespace Fantasy.BusinessEngine.Services
             }
         }
 
-      
+
+
+        #region IConnectionFactory Members
+
+        public System.Data.IDbConnection GetConnection()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void CloseConnection(System.Data.IDbConnection connection)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

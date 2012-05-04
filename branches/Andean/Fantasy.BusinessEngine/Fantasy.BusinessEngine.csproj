@@ -100,6 +100,7 @@
     <Compile Include="Services\IBusinessMenuService.cs" />
     <Compile Include="Services\IImageListService.cs" />
     <Compile Include="Services\ImageListService.cs" />
+    <Compile Include="Services\NHConnectionProvider.cs" />
     <Compile Include="Singularity.cs" />
     <Compile Include="Collections\BusinessObjectCollection.cs" />
     <Compile Include="Collections\IObservableList.cs" />
@@ -208,7 +209,7 @@
     <Compile Include="Services\DefaultBusinessDataTypeRepository.cs" />
     <Compile Include="Services\EntityServiceExtension.cs" />
     <Compile Include="Services\IBusinessDataTypeRepository.cs" />
-    <Compile Include="Services\IConnectionStringProvider.cs" />
+    <Compile Include="Services\IConnectionFactory.cs" />
     <Compile Include="Services\IDDLService.cs" />
     <Compile Include="Services\IEntityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -30,7 +30,7 @@ namespace Fantasy.BusinessEngine.Services
         {
 
             this._configuration = new NHibernate.Cfg.Configuration();
-            this._configuration.SetProperty("connection.connection_string", this.Site.GetRequiredService<IConnectionStringProvider>().ConnectionString);
+            //this._configuration.SetProperty("connection.connection_string", this.Site.GetRequiredService<IConnectionFactory>().ConnectionString);
             //this._configuration.
             this._configuration.EventListeners.PostLoadEventListeners = new IPostLoadEventListener[] { new NHPostLoadEventListener() {Site=this.Site},
                 new DefaultPostLoadEventListener() };
