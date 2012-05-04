@@ -94,7 +94,7 @@ namespace Fantasy.BusinessEngine
             return low != high ? string.Format("{0}..{1}", low, high) : low;
         }
 
-        public bool IsSingleton
+        public bool IsScalar
         {
             get
             {

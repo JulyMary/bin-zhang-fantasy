@@ -79,7 +79,10 @@
     <Compile Include="BusinessEnumValue.cs" />
     <Compile Include="BusinessMenuItem.cs" />
     <Compile Include="BusinessObject.cs" />
+    <Compile Include="BusinessObjectDescriptor.cs" />
     <Compile Include="BusinessObjectMetaDataHelper.cs" />
+    <Compile Include="BusinessPropertyDescriptor.cs" />
+    <Compile Include="BusinessPropertyDescriptorCollection.cs" />
     <Compile Include="BusinessPackage.cs" />
     <Compile Include="BusinessProperty.cs" />
     <Compile Include="BusinessRole.cs" />
@@ -90,6 +93,7 @@
     <Compile Include="Cardinality.cs" />
     <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
     <Compile Include="Maps\BusinessMenuItemMap.cs" />
+    <Compile Include="PropertyNotFoundException.cs" />
     <Compile Include="Security\BusinessApplicationACLSecurityProvider.cs" />
     <Compile Include="Security\BusinessObjectMemberSecurityCollection.cs" />
     <Compile Include="Services\BusinessMenuService.cs" />
@@ -121,7 +125,7 @@
     <Compile Include="IGernateCodeBusinessEntity.cs" />
     <Compile Include="IScriptable.cs" />
     <Compile Include="Security\BusinessObjectMemberSecurity.cs" />
-    <Compile Include="Security\BusinessObjectMemberTypes.cs" />
+    <Compile Include="BusinessObjectMemberTypes.cs" />
     <Compile Include="Security\BusinessObjectSecurity.cs" />
     <Compile Include="Security\ISecurityProvider.cs" />
     <Compile Include="Maps\BusinessApplicationACLMap.cs" />

@@ -39,7 +39,7 @@ namespace Fantasy.Web.Controllers
     {
         public StandardNavigationViewClassSettings()
         {
-            ChildRoles = new List<string>();
+            DisabledChildRoles = new List<string>();
         }
 
         [XAttribute("customized")]
@@ -50,7 +50,7 @@ namespace Fantasy.Web.Controllers
 
         [XArray,
         XArrayItem(Name="role", Type = typeof(string))]
-        public List<string> ChildRoles { get; private set; }
+        public List<string> DisabledChildRoles { get; private set; }
 
     }
 

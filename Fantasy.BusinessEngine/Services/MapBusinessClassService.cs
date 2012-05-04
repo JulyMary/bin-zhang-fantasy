@@ -98,13 +98,13 @@ namespace Fantasy.BusinessEngine.Services
 
             foreach (BusinessAssociation assn in @class.LeftAssociations.Where(w=>w.RightNavigatable))
             {
-                join.Add(this.CreateAssnMap(assn.RightRoleCode, assn.TableName, assn.TableSchema, assn.RightClass, new Cardinality(assn.RightCardinality).IsSingleton, "LEFTID", "RIGHTID", assn.LeftNavigatable )); 
+                join.Add(this.CreateAssnMap(assn.RightRoleCode, assn.TableName, assn.TableSchema, assn.RightClass, new Cardinality(assn.RightCardinality).IsScalar, "LEFTID", "RIGHTID", assn.LeftNavigatable )); 
 
             }
 
             foreach (BusinessAssociation assn in @class.RightAssociations.Where(w => w.LeftNavigatable))
             {
-                join.Add(this.CreateAssnMap(assn.LeftRoleCode, assn.TableName, assn.TableSchema, assn.LeftClass, new Cardinality(assn.LeftCardinality).IsSingleton, "RIGHTID", "LEFTID", false));
+                join.Add(this.CreateAssnMap(assn.LeftRoleCode, assn.TableName, assn.TableSchema, assn.LeftClass, new Cardinality(assn.LeftCardinality).IsScalar, "RIGHTID", "LEFTID", false));
 
             }
 

@@ -62,13 +62,13 @@ namespace Fantasy.Web.Controllers
             {
                
                 var lefts = from assn in @class.AllLeftAssociations() where string.Equals(property, assn.RightRoleCode, StringComparison.OrdinalIgnoreCase) select
-                            new  { IsScalar = (new Cardinality(assn.RightCardinality)).IsSingleton };
+                            new  { IsScalar = (new Cardinality(assn.RightCardinality)).IsScalar };
                 var desc = lefts.SingleOrDefault();
 
                 if (desc == null)
                 {
                     var rights = from assn in @class.AllRightAssociations() where string.Equals(property, assn.LeftRoleCode, StringComparison.OrdinalIgnoreCase)
-                           select  new { IsScalar = (new Cardinality(assn.LeftCardinality)).IsSingleton };
+                           select  new { IsScalar = (new Cardinality(assn.LeftCardinality)).IsScalar };
 
                     desc = rights.Single(string.Format(Resources.PropertyNotFoundMessage, property, @class.FullCodeName));
                 }
@@ -104,11 +104,27 @@ namespace Fantasy.Web.Controllers
 
         private static readonly BindingFlags _bindingFlags = System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance;
 
+        private bool ShowAssocation(BusinessObject obj, string property)
+        {
+            bool rs = true;
+            if (this._settings.Customized)
+            {
+                StandardNavigationViewClassSettings clsSettings = this._settings.ClassSettings.FirstOrDefault(s => s.ClassId == obj.ClassId);
+                if (clsSettings != null && clsSettings.Customized)
+                {
+                    rs = !clsSettings.DisabledChildRoles.Any(s => string.Equals(s, property, StringComparison.OrdinalIgnoreCase));
+                }
+            }
+            return rs;
+        }
+
         private JsTreeNode CreateTreeItem(BusinessObject obj, int childDeep)
         {
-            BusinessApplication application = BusinessEngineContext.Current.Application;
-            BusinessObjectSecurity security = application.GetObjectSecurity(obj);
-            if (security.Properties["Name"].CanRead == true)
+
+            BusinessObjectDescriptor descriptor = new BusinessObjectDescriptor(obj);
+
+
+            if (descriptor.Properties["Name"].CanRead == true)
             {
                 JsTreeNode rs = new JsTreeNode();
                 rs.data.title = obj.Name;
@@ -117,50 +133,41 @@ namespace Fantasy.Web.Controllers
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 IImageListService imageList = BusinessEngineContext.Current.GetRequiredService<IImageListService>();
                 BusinessClass @class = oms.FindBusinessClass(obj.ClassId);
+                 
+                
+                var props = from prop in descriptor.Properties where prop.CanRead && (prop.MemberType == BusinessObjectMemberTypes.LeftAssociation || prop.MemberType == BusinessObjectMemberTypes.RightAssociation) 
+                            && ShowAssocation(obj, prop.CodeName) select prop;
 
-                var assns = (from assn in @class.AllLeftAssociations()
-                             where assn.RightNavigatable = true
-                             
-                             select new { Class = assn.RightClass, Text = assn.RightRoleName, Property=assn.RightRoleCode, Order = assn.RightRoleDisplayOrder, IsScalar = (new Cardinality(assn.RightCardinality)).IsSingleton  })
-                            .Union(from assn in @class.AllRightAssociations()
-                                   where assn.LeftNavigatable
-                                   select new {Class = assn.LeftClass, Text = assn.LeftRoleName, Property = assn.LeftRoleCode, Order = assn.LeftRoleDisplayOrder, IsScalar = (new Cardinality(assn.LeftCardinality)).IsSingleton  }).OrderBy(x => x.Order);
-
-                foreach (var v in assns)
+                foreach (BusinessPropertyDescriptor prop in props)
                 {
 
-                    if (security.Properties[v.Property].CanRead == true)
-                    {
+                    
 
                         JsTreeNode folderItem = new JsTreeNode();
-                        folderItem.data.title = v.Property;
-                        folderItem.metadata = new { url = this.Url.ApplicationUrl(objectId: obj.Id, action: "LoadChildren", property:v.Property) };
-
-
-                        string imageKey = imageList.GetFolderKey(oms.GetImageKey(v.Class));
-
-
+                        folderItem.data.title = prop.Name;
+                        folderItem.metadata = new { url = this.Url.ApplicationUrl(objectId: obj.Id, action: "LoadChildren", property:prop.CodeName) };
+                        string imageKey = imageList.GetFolderKey(oms.GetImageKey(prop.ReferencedClass));
 
                         folderItem.data.icon = this.Url.ImageList(imageKey);
                        
                         rs.children.Add(folderItem);
 
-                        if (BusinessEngineContext.Current.Application.GetViewType(obj, v.Property) == ViewType.Obj)
+                        if (BusinessEngineContext.Current.Application.GetViewType(obj, prop.CodeName) == ViewType.Obj)
                         {
 
                             if (childDeep > 0)
                             {
 
                                 IEnumerable childItems;
-                                if (v.IsScalar)
+                                if (prop.IsScalar)
                                 {
-                                    BusinessObject child = (BusinessObject)obj.GetType().GetProperty(v.Property, _bindingFlags).GetValue(obj, null);
+                                    BusinessObject child = (BusinessObject)prop.Value;
                                     childItems = child != null ? new BusinessObject[] { child } : new BusinessObject[0];
 
                                 }
                                 else
                                 {
-                                    childItems = (IEnumerable)obj.GetType().GetProperty(v.Property, _bindingFlags).GetValue(obj, null);
+                                    childItems = (IEnumerable)prop.Value;
 
                                 }
 
@@ -185,7 +192,9 @@ namespace Fantasy.Web.Controllers
                         {
                             //TODO: Add collection view link;
                         }
-                    }
+
+                        
+                    
                     
                 }
 

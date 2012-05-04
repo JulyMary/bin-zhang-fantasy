@@ -41,7 +41,7 @@ foreach(BusinessAssociation assn in _class.LeftAssociations)
 	    string name = assn.RightRoleCode;
 	    string type = assn.RightClass.FullCodeName;
 	    Cardinality card = new Cardinality(assn.RightCardinality);
-	    if(card.IsSingleton)
+	    if(card.IsScalar)
 	    {
 	        RenderManyToOne(name, type);
 	    }
@@ -60,7 +60,7 @@ foreach(BusinessAssociation assn in _class.RightAssociations)
 	Cardinality card = new Cardinality(assn.LeftCardinality);
 	if(assn.LeftNavigatable)
 	{
-	    if(card.IsSingleton)
+	    if(card.IsScalar)
 	    {
 	        RenderManyToOne(name, type);
 	    }
