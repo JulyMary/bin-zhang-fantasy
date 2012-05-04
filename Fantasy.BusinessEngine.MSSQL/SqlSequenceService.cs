@@ -11,6 +11,15 @@ namespace Fantasy.BusinessEngine.MSSQL
 {
     public class SqlSequenceService : ServiceBase, ISequenceService
     {
+
+        public override void InitializeService()
+        {
+            this._connectionFactory = this.Site.GetRequiredService<IConnectionFactory>();
+            base.InitializeService();
+        }
+
+        private IConnectionFactory _connectionFactory;
+
         #region ISequenceService Members
 
         public int Next(string name)
@@ -27,12 +36,24 @@ namespace Fantasy.BusinessEngine.MSSQL
 
         private long ExecuteCommand(string sql)
         {
-            IEntityService es = this.Site.GetRequiredService<IEntityService>();
-            using (IDbCommand cmd = es.CreateCommand())
+
+            long rs;
+            IDbConnection conn = this._connectionFactory.GetConnection();
+            try
             {
-                cmd.CommandText = sql;
-                return (long)cmd.ExecuteScalar();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    rs = (long)cmd.ExecuteScalar();
+                }
             }
+            finally
+            {
+                this._connectionFactory.CloseConnection(conn);
+            }
+
+            return rs;
+           
         }
 
         public int Current(string name)

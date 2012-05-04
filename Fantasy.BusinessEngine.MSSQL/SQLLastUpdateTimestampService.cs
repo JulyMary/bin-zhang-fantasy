@@ -12,20 +12,36 @@ namespace Fantasy.BusinessEngine.MSSQL
     {
         #region ILastUpdateTimestampService Members
 
+        public override object InitializeLifetimeService()
+        {
+            this._factory = this.Site.GetRequiredService<IConnectionFactory>();
+            return base.InitializeLifetimeService();
+        }
+
+        IConnectionFactory _factory;
+
         public long GetLastUpdateSeconds(string name)
         {
 
             lock (_synRoot)
             {
-                IEntityService es = this.Site.GetRequiredService<IEntityService>();
-
-                using (IDbCommand cmd = es.CreateCommand())
+                //IEntityService es = this.Site.GetRequiredService<IEntityService>();
+                IDbConnection conn = this._factory.GetConnection();
+                try
                 {
-                    cmd.CommandText = String.Format("select seconds from BUSINESSLASTUPDATETIMESTAMP where upper(name) = '{0}'", name);
-                    object o = cmd.ExecuteScalar();
+                    using (IDbCommand cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = String.Format("select seconds from BUSINESSLASTUPDATETIMESTAMP where upper(name) = '{0}'", name);
+                        object o = cmd.ExecuteScalar();
 
-                    return o is DBNull ? 0L : (long)Convert.ChangeType(o, typeof(Int64));
+                        return o is DBNull ? 0L : (long)Convert.ChangeType(o, typeof(Int64));
+                    }
                 }
+                finally
+                {
+                    this._factory.CloseConnection(conn);
+                }
+               
             }
             
         }

@@ -32,9 +32,7 @@
             <RegisterAdaptionService/>
         </Object>
        
-        <Object ID="connectionstring">
-            <be:DebugConnectionStringProvider/>
-        </Object>
+       
         <Object ID="nhCfg">
             <be:NHConfigurationService/>
         </Object>

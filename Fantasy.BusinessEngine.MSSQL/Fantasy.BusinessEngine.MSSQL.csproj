@@ -48,6 +48,7 @@
     <Compile Include="..\ProductInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DebugConnectionFactory.cs" />
     <Compile Include="SQLLastUpdateTimestampService.cs" />
     <Compile Include="SqlSequenceService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

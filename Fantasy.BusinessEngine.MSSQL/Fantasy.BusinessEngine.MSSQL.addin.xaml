@@ -7,6 +7,9 @@
     </AddIn.Import>
     
     <Extension Path="fantasy/services">
+        <Object ID="connectionFactory" InsertBefore="nhCfg">
+            <mssql:DebugConnectionFactory/>
+        </Object>
         <Object ID="SequenceService" InsertAfter="entityservice">
             <mssql:SqlSequenceService />
         </Object>
