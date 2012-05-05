@@ -10,6 +10,8 @@ namespace Fantasy.Web.Models
     {
         public JsTreeNode RootTreeItem { get; set; }
 
-        public BusinessObject EntryObject {get;set;}
+        public BusinessObject Object {get;set;}
+
+
     }
 }

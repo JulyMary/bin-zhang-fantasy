@@ -4,26 +4,12 @@ using System.Web.Mvc;
 using System.Web;
 using System.Linq;
 
-namespace Fantasy.Web.Mvc.UI
+namespace Fantasy.Web.Mvc.Html
 {
-   
 
     public class HtmlAssets
     {
-        internal static HtmlAssets GetInstance(HtmlHelper htmlHelper)
-        {
-            var instanceKey = "AssetsHelperInstance";
-
-            var context = htmlHelper.ViewContext.HttpContext;
-            if (context == null) return null;
-
-            var assetsHelper = (HtmlAssets)context.Items[instanceKey];
-
-            if (assetsHelper == null)
-                context.Items.Add(instanceKey, assetsHelper = new HtmlAssets());
-
-            return assetsHelper;
-        }
+        
 
         public ItemRegistrar Styles { get; private set; }
         public ItemRegistrar Scripts { get; private set; }
@@ -33,9 +19,6 @@ namespace Fantasy.Web.Mvc.UI
             Styles = new ItemRegistrar(ItemRegistrarFormatters.StyleFormat);
             Scripts = new ItemRegistrar(ItemRegistrarFormatters.ScriptFormat);
         }
-
-
-      
         
     }
 
@@ -76,5 +59,24 @@ namespace Fantasy.Web.Mvc.UI
     {
         public const string StyleFormat = "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
         public const string ScriptFormat = "<script src=\"{0}\" type=\"text/javascript\"></script>";
+    }
+
+
+    public static class HtmlAssetsExtensions
+    {
+        public static HtmlAssets HtmlAssets(this HtmlHelper htmlHelper)
+        {
+            var instanceKey = "AssetsHelperInstance";
+
+            var context = htmlHelper.ViewContext.HttpContext;
+            if (context == null) return null;
+
+            var assetsHelper = (HtmlAssets)context.Items[instanceKey];
+
+            if (assetsHelper == null)
+                context.Items.Add(instanceKey, assetsHelper = new HtmlAssets());
+
+            return assetsHelper;
+        }
     }
 }

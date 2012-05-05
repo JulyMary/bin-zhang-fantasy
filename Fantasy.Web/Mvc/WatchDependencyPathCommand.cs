@@ -38,7 +38,6 @@ namespace Fantasy.Web.Mvc
             }
         }
 
-
         private static bool _unloaded = false;
         static void DependencyFileChanged(object sender, FileSystemEventArgs e)
         {

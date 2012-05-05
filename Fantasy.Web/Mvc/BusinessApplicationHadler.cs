@@ -50,10 +50,6 @@ namespace Fantasy.Web.Mvc
 
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
-            //App/{AppName}/{ObjId}
-            //App/{AppName}/{RootId}/{ObjId}
-            //App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
-            //App/{AppName}/{RootId}/{ViewType}/{Action}/{ObjId}/{Property}
             RouteData routeData = this.RequestContext.RouteData;
             string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
             IBusinessApplicationService appSvc = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>();

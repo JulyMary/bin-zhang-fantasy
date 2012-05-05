@@ -1,9 +1,9 @@
 @model Fantasy.Web.Models.LoginModel
 
 @{
-    ViewBag.Title = "Log in";
-    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.js"));
-    Html.BusinessEngine().HtmlAssets.Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.unobtrusive.js"));
+    ViewBag.Title = "Log in"; 
+    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.js"));
+    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.unobtrusive.js"));
 }
 
 <hgroup class="title">
