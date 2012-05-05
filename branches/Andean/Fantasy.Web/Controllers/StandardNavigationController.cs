@@ -25,10 +25,25 @@ namespace Fantasy.Web.Controllers
 
             StandardNavigationDefaultViewModel model = new StandardNavigationDefaultViewModel();
             model.RootTreeItem = this.CreateTreeItem(entryObject, this._settings.Deep - 1);
+            
+
+
 
             if (model == null)
             {
                 FormsAuthentication.RedirectToLoginPage();
+            }
+
+
+
+            if (objId != null)
+            {
+                BusinessObject obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(objId);
+                model.Object = obj;
+            }
+            else
+            {
+                model.Object = entryObject;
             }
 
             

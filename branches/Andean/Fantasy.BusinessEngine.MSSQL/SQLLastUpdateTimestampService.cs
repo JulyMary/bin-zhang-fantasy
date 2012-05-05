@@ -10,13 +10,16 @@ namespace Fantasy.BusinessEngine.MSSQL
 {
     public class SQLLastUpdateTimestampService : ServiceBase, ILastUpdateTimestampService
     {
-        #region ILastUpdateTimestampService Members
+        
 
-        public override object InitializeLifetimeService()
+        public override void InitializeService()
         {
             this._factory = this.Site.GetRequiredService<IConnectionFactory>();
-            return base.InitializeLifetimeService();
+            base.InitializeService();
         }
+
+
+        
 
         IConnectionFactory _factory;
 
@@ -48,6 +51,6 @@ namespace Fantasy.BusinessEngine.MSSQL
 
         private object _synRoot = new object();
 
-        #endregion
+       
     }
 }

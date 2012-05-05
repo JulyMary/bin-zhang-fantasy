@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Web.Script.Serialization;
 
-namespace Fantasy.Web.Mvc.UI
+namespace Fantasy.Web.Mvc.Html
 {
     public class JsonHelper
     {

@@ -243,6 +243,11 @@
     <Compile Include="Mvc\CompiledViewEngine.cs" />
     <Compile Include="Mvc\CompiledViewVirtualPathFactory.cs" />
     <Compile Include="Mvc\CompiledContentRoute.cs" />
+    <Compile Include="Mvc\Html\GenericUserControl.cs" />
+      <Compile Include="Mvc\Html\PropertyGrid.cs" >
+          <DependentUpon>PropertyGrid.cshtml</DependentUpon>
+      </Compile>
+    <Compile Include="Mvc\Html\UserControlExtensions.cs" />
     <Compile Include="Mvc\IgnoreSystemRouteCommand.cs" />
     <Compile Include="Mvc\ImageListHandler.cs" />
     <Compile Include="Mvc\ImageListRoutHandler.cs" />
@@ -256,16 +261,10 @@
     <Compile Include="Mvc\RegisterImageListRouteCommand.cs" />
     <Compile Include="Mvc\RegisterSystemGlobalFiltersCommand.cs" />
     <Compile Include="Mvc\SetControllerFactoryCommand.cs" />
-    <Compile Include="Mvc\UI\ApplicationExtensions.cs" />
-    <Compile Include="Mvc\UI\HtmlAssets.cs" />
-    <Compile Include="Mvc\UI\HtmlHelperExtensions.cs" />
-    <Compile Include="Mvc\UI\HtmlLiteral.cs" />
-    <Compile Include="Mvc\UI\HtmlText.cs" />
-    <Compile Include="Mvc\UI\IHtmlNode.cs" />
-    <Compile Include="Mvc\UI\JsonHelper.cs" />
-    <Compile Include="Mvc\UI\ViewComponent.cs" />
-    <Compile Include="Mvc\UI\ViewComponentBuilder.cs" />
-    <Compile Include="Mvc\UI\ViewComponentFactory.cs" />
+    <Compile Include="Mvc\Html\ApplicationExtensions.cs" />
+    <Compile Include="Mvc\Html\HtmlAssets.cs" />
+    <Compile Include="Mvc\Html\JsonHelper.cs" />
+    <Compile Include="Mvc\Html\UserControl.cs" />
     <Compile Include="Mvc\UrlHelperExtensions.cs" />
     <Compile Include="Mvc\WatchDependencyPathCommand.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -300,6 +299,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Mvc\Html\PropertyGrid.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

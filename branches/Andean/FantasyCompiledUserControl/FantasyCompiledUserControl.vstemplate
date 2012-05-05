@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VSTemplate Version="3.0.0" Type="Item" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005">
+  <TemplateData>
+      <Name>Fantsy Compiled MVC 4 User Control  (Razor)</Name>
+      <Description>Fantasy compiled user control with Razor syntax (C#). Allows user to create MVC 4 User Control with razor engine without define controller. This template only supports Fantasy web project.</Description>
+      <Icon>cshtml.png</Icon>
+      <ProjectType>CSharp</ProjectType>
+    
+    <RequiredFrameworkVersion>4.0</RequiredFrameworkVersion>
+    <DefaultName>UserControl.cshtml</DefaultName>
+  </TemplateData>
+  <TemplateContent>
+		
+
+    <ProjectItem TargetFileName="$fileinputname$.cshtml" ReplaceParameters="true" >UserControl.cshtml</ProjectItem>
+    <ProjectItem  TargetFileName="$fileinputname$.cs" ReplaceParameters="true">UserControl.cs</ProjectItem>
+  </TemplateContent>
+    <!--<WizardExtension>
+        <Assembly>Fantasy.Web.UserControlTemplate, Version=1.0.0.0, Culture=neutral, PublicKeyToken=36c45fab6b1da0bc</Assembly>
+        <FullClassName>Fantasy.Web.UserControlTemplate.Template</FullClassName>
+    </WizardExtension>-->
+</VSTemplate>
