@@ -244,9 +244,9 @@
     <Compile Include="Mvc\CompiledViewVirtualPathFactory.cs" />
     <Compile Include="Mvc\CompiledContentRoute.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
-      <Compile Include="Mvc\Html\PropertyGrid.cs" >
-          <DependentUpon>PropertyGrid.cshtml</DependentUpon>
-      </Compile>
+    <Compile Include="Mvc\Html\PropertyGrid.cs">
+      <DependentUpon>PropertyGrid.cshtml</DependentUpon>
+    </Compile>
     <Compile Include="Mvc\Html\UserControlExtensions.cs" />
     <Compile Include="Mvc\IgnoreSystemRouteCommand.cs" />
     <Compile Include="Mvc\ImageListHandler.cs" />
@@ -261,7 +261,7 @@
     <Compile Include="Mvc\RegisterImageListRouteCommand.cs" />
     <Compile Include="Mvc\RegisterSystemGlobalFiltersCommand.cs" />
     <Compile Include="Mvc\SetControllerFactoryCommand.cs" />
-    <Compile Include="Mvc\Html\ApplicationExtensions.cs" />
+    <Compile Include="Mvc\Html\BusinessApplicationExtensions.cs" />
     <Compile Include="Mvc\Html\HtmlAssets.cs" />
     <Compile Include="Mvc\Html\JsonHelper.cs" />
     <Compile Include="Mvc\Html\UserControl.cs" />
