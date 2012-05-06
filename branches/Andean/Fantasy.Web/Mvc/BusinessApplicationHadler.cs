@@ -50,23 +50,7 @@ namespace Fantasy.Web.Mvc
 
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
-            RouteData routeData = this.RequestContext.RouteData;
-            string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
-            IBusinessApplicationService appSvc = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>();
-            
-            
-            BusinessApplication app = appSvc.CreateByName(appName);
-           
-            if (routeData.Values.ContainsKey("RootId"))
-            {
-
-                Guid rootId = (Guid)routeData.Values["RootId"];
-                BusinessObject entryObj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(rootId);
-                app.EntryObject = entryObj;
-            }
-
-            BusinessEngineContext.Current.LoadApplication(app);
-            AppRouteStack.Current.Push(new AppRouteValue(this.RequestContext.RouteData.Values));
+            BusinessApplication app = GetApplication(); 
             IController controller = null; 
             try
             {
@@ -81,14 +65,42 @@ namespace Fantasy.Web.Mvc
                     ((IDisposable)controller).Dispose();
                 }
 
-                if (app != null)
-                {
-                    AppRouteStack.Current.Pop(); 
-                    BusinessEngineContext.Current.UnloadApplication();
-                }
+                ReleaseApplication(app);
                 
             }
 
+        }
+
+        protected virtual void ReleaseApplication(BusinessApplication app)
+        {
+            if (app != null)
+            {
+                AppRouteStack.Current.Pop();
+                BusinessEngineContext.Current.UnloadApplication();
+            }
+        }
+
+        protected virtual BusinessApplication GetApplication()
+        {
+            RouteData routeData = this.RequestContext.RouteData;
+            string appName = this.RequestContext.RouteData.GetRequiredString("AppName");
+            IBusinessApplicationService appSvc = BusinessEngineContext.Current.GetRequiredService<IBusinessApplicationService>();
+
+
+            BusinessApplication app = appSvc.CreateByName(appName);
+
+            if (routeData.Values.ContainsKey("RootId"))
+            {
+
+                Guid rootId = (Guid)routeData.Values["RootId"];
+                BusinessObject entryObj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(rootId);
+                app.EntryObject = entryObj;
+            }
+
+            BusinessEngineContext.Current.LoadApplication(app);
+            AppRouteStack.Current.Push(new AppRouteValue(this.RequestContext.RouteData.Values));
+
+            return app;
         }
 
         private IController ProcessRequestInit(HttpContextBase httpContext, BusinessApplication app)
