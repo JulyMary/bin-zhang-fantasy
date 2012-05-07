@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Web.WebPages.Html;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using System.Linq.Expressions;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Fantasy.Web.Mvc.Html
 {
@@ -44,18 +45,5 @@ namespace Fantasy.Web.Mvc.Html
             return BusinessObjectRender<T>(htmlHelper, obj);
         }
 
-
-        public static BusinessObjectRender<T> CaptionFor<T>(this BusinessObjectRender<T> render, string propery, object htmlAttributes = null)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public static BusinessObjectRender<T> CaptionFor<T, TValue>(this BusinessObjectRender<T> render,  Expression<Func<T, TValue>> property, object  htmlAttributes = null ) where T : BusinessObject
-        {
-            string name = BusinessObjectMetaDataHelper.PropertyNameFromLambdaExpression(property, render.Object);
-            return CaptionFor(render, name);
-        }
     }
 }
