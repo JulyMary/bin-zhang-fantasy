@@ -77,7 +77,7 @@ namespace Fantasy.Web
 
             BusinessEngineContext.Current = context;
 
-            AppRouteStack.Current.Push(new AppRouteValue() { AppName = appSvc.GetApplicationFriendlyName(voidApp.Data.Id) });
+          
           
 
             foreach (ICommand command in AddInTree.Tree.GetTreeNode("fantasy/web/request/start").BuildChildItems<ICommand>(null, ServiceManager.Services))
@@ -96,7 +96,7 @@ namespace Fantasy.Web
             }
             
             BusinessEngineContext.Current.UnloadApplication();
-            AppRouteStack.Current.Pop();
+           
             AutoInitServiceContainer services = (AutoInitServiceContainer)HttpContext.Current.Items[BusinessEngineContextServicesKey];
             services.UninitializeServices();
         }

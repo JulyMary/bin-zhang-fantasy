@@ -1,17 +1,17 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
-using System.ComponentModel;
+using System.Web.Security;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Security;
+using Fantasy.BusinessEngine.Services;
 using Fantasy.Web.Models;
 using Fantasy.Web.Mvc;
-using Fantasy.BusinessEngine.Services;
-using System.Linq;
-using System.Collections;
-using System.Web.Security;
+using Fantasy.Web.Mvc.Html;
 using Fantasy.Web.Properties;
-using System.Collections.Generic;
-using System.Reflection;
 namespace Fantasy.Web.Controllers
 {
     
@@ -35,16 +35,8 @@ namespace Fantasy.Web.Controllers
             }
 
 
+            model.ObjId = objId ?? entryObject.Id;
 
-            if (objId != null)
-            {
-                BusinessObject obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(objId);
-                model.Object = obj;
-            }
-            else
-            {
-                model.Object = entryObject;
-            }
 
             
             model.RootTreeItem.state = JsTreeNode.Open;

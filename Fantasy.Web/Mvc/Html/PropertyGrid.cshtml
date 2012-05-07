@@ -1,4 +1,8 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.UserControl<Fantasy.BusinessEngine.BusinessObject>
-
+@{
+    Html.HtmlAssets().Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/propertygrid/style.css"));
+}
 @this.Model.Name
-
+<table @this.WriteAttributes()>
+    
+</table>

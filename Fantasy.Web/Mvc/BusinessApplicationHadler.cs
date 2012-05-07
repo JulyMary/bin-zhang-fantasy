@@ -48,6 +48,8 @@ namespace Fantasy.Web.Mvc
             this.ProcessRequest(base2);
         }
 
+      
+
         protected internal void ProcessRequest(HttpContextBase httpContext)
         {
             BusinessApplication app = GetApplication(); 
@@ -75,7 +77,7 @@ namespace Fantasy.Web.Mvc
         {
             if (app != null)
             {
-                AppRouteStack.Current.Pop();
+               
                 BusinessEngineContext.Current.UnloadApplication();
             }
         }
@@ -98,8 +100,7 @@ namespace Fantasy.Web.Mvc
             }
 
             BusinessEngineContext.Current.LoadApplication(app);
-            AppRouteStack.Current.Push(new AppRouteValue(this.RequestContext.RouteData.Values));
-
+          
             return app;
         }
 
@@ -126,8 +127,8 @@ namespace Fantasy.Web.Mvc
                     {
                         BusinessObject obj = GetBusinessObject(app);
                         string prop = this.RequestContext.RouteData.GetRequiredString("Property");
-                        IEnumerable<BusinessObject> collection = (IEnumerable<BusinessObject>)obj.GetType().GetProperty(prop, System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public).GetValue(obj, null);
-                        rs = app.GetCollectionView(obj, prop, collection);
+           
+                        rs = app.GetCollectionView(obj, prop);
 
                     }
                     break;
@@ -141,7 +142,7 @@ namespace Fantasy.Web.Mvc
             SessionStateBehavior behavior = attr != null ? attr.Behavior : SessionStateBehavior.Default;
             this.RequestContext.HttpContext.SetSessionStateBehavior(behavior);
 
-            if (!MvcHandler.DisableMvcResponseHeader)
+            if (!this.DisableMvcResponseHeader && !MvcHandler.DisableMvcResponseHeader)
             {
                 string mvcVersion = (string)typeof(MvcHandler).InvokeMember("MvcVersion", BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.Static, null, null, null);
                 httpContext.Response.AppendHeader(MvcHandler.MvcVersionHeaderName, mvcVersion);
@@ -152,9 +153,23 @@ namespace Fantasy.Web.Mvc
 
             string controllerName = rs.GetType().Name;
             controllerName = controllerName.Substring(0, controllerName.Length - "Controller".Length);
-            this.RequestContext.RouteData.Values.Add("controller", controllerName);
+            this.RequestContext.RouteData.Values["controller"] = controllerName;
 
             return rs;
+        }
+
+
+        private bool _disableMvcResponseHeader = false;
+        public bool DisableMvcResponseHeader
+        {
+            get
+            {
+                return _disableMvcResponseHeader;
+            }
+            set
+            {
+                _disableMvcResponseHeader = value; 
+            }
         }
 
         private void RemoveOptionalRoutingParameters()
@@ -172,11 +187,14 @@ namespace Fantasy.Web.Mvc
 
         private BusinessObject GetBusinessObject(BusinessApplication app)
         {
-            Guid objectId = new Guid(this.RequestContext.RouteData.GetRequiredString("ObjId"));
+          
+
+            
             BusinessObject obj;
-            if (objectId != Guid.Empty)
+            if (this.RequestContext.RouteData.Values.ContainsKey("ObjId"))
             {
-                obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(objectId);
+                Guid id = (Guid)this.RequestContext.RouteData.Values["ObjId"];
+                obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<BusinessObject>(id);
             }
             else
             {

@@ -184,6 +184,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\base\propertygrid\style.css" />
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-ui-1.8.19.js" />
@@ -223,6 +224,7 @@
     <Compile Include="Controllers\StandardNavigationController.cs" />
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
     <Compile Include="Controllers\StandardScalarController.cs" />
+    <Compile Include="DisplayOptions.cs" />
     <Compile Include="FantasyHttpApplication.cs" />
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="MIMETypes.cs" />
@@ -231,7 +233,6 @@
     <Compile Include="Models\StandardNavigationDefaultViewModel.cs" />
     <Compile Include="Models\JsTreeNode.cs" />
     <Compile Include="Mvc\AppRoute.cs" />
-    <Compile Include="Mvc\AppRouteStack.cs" />
     <Compile Include="Mvc\BusinessApplicationHadler.cs" />
     <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
     <Compile Include="Mvc\ChainedControllerFactory.cs" />
@@ -243,6 +244,8 @@
     <Compile Include="Mvc\CompiledViewEngine.cs" />
     <Compile Include="Mvc\CompiledViewVirtualPathFactory.cs" />
     <Compile Include="Mvc\CompiledContentRoute.cs" />
+    <Compile Include="Mvc\CurrentBusinessApplicationHandler.cs" />
+    <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
@@ -316,6 +319,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\MainMenu.cshtml" />
+    <Content Include="Views\StandardScalar\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

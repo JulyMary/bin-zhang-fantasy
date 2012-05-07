@@ -21,7 +21,7 @@
     <div id="navigationTree" ></div>
 </div>
 <div id="contentpanel" class="ui-layout-center">
-    @(this.Html.Control<PropertyGrid>().Model(this.Model.Object))
+    @Html.ScalarView(Model.ObjId)
 </div>
 </div>
 
