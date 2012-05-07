@@ -245,8 +245,13 @@
     <Compile Include="Mvc\CompiledViewVirtualPathFactory.cs" />
     <Compile Include="Mvc\CompiledContentRoute.cs" />
     <Compile Include="Mvc\CurrentBusinessApplicationHandler.cs" />
+    <Compile Include="Mvc\Html\BooleanEditor.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
+    <Compile Include="Mvc\Html\CaptionExtensions.cs" />
+    <Compile Include="Mvc\Html\EditorExtensions.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
+    <Compile Include="Mvc\Html\LabelExtensions.cs" />
+    <Compile Include="Mvc\Html\BusinessPropertyEditorBase.cs" />
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
     </Compile>
@@ -303,6 +308,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Mvc\Html\PropertyGrid.cshtml" />
+    <Content Include="Mvc\Html\BooleanEditor.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
