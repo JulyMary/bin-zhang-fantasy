@@ -151,7 +151,7 @@ namespace Fantasy.BusinessEngine
 
         public virtual IScalarViewController GetScalarView(BusinessObject obj)
         {
-            BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(obj.Id);
+            BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(obj.ClassId);
 
             return (IScalarViewController)CreateDetialsViewController(@class, Type.GetType("Fantasy.Web.Controllers.StandardScalarController, Fantasy.Web", true));
 
@@ -187,7 +187,7 @@ namespace Fantasy.BusinessEngine
             return rs;
         }
 
-        public virtual ICollectionViewController GetCollectionView(BusinessObject obj, string propertyName, IEnumerable<BusinessObject> collection)
+        public virtual ICollectionViewController GetCollectionView(BusinessObject obj, string propertyName)
         {
             BusinessClass parentClass = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(obj.ClassId);
 

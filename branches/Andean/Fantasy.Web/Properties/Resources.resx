@@ -141,4 +141,7 @@
   <data name="UserDoesNotExistMessage" xml:space="preserve">
     <value>User '{0}' does not exist.</value>
   </data>
+  <data name="ViewPageHttpHandlerWrapper_ExceptionOccurred" xml:space="preserve">
+    <value>Execution of the child request failed. Please examine the InnerException for more information.</value>
+  </data>
 </root>

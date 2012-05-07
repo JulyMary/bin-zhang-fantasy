@@ -131,5 +131,14 @@ namespace Fantasy.Web.Properties {
                 return ResourceManager.GetString("UserDoesNotExistMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution of the child request failed. Please examine the InnerException for more information..
+        /// </summary>
+        public static string ViewPageHttpHandlerWrapper_ExceptionOccurred {
+            get {
+                return ResourceManager.GetString("ViewPageHttpHandlerWrapper_ExceptionOccurred", resourceCulture);
+            }
+        }
     }
 }
