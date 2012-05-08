@@ -33,7 +33,7 @@ namespace RazorGenerator.Core
             razorHost.DefaultBaseClass = String.Empty;
 
             razorHost.GeneratedClassContext = new GeneratedClassContext(
-                    executeMethodName: GeneratedClassContext.DefaultExecuteMethodName,
+                    executeMethodName: "Render",
                     writeMethodName: GeneratedClassContext.DefaultWriteMethodName,
                     writeLiteralMethodName: GeneratedClassContext.DefaultWriteLiteralMethodName,
                     writeToMethodName: WriteToMethodName,

@@ -10,6 +10,11 @@ namespace RazorGenerator.MsBuild
 {
     public class RazorCodeGen : Task
     {
+        public RazorCodeGen()
+        {
+
+        }
+
         private readonly List<ITaskItem> _generatedFiles = new List<ITaskItem>();
 
         public ITaskItem[] FilesToPrecompile { get; set; }
@@ -31,6 +36,8 @@ namespace RazorGenerator.MsBuild
             }
         }
 
+
+
         public override bool Execute()
         {
             if (FilesToPrecompile == null || !FilesToPrecompile.Any())
@@ -46,9 +53,9 @@ namespace RazorGenerator.MsBuild
                     string filePath = file.GetMetadata("FullPath");
                     string fileName = Path.GetFileName(filePath);
                     var projectRelativePath = GetProjectRelativePath(filePath, projectRoot);
-                    string itemNamespace = GetNamespace(file, projectRelativePath);
-
                     string outputPath = Path.Combine(CodeGenDirectory, projectRelativePath.TrimStart(Path.DirectorySeparatorChar)) + ".cs";
+
+                    string itemNamespace = GetNamespace(file, projectRelativePath);
                     if (!RequiresRecompilation(filePath, outputPath))
                     {
                         continue;
@@ -63,11 +70,11 @@ namespace RazorGenerator.MsBuild
                     bool hasErrors = false;
                     host.Error += (o, eventArgs) =>
                     {
-                        Log.LogError("RazorGenerator", eventArgs.ErorrCode.ToString(), helpKeyword: "", file: file.ItemSpec, 
+                        Log.LogError("RazorGenerator", eventArgs.ErorrCode.ToString(), helpKeyword: "", file: file.ItemSpec,
                                      lineNumber: (int)eventArgs.LineNumber, columnNumber: (int)eventArgs.ColumnNumber,
-                                     endLineNumber: (int)eventArgs.LineNumber, endColumnNumber: (int)eventArgs.ColumnNumber, 
+                                     endLineNumber: (int)eventArgs.LineNumber, endColumnNumber: (int)eventArgs.ColumnNumber,
                                      message: eventArgs.ErrorMessage);
-                        
+
                         hasErrors = true;
                     };
 
@@ -89,6 +96,7 @@ namespace RazorGenerator.MsBuild
                     {
                         return false;
                     }
+
 
                     var taskItem = new TaskItem(outputPath);
                     taskItem.SetMetadata("AutoGen", "true");
