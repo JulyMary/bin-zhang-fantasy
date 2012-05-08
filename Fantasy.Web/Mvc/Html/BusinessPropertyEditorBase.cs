@@ -45,7 +45,7 @@ namespace Fantasy.Web.Mvc.Html
 
             if (this.PropertyDescriptor.CanWrite)
             {
-                this.RenderEditable();
+                this.Render();
             }
             else if (this.PropertyDescriptor.CanRead)
             {
@@ -61,10 +61,7 @@ namespace Fantasy.Web.Mvc.Html
             }
         }
 
-        protected virtual void RenderEditable()
-        {
-            //throw new NotImplementedException();
-        }
+       
 
 
 

@@ -12,16 +12,12 @@ namespace Fantasy.Web.Mvc.Html
     public partial class BooleanEditor
     {
        
-        internal string TrueText { get; internal set; }
+        public string TrueText { get; internal set; }
 
-        internal string FalseText { get; internal set; }
+        public string FalseText { get; internal set; }
 
 
-        protected override void RenderEditable()
-        {
-            base.RenderEditable();
-        }
-
+       
         private string CheckedString
         {
             get

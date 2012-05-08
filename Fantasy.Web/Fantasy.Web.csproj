@@ -275,7 +275,9 @@
     <Compile Include="Mvc\Html\HtmlAssets.cs" />
     <Compile Include="Mvc\Html\JsonHelper.cs" />
     <Compile Include="Mvc\UrlHelperExtensions.cs" />
+    <Compile Include="Mvc\ViewStartPage.cs" />
     <Compile Include="Mvc\WatchDependencyPathCommand.cs" />
+    <Compile Include="Mvc\WebViewPage.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

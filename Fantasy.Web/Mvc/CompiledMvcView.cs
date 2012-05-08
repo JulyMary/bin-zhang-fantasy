@@ -22,7 +22,7 @@ namespace Fantasy.Web.Mvc
         }
 
 
-        private WebViewPage _page;
+        private System.Web.Mvc.WebViewPage _page;
 
         public bool RunViewStartPages
         {
@@ -40,7 +40,7 @@ namespace Fantasy.Web.Mvc
         {
             object instance = Activator.CreateInstance(_type);
 
-            this._page = instance as WebViewPage;
+            this._page = instance as System.Web.Mvc.WebViewPage;
 
             if (_page == null)
             {

@@ -38,10 +38,7 @@ namespace Fantasy.Web.Mvc.Html
         public IDictionary<string, string> Attributes { get; private set; }
 
 
-        public override void Execute()
-        {
-            
-        }
+      
 
 
     }
