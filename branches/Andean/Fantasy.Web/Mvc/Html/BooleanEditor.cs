@@ -11,16 +11,25 @@ namespace Fantasy.Web.Mvc.Html
 {
     public partial class BooleanEditor
     {
-        public BooleanEditor DisplayText(string trueText, string falseText)
+       
+        internal string TrueText { get; internal set; }
+
+        internal string FalseText { get; internal set; }
+
+
+        protected override void RenderEditable()
         {
-            this.TrueText = trueText;
-            this.FalseText = falseText;
-            return this;
+            base.RenderEditable();
         }
 
-        public string TrueText { get; private set; }
-
-        public string FalseText { get; private set; }
+        private string CheckedString
+        {
+            get
+            {
+                object value = this.PropertyDescriptor.Value;
+                return value != null && (bool)value ? "checked=\"checked\"" : string.Empty;
+            }
+        }
     }
 
 

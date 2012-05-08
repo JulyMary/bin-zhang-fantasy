@@ -246,16 +246,18 @@
     <Compile Include="Mvc\CompiledContentRoute.cs" />
     <Compile Include="Mvc\CurrentBusinessApplicationHandler.cs" />
     <Compile Include="Mvc\Html\BooleanEditor.cs" />
+    <Compile Include="Mvc\Html\BooleanEditorFactory.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
-    <Compile Include="Mvc\Html\CaptionExtensions.cs" />
     <Compile Include="Mvc\Html\EditorExtensions.cs" />
+    <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
-    <Compile Include="Mvc\Html\LabelExtensions.cs" />
     <Compile Include="Mvc\Html\BusinessPropertyEditorBase.cs" />
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
     </Compile>
-    <Compile Include="Mvc\Html\UserControlExtensions.cs" />
+    <Compile Include="Mvc\Html\UserControl.cs" />
+    <Compile Include="Mvc\Html\UserControlFactoryExtensions.cs" />
+    <Compile Include="Mvc\Html\UserControlFactory.cs" />
     <Compile Include="Mvc\IgnoreSystemRouteCommand.cs" />
     <Compile Include="Mvc\ImageListHandler.cs" />
     <Compile Include="Mvc\ImageListRoutHandler.cs" />
@@ -272,7 +274,6 @@
     <Compile Include="Mvc\Html\BusinessApplicationExtensions.cs" />
     <Compile Include="Mvc\Html\HtmlAssets.cs" />
     <Compile Include="Mvc\Html\JsonHelper.cs" />
-    <Compile Include="Mvc\Html\UserControl.cs" />
     <Compile Include="Mvc\UrlHelperExtensions.cs" />
     <Compile Include="Mvc\WatchDependencyPathCommand.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
