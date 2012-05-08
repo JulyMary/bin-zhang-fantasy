@@ -27,13 +27,7 @@ namespace Fantasy.Web.Mvc.Html
     }
 
 
-    protected new TModel Model2
-    {
-        get
-        {
-            return (TModel)base.Model2; 
-        }
-    }
+   
 
     // Properties
     public new AjaxHelper<TModel> Ajax { get; private set; }
