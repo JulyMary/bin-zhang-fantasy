@@ -202,6 +202,10 @@ namespace RazorGenerator.Core
 
         public override void PostProcessGeneratedCode(CodeCompileUnit codeCompileUnit, CodeNamespace generatedNamespace, CodeTypeDeclaration generatedClass, CodeMemberMethod executeMethod)
         {
+            if (generatedClass != null)
+            {
+                generatedClass.IsPartial = true;
+            }
             _codeTransformer.ProcessGeneratedCode(codeCompileUnit, generatedNamespace, generatedClass, executeMethod);
         }
 
