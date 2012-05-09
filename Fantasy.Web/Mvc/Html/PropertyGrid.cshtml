@@ -1,8 +1,35 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.UserControl<Fantasy.BusinessEngine.BusinessObject>
+@using Fantasy.BusinessEngine
 @{
     Html.HtmlAssets().Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/propertygrid/style.css"));
+    var objectRender = this.Html.BusinessObjectRender(this.Model);
+    List<string> renderedCategories = new List<string>();
+   
 }
 @this.Model.Name
 <table @this.WriteAttributes()>
+@foreach (BusinessPropertyDescriptor desc in this.GetSortedProperties(objectRender))
+{
+    TryRenderCategory(desc);
+    <tr class="propertygrid-datarow" data-displayorder="@desc.DisplayOrder">
+        <td class="propertygrid-datarow-expander"></td>
+        <td class="propertygrid-datarow-caption">@desc.Name</td>
+        <td class="propertygrid-datarow-splitter"></td>
+        <td calss="propertygrid-datarow-editor">
+            
+        </td>
+    </tr>
     
+}
 </table>
+
+@helper TryRenderCategory(BusinessPropertyDescriptor desc)
+{
+    
+}
+@functions
+{
+     List<string> renderedCategories = new List<string>();
+  
+
+}

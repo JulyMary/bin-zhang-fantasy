@@ -34,12 +34,12 @@ namespace Fantasy.Web.Mvc.Html
 
     public static class BusinessObjectRenderExtensions
     {
-        public static BusinessObjectRender<T> BusinessObjectRender<T>(HtmlHelper htmlHelper, T obj) where T : BusinessObject
+        public static BusinessObjectRender<T> BusinessObjectRender<T>(this HtmlHelper htmlHelper, T obj) where T : BusinessObject
         {
             return new BusinessObjectRender<T>(htmlHelper, obj);
         }
 
-        public static BusinessObjectRender<T> BusinessObjectRender<T>(HtmlHelper htmlHelper, Guid id) where T : BusinessObject
+        public static BusinessObjectRender<T> BusinessObjectRender<T>(this HtmlHelper htmlHelper, Guid id) where T : BusinessObject
         {
             T obj = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get<T>(id);
             return BusinessObjectRender<T>(htmlHelper, obj);

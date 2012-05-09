@@ -38,6 +38,82 @@ namespace Fantasy.Web.Mvc.Html
         public IDictionary<string, string> Attributes { get; private set; }
 
 
+        public override void ExecutePageHierarchy()
+        {
+            this.PreExecute();
+            base.ExecutePageHierarchy();
+        }
+
+        protected virtual void PreExecute()
+        {
+        }
+
+        public override void Execute()
+        {
+            
+        }
+
+
+        protected void MergeAttribute(string key, string value, bool replaceExisting = true)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, "key");
+            }
+            if (replaceExisting || !this.Attributes.ContainsKey(key))
+            {
+                this.Attributes[key] = value;
+            }
+        }
+
+        protected void RemoveAttribute(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, "key");
+            }
+            if (this.Attributes.ContainsKey(key))
+            {
+                this.Attributes.Remove(key);
+            }
+        }
+
+
+        protected virtual void AddClass(string value)
+
+        {
+
+            string str;
+            if (this.Attributes.TryGetValue("class", out str))
+            {
+                this.Attributes["class"] = value + " " + str;
+            }
+            else
+            {
+                this.Attributes["class"] = value;
+            }
+        }
+
+        protected virtual void RemoveClass(string value)
+           
+        {
+            string @class = this.Attributes.GetValueOrDefault("class", string.Empty);
+            List<string> values = @class.Split(' ').ToList();
+
+            int index;
+            do
+            {
+                index = values.IndexOfBy(value, comparer: StringComparer.OrdinalIgnoreCase);
+
+                if (index >= 0)
+                {
+                    values.RemoveAt(index);
+                }
+            } while (index >= 0);
+
+            this.Attributes["class"] = String.Join(" ", values);
+            
+        }
       
 
 

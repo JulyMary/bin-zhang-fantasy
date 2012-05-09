@@ -202,6 +202,8 @@
     <Content Include="Scripts\knockout-1.3.0beta.debug.js" />
     <Content Include="Scripts\knockout-1.3.0beta.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
+    <Content Include="Scripts\Mvc\Html\BooleanEditor.js" />
+    <Content Include="Scripts\Mvc\Html\TextEditor.js" />
     <Content Include="Scripts\standardnavigation.default.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -255,6 +257,9 @@
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Mvc\Html\PropertySort.cs" />
+    <Compile Include="Mvc\Html\TextEditor.cs" />
+    <Compile Include="Mvc\Html\TextEditorFactory.cs" />
     <Compile Include="Mvc\Html\UserControl.cs" />
     <Compile Include="Mvc\Html\UserControlFactoryExtensions.cs" />
     <Compile Include="Mvc\Html\UserControlFactory.cs" />
@@ -275,9 +280,7 @@
     <Compile Include="Mvc\Html\HtmlAssets.cs" />
     <Compile Include="Mvc\Html\JsonHelper.cs" />
     <Compile Include="Mvc\UrlHelperExtensions.cs" />
-    <Compile Include="Mvc\ViewStartPage.cs" />
     <Compile Include="Mvc\WatchDependencyPathCommand.cs" />
-    <Compile Include="Mvc\WebViewPage.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -312,6 +315,7 @@
   <ItemGroup>
     <Content Include="Mvc\Html\PropertyGrid.cshtml" />
     <Content Include="Mvc\Html\BooleanEditor.cshtml" />
+    <Content Include="Mvc\Html\TextEditor.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

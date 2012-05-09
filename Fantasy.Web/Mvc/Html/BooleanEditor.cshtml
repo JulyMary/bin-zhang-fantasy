@@ -1,2 +1,20 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
-<input type="checkbox" @CheckedString />
+@{
+    this.Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/Mvc/Html/BooleanEditor.js"));
+}
+@if (this.PropertyDescriptor.CanWrite)
+{
+<input @WriteAttributes() data-truetext="@(this.TrueText)" data-falsetext="@(this.FalseText)" /><label for="@this.Attributes["id"]">@(this.Value ? this.TrueText : this.FalseText)</label>
+}
+else if(this.PropertyDescriptor.CanRead)
+{
+    <input @WriteAttributes() disabled="disabled" /><label for="@GenerateId()">@(this.Value ? this.TrueText : this.FalseText)</label>
+}
+else if (this.Model.InvisibleOption == Fantasy.Web.InvisibleOptions.Hidden)
+{
+    this.RenderHidden();
+} 
+else
+{
+    this.RenderCollapsed();
+}

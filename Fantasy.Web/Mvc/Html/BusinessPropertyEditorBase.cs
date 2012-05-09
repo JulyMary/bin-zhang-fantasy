@@ -32,39 +32,31 @@ namespace Fantasy.Web.Mvc.Html
 
         protected void CreateName()
         {
+
+            string name = GenerateId();
+
             if (!this.Attributes.ContainsKey("name"))
             {
-                this.Attributes.Add("name", this.Model.Descriptor.Object.Id + "_" + this.PropertyName); 
+                this.Attributes.Add("name", name); 
             }
+
+           
         }
 
-
-        public override void Execute()
+        public virtual string GenerateId()
         {
-            this.CreateName();
-
-            if (this.PropertyDescriptor.CanWrite)
-            {
-                this.Render();
-            }
-            else if (this.PropertyDescriptor.CanRead)
-            {
-                this.RenderReadOnly();
-            }
-            else if (this.Model.InvisibleOption == InvisibleOptions.Hidden)
-            {
-                this.RenderHidden();
-            }
-            else
-            {
-                this.RenderCollapsed();
-            }
+            return this.Model.Descriptor.Object.Id + "_" + this.PropertyName;
         }
 
+
+
+        protected override void PreExecute()
+        {
+           
+            base.PreExecute();
+            CreateName();
+        }
        
-
-
-
         protected virtual void RenderReadOnly()
         {
             object value = this.PropertyDescriptor.Value;
