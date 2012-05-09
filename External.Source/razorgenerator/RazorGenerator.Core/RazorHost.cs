@@ -68,7 +68,7 @@ namespace RazorGenerator.Core
             EnableLinePragmas = true;
 
             base.GeneratedClassContext = new GeneratedClassContext(
-                    executeMethodName: "Render",
+                    executeMethodName: GeneratedClassContext.DefaultExecuteMethodName,
                     writeMethodName: GeneratedClassContext.DefaultWriteMethodName,
                     writeLiteralMethodName: GeneratedClassContext.DefaultWriteLiteralMethodName,
                     writeToMethodName: "WriteTo",
@@ -77,7 +77,7 @@ namespace RazorGenerator.Core
                     defineSectionMethodName: "DefineSection"
             );
 
-            base.DefaultBaseClass = "Fantasy.Web.Mvc.WebViewPage";
+            base.DefaultBaseClass = typeof(WebPage).FullName;
 
 
 
@@ -202,8 +202,6 @@ namespace RazorGenerator.Core
 
         public override void PostProcessGeneratedCode(CodeCompileUnit codeCompileUnit, CodeNamespace generatedNamespace, CodeTypeDeclaration generatedClass, CodeMemberMethod executeMethod)
         {
-            base.PostProcessGeneratedCode(codeCompileUnit, generatedNamespace, generatedClass, executeMethod);
-            generatedClass.IsPartial = true;
             _codeTransformer.ProcessGeneratedCode(codeCompileUnit, generatedNamespace, generatedClass, executeMethod);
         }
 

@@ -23,7 +23,7 @@ namespace RazorGenerator.Core
             new AddGeneratedClassAttribute(),
             new AddPageVirtualPathAttribute(),
             new SetImports(_namespaces, replaceExisting: false),
-            new SetBaseType("Fantasy.Web.Mvc.WebViewPage"),
+            new SetBaseType(typeof(WebViewPage)),
             new RemoveLineHiddenPragmas(),
             new MvcWebConfigTransformer(),
         };
@@ -63,7 +63,7 @@ namespace RazorGenerator.Core
 
                 if (IsSpecialPage(sourceFileName))
                 {
-                    baseType = "Fantasy.Web.Mvc.ViewStartPage";
+                    baseType = typeof(ViewStartPage).FullName;
                 }
                 else
                 {

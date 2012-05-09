@@ -102,25 +102,25 @@ namespace RazorGenerator.Core
 
         internal static string GuessHost(string projectRoot, string projectRelativePath)
         {
-            //var mvcHelperRegex = new Regex(@"(^|\\)Views(\\.*)+Helpers?", RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
-            //if (mvcHelperRegex.IsMatch(projectRelativePath))
-            //{
-            //    return "MvcHelper";
-            //}
-            //var mvcViewRegex = new Regex(@"(^|\\)Views\\", RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
-            //if (mvcViewRegex.IsMatch(projectRelativePath))
-            //{
-            //    return "MvcView";
-            //}
-            //if (Path.GetFileNameWithoutExtension(projectRelativePath).Contains("Helper"))
-            //{
-            //    bool? isMvcProject = IsMvcProject(projectRoot);
-            //    if (isMvcProject.HasValue)
-            //    {
-            //        return isMvcProject.Value ? "MvcHelper" : "WebPagesHelper";
-            //    }
-            //}
-            return "MvcView";
+            var mvcHelperRegex = new Regex(@"(^|\\)Views(\\.*)+Helpers?", RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
+            if (mvcHelperRegex.IsMatch(projectRelativePath))
+            {
+                return "MvcHelper";
+            }
+            var mvcViewRegex = new Regex(@"(^|\\)Views\\", RegexOptions.ExplicitCapture | RegexOptions.IgnoreCase);
+            if (mvcViewRegex.IsMatch(projectRelativePath))
+            {
+                return "MvcView";
+            }
+            if (Path.GetFileNameWithoutExtension(projectRelativePath).Contains("Helper"))
+            {
+                bool? isMvcProject = IsMvcProject(projectRoot);
+                if (isMvcProject.HasValue)
+                {
+                    return isMvcProject.Value ? "MvcHelper" : "WebPagesHelper";
+                }
+            }
+            return null;
         }
 
         private static bool? IsMvcProject(string projectRoot)
