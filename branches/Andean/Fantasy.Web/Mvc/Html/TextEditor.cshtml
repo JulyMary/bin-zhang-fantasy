@@ -1,0 +1,20 @@
+﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
+@{
+    this.Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/Mvc/Html/TextEditor.js"));
+}
+@if (this.PropertyDescriptor.CanWrite)
+{
+<input @WriteAttributes() value="@this.Value" />
+}
+else if(this.PropertyDescriptor.CanRead)
+{
+    <span @WriteAttributes() >@this.Value</span>
+}
+else if (this.Model.InvisibleOption == Fantasy.Web.InvisibleOptions.Hidden)
+{
+    this.RenderHidden();
+} 
+else
+{
+    this.RenderCollapsed();
+}

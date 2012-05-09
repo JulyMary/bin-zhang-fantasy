@@ -9,7 +9,7 @@ using Fantasy.Web.Mvc;
 
 namespace Fantasy.Web.Mvc.Html
 {
-    public partial class BooleanEditor
+    partial class BooleanEditor
     {
        
         public string TrueText { get; internal set; }
@@ -17,13 +17,32 @@ namespace Fantasy.Web.Mvc.Html
         public string FalseText { get; internal set; }
 
 
-       
-        private string CheckedString
+        protected override void PreExecute()
+        {
+
+            this.AddClass("boolean-editor");
+
+            this.MergeAttribute("id", this.GenerateId());
+            this.MergeAttribute("type", "checkbox");
+
+            if (this.Value)
+            {
+                this.MergeAttribute("checked", "checked");
+            }
+
+            else
+            {
+                this.RemoveAttribute("checked");
+            }
+            base.PreExecute();
+        }
+
+        private bool Value
         {
             get
             {
                 object value = this.PropertyDescriptor.Value;
-                return value != null && (bool)value ? "checked=\"checked\"" : string.Empty;
+                return value != null && (bool)value == true;
             }
         }
     }
