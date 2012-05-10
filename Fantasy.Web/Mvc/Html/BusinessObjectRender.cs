@@ -45,5 +45,22 @@ namespace Fantasy.Web.Mvc.Html
             return BusinessObjectRender<T>(htmlHelper, obj);
         }
 
+        public static UserControlFactory Editor<TModel>(this BusinessObjectRender<TModel> render, string propertyName)
+            where TModel : BusinessObject
+        {
+            UserControlFactory<TextEditor> rs = new UserControlFactory<TextEditor>(render.Html);
+            rs.BindModel<UserControlFactory<TextEditor>, TextEditor>(render);
+            rs.Control.PropertyName = propertyName;
+
+            return rs;
+        }
+
+        public static UserControlFactory EditorFor<TModel, TValue>(this BusinessObjectRender<TModel> render, Expression<Func<TModel, TValue>> property) 
+            where TModel : BusinessObject
+        {
+            string name = BusinessObjectMetaDataHelper.PropertyNameFromLambdaExpression(property, render.Object);
+            return Editor(render, name);
+        }
+
     }
 }

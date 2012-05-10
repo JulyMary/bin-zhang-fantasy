@@ -8,25 +8,23 @@ using System.Web.WebPages;
 
 namespace Fantasy.Web.Mvc.Html
 {
-    public class UserControlFactory<TControl> where TControl : UserControl , new()
+
+
+    public class UserControlFactory
     {
-
-
-        public UserControlFactory(HtmlHelper htmlHelper)
+        public UserControlFactory(HtmlHelper htmlHelper, Type controlType)
         {
             this.Html = htmlHelper;
-            this.Control = new TControl();
-            string _virtualPath = typeof(TControl).GetCustomAttributes(typeof(PageVirtualPathAttribute), true).Cast<PageVirtualPathAttribute>().Single().VirtualPath;
+            this.Control = (UserControl)Activator.CreateInstance(controlType);
+            string _virtualPath = controlType.GetCustomAttributes(typeof(PageVirtualPathAttribute), true).Cast<PageVirtualPathAttribute>().Single().VirtualPath;
             this.Control.VirtualPath = _virtualPath;
         }
-
-        
 
         public HtmlHelper Html { get; private set; }
 
         public dynamic Model { get; internal set; }
 
-        protected internal TControl Control { get; set; }
+        protected internal UserControl Control { get; private set; }
 
 
         public virtual HtmlString ToHtmlString()
@@ -69,25 +67,45 @@ namespace Fantasy.Web.Mvc.Html
 
 
         }
-
     }
 
 
-    public class ControlFactory<TControl, TModel> : UserControlFactory<TControl> where TControl : UserControl<TModel>, new()
+    public class UserControlFactory<TControl> : UserControlFactory where TControl : UserControl , new()
     {
 
-        public ControlFactory(HtmlHelper htmlHelper)
-            :base(htmlHelper)
-        {
 
+        public UserControlFactory(HtmlHelper htmlHelper)
+            : base(htmlHelper, typeof(TControl))
+        {
+           
         }
 
-        public new TModel Model
+        protected internal new TControl Control
         {
             get
             {
-                return base.Model;
+                return (TControl)base.Control;
             }
         }
+        
     }
+
+
+    //public class UserControlFactory<TControl, TModel> : UserControlFactory<TControl> where TControl : UserControl<TModel>, new()
+    //{
+
+    //    public UserControlFactory(HtmlHelper htmlHelper)
+    //        :base(htmlHelper)
+    //    {
+
+    //    }
+
+    //    public new TModel Model
+    //    {
+    //        get
+    //        {
+    //            return base.Model;
+    //        }
+    //    }
+    //}
 }
