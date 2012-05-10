@@ -122,16 +122,7 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
-        public static T BindModel<T, TControl, TModel>(this T factory, TModel model)
-            where T : ControlFactory<TControl, TModel>
-            where TControl: UserControl<TModel>, new()
-        {
-
-            ((UserControlFactory<TControl>)factory).Model = model;
-            return factory;
-        }
-    
-        
+      
 
  
     }
