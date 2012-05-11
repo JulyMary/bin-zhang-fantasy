@@ -186,6 +186,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\propertygrid\style.css" />
     <Content Include="Scripts\AjaxLogin.js" />
+    <Content Include="Scripts\fantasy.core.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-ui-1.8.19.js" />
     <Content Include="Scripts\jquery.cookie.js" />
