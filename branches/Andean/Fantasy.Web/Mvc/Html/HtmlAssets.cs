@@ -3,78 +3,175 @@ using System.Text;
 using System.Web.Mvc;
 using System.Web;
 using System.Linq;
+using System;
 
 namespace Fantasy.Web.Mvc.Html
 {
 
+   
+
+
     public class HtmlAssets
     {
-        
-
-        public ItemRegistrar Styles { get; private set; }
-        public ItemRegistrar Scripts { get; private set; }
-
-        public HtmlAssets()
+        internal HtmlAssets(HtmlHelper html)
         {
-            Styles = new ItemRegistrar(ItemRegistrarFormatters.StyleFormat);
-            Scripts = new ItemRegistrar(ItemRegistrarFormatters.ScriptFormat);
+            this._html = html;
         }
-        
+
+
+        private const string DataInstanceKey = "HtmlAssetsDataInstance";
+        private int _scriptsPosition = 0;
+        private int _stylePosition = 0;
+        private int _startupPosition = 0;
+        private HtmlAssetsData Data
+        {
+            get
+            {
+
+              
+                HttpContextBase context = this._html.ViewContext.HttpContext;
+                HtmlAssetsData rs = (HtmlAssetsData)context.Items[DataInstanceKey];
+
+                if (rs == null)
+                {
+                    rs = new HtmlAssetsData();
+                    context.Items.Add(DataInstanceKey, rs);
+                }
+
+                return rs;
+                   
+            }
+        }
+       
+
+
+        public void AddStyleSheet(string url)
+        {
+            if (!this.Data.StyleSheets.Any(s => String.Equals(s, url, StringComparison.OrdinalIgnoreCase)))
+            {
+                this.Data.StyleSheets.Insert(_stylePosition, url);
+                _stylePosition++;
+            }
+        }
+
+        public void AddScript(string url)
+        {
+            if (!this.Data.Scripts.Any(s => String.Equals(s, url, StringComparison.OrdinalIgnoreCase)))
+            {
+                this.Data.Scripts.Insert(_scriptsPosition,url);
+                _scriptsPosition++;
+            }
+        }
+
+        public void AddStartupScript(string id, string content)
+        {
+            if (!this.Data.StartupScripts.Any(s => String.Equals(s.Key, id, StringComparison.OrdinalIgnoreCase)))
+            {
+                this.Data.StartupScripts.Insert(_startupPosition, new KeyValuePair<string, string>(id, content));
+                _startupPosition++;
+            }
+        }
+
+        private static MvcHtmlString _emptyString = new MvcHtmlString(string.Empty);
+
+        public MvcHtmlString RenderStyleSheets()
+        {
+            if (!this._html.ViewContext.IsChildAction)
+            {
+                if (this._html.ViewContext.RequestContext.HttpContext.Request.IsAjaxRequest())
+                {
+                    return RenderAjaxStyleScheets();
+                }
+                else
+                {
+                    return RenderHtmlStyleScheets();
+                }
+            }
+            else
+            {
+                return new MvcHtmlString(string.Empty);
+            }
+        }
+
+
+        public const string StyleFormat = "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
+        public const string ScriptFormat = "<script src=\"{0}\" type=\"text/javascript\"></script>";
+
+        private MvcHtmlString RenderHtmlStyleScheets()
+        {
+            throw new NotImplementedException();
+        }
+
+        private MvcHtmlString RenderAjaxStyleScheets()
+        {
+            return _emptyString; 
+        }
+
+        public MvcHtmlString RenderScripts()
+        {
+            if (!this._html.ViewContext.IsChildAction)
+            {
+                if (this._html.ViewContext.RequestContext.HttpContext.Request.IsAjaxRequest())
+                {
+                    return RenderAjaxScripts();
+                }
+                else
+                {
+                    return RenderHtmlScripts();
+                }
+            }
+            else
+            {
+                return new MvcHtmlString(string.Empty);
+            }
+        }
+
+        private MvcHtmlString RenderHtmlScripts()
+        {
+            throw new NotImplementedException();
+        }
+
+        private MvcHtmlString RenderAjaxScripts()
+        {
+            throw new NotImplementedException();
+        }
+
+        private HtmlHelper _html { get; set; }
+ 
+
     }
 
-    public class ItemRegistrar
+    internal class HtmlAssetsData
     {
-        private readonly string _format;
-        private readonly IList<string> _items;
+        internal List<string> StyleSheets = new List<string>();
+        internal List<string> Scripts = new List<string>();
 
-        public ItemRegistrar(string format)
-        {
-            _format = format;
-            _items = new List<string>();
-        }
+        internal List<KeyValuePair<string, string>> StartupScripts = new List<KeyValuePair<string, string>>();
 
-        public ItemRegistrar Add(string url)
-        {
-            if (!_items.Any(s=>string.Equals(url, s, System.StringComparison.OrdinalIgnoreCase)))
-                _items.Insert(0, url);
-
-            return this;
-        }
-
-        public IHtmlString Render()
-        {
-            var sb = new StringBuilder();
-
-            foreach (var item in _items)
-            {
-                var fmt = string.Format(_format, item);
-                sb.AppendLine(fmt);
-            }
-
-            return new HtmlString(sb.ToString());
-        }
     }
 
     public class ItemRegistrarFormatters
     {
-        public const string StyleFormat = "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
-        public const string ScriptFormat = "<script src=\"{0}\" type=\"text/javascript\"></script>";
+       
     }
 
+
+    
 
     public static class HtmlAssetsExtensions
     {
         public static HtmlAssets HtmlAssets(this HtmlHelper htmlHelper)
         {
-            var instanceKey = "AssetsHelperInstance";
 
-            var context = htmlHelper.ViewContext.HttpContext;
+            var instanceKey = "HtmlAssetsInstance";
+
+            var context = htmlHelper.ViewContext.ViewData;
             if (context == null) return null;
 
-            var assetsHelper = (HtmlAssets)context.Items[instanceKey];
+            var assetsHelper = (HtmlAssets)context[instanceKey];
 
             if (assetsHelper == null)
-                context.Items.Add(instanceKey, assetsHelper = new HtmlAssets());
+                context.Add(instanceKey, assetsHelper = new HtmlAssets(htmlHelper));
 
             return assetsHelper;
         }
