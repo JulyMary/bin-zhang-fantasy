@@ -63,77 +63,82 @@ namespace Fantasy.Web.Mvc.Html
             }
         }
 
-        public void AddStartupScript(string id, string content)
+        public void AddStartupScript(string content, string id = null)
         {
-            if (!this.Data.StartupScripts.Any(s => String.Equals(s.Key, id, StringComparison.OrdinalIgnoreCase)))
+            
+
+            if (string.IsNullOrEmpty(id) || !this.Data.StartupScripts.Any(s => String.Equals(s.Key, id, StringComparison.OrdinalIgnoreCase)))
             {
                 this.Data.StartupScripts.Insert(_startupPosition, new KeyValuePair<string, string>(id, content));
                 _startupPosition++;
             }
         }
 
+        public bool ContainsStartupScript(string id)
+        {
+            return this.Data.StartupScripts.Any(s => s.Key == id);
+        }
+
+        
+
         private static MvcHtmlString _emptyString = new MvcHtmlString(string.Empty);
 
         public MvcHtmlString RenderStyleSheets()
         {
-            if (!this._html.ViewContext.IsChildAction)
-            {
-                if (this._html.ViewContext.RequestContext.HttpContext.Request.IsAjaxRequest())
-                {
-                    return RenderAjaxStyleScheets();
-                }
-                else
-                {
-                    return RenderHtmlStyleScheets();
-                }
-            }
-            else
-            {
-                return new MvcHtmlString(string.Empty);
-            }
+            string rs = string.Join("\r\n", this.Data.StyleSheets.Select(s => string.Format(StyleFormat, s)));
+            return new MvcHtmlString(rs);
         }
 
 
         public const string StyleFormat = "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
         public const string ScriptFormat = "<script src=\"{0}\" type=\"text/javascript\"></script>";
+        public const string ReadyFormat = @"<script type=""text/javascript"">
+$(document).ready(function()
+{
+    *
+})
+</script>";
 
-        private MvcHtmlString RenderHtmlStyleScheets()
-        {
-            throw new NotImplementedException();
-        }
-
-        private MvcHtmlString RenderAjaxStyleScheets()
-        {
-            return _emptyString; 
-        }
+      
 
         public MvcHtmlString RenderScripts()
         {
+
+            StringBuilder rs = new StringBuilder( string.Join("\r\n", this.Data.Scripts.Select(s => string.Format(ScriptFormat, s))));
+
+            string startup = string.Join("\r\n", this.Data.StartupScripts.Select(s=>s.Value));
+
+            rs.Append(ReadyFormat.Replace("*", startup));
+            return new MvcHtmlString(rs.ToString());
+        }
+
+       
+
+        public MvcHtmlString RenderAjaxCallback()
+        {
             if (!this._html.ViewContext.IsChildAction)
             {
-                if (this._html.ViewContext.RequestContext.HttpContext.Request.IsAjaxRequest())
+                StringBuilder rs = new StringBuilder();
+                foreach (string s in this.Data.StyleSheets)
                 {
-                    return RenderAjaxScripts();
+                    rs.AppendFormat("$.appendStyleSheet(\"{0}\");", s);
                 }
-                else
+                foreach (string s in this.Data.Scripts)
                 {
-                    return RenderHtmlScripts();
+                    rs.AppendFormat("$.appendScript(\"{0}\");", s);
                 }
+
+                foreach (string s in this.Data.StartupScripts.Select(x=>x.Value))
+                {
+                    rs.Append(s);
+                }
+
+                return new MvcHtmlString(rs.ToString());
             }
             else
             {
-                return new MvcHtmlString(string.Empty);
+                return _emptyString;
             }
-        }
-
-        private MvcHtmlString RenderHtmlScripts()
-        {
-            throw new NotImplementedException();
-        }
-
-        private MvcHtmlString RenderAjaxScripts()
-        {
-            throw new NotImplementedException();
         }
 
         private HtmlHelper _html { get; set; }
@@ -150,12 +155,7 @@ namespace Fantasy.Web.Mvc.Html
 
     }
 
-    public class ItemRegistrarFormatters
-    {
-       
-    }
-
-
+  
     
 
     public static class HtmlAssetsExtensions

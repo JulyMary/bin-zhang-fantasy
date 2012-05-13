@@ -23,12 +23,18 @@ namespace Fantasy.Web.Mvc.Html
             internal set
             {
                 _propertyName = value;
-                this.PropertyDescriptor = this.Model.Descriptor.Properties[value];
+               
             }
         }
 
 
-        public BusinessPropertyDescriptor PropertyDescriptor { get; private set; }  
+        public BusinessPropertyDescriptor PropertyDescriptor
+        {
+            get
+            {
+                return this.Model.Descriptor.Properties[this.PropertyName];
+            }
+        }
 
         protected void CreateName()
         {
@@ -102,6 +108,7 @@ namespace Fantasy.Web.Mvc.Html
             where TModel : BusinessObject
         {
               string name = BusinessObjectMetaDataHelper.PropertyNameFromLambdaExpression(expression, (TModel)editor.Model.Object);
+             
               editor.PropertyName = name;
               return editor;
              

@@ -12,9 +12,8 @@ namespace Fantasy.Web.Mvc.Html
     public static class UserControlFactoryExtensions
     {
 
-        public static T Attr<T, TControl>(this T factory, object htmlAttribute, bool replaceExisting = true)
-            where T : UserControlFactory<TControl>
-            where TControl : UserControl, new()
+        public static T Attr<T>(this T factory, object htmlAttribute, bool replaceExisting = true)
+            where T : UserControlFactory
         {
 
             RouteValueDictionary attrs2 = new RouteValueDictionary(htmlAttribute);
@@ -30,9 +29,9 @@ namespace Fantasy.Web.Mvc.Html
             return factory;
         }
 
-        public static T Attr<T, TControl>(this T factory, RouteValueDictionary htmlAttributes, bool replaceExisting = true)
-            where T : UserControlFactory<TControl>
-            where TControl : UserControl, new()
+        public static T Attr<T>(this T factory, RouteValueDictionary htmlAttributes, bool replaceExisting = true)
+            where T : UserControlFactory
+          
         {
 
             if (htmlAttributes != null)
@@ -47,17 +46,15 @@ namespace Fantasy.Web.Mvc.Html
             return factory;
         }
 
-        public static T RemoveAttr<T, TControl>(this T factory, string attrName)
-            where T : UserControlFactory<TControl>
-            where TControl : UserControl, new()
+        public static T RemoveAttr<T>(this T factory, string attrName)
+            where T : UserControlFactory
         {
             factory.Control.Attributes.Remove(attrName);
             return factory;
         }
 
-        public static T AddClass<T, TControl>(this T factory, string value)
-            where T : UserControlFactory<TControl>
-            where TControl : UserControl, new()
+        public static T AddClass<T>(this T factory, string value)
+            where T : UserControlFactory
         {
 
             string str;
@@ -74,9 +71,9 @@ namespace Fantasy.Web.Mvc.Html
             return factory;
         }
 
-        public static T RemoveClass<T, TControl>(this T factory, string value) 
-            where T : UserControlFactory<TControl> 
-            where TControl : UserControl, new()
+        public static T RemoveClass<T>(this T factory, string value) 
+            where T : UserControlFactory
+          
         {
             string @class = factory.Control.Attributes.GetValueOrDefault("class", string.Empty);
             List<string> values = @class.Split(' ').ToList();
@@ -112,9 +109,8 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
-        public static T BindModel<T, TControl>(this T factory, object model)
-            where T : UserControlFactory<TControl>
-            where TControl : UserControl, new()
+        public static T BindModel<T>(this T factory, object model)
+            where T : UserControlFactory
         {
 
             factory.Model = model;

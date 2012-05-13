@@ -19,7 +19,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return Invoker.Invoke(Owner, CodeName);
+                return Invoker.Invoke(Owner.Object, CodeName);
             }
         }
 

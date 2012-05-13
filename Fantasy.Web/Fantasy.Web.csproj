@@ -185,8 +185,10 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\propertygrid\style.css" />
+    <Content Include="Content\themes\base\texteditor\style.css" />
     <Content Include="Scripts\AjaxLogin.js" />
-    <Content Include="Scripts\fantasy.core.js" />
+    <Content Include="Scripts\fantasy\core.js" />
+    <Content Include="Scripts\fantasy\businessengine.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-ui-1.8.19.js" />
     <Content Include="Scripts\jquery.cookie.js" />
@@ -200,8 +202,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-1.3.0beta.debug.js" />
-    <Content Include="Scripts\knockout-1.3.0beta.js" />
+    <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\Mvc\Html\BooleanEditor.js" />
     <Content Include="Scripts\Mvc\Html\TextEditor.js" />
@@ -258,6 +259,7 @@
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
     </Compile>
+    <Compile Include="Mvc\Html\PropertyGridFactory.cs" />
     <Compile Include="Mvc\Html\PropertySort.cs" />
     <Compile Include="Mvc\Html\TextEditor.cs" />
     <Compile Include="Mvc\Html\TextEditorFactory.cs" />

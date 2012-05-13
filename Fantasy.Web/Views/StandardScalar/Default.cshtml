@@ -1,2 +1,2 @@
 ﻿@model Fantasy.BusinessEngine.BusinessObject
-@Model.Name
+@this.Html.PropertyGrid().BindModel(this.Model)

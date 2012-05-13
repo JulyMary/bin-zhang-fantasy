@@ -10,7 +10,7 @@ namespace Fantasy.Web.Mvc.Html
 {
 
 
-    public class UserControlFactory
+    public class UserControlFactory : IHtmlString
     {
         public UserControlFactory(HtmlHelper htmlHelper, Type controlType)
         {
@@ -27,16 +27,19 @@ namespace Fantasy.Web.Mvc.Html
         protected internal UserControl Control { get; private set; }
 
 
-        public virtual HtmlString ToHtmlString()
+        public virtual string ToHtmlString()
         {
-            return new HtmlString(this.ToString());
+
+            StringWriter writer = new StringWriter();
+            this.Render(writer);
+           
+
+            return writer.ToString();
         }
 
         public override string ToString()
         {
-            StringWriter writer = new StringWriter();
-            this.Render(writer);
-            return writer.ToString();
+            return this.ToHtmlString().ToString();
         }
 
         public void Render()
@@ -67,6 +70,8 @@ namespace Fantasy.Web.Mvc.Html
 
 
         }
+
+       
     }
 
 
