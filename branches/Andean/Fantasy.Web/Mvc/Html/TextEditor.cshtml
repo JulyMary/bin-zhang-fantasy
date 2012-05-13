@@ -7,15 +7,15 @@
 @if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
 {
 
-<span @WriteAttributes() data-bind="visible:@string.Format("{0}Accessbility != 'collpased'", this.PropertyDescriptor.CodeName)">
+<span @WriteAttributes() data-bind="visible:@string.Format("{0}Accessbility() != 'collpased'", this.PropertyDescriptor.CodeName)">
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <input name="@this.Attributes["name"]" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("{0}Accessbility == 'editable'", this.PropertyDescriptor.CodeName)"  />
+        <input type="text" name="@this.Attributes["name"]" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("{0}Accessbility() == 'editable'", this.PropertyDescriptor.CodeName)"  />
     } 
     @if (this.PropertyDescriptor.CanRead)
     {
-         <span data-bind="text : @this.PropertyDescriptor.CodeName" ></span>
+         <span data-bind="text : @this.PropertyDescriptor.CodeName, visible:@string.Format("{0}Accessbility() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
     }
-    @*, visible:@string.Format("{0}Accessbility == 'visible'", this.PropertyDescriptor.CodeName)*@
+    
 </span> 
 }
