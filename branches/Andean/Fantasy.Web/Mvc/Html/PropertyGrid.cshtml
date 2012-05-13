@@ -1,8 +1,8 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.UserControl<Fantasy.BusinessEngine.BusinessObject>
 @using Fantasy.BusinessEngine
 @{
-    Html.HtmlAssets().Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/propertygrid/style.css"));
-    var objectRender = this.Html.BusinessObjectRender(this.Model);
+    Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/propertygrid/style.css"));
+    var objectRender = this.Html.BusinessObjectRender(this.Model,"#" + this.Attributes["id"]);
     List<string> renderedCategories = new List<string>();
    
 }

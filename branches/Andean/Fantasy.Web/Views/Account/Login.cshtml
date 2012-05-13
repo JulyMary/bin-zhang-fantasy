@@ -2,8 +2,8 @@
 
 @{
     ViewBag.Title = "Log in"; 
-    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.js"));
-    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/jquery.validate.unobtrusive.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.validate.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.validate.unobtrusive.js"));
 }
 
 <hgroup class="title">

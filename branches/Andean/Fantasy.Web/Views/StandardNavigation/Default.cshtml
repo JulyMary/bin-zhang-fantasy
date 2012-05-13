@@ -1,20 +1,18 @@
 ﻿@model Fantasy.Web.Models.StandardNavigationDefaultViewModel
 @{
-    Html.HtmlAssets().Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/jstree/style.css"));
-    Html.HtmlAssets().Styles.Add(this.Url.ThemedContent("~/Content/themes/{0}/jslayout/layout-default.css"));
-    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/standardnavigation.default.js"));
-    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/jquery.jstree.js"));
-    Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/jquery.layout.js"));
+    Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/jstree/style.css"));
+    Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/jslayout/layout-default.css"));
+   
+   
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.layout.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.jstree.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardnavigation.default.js"));
+
+
+    Html.HtmlAssets().AddStartupScript("var initNavigationTreeNodes = " + @JsonHelper.Serialize(this.Model.RootTreeItem) + ";showtree(initNavigationTreeNodes);"); 
    
 }
 
-<script type="text/javascript" >
-    //<!--
-   
-    var initNavigationTreeNodes = @JsonHelper.Serialize(this.Model.RootTreeItem);
-  
-    //-->
-</script>
 
 <div id="pagelayout" style="min-width:100%;min-height:300px" >
 <div id="navigationpanel" class="ui-layout-west" >

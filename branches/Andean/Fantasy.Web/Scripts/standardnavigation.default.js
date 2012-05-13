@@ -1,11 +1,11 @@
 ﻿
-$(document).ready(function () {
+function showtree(root) {
 
 
     $("#navigationTree").jstree({
         "json_data": {
             "data": [
-				initNavigationTreeNodes
+				root
 			],
             "ajax":
             {
@@ -33,4 +33,4 @@ $(document).ready(function () {
    );
 
 
-});
+}

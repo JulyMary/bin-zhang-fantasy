@@ -5,9 +5,11 @@ using System.Web;
 
 namespace Fantasy.Web
 {
-    public enum InvisibleOptions
+    public enum Accessbility
     {
-        Hidden,
+        Editable,
+        Visible,
         Collapsed,
+        Hidden
     }
 }

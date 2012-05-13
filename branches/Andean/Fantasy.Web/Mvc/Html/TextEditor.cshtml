@@ -1,20 +1,21 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
-    this.Html.HtmlAssets().Scripts.Add(this.Url.Content("~/Scripts/Mvc/Html/TextEditor.js"));
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/texteditor/style.css"));
+    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Mvc/Html/TextEditor.js"));
 }
-@if (this.PropertyDescriptor.CanWrite)
+
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
 {
-<input @WriteAttributes() value="@this.Value" />
-}
-else if(this.PropertyDescriptor.CanRead)
-{
-    <span @WriteAttributes() >@this.Value</span>
-}
-else if (this.Model.InvisibleOption == Fantasy.Web.InvisibleOptions.Hidden)
-{
-    this.RenderHidden();
-} 
-else
-{
-    this.RenderCollapsed();
+
+<span @WriteAttributes() data-bind="visible:@string.Format("{0}Accessbility != 'collpased'", this.PropertyDescriptor.CodeName)">
+    @if (this.PropertyDescriptor.CanWrite)
+    {
+        <input name="@this.Attributes["name"]" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("{0}Accessbility == 'editable'", this.PropertyDescriptor.CodeName)"  />
+    } 
+    @if (this.PropertyDescriptor.CanRead)
+    {
+         <span data-bind="text : @this.PropertyDescriptor.CodeName" ></span>
+    }
+    @*, visible:@string.Format("{0}Accessbility == 'visible'", this.PropertyDescriptor.CodeName)*@
+</span> 
 }
