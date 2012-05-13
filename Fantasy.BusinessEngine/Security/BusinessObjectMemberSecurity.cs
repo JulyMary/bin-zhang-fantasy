@@ -57,7 +57,7 @@ namespace Fantasy.BusinessEngine.Security
                 }
             }
         }
-
+        [XAttribute("canWrite")]
         private bool? _canWrite;
 
         public bool? CanWrite
