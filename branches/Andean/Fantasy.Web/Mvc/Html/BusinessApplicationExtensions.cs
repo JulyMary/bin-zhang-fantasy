@@ -9,6 +9,7 @@ using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using System.IO;
 using System.Reflection;
+using System.Web.Mvc.Ajax;
 
 namespace Fantasy.Web.Mvc.Html
 {
@@ -19,6 +20,40 @@ namespace Fantasy.Web.Mvc.Html
             RouteValueDictionary values2 = new RouteValueDictionary(routeValues);
             values2.Add("AppName",appName);
             return htmlHelper.RouteLink(linkText, values2); 
+        }
+
+
+
+        public static MvcHtmlString ScalarViewLink(this AjaxHelper ajaxHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
+        {
+            if (ajaxOptions == null)
+            {
+                ajaxOptions = new AjaxOptions();
+            }
+            RouteValueDictionary dictionary = routeValues != null ? new RouteValueDictionary(routeValues) : new RouteValueDictionary();
+            routeValues = MergeDictionaries(dictionary, ajaxHelper.ViewContext.RouteData.Values);
+
+            routeValues["action"] = action;
+
+            routeValues["ObjId"] = objId;
+
+            routeValues["ViewType"] = ViewType.Obj;
+
+            //return 
+           
+            
+        }
+
+
+        private IDictionary<string, object> GetAjaxLinkAttributes()
+        {
+
+        }
+
+
+        public  static IDictionary<string, object> GetSclarViewLinkAttributes(this AjaxHelper ajaxHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
+        {
+
         }
 
 
