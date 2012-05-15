@@ -22,7 +22,6 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
-
         public static MvcHtmlString ScalarView(this HtmlHelper htmlHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null)
         {
 

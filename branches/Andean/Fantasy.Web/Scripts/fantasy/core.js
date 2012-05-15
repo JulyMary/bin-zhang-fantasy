@@ -80,20 +80,11 @@ if (!String.format) {
 
 
 
-//
-$.appendScript = function (href) {
-    var exists = false;
-    $("head > script").each(function () {
-        if ($(this).attr("src").toLowerCase() == href.toLowerCase()) {
-            exists = true;
-        }
-    })
-    if (!exists) {
-        $.getScript(href);
-    }
-}
 
-$.appendStyleSheet = function (href) {
+
+
+
+function appendStyleSheet (href) {
     var exists = false;
     $("head > link").each(function () {
         if ($(this).attr("href").toLowerCase() == href.toLowerCase()) {
@@ -104,6 +95,37 @@ $.appendStyleSheet = function (href) {
     if (!exists) {
         $("head").append(String.format('<link ref="stylesheet" href="{0}" type=text/css" />', href));
     }
+}
+
+function execute_external_script (src) {
+    var exists = false;
+    $("head > script").each(function () {
+        if ($(this).attr("src").toLowerCase() == src.toLowerCase()) {
+            exists = true;
+        }
+    })
+    if (!exists) {
+        $.getScript(src);
+    }
+}
+
+function execute_ajax_scripts(scripts, startup) {
+    var args = new Array();
+    for(var i = 0; i < scripts.length; i ++)
+    {
+        var src = scripts[i];
+        args[i] = function(){execute_external_script(src)};
+    }
+
+    $.when.apply($, args).then(start);
+
+   
+}
+
+function append_ajax_script(html) {
+    $(html).find("script").each(function () {
+        $("head").append(this);
+    })
 }
 
 
