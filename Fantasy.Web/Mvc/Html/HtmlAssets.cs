@@ -114,30 +114,31 @@ $(document).ready(function()
 
        
 
-        public MvcHtmlString RenderAjaxCallback()
+        public string RenderAjaxCallback()
         {
-            if (!this._html.ViewContext.IsChildAction)
+            if (this._html.ViewContext.HttpContext.Request.IsAjaxRequest() && !this._html.ViewContext.IsChildAction)
             {
-                StringBuilder rs = new StringBuilder();
+
+
+                StringBuilder rs = new StringBuilder("<script type=\"text/javascript\">\r\n");
                 foreach (string s in this.Data.StyleSheets)
                 {
-                    rs.AppendFormat("$.appendStyleSheet(\"{0}\");", s);
-                }
-                foreach (string s in this.Data.Scripts)
-                {
-                    rs.AppendFormat("$.appendScript(\"{0}\");", s);
+                    rs.AppendFormat("appendStyleSheet(\"{0}\");\r\n", s);
                 }
 
-                foreach (string s in this.Data.StartupScripts.Select(x=>x.Value))
-                {
-                    rs.Append(s);
-                }
+                rs.AppendFormat("var externalScripts = {0};", JsonHelper.Serialize(this.Data.Scripts));
+               
+                rs.AppendFormat("var startup = function(){{{0}}}", string.Join(Environment.NewLine, this.Data.StartupScripts.Select(x=>x.Value)));
 
-                return new MvcHtmlString(rs.ToString());
+                rs.Append("execute_ajax_scripts(externalScripts, startup);\r\n");
+
+                rs.Append("</script>");
+
+                return rs.ToString();
             }
             else
             {
-                return _emptyString;
+                return string.Empty;
             }
         }
 
@@ -154,9 +155,6 @@ $(document).ready(function()
         internal List<KeyValuePair<string, string>> StartupScripts = new List<KeyValuePair<string, string>>();
 
     }
-
-  
-    
 
     public static class HtmlAssetsExtensions
     {
