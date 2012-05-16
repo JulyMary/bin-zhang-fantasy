@@ -2,7 +2,32 @@
 function showtree(root) {
 
 
-    $("#navigationTree").jstree({
+    $("#navigationTree").bind("load_node.jstree", function (e, data) {
+
+
+        function BindToEntity(node) {
+            var shortcut = $(node).data("entity");
+            if (shortcut != undefined) {
+
+
+                //$("a:first", node).append('<span data-bind="text:Name"></span>');
+                be.shortcut(shortcut);
+
+                be.applyBindings(shortcut.Id, node);
+            }
+            var children = data.inst._get_children(node);
+            children.each(function () {
+                BindToEntity(this);
+            });
+
+        }
+
+        var nodes = data.inst._get_children(data.rslt.obj);
+        nodes.each(function () {
+            BindToEntity(this);
+        });
+    })
+    .jstree({
         "json_data": {
             "data": [
 				root
@@ -23,7 +48,9 @@ function showtree(root) {
             "dots": false,
             "icons": true
         },
-        "plugins": ["themes", "json_data", "ui"]
+        "plugins": ["themes", "json_data", "ui"],
+
+        "core" : {"html_titles" : true}
     });
 
     $("#pagelayout").layout(
