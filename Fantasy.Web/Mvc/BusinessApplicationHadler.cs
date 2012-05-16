@@ -8,6 +8,7 @@ using System.Web.Routing;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.Services;
 using System.Reflection;
+using Fantasy.Web.Mvc.Html;
 
 namespace Fantasy.Web.Mvc
 {
@@ -58,6 +59,12 @@ namespace Fantasy.Web.Mvc
             {
                 controller = ProcessRequestInit(httpContext, app);
                 controller.Execute(this.RequestContext);
+                if (httpContext.Request.IsAjaxRequest())
+                {
+                    string script = HtmlAssets.RenderAjaxCallback(httpContext);
+
+                    httpContext.Response.Write(script);
+                }
             }
             finally
             {

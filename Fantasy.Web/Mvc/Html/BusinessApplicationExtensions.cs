@@ -15,23 +15,68 @@ namespace Fantasy.Web.Mvc.Html
 {
     public static class BusinessApplicationExtensions
     {
-        public static MvcHtmlString ApplicationLink(this HtmlHelper htmlHelper, string linkText, string appName, object routeValues)
+        public static MvcHtmlString ScalarViewLink(this AjaxHelper ajaxHelper, string linkText, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, object htmlAttributes = null, AjaxOptions ajaxOptions = null)
         {
-            RouteValueDictionary values2 = new RouteValueDictionary(routeValues);
-            values2.Add("AppName",appName);
-            return htmlHelper.RouteLink(linkText, values2); 
+
+            UrlHelper urlHelper = new UrlHelper(ajaxHelper.ViewContext.RequestContext);
+
+            IDictionary<string, object> attrs = urlHelper.GetSclarViewLinkAttributes(objId, action, routeValues, ajaxOptions); 
+
+            TagBuilder rs = new TagBuilder("a");
+
+            if (htmlAttributes != null)
+            {
+                attrs = MergeDictionaries(attrs, new RouteValueDictionary(htmlAttributes));
+            }
+
+            rs.MergeAttributes(attrs);
+            rs.SetInnerText(linkText);
+
+            return new MvcHtmlString(rs.ToString(TagRenderMode.Normal));
+            
         }
 
 
+        
 
-        public static MvcHtmlString ScalarViewLink(this AjaxHelper ajaxHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
+
+        private static  IDictionary<string, object> GetAjaxLinkAttributes(this UrlHelper urlHelper, RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
         {
             if (ajaxOptions == null)
             {
                 ajaxOptions = new AjaxOptions();
             }
+            IDictionary<string, object> rs = ajaxOptions.ToUnobtrusiveHtmlAttributes();
+
+
+            if (rs.ContainsKey("data-ajax-success"))
+            {
+                string func = (string)rs["append_ajax_script"];
+
+                string newFunc = string.Format(@"function(data, status, xhr){{append_ajax_script(data);getFunction(""{0}"", [""data"", ""status"", ""xhr""]).apply(this, [data, status, xhr]);}}", func);
+                rs["data-ajax-success"] = newFunc;
+            }
+            else
+            {
+                rs["data-ajax-success"] = "append_ajax_script";
+            }
+
+            string url = urlHelper.RouteUrl(routeValues);
+
+            rs["href"] = url;
+
+            return rs;
+
+        }
+
+
+      
+
+        public  static IDictionary<string, object> GetSclarViewLinkAttributes(this UrlHelper urlHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
+        {
+
             RouteValueDictionary dictionary = routeValues != null ? new RouteValueDictionary(routeValues) : new RouteValueDictionary();
-            routeValues = MergeDictionaries(dictionary, ajaxHelper.ViewContext.RouteData.Values);
+            routeValues = MergeDictionaries(dictionary, urlHelper.RequestContext.RouteData.Values);
 
             routeValues["action"] = action;
 
@@ -39,21 +84,10 @@ namespace Fantasy.Web.Mvc.Html
 
             routeValues["ViewType"] = ViewType.Obj;
 
-            //return 
+            routeValues.Remove("Property");
+
            
-            
-        }
-
-
-        private IDictionary<string, object> GetAjaxLinkAttributes()
-        {
-
-        }
-
-
-        public  static IDictionary<string, object> GetSclarViewLinkAttributes(this AjaxHelper ajaxHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
-        {
-
+            return urlHelper.GetAjaxLinkAttributes(routeValues, ajaxOptions); 
         }
 
 
@@ -106,7 +140,7 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
-        private static RouteValueDictionary MergeDictionaries(params RouteValueDictionary[] dictionaries)
+        private static RouteValueDictionary MergeDictionaries(params IDictionary<string, object>[] dictionaries)
         {
             RouteValueDictionary dictionary = new RouteValueDictionary();
             foreach (RouteValueDictionary dictionary2 in from d in dictionaries
