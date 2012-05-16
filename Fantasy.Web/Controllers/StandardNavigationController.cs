@@ -135,13 +135,17 @@ namespace Fantasy.Web.Controllers
             if (descriptor.Properties["Name"].CanRead == true)
             {
                 JsTreeNode rs = new JsTreeNode();
-                rs.data.title = obj.Name;
+                rs.data.title = "<span data-bind=\"text:Name\"></span>";
                 rs.data.icon = this.Url.ImageList(obj.IconKey);
-
-                rs.data.attr = Url.GetSclarViewLinkAttributes(obj.Id, ajaxOptions: new AjaxOptions()
+                
+                IDictionary<string, object> attr =  Url.GetSclarViewLinkAttributes(obj.Id, ajaxOptions: new AjaxOptions()
                     {
                         UpdateTargetId="contentpanel",
                     });
+                //attr.Add("data-bind", "text:Name");
+                rs.data.attr = attr;
+
+                rs.metadata = new { entity = new {Id = obj.Id, Name = obj.Name } };
 
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 IImageListService imageList = BusinessEngineContext.Current.GetRequiredService<IImageListService>();
