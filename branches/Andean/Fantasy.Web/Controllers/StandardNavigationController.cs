@@ -12,6 +12,7 @@ using Fantasy.Web.Models;
 using Fantasy.Web.Mvc;
 using Fantasy.Web.Mvc.Html;
 using Fantasy.Web.Properties;
+using System.Web.Mvc.Ajax;
 namespace Fantasy.Web.Controllers
 {
     
@@ -136,6 +137,11 @@ namespace Fantasy.Web.Controllers
                 JsTreeNode rs = new JsTreeNode();
                 rs.data.title = obj.Name;
                 rs.data.icon = this.Url.ImageList(obj.IconKey);
+
+                rs.data.attr = Url.GetSclarViewLinkAttributes(obj.Id, ajaxOptions: new AjaxOptions()
+                    {
+                        UpdateTargetId="contentpanel",
+                    });
 
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 IImageListService imageList = BusinessEngineContext.Current.GetRequiredService<IImageListService>();

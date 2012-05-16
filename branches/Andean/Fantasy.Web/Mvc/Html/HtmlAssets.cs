@@ -23,6 +23,20 @@ namespace Fantasy.Web.Mvc.Html
         private int _scriptsPosition = 0;
         private int _stylePosition = 0;
         private int _startupPosition = 0;
+
+
+        private static HtmlAssetsData GetData(HttpContextBase context)
+        {
+            HtmlAssetsData rs = (HtmlAssetsData)context.Items[DataInstanceKey];
+
+            if (rs == null)
+            {
+                rs = new HtmlAssetsData();
+                context.Items.Add(DataInstanceKey, rs);
+            }
+
+            return rs;
+        }
         private HtmlAssetsData Data
         {
             get
@@ -30,15 +44,7 @@ namespace Fantasy.Web.Mvc.Html
 
               
                 HttpContextBase context = this._html.ViewContext.HttpContext;
-                HtmlAssetsData rs = (HtmlAssetsData)context.Items[DataInstanceKey];
-
-                if (rs == null)
-                {
-                    rs = new HtmlAssetsData();
-                    context.Items.Add(DataInstanceKey, rs);
-                }
-
-                return rs;
+                return GetData(context);
                    
             }
         }
@@ -112,23 +118,24 @@ $(document).ready(function()
             return new MvcHtmlString(rs.ToString());
         }
 
-       
 
-        public string RenderAjaxCallback()
+
+        internal static string RenderAjaxCallback(HttpContextBase context)
         {
-            if (this._html.ViewContext.HttpContext.Request.IsAjaxRequest() && !this._html.ViewContext.IsChildAction)
+
+            HtmlAssetsData data = (HtmlAssetsData)context.Items[DataInstanceKey];
+            if (data != null)
             {
 
-
                 StringBuilder rs = new StringBuilder("<script type=\"text/javascript\">\r\n");
-                foreach (string s in this.Data.StyleSheets)
+                foreach (string s in data.StyleSheets)
                 {
                     rs.AppendFormat("appendStyleSheet(\"{0}\");\r\n", s);
                 }
 
-                rs.AppendFormat("var externalScripts = {0};", JsonHelper.Serialize(this.Data.Scripts));
-               
-                rs.AppendFormat("var startup = function(){{{0}}}", string.Join(Environment.NewLine, this.Data.StartupScripts.Select(x=>x.Value)));
+                rs.AppendFormat("var externalScripts = {0};", JsonHelper.Serialize(data.Scripts));
+
+                rs.AppendFormat("var startup = function(){{{0}}};", string.Join(Environment.NewLine, data.StartupScripts.Select(x => x.Value)));
 
                 rs.Append("execute_ajax_scripts(externalScripts, startup);\r\n");
 
@@ -140,6 +147,7 @@ $(document).ready(function()
             {
                 return string.Empty;
             }
+           
         }
 
         private HtmlHelper _html { get; set; }

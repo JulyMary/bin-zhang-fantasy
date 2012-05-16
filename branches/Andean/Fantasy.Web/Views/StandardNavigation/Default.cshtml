@@ -20,14 +20,9 @@
 </div>
 <div id="contentpanel" class="ui-layout-center">
 
-    @using (this.Ajax.BeginForm(new AjaxOptions()
-    {
-            UpdateTargetId = "ObjectBrowser",
-            OnSuccess = this.Html.HtmlAssets().RenderAjaxCallback()
-    }))
-    {
+   
     @Html.ScalarView(Model.ObjId)
-    }
+    
 </div>
 </div>
 

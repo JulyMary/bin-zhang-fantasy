@@ -22,12 +22,12 @@ namespace Fantasy.Web.Controllers
 
         #region IScalarViewController Members
 
-        public ViewResult Default(Guid objId)
+        public ViewResultBase Default(Guid objId)
         {
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
             BusinessObject obj = es.Get<BusinessObject>(objId);
 
-            return View(obj);
+            return PartialView(obj);
         }
 
         #endregion

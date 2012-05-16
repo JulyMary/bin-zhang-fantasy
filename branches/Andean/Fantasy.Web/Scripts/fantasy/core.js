@@ -80,7 +80,17 @@ if (!String.format) {
 
 
 
-
+function getFunction(code, argNames) {
+    var fn = window, parts = (code || "").split(".");
+    while (fn && parts.length) {
+        fn = fn[parts.shift()];
+    }
+    if (typeof (fn) === "function") {
+        return fn;
+    }
+    argNames.push(code);
+    return Function.constructor.apply(null, argNames);
+}
 
 
 
@@ -97,36 +107,46 @@ function appendStyleSheet (href) {
     }
 }
 
-function execute_external_script (src) {
-    var exists = false;
-    $("head > script").each(function () {
-        if ($(this).attr("src").toLowerCase() == src.toLowerCase()) {
-            exists = true;
-        }
-    })
-    if (!exists) {
-        $.getScript(src);
-    }
-}
 
 function execute_ajax_scripts(scripts, startup) {
     var args = new Array();
+    var c = 0;
     for(var i = 0; i < scripts.length; i ++)
     {
+      
+        var exists = false;
         var src = scripts[i];
-        args[i] = function(){execute_external_script(src)};
+        $("head > script").each(function () {
+            var comparteTo = $(this).attr("src");
+            if (comparteTo != undefined && comparteTo.toLowerCase() == src.toLowerCase()) {
+                exists = true;
+
+                return false;
+            }
+        })
+        if (!exists) {
+            args[c] = $.getScript(src);
+            c++;
+        }
+              
+        
     }
-
-    $.when.apply($, args).then(start);
-
-   
+    //startup();
+    $.when.apply(this, args).then(startup);
 }
+
 
 function append_ajax_script(html) {
     $(html).find("script").each(function () {
         $("head").append(this);
     })
 }
+
+
+
+
+
+
 
 
 
