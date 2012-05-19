@@ -6,7 +6,7 @@
    
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.layout.js"));
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.jstree.js"));
-    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardnavigation.default.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardnavigation/default.js"));
 
 
     Html.HtmlAssets().AddStartupScript("var initNavigationTreeNodes = " + @JsonHelper.Serialize(this.Model.RootTreeItem) + ";showtree(initNavigationTreeNodes);"); 

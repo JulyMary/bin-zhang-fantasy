@@ -2,6 +2,8 @@
 function showtree(root) {
 
 
+    var be = $("#navigationTree").be();
+
     $("#navigationTree").bind("load_node.jstree", function (e, data) {
 
 
@@ -9,8 +11,6 @@ function showtree(root) {
             var shortcut = $(node).data("entity");
             if (shortcut != undefined) {
 
-
-                //$("a:first", node).append('<span data-bind="text:Name"></span>');
                 be.shortcut(shortcut);
 
                 be.applyBindings(shortcut.Id, node);
