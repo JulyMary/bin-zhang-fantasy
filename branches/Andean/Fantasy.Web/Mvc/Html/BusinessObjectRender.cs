@@ -20,56 +20,69 @@ namespace Fantasy.Web.Mvc.Html
             this.Object = obj;
             this.Descriptor = new BusinessObjectDescriptor(obj);
             this.Accessbility = Accessbility.Collapsed;
-            this.WriteObjectDefinition();
+            this.WriteObjectDefinition(selector);
             this.WriteObjectDataBinding(selector);
 
         }
 
         private void WriteObjectDataBinding(string selector)
         {
-            string text = string.Format("be.applyBindings('{0}','{1}');", this.Object.Id, selector);
+            string text = string.Format("$('{1}').be().applyBindings('{0}','{1}');", this.Object.Id, selector);
             this.Html.HtmlAssets().AddStartupScript(text);
         }
 
 
-        private void WriteObjectDefinition()
+        private void WriteObjectDefinition(string selector)
         {
-            string scriptId = "__businessobject_definition" + this.Object.Id.ToString();
+
+           
+
+            string scriptId = "__businessobject_definition" + BusinessEngineContext.Current.Application.Data.Id .ToString() + this.Object.Id.ToString();
+            
             if (!this.Html.HtmlAssets().ContainsStartupScript(scriptId))
             {
 
                 JavaScriptSerializer ser = new JavaScriptSerializer();
-                StringBuilder text = new StringBuilder(1024);
+                StringBuilder objText = new StringBuilder(1024);
+                StringBuilder aclText = new StringBuilder(1024);
                 var properDescs = from prop in this.Descriptor.Properties
                                   where prop.CanRead && prop.MemberType == BusinessObjectMemberTypes.Property
                                   select prop;
                 foreach (BusinessPropertyDescriptor propDesc in properDescs)
                 {
-                    if (text.Length > 0)
+                    if (objText.Length > 0)
                     {
-                        text.Append(',');
+                        objText.Append(',');
                     }
                     object value = propDesc.Value;
                     if (value is BusinessObject)
                     {
                         BusinessObject oval = (BusinessObject)value;
-                        text.AppendFormat("{0} : be.shortcut({{Id: {1}, Name : '{2}'}})", propDesc.CodeName,
-                            oval.Id, oval.Name);
-
-
+                        objText.AppendFormat("{0} : $('{1}').be().shortcut({{Id: {2}, Name : '{3}'}})", propDesc.CodeName,
+                            selector, oval.Id, oval.Name);
                     }
                     else
                     {
-                        text.AppendFormat("{0} : {1}", propDesc.CodeName, JsonHelper.Serialize(value));
+                        objText.AppendFormat("{0} : {1}", propDesc.CodeName, JsonHelper.Serialize(value));
+                    }
+
+                    if (aclText.Length > 0)
+                    {
+                        aclText.Append(',');
                     }
 
                     Accessbility acc = propDesc.CanWrite ? Accessbility.Editable : Accessbility.Visible;
 
-                    text.AppendFormat(",{0}Accessbility : '{1}'", propDesc.CodeName, acc.ToString().ToLower());
+                    aclText.AppendFormat("{0} : '{1}'", propDesc.CodeName, acc.ToString().ToLower());
                   
                 }
 
-                string script = string.Format("be.renew({{{0}}});", text);
+                if (aclText.Length > 0)
+                {
+                    objText.AppendFormat(", acl : {{{0}}}", aclText);
+                }
+
+                string script = string.Format("$('{0}').be().renew({{{1}}});", selector, objText);
                 this.Html.HtmlAssets().AddStartupScript(script,scriptId);
             }
         }
