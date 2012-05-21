@@ -1,2 +1,7 @@
 ﻿@model Fantasy.BusinessEngine.BusinessObject
+
+@using (this.Ajax.BeginAppViewForm(new AjaxOptions()))
+{
+   <input type="submit" name="save" value="Save" />
 @this.Html.PropertyGrid().BindModel(this.Model)
+}

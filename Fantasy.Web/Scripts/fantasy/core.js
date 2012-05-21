@@ -78,6 +78,12 @@ if (!String.format) {
     };
 }
 
+if (!String.isNullOrEmpty) {
+    String.isNullOrEmpty = function (text) {
+        return text == undefined || text == "";
+    }
+}
+
 
 
 function getFunction(code, argNames) {
@@ -131,16 +137,11 @@ function execute_ajax_scripts(scripts, startup) {
               
         
     }
-    //startup();
     $.when.apply(this, args).then(startup);
 }
 
 
-function append_ajax_script(html) {
-    $(html).find("script").each(function () {
-        $("head").append(this);
-    })
-}
+
 
 
 

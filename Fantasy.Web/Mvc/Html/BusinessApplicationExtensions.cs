@@ -40,7 +40,7 @@ namespace Fantasy.Web.Mvc.Html
         
 
 
-        private static  IDictionary<string, object> GetAjaxLinkAttributes(this UrlHelper urlHelper, RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
+        private static  IDictionary<string, object> GetAjaxHtmlAttributes(AjaxOptions ajaxOptions = null)
         {
             if (ajaxOptions == null)
             {
@@ -48,27 +48,55 @@ namespace Fantasy.Web.Mvc.Html
             }
             IDictionary<string, object> rs = ajaxOptions.ToUnobtrusiveHtmlAttributes();
 
-
-            if (rs.ContainsKey("data-ajax-success"))
-            {
-                string func = (string)rs["append_ajax_script"];
-
-                string newFunc = string.Format(@"function(data, status, xhr){{append_ajax_script(data);getFunction(""{0}"", [""data"", ""status"", ""xhr""]).apply(this, [data, status, xhr]);}}", func);
-                rs["data-ajax-success"] = newFunc;
-            }
-            else
-            {
-                rs["data-ajax-success"] = "append_ajax_script";
-            }
-
-            string url = urlHelper.RouteUrl(routeValues);
-
-            rs["href"] = url;
+           
+           
 
             return rs;
 
         }
 
+        public static MvcForm BeginAppViewForm(this AjaxHelper ajaxHelper, AjaxOptions ajaxOptions = null, string appName = null, Guid? rootId = null, ViewType? viewType = null,
+                  Guid? objectId = null, string action = null, string property = null, object routeValues = null, object htmlAttributes = null)
+        {
+            UrlHelper urlHelper = new UrlHelper(ajaxHelper.ViewContext.RequestContext);
+            string formAction = urlHelper.ApplicationUrl(appName, rootId, viewType, objectId, action, property, routeValues);
+
+            RouteValueDictionary htmlAttributes2 = htmlAttributes != null ? new RouteValueDictionary(htmlAttributes) : new RouteValueDictionary();
+
+            return ajaxHelper.FormHelper(formAction, ajaxOptions, htmlAttributes2);
+
+
+        }
+
+       
+        private static MvcForm FormHelper(this AjaxHelper ajaxHelper, string formAction, AjaxOptions ajaxOptions, IDictionary<string, object> htmlAttributes)
+        {
+            TagBuilder builder = new TagBuilder("form");
+            builder.MergeAttributes<string, object>(htmlAttributes);
+            builder.MergeAttribute("action", formAction);
+            builder.MergeAttribute("method", "post");
+            ajaxOptions = ajaxOptions ?? new AjaxOptions();
+           
+            builder.MergeAttributes<string, object>(ajaxOptions.ToUnobtrusiveHtmlAttributes());
+            
+            if (ajaxHelper.ViewContext.ClientValidationEnabled)
+            {
+                Func<string> generator = (Func<string>)Invoker.Invoke(ajaxHelper.ViewContext, "FormIdGenerator"); 
+
+                builder.GenerateId(generator());
+            }
+            ajaxHelper.ViewContext.Writer.Write(builder.ToString(TagRenderMode.StartTag));
+            MvcForm form = new MvcForm(ajaxHelper.ViewContext);
+            if (ajaxHelper.ViewContext.ClientValidationEnabled)
+            {
+                ajaxHelper.ViewContext.FormContext.FormId = builder.Attributes["id"];
+            }
+            return form;
+        }
+
+ 
+
+ 
 
       
 
@@ -86,8 +114,11 @@ namespace Fantasy.Web.Mvc.Html
 
             routeValues.Remove("Property");
 
+            IDictionary<string, object> rs = GetAjaxHtmlAttributes(ajaxOptions);
            
-            return urlHelper.GetAjaxLinkAttributes(routeValues, ajaxOptions); 
+            string url = urlHelper.RouteUrl(routeValues);
+            rs["href"] = url;
+            return rs;
         }
 
 
@@ -183,17 +214,18 @@ namespace Fantasy.Web.Mvc.Html
             //Inherit appName, rootId, viewType if appName is not assigned
             if (!values2.ContainsKey("AppName"))
             {
-                RouteValueDictionary current = url.RequestContext.RouteData.Values;
+                //RouteValueDictionary current = url.RequestContext.RouteData.Values;
               
-                values2.Add("AppName", current["AppName"]);
-                if (current.ContainsKey("RootId") && !values2.ContainsKey("RootId"))
-                {
-                    values2.Add("RootId", current["RootId"]);
-                }
-                if (current.ContainsKey("ViewType") && !values2.ContainsKey("ViewType"))
-                {
-                    values2.Add("ViewType", current["ViewType"]);
-                }
+                //values2.Add("AppName", current["AppName"]);
+                //if (current.ContainsKey("RootId") && !values2.ContainsKey("RootId"))
+                //{
+                //    values2.Add("RootId", current["RootId"]);
+                //}
+                //if (current.ContainsKey("ViewType") && !values2.ContainsKey("ViewType"))
+                //{
+                //    values2.Add("ViewType", current["ViewType"]);
+                //}
+                values2 = MergeDictionaries(values2, url.RequestContext.RouteData.Values);
             }
 
             return url.RouteUrl(values2);
