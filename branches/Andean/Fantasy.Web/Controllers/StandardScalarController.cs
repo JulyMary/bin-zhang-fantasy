@@ -30,6 +30,12 @@ namespace Fantasy.Web.Controllers
             return PartialView(obj);
         }
 
+
+        public ViewResultBase Save(Guid objId)
+        {
+            return this.Default(objId);
+        }
+
         #endregion
     }
 }

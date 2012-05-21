@@ -27,19 +27,10 @@ namespace Fantasy.BusinessEngine.Services
                 _factory = ServiceManager.Services.GetRequiredService<IConnectionFactory>();
             }
             return _factory.GetConnection();
-
-           
         }
 
         #endregion
 
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            
-        }
-
-        #endregion
+      
     }
 }
