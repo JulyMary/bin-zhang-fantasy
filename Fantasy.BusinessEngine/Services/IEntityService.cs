@@ -12,7 +12,17 @@ namespace Fantasy.BusinessEngine.Services
     {
         T CreateEntity<T>() where T : IEntity;
 
+        T CreateEntity<T>(Guid id) where T : IEntity; 
+
+        IEntity CreateEntity(Type entityType);
+
+        IEntity CreateEntity(Type entityType, Guid id);
+
+        IEntity Get(Type entityType, object id);
+
         T Get<T>(object id) where T : IEntity;
+
+
 
         void SaveOrUpdate(IEntity entity);
 
