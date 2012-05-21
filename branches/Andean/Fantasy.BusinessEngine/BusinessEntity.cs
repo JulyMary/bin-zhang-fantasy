@@ -8,7 +8,7 @@ using Fantasy.BusinessEngine.Events;
 
 namespace Fantasy.BusinessEngine
 {
-    public abstract class BusinessEntity : IBusinessEntity, IEntity 
+    public abstract class BusinessEntity : IBusinessEntity, IBusinessEntityEx, IEntity 
     {
         public BusinessEntity()
         {
@@ -197,6 +197,9 @@ namespace Fantasy.BusinessEngine
         }
 
 
+
+
+
         public virtual DateTime CreationTime
         {
             get
@@ -292,7 +295,10 @@ namespace Fantasy.BusinessEngine
 
         void IEntity.OnCreate(EventArgs e)
         {
-            this.Id = Guid.NewGuid();
+            if (this.Id == Guid.Empty)
+            {
+                this.Id = Guid.NewGuid();
+            }
             this.CreationTime = DateTime.Now;
             this.OnCreate(e);
         }
@@ -412,7 +418,16 @@ namespace Fantasy.BusinessEngine
 
         #endregion
 
-       
+
+
+        #region IBusinessEntityEx Members
+
+        public void SetId(Guid id)
+        {
+            this.Id = id;
+        }
+
+        #endregion
     }
 
 
