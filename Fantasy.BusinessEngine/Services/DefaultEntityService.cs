@@ -76,19 +76,7 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
-        public T CreateEntity<T>(Guid id) where T : IEntity
-        {
-            T rs = Activator.CreateInstance<T>();
-            IEntity entity = (IEntity)rs;
-
-            if (rs is IBusinessEntityEx)
-            {
-                ((IBusinessEntityEx)rs).SetId(id);
-            }
-
-            this._createListener.OnCreate(entity);
-            return rs;
-        }
+       
 
         public IEntity CreateEntity(Type entityType)
         {
@@ -98,18 +86,6 @@ namespace Fantasy.BusinessEngine.Services
             return rs;
         }
 
-        public IEntity CreateEntity(Type entityType, Guid id)
-        {
-            IEntity rs = (IEntity)Activator.CreateInstance(entityType);
-            if (rs is IBusinessEntityEx)
-            {
-                ((IBusinessEntityEx)rs).SetId(id);
-            }
-            this._createListener.OnCreate(rs);
-            return rs;
-        }
-
-       
 
         private int _updateLevel = 0;
 
