@@ -195,7 +195,7 @@
     <Content Include="Scripts\jquery.hotkeys.js" />
     <Content Include="Scripts\jquery.jstree.js" />
     <Content Include="Scripts\jquery.layout.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\fantasy\jquery.unobtrusive-ajax.fantasy.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />

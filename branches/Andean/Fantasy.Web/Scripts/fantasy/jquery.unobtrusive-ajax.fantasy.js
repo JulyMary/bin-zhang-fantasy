@@ -38,28 +38,37 @@
         if (contentType.indexOf("application/x-javascript") !== -1) {  // jQuery already executes JavaScript for us
             return;
         }
+        var toUpdate = element.getAttribute("data-ajax-update");
 
-        mode = (element.getAttribute("data-ajax-mode") || "").toUpperCase();
-        $(element.getAttribute("data-ajax-update")).each(function (i, update) {
-            var top;
+        if (!String.isNullOrEmpty(toUpdate)) {
+            mode = (element.getAttribute("data-ajax-mode") || "").toUpperCase();
+            $(toUpdate).each(function (i, update) {
+                var top;
 
-            switch (mode) {
-            case "BEFORE":
-                top = update.firstChild;
-                $("<div />").html(data).contents().each(function () {
-                    update.insertBefore(this, top);
-                });
-                break;
-            case "AFTER":
-                $("<div />").html(data).contents().each(function () {
-                    update.appendChild(this);
-                });
-                break;
-            default:
-                $(update).html(data);
-                break;
-            }
-        });
+                switch (mode) {
+                    case "BEFORE":
+                        top = update.firstChild;
+                        $("<div />").html(data).contents().each(function () {
+                            update.insertBefore(this, top);
+                        });
+                        break;
+                    case "AFTER":
+                        $("<div />").html(data).contents().each(function () {
+                            update.appendChild(this);
+                        });
+                        break;
+                    default:
+                        $(update).html(data);
+                        break;
+                }
+            });
+
+        }
+        else {
+            $(element).closest(".appviewcontainer").html(data);
+        }
+
+
     }
 
     function asyncRequest(element, options) {
@@ -91,6 +100,13 @@
             },
             success: function (data, status, xhr) {
                 asyncOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
+
+                $(data).find("script").andSelf().filter("script").each(function () {
+                    $("head").append(this);
+                });
+
+               
+
                 getFunction(element.getAttribute("data-ajax-success"), ["data", "status", "xhr"]).apply(this, arguments);
             },
             error: getFunction(element.getAttribute("data-ajax-failure"), ["xhr", "status", "error"])
@@ -112,7 +128,7 @@
         return !validationInfo || !validationInfo.validate || validationInfo.validate();
     }
 
-    $("a[data-ajax=true]").live("click", function (evt) {
+    $(document).on("click", "a[data-ajax=true]", function (evt) {
         evt.preventDefault();
         asyncRequest(this, {
             url: this.href,
@@ -121,7 +137,7 @@
         });
     });
 
-    $("form[data-ajax=true] input[type=image]").live("click", function (evt) {
+    $(document).on("click", "form[data-ajax=true] input[type=image]", function (evt) {
         var name = evt.target.name,
             $target = $(evt.target),
             form = $target.parents("form")[0],
@@ -137,18 +153,18 @@
         }, 0);
     });
 
-    $("form[data-ajax=true] :submit").live("click", function (evt) {
+    $(document).on("click","form[data-ajax=true] :submit", function (evt) {
         var name = evt.target.name,
             form = $(evt.target).parents("form")[0];
 
-        $(form).data(data_click, name ? [{ name: name, value: evt.target.value }] : []);
+        $(form).data(data_click, name ? [{ name: name, value: evt.target.value}] : []);
 
         setTimeout(function () {
             $(form).removeData(data_click);
         }, 0);
     });
 
-    $("form[data-ajax=true]").live("submit", function (evt) {
+    $(document).on("submit", "form[data-ajax=true]", function (evt) {
         var clickInfo = $(this).data(data_click) || [];
         evt.preventDefault();
         if (!validate(this)) {
@@ -160,4 +176,4 @@
             data: clickInfo.concat($(this).serializeArray())
         });
     });
-}(jQuery));
+} (jQuery));
