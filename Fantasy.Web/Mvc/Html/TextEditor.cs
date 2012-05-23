@@ -12,8 +12,7 @@ namespace Fantasy.Web.Mvc.Html
         {
 
             this.AddClass("text-editor");
-            this.MergeAttribute("name", this.GenerateId());
-            this.MergeAttribute("id", this.GenerateId());
+            
             this.MergeAttribute("type", "text");
             base.PreExecute();
         }

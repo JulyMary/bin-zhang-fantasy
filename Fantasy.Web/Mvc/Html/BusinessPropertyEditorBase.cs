@@ -36,31 +36,30 @@ namespace Fantasy.Web.Mvc.Html
             }
         }
 
-        protected void CreateName()
+
+        public string FullHtmlFieldName
         {
-
-            string name = GenerateId();
-
-            if (!this.Attributes.ContainsKey("name"))
+            get
             {
-                this.Attributes.Add("name", name); 
+                return this.Html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(this.PropertyName); 
             }
-
-           
         }
 
-        public virtual string GenerateId()
+        public string FullHtmlFieldId
         {
-            return this.Model.Descriptor.Object.Id + "_" + this.PropertyName;
+            get
+            {
+                return this.Html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(this.PropertyName);
+            }
         }
-
+      
 
 
         protected override void PreExecute()
         {
            
             base.PreExecute();
-            CreateName();
+           
         }
        
         protected virtual void RenderReadOnly()
