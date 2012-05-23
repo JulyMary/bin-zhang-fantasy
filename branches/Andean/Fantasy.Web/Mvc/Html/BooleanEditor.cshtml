@@ -8,7 +8,7 @@
 }
 @if(this.PropertyDescriptor.CanRead)
 {
-    <input @WriteAttributes() disabled="disabled" /><label for="@GenerateId()">@(this.Value ? this.TrueText : this.FalseText)</label>
+    <input @WriteAttributes() disabled="disabled" /><label for="">@(this.Value ? this.TrueText : this.FalseText)</label>
 }
 else if (this.Model.Accessbility == Fantasy.Web.Accessbility.Hidden)
 {

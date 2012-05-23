@@ -239,6 +239,7 @@
     <Compile Include="Mvc\AppRoute.cs" />
     <Compile Include="Mvc\BusinessApplicationHadler.cs" />
     <Compile Include="Mvc\BusinessApplicationRouteHandler.cs" />
+    <Compile Include="Mvc\BusinessEntityModelBinder.cs" />
     <Compile Include="Mvc\ChainedControllerFactory.cs" />
     <Compile Include="Mvc\CompiledContentHandler.cs" />
     <Compile Include="Mvc\CompiledContentHandlerFactory.cs" />

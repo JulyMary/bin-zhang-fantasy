@@ -10,7 +10,7 @@
 <span @WriteAttributes() data-bind="visible:@string.Format("acl.{0}() != 'collpased'", this.PropertyDescriptor.CodeName)">
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <input type="text" name="@this.Attributes["name"]" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"  />
+        <input type="text" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"  />
     } 
     @if (this.PropertyDescriptor.CanRead)
     {

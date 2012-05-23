@@ -22,7 +22,7 @@ namespace Fantasy.Web.Mvc.Html
 
             this.AddClass("boolean-editor");
 
-            this.MergeAttribute("id", this.GenerateId());
+          
             this.MergeAttribute("type", "checkbox");
 
             if (this.Value)
