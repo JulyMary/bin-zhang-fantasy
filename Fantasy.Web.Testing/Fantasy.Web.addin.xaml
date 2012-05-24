@@ -88,6 +88,7 @@
         <Object ID="CompiledContentHandlerFactory">
             <fw:CompiledContentHandlerFactory/>
         </Object>
+        
     </Extension>
 
 
@@ -136,6 +137,9 @@
         </Object>
         <Object ID="RegisterAspNetMvcDefualtRoute">
             <fw:RegisterAspNetMvcDefualtRouteCommand />
+        </Object>
+        <Object ID="RegisterBusinessObjectModelBinderCommand">
+            <fw:RegisterBusinessObjectModelBinderCommand/>
         </Object>
         <Object ID="WatchDependencyPath">
             <fw:WatchDependencyPathCommand/>
