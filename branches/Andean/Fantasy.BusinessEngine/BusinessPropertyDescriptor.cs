@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Collections;
 
 namespace Fantasy.BusinessEngine
 {
@@ -21,6 +22,92 @@ namespace Fantasy.BusinessEngine
             {
                 return Invoker.Invoke(Owner.Object, CodeName);
             }
+            set
+            {
+
+                switch (this.MemberType)
+                {
+                    case BusinessObjectMemberTypes.Property:
+                        this.Owner.Object.GetType().GetProperty(CodeName).SetValue(this.Owner.Object, value, null);
+                        break;
+                    case BusinessObjectMemberTypes.LeftAssociation:
+
+                        if (this.IsScalar)
+                        {
+                            this.SetAssnValue((BusinessObject)value, this.Association.LeftNavigatable ? this.Association.LeftRoleCode : null,
+                                (new Cardinality(this.Association.LeftCardinality)).IsScalar);  
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+
+
+                        break;
+                    case BusinessObjectMemberTypes.RightAssociation:
+                        if(this.IsScalar)
+                        {
+                            this.SetAssnValue((BusinessObject)value, this.Association.RightNavigatable ? this.Association.RightRoleCode : null,
+                              (new Cardinality(this.Association.RightCardinality)).IsScalar);  
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                        break;
+                  
+                    default:
+                        throw new NotSupportedException();
+                }
+                
+            }
+        }
+
+
+        private void SetAssnValue(BusinessObject newValue, string otherSideRole, bool otherSideIsScalar)
+        {
+
+
+            PropertyInfo otherSidePropty = null; 
+            if(otherSideRole != null)
+            {
+                otherSidePropty =  this.ReferencedClass.EntityType().GetProperty(otherSideRole); 
+                BusinessObject oldValue = (BusinessObject)this.Value;
+                if (oldValue != null)
+                {
+                    if (otherSideIsScalar)
+                    {
+                        otherSidePropty.SetValue(oldValue, null, null);
+                    }
+                    else
+                    {
+                        IList list = (IList)otherSidePropty.GetValue(oldValue, null);
+                        if (list != null)
+                        {
+                            list.Remove(this.Owner.Object);
+                        }
+                    }
+                }
+            }
+            this.Owner.Object.GetType().GetProperty(CodeName).SetValue(this.Owner.Object, newValue, null);
+
+            if (newValue != null && otherSideRole != null)
+            {
+                if (otherSideIsScalar)
+                {
+                    otherSidePropty.SetValue(newValue, this.Owner.Object, null);
+                }
+                else
+                {
+                    IList list = (IList)otherSidePropty.GetValue(newValue, null);
+                    if (list != null)
+                    {
+                        list.Add(this.Owner.Object);
+                    }
+                }
+            }
+
+
         }
 
 
