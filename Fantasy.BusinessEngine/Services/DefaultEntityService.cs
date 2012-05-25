@@ -69,20 +69,36 @@ namespace Fantasy.BusinessEngine.Services
 
         public T CreateEntity<T>() where T : IEntity
         {
+            return CreateEntity<T>(null);
+        }
+
+
+        public T CreateEntity<T>(object key) where T : IEntity
+        {
             T rs = Activator.CreateInstance<T>();
-            IEntity entity = (IEntity)rs;
-            this._createListener.OnCreate(entity);
+
+            EntityCreateEventArgs e = new EntityCreateEventArgs(rs) { Key = key };
+         
+            this._createListener.OnCreate(e);
             return rs;
         }
+
+
+
 
 
        
 
         public IEntity CreateEntity(Type entityType)
         {
+            return this.CreateEntity(entityType, null);
+        }
+
+        public IEntity CreateEntity(Type entityType, object key)
+        {
             IEntity rs = (IEntity)Activator.CreateInstance(entityType);
-           
-            this._createListener.OnCreate(rs);
+            EntityCreateEventArgs e = new EntityCreateEventArgs(rs) { Key = key };
+            this._createListener.OnCreate(e);
             return rs;
         }
 

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using System.Xml.Linq;
+using Fantasy.BusinessEngine.Collections;
+using Fantasy.XSerialization;
+using Fantasy.BusinessEngine.Properties;
 
 namespace Fantasy.BusinessEngine
 {
@@ -38,7 +42,7 @@ namespace Fantasy.BusinessEngine
         public virtual string TableName { get; private set; }
 
 
-
+      
 
 
         public virtual string CodeName
@@ -257,10 +261,121 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+
+        protected internal virtual string ExtensionsData
+        {
+            get
+            {
+                return (string)this.GetValue("ExtensionsData", null);
+            }
+            set
+            {
+                this.SetValue("ExtensionsData", value);
+            }
+        }
+
+        private ObservableList<IEntityExtension> _extensions = new ObservableList<IEntityExtension>();
+
+        public virtual IList<IEntityExtension> Extensions
+        {
+            get { return _extensions; }
+        }
+
+       
+
         protected override void OnLoad(EventArgs e)
         {
+            this.LoadExtensions();
             base.OnLoad(e);
            
+        }
+
+        protected override void OnCreate(EventArgs e)
+        {
+            this.LoadExtensions();
+            base.OnCreate(e);
+        }
+
+
+        private void LoadExtensions()
+        {
+            XName typeAttr = (XNamespace)Consts.ExtensionsNamespace + "type";
+            if (!string.IsNullOrEmpty(this.ExtensionsData))
+            {
+                XElement element = XElement.Parse(this.ExtensionsData);
+                foreach (XElement child in element.Elements())
+                {
+                    string typeName = (string)child.Attribute(typeAttr);
+                    if (typeName != null)
+                    {
+                        Type type = Type.GetType(typeName);
+                        if (type != null)
+                        {
+                            XSerializer ser = new XSerializer(type);
+                            try
+                            {
+                                IEntityExtension extension = (IEntityExtension)ser.Deserialize(child);
+                                this.Extensions.Add(extension);
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            foreach (IEntityExtension extension in this.Extensions)
+            {
+                extension.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(Extension_PropertyChanged);
+            }
+
+            this._extensions.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Extensions_CollectionChanged);
+
+        }
+
+        private void Extensions_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    foreach (IEntityExtension extension in e.NewItems)
+                    {
+                        extension.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(Extension_PropertyChanged);
+                    }
+                    break;
+
+                case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    foreach (IEntityExtension extension in e.OldItems)
+                    {
+                        extension.PropertyChanged -= new System.ComponentModel.PropertyChangedEventHandler(Extension_PropertyChanged);
+                    }
+                    break;
+            }
+            this.UpdateExtensionData();
+        }
+
+        private void Extension_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this.UpdateExtensionData();
+        }
+
+        private void UpdateExtensionData()
+        {
+            XNamespace ns = Consts.ExtensionsNamespace;
+            XElement element = new XElement(ns + "extensions");
+            foreach (IEntityExtension extension in this.Extensions)
+            {
+                XElement child = new XElement(ns + "extension");
+                child.SetAttributeValue(ns + "type", extension.GetType().VersionFreeTypeName());
+
+                XSerializer ser = new XSerializer(extension.GetType());
+                ser.Serialize(child, extension);
+                element.Add(child);
+            }
+            this.ExtensionsData = element.ToString(SaveOptions.OmitDuplicateNamespaces);
         }
 
 

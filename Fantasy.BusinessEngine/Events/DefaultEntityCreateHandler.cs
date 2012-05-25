@@ -11,7 +11,7 @@ namespace Fantasy.BusinessEngine.Events
 
         public void Execute(EntityEventArgs e)
         {
-            e.Entity.OnCreate(EventArgs.Empty);
+            e.Entity.OnCreate((EntityCreateEventArgs)e);
         }
 
         #endregion

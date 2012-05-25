@@ -10,7 +10,7 @@ namespace Fantasy.BusinessEngine
     public interface IEntity : INotifyPropertyChanged, INotifyPropertyChanging 
     {
 
-        void OnCreate(EventArgs e);
+        void OnCreate(EntityCreateEventArgs e);
 
         event EventHandler Create;
 

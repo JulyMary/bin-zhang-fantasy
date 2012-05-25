@@ -146,6 +146,7 @@
     <Compile Include="AssociationEditing\AssociationEditor.cs" />
     <Compile Include="AssociationEditing\AssociationFolder.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationNameSetAction.cs" />
+    <Compile Include="AssociationEditing\CategoryAccessor.cs" />
     <Compile Include="AssociationEditing\PackageAssociationsProvider.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationLeftRoleNameSetAction.cs" />
     <Compile Include="AssociationEditing\BusinessAssociationRightRoleNameSetAction.cs" />
@@ -383,6 +384,8 @@
     <Compile Include="ClassEditing\PackageObjectModelFolderProvider.cs" />
     <Compile Include="PackageEditing\DeletePackageCommand.cs" />
     <Compile Include="PackageEditing\PackageSubfolderAdapterFactory.cs" />
+    <Compile Include="PropertyEditing\PropertyCategoryEditorCategoryEditor.cs" />
+    <Compile Include="PropertyEditing\PropertyCategoryAccessors.cs" />
     <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
     <Compile Include="InvokerMemberConverter.cs" />

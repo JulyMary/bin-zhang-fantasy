@@ -9,17 +9,17 @@ namespace Fantasy.BusinessEngine.Events
     class EntityCreateEventListener : ObjectWithSite
     {
         private IAddInTreeNode _treeNode;
-        public void OnCreate(IEntity entity)
+        public void OnCreate(EntityCreateEventArgs e)
         {
             if (_treeNode == null)
             {
                 _treeNode = AddInTree.Tree.GetTreeNode("fantasy/businessengine/entityhandlers/create");
             }
 
-            entity.EntityState = EntityState.New;
-            EntityEventArgs e = new EntityEventArgs(entity);
+            e.Entity.EntityState = EntityState.New;
+           
 
-            foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(entity, this.Site))
+            foreach (IEntityEventHandler handler in _treeNode.BuildChildItems(e.Entity, this.Site))
             {
                 handler.Execute(e);
             }

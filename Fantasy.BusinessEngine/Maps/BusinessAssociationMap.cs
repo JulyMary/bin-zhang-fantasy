@@ -29,7 +29,9 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.RightRoleName);
             this.Map(x => x.RightRoleCode);
             this.Map(x => x.RightNavigatable);
-            this.Map(x => x.RightRoleDisplayOrder); 
+            this.Map(x => x.RightRoleDisplayOrder);
+
+            this.Map(x => x.ExtensionsData).Column("Extensions").CustomType("StringClob");
 
 
            

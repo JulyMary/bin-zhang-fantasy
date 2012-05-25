@@ -92,6 +92,9 @@
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
+    <Compile Include="Events\EntityCreateEventArgs.cs" />
+    <Compile Include="EntityExtensions\Category.cs" />
+    <Compile Include="IEntityExtension.cs" />
     <Compile Include="Maps\BusinessMenuItemMap.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
     <Compile Include="Security\BusinessApplicationACLSecurityProvider.cs" />

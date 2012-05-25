@@ -16,6 +16,11 @@ namespace Fantasy.BusinessEngine.Services
 
         IEntity CreateEntity(Type entityType);
 
+
+        T CreateEntity<T>(object key) where T : IEntity;
+
+        IEntity CreateEntity(Type entityType, object key);
+
      
         IEntity Get(Type entityType, object id);
 
