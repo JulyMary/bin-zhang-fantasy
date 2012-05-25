@@ -34,9 +34,6 @@ namespace Fantasy.Web.Mvc.Html
 
         private void WriteObjectDefinition(string selector)
         {
-
-           
-
             string scriptId = "__businessobject_definition" + BusinessEngineContext.Current.Application.Data.Id .ToString() + this.Object.Id.ToString();
             
             if (!this.Html.HtmlAssets().ContainsStartupScript(scriptId))
@@ -74,12 +71,14 @@ namespace Fantasy.Web.Mvc.Html
                     Accessbility acc = propDesc.CanWrite ? Accessbility.Editable : Accessbility.Visible;
 
                     aclText.AppendFormat("{0} : '{1}'", propDesc.CodeName, acc.ToString().ToLower());
+
                   
                 }
 
                 if (aclText.Length > 0)
                 {
                     objText.AppendFormat(", acl : {{{0}}}", aclText);
+                    objText.AppendFormat(", entityState : '{0}'", this.Object.EntityState.ToString().ToLower());
                 }
 
                 string script = string.Format("$('{0}').be().renew({{{1}}});", selector, objText);

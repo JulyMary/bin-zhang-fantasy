@@ -293,9 +293,10 @@ namespace Fantasy.BusinessEngine
             }
         }
 
-        void IEntity.OnCreate(EventArgs e)
+        void IEntity.OnCreate(EntityCreateEventArgs e)
         {
-            this.Id = Guid.NewGuid();
+           
+            this.Id = e.Key != null ? (Guid)e.Key : Guid.NewGuid();
             this.CreationTime = DateTime.Now;
             this.OnCreate(e);
         }
@@ -415,9 +416,6 @@ namespace Fantasy.BusinessEngine
 
         #endregion
 
-
-
-      
     }
 
 

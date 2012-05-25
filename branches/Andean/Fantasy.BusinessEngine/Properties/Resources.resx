@@ -126,6 +126,9 @@
   <data name="AssemblyReferenceGroupName" xml:space="preserve">
     <value>References</value>
   </data>
+  <data name="BusinessPropertyDefaultCategory" xml:space="preserve">
+    <value>Misc</value>
+  </data>
   <data name="DuplicatedClassViewDefined" xml:space="preserve">
     <value>There are more than one class view settings defined for class {0} in application {1}.</value>
   </data>

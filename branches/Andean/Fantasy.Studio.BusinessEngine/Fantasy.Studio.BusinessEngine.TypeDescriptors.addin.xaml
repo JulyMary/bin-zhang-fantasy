@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model"
         xmlns:draw="clr-namespace:System.Drawing.Design;assembly=System.Drawing.Design"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine"/>
@@ -107,6 +108,8 @@
             <PropertyDescriptor ID="IsSystem" Name="IsSystem" Caption="Is System Entity" Category="System" ReadOnly="True"/>
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" Set="{New sbe:BusinessPropertyNameSetAction}"/>
             <PropertyDescriptor ID="CodeName" Name="CodeName" Caption="Code Name" Category="General"/>
+            <PropertyDescriptor ID="Category" Name="Category" Caption="Category" Category="General" Get="{New sbe:PropertyCategoryGetter}" Set="{New sbe:PropertyCategorySetter}" Type="{x:Type sys:String}"
+                                Editor="{New sbe:PropertyCategoryEditor}"/>
             <PropertyDescriptor ID="FieldName" Name="FieldName" Caption="Field Name" Category="Data">
                 <PropertyDescriptor.Conditional>
                     <OwnerState StateMember="EntityState" State="New" Action="Disable" />
@@ -122,9 +125,10 @@
                     <OwnerState StateMember="EntityState" State="New" Action="Disable" />
                 </PropertyDescriptor.Conditional>
             </PropertyDescriptor>
+           
             <PropertyDescriptor ID="Type" Name="Type" Caption="Type" Category="General" Converter="{New sbe:BusinessDataTypeConverter}" 
                                 Set="{New sbe:BusinessPropertyDataTypeAccessor}" Get="{New sbe:BusinessPropertyDataTypeAccessor}"
-                                Editor="{New sbe:BusinessPropertyTypeEditor}" Type="{x:Type be:IBusinessEntity}"/>
+                                Editor="{New sbe:BusinessPropertyTypeEditor}" Type="{x:Type be:IBusinessEntity}" />
         </TypeDescriptor>
         
         <TypeDescriptor ID="BusinessEnum" TargetType="{x:Type be:BusinessEnum}">
@@ -230,12 +234,14 @@
             <PropertyDescriptor ID="LeftRoleName" Name="LeftRoleName" Caption="Left Role Name" Category="Left" Set="{New sbe:BusinessAssociationLeftRoleNameSetAction}" />
             <PropertyDescriptor ID="LeftRoleCode" Name="LeftRoleCode" Caption="Left Role Code Name" Category="Left" />
             <PropertyDescriptor ID="LeftNavigatable" Name="LeftNavigatable" Caption="Left Navigatable" Category="Left" />
-
+            <PropertyDescriptor ID="LeftCategory" Name="LeftCategory" Caption="Left Category" Category="Left" Get="{New sbe:AssociationLeftCategoryGetter}" Set="{New sbe:AssociationLeftCategorySetter}" Type="{x:Type sys:String}" />
+            
             <PropertyDescriptor ID="RightClass" Name="RightClass" Caption="Right Class" Category="Right" ReadOnly="true" Converter="{New sbe:EntityFullNameConverter}" />
             <PropertyDescriptor ID="RightCardinality" Name="RightCardinality" Caption="Right Cardinality" Category="Right"  Editor="{New sbe:CardinalityEditor}" />
             <PropertyDescriptor ID="RightRoleName" Name="RightRoleName" Caption="Right Role Name" Category="Right" Set="{New sbe:BusinessAssociationRightRoleNameSetAction}"  />
             <PropertyDescriptor ID="RightRoleCode" Name="RightRoleCode" Caption="Right Role Code Name" Category="Right" />
             <PropertyDescriptor ID="RightNavigatable" Name="RightNavigatable" Caption="Right Navigatable" Category="Right" />
+            <PropertyDescriptor ID="RightCategory" Name="RightCategory" Caption="Right Category" Category="Right" Get="{New sbe:AssociationRightCategoryGetter}" Set="{New sbe:AssociationRightCategorySetter}" Type="{x:Type sys:String}" />
         </TypeDescriptor>
         <TypeDescriptor ID="LeftRoleNode" TargetType="{x:Type dm:LeftRoleNode}">
             <TypeDescriptor.Conditional>
