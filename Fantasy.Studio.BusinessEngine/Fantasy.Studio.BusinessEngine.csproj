@@ -384,7 +384,8 @@
     <Compile Include="ClassEditing\PackageObjectModelFolderProvider.cs" />
     <Compile Include="PackageEditing\DeletePackageCommand.cs" />
     <Compile Include="PackageEditing\PackageSubfolderAdapterFactory.cs" />
-    <Compile Include="PropertyEditing\PropertyCategoryEditorCategoryEditor.cs" />
+    <Compile Include="CategoryNameListener.cs" />
+    <Compile Include="CategoryEditor.cs" />
     <Compile Include="PropertyEditing\PropertyCategoryAccessors.cs" />
     <Compile Include="PropertyEditing\PropertyMoveDownCommand.cs" />
     <Compile Include="PropertyEditing\PropertyMoveUpCommand.cs" />
@@ -438,6 +439,7 @@
     <Compile Include="SaveAllCommandHandler.cs" />
     <Compile Include="SaveEntityEditingViewContentCommand.cs" />
     <Compile Include="CodeEditing\ScriptFolder.cs" />
+    <Compile Include="CategoryNameProvider.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="CodeGenerating\BusinessClassCodeGenerator.cs" />
     <Compile Include="CodeGenerating\ClassChangedHandler.cs" />
@@ -791,7 +793,9 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

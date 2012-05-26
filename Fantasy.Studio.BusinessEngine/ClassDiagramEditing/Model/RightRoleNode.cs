@@ -19,7 +19,8 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this.EditingState = entity.EntityState != EntityState.Clean ? EditingState.Dirty : Studio.EditingState.Clean;
             EntityStateChangedEventManager.AddListener(this.Entity, this);
             PropertyChangedEventManager.AddListener(this.Entity, this, "RightRoleDisplayOrder");
-            PropertyChangedEventManager.AddListener(this.Entity, this, "RightRoleName"); 
+            PropertyChangedEventManager.AddListener(this.Entity, this, "RightRoleName");
+            PropertyChangedEventManager.AddListener(this.Entity, this, "ExtensionsData"); 
 	    }
 
         public BusinessAssociation Entity { get; private set; }
@@ -89,6 +90,28 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             set
             {
                 this.Entity.RightRoleDisplayOrder = value;
+            }
+        }
+
+        public string Category
+        {
+            get
+            {
+                Fantasy.BusinessEngine.EntityExtensions.Category cate = this.Entity.RightExtensions.OfType<Fantasy.BusinessEngine.EntityExtensions.Category>().SingleOrDefault();
+                return cate != null ? cate.Value : null;
+            }
+            set
+            {
+                Fantasy.BusinessEngine.EntityExtensions.Category cate = this.Entity.RightExtensions.OfType<Fantasy.BusinessEngine.EntityExtensions.Category>().SingleOrDefault();
+                if (cate != null)
+                {
+                    cate.Value = value;
+                }
+                else
+                {
+                    cate = new Fantasy.BusinessEngine.EntityExtensions.Category() { Value = value };
+                    this.Entity.RightExtensions.Add(cate);
+                }
             }
         }
 

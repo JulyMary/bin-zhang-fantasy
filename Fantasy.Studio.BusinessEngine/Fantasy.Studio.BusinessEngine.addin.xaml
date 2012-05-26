@@ -99,6 +99,9 @@
         <Object ID="ScriptTemplateRepository" InsertBefore="workbench">
             <sbe:ScriptTemplateRepository/>
         </Object>
+        <Object ID="CategoryNameProvider">
+            <sbe:CategoryNameProvider/>
+        </Object>
        
     </Extension>
     <Extension Path="fantasy/studio/businessengine/applicationeditor/commandbindings"></Extension>
@@ -963,6 +966,15 @@
                 <IsTypeOf Type="{x:Type be:BusinessRoleData}"/>
             </Object.Conditional>
             <code:RoleChangedHandler/>
+        </Object>
+        <Object ID="CategoryListener">
+            <Object.Conditional>
+                <Or>
+                    <IsTypeOf Type="{x:Type be:BusinessProperty}"/>
+                    <IsTypeOf Type="{x:Type be:BusinessAssociation}" />
+                </Or>
+            </Object.Conditional>
+            <sbe:CategoryNameListener/>
         </Object>
     </Extension>
 
