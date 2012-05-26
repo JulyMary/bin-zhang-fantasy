@@ -45,6 +45,29 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
         }
 
+
+        public string Category
+        {
+            get
+            {
+                Fantasy.BusinessEngine.EntityExtensions.Category cate = this.Entity.LeftExtensions.OfType<Fantasy.BusinessEngine.EntityExtensions.Category>().SingleOrDefault();
+                return cate != null ? cate.Value : null;
+            }
+            set
+            {
+                Fantasy.BusinessEngine.EntityExtensions.Category cate = this.Entity.LeftExtensions.OfType<Fantasy.BusinessEngine.EntityExtensions.Category>().SingleOrDefault();
+                if (cate != null)
+                {
+                    cate.Value = value;
+                }
+                else
+                {
+                    cate = new Fantasy.BusinessEngine.EntityExtensions.Category() { Value = value };
+                    this.Entity.LeftExtensions.Add(cate);
+                }
+            }
+        }
+
         public string CodeName
         {
             get
