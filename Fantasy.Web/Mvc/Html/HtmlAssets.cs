@@ -20,9 +20,7 @@ namespace Fantasy.Web.Mvc.Html
 
 
         private const string DataInstanceKey = "HtmlAssetsDataInstance";
-        private int _scriptsPosition = 0;
-        private int _stylePosition = 0;
-        private int _startupPosition = 0;
+       
 
 
         private static HtmlAssetsData GetData(HttpContextBase context)
@@ -55,8 +53,8 @@ namespace Fantasy.Web.Mvc.Html
         {
             if (!this.Data.StyleSheets.Any(s => String.Equals(s, url, StringComparison.OrdinalIgnoreCase)))
             {
-                this.Data.StyleSheets.Insert(_stylePosition, url);
-                _stylePosition++;
+                this.Data.StyleSheets.Insert(this.Data._stylePosition, url);
+                this.Data._stylePosition++;
             }
         }
 
@@ -64,8 +62,8 @@ namespace Fantasy.Web.Mvc.Html
         {
             if (!this.Data.Scripts.Any(s => String.Equals(s, url, StringComparison.OrdinalIgnoreCase)))
             {
-                this.Data.Scripts.Insert(_scriptsPosition,url);
-                _scriptsPosition++;
+                this.Data.Scripts.Insert(this.Data._scriptsPosition, url);
+                this.Data._scriptsPosition++;
             }
         }
 
@@ -75,8 +73,8 @@ namespace Fantasy.Web.Mvc.Html
 
             if (string.IsNullOrEmpty(id) || !this.Data.StartupScripts.Any(s => String.Equals(s.Key, id, StringComparison.OrdinalIgnoreCase)))
             {
-                this.Data.StartupScripts.Insert(_startupPosition, new KeyValuePair<string, string>(id, content));
-                _startupPosition++;
+                this.Data.StartupScripts.Insert(this.Data._startupPosition, new KeyValuePair<string, string>(id, content));
+                this.Data._startupPosition++;
             }
         }
 
@@ -161,6 +159,10 @@ $(document).ready(function()
         internal List<string> Scripts = new List<string>();
 
         internal List<KeyValuePair<string, string>> StartupScripts = new List<KeyValuePair<string, string>>();
+
+        internal int _scriptsPosition = 0;
+        internal int _stylePosition = 0;
+        internal int _startupPosition = 0;
 
     }
 

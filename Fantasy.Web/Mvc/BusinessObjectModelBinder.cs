@@ -20,21 +20,20 @@ namespace Fantasy.Web.Mvc
             if (model == null)
             {
 
-                Guid id = new Guid(bindingContext.ValueProvider.GetValue("Id").AttemptedValue);
-
-                if (bindingContext.ValueProvider.GetValue("ClassId") != null)
-                {
-                    Guid classId = new Guid(bindingContext.ValueProvider.GetValue("ClassId").AttemptedValue);
-                    BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(classId);
-
-                    model = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(@class.EntityType(), id);
-                }
-                else
-                {
-                    model = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(bindingContext.ModelType, id);
-                }
-               
+                model = TryCreateModel(bindingContext, model);
             }
+
+            if (model != null)
+            {
+                BindModel(bindingContext, model);
+            }
+
+            return model;
+
+        }
+
+        private void BindModel(ModelBindingContext bindingContext, BusinessObject model)
+        {
             BusinessObjectDescriptor descriptor = new BusinessObjectDescriptor(model);
 
             foreach (BusinessPropertyDescriptor prop in descriptor.Properties)
@@ -42,9 +41,9 @@ namespace Fantasy.Web.Mvc
                 if (prop.CanWrite)
                 {
                     ValueProviderResult vps = bindingContext.ValueProvider.GetValue(prop.CodeName);
-                    if(vps != null)
+                    if (vps != null)
                     {
-                        string str = (string)vps.RawValue; 
+                        string str = (string)vps.AttemptedValue;
 
                         //TODO: Add converter for property;
 
@@ -80,15 +79,33 @@ namespace Fantasy.Web.Mvc
                                 prop.Value = Convert.ChangeType(string.Empty, prop.PropertyType);
                             }
                         }
-                        
-                        
+
+
                     }
                 }
             }
+        }
 
+        private  BusinessObject TryCreateModel(ModelBindingContext bindingContext, BusinessObject model)
+        {
+            if (bindingContext.ValueProvider.GetValue("Id") != null)
+            {
 
+                Guid id = new Guid(bindingContext.ValueProvider.GetValue("Id").AttemptedValue);
+
+                if (bindingContext.ValueProvider.GetValue("ClassId") != null)
+                {
+                    Guid classId = new Guid(bindingContext.ValueProvider.GetValue("ClassId").AttemptedValue);
+                    BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(classId);
+
+                    model = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(@class.EntityType(), id);
+                }
+                else
+                {
+                    model = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(bindingContext.ModelType, id);
+                }
+            }
             return model;
-
         }
 
         #endregion

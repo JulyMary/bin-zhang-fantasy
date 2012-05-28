@@ -257,13 +257,13 @@
     <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
     <Compile Include="Mvc\Html\BusinessPropertyEditorBase.cs" />
+    <Compile Include="Mvc\Html\HiddenEditor.cs" />
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Mvc\Html\PropertyGridFactory.cs" />
     <Compile Include="Mvc\Html\PropertySort.cs" />
     <Compile Include="Mvc\Html\TextEditor.cs" />
-    <Compile Include="Mvc\Html\TextEditorFactory.cs" />
     <Compile Include="Mvc\Html\UserControl.cs" />
     <Compile Include="Mvc\Html\UserControlFactoryExtensions.cs" />
     <Compile Include="Mvc\Html\UserControlFactory.cs" />
@@ -321,6 +321,7 @@
     <Content Include="Mvc\Html\PropertyGrid.cshtml" />
     <Content Include="Mvc\Html\BooleanEditor.cshtml" />
     <Content Include="Mvc\Html\TextEditor.cshtml" />
+    <Content Include="Mvc\Html\HiddenEditor.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

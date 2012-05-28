@@ -105,8 +105,6 @@
                     $("head").append(this);
                 });
 
-               
-
                 getFunction(element.getAttribute("data-ajax-success"), ["data", "status", "xhr"]).apply(this, arguments);
             },
             error: getFunction(element.getAttribute("data-ajax-failure"), ["xhr", "status", "error"])
@@ -133,7 +131,8 @@
         asyncRequest(this, {
             url: this.href,
             type: "GET",
-            data: []
+            data: [],
+            cache: false
         });
     });
 
@@ -173,7 +172,8 @@
         asyncRequest(this, {
             url: this.action,
             type: this.method || "GET",
-            data: clickInfo.concat($(this).serializeArray())
+            data: clickInfo.concat($(this).serializeArray()),
+            cache:false
         });
     });
 } (jQuery));

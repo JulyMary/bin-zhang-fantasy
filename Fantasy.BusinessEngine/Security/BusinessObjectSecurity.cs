@@ -81,6 +81,8 @@ namespace Fantasy.BusinessEngine.Security
             }
         }
 
+
+
         [XArray,
         XArrayItem(Name = "property", Type=typeof(BusinessObjectMemberSecurity))]
         public virtual BusinessObjectMemberSecurityCollection Properties { get; protected set; }

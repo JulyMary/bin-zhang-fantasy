@@ -6,10 +6,11 @@
              xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:dat="clr-namespace:System.Windows.Data;assembly=PresentationFramework"
              xmlns:f="urn:schema-fantasy:xaml" 
+             xmlns:l="clr-namespace:Fantasy.Studio.BusinessEngine.ObjectSecurityEditing"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <UserControl.Resources>
-        <Style TargetType="CheckBox">
+        <Style TargetType="l:CheckBoxEx">
             <Style.Setters>
                 <Setter Property="Foreground" Value="#FF27689A" />
                 <Setter Property="IsThreeState" Value="True" />
@@ -36,9 +37,14 @@
         <GroupBox Header="Object Access" Height="Auto">
             <Grid Margin="6">
                 <TextBlock HorizontalAlignment="Left" Text="Create" VerticalAlignment="Top" />
-                <CheckBox  Height="16" HorizontalAlignment="Left" Margin="40,0,0,0"  VerticalAlignment="Top" IsChecked="{Binding CanCreate, Mode=TwoWay}" />
+                <l:CheckBoxEx  Height="16" HorizontalAlignment="Left" Margin="40,0,0,0"  VerticalAlignment="Top" IsChecked="{Binding CanCreate, Mode=TwoWay}" />
                 <TextBlock HorizontalAlignment="Left" Margin="0,22,0,0" Text="Delete" VerticalAlignment="Top" />
-                <CheckBox  Height="16" HorizontalAlignment="Left" Margin="40,22,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete, Mode=TwoWay}" />
+                <l:CheckBoxEx  Height="16" HorizontalAlignment="Left" Margin="40,22,0,0" VerticalAlignment="Top" IsChecked="{Binding CanDelete, Mode=TwoWay}" />
+
+                <TextBlock HorizontalAlignment="Left" Text="Read" VerticalAlignment="Top" Margin="120,0,0,0"  />
+                <l:CheckBoxEx   Height="16" HorizontalAlignment="Left" Margin="160,0,0,0"  VerticalAlignment="Top" IsChecked="{Binding CanRead, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" IsThreeState="False" />
+                <TextBlock HorizontalAlignment="Left" Margin="120,22,0,0" Text="Write" VerticalAlignment="Top" />
+                <l:CheckBoxEx  Height="16" HorizontalAlignment="Left" Margin="160,22,0,0" VerticalAlignment="Top" IsChecked="{Binding CanWrite, Mode=TwoWay, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" IsThreeState="False" />
             </Grid>
         </GroupBox>
         <GroupBox Header="Property &amp; Association Access" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Grid.Row="1" >
@@ -85,16 +91,16 @@
                            
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox  IsChecked="{Binding CanRead}" Checked="PropertyReadChecked" Unchecked="PropertyReadChecked" > 
-                                    </CheckBox>
+                                    <l:CheckBoxEx  IsChecked="{Binding CanRead}" IsCheckedChanged="PropertyReadChecked" /> 
+                                   
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Write" f:GridViewLayout.ColumnId="WriteColumn">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox IsChecked="{Binding CanWrite}" Checked="PropertyWriteChecked" Unchecked="PropertyWriteChecked">
-                                    </CheckBox>
+                                    <l:CheckBoxEx IsChecked="{Binding CanWrite}" IsCheckedChanged="PropertyWriteChecked" />
+                                   
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>

@@ -33,7 +33,38 @@ namespace Fantasy.Web.Controllers
 
         public ViewResultBase Save(Guid objId)
         {
-            return this.Default(objId);
+
+            IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+            BusinessObject obj = es.Get<BusinessObject>(objId);
+            if (obj != null)
+            {
+                this.TryUpdateModel(obj);
+                es.BeginUpdate();
+                try
+                {
+                    es.SaveOrUpdate(obj);
+                    es.EndUpdate(true);
+                }
+                catch
+                {
+                    es.EndUpdate(false);
+                    throw;
+                }
+               
+            }
+
+
+            return PartialView("Default", obj);
+        }
+
+        #endregion
+
+        #region IScalarViewController Members
+
+
+        public ViewResultBase Create(CreateArgs args)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

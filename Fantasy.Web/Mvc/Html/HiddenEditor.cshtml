@@ -1,0 +1,5 @@
+﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
+@if (this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+{
+    <input type="hidden" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName"  />
+}

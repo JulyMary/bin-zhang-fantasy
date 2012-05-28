@@ -24,10 +24,9 @@ namespace Fantasy.Web.Mvc.Html
 
             TagBuilder rs = new TagBuilder("a");
 
-            if (htmlAttributes != null)
-            {
-                attrs = MergeDictionaries(attrs, new RouteValueDictionary(htmlAttributes));
-            }
+           
+            attrs = MergeDictionaries(attrs, CreateRouteValueDictionary(htmlAttributes));
+            
 
             rs.MergeAttributes(attrs);
             rs.SetInnerText(linkText);
@@ -37,7 +36,21 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
-        
+        private static RouteValueDictionary CreateRouteValueDictionary(object values)
+        {
+            if (values is RouteValueDictionary)
+            {
+                return (RouteValueDictionary)values; 
+            }
+            else if (values != null)
+            {
+                return new RouteValueDictionary(values);
+            }
+            else
+            {
+                return new RouteValueDictionary();
+            }
+        }
 
 
         private static  IDictionary<string, object> GetAjaxHtmlAttributes(AjaxOptions ajaxOptions = null)
@@ -61,10 +74,9 @@ namespace Fantasy.Web.Mvc.Html
             UrlHelper urlHelper = new UrlHelper(ajaxHelper.ViewContext.RequestContext);
             string formAction = urlHelper.ApplicationUrl(appName, rootId, viewType, objectId, action, property, routeValues);
 
-            RouteValueDictionary htmlAttributes2 = htmlAttributes != null ? new RouteValueDictionary(htmlAttributes) : new RouteValueDictionary();
+            RouteValueDictionary htmlAttributes2 = CreateRouteValueDictionary(htmlAttributes);
 
             return ajaxHelper.FormHelper(formAction, ajaxOptions, htmlAttributes2);
-
 
         }
 
@@ -103,7 +115,7 @@ namespace Fantasy.Web.Mvc.Html
         public  static IDictionary<string, object> GetSclarViewLinkAttributes(this UrlHelper urlHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
         {
 
-            RouteValueDictionary dictionary = routeValues != null ? new RouteValueDictionary(routeValues) : new RouteValueDictionary();
+            RouteValueDictionary dictionary = CreateRouteValueDictionary(routeValues);
             routeValues = MergeDictionaries(dictionary, urlHelper.RequestContext.RouteData.Values);
 
             routeValues["action"] = action;
@@ -127,7 +139,7 @@ namespace Fantasy.Web.Mvc.Html
 
             StringWriter textWriter = new StringWriter();
 
-            RouteValueDictionary dictionary =  routeValues != null ? new RouteValueDictionary(routeValues) : new RouteValueDictionary();
+            RouteValueDictionary dictionary = CreateRouteValueDictionary(routeValues);
 
             routeValues = MergeDictionaries(dictionary, htmlHelper.ViewContext.RouteData.Values);
 
@@ -174,7 +186,7 @@ namespace Fantasy.Web.Mvc.Html
         private static RouteValueDictionary MergeDictionaries(params IDictionary<string, object>[] dictionaries)
         {
             RouteValueDictionary dictionary = new RouteValueDictionary();
-            foreach (RouteValueDictionary dictionary2 in from d in dictionaries
+            foreach (IDictionary<string, object> dictionary2 in from d in dictionaries
                                                          where d != null
                                                          select d)
             {

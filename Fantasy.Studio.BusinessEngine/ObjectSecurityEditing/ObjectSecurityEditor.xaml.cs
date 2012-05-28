@@ -26,6 +26,16 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
         public ObjectSecurityEditor()
         {
             InitializeComponent();
+            this.DataContextChanged += new DependencyPropertyChangedEventHandler(ObjectSecurityEditor_DataContextChanged);
+        }
+
+        void ObjectSecurityEditor_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (this.DataContext != null)
+            {
+                this.SetCanReadValue();
+                this.SetCanWriteValue();
+            }
         }
 
 
@@ -38,6 +48,197 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
             Properties.Settings.Default.ObjectSecurityPropertyGridViewLayout = layout;
 
         }
+
+
+        private bool _lock = false;
+
+        private void SetCanReadValue()
+        {
+            if (!_lock)
+            {
+                _lock = true;
+                try
+                {
+                    bool allow = true;
+                    bool deny = true;
+                    BusinessObjectSecurity sec = (BusinessObjectSecurity)this.DataContext;
+                    foreach (BusinessObjectMemberSecurity prop in sec.Properties)
+                    {
+                        if (prop.CanRead != true)
+                        {
+                            allow = false;
+                        }
+                        if (prop.CanRead != false)
+                        {
+                            deny = false;
+                        }
+                    }
+
+                    if (allow)
+                    {
+                        this.CanRead = true;
+                    }
+                    else if (deny)
+                    {
+                        this.CanRead = false;
+                    }
+                    else
+                    {
+                        this.CanRead = null;
+                    }
+                }
+                finally
+                {
+                    _lock = false;
+                }
+
+               
+            }
+
+
+        }
+
+        private void SetCanWriteValue()
+        {
+            if (!_lock)
+            {
+                _lock = true;
+                try
+                {
+                    bool allow = true;
+                    bool deny = true;
+                    BusinessObjectSecurity sec = (BusinessObjectSecurity)this.DataContext;
+                    foreach (BusinessObjectMemberSecurity prop in sec.Properties)
+                    {
+                        if (prop.CanWrite == true)
+                        {
+                            deny = false;
+                        }
+                        if (prop.CanWrite == false)
+                        {
+                            allow = false;
+                        }
+                    }
+
+                    if (allow)
+                    {
+                        this.CanWrite = true;
+                    }
+                    else if (deny)
+                    {
+                        this.CanWrite = false;
+                    }
+                    else
+                    {
+                        this.CanWrite = null;
+                    }
+                }
+                finally
+                {
+                    this._lock = false;
+                }
+            }
+
+           
+        }
+
+
+
+
+        public bool? CanWrite
+        {
+            get { return (bool?)GetValue(CanWriteProperty); }
+            set { SetValue(CanWriteProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CanWrite.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CanWriteProperty =
+            DependencyProperty.Register("CanWrite", typeof(bool?), typeof(ObjectSecurityEditor), new UIPropertyMetadata(null, CanWriteChanged));
+
+
+
+        public bool? CanRead
+        {
+            get { return (bool?)GetValue(CanReadProperty); }
+            set { SetValue(CanReadProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CanRead.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CanReadProperty =
+            DependencyProperty.Register("CanRead", typeof(bool?), typeof(ObjectSecurityEditor), new UIPropertyMetadata(null, CanReadChanged));
+
+
+
+
+        static void  CanReadChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            ObjectSecurityEditor editor = (ObjectSecurityEditor)d;
+
+            if (!editor._lock)
+            {
+                editor._lock = true;
+                try
+                {
+                    BusinessObjectSecurity sec = (BusinessObjectSecurity)editor.DataContext;
+
+                    if ((bool?)e.NewValue == true)
+                    {
+                        foreach (BusinessObjectMemberSecurity prop in sec.Properties)
+                        {
+                            prop.CanRead = true;
+                        }
+                    }
+                    else if ((bool?)e.NewValue == false)
+                    {
+                        foreach (BusinessObjectMemberSecurity prop in sec.Properties)
+                        {
+                            prop.CanRead = false;
+                        }
+                    }
+                }
+                finally
+                {
+                    editor._lock = false;
+                }
+            }
+        }
+
+
+        static void CanWriteChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+
+            ObjectSecurityEditor editor = (ObjectSecurityEditor)d;
+
+            if (!editor._lock)
+            {
+                editor._lock = true;
+                try
+                {
+                    BusinessObjectSecurity sec = (BusinessObjectSecurity)editor.DataContext;
+
+                    if ((bool?)e.NewValue == true)
+                    {
+                        foreach (BusinessObjectMemberSecurity prop in sec.Properties)
+                        {
+                            prop.CanWrite = true;
+                        }
+                    }
+                    else if ((bool?)e.NewValue == false)
+                    {
+                        foreach (BusinessObjectMemberSecurity prop in sec.Properties)
+                        {
+                            prop.CanWrite = false;
+                        }
+                    }
+                }
+                finally
+                {
+                    editor._lock = false;
+                }
+            }
+        }
+
 
        
 
@@ -59,6 +260,7 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                 {
                     this._updating = false;
                 }
+                this.SetCanWriteValue();
             }
         }
 
@@ -80,6 +282,7 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                 {
                     this._updating = false;
                 }
+                this.SetCanReadValue();
             }
         }
 
