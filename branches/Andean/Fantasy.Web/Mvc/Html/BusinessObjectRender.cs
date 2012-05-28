@@ -77,6 +77,7 @@ namespace Fantasy.Web.Mvc.Html
 
                 if (aclText.Length > 0)
                 {
+                    aclText.AppendFormat(",deletable : {0}", this.Descriptor.CanDelete.ToString().ToLower()); 
                     objText.AppendFormat(", acl : {{{0}}}", aclText);
                     objText.AppendFormat(", entityState : '{0}'", this.Object.EntityState.ToString().ToLower());
                 }
@@ -124,6 +125,23 @@ namespace Fantasy.Web.Mvc.Html
         {
             string name = BusinessObjectMetaDataHelper.PropertyNameFromLambdaExpression(property, render.Object);
             return Editor(render, name);
+        }
+
+        public static UserControlFactory<HiddenEditor> Hidden<TModel>(this BusinessObjectRender<TModel> render, string propertyName)
+            where TModel : BusinessObject
+        {
+            UserControlFactory<HiddenEditor> rs = new UserControlFactory<HiddenEditor>(render.Html);
+            rs.BindModel(render);
+            rs.Control.PropertyName = propertyName;
+
+            return rs;
+        }
+
+        public static UserControlFactory<HiddenEditor> HiddenFor<TModel, TValue>(this BusinessObjectRender<TModel> render, Expression<Func<TModel, TValue>> property)
+            where TModel : BusinessObject
+        {
+            string name = BusinessObjectMetaDataHelper.PropertyNameFromLambdaExpression(property, render.Object);
+            return Hidden(render, name);
         }
 
     }

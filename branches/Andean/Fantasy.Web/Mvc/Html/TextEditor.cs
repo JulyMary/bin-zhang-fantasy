@@ -13,17 +13,10 @@ namespace Fantasy.Web.Mvc.Html
 
             this.AddClass("text-editor");
             
-            this.MergeAttribute("type", "text");
+           
             base.PreExecute();
         }
 
-        private string Value
-        {
-            get
-            {
-                object value = this.PropertyDescriptor.Value;
-                return value != null ? value.ToString() : String.Empty;
-            }
-        }
+       
     }
 }

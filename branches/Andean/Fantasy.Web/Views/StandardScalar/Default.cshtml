@@ -1,7 +1,20 @@
 ﻿@model Fantasy.BusinessEngine.BusinessObject
 
-@using (this.Ajax.BeginAppViewForm(new AjaxOptions()))
+@{
+     System.Web.Routing.RouteValueDictionary attrs = new System.Web.Routing.RouteValueDictionary();
+     attrs["data-bind"] = "enable: acl.deletable";
+     string id = Guid.NewGuid().ToString("N");
+     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0}').buttonset();", id));
+     
+}
+
+@using (this.Ajax.BeginAppViewForm(new AjaxOptions(), action:"Save"))
 {
-   <input type="submit" name="save" value="Save" />
+
+    this.Html.BusinessObjectRender(this.Model, "#" + this.ViewContext.FormContext.FormId);                                         
+    
+    <div id="@id"><input type="submit"  value="Save" />@this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: attrs)</div>
+   
+   
 @this.Html.PropertyGrid().BindModel(this.Model)
 }

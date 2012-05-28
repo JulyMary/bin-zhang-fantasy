@@ -224,6 +224,7 @@
     <Compile Include="SetBusinessObjectClassId.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Web\ClassViewSettings.cs" />
+    <Compile Include="Web\CreateArgs.cs" />
     <Compile Include="Web\ICustomerizableViewController.cs" />
     <Compile Include="Web\ICollectionViewController.cs" />
     <Compile Include="Web\INavigationViewController.cs" />

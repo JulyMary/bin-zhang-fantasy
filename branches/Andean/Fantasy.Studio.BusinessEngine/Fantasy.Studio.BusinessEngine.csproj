@@ -361,6 +361,7 @@
     <Compile Include="MenuItemEditing\MenuEditorModel.cs" />
     <Compile Include="MenuItemEditing\PackageMenuEditNodeProvider.cs" />
     <Compile Include="MenuItemEditing\RoleConverter.cs" />
+    <Compile Include="ObjectSecurityEditing\CheckBoxEx.cs" />
     <Compile Include="ObjectSecurityEditing\ObjectSecurityEditor.xaml.cs">
       <DependentUpon>ObjectSecurityEditor.xaml</DependentUpon>
     </Compile>
