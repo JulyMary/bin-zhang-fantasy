@@ -11,16 +11,14 @@ namespace Fantasy.Web.Controllers
     
     public class StandardScalarController : Controller, IScalarViewController//, ICustomerizableViewController
     {
-        #region ICustomerizableViewController Members
+      
 
         public void LoadSettings(object settings)
         {
             //throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region IScalarViewController Members
+       
 
         public ViewResultBase Default(Guid objId)
         {
@@ -57,16 +55,18 @@ namespace Fantasy.Web.Controllers
             return PartialView("Default", obj);
         }
 
-        #endregion
-
-        #region IScalarViewController Members
-
-
-        public ViewResultBase Create(CreateArgs args)
+        public ViewResultBase Create(BusinessObject obj)
         {
             throw new NotImplementedException();
         }
 
-        #endregion
+
+        [HttpPost]
+        public ViewResultBase Create()
+        {
+            throw new NotImplementedException();
+        }
+
+       
     }
 }
