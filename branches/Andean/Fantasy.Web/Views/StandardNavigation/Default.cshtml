@@ -2,10 +2,12 @@
 @{
     Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/jstree/style.css"));
     Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/jslayout/layout-default.css"));
+    Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/jquery.contextmenu.css"));
    
    
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.layout.js"));
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.jstree.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.contextmenu.js"));
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardnavigation/default.js"));
 
 

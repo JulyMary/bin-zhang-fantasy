@@ -20,6 +20,13 @@ function showtree(root) {
                 BindToEntity(this);
             });
 
+            var menuItems = $(node).data("contextmenu");
+            if (menuItems != undefined) {
+                var aId = $("a:first", $(node)).attr("id");
+                $.contextMenu({selector:"#" + aId, items:menuItems});
+
+            }
+
         }
 
         var nodes = data.inst._get_children(data.rslt.obj);
@@ -50,7 +57,7 @@ function showtree(root) {
         },
         "plugins": ["themes", "json_data", "ui"],
 
-        "core" : {"html_titles" : true}
+        "core": { "html_titles": true }
     });
 
     $("#pagelayout").layout(
