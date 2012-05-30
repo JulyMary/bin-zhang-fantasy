@@ -15,7 +15,7 @@ namespace Fantasy.Web.Mvc.Html
 {
     public static class BusinessApplicationExtensions
     {
-        public static MvcHtmlString ScalarViewLink(this AjaxHelper ajaxHelper, string linkText, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, object htmlAttributes = null, AjaxOptions ajaxOptions = null)
+        public static MvcHtmlString ScalarViewLink(this AjaxHelper ajaxHelper, string linkText, Guid objId, string action = "Default", object routeValues = null, object htmlAttributes = null, AjaxOptions ajaxOptions = null)
         {
 
             UrlHelper urlHelper = new UrlHelper(ajaxHelper.ViewContext.RequestContext);
@@ -41,6 +41,10 @@ namespace Fantasy.Web.Mvc.Html
             if (values is RouteValueDictionary)
             {
                 return (RouteValueDictionary)values; 
+            }
+            else if (values is IDictionary<string, object>)
+            {
+                return new RouteValueDictionary((IDictionary<string, object>)values);
             }
             else if (values != null)
             {
@@ -112,23 +116,26 @@ namespace Fantasy.Web.Mvc.Html
 
       
 
-        public  static IDictionary<string, object> GetSclarViewLinkAttributes(this UrlHelper urlHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null, AjaxOptions ajaxOptions = null)
+        public  static IDictionary<string, object> GetSclarViewLinkAttributes(this UrlHelper urlHelper, Guid objId, string action = "Default", object routeValues = null, AjaxOptions ajaxOptions = null)
         {
 
             RouteValueDictionary dictionary = CreateRouteValueDictionary(routeValues);
-            routeValues = MergeDictionaries(dictionary, urlHelper.RequestContext.RouteData.Values);
+            RouteValueDictionary dictionary2 = CreateRouteValueDictionary(urlHelper.RequestContext.RouteData.Values);
+            dictionary2.Remove("Property");
 
-            routeValues["action"] = action;
+            dictionary = MergeDictionaries(dictionary, dictionary2);
 
-            routeValues["ObjId"] = objId;
+            dictionary["action"] = action;
 
-            routeValues["ViewType"] = ViewType.Obj;
+            dictionary["ObjId"] = objId;
 
-            routeValues.Remove("Property");
+            dictionary["ViewType"] = ViewType.Obj;
+
+          
 
             IDictionary<string, object> rs = GetAjaxHtmlAttributes(ajaxOptions);
-           
-            string url = urlHelper.RouteUrl(routeValues);
+
+            string url = urlHelper.RouteUrl(dictionary);
             rs["href"] = url;
             return rs;
         }

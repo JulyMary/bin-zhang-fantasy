@@ -138,6 +138,9 @@
   <data name="RoleDoesNotExistMessage" xml:space="preserve">
     <value>Role '{0}' does not exist</value>
   </data>
+  <data name="StandardNavigationAddChildText" xml:space="preserve">
+    <value>Add {0}</value>
+  </data>
   <data name="UserDoesNotExistMessage" xml:space="preserve">
     <value>User '{0}' does not exist.</value>
   </data>

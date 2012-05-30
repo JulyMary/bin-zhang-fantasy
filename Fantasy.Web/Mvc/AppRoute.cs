@@ -42,7 +42,7 @@ namespace Fantasy.Web.Mvc
 
         private IRouteHandler _handler;
         private IBusinessApplicationService _applicationService;
-        private string[] _routeSegmentNames = new string[] { "appname", "rootid", "viewtype", "action", "objid", "property" }; 
+        private string[] _routeSegmentNames = new string[] { "appname", "rootid", "viewtype", "action", "objid", "property", "controller" }; 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             if (values.ContainsKey("AppName"))
@@ -84,6 +84,16 @@ namespace Fantasy.Web.Mvc
                         string property = (string)values["Property"];
                         path.AppendFormat("/{0}", property);
                     }
+                }
+
+                var query = from p in values where !_routeSegmentNames.Any(s=>string.Equals(s, p.Key, StringComparison.OrdinalIgnoreCase)) && p.Value != null
+                    select string.Format("{0}={1}", p.Key, HttpUtility.UrlEncode(p.Value.ToString()));
+
+                string queryString = string.Join("&", query);
+                if(!String.IsNullOrEmpty(queryString))
+                {
+                    path.Append("?");
+                    path.Append(queryString);
                 }
 
                 VirtualPathData rs = new VirtualPathData(this, path.ToString());
