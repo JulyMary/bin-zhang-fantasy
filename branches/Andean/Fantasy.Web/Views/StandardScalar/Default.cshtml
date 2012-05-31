@@ -5,6 +5,7 @@
      attrs["data-bind"] = "enable: acl.deletable";
      string id = Guid.NewGuid().ToString("N");
      this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0}').buttonset();", id));
+    
      
 }
 

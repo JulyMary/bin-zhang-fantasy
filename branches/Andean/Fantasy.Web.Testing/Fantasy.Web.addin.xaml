@@ -156,7 +156,9 @@
     </Extension>
 
     <Extension Path="fantasy/context/services">
-        
+        <Object ID="entityservice">
+            <be:DefaultEntityService/>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/web/request/start">
