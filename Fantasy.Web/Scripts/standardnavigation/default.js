@@ -1,4 +1,27 @@
 ﻿
+
+function BindEntityToNavigationTree(node, be) {
+    var shortcut = $(node).data("entity");
+    if (shortcut != undefined) {
+
+        be.shortcut(shortcut);
+
+        be.applyBindings(shortcut.Id, node);
+    }
+    var children = $.jstree._reference("#navigationTree")._get_children(node);
+    children.each(function () {
+        BindEntityToNavigationTree(this, be);
+    });
+
+    var menuItems = $(node).data("contextmenu");
+    if (menuItems != undefined) {
+        var aId = $("a:first", $(node)).attr("id");
+        $.contextMenu({ selector: "#" + aId, items: menuItems });
+
+    }
+
+}
+
 function showtree(root) {
 
 
@@ -6,32 +29,9 @@ function showtree(root) {
 
     $("#navigationTree").bind("load_node.jstree", function (e, data) {
 
-
-        function BindToEntity(node) {
-            var shortcut = $(node).data("entity");
-            if (shortcut != undefined) {
-
-                be.shortcut(shortcut);
-
-                be.applyBindings(shortcut.Id, node);
-            }
-            var children = data.inst._get_children(node);
-            children.each(function () {
-                BindToEntity(this);
-            });
-
-            var menuItems = $(node).data("contextmenu");
-            if (menuItems != undefined) {
-                var aId = $("a:first", $(node)).attr("id");
-                $.contextMenu({selector:"#" + aId, items:menuItems});
-
-            }
-
-        }
-
         var nodes = data.inst._get_children(data.rslt.obj);
         nodes.each(function () {
-            BindToEntity(this);
+            BindEntityToNavigationTree(this, be);
         });
     })
     .jstree({
@@ -55,7 +55,7 @@ function showtree(root) {
             "dots": false,
             "icons": true
         },
-        "plugins": ["themes", "json_data", "ui"],
+        "plugins": ["themes", "json_data", "ui", "crrm"],
 
         "core": { "html_titles": true }
     });
@@ -65,6 +65,19 @@ function showtree(root) {
         initClosed: false
     }
    );
+
+
+}
+
+
+function addChildNodeToNavigationTree(parent, property, childNode) {
+
+    var pNode = $("#navigationTree" + parent + property).closest("li");
+    var callback = function (node) {
+        var be = $("#navigationTree").be();
+        BindEntityToNavigationTree(node[0], be);
+    };
+    $("#navigationTree").jstree("create", pNode, "last", childNode, callback, true);
 
 
 }

@@ -925,7 +925,10 @@
                     // add label for input
                     if (item.type == 'html') {
                         $t.addClass('context-menu-html not-selectable');
-                    } else if (item.type) {
+                    }
+                    else if (item.type == 'anchor') {
+                    }
+                    else if (item.type) {
                         $label = $('<label></label>').appendTo($t);
                         $('<span></span>').html(item._name || item.name).appendTo($label);
                         $t.addClass('context-menu-input');
@@ -972,6 +975,26 @@
                                 $input.val(item.selected);
                             }
                             break;
+                        case 'anchor':
+                            var a = $('<a></a>').text(item._name || item.name).attr("href", item.href);
+                            var attr = item.attr;
+                            if (attr != undefined) {
+                                for (var prop in attr) {
+                                    if (item.attr.hasOwnProperty(prop)) {
+                                        a.attr(prop, attr[prop]);
+                                    }
+                                }
+                            }
+                            a.appendTo($t);
+
+                            $.each([opt, root], function (i, k) {
+                                k.commands[key] = item;
+
+                                k.callbacks[key] = function () { };
+
+                            });
+                            break;
+
 
                         case 'sub':
                             $('<span></span>').html(item._name || item.name).appendTo($t);
@@ -983,6 +1006,7 @@
 
                         case 'html':
                             $(item.html).appendTo($t);
+
                             break;
 
                         default:
@@ -998,7 +1022,7 @@
                     }
 
                     // disable key listener in <input>
-                    if (item.type && item.type != 'sub' && item.type != 'html') {
+                    if (item.type && item.type != 'sub' && item.type != 'html' && item.type != 'anchor') {
                         $input
                             .on('focus', handle.focusInput)
                             .on('blur', handle.blurInput);
@@ -1007,7 +1031,7 @@
                             $input.on(item.events);
                         }
                     }
-                   
+
 
                     $t.prepend("<ins class='icon'></ins>");
                     // add icons
@@ -1373,13 +1397,13 @@
 
             // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#concept-command
             switch (nodeName) {
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-menu-element     
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-menu-element                
                 case 'menu':
                     item = { name: $node.attr('label'), items: {} };
                     menuChildren(item.items, $node.children(), counter);
                     break;
 
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-a-element-to-define-a-command     
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-a-element-to-define-a-command                
                 case 'a':
                     // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-button-element-to-define-a-command
                 case 'button':
@@ -1390,7 +1414,7 @@
                     };
                     break;
 
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-command-element-to-define-a-command     
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-command-element-to-define-a-command                
 
                 case 'menuitem':
                 case 'command':

@@ -12,6 +12,8 @@ namespace Fantasy.Web.Models
 
         public string Property { get; set; }
 
-        public BusinessObject Child { get; set; } 
+        public BusinessObject Child { get; set; }
+
+        public JsTreeNode TreeNode { get; set; }
     }
 }

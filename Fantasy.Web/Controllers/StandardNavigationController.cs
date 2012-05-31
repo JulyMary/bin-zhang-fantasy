@@ -169,12 +169,13 @@ namespace Fantasy.Web.Controllers
                 JsTreeNode rs = new JsTreeNode();
                 rs.data.title = "<span data-bind=\"text:Name\"></span>";
                 rs.data.icon = this.Url.ImageList(obj.IconKey);
-
+                string id = "navigationTree" + obj.Id.ToString();
                 IDictionary<string, object> attr = Url.GetSclarViewLinkAttributes(obj.Id, ajaxOptions: new AjaxOptions()
                     {
                         UpdateTargetId = "contentpanel",
                     });
-                
+
+                attr.Add("id", id);
                 rs.data.attr = attr;
 
                 rs.metadata = new { entity = new { Id = obj.Id, Name = obj.Name } };
@@ -193,7 +194,7 @@ namespace Fantasy.Web.Controllers
                 {
                     JsTreeNode folderItem = new JsTreeNode();
                     folderItem.data.title = prop.Name;
-                    folderItem.data.attr = new {id=Guid.NewGuid().ToString() };
+                    folderItem.data.attr = new {id=id + prop.CodeName };
                     folderItem.metadata = new { url = this.Url.ApplicationUrl(objectId: obj.Id, action: "LoadChildren", property: prop.CodeName),
                     contextmenu=this.CreateFolderContextMenu(prop)};
 
@@ -276,15 +277,15 @@ namespace Fantasy.Web.Controllers
                 foreach (BusinessClass @class in classes)
                 {
 
-                    TagBuilder a = new TagBuilder("a");
-
-                    a.MergeAttributes(ao.ToUnobtrusiveHtmlAttributes());
-                    a.MergeAttribute("href", this.Url.ApplicationUrl(objectId: prop.Owner.Object.Id, action: "create", property: prop.CodeName, routeValues: new { classId = @class.Id }));
+                 
 
                    
-                    a.SetInnerText(string.Format(Resources.StandardNavigationAddChildText, @class.Name));
+                    string href = this.Url.ApplicationUrl(objectId: prop.Owner.Object.Id, action: "create", property: prop.CodeName, routeValues: new { classId = @class.Id });
+                    IDictionary<string, object> attr = ao.ToUnobtrusiveHtmlAttributes();
+                    string name = string.Format(Resources.StandardNavigationAddChildText, @class.Name);
+                   
                     string icon = this.Url.ImageList(oms.GetImageKey(@class));
-                    rs.Add(@class.CodeName, new {type="html",icon=icon, html=a.ToString(TagRenderMode.Normal) }); 
+                    rs.Add(@class.CodeName, new {type="anchor",icon=icon, href= href, name=name, attr = attr }); 
                 }
             }
 
@@ -336,7 +337,7 @@ namespace Fantasy.Web.Controllers
 
                     parent.Append(property, child);
 
-                    return PartialView(new CreateChildModel() { Parent = parent, Property = property, Child = child });
+                    return PartialView(new CreateChildModel() { Parent = parent, Property = property, Child = child, TreeNode = this.CreateTreeItem(child, 0) });
                 }
 
                 

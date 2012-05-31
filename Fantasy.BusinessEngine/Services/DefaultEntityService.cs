@@ -27,7 +27,11 @@ namespace Fantasy.BusinessEngine.Services
             this._postDeleteEventListener = new NHPostDeleteEventListener() { Site = this.Site };
             this._createListener = new EntityCreateEventListener() { Site = this.Site };
 
-            this._sessionFactory = cs.Configuration.BuildSessionFactory();
+            lock (cs.Configuration)
+            {
+
+                this._sessionFactory = cs.Configuration.BuildSessionFactory();
+            }
 
             base.InitializeService();
         }
