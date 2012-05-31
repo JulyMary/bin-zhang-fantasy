@@ -59,7 +59,7 @@ namespace Fantasy.Web.Mvc
             {
                 controller = ProcessRequestInit(httpContext, app);
                 controller.Execute(this.RequestContext);
-                if (httpContext.Request.IsAjaxRequest())
+                if (httpContext.Request.IsAjaxRequest()&&!((ControllerBase)controller).ControllerContext.IsChildAction)
                 {
                     string script = HtmlAssets.RenderAjaxCallback(httpContext);
 
