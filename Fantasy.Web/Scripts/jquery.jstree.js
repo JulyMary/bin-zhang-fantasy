@@ -731,7 +731,12 @@
 					tmp;
 
 				if(obj !== -1 && !obj.length) { return false; }
-				if(!is_loaded && !this._is_loaded(obj)) { this.load_node(obj, function () { this.create_node(obj, position, js, callback, true); }); return false; }
+				  if(!is_loaded && !this._is_loaded(obj)) { 
+                      this.load_node(obj, function () { 
+                          this.create_node(obj, position, js, callback, true); 
+                          }); 
+                      return false; 
+                  }
 
 				this.__rollback();
 

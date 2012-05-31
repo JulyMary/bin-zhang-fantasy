@@ -57,7 +57,8 @@ function showtree(root) {
         },
         "plugins": ["themes", "json_data", "ui", "crrm"],
 
-        "core": { "html_titles": true }
+        "core": { "html_titles": true },
+        "ui" : {select_limit:1}
     });
 
     $("#pagelayout").layout(
@@ -71,13 +72,29 @@ function showtree(root) {
 
 
 function addChildNodeToNavigationTree(parent, property, childNode) {
-
+    var tree = $.jstree._reference("#navigationTree");
     var pNode = $("#navigationTree" + parent + property).closest("li");
     var callback = function (node) {
+
+        tree.select_node(node,true);
         var be = $("#navigationTree").be();
         BindEntityToNavigationTree(node[0], be);
     };
-    $("#navigationTree").jstree("create", pNode, "last", childNode, callback, true);
+
+   
+    if (tree.is_closed(pNode)) {
+        tree.open_node(pNode, function () {
+            $("#navigationTree").jstree("create", pNode, "last", childNode, callback, true);
+        });
+
+    }
+    else
+    {
+         $("#navigationTree").jstree("create", pNode, "last", childNode, callback, true);
+    }
+
+   
+  
 
 
 }
