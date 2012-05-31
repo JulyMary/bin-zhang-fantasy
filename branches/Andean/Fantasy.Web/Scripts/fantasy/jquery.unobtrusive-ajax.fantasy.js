@@ -101,9 +101,9 @@
             success: function (data, status, xhr) {
                 asyncOnSuccess(element, data, xhr.getResponseHeader("Content-Type") || "text/html");
 
-                $(data).find("script").andSelf().filter("script").each(function () {
-                    $("head").append(this);
-                });
+//                $(data).find("script").andSelf().filter("script").each(function () {
+//                    $("head").append(this);
+//                });
 
                 getFunction(element.getAttribute("data-ajax-success"), ["data", "status", "xhr"]).apply(this, arguments);
             },
