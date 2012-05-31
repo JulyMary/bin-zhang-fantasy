@@ -71,7 +71,8 @@ namespace Fantasy.BusinessEngine
                     IsScalar = true,
                     MemberType = BusinessObjectMemberTypes.Property,
                     PropertyType = EntityType.GetProperty(property.CodeName).PropertyType,
-                    DisplayOrder = property.DisplayOrder
+                    DisplayOrder = property.DisplayOrder,
+                    Property = property,
                 };
 
                 if (property.DataType == dataTypes.Class)
@@ -100,7 +101,8 @@ namespace Fantasy.BusinessEngine
                     MemberType = BusinessObjectMemberTypes.LeftAssociation,
                     PropertyType = EntityType.GetProperty(assn.RightRoleCode).PropertyType,
                     DisplayOrder = assn.RightRoleDisplayOrder,
-                    ReferencedClass = assn.RightClass
+                    ReferencedClass = assn.RightClass,
+                    Association = assn,
 
                 };
                 this.Properties.Add(desc);
@@ -118,7 +120,8 @@ namespace Fantasy.BusinessEngine
                     MemberType = BusinessObjectMemberTypes.RightAssociation,
                     PropertyType = EntityType.GetProperty(assn.LeftRoleCode).PropertyType,
                     DisplayOrder = assn.LeftRoleDisplayOrder,
-                    ReferencedClass = assn.LeftClass
+                    ReferencedClass = assn.LeftClass,
+                    Association = assn,
                 };
                 this.Properties.Add(desc);
             }

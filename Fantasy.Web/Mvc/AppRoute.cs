@@ -42,7 +42,7 @@ namespace Fantasy.Web.Mvc
 
         private IRouteHandler _handler;
         private IBusinessApplicationService _applicationService;
-        private string[] _routeSegmentNames = new string[] { "appname", "rootid", "viewtype", "action", "objid", "property", "controller" }; 
+        private string[] _routeSegmentNames = new string[] { "appname", "rootid", "viewtype", "action", "objid", "property", "controller", "obj" }; 
         public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values)
         {
             if (values.ContainsKey("AppName"))

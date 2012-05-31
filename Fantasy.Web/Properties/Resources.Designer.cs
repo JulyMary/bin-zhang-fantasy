@@ -106,6 +106,15 @@ namespace Fantasy.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New {0}.
+        /// </summary>
+        public static string NewBusinessObjectName {
+            get {
+                return ResourceManager.GetString("NewBusinessObjectName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no property/association named {0} in business class {1}..
         /// </summary>
         public static string PropertyNotFoundMessage {

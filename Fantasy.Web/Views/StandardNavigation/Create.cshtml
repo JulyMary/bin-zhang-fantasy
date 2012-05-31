@@ -1,0 +1,2 @@
+﻿@model Fantasy.Web.Models.CreateChildModel
+@Html.ScalarView(this.Model.Child.Id, action: "Create", routeValues: new { obj = this.Model.Child }); 

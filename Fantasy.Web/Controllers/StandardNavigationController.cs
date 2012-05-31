@@ -13,6 +13,7 @@ using Fantasy.Web.Mvc;
 using Fantasy.Web.Mvc.Html;
 using Fantasy.Web.Properties;
 using System.Web.Mvc.Ajax;
+using System.Web;
 namespace Fantasy.Web.Controllers
 {
 
@@ -115,15 +116,43 @@ namespace Fantasy.Web.Controllers
 
         private static readonly BindingFlags _bindingFlags = System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance;
 
-        private bool ShowAssocation(BusinessObject obj, string property)
+        private bool ShowAssocation(BusinessPropertyDescriptor prop)
         {
             bool rs = true;
             if (this._settings.Customized)
             {
-                StandardNavigationViewClassSettings clsSettings = this._settings.ClassSettings.FirstOrDefault(s => s.ClassId == obj.ClassId);
+                StandardNavigationViewClassSettings clsSettings = this._settings.ClassSettings.FirstOrDefault(s => s.ClassId == prop.Owner.Object.ClassId);
                 if (clsSettings != null && clsSettings.Customized)
                 {
-                    rs = !clsSettings.DisabledChildRoles.Any(s => string.Equals(s, property, StringComparison.OrdinalIgnoreCase));
+                    rs = !clsSettings.DisabledChildRoles.Any(s => string.Equals(s, prop.CodeName, StringComparison.OrdinalIgnoreCase));
+                }
+            }
+            else
+            {
+                if (prop.IsScalar)
+                {
+                    Cardinality card;
+                    if (prop.MemberType == BusinessObjectMemberTypes.LeftAssociation)
+                    {
+                        if (prop.Association.LeftNavigatable)
+                        {
+                            card = new Cardinality(prop.Association.LeftCardinality);
+                            rs = card.IsScalar;
+                        }
+
+                        
+                    }
+                    else
+                    {
+
+                        if (prop.Association.RightNavigatable)
+                        {
+                            card = new Cardinality(prop.Association.RightCardinality);
+                            rs = card.IsScalar;
+                        }
+                       
+                    }
+                     
                 }
             }
             return rs;
@@ -157,7 +186,7 @@ namespace Fantasy.Web.Controllers
 
                 var props = from prop in descriptor.Properties
                             where prop.CanRead && (prop.MemberType == BusinessObjectMemberTypes.LeftAssociation || prop.MemberType == BusinessObjectMemberTypes.RightAssociation)
-                                && ShowAssocation(obj, prop.CodeName)
+                                && ShowAssocation(prop)
                             select prop;
 
                 foreach (BusinessPropertyDescriptor prop in props)
@@ -237,6 +266,7 @@ namespace Fantasy.Web.Controllers
             
             if (prop.CanWrite)
             {
+                AjaxOptions ao = new AjaxOptions(){UpdateTargetId = "contentpanel"};
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 BusinessApplication app = BusinessEngineContext.Current.Application;
                 var classes = from cls in prop.ReferencedClass.Flatten(c => c.ChildClasses)
@@ -247,8 +277,11 @@ namespace Fantasy.Web.Controllers
                 {
 
                     TagBuilder a = new TagBuilder("a");
-                    a.MergeAttributes(this.Url.GetSclarViewLinkAttributes(prop.Owner.Object.Id, action:"Create", 
-                    routeValues:new {Property=prop.CodeName, classId=@class.Id},ajaxOptions:new AjaxOptions(){ UpdateTargetId = "contentpanel"}));
+
+                    a.MergeAttributes(ao.ToUnobtrusiveHtmlAttributes());
+                    a.MergeAttribute("href", this.Url.ApplicationUrl(objectId: prop.Owner.Object.Id, action: "create", property: prop.CodeName, routeValues: new { classId = @class.Id }));
+
+                   
                     a.SetInnerText(string.Format(Resources.StandardNavigationAddChildText, @class.Name));
                     string icon = this.Url.ImageList(oms.GetImageKey(@class));
                     rs.Add(@class.CodeName, new {type="html",icon=icon, html=a.ToString(TagRenderMode.Normal) }); 
@@ -271,6 +304,48 @@ namespace Fantasy.Web.Controllers
         public void LoadSettings(object settings)
         {
             this._settings = (StandardNavigationViewSettings)settings;
+        }
+
+
+        public ViewResultBase Create(Guid objId, string property, Guid classId)
+        {
+            IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+            IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
+            BusinessObject parent = es.Get<BusinessObject>(objId);
+
+            BusinessObjectDescriptor parentDesc = new BusinessObjectDescriptor(parent);
+
+            if (parentDesc.Properties[property].CanWrite == true)
+            {
+                BusinessClass @class = oms.FindBusinessClass(classId);
+                BusinessObjectDescriptor childDesc = new BusinessObjectDescriptor(@class);
+                if (childDesc.CanCreate)
+                {
+                    BusinessObject child = (BusinessObject)es.CreateEntity(@class.EntityType());
+                    if (String.IsNullOrEmpty(child.Name))
+                    {
+                        string name = string.Format(Resources.NewBusinessObjectName, @class.Name);
+                        if (!parentDesc.Properties[property].IsScalar)
+                        {
+                            IList siblings = Invoker.Invoke<IList>(parent, property);
+                            name = Utils.UniqueNameGenerator.GetName(name, siblings.Cast<BusinessObject>().Select(s => s.Name));
+                        }
+
+                        child.Name = name;
+                    }
+
+                    parent.Append(property, child);
+
+                    return PartialView(new CreateChildModel() { Parent = parent, Property = property, Child = child });
+                }
+
+                
+            }
+           
+            throw new HttpException(403, "Forbidden");
+            
+
+
         }
 
 

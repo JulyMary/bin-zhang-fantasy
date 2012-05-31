@@ -51,7 +51,7 @@ namespace Fantasy.Web.Mvc
 
       
 
-        protected internal void ProcessRequest(HttpContextBase httpContext)
+        protected virtual internal void ProcessRequest(HttpContextBase httpContext)
         {
             BusinessApplication app = GetApplication(); 
             IController controller = null; 
@@ -125,7 +125,16 @@ namespace Fantasy.Web.Mvc
                     break;
                 case ViewType.Obj:
                     {
-                        BusinessObject obj = GetBusinessObject(app);
+                        BusinessObject obj;
+                        if (string.Equals((string)this.RequestContext.RouteData.Values["action"], "create", StringComparison.OrdinalIgnoreCase))
+                        {
+                            obj = (BusinessObject)this.RequestContext.RouteData.Values["obj"];
+                        }
+                        else
+                        {
+
+                            obj = GetBusinessObject(app);
+                        }
                         rs = app.GetScalarView(obj);
                     }
 

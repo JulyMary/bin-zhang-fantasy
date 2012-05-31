@@ -57,12 +57,17 @@ namespace Fantasy.Web.Controllers
 
         public ViewResultBase Create(BusinessObject obj)
         {
-            throw new NotImplementedException();
+            return PartialView(obj);
         }
 
 
         [HttpPost]
-        public ViewResultBase Create()
+        public ViewResultBase SaveCreation(Guid objId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ViewResultBase CancelCreation(Guid objId)
         {
             throw new NotImplementedException();
         }

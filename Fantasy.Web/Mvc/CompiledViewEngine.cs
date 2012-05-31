@@ -79,7 +79,7 @@ namespace Fantasy.Web.Mvc
 
                         string viewTypeName = string.Format("{0}.Views.{1}.{2}", ns, controllerName, viewName);
                         searchedLocation.Add(ViewTypeNameToVirtualPath(viewTypeName, rootNamespace)); 
-                        rs = asm.GetType(viewTypeName);
+                        rs = asm.GetType(viewTypeName, false, true);
 
                         if (rs == null)
                         {
