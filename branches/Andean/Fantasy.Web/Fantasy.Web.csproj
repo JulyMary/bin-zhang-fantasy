@@ -235,6 +235,7 @@
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="MIMETypes.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CreateChildModel.cs" />
     <Compile Include="Models\MenuItemModels.cs" />
     <Compile Include="Models\StandardNavigationDefaultViewModel.cs" />
     <Compile Include="Models\JsTreeNode.cs" />
@@ -341,6 +342,8 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\MainMenu.cshtml" />
     <Content Include="Views\StandardScalar\Default.cshtml" />
+    <Content Include="Views\StandardNavigation\Create.cshtml" />
+    <Content Include="Views\StandardScalar\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

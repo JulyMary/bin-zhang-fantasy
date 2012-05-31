@@ -175,6 +175,9 @@
         <Object ID="defaultcreatehandler">
             <be:DefaultEntityCreateHandler/>
         </Object>
+        <Object ID="DefaultBusinessObjectCreateHandler">
+            <be:DefaultBusinessObjectCreateHandler/>
+        </Object>
     </Extension>
 
     <Extension Path="fantasy/businessengine/entityhandlers/propertychanging">

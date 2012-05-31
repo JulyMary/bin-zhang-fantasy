@@ -20,7 +20,18 @@ namespace Fantasy.Web.Mvc
             if (model == null)
             {
 
-                model = TryCreateModel(bindingContext, model);
+                ValueProviderResult r1 = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+                if (r1 != null)
+                {
+                    model = r1.RawValue as BusinessObject;
+                }
+
+                if (model == null)
+                {
+
+
+                    model = TryCreateModel(bindingContext);
+                }
             }
 
             if (model != null)
@@ -86,8 +97,10 @@ namespace Fantasy.Web.Mvc
             }
         }
 
-        private  BusinessObject TryCreateModel(ModelBindingContext bindingContext, BusinessObject model)
+        private  BusinessObject TryCreateModel(ModelBindingContext bindingContext)
         {
+            BusinessObject rs = null;
+
             if (bindingContext.ValueProvider.GetValue("Id") != null)
             {
 
@@ -98,14 +111,14 @@ namespace Fantasy.Web.Mvc
                     Guid classId = new Guid(bindingContext.ValueProvider.GetValue("ClassId").AttemptedValue);
                     BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(classId);
 
-                    model = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(@class.EntityType(), id);
+                    rs = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(@class.EntityType(), id);
                 }
                 else
                 {
-                    model = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(bindingContext.ModelType, id);
+                    rs = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(bindingContext.ModelType, id);
                 }
             }
-            return model;
+            return rs;
         }
 
         #endregion

@@ -111,6 +111,32 @@ namespace Fantasy.BusinessEngine
         }
 
 
+        public virtual long DisplayOrder
+        {
+            get
+            {
+                return (long)this.GetValue("DisplayOrder", null);
+            }
+            set
+            {
+                this.SetValue("DisplayOrder", value);
+            }
+        }
+
+
+        public virtual Guid Creator
+        {
+            get
+            {
+                return (Guid)this.GetValue("Creator", null);
+            }
+            set
+            {
+                this.SetValue("Creator", value);
+            }
+        }
+
+
         public virtual string IconKey
         {
 
@@ -123,6 +149,151 @@ namespace Fantasy.BusinessEngine
             }
         }
 
+       
+
+        public virtual void Append(string propertyCodeName, BusinessObject other)
+        {
+            BusinessObjectDescriptor desc = new BusinessObjectDescriptor(this);
+            BusinessPropertyDescriptor propDesc = desc.Properties[propertyCodeName];
+
+            PropertyInfo pi = this.GetType().GetProperty(propertyCodeName);
+            
+            switch (propDesc.MemberType)
+            {
+                case BusinessObjectMemberTypes.Property:
+                    {
+                        pi.SetValue(this, other, null);
+                    }
+                    break;
+                case BusinessObjectMemberTypes.LeftAssociation:
+                    {
+                        if (propDesc.IsScalar)
+                        {
+                            pi.SetValue(this, other, null);
+                        }
+                        else
+                        {
+                            IList col = (IList)pi.GetValue(this, null);
+                            col.Add(other);
+                        }
+
+                        if (propDesc.Association.LeftNavigatable)
+                        {
+                            PropertyInfo otherPi = other.GetType().GetProperty(propDesc.Association.LeftRoleCode);
+                            if ((new Cardinality(propDesc.Association.LeftCardinality)).IsScalar)
+                            {
+                                otherPi.SetValue(other, this, null);
+                            }
+                            else
+                            {
+                                IList col = (IList)otherPi.GetValue(other, null);
+                                col.Add(this);
+                            }
+                        }
+                    }
+                    break;
+                case BusinessObjectMemberTypes.RightAssociation:
+                    {
+                        if (propDesc.IsScalar)
+                        {
+                            pi.SetValue(this, other, null);
+                        }
+                        else
+                        {
+                            IList col = (IList)pi.GetValue(this, null);
+                            col.Add(other);
+                        }
+
+                        if (propDesc.Association.RightNavigatable)
+                        {
+                            PropertyInfo otherPi = other.GetType().GetProperty(propDesc.Association.RightRoleCode);
+                            if ((new Cardinality(propDesc.Association.RightCardinality)).IsScalar)
+                            {
+                                otherPi.SetValue(other, this, null);
+                            }
+                            else
+                            {
+                                IList col = (IList)otherPi.GetValue(other, null);
+                                col.Add(this);
+                            }
+                        }
+                    }
+                    break;
+               
+            }
+        }
+
+        public virtual void Remove(string propertyCodeName, BusinessObject other)
+        {
+            BusinessObjectDescriptor desc = new BusinessObjectDescriptor(this);
+            BusinessPropertyDescriptor propDesc = desc.Properties[propertyCodeName];
+
+            PropertyInfo pi = this.GetType().GetProperty(propertyCodeName);
+
+            switch (propDesc.MemberType)
+            {
+                case BusinessObjectMemberTypes.Property:
+                    {
+                        pi.SetValue(this, null, null);
+                    }
+                    break;
+                case BusinessObjectMemberTypes.LeftAssociation:
+                    {
+                        if (propDesc.IsScalar)
+                        {
+                            pi.SetValue(this, null, null);
+                        }
+                        else
+                        {
+                            IList col = (IList)pi.GetValue(this, null);
+                            col.Remove(other);
+                        }
+
+                        if (propDesc.Association.LeftNavigatable)
+                        {
+                            PropertyInfo otherPi = other.GetType().GetProperty(propDesc.Association.LeftRoleCode);
+                            if ((new Cardinality(propDesc.Association.LeftCardinality)).IsScalar)
+                            {
+                                otherPi.SetValue(other, null, null);
+                            }
+                            else
+                            {
+                                IList col = (IList)otherPi.GetValue(other, null);
+                                col.Remove(this);
+                            }
+                        }
+                    }
+                    break;
+                case BusinessObjectMemberTypes.RightAssociation:
+                    {
+                        if (propDesc.IsScalar)
+                        {
+                            pi.SetValue(this, null, null);
+                        }
+                        else
+                        {
+                            IList col = (IList)pi.GetValue(this, null);
+                            col.Remove(other);
+                        }
+
+                        if (propDesc.Association.RightNavigatable)
+                        {
+                            PropertyInfo otherPi = other.GetType().GetProperty(propDesc.Association.RightRoleCode);
+                            if ((new Cardinality(propDesc.Association.RightCardinality)).IsScalar)
+                            {
+                                otherPi.SetValue(other, null, null);
+                            }
+                            else
+                            {
+                                IList col = (IList)otherPi.GetValue(other, null);
+                                col.Remove(this);
+                            }
+                        }
+                    }
+                    break;
+
+            }
+        }
 
 
     }

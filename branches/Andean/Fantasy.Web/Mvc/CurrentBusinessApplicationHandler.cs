@@ -16,6 +16,11 @@ namespace Fantasy.Web.Mvc
         }
 
 
+        protected internal override void ProcessRequest(HttpContextBase httpContext)
+        {
+            base.ProcessRequest(httpContext);
+        }
+
         protected override BusinessEngine.BusinessApplication GetApplication()
         {
             return BusinessEngineContext.Current.Application;

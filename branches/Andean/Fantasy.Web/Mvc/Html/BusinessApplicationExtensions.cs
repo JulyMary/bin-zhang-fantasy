@@ -141,23 +141,23 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
-        public static MvcHtmlString ScalarView(this HtmlHelper htmlHelper, Guid objId, string action = "Default", RouteValueDictionary routeValues = null)
+        public static MvcHtmlString ScalarView(this HtmlHelper htmlHelper, Guid objId, string action = "Default", object routeValues = null)
         {
 
             StringWriter textWriter = new StringWriter();
 
             RouteValueDictionary dictionary = CreateRouteValueDictionary(routeValues);
 
-            routeValues = MergeDictionaries(dictionary, htmlHelper.ViewContext.RouteData.Values);
+            dictionary = MergeDictionaries(dictionary, htmlHelper.ViewContext.RouteData.Values);
 
-            routeValues["action"] = action;
+            dictionary["action"] = action;
 
-            routeValues["ObjId"] = objId;
+            dictionary["ObjId"] = objId;
 
-            routeValues["ViewType"] = ViewType.Obj;
+            dictionary["ViewType"] = ViewType.Obj;
 
             RouteData routeData = new RouteData();
-            foreach (KeyValuePair<string, object> pair in routeValues)
+            foreach (KeyValuePair<string, object> pair in dictionary)
             {
                 routeData.Values.Add(pair.Key, pair.Value);
             }

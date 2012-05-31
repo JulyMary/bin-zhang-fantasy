@@ -92,6 +92,7 @@
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
+    <Compile Include="Events\DefaultBusinessObjectCreateHandler.cs" />
     <Compile Include="Events\EntityCreateEventArgs.cs" />
     <Compile Include="EntityExtensions\Category.cs" />
     <Compile Include="IEntityExtension.cs" />
