@@ -159,6 +159,10 @@
     <Content Include="Content\themes\base\jstree\d.png" />
     <Content Include="Content\themes\base\jstree\style.css" />
     <Content Include="Content\themes\base\jstree\throbber.gif" />
+    <Content Include="Content\themes\base\messagebox\error.png" />
+    <Content Include="Content\themes\base\messagebox\information.png" />
+    <Content Include="Content\themes\base\messagebox\style.css" />
+    <Content Include="Content\themes\base\messagebox\warnning.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -190,6 +194,7 @@
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Scripts\fantasy\core.js" />
     <Content Include="Scripts\fantasy\businessengine.js" />
+    <Content Include="Scripts\fantasy\jquery.editingview.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-ui-1.8.19.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
@@ -198,6 +203,7 @@
     <Content Include="Scripts\jquery.jstree.js" />
     <Content Include="Scripts\jquery.layout.js" />
     <Content Include="Scripts\fantasy\jquery.unobtrusive-ajax.fantasy.js" />
+    <Content Include="Scripts\fantasy\messagebox.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />

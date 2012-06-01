@@ -1,5 +1,5 @@
 ﻿@model Fantasy.Web.Models.CreateChildModel
 @{
-     this.Html.HtmlAssets().AddStartupScript(String.Format("addChildNodeToNavigationTree('{0}', '{1}', {2});", this.Model.Parent.Id, this.Model.Property, JsonHelper.Serialize(this.Model.TreeNode)));
+     //this.Html.HtmlAssets().AddStartupScript(String.Format("addChildNodeToNavigationTree('{0}', '{1}', {2});", this.Model.Parent.Id, this.Model.Property, JsonHelper.Serialize(this.Model.TreeNode)));
 }
 @Html.ScalarView(this.Model.Child.Id, action: "Create", routeValues: new { obj = this.Model.Child }); 

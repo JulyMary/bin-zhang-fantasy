@@ -761,7 +761,10 @@
 					if(!m.icon && js.icon) { m.icon = js.icon; }
 					if(m.icon) { 
 						if(m.icon.indexOf("/") === -1) { tmp.children("ins").addClass(m.icon); }
-						else { tmp.children("ins").css("background","url('" + m.icon + "') center center no-repeat"); }
+						else { 
+                            tmp.children("ins").css("background","url('" + m.icon + "') center center no-repeat");
+                            tmp.children("ins").css("background-size", "contain");
+                        }
 					}
 					d.append(tmp);
 				});
@@ -797,7 +800,18 @@
 				if(tmp === -1 || tmp.get(0) === this.get_container().get(0)) { tmp = -1; }
 				this.clean_node(tmp);
 				this.__callback({ "obj" : d, "parent" : tmp });
+
+                 if(js.children)
+                {
+                    for(var i = 0; i < js.children.length; i ++)
+                    {
+                        this.create_node(d, "last", js.children[i], null, true);
+                    }
+                }
+
 				if(callback) { callback.call(this, d); }
+
+               
 				return d;
 			},
 			// Basic operations: rename (deal with text)
