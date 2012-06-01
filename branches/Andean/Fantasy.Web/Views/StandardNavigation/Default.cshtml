@@ -11,7 +11,7 @@
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardnavigation/default.js"));
 
 
-    Html.HtmlAssets().AddStartupScript("var initNavigationTreeNodes = " + @JsonHelper.Serialize(this.Model.RootTreeItem) + ";showtree(initNavigationTreeNodes);"); 
+    Html.HtmlAssets().AddStartupScript("var initNavigationTreeNodes = " + @JsonHelper.Serialize(this.Model.RootTreeItem) + ";stdnav.showtree(initNavigationTreeNodes);"); 
    
 }
 

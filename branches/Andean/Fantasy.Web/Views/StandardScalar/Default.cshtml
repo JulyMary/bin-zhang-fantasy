@@ -14,8 +14,16 @@
 
     this.Html.BusinessObjectRender(this.Model, "#" + this.ViewContext.FormContext.FormId);                                         
     
-    <div id="@id"><input type="submit"  value="Save" />@this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: attrs)</div>
+    <div id="@id"><input type="submit"  value="Save" />@this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: attrs)
+    <button onclick="messageboxbuttonclick()">messagebox</button></div>
+    
    
    
 @this.Html.PropertyGrid().BindModel(this.Model)
 }
+
+<script type="text/javascript">
+    function messageboxbuttonclick() {
+        messageBox.show({ text: "hello world;hello world;hello world;hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world", icon: messageBox.icons.Error, buttons: messageBox.buttons.YesNoCancel, defaultButtons:1 });
+    }
+</script>

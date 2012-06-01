@@ -1,0 +1,39 @@
+﻿.messagebox
+{
+	display:none;
+}
+
+.messagebox > .icon
+{
+	width:48px;
+	height:48px;
+	display:inline-block;
+	background-attachment:scroll;
+	background-clip:border-box;
+	background-origin:padding-box;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size:contain;
+	float:left;
+	margin-right:20px;
+}
+
+.messagebox > .icon-none
+{
+	display:none;
+}
+
+.messagebox > .icon-error
+{
+	background-image: url(error.png);
+}
+
+.messagebox > .icon-warnning
+{
+	background-image: url(warnning.png);
+}
+
+.messagebox > .icon-information
+{
+	background-image: url(information.png);
+}
