@@ -65,7 +65,7 @@
 
         }
         else {
-            $(element).closest(".appviewcontainer").html(data);
+            $(element).closest(".editviewcontainer").html(data);
         }
 
 

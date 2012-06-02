@@ -36,18 +36,21 @@
                                 if (wrapped[prop] == undefined) {
                                     wrapped[prop] = ko.observable(val);
                                     wrapped[prop].subscribe(function (x) {
-                                        if (!wrapped.isrenewing) {
-                                            if (wrapped.entityState() == "clean") {
-                                                wrapped.entityState("dirty");
+                                        if (!this.isrenewing) {
+                                            if (this.entityState() == "clean") {
+                                                this.entityState("dirty");
                                             }
                                         }
-                                    });
+                                    }, wrapped);
+
                                 }
                                 else {
                                     wrapped[prop](val);
                                 }
                             }
                         }
+
+
 
                         var wrappedAcl = wrapped.acl;
                         if (wrappedAcl == undefined) {
@@ -79,19 +82,7 @@
                     this.shortcut = function (entity) {
                         var wrapped = this.entities[entity.Id];
                         if (wrapped == undefined) {
-                            wrapped = new Object();
-                            for (var prop in entity) {
-                                if (entity.hasOwnProperty(prop)) {
-                                    var val = entity[prop];
-                                    wrapped[prop] = ko.observable(val);
-
-                                }
-                            }
-                            if (wrapped.entityState == undefined) {
-                                wrapped.entityState = ko.observable('clean');
-
-                            }
-                            this.entities[entity.Id] = wrapped;
+                            this.renew(entity);
                         }
 
                         return wrapped;

@@ -7,6 +7,7 @@
                 isDirty: false
             }, options);
 
+            this.addClass("editview");
             return this.each(function () {
                 var $this = $(this);
                 $this.data("editviewOptions", settings);
@@ -42,23 +43,22 @@
             this.each(function () {
                 var $this = $(this);
                 var options = $this.data("editviewOptions");
+                if (options) {
+                    if (val != undefined) {
 
-                if (val != undefined) {
-
-                    if (options.isDirty != val) {
-                        options.isDirty = val;
-                        $this.trigger("isDirtyChanged.editview", val);
+                        if (options.isDirty != val) {
+                            options.isDirty = val;
+                            $this.trigger("isDirtyChanged.editview", val);
+                        }
                     }
+                    rs |= options.isDirty;
                 }
-                rs |= options.isDirty;
             });
 
             return rs;
 
         }
     };
-
-
 
 
     $.fn.editview = function (method) {

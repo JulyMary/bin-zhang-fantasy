@@ -173,6 +173,7 @@ namespace Fantasy.Web.Controllers
                 IDictionary<string, object> attr = Url.GetSclarViewLinkAttributes(obj.Id, ajaxOptions: new AjaxOptions()
                     {
                         UpdateTargetId = "contentpanel",
+                        OnBegin = "stdnav.confirmSaving"
                     });
 
                 attr.Add("id", id);

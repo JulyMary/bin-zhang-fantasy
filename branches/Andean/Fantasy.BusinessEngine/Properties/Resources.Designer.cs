@@ -122,6 +122,15 @@ namespace Fantasy.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Misc.
+        /// </summary>
+        internal static string MiscCategoryName {
+            get {
+                return ResourceManager.GetString("MiscCategoryName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no property/association named {0} in business class {1}..
         /// </summary>
         internal static string PropertyNotFoundMessage {

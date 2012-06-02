@@ -210,11 +210,11 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-2.1.0.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\Mvc\Html\BooleanEditor.js" />
     <Content Include="Scripts\Mvc\Html\TextEditor.js" />
     <Content Include="Scripts\standardnavigation\default.js" />
+    <Content Include="Scripts\standardscalar\default.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -331,6 +331,8 @@
     <Content Include="Mvc\Html\BooleanEditor.cshtml" />
     <Content Include="Mvc\Html\TextEditor.cshtml" />
     <Content Include="Mvc\Html\HiddenEditor.cshtml" />
+    <Content Include="Mvc\Html\ClassIdEditor.cshtml" />
+    <Content Include="Mvc\Html\BusinessObjectPropertyEditor.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -378,7 +380,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>22353</DevelopmentServerPort>
+          <DevelopmentServerPort>7997</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
