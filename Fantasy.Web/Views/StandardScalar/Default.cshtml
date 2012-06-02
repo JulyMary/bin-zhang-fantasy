@@ -1,29 +1,31 @@
 ﻿@model Fantasy.BusinessEngine.BusinessObject
 
 @{
-     System.Web.Routing.RouteValueDictionary attrs = new System.Web.Routing.RouteValueDictionary();
-     attrs["data-bind"] = "enable: acl.deletable";
-     string id = Guid.NewGuid().ToString("N");
-     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0}').buttonset();", id));
     
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/jquery.editingview.js"));
+     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardscalar/default.js"));
+    
+    
+     string id = "form_" + Guid.NewGuid().ToString("N");
+     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0} > div:first').buttonset();", id));
+    
+
      
 }
 
-@using (this.Ajax.BeginAppViewForm(new AjaxOptions(), action:"Save"))
+@using (this.Ajax.BeginAppViewForm(new AjaxOptions(), action:"Save", htmlAttributes:new {id=id}))
 {
 
-    this.Html.BusinessObjectRender(this.Model, "#" + this.ViewContext.FormContext.FormId);                                         
+    this.Html.BusinessObjectRender(this.Model, "#" + id);                                         
     
-    <div id="@id"><input type="submit"  value="Save" />@this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: attrs)
-    <button onclick="messageboxbuttonclick()">messagebox</button></div>
-    
-   
-   
+    <div><button type="submit" data-bind="enable: entityState() != 'clean'">Save</button> @this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: new System.Web.Routing.RouteValueDictionary() { { "data-bind", "enable: acl.deletable"} })</div>
+      
 @this.Html.PropertyGrid().BindModel(this.Model)
+
 }
 
-<script type="text/javascript">
-    function messageboxbuttonclick() {
-        messageBox.show({ text: "hello world;hello world;hello world;hello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello worldhello world", icon: messageBox.icons.Error, buttons: messageBox.buttons.YesNoCancel, defaultButtons:1 });
-    }
-</script>
+@{
+    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindview('{0}', '{1}');", id, this.Model.Id));
+}
+
+

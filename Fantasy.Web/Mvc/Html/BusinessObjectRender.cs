@@ -43,7 +43,7 @@ namespace Fantasy.Web.Mvc.Html
                 StringBuilder objText = new StringBuilder(1024);
                 StringBuilder aclText = new StringBuilder(1024);
                 var properDescs = from prop in this.Descriptor.Properties
-                                  where prop.CanRead && prop.MemberType == BusinessObjectMemberTypes.Property
+                                  where prop.CanRead && prop.IsScalar
                                   select prop;
                 foreach (BusinessPropertyDescriptor propDesc in properDescs)
                 {
@@ -55,7 +55,7 @@ namespace Fantasy.Web.Mvc.Html
                     if (value is BusinessObject)
                     {
                         BusinessObject oval = (BusinessObject)value;
-                        objText.AppendFormat("{0} : $('{1}').be().shortcut({{Id: {2}, Name : '{3}'}})", propDesc.CodeName,
+                        objText.AppendFormat("{0} : $('{1}').be().shortcut({{Id: '{2}', Name : '{3}'}})", propDesc.CodeName,
                             selector, oval.Id, oval.Name);
                     }
                     else
@@ -113,11 +113,33 @@ namespace Fantasy.Web.Mvc.Html
         public static UserControlFactory Editor<TModel>(this BusinessObjectRender<TModel> render, string propertyName)
             where TModel : BusinessObject
         {
-            UserControlFactory<TextEditor> rs = new UserControlFactory<TextEditor>(render.Html);
-            rs.BindModel(render);
-            rs.Control.PropertyName = propertyName;
 
-            return rs;
+            
+            BusinessPropertyDescriptor desc = render.Descriptor.Properties[propertyName];
+            if (desc.CodeName == "ClassId")
+            {
+                UserControlFactory<ClassIdEditor> rs = new UserControlFactory<ClassIdEditor>(render.Html);
+                rs.BindModel(render);
+                rs.Control.PropertyName = propertyName;
+                return rs;
+            }
+            else if (desc.PropertyType.IsSubclassOf(typeof(BusinessObject)))
+            {
+                UserControlFactory<BusinessObjectPropertyEditor> rs = new UserControlFactory<BusinessObjectPropertyEditor>(render.Html);
+                rs.BindModel(render);
+                rs.Control.PropertyName = propertyName;
+                return rs;
+            }
+            else
+            {
+                UserControlFactory<TextEditor> rs = new UserControlFactory<TextEditor>(render.Html);
+                rs.BindModel(render);
+                rs.Control.PropertyName = propertyName;
+
+                return rs;
+            }
+
+           
         }
 
         public static UserControlFactory EditorFor<TModel, TValue>(this BusinessObjectRender<TModel> render, Expression<Func<TModel, TValue>> property) 

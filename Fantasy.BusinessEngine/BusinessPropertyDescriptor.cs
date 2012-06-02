@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Collections;
+using Fantasy.BusinessEngine.EntityExtensions;
+using Fantasy.BusinessEngine.Properties;
 
 namespace Fantasy.BusinessEngine
 {
@@ -134,7 +136,25 @@ namespace Fantasy.BusinessEngine
 
         public long DisplayOrder { get; internal set; }
 
+        public IList<IEntityExtension> Entensions { get; internal set; }
 
+        public string Category
+        {
+            get
+            {
+                string rs = null;
+                Category cate = this.Entensions.OfType<Category>().FirstOrDefault();
+                if (cate != null)
+                {
+                    rs = cate.Value;
+                }
+                if (String.IsNullOrEmpty(rs))
+                {
+                    rs = Resources.MiscCategoryName;
+                }
+                return rs;
+            }
+        }
 
 
     }

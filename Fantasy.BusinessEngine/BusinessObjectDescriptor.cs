@@ -73,6 +73,7 @@ namespace Fantasy.BusinessEngine
                     PropertyType = EntityType.GetProperty(property.CodeName).PropertyType,
                     DisplayOrder = property.DisplayOrder,
                     Property = property,
+                    Entensions = property.Extensions
                 };
 
                 if (property.DataType == dataTypes.Class)
@@ -103,6 +104,7 @@ namespace Fantasy.BusinessEngine
                     DisplayOrder = assn.RightRoleDisplayOrder,
                     ReferencedClass = assn.RightClass,
                     Association = assn,
+                    Entensions = assn.RightExtensions
 
                 };
                 this.Properties.Add(desc);
@@ -122,6 +124,7 @@ namespace Fantasy.BusinessEngine
                     DisplayOrder = assn.LeftRoleDisplayOrder,
                     ReferencedClass = assn.LeftClass,
                     Association = assn,
+                    Entensions = assn.LeftExtensions
                 };
                 this.Properties.Add(desc);
             }

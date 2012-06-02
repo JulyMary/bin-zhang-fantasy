@@ -1,0 +1,20 @@
+﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
+@using Fantasy;
+@using Fantasy.BusinessEngine
+@using Fantasy.BusinessEngine.Services
+@{
+    IObjectModelService svc = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>(); 
+    BusinessClass cls = svc.FindBusinessClass(this.Model.Object.ClassId);
+}
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+{
+
+<span @WriteAttributes() data-bind="visible: acl.ClassId() != 'collpased'">
+    
+    @if (this.PropertyDescriptor.CanRead)
+    {
+         @cls.Name
+    }
+    
+</span> 
+}

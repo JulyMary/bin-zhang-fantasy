@@ -89,11 +89,17 @@ var stdnav = {
 
     confirmSaving: function () {
 
+        var rs = true;
         var view = $("#contentpanel").children(":first");
         if (view.editview("isDirty")) {
-            
-            
+
+            rs = confirm("Changes are not saved, contiune?") ? true:false;
+
+
+
         }
+
+        return rs;
     }
 
 
