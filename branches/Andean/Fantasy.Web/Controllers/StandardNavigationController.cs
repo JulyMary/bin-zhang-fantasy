@@ -28,9 +28,6 @@ namespace Fantasy.Web.Controllers
             StandardNavigationDefaultViewModel model = new StandardNavigationDefaultViewModel();
             model.RootTreeItem = this.CreateTreeItem(entryObject, this._settings.Deep - 1);
 
-
-
-
             if (model == null)
             {
                 FormsAuthentication.RedirectToLoginPage();
@@ -46,10 +43,6 @@ namespace Fantasy.Web.Controllers
             return View(model);
 
         }
-
-
-
-
 
         public JsonResult LoadChildren(Guid objId, string property)
         {
@@ -158,7 +151,7 @@ namespace Fantasy.Web.Controllers
             return rs;
         }
 
-        private JsTreeNode CreateTreeItem(BusinessObject obj, int childDeep)
+        internal JsTreeNode CreateTreeItem(BusinessObject obj, int childDeep)
         {
 
             BusinessObjectDescriptor descriptor = new BusinessObjectDescriptor(obj);
@@ -311,43 +304,19 @@ namespace Fantasy.Web.Controllers
 
         public ViewResultBase Create(Guid objId, string property, Guid classId)
         {
+
+
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
-            IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
-            BusinessObject parent = es.Get<BusinessObject>(objId);
 
-            BusinessObjectDescriptor parentDesc = new BusinessObjectDescriptor(parent);
-
-            if (parentDesc.Properties[property].CanWrite == true)
+            object model = new
             {
-                BusinessClass @class = oms.FindBusinessClass(classId);
-                BusinessObjectDescriptor childDesc = new BusinessObjectDescriptor(@class);
-                if (childDesc.CanCreate)
-                {
-                    BusinessObject child = (BusinessObject)es.CreateEntity(@class.EntityType());
-                    if (String.IsNullOrEmpty(child.Name))
-                    {
-                        string name = string.Format(Resources.NewBusinessObjectName, @class.Name);
-                        if (!parentDesc.Properties[property].IsScalar)
-                        {
-                            IList siblings = Invoker.Invoke<IList>(parent, property);
-                            name = Utils.UniqueNameGenerator.GetName(name, siblings.Cast<BusinessObject>().Select(s => s.Name));
-                        }
+                Parent = es.Get<BusinessObject>(objId),
+                Property = property,
+                ClassId = classId
+            };
 
-                        child.Name = name;
-                    }
-
-                    parent.Append(property, child);
-
-                    return PartialView(new CreateChildModel() { Parent = parent, Property = property, Child = child, TreeNode = this.CreateTreeItem(child, 0) });
-                }
-
-                
-            }
-           
-            throw new HttpException(403, "Forbidden");
-            
-
-
+            return PartialView(model);
+ 
         }
 
 

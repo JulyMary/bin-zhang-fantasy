@@ -8,5 +8,17 @@
             view.editview("isDirty", state != "clean");
         });
 
+    },
+
+    cancelCreation: function (viewId, objId) {
+
+        var view = $("#" + viewId);
+        view.editview("isDirty", false);
+        var be = view.be();
+        var entity = be.getEntity(objId);
+
+        entity.entityState("deleted");
     }
+
+
 }

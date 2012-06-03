@@ -1,5 +1,21 @@
-﻿@model Fantasy.Web.Models.CreateChildModel
-@{
-     //this.Html.HtmlAssets().AddStartupScript(String.Format("addChildNodeToNavigationTree('{0}', '{1}', {2});", this.Model.Parent.Id, this.Model.Property, JsonHelper.Serialize(this.Model.TreeNode)));
+﻿@using Fantasy.BusinessEngine;
+@Html.ScalarView(((BusinessObject)this.Model.Parent).Id, action: "Create", routeValues: new { parentId = this.Model.Parent.Id, property = this.Model.Property, classId = this.Model.ClassId }) 
+@{ 
+    object o = System.Reflection.Invoker.Invoke(this.Model.Parent, this.Model.Property);
+    BusinessObject child = null;
+    if(o is BusinessObject)
+    {
+        child = (BusinessObject)o;
+    } 
+    else if(o is System.Collections.IList)
+    {
+        child = ((System.Collections.IList)o).OfType<BusinessObject>().LastOrDefault();
+    }
+    
+    if(child != null && child.EntityState == EntityState.New)
+    {
+        Fantasy.Web.Models.JsTreeNode node = ((Fantasy.Web.Controllers.StandardNavigationController)this.ViewContext.Controller).CreateTreeItem(child, 0);
+        
+        this.Html.HtmlAssets().AddStartupScript(String.Format("stdnav.addTreeNode('{0}', '{1}', {2});", this.Model.Parent.Id, this.Model.Property, JsonHelper.Serialize(node)));
+    }
 }
-@Html.ScalarView(this.Model.Child.Id, action: "Create", routeValues: new { obj = this.Model.Child }); 

@@ -147,15 +147,15 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        
+        public virtual IScalarViewController GetScalarView(BusinessClass @class)
+        {
+            return (IScalarViewController)CreateDetialsViewController(@class, Type.GetType("Fantasy.Web.Controllers.StandardScalarController, Fantasy.Web", true));
+        }
 
         public virtual IScalarViewController GetScalarView(BusinessObject obj)
         {
             BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(obj.ClassId);
-
-            return (IScalarViewController)CreateDetialsViewController(@class, Type.GetType("Fantasy.Web.Controllers.StandardScalarController, Fantasy.Web", true));
-
-
+            return GetScalarView(@class);
         }
 
         private object CreateDetialsViewController(BusinessClass @class, Type defaultType)

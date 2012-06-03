@@ -27,39 +27,21 @@ namespace Fantasy.BusinessEngine
             set
             {
 
-                switch (this.MemberType)
+                if (this.IsScalar)
                 {
-                    case BusinessObjectMemberTypes.Property:
+                    if (this.PropertyType.IsSubclassOf(typeof(BusinessObject)))
+                    {
+                        this.Owner.Object.Append(this.CodeName, (BusinessObject)value);
+                    }
+                    else
+                    {
                         this.Owner.Object.GetType().GetProperty(CodeName).SetValue(this.Owner.Object, value, null);
-                        break;
-                    case BusinessObjectMemberTypes.LeftAssociation:
+                    }
+                }
 
-                        if (this.IsScalar)
-                        {
-                            this.SetAssnValue((BusinessObject)value, this.Association.LeftNavigatable ? this.Association.LeftRoleCode : null,
-                                (new Cardinality(this.Association.LeftCardinality)).IsScalar);  
-                        }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-
-
-                        break;
-                    case BusinessObjectMemberTypes.RightAssociation:
-                        if(this.IsScalar)
-                        {
-                            this.SetAssnValue((BusinessObject)value, this.Association.RightNavigatable ? this.Association.RightRoleCode : null,
-                              (new Cardinality(this.Association.RightCardinality)).IsScalar);  
-                        }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-                        break;
-                  
-                    default:
-                        throw new NotSupportedException();
+                else
+                {
+                    throw new NotSupportedException();
                 }
                 
             }

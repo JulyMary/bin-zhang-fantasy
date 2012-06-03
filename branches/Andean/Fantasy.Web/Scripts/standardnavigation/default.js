@@ -4,9 +4,39 @@ var stdnav = {
         var shortcut = $(node).data("entity");
         if (shortcut != undefined) {
 
-            be.shortcut(shortcut);
+            var entity = be.shortcut(shortcut);
 
             be.applyBindings(shortcut.Id, node);
+
+            var handler = entity.entityState.subscribe(function (state) {
+                if (state == "deleted") {
+
+                    var tree = $.jstree._reference("#navigationTree");
+                    var toSelect = tree._get_next(this, true);
+                    if (!toSelect) {
+                        toSelect = tree._get_prev(this, true);
+                    }
+
+                    if (!toSelect) {
+                        toSelect = tree._get_parent(this);
+                        if (toSelect != -1 && toSelect != false) {
+                            //Skip FOLDER
+                            toSelect = tree._get_parent(toSelect);
+                        }
+                    }
+
+
+                    $("#navigationTree").jstree("remove", this);
+                    this.data("entityStateHandler").dispose();
+
+                    if (toSelect != -1 && toSelect != false) {
+                        tree.select_node(toSelect, true);
+                        toSelect.children("a:first").click();
+                    }
+
+                }
+            }, $(node));
+            $(node).data("entityStateHandler", handler);
         }
         var children = $.jstree._reference("#navigationTree")._get_children(node);
         children.each(function () {
@@ -93,10 +123,7 @@ var stdnav = {
         var view = $("#contentpanel").children(":first");
         if (view.editview("isDirty")) {
 
-            rs = confirm("Changes are not saved, contiune?") ? true:false;
-
-
-
+            rs = confirm("Changes are not saved, contiune?") ? true : false;
         }
 
         return rs;

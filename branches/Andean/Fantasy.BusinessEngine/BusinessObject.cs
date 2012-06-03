@@ -174,7 +174,10 @@ namespace Fantasy.BusinessEngine
                         else
                         {
                             IList col = (IList)pi.GetValue(this, null);
-                            col.Add(other);
+                            if (col.IndexOf(other) < 0)
+                            {
+                                col.Add(other);
+                            }
                         }
 
                         if (propDesc.Association.LeftNavigatable)
@@ -187,7 +190,10 @@ namespace Fantasy.BusinessEngine
                             else
                             {
                                 IList col = (IList)otherPi.GetValue(other, null);
-                                col.Add(this);
+                                if (col.IndexOf(this) < 0)
+                                {
+                                    col.Add(this);
+                                }
                             }
                         }
                     }
@@ -201,7 +207,10 @@ namespace Fantasy.BusinessEngine
                         else
                         {
                             IList col = (IList)pi.GetValue(this, null);
-                            col.Add(other);
+                            if (col.IndexOf(other) < 0)
+                            {
+                                col.Add(other);
+                            }
                         }
 
                         if (propDesc.Association.RightNavigatable)
@@ -214,7 +223,10 @@ namespace Fantasy.BusinessEngine
                             else
                             {
                                 IList col = (IList)otherPi.GetValue(other, null);
-                                col.Add(this);
+                                if (col.IndexOf(this) < 0)
+                                {
+                                    col.Add(this);
+                                }
                             }
                         }
                     }
