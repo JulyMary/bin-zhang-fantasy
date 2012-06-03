@@ -24,6 +24,16 @@
             });
         },
 
+        rollback: function () {
+            return this.each(function () {
+                var $this = $(this);
+                var options = $this.data("editviewOptions");
+                if (options.rollback) {
+                    options.rollback.apply($this);
+                }
+            });
+        },
+
         refresh: function () {
             return this.each(function () {
                 var $this = $(this);

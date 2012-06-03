@@ -61,6 +61,21 @@ var stdnav = {
                 stdnav.bindEntity(this, be);
             });
         })
+    .bind("before.jstree", function (e, data) {
+        if (data.func == "select_node") {
+            var view = $("#contentpanel").children(":first");
+            if (view.editview("isDirty")) {
+
+                if (!confirm("Changes are not saved, contiune?")) {
+                    e.stopImmediatePropagation();
+                    return false;
+                }
+                else {
+                    view.editview("rollback");
+                }
+            }
+        }
+    })
     .jstree({
         "json_data": {
             "data": [
@@ -120,11 +135,7 @@ var stdnav = {
     confirmSaving: function () {
 
         var rs = true;
-        var view = $("#contentpanel").children(":first");
-        if (view.editview("isDirty")) {
 
-            rs = confirm("Changes are not saved, contiune?") ? true : false;
-        }
 
         return rs;
     }
