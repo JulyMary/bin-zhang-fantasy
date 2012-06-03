@@ -7,20 +7,14 @@
 
     string id = "form_" + Guid.NewGuid().ToString("N");
     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0} > div:first').buttonset();", id));
-    
+    this.Html.BusinessObjectRender(this.Model, "#" + id);
+    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindview('{0}', '{1}');", id, this.Model.Id));
      
 }
 
-@using (this.Ajax.BeginAppViewForm(new AjaxOptions(), action:"SaveCreation"))
+@using (this.Ajax.BeginAppViewForm(new AjaxOptions(), action: "Create", routeValues: new {objId = this.Model.Id, classId=this.Model.ClassId}, htmlAttributes: new { id = id }))
 {
-
-    this.Html.BusinessObjectRender(this.Model, "#" + id);                                         
-    
-    <div id="@id"><input type="submit"  value="Save" />@this.Ajax.ScalarViewLink("Cancel", this.Model.Id, action: "CancelCreation")</div>
-   
-   
-@this.Html.PropertyGrid().BindModel(this.Model)
-}
-@{
-    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindview('{0}', '{1}');", id, this.Model.Id));
+     <div><button type="submit">Save</button><button type="button" onclick="stdscalar.cancelCreation('@id', '@this.Model.Id')">Cancel</button></div>
+  
+     @this.Html.PropertyGrid().BindModel(this.Model)
 }

@@ -128,14 +128,23 @@ namespace Fantasy.Web.Mvc
                         BusinessObject obj;
                         if (string.Equals((string)this.RequestContext.RouteData.Values["action"], "create", StringComparison.OrdinalIgnoreCase))
                         {
-                            obj = (BusinessObject)this.RequestContext.RouteData.Values["obj"];
+                            object o = this.RequestContext.RouteData.Values["classId"];
+                            if (o == null)
+                            {
+                                o = this.RequestContext.HttpContext.Request["classId"];
+                            }
+                            Guid classId = o is Guid ? (Guid)o : new Guid((string)o);
+                            IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
+                            BusinessClass @class = oms.FindBusinessClass(classId);
+                            rs = app.GetScalarView(@class);
                         }
                         else
                         {
 
                             obj = GetBusinessObject(app);
+                            rs = app.GetScalarView(obj);
                         }
-                        rs = app.GetScalarView(obj);
+                      
                     }
 
                     break;

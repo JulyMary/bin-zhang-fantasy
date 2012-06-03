@@ -51,7 +51,7 @@
                             $this.trigger("isDirtyChanged.editview", val);
                         }
                     }
-                    rs |= options.isDirty;
+                    rs = rs || options.isDirty;
                 }
             });
 

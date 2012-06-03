@@ -82,7 +82,7 @@
                     this.shortcut = function (entity) {
                         var wrapped = this.entities[entity.Id];
                         if (wrapped == undefined) {
-                            this.renew(entity);
+                            wrapped = this.renew(entity);
                         }
 
                         return wrapped;

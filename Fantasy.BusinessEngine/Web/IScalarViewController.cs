@@ -11,6 +11,6 @@ namespace Fantasy.Web
     {
         ViewResultBase Default(Guid objId);
 
-        ViewResultBase Create(BusinessObject obj);
+        ViewResultBase Create(Guid parentId, string property, Guid classId);
     }
 }
