@@ -3,7 +3,7 @@
 @{
     
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/jquery.editingview.js"));
-     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardscalar/default.js"));
+     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Views/standardscalar.js"));
     
     
      string id = "form_" + Guid.NewGuid().ToString("N");
@@ -18,14 +18,18 @@
 
     this.Html.BusinessObjectRender(this.Model, "#" + id);                                         
     
-    <div><button type="submit" data-bind="enable: entityState() != 'clean'">Save</button> @this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: new System.Web.Routing.RouteValueDictionary() { { "data-bind", "enable: acl.deletable"} })</div>
+    <div>@this.Ajax.ScalarViewLink("Refresh", this.Model.Id, htmlAttributes: new {id=id + "_refresh"})
+        <button type="submit" data-bind="enable: entityState() != 'clean'">Save</button> 
+        @this.Ajax.ScalarViewLink("Delete", this.Model.Id, action: "Delete", htmlAttributes: new System.Web.Routing.RouteValueDictionary() { { "data-bind", "enable: acl.deletable"} })
+    </div>
+   
       
 @this.Html.PropertyGrid().BindModel(this.Model)
 
 }
 
 @{
-    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindview('{0}', '{1}');", id, this.Model.Id));
+    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindEditView('{0}', '{1}');", id, this.Model.Id));
 }
 
 

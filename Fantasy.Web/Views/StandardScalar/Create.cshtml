@@ -2,13 +2,13 @@
 @{
   
     Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/jquery.editingview.js"));
-    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/standardscalar/default.js"));
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Views/standardscalar.js"));
 
 
     string id = "form_" + Guid.NewGuid().ToString("N");
     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0} > div:first').buttonset();", id));
     this.Html.BusinessObjectRender(this.Model, "#" + id);
-    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindview('{0}', '{1}');", id, this.Model.Id));
+    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.bindCreationView('{0}', '{1}');", id, this.Model.Id));
      
 }
 

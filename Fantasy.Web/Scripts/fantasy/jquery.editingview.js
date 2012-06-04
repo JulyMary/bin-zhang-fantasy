@@ -9,41 +9,31 @@
 
             this.addClass("editview");
             return this.each(function () {
-                var $this = $(this);
-                $this.data("editviewOptions", settings);
+               
+                $.data(this, "editviewOptions", settings);
+              
             });
         },
 
         save: function () {
             return this.each(function () {
-                var $this = $(this);
-                var options = $this.data("editviewOptions");
+               
+                var options = $.data(this, "editviewOptions");
                 if (options.save) {
-                    options.save.apply($this);
+                    options.save.apply($(this));
                 }
             });
         },
 
         rollback: function () {
             return this.each(function () {
-                var $this = $(this);
-                var options = $this.data("editviewOptions");
+                
+                var options = $.data(this, "editviewOptions");
                 if (options.rollback) {
-                    options.rollback.apply($this);
+                    options.rollback.apply($(this));
                 }
             });
         },
-
-        refresh: function () {
-            return this.each(function () {
-                var $this = $(this);
-                var options = $this.data("editviewOptions");
-                if (options.refresh) {
-                    options.refresh.apply($this);
-                }
-            });
-        },
-
 
 
         isDirty: function (val) {
@@ -51,14 +41,14 @@
             var rs = false;
 
             this.each(function () {
-                var $this = $(this);
-                var options = $this.data("editviewOptions");
+               
+                var options = $.data(this, "editviewOptions");
                 if (options) {
                     if (val != undefined) {
 
                         if (options.isDirty != val) {
                             options.isDirty = val;
-                            $this.trigger("isDirtyChanged.editview", val);
+                            $(this).trigger("isDirtyChanged.editview", val);
                         }
                     }
                     rs = rs || options.isDirty;

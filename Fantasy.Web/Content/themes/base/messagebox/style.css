@@ -37,3 +37,8 @@
 {
 	background-image: url(information.png);
 }
+
+.messagebox > .icon-question
+{
+	background-image: url(question.png);
+}

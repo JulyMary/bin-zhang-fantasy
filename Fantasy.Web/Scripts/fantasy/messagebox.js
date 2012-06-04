@@ -18,7 +18,9 @@
         Information: 0x40,
         None: 0,
         Stop: 0x10,
-        Warning: 0x30
+        Warning: 0x30,
+        Question: 0x20,
+        Help: 0x20
     };
 
     this.defaultButtons = {
@@ -27,7 +29,7 @@
         Button3: 2
     };
 
-    this.dialogResult = {
+    this.dialogResults = {
         None: 0,
         OK: 1,
         Cancel: 2,
@@ -60,164 +62,152 @@
         }
 
 
-        var icon=$("ins:first", div);
+        var icon = $("ins:first", div);
         icon.attr("class", "");
-        switch(options.icon)
-        {
-            case 0 :
-                icon.addClass("icon icon-none");
-                break;
-            case 0x10 :
+        switch (options.icon) {
+            case 0x10:
                 icon.addClass("icon icon-error");
                 break;
-            case 0x30 :
+            case 0x20:
+                icon.addClass("icon icon-question");
+                break;
+            case 0x30:
                 icon.addClass("icon icon-warnning");
                 break;
-            case 0x40 :
+            case 0x40:
                 icon.addClass("icon icon-information");
+                break;
+            default:
+                icon.addClass("icon icon-none");
                 break;
         }
 
         $("p:first", div).html(options.text);
 
 
-       
 
 
-       
+
+
         var buttons;
         switch (options.buttons) {
             case 0: //OK
                 buttons = {
-                    "OK" : function(){
+                    "OK": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 1);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [1]);
                         }
                     }
                 };
                 break;
             case 1: //OKCancel
                 buttons = {
-                    "OK" : function(){
+                    "OK": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 1);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [1]);
                         }
                     },
-                    "Cancel" : function(){
+                    "Cancel": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 2);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [2]);
                         }
                     }
                 };
                 break;
             case 2: //AbortRetryIgnore
-             buttons = {
-                    "Abort" : function(){
+                buttons = {
+                    "Abort": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 3);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [3]);
                         }
                     },
-                    "Retry" : function(){
+                    "Retry": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 4);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [4]);
                         }
                     },
-                    "Ignore" : function(){
+                    "Ignore": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 5);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [5]);
                         }
                     }
                 };
                 break;
             case 3: //YesNoCancel
-             buttons = {
-                    "Yes" : function(){
+                buttons = {
+                    "Yes": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 6);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [6]);
                         }
                     },
-                    "No" : function(){
+                    "No": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 7);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [7]);
                         }
                     },
-                    "Cancel" : function(){
+                    "Cancel": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 2);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [2]);
                         }
                     }
                 };
                 break;
             case 4: //YesNo
                 buttons = {
-                    "Yes" : function(){
+                    "Yes": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 6);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [6]);
                         }
                     },
-                    "No" : function(){
+                    "No": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 7);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [7]);
                         }
                     }
                 };
                 break;
             case 5: //RetryCancel;
                 buttons = {
-                    "Retry" : function(){
+                    "Retry": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 4);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [4]);
                         }
                     },
-                    "Cancel" : function(){
+                    "Cancel": function () {
                         $(this).dialog("close");
-                        if(options.callback)
-                        {
-                            options.callback.apply($(this), 2);
+                        if (options.onclose) {
+                            options.onclose.apply($(this), [2]);
                         }
                     }
                 };
-                break; 
+                break;
         }
 
         div.dialog({
-            resizable:false,
-            modal:true,
-            buttons:buttons,
-            width:"auto",
-            title:options.caption
+            resizable: false,
+            modal: true,
+            buttons: buttons,
+            width: "auto",
+            title: options.caption
         });
 
         var b = $("button", div.closest(".ui-dialog"));
-        if(options.defaultButtons < b.length)
-        {
+        if (options.defaultButtons < b.length) {
             $(b[options.defaultButtons]).focus();
         }
     };
 
-   
+
 }

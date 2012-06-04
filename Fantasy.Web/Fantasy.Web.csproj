@@ -161,6 +161,7 @@
     <Content Include="Content\themes\base\jstree\throbber.gif" />
     <Content Include="Content\themes\base\messagebox\error.png" />
     <Content Include="Content\themes\base\messagebox\information.png" />
+    <Content Include="Content\themes\base\messagebox\question.png" />
     <Content Include="Content\themes\base\messagebox\style.css" />
     <Content Include="Content\themes\base\messagebox\warnning.png" />
     <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -213,8 +214,8 @@
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\Mvc\Html\BooleanEditor.js" />
     <Content Include="Scripts\Mvc\Html\TextEditor.js" />
-    <Content Include="Scripts\standardnavigation\default.js" />
-    <Content Include="Scripts\standardscalar\default.js" />
+    <Content Include="Scripts\Views\standardnavigation.js" />
+    <Content Include="Scripts\Views\standardscalar.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
