@@ -1027,8 +1027,13 @@
 						event.preventDefault();
 						event.currentTarget.blur();
 						if(!$(event.currentTarget).hasClass("jstree-loading")) {
-							this.select_node(event.currentTarget, true, event);
+							this.select_node(event.currentTarget, true, event)
+                            if(!this.is_selected(event.currentTarget))
+                            {
+                                event.stopImmediatePropagation();
+                            }
 						}
+                       
 					}, this))
 				.delegate("a", "mouseenter.jstree", $.proxy(function (event) {
 						if(!$(event.currentTarget).hasClass("jstree-loading")) {

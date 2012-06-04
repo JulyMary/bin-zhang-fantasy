@@ -50,7 +50,7 @@ var stdnav = {
 
         }
     },
-
+    isConfirmed: false,
     showtree: function (root) {
         var be = $("#navigationTree").be();
 
@@ -64,15 +64,44 @@ var stdnav = {
     .bind("before.jstree", function (e, data) {
         if (data.func == "select_node") {
             var view = $("#contentpanel").children(":first");
-            if (view.editview("isDirty")) {
+            var tree = $.jstree._reference("#navigationTree");
 
-                if (!confirm("Changes are not saved, contiune?")) {
-                    e.stopImmediatePropagation();
-                    return false;
-                }
-                else {
-                    view.editview("rollback");
-                }
+            var newNode = tree._get_node(data.args[0]);
+            if (!stdnav.isConfirmed && view.editview("isDirty")) {
+
+                messageBox.show({
+                    text: "Changes are not saved, do you want to save them?",
+                    buttons: messageBox.buttons.YesNoCancel,
+                    icon: messageBox.icons.Question,
+                    defaultButtons: messageBox.defaultButtons.Button3,
+                    onclose: function (dr) {
+
+                        var op = undefined;
+                        switch (dr) {
+                            case messageBox.dialogResults.Yes:
+                                op = "save";
+                                break;
+                            case messageBox.dialogResults.No:
+                                op = "rollback";
+                                break;
+                        }
+                        if (op) {
+                            view.editview(op);
+                            stdnav.isConfirmed = true;
+                            try {
+                                tree.select_node(newNode, true);
+                                newNode.children("a:first").click();
+                            }
+                            finally {
+                                stdnav.isConfirmed = false;
+                            }
+                        }
+                    }
+                });
+
+                e.stopImmediatePropagation();
+                return false;
+
             }
         }
     })
@@ -115,9 +144,16 @@ var stdnav = {
         var pNode = $("#navigationTree" + parent + property).closest("li");
         var callback = function (node) {
 
-            tree.select_node(node, true);
-            var be = $("#navigationTree").be();
-            stdnav.bindEntity(node[0], be);
+            stdnav.isConfirmed = true;
+            try {
+                tree.select_node(node, true);
+                var be = $("#navigationTree").be();
+                stdnav.bindEntity(node[0], be);
+            }
+            finally {
+                stdnav.isConfirmed = false;
+            }
+
         };
 
 
