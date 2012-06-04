@@ -8,7 +8,7 @@ namespace Fantasy.BusinessEngine
 {
     public class EntityNotFoundException : Exception
     {
-        public EntityNotFoundException(Type type, Guid id)
+        public EntityNotFoundException(Type type, object id)
             : base(String.Format(Resources.EntityNotFoundExceptionMessage, type.Name, id))
         {
             this.EntityType = type;
@@ -17,6 +17,6 @@ namespace Fantasy.BusinessEngine
 
         public Type EntityType { get; private set; }
 
-        public Guid EntityId { get; private set; }
+        public object EntityId { get; private set; }
     }
 }

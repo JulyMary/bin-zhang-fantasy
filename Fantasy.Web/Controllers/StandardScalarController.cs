@@ -26,7 +26,7 @@ namespace Fantasy.Web.Controllers
         public ViewResultBase Default(Guid objId)
         {
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
-            BusinessObject obj = es.Get<BusinessObject>(objId);
+            BusinessObject obj = es.Load<BusinessObject>(objId);
 
             return PartialView(obj);
         }
@@ -36,7 +36,7 @@ namespace Fantasy.Web.Controllers
         {
 
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
-            BusinessObject obj = es.Get<BusinessObject>(objId);
+            BusinessObject obj = es.Load<BusinessObject>(objId);
             if (obj != null)
             {
                 this.TryUpdateModel(obj);
@@ -137,7 +137,36 @@ namespace Fantasy.Web.Controllers
 
         }
 
-       
+        public ViewResultBase Delete(Guid objId)
+        {
+
+            IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+            BusinessObject entity = es.Load<BusinessObject>(objId);
+            BusinessObjectDescriptor desc = new BusinessObjectDescriptor(entity);
+
+            if (desc.CanDelete)
+            {
+                es.BeginUpdate();
+                try
+                {
+                    es.Delete(entity);
+                    es.EndUpdate(true);
+                }
+                catch
+                {
+                    es.EndUpdate(false);
+                    throw;
+                }
+
+                return PartialView(entity);
+
+
+            }
+            else
+            {
+                throw new OperationFobiddenException();
+            }
+        }
        
     }
 }

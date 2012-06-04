@@ -295,7 +295,6 @@
     <Compile Include="Mvc\Html\JsonHelper.cs" />
     <Compile Include="Mvc\UrlHelperExtensions.cs" />
     <Compile Include="Mvc\WatchDependencyPathCommand.cs" />
-    <Compile Include="OperationFobiddenException.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -353,6 +352,7 @@
     <Content Include="Views\StandardScalar\Default.cshtml" />
     <Content Include="Views\StandardNavigation\Create.cshtml" />
     <Content Include="Views\StandardScalar\Create.cshtml" />
+    <Content Include="Views\StandardScalar\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,0 +1,9 @@
+﻿@model Fantasy.BusinessEngine.BusinessObject
+@{
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Views/standardscalar.js"));
+    string id = Guid.NewGuid().ToString("N");
+    this.Html.HtmlAssets().AddStartupScript(String.Format("stdscalar.entityDeleted('{0}', '{1}');", id, this.Model.Id));
+   
+}
+<div id="@id">Entity Deleted</div>
+
