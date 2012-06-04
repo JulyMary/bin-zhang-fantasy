@@ -98,6 +98,7 @@
     <Compile Include="EntityExtensions\Category.cs" />
     <Compile Include="IEntityExtension.cs" />
     <Compile Include="Maps\BusinessMenuItemMap.cs" />
+    <Compile Include="OperationFobiddenException.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
     <Compile Include="Security\BusinessApplicationACLCreatorOwnerSecurityProvider.cs" />
     <Compile Include="Security\BusinessApplicationACLSecurityProvider.cs" />
@@ -243,7 +244,9 @@
       <Name>Fantasy.Base</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="XMLFile1.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

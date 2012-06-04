@@ -25,14 +25,16 @@ var stdnav = {
                         }
                     }
 
+                    if (toSelect != -1 && toSelect != false) {
 
+                        toSelect.children("a:first").click();
+                        tree.select_node(toSelect, true);
+
+                    }
                     $("#navigationTree").jstree("remove", this);
                     this.data("entityStateHandler").dispose();
 
-                    if (toSelect != -1 && toSelect != false) {
-                        tree.select_node(toSelect, true);
-                        toSelect.children("a:first").click();
-                    }
+                   
 
                 }
             }, $(node));

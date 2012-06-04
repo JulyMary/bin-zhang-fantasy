@@ -46,7 +46,7 @@ namespace Fantasy.ServiceModel
                     }
                     catch(Exception error)
                     {
-                        logger.SafeLogError("Services", error, "Service {0} failed to initialize.", o.GetType().FullName);
+                            logger.SafeLogError("Services", error, "Service {0} failed to initialize.", o.GetType().FullName);
                         throw;
                     }
 

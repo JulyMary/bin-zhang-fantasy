@@ -31,7 +31,16 @@
 
         entity.entityState("deleted");
         view.html("Operation cancelled");
+    },
+
+    entityDeleted: function (viewId, objId) {
+        var view = $("#" + viewId);
+        var be = view.be();
+        var entity = be.getEntity(objId);
+        entity.entityState("deleted");
     }
+
+
 
 
 }

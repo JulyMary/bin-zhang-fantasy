@@ -182,6 +182,23 @@ namespace Fantasy.BusinessEngine.Services
         }
 
 
+        public T Load<T>(object id) where T : IEntity
+        {
+            return (T)this.Get(typeof(T), id);
+        }
+
+        public IEntity Load(Type entityType, object id)
+        {
+            IEntity rs = this.Get(entityType, id);
+            if (rs == null)
+            {
+                throw new EntityNotFoundException(entityType, id);
+            }
+
+            return rs;
+        }
+
+
         public void Delete(IEntity entity)
         {
             if (entity.EntityState != EntityState.New)

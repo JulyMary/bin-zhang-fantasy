@@ -140,7 +140,7 @@ function execute_ajax_scripts(scripts, startup) {
     $.when.apply(this, args).then(startup);
 }
 
-
+jQuery.ajaxSetup({cache:false});
 
 
 

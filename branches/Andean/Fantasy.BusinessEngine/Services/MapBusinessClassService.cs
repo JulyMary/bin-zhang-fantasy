@@ -127,7 +127,8 @@ namespace Fantasy.BusinessEngine.Services
                 new XElement(_nhns + "key", new XAttribute("column", column)),
                 new XElement(_nhns + "many-to-many", 
                     new XAttribute("class", @class.EntityType().AssemblyQualifiedName),
-                    new XAttribute("column", refcolumn))
+                    new XAttribute("column", refcolumn),
+                    new XAttribute("order-by", "DisplayOrder"))
                 );
 
             return rs;

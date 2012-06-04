@@ -26,6 +26,10 @@ namespace Fantasy.BusinessEngine.Services
 
         T Get<T>(object id) where T : IEntity;
 
+        IEntity Load(Type entityType, object id);
+
+        T Load<T>(object id) where T : IEntity;
+
 
 
         void SaveOrUpdate(IEntity entity);
