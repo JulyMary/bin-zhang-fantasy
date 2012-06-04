@@ -49,53 +49,57 @@ namespace Fantasy.Web.Controllers
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
 
             BusinessObject parent = es.Get<BusinessObject>(objId);
-            BusinessApplication application = BusinessEngineContext.Current.Application;
-
-            BusinessObjectSecurity security = application.GetObjectSecurity(parent);
-
-
-            IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
-            BusinessClass @class = oms.FindBusinessClass(parent.ClassId);
-
-
             List<JsTreeNode> model = new List<JsTreeNode>();
-
-            if (security.Properties[property].CanRead == true)
+            if (parent != null)
             {
+                BusinessApplication application = BusinessEngineContext.Current.Application;
 
-                var lefts = from assn in @class.AllLeftAssociations()
-                            where string.Equals(property, assn.RightRoleCode, StringComparison.OrdinalIgnoreCase)
-                            select
-                                new { IsScalar = (new Cardinality(assn.RightCardinality)).IsScalar };
-                var desc = lefts.SingleOrDefault();
+                BusinessObjectSecurity security = application.GetObjectSecurity(parent);
 
-                if (desc == null)
+
+                IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
+                BusinessClass @class = oms.FindBusinessClass(parent.ClassId);
+
+
+
+
+                if (security.Properties[property].CanRead == true)
                 {
-                    var rights = from assn in @class.AllRightAssociations()
-                                 where string.Equals(property, assn.LeftRoleCode, StringComparison.OrdinalIgnoreCase)
-                                 select new { IsScalar = (new Cardinality(assn.LeftCardinality)).IsScalar };
 
-                    desc = rights.Single(string.Format(Resources.PropertyNotFoundMessage, property, @class.FullCodeName));
-                }
+                    var lefts = from assn in @class.AllLeftAssociations()
+                                where string.Equals(property, assn.RightRoleCode, StringComparison.OrdinalIgnoreCase)
+                                select
+                                    new { IsScalar = (new Cardinality(assn.RightCardinality)).IsScalar };
+                    var desc = lefts.SingleOrDefault();
 
-                IEnumerable children;
-                if (desc.IsScalar)
-                {
-                    BusinessObject child = (BusinessObject)parent.GetType().GetProperty(property, _bindingFlags).GetValue(parent, null);
-                    children = child != null ? new BusinessObject[] { child } : new BusinessObject[0];
-                }
-                else
-                {
-                    children = (IEnumerable)parent.GetType().GetProperty(property, _bindingFlags).GetValue(parent, null);
-
-                }
-
-                foreach (BusinessObject child in children)
-                {
-                    JsTreeNode childNode = CreateTreeItem(child, this._settings.Deep - 1);
-                    if (childNode != null)
+                    if (desc == null)
                     {
-                        model.Add(childNode);
+                        var rights = from assn in @class.AllRightAssociations()
+                                     where string.Equals(property, assn.LeftRoleCode, StringComparison.OrdinalIgnoreCase)
+                                     select new { IsScalar = (new Cardinality(assn.LeftCardinality)).IsScalar };
+
+                        desc = rights.Single(string.Format(Resources.PropertyNotFoundMessage, property, @class.FullCodeName));
+                    }
+
+                    IEnumerable children;
+                    if (desc.IsScalar)
+                    {
+                        BusinessObject child = (BusinessObject)parent.GetType().GetProperty(property, _bindingFlags).GetValue(parent, null);
+                        children = child != null ? new BusinessObject[] { child } : new BusinessObject[0];
+                    }
+                    else
+                    {
+                        children = (IEnumerable)parent.GetType().GetProperty(property, _bindingFlags).GetValue(parent, null);
+
+                    }
+
+                    foreach (BusinessObject child in children)
+                    {
+                        JsTreeNode childNode = CreateTreeItem(child, this._settings.Deep - 1);
+                        if (childNode != null)
+                        {
+                            model.Add(childNode);
+                        }
                     }
                 }
             }
@@ -270,10 +274,6 @@ namespace Fantasy.Web.Controllers
 
                 foreach (BusinessClass @class in classes)
                 {
-
-                 
-
-                   
                     string href = this.Url.ApplicationUrl(objectId: prop.Owner.Object.Id, action: "create", property: prop.CodeName, routeValues: new { classId = @class.Id });
                     IDictionary<string, object> attr = ao.ToUnobtrusiveHtmlAttributes();
                     string name = string.Format(Resources.StandardNavigationAddChildText, @class.Name);
@@ -282,6 +282,11 @@ namespace Fantasy.Web.Controllers
                     rs.Add(@class.CodeName, new {type="anchor",icon=icon, href= href, name=name, attr = attr }); 
                 }
             }
+            if (rs.Count > 0)
+            {
+                rs.Add("separator1", "-----");
+            }
+            rs.Add("refresh", new { name = "Refresh", callback="stdnav.refreshNode"}); 
 
             if (rs.Count > 0)
             {
@@ -304,8 +309,6 @@ namespace Fantasy.Web.Controllers
 
         public ViewResultBase Create(Guid objId, string property, Guid classId)
         {
-
-
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
 
             object model = new

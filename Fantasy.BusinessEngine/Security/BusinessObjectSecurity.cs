@@ -280,6 +280,10 @@ namespace Fantasy.BusinessEngine.Security
 
         public BusinessObjectSecurity Union(BusinessObjectSecurity other)
         {
+            if (other == null)
+            {
+                return this;
+            }
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
 
             rs.CanCreate = NullableOr(this.CanCreate, other != null ? other.CanCreate : null);
@@ -302,6 +306,11 @@ namespace Fantasy.BusinessEngine.Security
 
         public BusinessObjectSecurity Intersect(BusinessObjectSecurity other)
         {
+            if (other == null)
+            {
+                return this;
+            }
+
             BusinessObjectSecurity rs = new BusinessObjectSecurity();
 
             rs.CanCreate = NullableAnd(this.CanCreate, other != null ? other.CanCreate : null);
@@ -325,11 +334,22 @@ namespace Fantasy.BusinessEngine.Security
 
         public static BusinessObjectSecurity operator | (BusinessObjectSecurity x, BusinessObjectSecurity y)
         {
+            if (x == null)
+            {
+                return y;
+            }
+
+
             return x.Union(y);
         }
 
         public static BusinessObjectSecurity operator &(BusinessObjectSecurity x, BusinessObjectSecurity y)
         {
+            if (x == null)
+            {
+                return y;
+            }
+
             return x.Intersect(y);
         }
 

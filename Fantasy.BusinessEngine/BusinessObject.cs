@@ -115,7 +115,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return (long)this.GetValue("DisplayOrder", null);
+                return (long)this.GetValue("DisplayOrder", 0L);
             }
             set
             {
@@ -128,7 +128,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return (Guid)this.GetValue("Creator", null);
+                return (Guid)this.GetValue("Creator", Guid.Empty);
             }
             set
             {

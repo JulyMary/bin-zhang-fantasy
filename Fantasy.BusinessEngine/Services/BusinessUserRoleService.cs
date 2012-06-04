@@ -193,8 +193,9 @@ namespace Fantasy.BusinessEngine.Services
                 this._wellknownRoles = new WellknownRoles()
                 {
                     Administrators = this.RoleById(new Guid("6d21bc2a-870a-4928-b219-fae9c4c9fd15")),
-                    Users = this.RoleById(new Guid("E8700B4B-7911-470E-8E0E-458507D1F51D")),
-                    Everyone = this.RoleById(new Guid("A51973B2-7CE8-440E-8A9C-1B48B59B0499"))
+                    Users = this.RoleById(new Guid("e8700b4b-7911-470e-8e0e-458507d1f51d")),
+                    Everyone = this.RoleById(new Guid("a51973b2-7ce8-440e-8a9c-1b48b59b0499")),
+                    CreatorOwner = this.RoleById(new Guid("88127de6-9e01-467a-af5a-6bf90183cd11")),
 
                 };
             }

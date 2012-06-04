@@ -91,6 +91,7 @@
     <Compile Include="BusinessUser.cs" />
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
+    <Compile Include="Codons\SecurityLayer.cs" />
     <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
     <Compile Include="Events\DefaultBusinessObjectCreateHandler.cs" />
     <Compile Include="Events\EntityCreateEventArgs.cs" />
@@ -98,8 +99,10 @@
     <Compile Include="IEntityExtension.cs" />
     <Compile Include="Maps\BusinessMenuItemMap.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
+    <Compile Include="Security\BusinessApplicationACLCreatorOwnerSecurityProvider.cs" />
     <Compile Include="Security\BusinessApplicationACLSecurityProvider.cs" />
     <Compile Include="Security\BusinessObjectMemberSecurityCollection.cs" />
+    <Compile Include="Security\SecurityLayer.cs" />
     <Compile Include="Services\BusinessMenuService.cs" />
     <Compile Include="Services\IBusinessMenuService.cs" />
     <Compile Include="Services\IImageListService.cs" />
@@ -240,9 +243,7 @@
       <Name>Fantasy.Base</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Codons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

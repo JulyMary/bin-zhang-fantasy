@@ -99,9 +99,15 @@
     </Extension>
     
     <Extension Path="fantasy/security/securityproviders">
-        <Object ID="appacl">
-            <be:BusinessApplicationACLSecurityProvider />
-        </Object>
+        <be:SecurityLayer ID="applayer">
+            <Object ID="appacl">
+                <be:BusinessApplicationACLSecurityProvider />
+            </Object>
+            <Object ID="CreatorOwner">
+                <be:BusinessApplicationACLCreatorOwnerSecurityProvider/>
+            </Object>
+        </be:SecurityLayer>
+        
     </Extension>
 
     <Extension Path="fantasy/startup">
