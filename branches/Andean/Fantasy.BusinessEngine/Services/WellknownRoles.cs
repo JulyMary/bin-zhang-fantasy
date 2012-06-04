@@ -12,5 +12,7 @@ namespace Fantasy.BusinessEngine.Services
         public BusinessRole Users { get; internal set; }
 
         public BusinessRole Administrators { get; internal set; }
+
+        public BusinessRole CreatorOwner { get; internal set; }
     }
 }

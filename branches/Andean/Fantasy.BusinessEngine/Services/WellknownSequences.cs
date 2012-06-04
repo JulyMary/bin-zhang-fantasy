@@ -8,5 +8,6 @@ namespace Fantasy.BusinessEngine.Services
     public static class WellknownSequences
     {
         public const string MetaModel = "BUSINESSMETAMODESEQ";
+        public const string BusinessObject = "BUSINESSOBJECTSEQ";
     }
 }

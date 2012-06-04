@@ -1015,6 +1015,21 @@
                                 if ($.isFunction(item.callback)) {
                                     k.callbacks[key] = item.callback;
                                 }
+                                else if (typeof item.callback == 'string') {
+                                    function getFunction(code, argNames) {
+                                        var fn = window, parts = (code || "").split(".");
+                                        while (fn && parts.length) {
+                                            fn = fn[parts.shift()];
+                                        }
+                                        if (typeof (fn) === "function") {
+                                            return fn;
+                                        }
+                                        argNames.push(code);
+                                        return Function.constructor.apply(null, argNames);
+                                    }
+                                    var func = getFunction(item.callback, ["key", "opt"]);
+                                    k.callbacks[key] = func;
+                                }
                             });
 
                             $('<span></span>').html(item._name || item.name || "").appendTo($t);
@@ -1397,13 +1412,13 @@
 
             // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#concept-command
             switch (nodeName) {
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-menu-element                
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-menu-element                  
                 case 'menu':
                     item = { name: $node.attr('label'), items: {} };
                     menuChildren(item.items, $node.children(), counter);
                     break;
 
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-a-element-to-define-a-command                
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-a-element-to-define-a-command                  
                 case 'a':
                     // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-button-element-to-define-a-command
                 case 'button':
@@ -1414,7 +1429,7 @@
                     };
                     break;
 
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-command-element-to-define-a-command                
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-command-element-to-define-a-command                  
 
                 case 'menuitem':
                 case 'command':

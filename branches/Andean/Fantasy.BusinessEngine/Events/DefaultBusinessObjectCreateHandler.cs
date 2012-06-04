@@ -17,6 +17,11 @@ namespace Fantasy.BusinessEngine.Events
             BusinessClass @class = oms.FindBusinessClassForType(obj.GetType());
             obj.ClassId = @class.Id;
 
+            obj.Creator = BusinessEngineContext.Current.User.Id;
+            ISequenceService seq = this.Site.GetRequiredService<ISequenceService>();
+
+            obj.DisplayOrder = seq.LongNext(WellknownSequences.BusinessObject);
+
            
         }
 

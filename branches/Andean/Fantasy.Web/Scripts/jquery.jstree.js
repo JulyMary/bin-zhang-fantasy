@@ -1026,13 +1026,18 @@
 				.delegate("a", "click.jstree", $.proxy(function (event) {
 						event.preventDefault();
 						event.currentTarget.blur();
-						if(!$(event.currentTarget).hasClass("jstree-loading")) {
+                        
+                        var node = this._get_node(event.currentTarget);
+                        var last = this.data.ui.last_selected;
+                        if((last === false || node[0] != last[0]) && !$(event.currentTarget).hasClass("jstree-loading"))
+						{
 							this.select_node(event.currentTarget, true, event)
-                            if(!this.is_selected(event.currentTarget))
-                            {
-                                event.stopImmediatePropagation();
-                            }
+                           
 						}
+                        if(!this.is_selected(event.currentTarget) || (last !== false && node[0] == last[0] ))
+                        {
+                                event.stopImmediatePropagation();
+                        }
                        
 					}, this))
 				.delegate("a", "mouseenter.jstree", $.proxy(function (event) {

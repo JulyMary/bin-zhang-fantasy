@@ -174,6 +174,12 @@ var stdnav = {
 
 
         return rs;
+    },
+
+    refreshNode: function (key, opt) {
+        var tree = $.jstree._reference("#navigationTree");
+        var node = tree._get_node(opt.$trigger);
+        tree.refresh(node);
     }
 
 
