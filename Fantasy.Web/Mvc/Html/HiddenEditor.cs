@@ -7,5 +7,6 @@ namespace Fantasy.Web.Mvc.Html
 {
     partial class HiddenEditor
     {
+
     }
 }
