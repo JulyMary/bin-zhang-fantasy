@@ -99,6 +99,8 @@
                             ko.applyBindings(model, this);
                         });
                     }
+
+
                 };
 
                 $.data(appscope[0], "fantasybuesinessengine", rs);

@@ -111,6 +111,46 @@ namespace Fantasy.Web.Controllers
         }
 
 
+        public JsonResult SwitchDisplayOrder(Guid objId, Guid other)
+        {
+            IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+
+            BusinessObject obj = es.Load<BusinessObject>(objId);
+            BusinessObject _other = es.Load<BusinessObject>(other);
+
+            BusinessObjectDescriptor d1 = new BusinessObjectDescriptor(obj);
+            BusinessObjectDescriptor d2 = new BusinessObjectDescriptor(_other);
+
+            if (d1.Properties["DisplayOrder"].CanWrite && d2.Properties["DisplayOrder"].CanWrite)
+            {
+                long temp = obj.DisplayOrder;
+                obj.DisplayOrder = _other.DisplayOrder;
+                _other.DisplayOrder = temp;
+
+                es.BeginUpdate();
+                try
+                {
+                    es.SaveOrUpdate(obj);
+                    es.SaveOrUpdate(_other);
+                    es.EndUpdate(true);
+                }
+                catch
+                {
+                    es.EndUpdate(false);
+                    throw;
+                }
+
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                throw new OperationFobiddenException();
+            }
+
+
+
+        }
+
         private static readonly BindingFlags _bindingFlags = System.Reflection.BindingFlags.GetProperty | System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance;
 
         private bool ShowAssocation(BusinessPropertyDescriptor prop)
@@ -176,7 +216,7 @@ namespace Fantasy.Web.Controllers
                 attr.Add("id", id);
                 rs.data.attr = attr;
 
-                rs.metadata = new { entity = new { Id = obj.Id, Name = obj.Name } };
+                rs.metadata = new { entity = new { Id = obj.Id, Name = obj.Name }, contextmenu = this.CreateEntityContextMenu(descriptor) };
 
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 IImageListService imageList = BusinessEngineContext.Current.GetRequiredService<IImageListService>();
@@ -257,11 +297,26 @@ namespace Fantasy.Web.Controllers
 
         }
 
-        private IDictionary<string, object> CreateFolderContextMenu(BusinessPropertyDescriptor prop)
-        {
 
-           
-            Dictionary<string, object> rs = new Dictionary<string, object>();
+        private object CreateEntityContextMenu(BusinessObjectDescriptor desc)
+        {
+            if (desc.Properties["DisplayOrder"].CanRead)
+            {
+                Dictionary<string, object> items = new Dictionary<string, object>();
+                items.Add("moveup", new { name = "Move Up", callback = "stdnav.moveNode" });
+                items.Add("movedown", new { name = "Move Down", callback = "stdnav.moveNode" });
+                string url = this.Url.ApplicationUrl(action: "SwitchDisplayOrder");
+                return new { items = items, events = new { show = "stdnav.entityContextMenuShow" }, url=url };
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        private object CreateFolderContextMenu(BusinessPropertyDescriptor prop)
+        {
+            Dictionary<string, object> items = new Dictionary<string, object>();
             
             if (prop.CanWrite)
             {
@@ -279,18 +334,18 @@ namespace Fantasy.Web.Controllers
                     string name = string.Format(Resources.StandardNavigationAddChildText, @class.Name);
                    
                     string icon = this.Url.ImageList(oms.GetImageKey(@class));
-                    rs.Add(@class.CodeName, new {type="anchor",icon=icon, href= href, name=name, attr = attr }); 
+                    items.Add(@class.CodeName, new {type="anchor",icon=icon, href= href, name=name, attr = attr }); 
                 }
             }
-            if (rs.Count > 0)
+            if (items.Count > 0)
             {
-                rs.Add("separator1", "-----");
+                items.Add("separator1", "-----");
             }
-            rs.Add("refresh", new { name = "Refresh", callback="stdnav.refreshNode"}); 
+            items.Add("refresh", new { name = "Refresh", callback="stdnav.refreshNode"}); 
 
-            if (rs.Count > 0)
+            if (items.Count > 0)
             {
-                return rs;
+                return new { items = items };
             }
             else
             {
