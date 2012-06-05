@@ -263,6 +263,7 @@
     <Compile Include="Mvc\Html\BooleanEditor.cs" />
     <Compile Include="Mvc\Html\BooleanEditorFactory.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
+    <Compile Include="EntityExtensions\Editor.cs" />
     <Compile Include="Mvc\Html\EditorExtensions.cs" />
     <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />

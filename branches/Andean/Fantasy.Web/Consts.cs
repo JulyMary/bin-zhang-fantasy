@@ -8,5 +8,7 @@ namespace Fantasy.Web
     public class Consts
     {
         public const string Namespace = "urn:schema-fantasy:web";
+
+        public const string ExtensionsNamespace = "urn:schema-fantasy:web-extensions";
     }
 }
