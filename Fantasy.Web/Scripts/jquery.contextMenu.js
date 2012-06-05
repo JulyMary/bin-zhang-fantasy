@@ -1,16 +1,16 @@
 /*!
- * jQuery contextMenu - Plugin for simple contextMenu handling
- *
- * Version: 1.5.16
- *
- * Authors: Rodney Rehm, Addy Osmani (patches for FF)
- * Web: http://medialize.github.com/jQuery-contextMenu/
- *
- * Licensed under
- *   MIT License http://www.opensource.org/licenses/mit-license
- *   GPL v3 http://opensource.org/licenses/GPL-3.0
- *
- */
+* jQuery contextMenu - Plugin for simple contextMenu handling
+*
+* Version: 1.5.16
+*
+* Authors: Rodney Rehm, Addy Osmani (patches for FF)
+* Web: http://medialize.github.com/jQuery-contextMenu/
+*
+* Licensed under
+*   MIT License http://www.opensource.org/licenses/mit-license
+*   GPL v3 http://opensource.org/licenses/GPL-3.0
+*
+*/
 
 (function ($, undefined) {
 
@@ -205,6 +205,7 @@
 
                     // dynamically build menu on invocation
                     e.data = $.extend(true, {}, defaults, e.data, built || {});
+
 
                     // abort if there are no items to display
                     if (!e.data.items || $.isEmptyObject(e.data.items)) {
@@ -763,7 +764,15 @@
             // backreference for callbacks
             opt.$trigger = $this;
 
+
+
             // show event
+
+            if (typeof opt.events.show == 'string') {
+                var func = getFunction(opt.events.show, ["opt"]);
+                opt.events.show = func;
+            }
+
             if (opt.events.show.call($this, opt) === false) {
                 $currentTrigger = null;
                 return;
@@ -814,8 +823,15 @@
             }
 
             // hide event
-            if (opt.events && opt.events.hide.call($this, opt) === false) {
-                return;
+            if (opt.events) {
+
+                if (typeof opt.events.hide == 'string') {
+                    var func = getFunction(opt.events.hide, ["opt"]);
+                    opt.events.hide = func;
+                }
+                if (opt.events.hide.call($this, opt) === false) {
+                    return;
+                }
             }
 
             if (opt.$layer) {
@@ -1016,17 +1032,7 @@
                                     k.callbacks[key] = item.callback;
                                 }
                                 else if (typeof item.callback == 'string') {
-                                    function getFunction(code, argNames) {
-                                        var fn = window, parts = (code || "").split(".");
-                                        while (fn && parts.length) {
-                                            fn = fn[parts.shift()];
-                                        }
-                                        if (typeof (fn) === "function") {
-                                            return fn;
-                                        }
-                                        argNames.push(code);
-                                        return Function.constructor.apply(null, argNames);
-                                    }
+
                                     var func = getFunction(item.callback, ["key", "opt"]);
                                     k.callbacks[key] = func;
                                 }
@@ -1160,6 +1166,18 @@
         }
 
         return keys;
+    }
+
+    function getFunction(code, argNames) {
+        var fn = window, parts = (code || "").split(".");
+        while (fn && parts.length) {
+            fn = fn[parts.shift()];
+        }
+        if (typeof (fn) === "function") {
+            return fn;
+        }
+        argNames.push(code);
+        return Function.constructor.apply(null, argNames);
     }
 
     // handle contextMenu triggers
@@ -1412,13 +1430,13 @@
 
             // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#concept-command
             switch (nodeName) {
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-menu-element                  
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/interactive-elements.html#the-menu-element                        
                 case 'menu':
                     item = { name: $node.attr('label'), items: {} };
                     menuChildren(item.items, $node.children(), counter);
                     break;
 
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-a-element-to-define-a-command                  
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-a-element-to-define-a-command                        
                 case 'a':
                     // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-button-element-to-define-a-command
                 case 'button':
@@ -1429,7 +1447,7 @@
                     };
                     break;
 
-                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-command-element-to-define-a-command                  
+                // http://www.whatwg.org/specs/web-apps/current-work/multipage/commands.html#using-the-command-element-to-define-a-command                        
 
                 case 'menuitem':
                 case 'command':

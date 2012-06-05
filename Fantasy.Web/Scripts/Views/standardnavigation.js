@@ -34,7 +34,7 @@ var stdnav = {
                     $("#navigationTree").jstree("remove", this);
                     this.data("entityStateHandler").dispose();
 
-                   
+
 
                 }
             }, $(node));
@@ -45,10 +45,13 @@ var stdnav = {
             stdnav.bindEntity(this, be);
         });
 
-        var menuItems = $(node).data("contextmenu");
-        if (menuItems != undefined) {
+        var contextMenu = $(node).data("contextmenu");
+        if (contextMenu != undefined) {
             var aId = $("a:first", $(node)).attr("id");
-            $.contextMenu({ selector: "#" + aId, items: menuItems });
+
+            contextMenu.selector = "#" + aId;
+
+            $.contextMenu(contextMenu);
 
         }
     },
@@ -182,6 +185,43 @@ var stdnav = {
         var tree = $.jstree._reference("#navigationTree");
         var node = tree._get_node(opt.$trigger);
         tree.refresh(node);
+    },
+
+    entityContextMenuShow: function (opt) {
+        var tree = $.jstree._reference("#navigationTree");
+        var node = tree._get_node(opt.selector);
+        var next = tree._get_next(node, true);
+        var prev = tree._get_prev(node, true);
+
+        opt.items["moveup"].disabled = prev == false;
+        opt.items["movedown"].disabled = next == false;
+
+    },
+
+    moveNode: function (key, opt) {
+        var tree = $.jstree._reference("#navigationTree");
+        var node = tree._get_node(opt.selector);
+        var other;
+        if (key == "moveup") {
+            other = tree._get_prev(node, true);
+        }
+        else {
+            other = tree._get_next(node, true);
+        }
+
+
+        var otherId = ko.dataFor(other[0]).Id();
+        var url = opt.url;
+
+        $.getJSON(url, { other: otherId }, function (success) {
+            if (key == "moveup") {
+                tree.move_node(node, other, 'before');
+            }
+            else {
+                tree.move_node(node, other, 'after');
+            }
+        });
+
     }
 
 
