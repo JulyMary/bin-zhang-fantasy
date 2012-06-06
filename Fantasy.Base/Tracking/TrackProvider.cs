@@ -51,14 +51,16 @@ namespace Fantasy.Tracking
                     
 
                     this._wcfProvider = ClientFactory.Create<ITrackProviderService>();
-
-                    List<KeyValuePair<string, object>> values = new List<KeyValuePair<string, object>>(this.Data);
-                    TrackProperty[] props = new TrackProperty[this.Data.Count];
-                    Parallel.For(0, this.Data.Count, i =>
-                        {
-                            props[i] = TrackProperty.Create(values[i].Key, values[i].Value);
-                        }
-                    );
+                    List<KeyValuePair<string, object>> values;
+                    lock (this.Data)
+                    {
+                        values = new List<KeyValuePair<string, object>>(this.Data);
+                    }
+                    TrackProperty[] props = new TrackProperty[values.Count];
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        props[i] = TrackProperty.Create(values[i].Key, values[i].Value);
+                    }
 
                     this._wcfProvider.Client.CreateTrackProvider(this.Id, this.Name, this.Category, props, true);
                     this._created = true;

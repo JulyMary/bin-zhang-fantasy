@@ -16,7 +16,7 @@ namespace Fantasy.Tracking
 
         public virtual string Category { get; set; }
 
-        private object _syncRoot = new object();
+      
 
         protected void InitializeData(IDictionary<string, object> values)
         {
@@ -41,7 +41,7 @@ namespace Fantasy.Tracking
         {
             get
             {
-                lock(_syncRoot)
+                lock(this.Data)
                 {
                     object rs;
                     this.Data.TryGetValue(name, out rs);
@@ -52,7 +52,7 @@ namespace Fantasy.Tracking
             {
                 object oldValue;
                 bool changed = false;
-                lock (_syncRoot)
+                lock (this.Data)
                 {
                     this.Data.TryGetValue(name, out oldValue);
 

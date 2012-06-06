@@ -11,6 +11,8 @@ namespace Fantasy.BusinessEngine.EntityExtensions
     public class ExtensionUsageAttribute : Attribute
     {
         public bool AllowMultiple { get; set; }
+
+        public Type Designer { get; set; }
     }
 
     public class ExtensionIconAttribute : Attribute
