@@ -352,6 +352,11 @@
     <Compile Include="EnumEditing\NamespaceNode.cs" />
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
+    <Compile Include="ExtensionEditing\EntityExtensionEditor.xaml.cs">
+      <DependentUpon>EntityExtensionEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExtensionEditing\EntityExtensionEditorModel.cs" />
+    <Compile Include="ExtensionEditing\ExtensionData.cs" />
     <Compile Include="IDocumentEditingPanelContainer.cs" />
     <Compile Include="MenuItemEditing\ApplicationConverter.cs" />
     <Compile Include="MenuItemEditing\MenuEditNode.cs" />
@@ -573,6 +578,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\EditorIcon.png" />
+    <None Include="Resources\ValidationIcon.png" />
+    <Resource Include="images\extension.png" />
     <None Include="Resources\defaultmenuitemicon.png" />
     <Resource Include="images\delete.png" />
     <Resource Include="images\openfile.png" />
@@ -660,6 +668,10 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Page Include="ExtensionEditing\EntityExtensionEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MenuItemEditing\MenuEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
