@@ -20,6 +20,8 @@ using System.ComponentModel.Design;
 using NHibernate;
 using Fantasy.BusinessEngine.Services;
 using System.Collections.Specialized;
+using Fantasy.Studio.BusinessEngine.ExtensionEditing;
+using Fantasy.Windows;
 
 namespace Fantasy.Studio.BusinessEngine.PropertyEditing
 {
@@ -72,7 +74,7 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
                 this.ToolBarTray.ToolBars.Add(bar);
             }
 
-            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/propertyeditor/commandbindings").BuildChildItems(this._model, this.Site))
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/classeditor/propertyeditor/commandbindings").BuildChildItems(this._model, this.Site))
             {
                 this.CommandBindings.Add(cb);
             }
@@ -234,6 +236,24 @@ namespace Fantasy.Studio.BusinessEngine.PropertyEditing
         public void ViewContentDeselected()
         {
            
+        }
+
+        private void propertyListview_DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            IEditingService documentService = this.Site.GetRequiredService<IEditingService>();
+            IViewContent content = null;
+
+            BusinessProperty prop = propertyListView.GetObjectAtPoint<ListViewItem>(e.GetPosition(this.propertyListView)) as BusinessProperty;
+
+            if(prop != null)
+            {
+                content = documentService.OpenView(new PropertyExtensionData(prop));
+                if (content != null)
+                {
+                    content.WorkbenchWindow.Select();
+                }  
+            }
+            
         }
 
        

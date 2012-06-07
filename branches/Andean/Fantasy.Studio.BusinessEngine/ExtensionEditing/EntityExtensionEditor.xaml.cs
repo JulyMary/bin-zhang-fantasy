@@ -17,6 +17,7 @@ using System.ComponentModel;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.BusinessEngine;
 using Fantasy.BusinessEngine.EntityExtensions;
+using Fantasy.AddIns;
 
 namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 {
@@ -35,10 +36,10 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
         private ExtensionData _data;
 
-       
+
         public void Initialize()
         {
-            
+
         }
 
         private SelectionService _selection = new SelectionService(null);
@@ -65,35 +66,37 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             this._data = (ExtensionData)document;
             this.DirtyState = this._data.Entity.EntityState == Fantasy.BusinessEngine.EntityState.Clean ? EditingState.Clean : EditingState.Dirty;
-            _entityListener = new WeakEventListener((t, sender, e)=>{
-                switch (((PropertyChangedEventArgs)e).PropertyName )
-                    {
-                        case "EntityState":
-                            switch (this._data.Entity.EntityState)
-	                        {
-                                case Fantasy.BusinessEngine.EntityState.New:
-                                    this.DirtyState = EditingState.Dirty;
-                                    break;
-                                case Fantasy.BusinessEngine.EntityState.Clean:
-                                    this.DirtyState = EditingState.Clean;
-                                    break;
-                                case Fantasy.BusinessEngine.EntityState.Dirty:
-                                    this.DirtyState = EditingState.Dirty;
-                                    break;
-                                case Fantasy.BusinessEngine.EntityState.Deleted:
-                                    this.DirtyState = EditingState.Clean;
-                                    this.Dispatcher.BeginInvoke(new Action(() => {
-                                        this.Site.GetRequiredService<IWorkbench>().CloseContent(this);
-                                    }));
+            _entityListener = new WeakEventListener((t, sender, e) =>
+            {
+                switch (((PropertyChangedEventArgs)e).PropertyName)
+                {
+                    case "EntityState":
+                        switch (this._data.Entity.EntityState)
+                        {
+                            case Fantasy.BusinessEngine.EntityState.New:
+                                this.DirtyState = EditingState.Dirty;
+                                break;
+                            case Fantasy.BusinessEngine.EntityState.Clean:
+                                this.DirtyState = EditingState.Clean;
+                                break;
+                            case Fantasy.BusinessEngine.EntityState.Dirty:
+                                this.DirtyState = EditingState.Dirty;
+                                break;
+                            case Fantasy.BusinessEngine.EntityState.Deleted:
+                                this.DirtyState = EditingState.Clean;
+                                this.Dispatcher.BeginInvoke(new Action(() =>
+                                {
+                                    this.Site.GetRequiredService<IWorkbench>().CloseContent(this);
+                                }));
 
-                                    break;
-                             
-	                        }
-                            return true;
-                        default:
-                            return false;
-                    }
-               
+                                break;
+
+                        }
+                        return true;
+                    default:
+                        return false;
+                }
+
             });
 
             PropertyChangedEventManager.AddListener(this._data.Entity, _entityListener, "EntityState");
@@ -115,6 +118,26 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
             _model = new EntityExtensionEditorModel(this._data, this.Site);
             this.DataContext = _model;
+
+
+            foreach (ToolBar bar in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/entityextensioneditor/toolbars").BuildChildItems(this._model, this.Site))
+            {
+                this.ToolBarTray.ToolBars.Add(bar);
+            }
+
+            foreach (CommandBinding cb in AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/entityextensioneditor/commandbindings").BuildChildItems(this._model, this.Site))
+            {
+                this.CommandBindings.Add(cb);
+            }
+        }
+
+
+        private bool IsReadOnly
+        {
+            get
+            {
+                return this._data.Entity.IsSystem && !CommandArgumentsHelper.HasArgument("EditAll");
+            }
         }
 
         private EditingState _dirtyState = EditingState.Clean;
@@ -159,7 +182,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                 es.EndUpdate(false);
                 throw;
             }
-         
+
             this.DirtyState = EditingState.Clean;
         }
 
@@ -173,13 +196,13 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
             get { return this._data; }
         }
 
-        public IWorkbenchWindow WorkbenchWindow {get;set;}
-      
+        public IWorkbenchWindow WorkbenchWindow { get; set; }
+
 
         public string Title
         {
             get { return this._data.Name; }
-            
+
         }
 
         public event EventHandler TitleChanged;
@@ -194,25 +217,25 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
         public void Selected()
         {
-            
+
         }
 
         public void Deselected()
         {
-            
+
         }
 
         public void Closing(CancelEventArgs e)
         {
-           
+
         }
 
         public void Closed()
         {
-            
+
         }
 
-       
+
 
         public string DocumentName
         {
@@ -229,7 +252,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         public ImageSource Icon
         {
 
-            get 
+            get
             {
                 return _icon;
             }
@@ -239,17 +262,17 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
         protected virtual void OnIconChanged(EventArgs e)
         {
-            if(this.IconChanged != null)
+            if (this.IconChanged != null)
             {
                 this.IconChanged(this, e);
             }
         }
 
-    
+
 
         public void Dispose()
         {
-           
+
         }
 
         private void ExtensionListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -257,14 +280,36 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
             var query = from item in this.ExtensionListView.SelectedItems.Cast<EntityExtensionModel>()
                         select item.Extension;
             this._selection.SetSelectedComponents(query.ToArray());
+
+            if(e.AddedItems != null)
+            {
+                foreach (EntityExtensionModel m in e.AddedItems)
+                {
+                    this._model.Selected.Add(m.Extension);
+                }
+
+            }
+            if (e.RemovedItems != null)
+            {
+                foreach (EntityExtensionModel m in e.RemovedItems)
+                {
+                    this._model.Selected.Remove(m.Extension);
+                }
+            }
+
+            this._model.PrimarySelected = this.ExtensionListView.SelectedItem as EntityExtensionModel;
         }
 
         private void ExtensionListView_DragEnter(object sender, DragEventArgs e)
         {
-            IEntityExtension value = e.Data.GetDataByType<IEntityExtension>();
-            if (value != null && this.CanAdd(value))
+            e.Effects = DragDropEffects.None;
+            if (!this.IsReadOnly)
             {
-                e.Effects = DragDropEffects.Copy;
+                IEntityExtension value = e.Data.GetDataByType<IEntityExtension>();
+                if (value != null && this.CanAdd(value))
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
             }
         }
 
@@ -275,25 +320,69 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
         private void ExtensionListView_DragOver(object sender, DragEventArgs e)
         {
-            IEntityExtension value = e.Data.GetDataByType<IEntityExtension>();
-            if (value != null && this.CanAdd(value))
+            e.Effects = DragDropEffects.None;
+            if (!this.IsReadOnly)
             {
-                e.Effects = DragDropEffects.Copy;
+                IEntityExtension value = e.Data.GetDataByType<IEntityExtension>();
+                if (value != null && this.CanAdd(value))
+                {
+                    e.Effects = DragDropEffects.Copy;
+                }
             }
+
         }
 
         private void ExtensionListView_Drop(object sender, DragEventArgs e)
         {
-            IEntityExtension value = e.Data.GetDataByType<IEntityExtension>();
-            if (value != null && this.CanAdd(value))
+           
+            if (!this.IsReadOnly)
             {
-                this._data.Extensions.Add(value);
-                EntityExtensionModel item = this._model.Extensions.Single(i => i.Extension == value);
-                this.ExtensionListView.SelectedItem = item;
+                IEntityExtension value = e.Data.GetDataByType<IEntityExtension>();
+                if (value != null && this.CanAdd(value) && RemoveOldSingleInstanceExtension(value))
+                {
+                    this._data.Extensions.Add(value);
+                    EntityExtensionModel item = this._model.Extensions.Single(i => i.Extension == value);
+                    this.ExtensionListView.SelectedItem = item;
+
+                }
             }
-          
+
         }
 
-       
+        private bool RemoveOldSingleInstanceExtension(IEntityExtension value)
+        {
+            var q1 = from t in value.GetType().Flatten(t => t.BaseType)
+                     let attr = t.GetCustomAttribute<ExtensionUsageAttribute>(false, false)
+                     where attr != null && attr.AllowMultiple == false
+                     select t;
+            Type type = q1.SingleOrDefault();
+
+            bool rs = true;
+            if (type != null)
+            {
+                IEntityExtension old = this._data.Extensions.FirstOrDefault(ex => type.IsInstanceOfType(ex));
+                if (old != null)
+                {
+                    IMessageBoxService msgBox = this.Site.GetRequiredService<IMessageBoxService>();
+                    if (msgBox.Show(String.Format("There is already a {0} in {1}, replace it?", old.Name, this._data.Name),
+                        button: MessageBoxButton.YesNo, icon: MessageBoxImage.Question,
+                        defaultResult: MessageBoxResult.No) == MessageBoxResult.Yes)
+                    {
+                        this._data.Extensions.Remove(old);
+                       
+                    }
+                    else
+                    {
+                        rs = false;
+                    }
+                }
+
+
+
+            }
+            return rs;
+        }
+
+
     }
 }

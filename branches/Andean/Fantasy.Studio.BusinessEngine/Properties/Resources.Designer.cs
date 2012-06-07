@@ -151,6 +151,15 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to there is already a {0}, do you want to replace it?.
+        /// </summary>
+        public static string ConfirmReplaceEntityExtensionText {
+            get {
+                return ResourceManager.GetString("ConfirmReplaceEntityExtensionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string DefaultCodePanelTitle {
@@ -309,7 +318,7 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ,Extensions.
+        ///   Looks up a localized string similar to .Extensions.
         /// </summary>
         public static string EntityExtensionsSuffix {
             get {

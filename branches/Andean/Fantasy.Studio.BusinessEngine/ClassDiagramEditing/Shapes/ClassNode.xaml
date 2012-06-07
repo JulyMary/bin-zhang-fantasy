@@ -147,6 +147,9 @@
                                     <Button  IsEnabled="{Binding CanMoveDown}" Click="MoveDownButton_Click">
                                         <f:AutoGrayImage IsEnabled="{Binding CanMoveDown}"  Source="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
                                     </Button>
+                                    <Button Click="EditExtension_Click" >
+                                        <f:AutoGrayImage Source="/Fantasy.Studio.BusinessEngine;component/images/extension.png"/>
+                                    </Button>
                                 </StackPanel>
                                    
                             </Grid>

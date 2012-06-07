@@ -226,5 +226,26 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             }
         }
 
+        private void EditExtension_Click(object sender, RoutedEventArgs e)
+        {
+            DependencyObject container = this.PropertyListBox.ContainerFromElement((DependencyObject)e.Source);
+
+            m.ClassGlyph model = this.DataContext as m.ClassGlyph;
+
+            Model.MemberNode node = (Model.MemberNode)this.PropertyListBox.ItemContainerGenerator.ItemFromContainer(container);
+
+            IEditingService documentService = model.Site.GetRequiredService<IEditingService>();
+            IViewContent content = null;
+
+            content = documentService.OpenView(node.ExtensionData);
+            if (content != null)
+            {
+                content.WorkbenchWindow.Select();
+            }
+            
+        }
+
+       
+
     }
 }

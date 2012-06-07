@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <ToolBarTray Name="ToolBarTray" Grid.Row="0" Grid.RowSpan="1" />
-        <ListView Grid.Row="1" ItemsSource="{Binding Path=Class.Properties}" Name="propertyListView" SelectionChanged="propertyListView_SelectionChanged">
+        <ListView Grid.Row="1" ItemsSource="{Binding Path=Class.Properties}" Name="propertyListView" SelectionChanged="propertyListView_SelectionChanged" MouseDoubleClick="propertyListview_DoubleClick">
             <ListView.View>
                 <GridView AllowsColumnReorder="true" x:Name="PropertyGridView">
                     <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" f:GridViewLayout.ColumnId="NameColumn"></GridViewColumn>

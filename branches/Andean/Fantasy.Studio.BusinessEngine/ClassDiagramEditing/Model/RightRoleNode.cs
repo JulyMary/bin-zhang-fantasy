@@ -8,6 +8,7 @@ using System.ComponentModel;
 using NHibernate;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.Utils;
+using Fantasy.Studio.BusinessEngine.ExtensionEditing;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
@@ -20,8 +21,18 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             EntityStateChangedEventManager.AddListener(this.Entity, this);
             PropertyChangedEventManager.AddListener(this.Entity, this, "RightRoleDisplayOrder");
             PropertyChangedEventManager.AddListener(this.Entity, this, "RightRoleName");
-            PropertyChangedEventManager.AddListener(this.Entity, this, "ExtensionsData"); 
+            PropertyChangedEventManager.AddListener(this.Entity, this, "ExtensionsData");
+            this._extensionData = new AssociationRightRoleExtensionData(entity);
 	    }
+
+        private ExtensionData _extensionData;
+        public override ExtensionData ExtensionData
+        {
+            get
+            {
+                return _extensionData;
+            }
+        }
 
         public BusinessAssociation Entity { get; private set; }
         public override string Name
@@ -171,5 +182,7 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
                 throw;
             }
         }
+
+        
     }
 }
