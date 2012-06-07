@@ -144,6 +144,12 @@
   <data name="StandardNavigationAddChildText" xml:space="preserve">
     <value>Add {0}</value>
   </data>
+  <data name="TextEditorDescription" xml:space="preserve">
+    <value>Basic single line text editor.</value>
+  </data>
+  <data name="TextEditorName" xml:space="preserve">
+    <value>Text Editor</value>
+  </data>
   <data name="UserDoesNotExistMessage" xml:space="preserve">
     <value>User '{0}' does not exist.</value>
   </data>

@@ -117,40 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TypeIsNotXSerializableText" xml:space="preserve">
-    <value>Type {0} is not marked as XSerializable.</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="CheckBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CheckBox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TypeMissingElementNameText" xml:space="preserve">
-    <value>Type {0} miss element name or namespace.</value>
+  <data name="DateTimePicker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DateTimePicker.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="InvalidMultProgressStepCountText" xml:space="preserve">
-    <value>Step count must be great than 0</value>
+  <data name="EditorIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\EditorIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="InvalidMultProgressStepsText" xml:space="preserve">
-    <value>Summary of steps must equal 1.</value>
+  <data name="Selector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Selector.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="CannotSetValueOnMultProgress" xml:space="preserve">
-    <value>Cannot set value on Parallel Progress.</value>
+  <data name="TextArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TextArea.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="InvalidProgressValueText" xml:space="preserve">
-    <value>Progress value must between Minimum value and Maximum value</value>
-  </data>
-  <data name="MissingRequiredServiceText" xml:space="preserve">
-    <value>Missing {0} service.</value>
-  </data>
-  <data name="AddInTreePathRecursiveOrderText" xml:space="preserve">
-    <value>AddIn tree contains recursive dependent nodes in path {0}.</value>
-  </data>
-  <data name="CannotFindPathInAddInTreeText" xml:space="preserve">
-    <value>Cannot find AddIn tree path {0}.</value>
-  </data>
-  <data name="DuplicatedCodonText" xml:space="preserve">
-    <value>Duplicated codon {0} in add {1} and {2}.</value>
-  </data>
-  <data name="CustomAttributeNotDefinedMessage" xml:space="preserve">
-    <value>{0} is not defined on Type {1}.</value>
-  </data>
-  <data name="ArgumentNullOrEmptyStringText" xml:space="preserve">
-    <value>Argument '{0}' cannot be null or empty string ("").</value>
+  <data name="ValidationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ValidationIcon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

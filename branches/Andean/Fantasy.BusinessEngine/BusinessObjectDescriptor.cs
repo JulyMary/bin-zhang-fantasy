@@ -13,7 +13,13 @@ namespace Fantasy.BusinessEngine
 
         public BusinessPropertyDescriptorCollection Properties { get; private set; }
 
-        public Type EntityType { get; private set; }
+        public Type EntityType
+        {
+            get
+            {
+                return this.Class.EntityType();
+            }
+        }
 
         public BusinessObjectDescriptor(BusinessClass @class)
         {
@@ -58,7 +64,7 @@ namespace Fantasy.BusinessEngine
         private void LoadClassMetaData()
         {
 
-            this.EntityType = this.Class.EntityType();
+           
 
             IBusinessDataTypeRepository dataTypes = BusinessEngineContext.Current.GetRequiredService<IBusinessDataTypeRepository>();
             foreach (BusinessProperty property in this.Class.AllProperties())

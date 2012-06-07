@@ -159,7 +159,7 @@ namespace Fantasy.AddIns
                     {
                         AddInParser parser = new AddInParser();
 
-                        addIn = parser.Parse(reader);
+                        addIn = (AddIn)parser.Parse(reader);
                         AddInTree.Tree.InsertAddIn(addIn);
                     }
                     catch (XamlObjectWriterException error)

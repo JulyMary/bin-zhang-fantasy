@@ -185,8 +185,11 @@
     <Compile Include="Collections\Generic.UnionedObservableCollection.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\Key.cs" />
+    <Compile Include="ComponentModel\EditorAttribute.cs" />
+    <Compile Include="ComponentModel\IconAttribute.cs" />
     <Compile Include="Configuration\XSettingsConfigurationHandler.cs" />
     <Compile Include="Drawing\IconReader.cs" />
+    <Compile Include="ReferenceTypeAttributeBase.cs" />
     <Compile Include="Reflection\GlobalAssemblyCache.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="NumericalComparisonOperator.cs" />

@@ -7,23 +7,31 @@ using System.Xaml;
 
 namespace Fantasy.AddIns
 {
-  
+
     public class ObjectBuilder
     {
-        internal ObjectBuilder(XamlNodeList xamlNodes)
+        internal ObjectBuilder(XamlNodeList xamlNodes, string baseDir)
         {
             this._xamlNodes = xamlNodes;
         }
+
+        private string _baseDir = string.Empty;
+
         public T Build<T>()
         {
             XamlReader xr = this._xamlNodes.GetReader();
-            XamlObjectWriter writer = new XamlObjectWriter(xr.SchemaContext);
+            AddInParser parser = new AddInParser();
+            object rs;
+            try
+            {
+                rs = parser.Parse(xr, this._baseDir);
+            }
+            finally
+            {
+                xr.Close();
+            }
+            return (T)rs;
 
-
-            XamlServices.Transform(xr, writer, true);
-            xr.Close();
-            return (T)writer.Result;
-            
         }
         private XamlNodeList _xamlNodes;
 
