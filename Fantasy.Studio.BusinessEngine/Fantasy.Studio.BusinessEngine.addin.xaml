@@ -693,7 +693,7 @@
             <sbe:DefaultParticipantACLPanel />
         </Object>
     </Extension>
-    <Extension Path="fantasy/studio/businessengine/propertyeditor/commandbindings">
+    <Extension Path="fantasy/studio/businessengine/classeditor/propertyeditor/commandbindings">
         <CommandBinding ID="AddProperty" Command="{Command Name=AddBusinessProperty}" Handler="{New sbe:AddPropertyCommand}" ParameterSource="Owner" ParameterMember="Class">
             <CommandBinding.Conditional>
                 <Not>
@@ -819,7 +819,12 @@
         </Object>
         <Object ID="ExtensionEditor">
             <Object.Conditional>
-                <IsTypeOf Type="{x:Type sbe:PropertyExtensionData}"/>
+                <Or>
+                    <IsTypeOf Type="{x:Type sbe:PropertyExtensionData}"/>
+                    <IsTypeOf Type="{x:Type sbe:AssociationLeftRoleExtensionData}"/>
+                    <IsTypeOf Type="{x:Type sbe:AssociationRightRoleExtensionData}"/>
+                </Or>
+               
             </Object.Conditional>
             <sbe:EntityExtensionEditor/>
         </Object>
@@ -1062,6 +1067,25 @@
         <Object ID="script">
             <sbe:BusinessScriptItemsReader />
         </Object>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/entityextensioneditor/toolbars">
+        <ToolBar ID="Default" Text="Default">
+            <Button ID="removeExtension" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico" Command="Delete" />
+        </ToolBar>
+    </Extension>
+
+    <Extension Path="fantasy/studio/businessengine/entityextensioneditor/commandbindings">
+        <CommandBinding ID="removeExtension" Command="Delete" Handler="{New sbe:DeleteEntityExtensionCommand}" ParameterSource="Owner" >
+            <CommandBinding.Conditional>
+                <And>
+                    <Not>
+                        <sbe:IsSystemEntity Member="ExtensionData.Entity" />
+                    </Not>
+                    <SelectionCount Count="+" Member="Selected" />
+                </And>
+            </CommandBinding.Conditional>
+        </CommandBinding>
     </Extension>
 
 </AddIn>

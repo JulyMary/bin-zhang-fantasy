@@ -19,6 +19,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
     {
         public EntityExtensionEditorModel(ExtensionData data, IServiceProvider site)
         {
+            this.ExtensionData = data;
             this.Extensions = new ObservableAdapterCollection<EntityExtensionModel>(data.Extensions.ToFiltered(x =>
                 {
                     BrowsableAttribute ba = x.GetType().GetCustomAttribute<BrowsableAttribute>(required:false);
@@ -27,6 +28,8 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                 x => new EntityExtensionModel((IEntityExtension)x, site));
         }
 
+
+        public ExtensionData ExtensionData { get; private set; }
 
 
         public IEnumerable<EntityExtensionModel> Extensions { get; private set; }
@@ -67,7 +70,14 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                     this.OnPropertyChanged("EditorVisibility");
                 }
             }
-        } 
+        }
+
+        private ObservableCollection<IEntityExtension> _selected = new ObservableCollection<IEntityExtension>();
+
+        public IList<IEntityExtension> Selected
+        {
+            get { return _selected; }
+        }
        
     }
 
@@ -116,7 +126,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                 if (!_isEditorCreated)
                 {
                     _isEditorCreated = true;
-                    Fantasy.ComponentModel.EditorAttribute attr = this.Editor.GetType().GetCustomAttribute<Fantasy.ComponentModel.EditorAttribute>(required: false);
+                    Fantasy.ComponentModel.EditorAttribute attr = this.Extension.GetType().GetCustomAttribute<Fantasy.ComponentModel.EditorAttribute>(required: false);
                     if (attr != null)
                     {
                         _editor = (UIElement)Activator.CreateInstance(attr.EditorType);

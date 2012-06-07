@@ -9,6 +9,7 @@ using System.Windows;
 using System.Collections.Specialized;
 using NHibernate;
 using Fantasy.BusinessEngine.Services;
+using Fantasy.Studio.BusinessEngine.ExtensionEditing;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
@@ -21,7 +22,19 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             this.EditingState = property.EntityState != EntityState.Clean ? EditingState.Dirty : Studio.EditingState.Clean;
             EntityStateChangedEventManager.AddListener(this.Entity, this);
             PropertyChangedEventManager.AddListener(this.Entity, this, "DisplayOrder");
-            PropertyChangedEventManager.AddListener(this.Entity, this, "Name"); 
+            PropertyChangedEventManager.AddListener(this.Entity, this, "Name");
+            PropertyChangedEventManager.AddListener(this.Entity, this, "ExtensionsData");
+            this._extensionData = new PropertyExtensionData(property);
+        }
+
+
+        private ExtensionData _extensionData;
+        public override ExtensionData ExtensionData
+        {
+            get
+            {
+                return _extensionData;
+            }
         }
 
         public BusinessProperty Entity { get; private set; }

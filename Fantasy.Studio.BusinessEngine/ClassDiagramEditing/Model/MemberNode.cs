@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Fantasy.Windows;
 using Fantasy.BusinessEngine;
+using Fantasy.Studio.BusinessEngine.ExtensionEditing;
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
 {
@@ -16,6 +17,9 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
         public abstract string Name { get; set; }
 
         public abstract long DisplayOrder { get; set; }
+
+
+        public abstract ExtensionData ExtensionData { get; }
 
         private bool _canMoveUp;
 

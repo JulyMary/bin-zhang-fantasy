@@ -88,7 +88,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
            
         }
 
-        public abstract BusinessPropertyDescriptor CreateDescriptor();
+      
 
         public override int GetHashCode()
         {
@@ -102,8 +102,9 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             this.Entity = property;
             this.Extensions = property.Extensions;
-            this.Name = ((BusinessProperty)this.Entity).Name + Resources.EntityExtensionsSuffix;
+            this.Name = property.Class.Name + "." + property.Name + Resources.EntityExtensionsSuffix;
             PropertyChangedEventManager.AddListener(property, this, "Name");
+            PropertyChangedEventManager.AddListener(property.Class, this, "Name");
             this.Type = "Property.Extensions";
         }
 
@@ -114,7 +115,8 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
             switch (((PropertyChangedEventArgs)e).PropertyName)
             {
                 case "Name":
-                    this.Name = ((BusinessProperty)this.Entity).Name + Resources.EntityExtensionsSuffix;
+                    BusinessProperty prop = (BusinessProperty)this.Entity;
+                    this.Name = prop.Class.Name + "." + prop.Name + Resources.EntityExtensionsSuffix;
                     return true;
 
                 default:
@@ -124,11 +126,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
         #endregion
 
-        public override BusinessPropertyDescriptor CreateDescriptor()
-        {
-            BusinessProperty prop = (BusinessProperty)this.Entity;
-            return (new BusinessObjectDescriptor(prop.Class)).Properties[prop.CodeName]; 
-        }
+      
     }
 
     public class AssociationLeftRoleExtensionData : ExtensionData, IWeakEventListener
@@ -137,8 +135,9 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             this.Entity = assn;
             this.Extensions = assn.LeftExtensions;
-            this.Name = ((BusinessAssociation)this.Entity).LeftRoleName + Resources.EntityExtensionsSuffix;
+            this.Name = assn.RightClass + "." + assn.LeftRoleName + Resources.EntityExtensionsSuffix;
             PropertyChangedEventManager.AddListener(assn, this, "LeftRoleName");
+            PropertyChangedEventManager.AddListener(assn.RightClass, this, "Name");
             this.Type = "Role.Extensions";
         }
 
@@ -148,6 +147,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             switch (((PropertyChangedEventArgs)e).PropertyName)
             {
+                case "Name":
                 case "LeftRoleName":
                     this.Name = ((BusinessAssociation)this.Entity).LeftRoleName + Resources.EntityExtensionsSuffix;
                     return true;
@@ -156,11 +156,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
             }
         }
 
-        public override BusinessPropertyDescriptor CreateDescriptor()
-        {
-            BusinessAssociation prop = (BusinessAssociation)this.Entity;
-            return (new BusinessObjectDescriptor(prop.RightClass)).Properties[prop.LeftRoleCode];
-        }
+      
 
         #endregion
     }
@@ -171,8 +167,9 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             this.Entity = assn;
             this.Extensions = assn.RightExtensions;
-            this.Name = ((BusinessAssociation)this.Entity).RightRoleName + Resources.EntityExtensionsSuffix;
+            this.Name = assn.LeftClass.Name + "." + assn.RightRoleName + Resources.EntityExtensionsSuffix;
             PropertyChangedEventManager.AddListener(assn, this, "RightRoleName");
+            PropertyChangedEventManager.AddListener(assn.LeftClass, this, "Name");
             this.Type = "Role.Extensions";
         }
 
@@ -182,19 +179,17 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             switch (((PropertyChangedEventArgs)e).PropertyName)
             {
+                case "Name":   
                 case "RightRoleName":
-                    this.Name = ((BusinessAssociation)this.Entity).RightRoleName + Resources.EntityExtensionsSuffix;
+                    BusinessAssociation assn = (BusinessAssociation)this.Entity;
+                    this.Name = assn.LeftClass.Name + "." + assn.RightRoleName + Resources.EntityExtensionsSuffix;
                     return true;
                 default:
                     return false;
             }
         }
 
-        public override BusinessPropertyDescriptor CreateDescriptor()
-        {
-            BusinessAssociation prop = (BusinessAssociation)this.Entity;
-            return (new BusinessObjectDescriptor(prop.LeftClass)).Properties[prop.RightRoleCode];
-        }
+      
 
         #endregion
     }
