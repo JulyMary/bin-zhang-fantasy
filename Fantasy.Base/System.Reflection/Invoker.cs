@@ -35,5 +35,32 @@ namespace System.Reflection
             return rs;
 
         }
+
+        public static object InvokeStatic(Type type, string member)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            if (string.IsNullOrWhiteSpace(member))
+            {
+                throw new ArgumentException(string.Format(Fantasy.Properties.Resources.ArgumentNullOrEmptyStringText, "member"), "member");
+            }
+
+            string[] names = member.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            PropertyInfo pi = type.GetProperty(names[0], System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.GetProperty);
+            object rs = pi.GetValue(null, null);
+
+            for (int i = 1; i < names.Length && rs != null; i++)
+            {
+                rs = InvokeSegment(rs, names[i]);
+            }
+
+            return rs;
+        }
+
+
+
     }
 }

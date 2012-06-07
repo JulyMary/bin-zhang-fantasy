@@ -108,9 +108,6 @@
     </Compile>
     <Compile Include="ApplicationEditing\BusinessApplicationViewDesignPanelModel.cs" />
     <Compile Include="ApplicationEditing\ClearParticipantsCommandHandler.cs" />
-    <Compile Include="ApplicationEditing\DefaultApplicationViewDesigner.xaml.cs">
-      <DependentUpon>DefaultApplicationViewDesigner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ApplicationEditing\DefaultParticipantACLModel.cs" />
     <Compile Include="ApplicationEditing\DefaultParticipantACLPanel.xaml.cs">
       <DependentUpon>DefaultParticipantACLPanel.xaml</DependentUpon>
@@ -352,6 +349,7 @@
     <Compile Include="EnumEditing\NamespaceNode.cs" />
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
+    <Compile Include="ExtensionEditing\EditBusinessPropertyExtensionCommand.cs" />
     <Compile Include="ExtensionEditing\EntityExtensionEditor.xaml.cs">
       <DependentUpon>EntityExtensionEditor.xaml</DependentUpon>
     </Compile>
@@ -572,10 +570,6 @@
       <Project>{5FDF97CF-CBFC-40E0-892B-9C192E7A4CC8}</Project>
       <Name>Fantasy.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fantasy.Web.Design\Fantasy.Web.Design.csproj">
-      <Project>{F2BC544D-1583-4219-9A23-C21FE744CB08}</Project>
-      <Name>Fantasy.Web.Design</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\EditorIcon.png" />
@@ -621,10 +615,6 @@
     <Resource Include="images\applicationfolder.png" />
     <Resource Include="images\application.png" />
     <Page Include="ApplicationEditing\BusinessApplicationViewDesignPanel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ApplicationEditing\DefaultApplicationViewDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

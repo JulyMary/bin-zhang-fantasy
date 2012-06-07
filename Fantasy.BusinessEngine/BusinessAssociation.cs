@@ -5,6 +5,7 @@ using System.Text;
 using Fantasy.BusinessEngine.Collections;
 using System.Xml.Linq;
 using Fantasy.XSerialization;
+using Fantasy.BusinessEngine.EntityExtensions;
 
 namespace Fantasy.BusinessEngine
 {

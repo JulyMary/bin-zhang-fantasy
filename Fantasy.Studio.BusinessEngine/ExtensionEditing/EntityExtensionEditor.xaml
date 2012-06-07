@@ -10,7 +10,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <ListView Name="ExtensionListView" ItemsSource="{Binding Extensions}" SelectionChanged="ExtensionListView_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" DragEnter="ExtensionListView_DragEnter" DragOver="ExtensionListView_DragOver" Drop="ExtensionListView_Drop">
+        <ListView Name="ExtensionListView" ItemsSource="{Binding Extensions}" SelectionChanged="ExtensionListView_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" DragEnter="ExtensionListView_DragEnter" DragOver="ExtensionListView_DragOver" Drop="ExtensionListView_Drop" AllowDrop="True">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Margin" Value="0, 3, 0, 3"/>

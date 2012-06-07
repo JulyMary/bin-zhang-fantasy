@@ -14,11 +14,14 @@ namespace Fantasy.AddIns
 {
     public class AddInParser
     {
-        public AddIn Parse(XmlReader reader)
+
+        private string _baseDir;
+
+        public object Parse(XamlReader xxr, string baseDir)
         {
-            XamlXmlReaderSettings readerSettings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
-            string baseDir = LongPath.GetDirectoryName(reader.BaseURI);
-            XamlXmlReader xxr = new XamlXmlReader(reader, readerSettings);
+            this._baseDir = baseDir;
+
+
             XamlObjectWriterSettings writerSettings = new XamlObjectWriterSettings()
             {
                 AfterPropertiesHandler = new EventHandler<XamlObjectEventArgs>((o, e) =>
@@ -43,16 +46,25 @@ namespace Fantasy.AddIns
                 }),
                 BeforePropertiesHandler = new EventHandler<XamlObjectEventArgs>((o, e) =>
                 {
-                    _currentInstance.Push(e.Instance); 
+                    _currentInstance.Push(e.Instance);
                 })
             };
 
-            XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext, writerSettings );
+            XamlObjectWriter xow = new XamlObjectWriter(xxr.SchemaContext, writerSettings);
 
             ParseObject(xxr, xow);
-           
-            return (AddIn)xow.Result;
 
+            return xow.Result;
+        }
+
+        public object Parse(XmlReader reader)
+        {
+            string baseDir = LongPath.GetDirectoryName(reader.BaseURI);
+            XamlXmlReaderSettings readerSettings = new XamlXmlReaderSettings() { ProvideLineInfo = true };
+            
+            XamlXmlReader xxr = new XamlXmlReader(reader, readerSettings);
+
+            return Parse(xxr, baseDir);
         }
 
         private Stack<List<NamespaceDeclaration>> _namespaces = new Stack<List<NamespaceDeclaration>>();
@@ -73,23 +85,7 @@ namespace Fantasy.AddIns
 
         private void Write(XamlReader reader, XamlObjectWriter writer)
         {
-            //if (reader.NodeType == XamlNodeType.StartObject)
-            //{
-            //    Debug.WriteLine(String.Format("{0} : {1} ", reader.NodeType, reader.Type.UnderlyingType));
-            //}
-            //else if (reader.NodeType == XamlNodeType.StartMember)
-            //{
-
-            //    Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Member.Name));
-            //}
-            //else if (reader.NodeType == XamlNodeType.Value)
-            //{
-            //    Debug.WriteLine(String.Format("{0} : {1}", reader.NodeType, reader.Value));
-            //}
-            //else
-            //{
-            //    Debug.WriteLine(reader.NodeType);
-            //}
+           
             writer.WriteNode(reader);
         }
 
@@ -184,7 +180,7 @@ namespace Fantasy.AddIns
 
             writer.Close();
 
-            ObjectBuilder builder = new ObjectBuilder(nodes);
+            ObjectBuilder builder = new ObjectBuilder(nodes, this._baseDir);
 
             object current = _currentInstance.Peek();
  

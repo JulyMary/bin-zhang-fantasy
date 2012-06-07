@@ -42,6 +42,16 @@ namespace Fantasy.BusinessEngine.EntityExtensions
 
         #endregion
 
-       
+
+
+        #region IEntityExtension Members
+
+
+        public bool ApplyTo(object context)
+        {
+            return true;
+        }
+
+        #endregion
     }
 }

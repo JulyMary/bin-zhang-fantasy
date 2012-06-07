@@ -191,6 +191,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\propertygrid\style.css" />
+    <Content Include="Content\themes\base\textarea\style.css" />
     <Content Include="Content\themes\base\texteditor\style.css" />
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Scripts\fantasy\core.js" />
@@ -239,6 +240,8 @@
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
     <Compile Include="Controllers\StandardScalarController.cs" />
     <Compile Include="DisplayOptions.cs" />
+    <Compile Include="EntityExtensions\TextAreaEditorExtension.cs" />
+    <Compile Include="EntityExtensions\TextEditorExtension.cs" />
     <Compile Include="FantasyHttpApplication.cs" />
     <Compile Include="HttpContextBusinessEngineContextProvider.cs" />
     <Compile Include="MIMETypes.cs" />
@@ -263,7 +266,7 @@
     <Compile Include="Mvc\Html\BooleanEditor.cs" />
     <Compile Include="Mvc\Html\BooleanEditorFactory.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
-    <Compile Include="EntityExtensions\Editor.cs" />
+    <Compile Include="EntityExtensions\EditorExtension.cs" />
     <Compile Include="Mvc\Html\EditorExtensions.cs" />
     <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
@@ -335,6 +338,7 @@
     <Content Include="Mvc\Html\HiddenEditor.cshtml" />
     <Content Include="Mvc\Html\ClassIdEditor.cshtml" />
     <Content Include="Mvc\Html\BusinessObjectPropertyEditor.cshtml" />
+    <Content Include="Mvc\Html\TextArea.cshtml" />
     <None Include="Properties\Settings.settings">
       <Generator>%28None%29</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

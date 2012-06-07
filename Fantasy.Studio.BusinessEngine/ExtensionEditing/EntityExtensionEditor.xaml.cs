@@ -16,6 +16,7 @@ using Fantasy.Windows;
 using System.ComponentModel;
 using Fantasy.BusinessEngine.Services;
 using Fantasy.BusinessEngine;
+using Fantasy.BusinessEngine.EntityExtensions;
 
 namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 {
@@ -67,7 +68,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
             _entityListener = new WeakEventListener((t, sender, e)=>{
                 switch (((PropertyChangedEventArgs)e).PropertyName )
                     {
-                        case "DirtyState":
+                        case "EntityState":
                             switch (this._data.Entity.EntityState)
 	                        {
                                 case Fantasy.BusinessEngine.EntityState.New:
@@ -95,7 +96,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                
             });
 
-            PropertyChangedEventManager.AddListener(this._data.Entity, _entityListener, "DirtyState");
+            PropertyChangedEventManager.AddListener(this._data.Entity, _entityListener, "EntityState");
 
             this._dataListener = new WeakEventListener((t, sender, e) =>
             {
@@ -269,7 +270,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 
         private bool CanAdd(IEntityExtension value)
         {
-            return true;
+            return value.ApplyTo(this.Data);
         }
 
         private void ExtensionListView_DragOver(object sender, DragEventArgs e)

@@ -142,6 +142,24 @@ namespace Fantasy.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Basic single line text editor..
+        /// </summary>
+        public static string TextEditorDescription {
+            get {
+                return ResourceManager.GetString("TextEditorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text Editor.
+        /// </summary>
+        public static string TextEditorName {
+            get {
+                return ResourceManager.GetString("TextEditorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User &apos;{0}&apos; does not exist..
         /// </summary>
         public static string UserDoesNotExistMessage {

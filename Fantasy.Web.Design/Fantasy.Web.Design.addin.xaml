@@ -1,0 +1,31 @@
+﻿<AddIn  xmlns="urn:schema-fantasy:xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:be="urn:schema-fantasy:business-engine"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+       
+        xmlns:fw="urn:schema-fantasy:web"
+        Author="Bin Zhang" Description="Fantasy Web Designer AddIn" Name="Web Designer" Version="1.0">
+    <AddIn.Import>
+        <Assembly Name="Fantasy.BusinessEngine" />
+        <Assembly Name="Fantasy.Web" />
+        <Assembly Name="Fantasy.Web.Design"/>
+    </AddIn.Import>
+    <Extension Path="fantasy/studio/workbench/toolbox/items">
+
+        <ToolBoxItem ID="ExtensionTextEditor" Category="Editor Extensions" Text="Text Editor" Icon="/Fantasy.Web.Design;component/resources/EditorIcon.png">
+            <ToolBoxItem.Conditional>
+
+                <ActiveWindow Type="Property.Extensions" />
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.DoDragDrop>
+                <DoDragDropHandler AllowedEffects="Copy" >
+                    <DoDragDropHandler.Data>
+                        <fw:TextEditorExtension />
+                    </DoDragDropHandler.Data>
+                </DoDragDropHandler>
+            </ToolBoxItem.DoDragDrop>
+           
+        </ToolBoxItem>
+    </Extension>
+</AddIn>

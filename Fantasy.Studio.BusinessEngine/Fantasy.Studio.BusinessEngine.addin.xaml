@@ -367,6 +367,7 @@
             <Button ID="removeProperty" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico" Command="Delete" />
             <Button ID="MoveUp" Command="{Command Name=MoveUp}" Icon="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
             <Button ID="MoveDown" Command="{Command Name=MoveDown}" Icon="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
+            <Button ID="editExtension" Icon="/Fantasy.Studio.BusinessEngine;component/images/extension.png" Command="{Command Name=EditBusinessPropertyExtension}" />
         </ToolBar>
     </Extension>
     <Extension Path="fantasy/studio/businessengine/classviewpad/treeview">
@@ -717,11 +718,16 @@
                 </Not>
             </CommandBinding.Conditional>
         </CommandBinding>
-        <CommandBinding ID="MoveDown" Command="{Command Name=MoveDown}" Handler="{New sbe:PropertyMoveDownCommand}" ParameterSource="Owner">
+        <CommandBinding ID="MoveDown" Command="{Command Name=MoveDown}" Handler="{New sbe:PropertyMoveDownCommand}" ParameterSource="Owner"  >
             <CommandBinding.Conditional>
                 <Not>
                     <sbe:IsSystemEntity Member="Selected" />
                 </Not>
+            </CommandBinding.Conditional>
+        </CommandBinding>
+        <CommandBinding ID="EditBusinessPropertyExtension" Command="{Command Name=EditBusinessPropertyExtension}" Handler="{New sbe:EditBusinessPropertyExtensionCommand}" ParameterSource="Owner" ParameterMember="Selected">
+            <CommandBinding.Conditional>
+               <SelectionCount Count="+" />
             </CommandBinding.Conditional>
         </CommandBinding>
     </Extension>
@@ -811,9 +817,16 @@
             </Object.Conditional>
             <sbe:MenuEditor/>
         </Object>
+        <Object ID="ExtensionEditor">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type sbe:PropertyExtensionData}"/>
+            </Object.Conditional>
+            <sbe:EntityExtensionEditor/>
+        </Object>
     </Extension>
     <Extension Path="fantasy/studio/routedcommands">
         <RoutedUICommand ID="AddBusinessProperty" Text="Add Property" />
+        <RoutedUICommand ID="EditBusinessPropertyExtension" Text="Edit Extensions"/>
         <RoutedUICommand ID="AddBusinessEnumValue" Text="Add Value" />
         <RoutedUICommand ID="SyncExternalEnum" Text="Sync" />
         <RoutedUICommand ID="MoveUp" Text="Move Up" />

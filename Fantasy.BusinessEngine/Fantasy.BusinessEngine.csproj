@@ -92,13 +92,13 @@
     <Compile Include="BusinessUserData.cs" />
     <Compile Include="Cardinality.cs" />
     <Compile Include="Codons\SecurityLayer.cs" />
-    <Compile Include="EntityExtensions\ExtensionAttributes.cs" />
+    <Compile Include="EntityExtensions\ExtensionUsageAttribute.cs" />
     <Compile Include="EntityExtensions\IEntityExtensionEditor.cs" />
     <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
     <Compile Include="Events\DefaultBusinessObjectCreateHandler.cs" />
     <Compile Include="Events\EntityCreateEventArgs.cs" />
     <Compile Include="EntityExtensions\Category.cs" />
-    <Compile Include="IEntityExtension.cs" />
+    <Compile Include="EntityExtensions\IEntityExtension.cs" />
     <Compile Include="Maps\BusinessMenuItemMap.cs" />
     <Compile Include="OperationFobiddenException.cs" />
     <Compile Include="PropertyNotFoundException.cs" />
@@ -245,9 +245,6 @@
       <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
       <Name>Fantasy.Base</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="XMLFile1.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

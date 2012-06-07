@@ -92,7 +92,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
             {
                 if (_icon == null)
                 {
-                    ExtensionIconAttribute attr = this.Extension.GetType().GetCustomAttribute<ExtensionIconAttribute>(required:false);
+                    Fantasy.ComponentModel.IconAttribute attr = this.Extension.GetType().GetCustomAttribute<Fantasy.ComponentModel.IconAttribute>(required: false);
                     if (attr != null)
                     {
                         System.Drawing.Image image = attr.Icon;
@@ -103,7 +103,7 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                         _icon = _defaultIcon;
                     }
                 }
-                return _defaultIcon;
+                return _icon;
             }
         }
 
@@ -116,10 +116,10 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                 if (!_isEditorCreated)
                 {
                     _isEditorCreated = true;
-                    ExtensionUsageAttribute attr = this.Editor.GetType().GetCustomAttribute<ExtensionUsageAttribute>(required: false);
-                    if (attr.Designer != null)
+                    Fantasy.ComponentModel.EditorAttribute attr = this.Editor.GetType().GetCustomAttribute<Fantasy.ComponentModel.EditorAttribute>(required: false);
+                    if (attr != null)
                     {
-                        _editor = (UIElement)Activator.CreateInstance(attr.Designer);
+                        _editor = (UIElement)Activator.CreateInstance(attr.EditorType);
                         IObjectWithSite ows = _editor as IObjectWithSite;
                         if (ows != null)
                         {

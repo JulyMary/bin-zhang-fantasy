@@ -7,10 +7,11 @@ using Fantasy.BusinessEngine;
 using System.Windows;
 using System.ComponentModel;
 using Fantasy.Studio.BusinessEngine.Properties;
+using Fantasy.BusinessEngine.EntityExtensions;
 
 namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
 {
-    public class ExtensionData : NotifyPropertyChangedObject
+    public abstract class ExtensionData : NotifyPropertyChangedObject
     {
         private BusinessEntity _entity;
 
@@ -87,6 +88,8 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
            
         }
 
+        public abstract BusinessPropertyDescriptor CreateDescriptor();
+
         public override int GetHashCode()
         {
             return this.Entity.GetHashCode() ^ this.Extensions.GetHashCode();
@@ -120,6 +123,12 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         }
 
         #endregion
+
+        public override BusinessPropertyDescriptor CreateDescriptor()
+        {
+            BusinessProperty prop = (BusinessProperty)this.Entity;
+            return (new BusinessObjectDescriptor(prop.Class)).Properties[prop.CodeName]; 
+        }
     }
 
     public class AssociationLeftRoleExtensionData : ExtensionData, IWeakEventListener
@@ -145,6 +154,12 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                 default:
                     return false;
             }
+        }
+
+        public override BusinessPropertyDescriptor CreateDescriptor()
+        {
+            BusinessAssociation prop = (BusinessAssociation)this.Entity;
+            return (new BusinessObjectDescriptor(prop.RightClass)).Properties[prop.LeftRoleCode];
         }
 
         #endregion
@@ -173,6 +188,12 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
                 default:
                     return false;
             }
+        }
+
+        public override BusinessPropertyDescriptor CreateDescriptor()
+        {
+            BusinessAssociation prop = (BusinessAssociation)this.Entity;
+            return (new BusinessObjectDescriptor(prop.LeftClass)).Properties[prop.RightRoleCode];
         }
 
         #endregion

@@ -7,7 +7,6 @@ using Fantasy.Web;
 
 [assembly: XmlnsDefinition(Consts.Namespace, "Fantasy.Web.Mvc")]
 [assembly: XmlnsDefinition(Consts.Namespace, "Fantasy.Web")]
-[assembly: XmlnsDefinition(Consts.Namespace, "Fantasy.Web.EntityExtensions")]
 
 
 
