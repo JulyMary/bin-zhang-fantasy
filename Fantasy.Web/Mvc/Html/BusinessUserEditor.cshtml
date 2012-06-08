@@ -1,0 +1,20 @@
+﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
+@using Fantasy;
+@using Fantasy.BusinessEngine
+@using Fantasy.BusinessEngine.Services
+@{
+    IBusinessUserRoleService svc = BusinessEngineContext.Current.GetRequiredService<IBusinessUserRoleService>(); 
+    BusinessUser user = svc.Users.FirstOrDefault(u=>u.Id == (Guid)this.PropertyDescriptor.Value);
+}
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+{
+
+<span @WriteAttributes() data-bind="visible: acl.ClassId() != 'collpased'">
+    
+    @if (this.PropertyDescriptor.CanRead && user != null)
+    {
+         @user.Name
+    }
+    
+</span> 
+}

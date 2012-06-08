@@ -2,19 +2,12 @@
 @{
     this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Mvc/Html/BooleanEditor.js"));
 }
-@if (this.PropertyDescriptor.CanWrite)
+@if (this.PropertyDescriptor.CanRead)
 {
-<input @WriteAttributes() data-truetext="@(this.TrueText)" data-falsetext="@(this.FalseText)" /><label for="@this.Attributes["id"]">@(this.Value ? this.TrueText : this.FalseText)</label>
+    <input @WriteAttributes() type="checkbox" name="@this.FullHtmlFieldName" id="@this.FullHtmlFieldId" data-bind="checked:@this.PropertyDescriptor.CodeName,enable: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName), visible: @String.Format("(acl.{0}() == 'visible' || acl.{0}() == 'editable')", this.PropertyDescriptor.CodeName)"  />
+    if (this.ShowText)
+    {
+        <label for="@this.FullHtmlFieldId" data-bind="text: @string.Format("{0}() === true ? '{1}' : {0}() === false ? '{2}' : '{3}'", this.PropertyDescriptor.CodeName, this.TrueText, this.FalseText, this.NullText), visible: @String.Format("(acl.{0}() == 'visible' || acl.{0}() == 'editable')", this.PropertyDescriptor.CodeName)" ></label>
+    }
 }
-@if(this.PropertyDescriptor.CanRead)
-{
-    <input @WriteAttributes() disabled="disabled" /><label for="">@(this.Value ? this.TrueText : this.FalseText)</label>
-}
-else if (this.Model.Accessbility == Fantasy.Web.Accessbility.Hidden)
-{
-    this.RenderHidden();
-} 
-else
-{
-    this.RenderCollapsed();
-}
+

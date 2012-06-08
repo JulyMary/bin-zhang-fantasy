@@ -6,36 +6,52 @@ using System.Text;
 using System.Web.Mvc;
 using Fantasy.Web;
 using Fantasy.Web.Mvc;
+using Fantasy.Web.Properties;
 
 namespace Fantasy.Web.Mvc.Html
 {
     partial class BooleanEditor
     {
        
-        public string TrueText { get; internal set; }
 
-        public string FalseText { get; internal set; }
+        private string _trueText = Resources.BooleanEditorDefaultTrueText;
 
-
-        protected override void PreExecute()
+        public string TrueText
         {
-
-            this.AddClass("boolean-editor");
-
-          
-            this.MergeAttribute("type", "checkbox");
-
-            if (this.Value)
-            {
-                this.MergeAttribute("checked", "checked");
-            }
-
-            else
-            {
-                this.RemoveAttribute("checked");
-            }
-            base.PreExecute();
+            get { return _trueText; }
+            set { _trueText = value; }
         }
+
+
+        private string _falseText = Resources.BooleanEditorDefaultFalseText;
+
+        public string FalseText
+        {
+            get { return _falseText; }
+            set { _falseText = value; }
+        }
+
+
+        private string _nullText = Resources.BooleanEditorDefaultNullText;
+
+        public string NullText
+        {
+            get { return _nullText; }
+            set { _nullText = value; }
+        }
+
+        private bool _showText = true;
+
+        public bool ShowText
+        {
+            get { return _showText; }
+            set { _showText = value; }
+        }
+
+
+
+      
+       
 
         private bool Value
         {

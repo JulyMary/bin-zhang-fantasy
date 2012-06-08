@@ -9,7 +9,7 @@
 @if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
 {
 
-<span @WriteAttributes() data-bind="visible: acl.ClassId() != 'collpased'">
+<span @WriteAttributes() data-bind="visible: (acl.ClassId() == 'visible' || acl.ClassId() == 'editable') ">
     
     @if (this.PropertyDescriptor.CanRead)
     {

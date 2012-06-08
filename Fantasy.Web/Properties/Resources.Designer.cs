@@ -78,10 +78,98 @@ namespace Fantasy.Web.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to false.
+        /// </summary>
+        public static string BooleanEditorDefaultFalseText {
+            get {
+                return ResourceManager.GetString("BooleanEditorDefaultFalseText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to null.
+        /// </summary>
+        public static string BooleanEditorDefaultNullText {
+            get {
+                return ResourceManager.GetString("BooleanEditorDefaultNullText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to true.
+        /// </summary>
+        public static string BooleanEditorDefaultTrueText {
+            get {
+                return ResourceManager.GetString("BooleanEditorDefaultTrueText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checkbox for editing boolean value..
+        /// </summary>
+        public static string BooleanEditorDescription {
+            get {
+                return ResourceManager.GetString("BooleanEditorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Boolean.
+        /// </summary>
+        public static string BooleanEditorName {
+            get {
+                return ResourceManager.GetString("BooleanEditorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show user name.
+        /// </summary>
+        public static string BusinessUserEditorDescription {
+            get {
+                return ResourceManager.GetString("BusinessUserEditorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string BusinessUserEditorName {
+            get {
+                return ResourceManager.GetString("BusinessUserEditorName", resourceCulture);
+            }
+        }
+        
         public static System.Drawing.Bitmap CheckBox {
             get {
                 object obj = ResourceManager.GetObject("CheckBox", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap ClassIdEditor {
+            get {
+                object obj = ResourceManager.GetObject("ClassIdEditor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show object class name..
+        /// </summary>
+        public static string ClassIdEditorDescription {
+            get {
+                return ResourceManager.GetString("ClassIdEditorDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string ClassIdEditorName {
+            get {
+                return ResourceManager.GetString("ClassIdEditorName", resourceCulture);
             }
         }
         
@@ -200,6 +288,13 @@ namespace Fantasy.Web.Properties {
         public static string UserDoesNotExistMessage {
             get {
                 return ResourceManager.GetString("UserDoesNotExistMessage", resourceCulture);
+            }
+        }
+        
+        public static System.Drawing.Bitmap UserEditor {
+            get {
+                object obj = ResourceManager.GetObject("UserEditor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
