@@ -67,6 +67,13 @@ namespace Fantasy.Web.Design.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap ClassEditor {
+            get {
+                object obj = ResourceManager.GetObject("ClassEditor", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         public static System.Drawing.Bitmap DateTimePicker {
             get {
                 object obj = ResourceManager.GetObject("DateTimePicker", resourceCulture);

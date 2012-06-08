@@ -22,6 +22,7 @@ namespace Fantasy.Web.Mvc
             this._factories.AddRange(AddInTree.Tree.GetTreeNode("fantasy/web/controllerfactories").BuildChildItems<IControllerFactory>(this, this.Site));
 
             base.InitializeService();
+           
         }
 
         public IController CreateController(RequestContext requestContext, string controllerName)

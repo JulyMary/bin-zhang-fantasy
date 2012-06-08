@@ -193,12 +193,16 @@
     <Content Include="Content\themes\base\propertygrid\style.css" />
     <Content Include="Content\themes\base\textarea\style.css" />
     <Content Include="Content\themes\base\texteditor\style.css" />
+    <Content Include="Mvc\Html\BusinessUserEditor.cshtml" />
+    <Content Include="Mvc\Html\SelectList.cshtml" />
     <None Include="Resources\checkbox.png" />
     <None Include="Resources\validationicon.png" />
     <None Include="Resources\datetimepicker.gif" />
     <None Include="Resources\editoricon.png" />
     <None Include="Resources\selector.png" />
     <None Include="Resources\textarea.png" />
+    <None Include="Resources\class.png" />
+    <None Include="Resources\user.png" />
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Scripts\fantasy\core.js" />
     <Content Include="Scripts\fantasy\businessengine.js" />
@@ -246,6 +250,9 @@
     <Compile Include="Controllers\StandardNavigationViewSettings.cs" />
     <Compile Include="Controllers\StandardScalarController.cs" />
     <Compile Include="DisplayOptions.cs" />
+    <Compile Include="EntityExtensions\BooleanEditorExtension.cs" />
+    <Compile Include="EntityExtensions\BusinessUserEditorExtension.cs" />
+    <Compile Include="EntityExtensions\ClassIdEditorExtension.cs" />
     <Compile Include="EntityExtensions\TextAreaEditorExtension.cs" />
     <Compile Include="EntityExtensions\TextEditorExtension.cs" />
     <Compile Include="FantasyHttpApplication.cs" />
@@ -273,7 +280,6 @@
     <Compile Include="Mvc\Html\BooleanEditorFactory.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
     <Compile Include="EntityExtensions\EditorExtension.cs" />
-    <Compile Include="Mvc\Html\EditorExtensions.cs" />
     <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
     <Compile Include="Mvc\Html\BusinessPropertyEditorBase.cs" />
@@ -283,6 +289,7 @@
     </Compile>
     <Compile Include="Mvc\Html\PropertyGridFactory.cs" />
     <Compile Include="Mvc\Html\PropertySort.cs" />
+    <Compile Include="Mvc\Html\SelectList.cs" />
     <Compile Include="Mvc\Html\TextEditor.cs" />
     <Compile Include="Mvc\Html\UserControl.cs" />
     <Compile Include="Mvc\Html\UserControlFactoryExtensions.cs" />

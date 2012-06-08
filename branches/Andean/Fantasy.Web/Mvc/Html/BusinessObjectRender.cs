@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Script.Serialization;
 using System.Text;
+using Fantasy.Web.EntityExtensions;
+using System.Drawing;
 
 namespace Fantasy.Web.Mvc.Html
 {
@@ -116,31 +118,100 @@ namespace Fantasy.Web.Mvc.Html
 
             
             BusinessPropertyDescriptor desc = render.Descriptor.Properties[propertyName];
-            if (desc.CodeName == "ClassId")
+
+            EditorExtension ext = desc.Entensions.OfType<EditorExtension>().FirstOrDefault();
+            UserControlFactory rs;
+            if (ext != null)
             {
-                UserControlFactory<ClassIdEditor> rs = new UserControlFactory<ClassIdEditor>(render.Html);
-                rs.BindModel(render);
-                rs.Control.PropertyName = propertyName;
-                return rs;
+                rs = ext.CreateEditor(render.Html);
             }
-            else if (desc.PropertyType.IsSubclassOf(typeof(BusinessObject)))
+            else
             {
-                UserControlFactory<BusinessObjectPropertyEditor> rs = new UserControlFactory<BusinessObjectPropertyEditor>(render.Html);
-                rs.BindModel(render);
-                rs.Control.PropertyName = propertyName;
+                rs = GetDefaultEditor(desc, render.Html);
+            }
+
+            rs.BindModel(render);
+            if(rs.Control is BusinessPropertyEditorBase)
+            {
+                ((BusinessPropertyEditorBase)rs.Control).PropertyName = propertyName;
+            }
+
+            return rs;
+
+           
+        }
+
+
+        private static UserControlFactory GetDefaultEditor(BusinessPropertyDescriptor desc, HtmlHelper html)
+        {
+            UserControlFactory rs = null;
+
+            Type type = desc.PropertyType;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                type = type.GetGenericArguments()[0];
+            }
+
+            if (desc.IsScalar)
+            {
+                if (typeof(BusinessObject).IsAssignableFrom(type))
+                {
+                    rs = new UserControlFactory<BusinessObjectPropertyEditor>(html);
+                }
+                else if (typeof(Image).IsAssignableFrom(type))
+                {
+
+                }
+                else if (type.IsEnum)
+                {
+
+                }
+                else if (type == typeof(Guid))
+                {
+                    rs = new UserControlFactory<TextEditor>(html);
+                }
+                else
+                {
+
+
+                    switch (Type.GetTypeCode(desc.PropertyType))
+                    {
+                        case TypeCode.Boolean:
+                            rs = new BooleanEditorFactory(html);
+                            break;
+                        case TypeCode.Byte:
+                        case TypeCode.Char:
+                        case TypeCode.Decimal:
+                        case TypeCode.Double:
+                        case TypeCode.Int16:
+                        case TypeCode.Int32:
+                        case TypeCode.Int64:
+                        case TypeCode.SByte:
+                        case TypeCode.Single:
+                        case TypeCode.String:
+                        case TypeCode.UInt16:
+                        case TypeCode.UInt32:
+                        case TypeCode.UInt64:
+                            rs = new UserControlFactory<TextEditor>(html);
+                            break;
+                        case TypeCode.DateTime:
+                            rs = new UserControlFactory<TextEditor>(html);
+                            break;
+
+                    }
+                }
+            }
+
+            if (rs != null)
+            {
                 return rs;
             }
             else
             {
-                UserControlFactory<TextEditor> rs = new UserControlFactory<TextEditor>(render.Html);
-                rs.BindModel(render);
-                rs.Control.PropertyName = propertyName;
-
-                return rs;
+                throw new NotSupportedException();
             }
-
-           
         }
+
 
         public static UserControlFactory EditorFor<TModel, TValue>(this BusinessObjectRender<TModel> render, Expression<Func<TModel, TValue>> property) 
             where TModel : BusinessObject
@@ -154,6 +225,7 @@ namespace Fantasy.Web.Mvc.Html
         {
             UserControlFactory<HiddenEditor> rs = new UserControlFactory<HiddenEditor>(render.Html);
             rs.BindModel(render);
+            
             rs.Control.PropertyName = propertyName;
 
             return rs;

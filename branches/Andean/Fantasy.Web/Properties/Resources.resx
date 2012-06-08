@@ -123,9 +123,39 @@
   <data name="AuthenticationFailedMessage" xml:space="preserve">
     <value>The user name or password provided is incorrect.</value>
   </data>
+  <data name="BooleanEditorDefaultFalseText" xml:space="preserve">
+    <value>false</value>
+  </data>
+  <data name="BooleanEditorDefaultNullText" xml:space="preserve">
+    <value>null</value>
+  </data>
+  <data name="BooleanEditorDefaultTrueText" xml:space="preserve">
+    <value>true</value>
+  </data>
+  <data name="BooleanEditorDescription" xml:space="preserve">
+    <value>Checkbox for editing boolean value.</value>
+  </data>
+  <data name="BooleanEditorName" xml:space="preserve">
+    <value>Boolean</value>
+  </data>
+  <data name="BusinessUserEditorDescription" xml:space="preserve">
+    <value>Show user name</value>
+  </data>
+  <data name="BusinessUserEditorName" xml:space="preserve">
+    <value>User</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CheckBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\checkbox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClassIdEditor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\class.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ClassIdEditorDescription" xml:space="preserve">
+    <value>Show object class name.</value>
+  </data>
+  <data name="ClassIdEditorName" xml:space="preserve">
+    <value>Class</value>
   </data>
   <data name="DateTimePicker" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\datetimepicker.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -168,6 +198,9 @@
   </data>
   <data name="UserDoesNotExistMessage" xml:space="preserve">
     <value>User '{0}' does not exist.</value>
+  </data>
+  <data name="UserEditor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\user.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ValidationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\validationicon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

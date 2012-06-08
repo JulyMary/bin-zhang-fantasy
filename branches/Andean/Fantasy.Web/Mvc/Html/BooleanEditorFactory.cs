@@ -15,10 +15,17 @@ namespace Fantasy.Web.Mvc.Html
 
         }
 
-        public BooleanEditorFactory Display(string trueText, string falseText)
+        public BooleanEditorFactory Display(string trueText, string falseText, string nullText)
         {
             ((BooleanEditor)this.Control).TrueText = trueText;
             ((BooleanEditor)this.Control).FalseText = falseText;
+            ((BooleanEditor)this.Control).NullText = nullText;
+            return this;
+        }
+
+        public BooleanEditorFactory ShowText(bool value)
+        {
+            ((BooleanEditor)this.Control).ShowText = value;
             return this;
         }
 

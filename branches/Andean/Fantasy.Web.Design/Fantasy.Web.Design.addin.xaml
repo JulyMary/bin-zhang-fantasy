@@ -27,5 +27,19 @@
             </ToolBoxItem.DoDragDrop>
            
         </ToolBoxItem>
+        <ToolBoxItem ID="ExtensionBooleanEditor" Category="Editor Extensions" Text="Boolean Editor" Icon="/Fantasy.Web.Design;component/resources/CheckBox.png">
+            <ToolBoxItem.Conditional>
+
+                <ActiveWindow Type="Property.Extensions" />
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.DoDragDrop>
+                <DoDragDropHandler AllowedEffects="Copy" >
+                    <DoDragDropHandler.Data>
+                        <fw:BooleanEditorExtension />
+                    </DoDragDropHandler.Data>
+                </DoDragDropHandler>
+            </ToolBoxItem.DoDragDrop>
+
+        </ToolBoxItem>
     </Extension>
 </AddIn>

@@ -57,7 +57,7 @@ namespace Fantasy.Web.EntityExtensions
 
         public virtual bool ApplyTo(object context)
         {
-            return false;
+            return true;
         }
 
         #endregion

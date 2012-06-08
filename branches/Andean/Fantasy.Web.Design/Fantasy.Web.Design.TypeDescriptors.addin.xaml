@@ -2,6 +2,7 @@
        
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:be="urn:schema-fantasy:business-engine"
         xmlns:fw="urn:schema-fantasy:web"
         Author="Bin Zhang" Description="Fantasy Web Designer custom type descriptors AddIn" Name="Web Designer Type Descriptors" Version="1.0">
     <AddIn.Import>
@@ -9,7 +10,15 @@
     </AddIn.Import>
 
     <Extension Path="fantasy/studio/typedescriptors">
-        <TypeDescriptor ID="TextEditorExtension" TargetType="{x:Type fw:TextEditorExtension}">
+        <TypeDescriptor ID="BooleanEditorExtension" TargetType="{x:Type fw:BooleanEditorExtension}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True"/>
+            <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" ReadOnly="True"/>
+            <PropertyDescriptor ID="TrueText" Name="TrueText" Caption="True Text" Category="General"/>
+            <PropertyDescriptor ID="FalseText" Name="FalseText" Caption="False Text" Category="General"/>
+            <PropertyDescriptor ID="NullText" Name="NullText" Caption="Null Text" Category="General"/>
+            <PropertyDescriptor ID="ShowText" Name="ShowText" Caption="Show Text" Category="General"/>
+        </TypeDescriptor>
+        <TypeDescriptor ID="IEntityExtension" TargetType="{x:Type be:IEntityExtension}">
             
            
             <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True"/>
