@@ -123,6 +123,16 @@
   <data name="AuthenticationFailedMessage" xml:space="preserve">
     <value>The user name or password provided is incorrect.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="CheckBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\checkbox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="DateTimePicker" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\datetimepicker.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="EditorIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\editoricon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="LogInModel_Password" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -141,8 +151,14 @@
   <data name="RoleDoesNotExistMessage" xml:space="preserve">
     <value>Role '{0}' does not exist</value>
   </data>
+  <data name="Selector" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\selector.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="StandardNavigationAddChildText" xml:space="preserve">
     <value>Add {0}</value>
+  </data>
+  <data name="TextArea" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\textarea.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TextEditorDescription" xml:space="preserve">
     <value>Basic single line text editor.</value>
@@ -152,6 +168,9 @@
   </data>
   <data name="UserDoesNotExistMessage" xml:space="preserve">
     <value>User '{0}' does not exist.</value>
+  </data>
+  <data name="ValidationIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\validationicon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="ViewPageHttpHandlerWrapper_ExceptionOccurred" xml:space="preserve">
     <value>Execution of the child request failed. Please examine the InnerException for more information.</value>

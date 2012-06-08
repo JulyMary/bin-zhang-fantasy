@@ -109,6 +109,12 @@
   <ItemGroup>
     <Resource Include="Resources\DateTimePicker.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Fantasy.Web.Design.TypeDescriptors.addin.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

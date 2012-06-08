@@ -238,6 +238,11 @@
     <Compile Include="Web\ApplicationViewSettings.cs" />
     <Compile Include="Web\SettingsAttribute.cs" />
     <Compile Include="Web\ViewType.cs" />
+    <Compile Include="WellknownCategoryNames.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WellknownCategoryNames.resx</DependentUpon>
+    </Compile>
     <Compile Include="XamlNamespaces.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -250,6 +255,10 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WellknownCategoryNames.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>WellknownCategoryNames.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

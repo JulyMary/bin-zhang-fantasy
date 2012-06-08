@@ -193,6 +193,12 @@
     <Content Include="Content\themes\base\propertygrid\style.css" />
     <Content Include="Content\themes\base\textarea\style.css" />
     <Content Include="Content\themes\base\texteditor\style.css" />
+    <None Include="Resources\checkbox.png" />
+    <None Include="Resources\validationicon.png" />
+    <None Include="Resources\datetimepicker.gif" />
+    <None Include="Resources\editoricon.png" />
+    <None Include="Resources\selector.png" />
+    <None Include="Resources\textarea.png" />
     <Content Include="Scripts\AjaxLogin.js" />
     <Content Include="Scripts\fantasy\core.js" />
     <Content Include="Scripts\fantasy\businessengine.js" />

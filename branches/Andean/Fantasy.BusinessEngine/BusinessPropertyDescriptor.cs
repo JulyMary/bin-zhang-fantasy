@@ -132,7 +132,7 @@ namespace Fantasy.BusinessEngine
                 }
                 if (String.IsNullOrEmpty(rs))
                 {
-                    rs = Resources.MiscCategoryName;
+                    rs = WellknownCategoryNames.Misc;
                 }
                 return rs;
             }

@@ -89,12 +89,18 @@ namespace Fantasy.Studio.BusinessEngine.ExtensionEditing
         {
             this._site = site;
             this.Extension = extension;
+
+            CategoryAttribute ca = this.Extension.GetType().GetCustomAttribute<CategoryAttribute>(required: false);
+            this.Category = ca != null ? ca.Category : WellknownCategoryNames.Misc;
+
         }
 
         private IServiceProvider _site;
 
         private static readonly ImageSource _defaultIcon = new BitmapImage(new Uri("/Fantasy.Studio.BusinessEngine;component/images/extension.png", UriKind.RelativeOrAbsolute));
         private ImageSource _icon;
+
+        public string Category { get; private set; }
 
         public ImageSource Icon
         {
