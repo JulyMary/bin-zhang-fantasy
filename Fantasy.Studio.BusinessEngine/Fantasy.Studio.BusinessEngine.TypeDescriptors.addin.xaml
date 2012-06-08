@@ -5,7 +5,7 @@
         xmlns:dm="urn:schema-fantasy:studio-business-engine-class-diagram-model"
         xmlns:draw="clr-namespace:System.Drawing.Design;assembly=System.Drawing.Design"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        Author="Bin Zhang" Description="Fantasy Business Engine Studio AddIn" Name="BusinessEngineStudio" Version="1.0">
+        Author="Bin Zhang" Description="Fantasy Studio  Business Engine custom type descriptor  AddIn" Name="BusinessEngineStudio.TypeDescriptors" Version="1.0">
     <AddIn.Import>
         <Assembly Name="Fantasy.Studio.BusinessEngine"/>
     </AddIn.Import>

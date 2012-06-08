@@ -1,0 +1,21 @@
+﻿<AddIn  xmlns="urn:schema-fantasy:xaml"
+       
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:fw="urn:schema-fantasy:web"
+        Author="Bin Zhang" Description="Fantasy Web Designer custom type descriptors AddIn" Name="Web Designer Type Descriptors" Version="1.0">
+    <AddIn.Import>
+        <Assembly Name="Fantas.Web"/>
+    </AddIn.Import>
+
+    <Extension Path="fantasy/studio/typedescriptors">
+        <TypeDescriptor ID="TextEditorExtension" TargetType="{x:Type fw:TextEditorExtension}">
+            
+           
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True"/>
+            <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" ReadOnly="True"/>
+           
+        </TypeDescriptor>
+    </Extension>
+
+</AddIn>

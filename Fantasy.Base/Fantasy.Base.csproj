@@ -187,6 +187,7 @@
     <Compile Include="Collections\Key.cs" />
     <Compile Include="ComponentModel\EditorAttribute.cs" />
     <Compile Include="ComponentModel\IconAttribute.cs" />
+    <Compile Include="ComponentModel\ResourceCategoryAttribute.cs" />
     <Compile Include="Configuration\XSettingsConfigurationHandler.cs" />
     <Compile Include="Drawing\IconReader.cs" />
     <Compile Include="ReferenceTypeAttributeBase.cs" />

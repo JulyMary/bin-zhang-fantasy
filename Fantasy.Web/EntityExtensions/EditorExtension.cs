@@ -9,12 +9,14 @@ using Fantasy.BusinessEngine.EntityExtensions;
 using Fantasy.ComponentModel;
 using Fantasy.Web.Mvc.Html;
 using System.Web.Mvc;
+using Fantasy.Web.Properties;
 
 namespace Fantasy.Web.EntityExtensions
 {
     [XSerializable("editor", NamespaceUri = Consts.ExtensionsNamespace)]
     [ExtensionUsage(AllowMultiple = false)]
-    [Icon("Fantasy.Web.Design.Properties.Resources, Fantasy.Web.Design", "EditorIcon")]
+    [Icon(typeof(Resources), "EditorIcon")]
+    [ResourceCategory(typeof(WellknownCategoryNames), "Editor")]
     public abstract class EditorExtension : NotifyPropertyChangedObject, IEntityExtension
     {
        

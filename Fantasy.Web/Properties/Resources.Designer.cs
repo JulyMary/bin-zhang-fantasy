@@ -78,6 +78,27 @@ namespace Fantasy.Web.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap CheckBox {
+            get {
+                object obj = ResourceManager.GetObject("CheckBox", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap DateTimePicker {
+            get {
+                object obj = ResourceManager.GetObject("DateTimePicker", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        public static System.Drawing.Bitmap EditorIcon {
+            get {
+                object obj = ResourceManager.GetObject("EditorIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
@@ -132,12 +153,26 @@ namespace Fantasy.Web.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap Selector {
+            get {
+                object obj = ResourceManager.GetObject("Selector", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Add {0}.
         /// </summary>
         public static string StandardNavigationAddChildText {
             get {
                 return ResourceManager.GetString("StandardNavigationAddChildText", resourceCulture);
+            }
+        }
+        
+        public static System.Drawing.Bitmap TextArea {
+            get {
+                object obj = ResourceManager.GetObject("TextArea", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -165,6 +200,13 @@ namespace Fantasy.Web.Properties {
         public static string UserDoesNotExistMessage {
             get {
                 return ResourceManager.GetString("UserDoesNotExistMessage", resourceCulture);
+            }
+        }
+        
+        public static System.Drawing.Bitmap ValidationIcon {
+            get {
+                object obj = ResourceManager.GetObject("ValidationIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
