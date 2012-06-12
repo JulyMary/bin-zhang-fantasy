@@ -16,6 +16,8 @@
                     //data to save entities;
                     this.entities = new Array();
 
+                    this.boundElements = new Array();
+
                     //create or update a json object to ko observable object
                     this.renew = function (entity) {
                         var wrapped = this.entities[entity.Id];
@@ -34,18 +36,38 @@
                             if (entity.hasOwnProperty(prop) && prop != "acl" && prop != "entityState") {
                                 var val = entity[prop];
                                 if (wrapped[prop] == undefined) {
-                                    wrapped[prop] = ko.observable(val);
-                                    wrapped[prop].subscribe(function (x) {
-                                        if (!this.isrenewing) {
-                                            if (this.entityState() == "clean") {
-                                                this.entityState("dirty");
+                                    if ($.isArray(val)) {
+                                        wrapped[prop] = ko.observableArray(val);
+                                    }
+                                    else if ($.isFunction(val)) {
+                                        wrapped[prop] = ko.computed(val, wrapped);
+                                    }
+                                    else {
+                                        wrapped[prop] = ko.observable(val);
+                                        wrapped[prop].subscribe(function (x) {
+                                            if (!this.isrenewing) {
+                                                if (this.entityState() == "clean") {
+                                                    this.entityState("dirty");
+                                                }
                                             }
-                                        }
-                                    }, wrapped);
+                                        }, wrapped);
+                                    }
 
                                 }
                                 else {
-                                    wrapped[prop](val);
+                                    if ($.isArray(val)) {
+                                        wrapped[prop].removeAll();
+                                        for (var i = 0; i < val.length; i++) {
+                                            wrapped[prop].push(val[i]);
+                                        }
+
+                                    }
+                                    else if ($.isFunction(val)) {
+                                        //We do not update computed functions;
+                                    }
+                                    else {
+                                        wrapped[prop](val);
+                                    }
                                 }
                             }
                         }

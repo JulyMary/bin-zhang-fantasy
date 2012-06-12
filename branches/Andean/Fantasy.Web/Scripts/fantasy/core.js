@@ -140,6 +140,77 @@ function execute_ajax_scripts(scripts, startup) {
     $.when.apply(this, args).then(startup);
 }
 
+
+function Hashtable() {
+
+    this.hashtable = new Array();
+    this.clear = function () {
+        this.hashtable = new Array();
+    };
+    this.containsKey = function (key) {
+        for (var i in this.hashtable) {
+            if (i == key) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    this.containsValue = function (value) {
+        for (var i in this.hashtable) {
+            if (this.hashtable[i] == value) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    this.get = function (key) {
+        return this.hashtable[key];
+    };
+
+    this.isEmpty = function () {
+        return this.size == 0 ? true : false;
+    };
+
+    this.keys = function () {
+        var rs = new Array();
+        for (var i in this.hashtable) {
+            rs.push(i);
+        }
+
+        return rs;
+    };
+
+    this.put = function (key, value) {
+        if (key == undefined) {
+            throw "Key cannot be null.";
+        }
+        this.hashtable[key] = value;
+
+    };
+
+    this.remove = function (key) {
+        var rs = this.hashtable[key];
+        this.hashtable.splice(key, 1);
+        return rs;
+    };
+
+    this.size = function () {
+        return this.hashtable.length;
+    };
+
+    this.values = function () {
+        var rs = new Array();
+        for (var i in this.hashtable) {
+            rs.push(this.hashtable[i]);
+        }
+        return rs;
+    };
+
+}
+
 jQuery.ajaxSetup({cache:false});
 
 

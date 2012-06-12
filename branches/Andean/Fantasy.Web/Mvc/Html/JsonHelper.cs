@@ -6,6 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Xml;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace Fantasy.Web.Mvc.Html
 {
@@ -15,7 +16,7 @@ namespace Fantasy.Web.Mvc.Html
         {
             if (o != null)
             {
-                string rs = new JavaScriptSerializer().Serialize(o);
+                string rs = JsonConvert.SerializeObject(o, Newtonsoft.Json.Formatting.None);
                 return new HtmlString(rs);
             }
             else
