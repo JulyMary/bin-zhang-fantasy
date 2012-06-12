@@ -43,6 +43,9 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -194,7 +197,8 @@
     <Content Include="Content\themes\base\textarea\style.css" />
     <Content Include="Content\themes\base\texteditor\style.css" />
     <Content Include="Mvc\Html\BusinessUserEditor.cshtml" />
-    <Content Include="Mvc\Html\SelectList.cshtml" />
+    <Content Include="Mvc\Html\SingleSelectList.cshtml" />
+    <Content Include="packages.config" />
     <None Include="Resources\checkbox.png" />
     <None Include="Resources\validationicon.png" />
     <None Include="Resources\datetimepicker.gif" />
@@ -280,16 +284,22 @@
     <Compile Include="Mvc\Html\BooleanEditorFactory.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
     <Compile Include="EntityExtensions\EditorExtension.cs" />
+    <Compile Include="Mvc\Html\EnumEditor.cs" />
+    <Compile Include="Mvc\Html\EnumEditorFactory.cs" />
     <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
     <Compile Include="Mvc\Html\BusinessPropertyEditorBase.cs" />
     <Compile Include="Mvc\Html\HiddenEditor.cs" />
+    <Compile Include="Mvc\JavaScriptString.cs" />
+    <Compile Include="Mvc\JavaStringStringJsonConverter.cs" />
+    <Compile Include="Mvc\JsonNetResult.cs" />
     <Compile Include="Mvc\Html\PropertyGrid.cs">
       <DependentUpon>PropertyGrid.cshtml</DependentUpon>
     </Compile>
     <Compile Include="Mvc\Html\PropertyGridFactory.cs" />
     <Compile Include="Mvc\Html\PropertySort.cs" />
-    <Compile Include="Mvc\Html\SelectList.cs" />
+    <Compile Include="Mvc\Html\SingleSelectList.cs" />
+    <Compile Include="Mvc\Html\SingleSelectListFactory.cs" />
     <Compile Include="Mvc\Html\TextEditor.cs" />
     <Compile Include="Mvc\Html\UserControl.cs" />
     <Compile Include="Mvc\Html\UserControlFactoryExtensions.cs" />

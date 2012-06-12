@@ -100,7 +100,7 @@ namespace Fantasy.Web.Mvc.Html
         {
             if (string.IsNullOrEmpty(key))
             {
-                throw new ArgumentException(Resources.ArgumentCannotBeNullOrEmpty, "key");
+                throw new ArgumentException(String.Format(Resources.ArgumentNullOrEmptyStringText, "key"), "key");
             }
             if (replaceExisting || !control.Attributes.ContainsKey(key))
             {
@@ -116,10 +116,6 @@ namespace Fantasy.Web.Mvc.Html
             factory.Model = model;
             return factory;
         }
-
-
-      
-
  
     }
 

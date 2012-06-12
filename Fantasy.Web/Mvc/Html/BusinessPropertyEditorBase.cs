@@ -14,13 +14,13 @@ namespace Fantasy.Web.Mvc.Html
     {
 
         private string _propertyName;
-        public string PropertyName 
+        public virtual string PropertyName 
         {
             get
             {
                 return _propertyName;
             }
-            internal set
+            protected internal set
             {
                 _propertyName = value;
                

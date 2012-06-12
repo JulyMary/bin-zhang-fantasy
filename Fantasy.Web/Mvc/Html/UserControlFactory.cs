@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Web.WebPages;
+using System.Web.Routing;
 
 namespace Fantasy.Web.Mvc.Html
 {
@@ -61,9 +62,28 @@ namespace Fantasy.Web.Mvc.Html
                 dictionary = new ViewDataDictionary(this.Model);
             }
 
+            RouteData routeData = new RouteData();
+
+            foreach (KeyValuePair<string, object> pair in this.Html.ViewContext.RouteData.Values)
+            {
+                routeData.Values.Add(pair.Key, pair.Value);
+            }
+           
+
+            foreach (KeyValuePair<string, object> pair in this.Html.ViewContext.RouteData.DataTokens)
+            {
+                routeData.DataTokens.Add(pair.Key, pair.Value);
+            }
+
+            routeData.Route = this.Html.ViewContext.RouteData.Route;
+
+            routeData.DataTokens["ParentActionViewContext"] = this.Html.ViewContext;
+
             ViewContext viewContext = new ViewContext(this.Html.ViewContext, this.Html.ViewContext.View, dictionary, this.Html.ViewContext.TempData, writer);
+            viewContext.RouteData = routeData;
             this.Control.ViewContext = viewContext;
             Control.ViewData = viewContext.ViewData;
+           
             Control.InitHelpers();
             var pageContext = new WebPageContext(viewContext.HttpContext, this.Control, this.Model);
             Control.ExecutePageHierarchy(pageContext, writer);
@@ -96,21 +116,5 @@ namespace Fantasy.Web.Mvc.Html
     }
 
 
-    //public class UserControlFactory<TControl, TModel> : UserControlFactory<TControl> where TControl : UserControl<TModel>, new()
-    //{
-
-    //    public UserControlFactory(HtmlHelper htmlHelper)
-    //        :base(htmlHelper)
-    //    {
-
-    //    }
-
-    //    public new TModel Model
-    //    {
-    //        get
-    //        {
-    //            return base.Model;
-    //        }
-    //    }
-    //}
+   
 }

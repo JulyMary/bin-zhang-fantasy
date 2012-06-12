@@ -61,11 +61,11 @@ namespace Fantasy.Web.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Value cannot be null or an empty string..
+        ///   Looks up a localized string similar to Argument &apos;{0}&apos; cannot be null or empty string (&quot;&quot;)..
         /// </summary>
-        public static string ArgumentCannotBeNullOrEmpty {
+        public static string ArgumentNullOrEmptyStringText {
             get {
-                return ResourceManager.GetString("ArgumentCannotBeNullOrEmpty", resourceCulture);
+                return ResourceManager.GetString("ArgumentNullOrEmptyStringText", resourceCulture);
             }
         }
         
