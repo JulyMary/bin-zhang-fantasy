@@ -55,7 +55,7 @@ namespace Fantasy.BusinessEngine
             PropertyInfo otherSidePropty = null; 
             if(otherSideRole != null)
             {
-                otherSidePropty =  this.ReferencedClass.EntityType().GetProperty(otherSideRole); 
+                otherSidePropty =  this.ReferencedClass.RuntimeType().GetProperty(otherSideRole); 
                 BusinessObject oldValue = (BusinessObject)this.Value;
                 if (oldValue != null)
                 {

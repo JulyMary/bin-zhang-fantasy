@@ -18,8 +18,14 @@ namespace Fantasy.Web.Mvc.Html
 
 
                 base.PropertyName = value;
-                this.AddItems();
+               
             }
+        }
+
+        protected override void PreExecute()
+        {
+            this.AddItems();
+            base.PreExecute();
         }
 
         private void AddItems()
@@ -30,7 +36,19 @@ namespace Fantasy.Web.Mvc.Html
 
             this.OptionsText = "Text";
             this.OptionsValue = "Value";
+
+            if (this.PropertyDescriptor.Property.IsNullable && this.OptionsCaption == null)
+            {
+                this.OptionsCaption = string.Empty;
+            }
                           
+        }
+
+        public class EnumData
+        {
+            public int Value { get; set; }
+
+            public string Text { get; set; }
         }
 
     }
