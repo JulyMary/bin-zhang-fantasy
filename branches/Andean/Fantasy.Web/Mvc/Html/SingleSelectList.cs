@@ -31,17 +31,17 @@ namespace Fantasy.Web.Mvc.Html
         private MvcHtmlString AdditionalOptions()
         {
             StringBuilder rs = new StringBuilder();
-            if (!string.IsNullOrEmpty(this.OptionsCaption))
+            if (this.OptionsCaption != null)
             {
-                rs.AppendFormat(", optionsCaption: {0}", this.OptionsCaption);
+                rs.AppendFormat(", optionsCaption: '{0}'", this.OptionsCaption);
             }
             if(!string.IsNullOrEmpty(this.OptionsText))
             {
-                rs.AppendFormat(", optionsText: {0}", this.OptionsText);
+                rs.AppendFormat(", optionsText: '{0}'", this.OptionsText);
             }
             if (!string.IsNullOrEmpty(this.OptionsValue))
             {
-                rs.AppendFormat(", optionsValue: {0}", this.OptionsValue); 
+                rs.AppendFormat(", optionsValue: '{0}'", this.OptionsValue); 
             }
             return new MvcHtmlString(rs.ToString());
         }
@@ -50,13 +50,23 @@ namespace Fantasy.Web.Mvc.Html
         {
             JObject ex = new JObject();
             ex.Add(new JProperty("Id", this.Model.Object.Id));
-            ex.Add(new JProperty(String.Format("{0}$Options", this.PropertyName),new JArray(this.Items)));
-            ex.Add(new JProperty(String.Format("{0}$Display", this.PropertyName),  GetDisplayFunc()));
-            string rs = JsonConvert.SerializeObject(ex, Formatting.None);
+            ex.Add(new JProperty(String.Format("{0}$Options", this.PropertyName), new JArray(this.JItems())));
+            ex.Add(new JProperty(String.Format("{0}$Display", this.PropertyName), new JRaw(GetDisplayFunc())));
+            string rs = JsonConvert.SerializeObject(ex, Formatting.Indented);
             return rs; 
         }
 
-        private JavaScriptString GetDisplayFunc()
+       
+
+        private IEnumerable<JToken> JItems()
+        {
+            foreach (object o in this.Items)
+            {
+                yield return JToken.FromObject(o);
+            }
+        }
+
+        private string GetDisplayFunc()
         {
             string itemByValueFunc;
             if (string.IsNullOrEmpty(this.OptionsValue))
@@ -79,18 +89,20 @@ namespace Fantasy.Web.Mvc.Html
             }
 
             string displayFunc = string.Format(@"function(){{
+            
             {0}
             {1}
-            var item = itemByValue(this.{2}());
+            var items = this.{2}$Options();
+            var item = itemByValue(this.{2}(), items);
             var rs = displayByItem(item);
             return rs;
 }}", itemByValueFunc, displayByItemFunc, this.PropertyName);
-            return new JavaScriptString(displayFunc);
+            return displayFunc;
         }
 
 
 //        private const string PostValueByItemFunctionTemplate = @"function postValueByItem(item){{
-//              return $.isFunction(item.{0})) ? item.{0}() : item.{0};
+//              return $.isFunction(item.{0}) ? item.{0}() : item.{0};
 //             
 //}}";
 
@@ -101,7 +113,11 @@ namespace Fantasy.Web.Mvc.Html
 
 
         private const string DisplayByItemFunctionTemplate = @"function displayByItem(item){{
-              return $.isFunction(item.{0})) ? item.{0}() : item.{0};
+              if(item == undefined)
+              {{
+                  return undefined;
+              }}
+              return $.isFunction(item.{0}) ? item.{0}() : item.{0};
              
 }}";
 
@@ -109,8 +125,8 @@ namespace Fantasy.Web.Mvc.Html
               return item;
              
 }}";
-        private const string ItemByValueFunctionTemplate = @"function itemByValue(val){{
-            var items = this.{0}$Options();
+        private const string ItemByValueFunctionTemplate = @"function itemByValue(val, items){{
+            
             
             for(var i = 0; i < items.length; i ++)
             {{
@@ -132,9 +148,8 @@ namespace Fantasy.Web.Mvc.Html
             return undefined;
         }}";
 
-        private const string NoValueMemberItemByValueFunctionTemplate = @"function itemByValue(val){{
-            var items = this.{0}$Options();
-            
+        private const string NoValueMemberItemByValueFunctionTemplate = @"function itemByValue(val, items){{
+          
             for(var i = 0; i < items.length; i ++)
             {{
                 var item = items[i]; 

@@ -17,7 +17,7 @@ namespace Fantasy.BusinessEngine
         {
             get
             {
-                return this.Class.EntityType();
+                return this.Class.RuntimeType();
             }
         }
 

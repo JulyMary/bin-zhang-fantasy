@@ -8,7 +8,7 @@ namespace Fantasy.BusinessEngine
 {
     public static class BusinessClassExtensions
     {
-        public static Type EntityType(this BusinessClass @class)
+        public static Type RuntimeType(this BusinessClass @class)
         {
             if (@class.ScriptOptions == ScriptOptions.External)
             {

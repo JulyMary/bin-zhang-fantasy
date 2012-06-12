@@ -164,7 +164,14 @@ namespace Fantasy.Web.Mvc.Html
                 }
                 else if (type.IsEnum)
                 {
-
+                    Type t = desc.ReferencedEnum.RuntimeType();
+                    if (t.IsDefined(typeof(FlagsAttribute), true))
+                    {
+                    }
+                    else
+                    {
+                        rs = new EnumEditorFactory(html);
+                    }
                 }
                 else if (type == typeof(Guid))
                 {

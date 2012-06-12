@@ -1,6 +1,6 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
-    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/knockout.options-extension.js"));
+ 
     string containerId = this.FullHtmlFieldId + "container";
     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0}').be().renew({1});", containerId, this.CreateEntityExtension())); 
    
@@ -12,7 +12,7 @@
 <span id="@containerId" >
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <select @this.WriteAttributes() name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName) @this.AdditionalOptions()"  />
+        <select @this.WriteAttributes() name="@this.FullHtmlFieldName" data-bind="value: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName) @this.AdditionalOptions()"  />
     } 
     @if (this.PropertyDescriptor.CanRead)
     {

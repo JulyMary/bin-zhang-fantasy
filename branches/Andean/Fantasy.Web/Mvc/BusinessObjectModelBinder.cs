@@ -111,7 +111,7 @@ namespace Fantasy.Web.Mvc
                     Guid classId = new Guid(bindingContext.ValueProvider.GetValue("ClassId").AttemptedValue);
                     BusinessClass @class = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>().FindBusinessClass(classId);
 
-                    rs = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(@class.EntityType(), id);
+                    rs = (BusinessObject)BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(@class.RuntimeType(), id);
                 }
                 else
                 {

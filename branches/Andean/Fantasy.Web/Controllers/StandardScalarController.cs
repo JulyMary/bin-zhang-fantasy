@@ -73,7 +73,7 @@ namespace Fantasy.Web.Controllers
                 BusinessObjectDescriptor childDesc = new BusinessObjectDescriptor(@class);
                 if (childDesc.CanCreate)
                 {
-                    BusinessObject child = (BusinessObject)es.CreateEntity(@class.EntityType());
+                    BusinessObject child = (BusinessObject)es.CreateEntity(@class.RuntimeType());
                     if (String.IsNullOrEmpty(child.Name))
                     {
                         string name = string.Format(Resources.NewBusinessObjectName, @class.Name);
@@ -111,7 +111,7 @@ namespace Fantasy.Web.Controllers
             {
 
                 IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
-                BusinessObject entity = (BusinessObject)es.CreateEntity(@class.EntityType(), objId);
+                BusinessObject entity = (BusinessObject)es.CreateEntity(@class.RuntimeType(), objId);
                 this.TryUpdateModel(entity);
 
                 es.BeginUpdate();

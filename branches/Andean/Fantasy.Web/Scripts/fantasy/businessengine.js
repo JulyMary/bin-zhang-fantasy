@@ -16,10 +16,10 @@
                     //data to save entities;
                     this.entities = new Array();
 
-                    this.boundElements = new Array();
+                    this.boundElements = new Hashtable();
 
                     //create or update a json object to ko observable object
-                    this.renew = function (entity) {
+                    this.renew = function (entity, rebind) {
                         var wrapped = this.entities[entity.Id];
                         if (wrapped == undefined) {
                             wrapped = new Object();
@@ -95,6 +95,23 @@
                         }
                         wrapped.isrenewing = false;
                         wrapped.entityState(entity.entityState);
+
+
+                        if (rebind !== false) {
+                            var elements = this.boundElements.get(entity.Id);
+                            if (elements != undefined) {
+                                var newArray = new Array();
+                                for (var i = 0; i < elements.length; i++) {
+                                    var ele = elements[i];
+                                    if ($.contains(document.documentElement, ele)) {
+                                        newArray.push(ele);
+                                        ko.applyBindings(wrapped, ele);
+                                    }
+                                }
+                                this.boundElements.put(entity.Id, newArray);
+                            }
+                        }
+
                         return wrapped;
 
                     }
@@ -104,7 +121,7 @@
                     this.shortcut = function (entity) {
                         var wrapped = this.entities[entity.Id];
                         if (wrapped == undefined) {
-                            wrapped = this.renew(entity);
+                            wrapped = this.renew(entity, false);
                         }
 
                         return wrapped;
@@ -117,8 +134,17 @@
                     this.applyBindings = function (id, element) {
 
                         var model = this.getEntity(id);
+                        var elements = this.boundElements.get(id);
+                        if (elements == undefined) {
+                            elements = new Array();
+                            this.boundElements.put(id, elements);
+                        }
                         $(element).each(function () {
                             ko.applyBindings(model, this);
+                            if (elements.indexOf(this) < 0) {
+                                elements.push(this);
+                            }
+
                         });
                     }
 

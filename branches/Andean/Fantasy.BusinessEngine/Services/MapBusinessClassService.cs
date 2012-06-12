@@ -70,8 +70,8 @@ namespace Fantasy.BusinessEngine.Services
         {
            
             XElement rs = new XElement(_nhns + "subclass",
-                new XAttribute("name", @class.EntityType().AssemblyQualifiedName),
-                new XAttribute("extends", @class.ParentClass.EntityType().AssemblyQualifiedName),
+                new XAttribute("name", @class.RuntimeType().AssemblyQualifiedName),
+                new XAttribute("extends", @class.ParentClass.RuntimeType().AssemblyQualifiedName),
                
                 new XAttribute("discriminator-value", @class.Id),
                 new XElement(_nhns + "join",
@@ -121,12 +121,12 @@ namespace Fantasy.BusinessEngine.Services
                 new XAttribute("lazy", true),
                 new XAttribute("inverse", inverse),
                 new XAttribute("cascade", "none"),
-                new XAttribute("collection-type", typeof(ObservableList<>).MakeGenericType(@class.EntityType()).AssemblyQualifiedName),
+                new XAttribute("collection-type", typeof(ObservableList<>).MakeGenericType(@class.RuntimeType()).AssemblyQualifiedName),
                 new XAttribute("access", isManyToOne ? typeof(ManyToOneAccessor).AssemblyQualifiedName : typeof(ManyToManyAccessor).AssemblyQualifiedName),
                
                 new XElement(_nhns + "key", new XAttribute("column", column)),
                 new XElement(_nhns + "many-to-many", 
-                    new XAttribute("class", @class.EntityType().AssemblyQualifiedName),
+                    new XAttribute("class", @class.RuntimeType().AssemblyQualifiedName),
                     new XAttribute("column", refcolumn),
                     new XAttribute("order-by", "DisplayOrder"))
                 );
@@ -139,7 +139,7 @@ namespace Fantasy.BusinessEngine.Services
         {
             XElement rs = new XElement(_nhns + "many-to-one",
                 new XAttribute("name", property.CodeName),
-                new XAttribute("class", property.DataClassType.EntityType().AssemblyQualifiedName),
+                new XAttribute("class", property.DataClassType.RuntimeType().AssemblyQualifiedName),
                 new XAttribute("column", property.FieldName),
                 new XAttribute("cascade", "none"),
                 new XAttribute("fetch", "select"));

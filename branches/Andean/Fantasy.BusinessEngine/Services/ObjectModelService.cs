@@ -18,7 +18,7 @@ namespace Fantasy.BusinessEngine.Services
 
             this._allClasses = es.Query<BusinessClass>().ToList();
             _allClasses.SortBy(c => c.Id);
-            this._typeClasses = this._allClasses.ToDictionary(c => c.EntityType());
+            this._typeClasses = this._allClasses.ToDictionary(c => c.RuntimeType());
             this.RootClass = this.FindBusinessClass(BusinessClass.RootClassId);
 
 
