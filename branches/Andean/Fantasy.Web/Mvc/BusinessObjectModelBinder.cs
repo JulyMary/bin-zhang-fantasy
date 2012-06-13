@@ -68,10 +68,40 @@ namespace Fantasy.Web.Mvc
                             }
 
                         }
-
                         else
                         {
-                            value = vps.ConvertTo(prop.PropertyType);
+                            Type t = prop.PropertyType;
+                            bool isNullable = false;
+                            if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>))
+                            {
+                                isNullable = true;
+                                t = t.GetGenericArguments()[0];
+                            }
+
+                            if (t.IsEnum && t.IsDefined(typeof(FlagsAttribute), true))
+                            {
+                                string s = vps.AttemptedValue;
+                                if (!string.IsNullOrEmpty(s))
+                                {
+                                   
+                                    string[] values = s.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                    long v = 0L;
+                                    foreach(string st in values)
+                                    {
+                                        v |= Int64.Parse(st);
+                                    }
+                                    value = Convert.ChangeType(v, t.GetEnumUnderlyingType());
+                                }
+                                else
+                                {
+                                    value = isNullable ? null : Activator.CreateInstance(t);
+                                }
+                            }
+                            else
+                            {
+
+                                value = vps.ConvertTo(prop.PropertyType);
+                            }
                         }
 
                         prop.Value = value;
