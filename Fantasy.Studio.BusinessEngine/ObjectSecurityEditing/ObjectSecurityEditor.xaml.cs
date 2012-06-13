@@ -72,6 +72,11 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                         {
                             deny = false;
                         }
+                        if (!deny && !allow)
+                        {
+                            break;
+                        }
+                       
                     }
 
                     if (allow)
@@ -110,13 +115,18 @@ namespace Fantasy.Studio.BusinessEngine.ObjectSecurityEditing
                     BusinessObjectSecurity sec = (BusinessObjectSecurity)this.DataContext;
                     foreach (BusinessObjectMemberSecurity prop in sec.Properties)
                     {
-                        if (prop.CanWrite == true)
+                        if (prop.CanWrite != true)
+                        {
+                            allow = false;
+                        }
+                        if (prop.CanWrite != false)
                         {
                             deny = false;
                         }
-                        if (prop.CanWrite == false)
+                        
+                        if (!deny && !allow)
                         {
-                            allow = false;
+                            break;
                         }
                     }
 

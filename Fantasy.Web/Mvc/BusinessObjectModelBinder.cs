@@ -28,8 +28,6 @@ namespace Fantasy.Web.Mvc
 
                 if (model == null)
                 {
-
-
                     model = TryCreateModel(bindingContext);
                 }
             }
@@ -54,50 +52,36 @@ namespace Fantasy.Web.Mvc
                     ValueProviderResult vps = bindingContext.ValueProvider.GetValue(prop.CodeName);
                     if (vps != null)
                     {
-                        string str = (string)vps.AttemptedValue;
+                        object value;
 
-                        //TODO: Add converter for property;
-
-                        if (str != string.Empty)
+                        if (prop.PropertyType.IsSubclassOf(typeof(BusinessObject)))
                         {
-                            object value;
-                            if (prop.PropertyType.IsSubclassOf(typeof(BusinessObject)))
+                            string str = (string)vps.AttemptedValue;
+                            if (!string.IsNullOrEmpty(str))
                             {
                                 Guid id = new Guid(str);
                                 value = BusinessEngineContext.Current.GetRequiredService<IEntityService>().Get(prop.PropertyType, id);
-
                             }
                             else
                             {
-                                value = Convert.ChangeType(str, prop.PropertyType);
+                                value = null;
                             }
 
-                            prop.Value = value;
                         }
+
                         else
                         {
-                            if (prop.PropertyType == typeof(string))
-                            {
-                                prop.Value = string.Empty;
-                            }
-                            else if ((prop.PropertyType.IsGenericType && prop.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)) || prop.PropertyType.IsByRef)
-                            {
-                                prop.Value = null;
-                            }
-                            else
-                            {
-                                //Force throw invalidcast exception
-                                prop.Value = Convert.ChangeType(string.Empty, prop.PropertyType);
-                            }
+                            value = vps.ConvertTo(prop.PropertyType);
                         }
 
-
+                        prop.Value = value;
                     }
+
                 }
             }
         }
 
-        private  BusinessObject TryCreateModel(ModelBindingContext bindingContext)
+        private BusinessObject TryCreateModel(ModelBindingContext bindingContext)
         {
             BusinessObject rs = null;
 
