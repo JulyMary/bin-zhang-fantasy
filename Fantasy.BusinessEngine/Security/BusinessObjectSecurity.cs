@@ -236,7 +236,11 @@ namespace Fantasy.BusinessEngine.Security
             foreach (BusinessObjectMemberSecurity ps in toAdd)
             {
                 int index = this.Properties.BinarySearchBy(ps.DisplayOrder, (p => p.DisplayOrder));
-                this.Properties.Insert(~index, ps);
+                if (index < 0)
+                {
+                    index = ~index;
+                }
+                this.Properties.Insert(index, ps);
             }
         }
 

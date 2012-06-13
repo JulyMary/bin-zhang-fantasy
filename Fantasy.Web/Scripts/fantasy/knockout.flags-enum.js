@@ -34,7 +34,7 @@
                 result = XOr(result, v);
             }
             else if (tagName == "optgroup") {
-                var v = ko.bindingHandlers['selectedOptions'].getSelectedValuesFromSelectNode(node);
+                var v = ko.bindingHandlers['flagsEnum'].getSelectedValuesFromSelectNode(node);
                 result = XOr(result, v);
             }
         }
@@ -43,14 +43,14 @@
     'init': function (element, valueAccessor, allBindingsAccessor) {
         ko.utils.registerEventHandler(element, "change", function () {
             var value = valueAccessor();
-            var valueToWrite = ko.bindingHandlers['selectedOptions'].getSelectedValuesFromSelectNode(this);
+            var valueToWrite = ko.bindingHandlers['flagsEnum'].getSelectedValuesFromSelectNode(this);
             ko.jsonExpressionRewriting.writeValueToProperty(value, allBindingsAccessor, 'value', valueToWrite);
         });
     },
     'update': function (element, valueAccessor) {
         if (ko.utils.tagNameLower(element) != "select")
             throw new Error("values binding applies only to SELECT elements");
-
+       
         var newValue = ko.utils.unwrapObservable(valueAccessor());
 
         var nodes = element.childNodes;
