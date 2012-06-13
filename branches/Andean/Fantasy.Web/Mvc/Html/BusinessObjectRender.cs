@@ -160,13 +160,14 @@ namespace Fantasy.Web.Mvc.Html
                 }
                 else if (typeof(Image).IsAssignableFrom(type))
                 {
-
+                   
                 }
                 else if (type.IsEnum)
                 {
                     Type t = desc.ReferencedEnum.RuntimeType();
                     if (t.IsDefined(typeof(FlagsAttribute), true))
                     {
+                        rs = new FlagsEnumEditorFactory(html);
                     }
                     else
                     {

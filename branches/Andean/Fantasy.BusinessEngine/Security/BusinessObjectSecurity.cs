@@ -44,6 +44,12 @@ namespace Fantasy.BusinessEngine.Security
 
         }
 
+        protected override void OnPropertyChanged(string propertyName)
+        {
+            base.OnPropertyChanged(propertyName);
+            this.OnChanged(EventArgs.Empty);
+        }
+
         void PropertySecurityChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             this.OnChanged(EventArgs.Empty);

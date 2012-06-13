@@ -94,7 +94,9 @@
                             }
                         }
                         wrapped.isrenewing = false;
-                        wrapped.entityState(entity.entityState);
+                        if (entity.entityState) {
+                            wrapped.entityState(entity.entityState);
+                        }
 
 
                         if (rebind !== false) {

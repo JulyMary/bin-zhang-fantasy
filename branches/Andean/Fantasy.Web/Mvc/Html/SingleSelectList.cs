@@ -50,7 +50,7 @@ namespace Fantasy.Web.Mvc.Html
         {
             JObject ex = new JObject();
             ex.Add(new JProperty("Id", this.Model.Object.Id));
-            ex.Add(new JProperty(String.Format("{0}$Options", this.PropertyName), new JArray(this.JItems())));
+            ex.Add(new JProperty(String.Format("{0}$Options", this.PropertyName), JArray.FromObject(this.Items)));
             ex.Add(new JProperty(String.Format("{0}$Display", this.PropertyName), new JRaw(GetDisplayFunc())));
             string rs = JsonConvert.SerializeObject(ex, Formatting.Indented);
             return rs; 
@@ -99,18 +99,6 @@ namespace Fantasy.Web.Mvc.Html
 }}", itemByValueFunc, displayByItemFunc, this.PropertyName);
             return displayFunc;
         }
-
-
-//        private const string PostValueByItemFunctionTemplate = @"function postValueByItem(item){{
-//              return $.isFunction(item.{0}) ? item.{0}() : item.{0};
-//             
-//}}";
-
-//        private const string NoPostValueMemberDisplayByItemFunctionTemplate = @"function postValueByItem(item){{
-//              return item;
-//             
-//}}";
-
 
         private const string DisplayByItemFunctionTemplate = @"function displayByItem(item){{
               if(item == undefined)

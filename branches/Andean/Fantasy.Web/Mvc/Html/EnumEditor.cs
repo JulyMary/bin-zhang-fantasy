@@ -44,12 +44,7 @@ namespace Fantasy.Web.Mvc.Html
                           
         }
 
-        public class EnumData
-        {
-            public int Value { get; set; }
-
-            public string Text { get; set; }
-        }
+       
 
     }
 }
