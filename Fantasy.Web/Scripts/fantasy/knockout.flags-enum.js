@@ -70,6 +70,6 @@
                 ko.utils.setOptionNodeSelectionState(node, selected);
             }
         }
-
+ 
     }
 };

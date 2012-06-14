@@ -113,26 +113,35 @@ function appendStyleSheet (href) {
     }
 }
 
+var loaded_scripts;
 
 function execute_ajax_scripts(scripts, startup) {
     var args = new Array();
-    var c = 0;
+    
+
+    if (loaded_scripts == undefined) {
+        loaded_scripts = new Array();
+        $("head > script").each(function () {
+            loaded_scripts.push($(this).attr("src"));
+        })
+    }
+
     for(var i = 0; i < scripts.length; i ++)
     {
       
         var exists = false;
         var src = scripts[i];
-        $("head > script").each(function () {
-            var comparteTo = $(this).attr("src");
-            if (comparteTo != undefined && comparteTo.toLowerCase() == src.toLowerCase()) {
+        for (var j = 0; j < loaded_scripts.length; j++) {
+            var compareTo = loaded_scripts[j];
+            if (compareTo != undefined && compareTo.toLowerCase() == src.toLowerCase()) {
                 exists = true;
-
-                return false;
+                break;
             }
-        })
+        }
+
         if (!exists) {
-            args[c] = $.getScript(src);
-            c++;
+            loaded_scripts.push(src);
+            args.push($.getScript(src));
         }
               
         
