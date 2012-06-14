@@ -94,8 +94,9 @@ var stdnav = {
                             view.editview(op);
                             stdnav.isConfirmed = true;
                             try {
+                                newNode.children("a:first").trigger('click');
                                 tree.select_node(newNode, true);
-                                newNode.children("a:first").click();
+                                
                             }
                             finally {
                                 stdnav.isConfirmed = false;
