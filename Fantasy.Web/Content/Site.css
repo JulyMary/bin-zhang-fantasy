@@ -27,9 +27,17 @@ a:hover {
     background-color: #c7d1d6;
 }
 
+
+
 header, footer, hgroup
 nav, section {
     display: block;
+   
+}
+
+header, footer
+{
+	overflow:auto;
 }
 
 .float-left {

@@ -1,4 +1,7 @@
 ﻿
+
+
+
 var stdnav = {
     bindEntity: function (node, be) {
         var shortcut = $(node).data("entity");
@@ -227,6 +230,26 @@ var stdnav = {
 
 
 };
+
+
+function resizePageLayout() {
+    function getOffsetHeight(n) {
+        if (n.length > 0) {
+            return n[0].offsetHeight;
+        }
+        else {
+            return 0;
+        }
+    }
+    var bh = getOffsetHeight($("body"));
+    var hh = getOffsetHeight($("header"));
+    var fh = getOffsetHeight($("footer"));
+    var ch = bh - hh - fh - 50;
+    $("#pagelayout").height(ch);
+}
+
+$(window).resize(resizePageLayout);
+$(document).ready(resizePageLayout);
 
 
 
