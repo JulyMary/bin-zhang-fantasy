@@ -59,12 +59,44 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                                <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/EnumItem.png" VerticalAlignment="Center">
-                                </Image>
-                                <TextBlock Text="{Binding Entity.Name}" VerticalAlignment="Center" Margin="2,0,0,0"/>
-                            </StackPanel>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                                    <Image Width="16" Height="16" Source="/Fantasy.Studio.BusinessEngine;component/images/EnumItem.png" VerticalAlignment="Center">
+                                    </Image>
+                                    <TextBlock Text="{Binding Entity.Name}" VerticalAlignment="Center" Margin="2,0,0,0"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Center" Name="UpDownPanel">
+                                    <StackPanel.Resources>
+                                        <Style TargetType="f:AutoGrayImage">
+                                            <Setter Property="Width" Value="16" />
+                                            <Setter Property="Height" Value="16" />
+                                        </Style>
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Static ToolBar.ButtonStyleKey}}">
+                                            <Setter Property="HorizontalAlignment" Value="Right" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                            <Setter Property="Focusable" Value="False" />
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <Button IsEnabled="{Binding CanMoveUp}" Click="MoveUpButton_Click">
+                                        <f:AutoGrayImage IsEnabled="{Binding CanMoveUp}" Source="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
+                                    </Button>
+                                    <Button  IsEnabled="{Binding CanMoveDown}" Click="MoveDownButton_Click">
+                                        <f:AutoGrayImage IsEnabled="{Binding CanMoveDown}"  Source="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
+                                    </Button>
+                                    
+                                </StackPanel>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True"/>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type l:ClassDiagramNode}}, Path=DataContext.IsShortCut}" Value="False"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <Setter TargetName="UpDownPanel" Property="Visibility"  Value="Visible"/>
+                                </MultiDataTrigger>
+                            </DataTemplate.Triggers>
                         </DataTemplate>
+                       
                     </ListBox.ItemTemplate>
                 </ListBox>
             </StackPanel>

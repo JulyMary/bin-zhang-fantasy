@@ -17,6 +17,7 @@ using Fantasy.Studio.Services;
 using Fantasy.AddIns;
 using Fantasy.Windows;
 using System.Collections.Specialized;
+using Fantasy.BusinessEngine;
 
 
 namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
@@ -159,6 +160,58 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Shapes
             {
                 this.Focus();
             }
+        }
+
+        private void MoveUpButton_Click(object sender, RoutedEventArgs e)
+        {
+            DependencyObject container = this.EnumValueListBox.ContainerFromElement((DependencyObject)e.Source);
+
+            BusinessEnumValue from = ((m.EnumValueNode)this.EnumValueListBox.ItemContainerGenerator.ItemFromContainer(container)).Entity;
+
+            BusinessEnum @enum = ((m.EnumGlyph)this.DataContext).Entity;
+
+            int index = @enum.EnumValues.IndexOf(from);
+
+            BusinessEnumValue to = @enum.EnumValues[index - 1];
+
+          
+
+            long temp = from.DisplayOrder;
+            from.DisplayOrder = to.DisplayOrder;
+            to.DisplayOrder = temp;
+
+            @enum.EnumValues.Swap(index - 1, index);
+            this.EnumValueListBox.SelectedIndex = index - 1;
+        }
+
+        private void MoveDownButton_Click(object sender, RoutedEventArgs e)
+        {
+
+          
+
+            DependencyObject container = this.EnumValueListBox.ContainerFromElement((DependencyObject)e.Source);
+
+            BusinessEnumValue from = ((m.EnumValueNode)this.EnumValueListBox.ItemContainerGenerator.ItemFromContainer(container)).Entity;
+
+            BusinessEnum @enum = ((m.EnumGlyph)this.DataContext).Entity;
+
+            int index = @enum.EnumValues.IndexOf(from);
+
+            BusinessEnumValue to = @enum.EnumValues[index + 1];
+
+
+
+            long temp = from.DisplayOrder;
+            from.DisplayOrder = to.DisplayOrder;
+            to.DisplayOrder = temp;
+
+            @enum.EnumValues.Swap(index, index + 1);
+
+            this.EnumValueListBox.SelectedIndex = index + 1;
+
+           
+
+            
         }
     }
 }

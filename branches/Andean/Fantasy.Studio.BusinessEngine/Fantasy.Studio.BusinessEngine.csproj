@@ -348,6 +348,8 @@
     <Compile Include="EnumEditing\ImportEnumDialogModel.cs" />
     <Compile Include="EnumEditing\NamespaceNode.cs" />
     <Compile Include="EnumEditing\PackageEnumsProvider.cs" />
+    <Compile Include="EnumEditing\EnumValueMoveDownCommand.cs" />
+    <Compile Include="EnumEditing\EnumValueMoveUpCommand.cs" />
     <Compile Include="EnumEditing\SyncExternalEnumCommand.cs" />
     <Compile Include="ExtensionEditing\DeleteEntityExtensionCommand.cs" />
     <Compile Include="ExtensionEditing\EditBusinessPropertyExtensionCommand.cs" />
