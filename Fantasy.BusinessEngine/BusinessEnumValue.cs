@@ -56,5 +56,17 @@ namespace Fantasy.BusinessEngine
                 this.SetValue("CodeName", value);
             }
         }
+
+        public virtual long DisplayOrder
+        {
+            get
+            {
+                return (long)this.GetValue("DisplayOrder", 0L);
+            }
+            set
+            {
+                this.SetValue("DisplayOrder", value);
+            }
+        }
     }
 }

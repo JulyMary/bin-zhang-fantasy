@@ -166,13 +166,38 @@ namespace Fantasy.Studio.BusinessEngine.ClassDiagramEditing.Model
             }
 
             this.EnumValues = new ObservableAdapterCollection<EnumValueNode>(entity.EnumValues, v => { return new EnumValueNode((BusinessEnumValue)v); });
-
+            this.EnumValues.CollectionChanged += new NotifyCollectionChangedEventHandler(EnumValues_CollectionChanged);
+            this.UpdateMoveState();
             this.EditingState = state;
 
 
             CollectionChangedEventManager.AddListener((INotifyCollectionChanged)this.Entity.EnumValues, this._enumValueCollectionListener); 
             
 
+        }
+
+
+        private void UpdateMoveState()
+        {
+            IEnumerable<EnumValueNode> nodes = (IEnumerable<EnumValueNode>)this.EnumValues;
+
+            EnumValueNode first = nodes.FirstOrDefault();
+           
+            EnumValueNode last = nodes.LastOrDefault();
+           
+
+            foreach (EnumValueNode node in nodes)
+            {
+                node.CanMoveUp = node != first;
+                node.CanMoveDown = node != last;
+            }
+
+
+        }
+
+        void EnumValues_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            this.UpdateMoveState();
         }
 
         private bool EnumValueCollectionChanged(Type managerType, object sender, EventArgs args)

@@ -7,7 +7,6 @@
     </AddIn.Import>
     
     <Extension Path="fantasy/services">
-        
         <Object ID="nhCfg">
             <be:NHConfigurationService/>
         </Object>
@@ -32,6 +31,12 @@
                 <IsTypeOf Type="{x:Type be:BusinessProperty}" />
             </Object.Conditional>
             <be:BusinessPropertyCreateOrderHandler/>
+        </Object>
+        <Object ID="BusinessEnumValueCreateOrder">
+            <Object.Conditional>
+                <IsTypeOf Type="{x:Type be:BusinessEnumValue}" />
+            </Object.Conditional>
+            <be:BusinessEnumValueCreateOrderHandler/>
         </Object>
         <Object ID="BusinessAssociationCreateOrder">
             <Object.Conditional>

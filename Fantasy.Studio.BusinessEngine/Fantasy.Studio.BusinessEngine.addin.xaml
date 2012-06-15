@@ -663,6 +663,20 @@
                 </And>
             </CommandBinding.Conditional>
         </CommandBinding>
+        <CommandBinding ID="MoveUp" Command="{Command MoveUp}" Handler="{New sbe:EnumValueMoveUpCommand}" ParameterSource="Owner">
+            <CommandBinding.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity Member="Enum"/>
+                </Not>
+            </CommandBinding.Conditional>
+        </CommandBinding>
+        <CommandBinding ID="MoveDown" Command="{Command MoveDown}" Handler="{New sbe:EnumValueMoveDownCommand}" ParameterSource="Owner">
+            <CommandBinding.Conditional>
+                <Not>
+                    <sbe:IsSystemEntity Member="Enum"/>
+                </Not>
+            </CommandBinding.Conditional>
+        </CommandBinding>
         <CommandBinding ID="SyncEnum" Command="{Command Name=SyncExternalEnum}" Handler="{New sbe:SyncExternalEnumCommand}" ParameterSource="Owner" ParameterMember="Enum">
             <CommandBinding.Conditional>
                 <And>
@@ -678,6 +692,8 @@
         <ToolBar ID="Default" Text="Default">
             <Button ID="addenumvalue" Icon="/Fantasy.Studio.BusinessEngine;component/images/plus.ico" Command="{Command Name=AddBusinessEnumValue}" />
             <Button ID="removeenumvalue" Icon="/Fantasy.Studio.BusinessEngine;component/images/minus.ico" Command="Delete" />
+            <Button ID="MoveUp" Command="{Command Name=MoveUp}" Icon="/Fantasy.Studio.BusinessEngine;component/images/UpArrowShort_Blue.ico" />
+            <Button ID="MoveDown" Command="{Command Name=MoveDown}" Icon="/Fantasy.Studio.BusinessEngine;component/images/DownArrowShort_Blue.ico" />
             <Button ID="SyncEnum" Icon="/Fantasy.Studio.BusinessEngine;component/images/syncenum.png" Command="{Command Name=SyncExternalEnum}" />
         </ToolBar>
     </Extension>

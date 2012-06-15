@@ -14,7 +14,7 @@
 <span id="@containerId" >
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <select multiple="multiple" @this.WriteAttributes() name="@this.FullHtmlFieldName" data-bind="flagsEnum: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),
+        <select size="@this.Items().Count()" multiple="multiple" @this.WriteAttributes() name="@this.FullHtmlFieldName" data-bind="flagsEnum: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),
             visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName), optionsText: 'Text', optionsValue: 'Value'
             @if(this.OptionsCaption != null)
             {

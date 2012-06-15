@@ -12,7 +12,7 @@ namespace Fantasy.Studio.BusinessEngine.EnumEditing
         public EnumValuesPanelModel(BusinessEnum @enum)
         {
             this.Enum = @enum;
-            this._enumValues = @enum.EnumValues.ToSorted("Value");
+            this._enumValues = @enum.EnumValues;
         }
 
         public BusinessEnum Enum { get; private set; }

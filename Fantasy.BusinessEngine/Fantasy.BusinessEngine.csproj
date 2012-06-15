@@ -95,6 +95,7 @@
     <Compile Include="EntityExtensions\ExtensionUsageAttribute.cs" />
     <Compile Include="EntityExtensions\IEntityExtensionEditor.cs" />
     <Compile Include="Events\BusinessMenuItemCreateOrderHander.cs" />
+    <Compile Include="Events\BusinessEnumValueCreateOrderHandler.cs" />
     <Compile Include="Events\DefaultBusinessObjectCreateHandler.cs" />
     <Compile Include="Events\EntityCreateEventArgs.cs" />
     <Compile Include="EntityExtensions\Category.cs" />

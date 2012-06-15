@@ -13,6 +13,7 @@ namespace Fantasy.BusinessEngine.Maps
             this.Map(x => x.Name).Not.Nullable();
             this.Map(x => x.CodeName).Not.Nullable();
             this.Map(x => x.Value);
+            this.Map(x => x.DisplayOrder);
             this.References<BusinessEnum>(x => x.Enum).Column("ENUMID");
         }
     }
