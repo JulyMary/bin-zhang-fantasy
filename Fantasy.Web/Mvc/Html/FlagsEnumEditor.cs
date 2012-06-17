@@ -43,7 +43,7 @@ namespace Fantasy.Web.Mvc.Html
         {
             foreach (BusinessEnumValue val in this.PropertyDescriptor.ReferencedEnum.EnumValues)
             {
-                yield return new { Value = val.Value, Text = val.Name };
+                yield return new { Value = "_" + val.Value.ToString(), Text = val.Name };
             }
         }
 

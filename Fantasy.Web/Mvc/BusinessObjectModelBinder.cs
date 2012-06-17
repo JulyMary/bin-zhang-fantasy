@@ -88,7 +88,7 @@ namespace Fantasy.Web.Mvc
                                     long v = 0L;
                                     foreach(string st in values)
                                     {
-                                        v |= Int64.Parse(st);
+                                        v |= Int64.Parse(st.TrimStart('_'));
                                     }
                                     value = Convert.ChangeType(v, t.GetEnumUnderlyingType());
                                 }

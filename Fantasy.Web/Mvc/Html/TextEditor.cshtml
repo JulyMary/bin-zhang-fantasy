@@ -1,6 +1,6 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
-    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/texteditor/style.css"));
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/texteditor.css"));
     this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Mvc/Html/TextEditor.js"));
 }
 
@@ -10,7 +10,7 @@
 <span @WriteAttributes() data-bind="visible:@string.Format("acl.{0}() != 'collpased'", this.PropertyDescriptor.CodeName)">
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <input type="text" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"  />
+        <input type="text" readonly="readonly" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"  />
     } 
     @if (this.PropertyDescriptor.CanRead)
     {
