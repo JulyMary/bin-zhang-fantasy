@@ -193,10 +193,10 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
-    <Content Include="Content\themes\base\propertygrid\style.css" />
+    <Content Include="Content\themes\base\editors\propertygrid.css" />
     <Content Include="Content\themes\base\stdnav\stdnav.css" />
-    <Content Include="Content\themes\base\textarea\style.css" />
-    <Content Include="Content\themes\base\texteditor\style.css" />
+    <Content Include="Content\themes\base\editors\textarea.css" />
+    <Content Include="Content\themes\base\editors\texteditor.css" />
     <Content Include="Mvc\Html\BusinessUserEditor.cshtml" />
     <Content Include="Mvc\Html\SingleSelectList.cshtml" />
     <Content Include="packages.config" />

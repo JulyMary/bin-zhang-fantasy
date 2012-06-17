@@ -4,7 +4,7 @@
         function ToInt(val) {
             if (typeof val == 'string') {
                 if (!String.isNullOrEmpty(val)) {
-                    return parseInt(val);
+                    return parseInt(val.substring(1));
                 }
                 else {
                     return undefined;
@@ -50,7 +50,7 @@
     'update': function (element, valueAccessor) {
         if (ko.utils.tagNameLower(element) != "select")
             throw new Error("values binding applies only to SELECT elements");
-       
+
         var newValue = ko.utils.unwrapObservable(valueAccessor());
 
         var nodes = element.childNodes;
@@ -64,12 +64,18 @@
                     selected = String.isNullOrEmpty(ov);
                 }
                 else {
-                    var n = parseInt(ov);
-                    selected = (newValue & n) == n ? true : false;
+                    var n = parseInt(ov.substring(1));
+
+                    if (n != 0) {
+                        selected = (newValue & n) == n;
+                    }
+                    else {
+                        selected = newValue == 0;
+                    }
                 }
                 ko.utils.setOptionNodeSelectionState(node, selected);
             }
         }
- 
+
     }
 };
