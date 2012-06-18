@@ -23,6 +23,12 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
+        protected override void PreExecute()
+        {
+            this.AddClass("boolean-editor");
+            base.PreExecute();
+        }
+
         private string _falseText = Resources.BooleanEditorDefaultFalseText;
 
         public string FalseText

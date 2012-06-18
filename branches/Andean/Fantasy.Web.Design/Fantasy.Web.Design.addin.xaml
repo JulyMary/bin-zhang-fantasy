@@ -41,5 +41,19 @@
             </ToolBoxItem.DoDragDrop>
 
         </ToolBoxItem>
+        <ToolBoxItem ID="ExtensionTextArea" Category="Editor Extensions" Text="TextArea" Icon="/Fantasy.Web.Design;component/resources/TextArea.png">
+            <ToolBoxItem.Conditional>
+
+                <ActiveWindow Type="Property.Extensions" />
+            </ToolBoxItem.Conditional>
+            <ToolBoxItem.DoDragDrop>
+                <DoDragDropHandler AllowedEffects="Copy" >
+                    <DoDragDropHandler.Data>
+                        <fw:TextAreaEditorExtension />
+                    </DoDragDropHandler.Data>
+                </DoDragDropHandler>
+            </ToolBoxItem.DoDragDrop>
+
+        </ToolBoxItem>
     </Extension>
 </AddIn>

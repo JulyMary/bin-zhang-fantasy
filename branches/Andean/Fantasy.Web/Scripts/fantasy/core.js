@@ -109,7 +109,12 @@ function appendStyleSheet (href) {
     });
 
     if (!exists) {
-        $("head").append(String.format('<link ref="stylesheet" href="{0}" type=text/css" />', href));
+        $("<link/>", {
+            rel: "stylesheet",
+            type: "text/css",
+            href: href
+        }).appendTo("head"); 
+
     }
 }
 

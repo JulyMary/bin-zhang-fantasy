@@ -15,6 +15,12 @@ namespace Fantasy.Web.Mvc.Html
 
         public string OptionsCaption { get; set; }
 
+        protected override void PreExecute()
+        {
+            this.AddClass("flagsenum-editor");
+            base.PreExecute();
+        }
+
         private MvcHtmlString AdditionalOptions()
         {
             StringBuilder rs = new StringBuilder();

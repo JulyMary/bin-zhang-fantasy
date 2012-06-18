@@ -1,14 +1,17 @@
-﻿.text-editor
+﻿.textarea-editor
 {
 	
 }
 
-.text-editor input[type=text]
-{
-	width:100%
-}
-
-.text-editor span
+.textarea-editor textarea
 {
 	
 }
+
+.propertygrid-datarow-editor  .textarea-editor  input[type=text]
+{
+	width:100%;
+	box-sizing: border-box;
+}
+
+

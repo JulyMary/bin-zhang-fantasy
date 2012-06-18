@@ -7,6 +7,6 @@ namespace Fantasy.Web.Mvc.Html
 {
     partial class HiddenEditor
     {
-
+        public string ValueMember { get; set; }
     }
 }

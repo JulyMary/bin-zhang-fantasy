@@ -21,7 +21,7 @@ namespace Fantasy.Web.Mvc.Html
             this.Html = htmlHelper;
             this.Object = obj;
             this.Descriptor = new BusinessObjectDescriptor(obj);
-            this.Accessbility = Accessbility.Collapsed;
+            this.Accessbility = Accessbility.Collapse;
             this.WriteObjectDefinition(selector);
             this.WriteObjectDataBinding(selector);
 

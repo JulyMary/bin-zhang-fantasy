@@ -5,18 +5,19 @@ using System.Web;
 
 namespace Fantasy.Web.Mvc.Html
 {
-    partial class TextEditor
+    partial class TextArea
     {
 
         protected override void PreExecute()
         {
-
-            this.AddClass("text-editor");
-           
-           
+            this.AddClass("textarea-editor");
             base.PreExecute();
         }
 
-       
+        public int? Columns { get; set; }
+
+        public int? Rows { get; set; }
+
+        
     }
 }

@@ -18,6 +18,13 @@
             <PropertyDescriptor ID="NullText" Name="NullText" Caption="Null Text" Category="General"/>
             <PropertyDescriptor ID="ShowText" Name="ShowText" Caption="Show Text" Category="General"/>
         </TypeDescriptor>
+        <TypeDescriptor ID="TextAreaEditorExtension" TargetType="{x:Type fw:TextAreaEditorExtension}">
+            <PropertyDescriptor ID="Name" Name="Name" Caption="Name" Category="General" ReadOnly="True"/>
+            <PropertyDescriptor ID="Description" Name="Description" Caption="Description" Category="General" ReadOnly="True"/>
+            <PropertyDescriptor ID="Columns" Name="Columns" Caption="Columns" Category="General"/>
+            <PropertyDescriptor ID="Rows" Name="Rows" Caption="Rows" Category="Rows"/>
+            
+        </TypeDescriptor>
         <TypeDescriptor ID="IEntityExtension" TargetType="{x:Type be:IEntityExtension}">
             
            

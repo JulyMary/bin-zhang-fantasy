@@ -9,7 +9,7 @@ namespace Fantasy.Web
     {
         Editable,
         Visible,
-        Collapsed,
+        Collapse,
         Hidden
     }
 }

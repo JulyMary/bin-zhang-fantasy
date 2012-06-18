@@ -2,29 +2,30 @@
 @{
  
     this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/knockout.flags-enum.js"));
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/flagsenumeditor.css"));
     string containerId = this.FullHtmlFieldId + "container";
     
     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0}').be().renew({1});", containerId, this.CreateEntityExtension())); 
    
 }
 
-@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
 {
 
-<span id="@containerId" >
+<span id="@containerId" @this.WriteAttributes() data-bind="visibility:acl.@this.PropertyDescriptor.CodeName" >
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <select size="@this.Items().Count()" multiple="multiple" @this.WriteAttributes() name="@this.FullHtmlFieldName" data-bind="flagsEnum: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),
+        <select size="@this.Items().Count()" multiple="multiple"  name="@this.FullHtmlFieldName" data-bind="flagsEnum: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),
             visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName), optionsText: 'Text', optionsValue: 'Value'
             @if(this.OptionsCaption != null)
             {
                 this.Write(string.Format(",optionsCaption: '{0}'", this.OptionsCaption)); 
-            }"  />
+            }"/>
     } 
     @if (this.PropertyDescriptor.CanRead)
     {
         
-         <span @this.WriteAttributes() data-bind="text : @String.Format("{0}$Display", this.PropertyDescriptor.CodeName), visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
+         <span class="readonly-span" data-bind="text : @String.Format("{0}$Display", this.PropertyDescriptor.CodeName), visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
     }
     
 </span> 

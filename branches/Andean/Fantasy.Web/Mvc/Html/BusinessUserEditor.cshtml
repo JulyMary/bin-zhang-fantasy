@@ -3,13 +3,17 @@
 @using Fantasy.BusinessEngine
 @using Fantasy.BusinessEngine.Services
 @{
+    
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/businessusereditor.css"));
+    
     IBusinessUserRoleService svc = BusinessEngineContext.Current.GetRequiredService<IBusinessUserRoleService>(); 
     BusinessUser user = svc.Users.FirstOrDefault(u=>u.Id == (Guid)this.PropertyDescriptor.Value);
+    
 }
-@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
 {
 
-<span @WriteAttributes() data-bind="visible: acl.ClassId() != 'collpased'">
+<span @WriteAttributes() data-bind="visibility: acl.@this.PropertyDescriptor.CodeName">
     
     @if (this.PropertyDescriptor.CanRead && user != null)
     {
@@ -17,4 +21,13 @@
     }
     
 </span> 
+}
+
+@functions
+{
+    protected override void PreExecute()
+    {
+        this.AddClass("businessuser-editor");
+        base.PreExecute();
+    }
 }

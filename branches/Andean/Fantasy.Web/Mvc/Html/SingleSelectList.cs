@@ -22,6 +22,12 @@ namespace Fantasy.Web.Mvc.Html
         }
 
 
+        protected override void PreExecute()
+        {
+            this.AddClass("single-selected-list");
+            base.PreExecute();
+        }
+
         public string OptionsText { get; set; }
 
         public string OptionsValue { get; set; }
