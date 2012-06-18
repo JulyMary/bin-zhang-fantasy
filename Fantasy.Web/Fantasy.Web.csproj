@@ -128,6 +128,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Site.css" />
+    <Content Include="Content\themes\base\editors\booleaneditor.css" />
+    <Content Include="Content\themes\base\editors\businessobjectpropertyeditor.css" />
+    <Content Include="Content\themes\base\editors\businessusereditor.css" />
+    <Content Include="Content\themes\base\editors\classideditor.css" />
+    <Content Include="Content\themes\base\editors\flagsenumeditor.css" />
+    <Content Include="Content\themes\base\editors\singleselectlist.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -201,6 +207,7 @@
     <Content Include="Mvc\Html\SingleSelectList.cshtml" />
     <Content Include="packages.config" />
     <Content Include="Mvc\Html\FlagsEnumEditor.cshtml" />
+    <Content Include="Mvc\Html\DateTimeEditor.cshtml" />
     <None Include="Resources\checkbox.png" />
     <None Include="Resources\validationicon.png" />
     <None Include="Resources\datetimepicker.gif" />
@@ -214,6 +221,7 @@
     <Content Include="Scripts\fantasy\businessengine.js" />
     <Content Include="Scripts\fantasy\jquery.editingview.js" />
     <Content Include="Scripts\fantasy\knockout.flags-enum.js" />
+    <Content Include="Scripts\fantasy\knockoutjs.visibility.js" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-ui-1.8.19.js" />
     <Content Include="Scripts\jquery.contextMenu.js" />
@@ -262,6 +270,7 @@
     <Content Include="Scripts\knockoutjs\virtualElements.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\Mvc\Html\BooleanEditor.js" />
+    <Content Include="Scripts\Mvc\Html\DateTimeEditor.js" />
     <Content Include="Scripts\Mvc\Html\TextEditor.js" />
     <Content Include="Scripts\Views\standardnavigation.js" />
     <Content Include="Scripts\Views\standardscalar.js" />
@@ -317,14 +326,16 @@
     <Compile Include="Mvc\Html\BooleanEditorFactory.cs" />
     <Compile Include="Mvc\Html\BusinessObjectRender.cs" />
     <Compile Include="EntityExtensions\EditorExtension.cs" />
+    <Compile Include="Mvc\Html\DateTimeEditor.cs" />
     <Compile Include="Mvc\Html\EnumEditor.cs" />
     <Compile Include="Mvc\Html\EnumEditorFactory.cs" />
-    <Compile Include="Mvc\Html\Expression.cs" />
     <Compile Include="Mvc\Html\FlagsEnumEditor.cs" />
     <Compile Include="Mvc\Html\FlagsEnumEditorFactory.cs" />
     <Compile Include="Mvc\Html\GenericUserControl.cs" />
     <Compile Include="Mvc\Html\BusinessPropertyEditorBase.cs" />
     <Compile Include="Mvc\Html\HiddenEditor.cs" />
+    <Compile Include="Mvc\Html\TextArea.cs" />
+    <Compile Include="Mvc\Html\TextAreaFactory.cs" />
     <Compile Include="Mvc\JavaScriptString.cs" />
     <Compile Include="Mvc\JavaStringStringJsonConverter.cs" />
     <Compile Include="Mvc\JsonNetResult.cs" />

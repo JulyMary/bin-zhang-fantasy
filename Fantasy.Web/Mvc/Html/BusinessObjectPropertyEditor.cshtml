@@ -1,16 +1,31 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
-@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+@{
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/businessobjectpropertyeditor.css"));
+}
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
 {
-
-<span @WriteAttributes() data-bind="visible:@string.Format("acl.{0}() != 'collpased'", this.PropertyDescriptor.CodeName)">
+<span @WriteAttributes() data-bind="visibility:acl.@this.PropertyDescriptor.CodeName">
    
     @if (this.PropertyDescriptor.CanRead)
     {
          <!-- ko with: @this.PropertyDescriptor.CodeName -->
-         <input type="hidden" name="@this.FullHtmlFieldName" data-bind="value : Id"  />
-         <span data-bind="text : Name" ></span>
+         if (this.PropertyDescriptor.CanWrite)
+         {
+             <input type="hidden" name="@this.FullHtmlFieldName" data-bind="value : Id"  />
+             <button type="button">...</button>
+         }
+         <span class="readonly-span" data-bind="text : Name" ></span>
           <!-- /ko -->
     }
     
 </span> 
+}
+
+@functions
+{
+    protected override void PreExecute()
+    {
+        this.AddClass("businessobjectproperty-editor");
+        base.PreExecute();
+    }
 }

@@ -1,11 +1,11 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
-    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/texteditor.css"));
-    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Mvc/Html/TextEditor.js"));
+ 
+    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/knockout.datetime.js"));
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/datetimeeditor.css"));
+    string containerId = this.FullHtmlFieldId + "container";
+    
 }
-
-@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
-{
 
 <span @WriteAttributes() data-bind="visibility:acl.@this.PropertyDescriptor.CodeName">
     @if (this.PropertyDescriptor.CanWrite)
@@ -19,4 +19,3 @@
     }
     
 </span> 
-}

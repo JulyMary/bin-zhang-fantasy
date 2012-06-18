@@ -1,0 +1,19 @@
+﻿.single-selected-list
+{
+	
+}
+
+.single-selected-list select
+{
+	  
+}
+
+.single-selected-list .readonly-span
+{
+	
+}
+
+.propertygrid-datarow-editor .single-selected-list select
+{
+	width:100%;
+}

@@ -1,19 +1,28 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
-    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editor/textarea.css"));
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/textarea.css"));
     //this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/Mvc/Html/textarea.js"));
 }
 
-@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
 {
-
+  <span @WriteAttributes() data-bind="visibility:acl.@this.PropertyDescriptor.CodeName">  
 
     if (this.PropertyDescriptor.CanWrite)
     {
-        <textarea @WriteAttributes() type="text" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)" ></textarea>
+        <textarea type="text" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"
+        @if(this.Columns != null)
+        {
+            this.Write(String.Format("cols='{0}'", this.Columns));
+        }
+        @if(this.Rows != null)
+        {
+            this.Write(String.Format("rows='{0}'", this.Rows));
+        }></textarea>
     } 
     if(this.PropertyDescriptor.CanRead)
     {
-         <span @WriteAttributes() data-bind="text : @this.PropertyDescriptor.CodeName, visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
+         <span class="readonly-span" data-bind="text : @this.PropertyDescriptor.CodeName, visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
     }
+ </span>
 }

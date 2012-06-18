@@ -1,5 +1,13 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
-@if (this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+@{
+    if (typeof(Fantasy.BusinessEngine.BusinessObject).IsAssignableFrom(this.PropertyDescriptor.PropertyType) && String.IsNullOrEmpty(this.ValueMember))
+    {
+        this.ValueMember = "Id";
+    }
+
+    string valueExpress = !String.IsNullOrEmpty(this.ValueMember) ? String.Format("{0}.{1}", this.PropertyDescriptor.CodeName, this.ValueMember) : this.PropertyDescriptor.CodeName;
+}
+@if (this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
 {
-    <input type="hidden" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName"  />
+    <input type="hidden" name="@this.FullHtmlFieldName" data-bind="value : @valueExpress"  />
 }

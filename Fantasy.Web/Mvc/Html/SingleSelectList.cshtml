@@ -1,23 +1,24 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
  
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/singleselectlist.css"));
     string containerId = this.FullHtmlFieldId + "container";
     this.Html.HtmlAssets().AddStartupScript(String.Format("$('#{0}').be().renew({1});", containerId, this.CreateEntityExtension())); 
    
 }
 
-@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapsed)
+@if(this.PropertyDescriptor.CanRead || this.Model.Accessbility != Fantasy.Web.Accessbility.Collapse)
 {
 
-<span id="@containerId" >
+<span id="@containerId" @this.WriteAttributes() data-bind="visibility:acl.@this.PropertyDescriptor.CodeName"  >
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <select @this.WriteAttributes() name="@this.FullHtmlFieldName" data-bind="value: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName) @this.AdditionalOptions()"  />
+        <select  name="@this.FullHtmlFieldName" data-bind="value: @this.PropertyDescriptor.CodeName, options: @string.Format("{0}$Options",this.PropertyDescriptor.CodeName),visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName) @this.AdditionalOptions()"  />
     } 
     @if (this.PropertyDescriptor.CanRead)
     {
         
-         <span @this.WriteAttributes() data-bind="text : @String.Format("{0}$Display", this.PropertyDescriptor.CodeName), visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
+         <span class="readonly-span" data-bind="text : @String.Format("{0}$Display", this.PropertyDescriptor.CodeName), visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
     }
     
 </span> 

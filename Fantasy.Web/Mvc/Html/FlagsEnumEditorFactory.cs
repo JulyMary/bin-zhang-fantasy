@@ -26,5 +26,7 @@ namespace Fantasy.Web.Mvc.Html
             ((FlagsEnumEditor)this.Control).OptionsCaption = nullText;
             return this;
         }
+
+        
     }
 }

@@ -1,0 +1,21 @@
+﻿.businessobjectproperty-editor
+{
+}
+
+.businessobjectproperty-editor button[type="button"]
+{
+	float:right;
+}
+
+.businessobjectproperty-editor .readonly-span
+{
+	
+}
+
+.propertygrid-datarow-editor  .businessobjectproperty-editor
+{
+	display:inline-block;
+	width:100%;
+	
+	
+}
