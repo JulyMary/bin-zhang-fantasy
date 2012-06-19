@@ -7,7 +7,7 @@ using System.Web.Routing;
 namespace Fantasy.Web.Mvc
 {
 
-    //URL Pattern: ~/App/{AppName}/{ViewType}/{Action}/{ObjId}/{Property}
+    
 
     public class BusinessApplicationRouteHandler  : ObjectWithSite, IRouteHandler
     {

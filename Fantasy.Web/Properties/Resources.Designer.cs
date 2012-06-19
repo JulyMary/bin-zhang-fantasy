@@ -257,6 +257,15 @@ namespace Fantasy.Web.Properties {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to {0}.{1} is not type of BusinessObject..
+        /// </summary>
+        public static string StdSelInvalidPropertyText {
+            get {
+                return ResourceManager.GetString("StdSelInvalidPropertyText", resourceCulture);
+            }
+        }
+        
         public static System.Drawing.Bitmap TextArea {
             get {
                 object obj = ResourceManager.GetObject("TextArea", resourceCulture);

@@ -9,8 +9,8 @@ namespace Fantasy.Web
 {
     public interface IScalarViewController : IController
     {
-        ViewResultBase Default(Guid objId);
+        //ViewResultBase Default(Guid objId);
 
-        ViewResultBase Create(Guid parentId, string property, Guid classId);
+        //ViewResultBase Create(Guid parentId, string property, Guid classId);
     }
 }

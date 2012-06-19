@@ -182,7 +182,7 @@ namespace Fantasy.Web.Mvc.Html
                 {
 
 
-                    switch (Type.GetTypeCode(desc.PropertyType))
+                    switch (Type.GetTypeCode(type))
                     {
                         case TypeCode.Boolean:
                             rs = new BooleanEditorFactory(html);
@@ -203,7 +203,7 @@ namespace Fantasy.Web.Mvc.Html
                             rs = new UserControlFactory<TextEditor>(html);
                             break;
                         case TypeCode.DateTime:
-                            rs = new UserControlFactory<TextEditor>(html);
+                            rs = new DateTimeEditorFactory(html);
                             break;
 
                     }
