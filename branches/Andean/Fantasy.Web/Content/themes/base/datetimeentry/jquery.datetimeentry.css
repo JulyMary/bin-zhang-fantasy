@@ -1,0 +1,11 @@
+/* DateTimeEntry styles */
+.datetimeEntry_control {
+	vertical-align: middle;
+	margin-left: 2px;
+	background-image: url(spinnerBlue.png);
+	background-repeat:no-repeat;
+	background-position:0, 0;
+}
+* html .datetimeEntry_control { /* IE only */
+	margin-top: -4px;
+}

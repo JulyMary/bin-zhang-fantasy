@@ -1,8 +1,11 @@
 ﻿@inherits Fantasy.Web.Mvc.Html.BusinessPropertyEditorBase
 @{
  
-    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/knockout.datetime.js"));
+    this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/datetimeentry/jquery.datetimeentry.css"));
     this.Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/editors/datetimeeditor.css"));
+    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/datetimeentry/jquery.datetimeentry.js"));
+    this.Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/fantasy/knockout.datetime.js"));
+    
     string containerId = this.FullHtmlFieldId + "container";
     
 }
@@ -10,12 +13,12 @@
 <span @WriteAttributes() data-bind="visibility:acl.@this.PropertyDescriptor.CodeName">
     @if (this.PropertyDescriptor.CanWrite)
     {
-        <input type="text" name="@this.FullHtmlFieldName" data-bind="value : @this.PropertyDescriptor.CodeName,visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"  />
+        <input type="text"  name="@this.FullHtmlFieldName" data-bind="datetimeValue : @this.PropertyDescriptor.CodeName, datetimeFormat: '@this.Format', visible: @string.Format("acl.{0}() == 'editable'", this.PropertyDescriptor.CodeName)"  />
     }
      
     @if (this.PropertyDescriptor.CanRead)
     {
-         <span class="readonly-span" data-bind="text : @this.PropertyDescriptor.CodeName, visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
+         <span class="readonly-span" data-bind="datetimeText : @this.PropertyDescriptor.CodeName, datetimeFormat: '@this.Format', visible:@string.Format("acl.{0}() == 'visible'", this.PropertyDescriptor.CodeName)" ></span>
     }
     
 </span> 

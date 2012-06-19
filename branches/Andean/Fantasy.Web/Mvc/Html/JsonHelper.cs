@@ -7,6 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Fantasy.Web.Mvc.Html
 {
@@ -16,7 +17,7 @@ namespace Fantasy.Web.Mvc.Html
         {
             if (o != null)
             {
-                string rs = JsonConvert.SerializeObject(o, Newtonsoft.Json.Formatting.Indented);
+                string rs = JsonConvert.SerializeObject(o, Newtonsoft.Json.Formatting.Indented, new JavaScriptDateTimeConverter());
                 return new HtmlString(rs);
             }
             else
@@ -25,11 +26,11 @@ namespace Fantasy.Web.Mvc.Html
             }
         }
 
-        private static Type[] PrimitiveTypes = new Type[] { typeof(DBNull), typeof(string), typeof(long), typeof(int), typeof(short), typeof(sbyte), typeof(ulong), typeof(uint), typeof(ushort), typeof(byte),
-        typeof(double), typeof(float), typeof(decimal), typeof(DateTime), typeof(DateTimeOffset), typeof(byte[]), typeof(bool), typeof(Guid), typeof(Uri), typeof(TimeSpan) };
-        public static bool IsPrimitiveType(Type t)
-        {
-            return t.IsEnum || Array.IndexOf(PrimitiveTypes, t) >= 0;
-        }
+        //private static Type[] PrimitiveTypes = new Type[] { typeof(DBNull), typeof(string), typeof(long), typeof(int), typeof(short), typeof(sbyte), typeof(ulong), typeof(uint), typeof(ushort), typeof(byte),
+        //typeof(double), typeof(float), typeof(decimal), typeof(DateTime), typeof(DateTimeOffset), typeof(byte[]), typeof(bool), typeof(Guid), typeof(Uri), typeof(TimeSpan) };
+        //public static bool IsPrimitiveType(Type t)
+        //{
+        //    return t.IsEnum || Array.IndexOf(PrimitiveTypes, t) >= 0;
+        //}
     }
 }

@@ -5,7 +5,11 @@ using System.Web;
 
 namespace Fantasy.Web.Mvc.Html
 {
-    public class DateTimeEditor
+    partial class DateTimeEditor
     {
+
+        public string Format { get; set; }
     }
+
+   
 }

@@ -11,6 +11,6 @@ namespace Fantasy.Web
 {
     public interface ICollectionViewController : IController
     {
-        ViewResult Default(IEnumerable<BusinessObject> collection);
+        //ViewResult Default(IEnumerable<BusinessObject> collection);
     }
 }
