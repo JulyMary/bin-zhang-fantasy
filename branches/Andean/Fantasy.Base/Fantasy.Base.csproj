@@ -185,6 +185,7 @@
     <Compile Include="Collections\Generic.UnionedObservableCollection.cs" />
     <Compile Include="Collections\DictionaryExtensions.cs" />
     <Compile Include="Collections\Key.cs" />
+    <Compile Include="ComponentModel\CaptionAttribute.cs" />
     <Compile Include="ComponentModel\EditorAttribute.cs" />
     <Compile Include="ComponentModel\IconAttribute.cs" />
     <Compile Include="ComponentModel\ResourceCategoryAttribute.cs" />
