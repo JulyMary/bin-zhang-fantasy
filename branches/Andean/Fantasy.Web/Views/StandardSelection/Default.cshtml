@@ -1,0 +1,17 @@
+﻿@model Fantasy.Web.Models.JsTreeNode
+@{
+    var treeId = "Tree" + Guid.NewGuid().ToString("N");
+    Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/jstree/style.css"));
+
+    Html.HtmlAssets().AddStyleSheet(this.Url.ThemedContent("~/Content/themes/{0}/stdsel/stdsel.css"));
+
+   
+    Html.HtmlAssets().AddScript(this.Url.Content("~/Scripts/jquery.jstree.js"));
+
+
+
+
+    Html.HtmlAssets().AddStartupScript(String.Format("stdsel.show('{0}', {1});", treeId, JsonHelper.Serialize(this.Model))); 
+}
+<div id="@treeId" class="stdseltree">
+</div>

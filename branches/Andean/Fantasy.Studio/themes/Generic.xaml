@@ -117,5 +117,57 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="DropDownTreeToggleButtonStyle" Style.TargetType="{x:Type ToggleButton}" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <Setter Setter.Property="FrameworkElement.OverridesDefaultStyle" Setter.Value="True" />
+        <Setter Setter.Property="Control.IsTabStop" Setter.Value="False" />
+        <Setter Setter.Property="UIElement.Focusable" Setter.Value="False" />
+        <Setter Setter.Property="ButtonBase.ClickMode" Setter.Value="Press" />
+        <Setter Property="Width" Value=" {DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}"/>
+        <Setter Property="Content">
+            <Setter.Value>
+                <Path Name="Arrow" Margin="3,1,0,0" Fill="{StaticResource DefaultBorderBrush}" Data="M 0 0 L 3.5 4 L 7 0 Z" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 
+
+    <Style TargetType="{x:Type ctrls:DropDownTreeView}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ctrls:DropDownTreeView}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid FrameworkElement.Name="MainGrid" UIElement.SnapsToDevicePixels="True">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition ColumnDefinition.Width="*" />
+                                    <ColumnDefinition ColumnDefinition.MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" ColumnDefinition.Width="0" />
+                                </Grid.ColumnDefinitions>
+                                <Popup  FrameworkElement.Name="PART_Popup" Popup.AllowsTransparency="True" Grid.ColumnSpan="2" Popup.Placement="Bottom" 
+                                           Popup.PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" Popup.IsOpen="{Binding Path=IsDropDownOpen,RelativeSource={RelativeSource TemplatedParent}}"
+                                          >
+
+                                    <Border  MinWidth="{TemplateBinding ActualWidth}" x:Name="DropDownBorder" Background="{StaticResource BlackMarbleBackgroundBrush}" Border.BorderThickness="1" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="4">
+                                        <ScrollViewer FrameworkElement.Name="DropDownScrollViewer">
+                                            <Grid RenderOptions.ClearTypeHint="Enabled">
+                                                <Canvas FrameworkElement.Height="0" FrameworkElement.Width="0" FrameworkElement.HorizontalAlignment="Left" FrameworkElement.VerticalAlignment="Top">
+                                                    <Rectangle x:Name="OpaqueRect" FrameworkElement.Height="{Binding ElementName=DropDownBorder,Path=ActualHeight}" FrameworkElement.Width="{Binding ElementName=DropDownBorder,Path=ActualWidth}" Shape.Fill="{Binding ElementName=DropDownBorder,Path=Background}" />
+                                                </Canvas>
+
+                                                <ItemsPresenter FrameworkElement.Name="ItemsPresenter" KeyboardNavigation.DirectionalNavigation="Contained" UIElement.SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+
+                                            </Grid>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+                                <ToggleButton Grid.ColumnSpan="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Style="{StaticResource DefaultComboBoxToggleButtonStyle}" ToggleButton.IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}" />
+                                <ContentPresenter Name="Content" IsHitTestVisible="False" Margin="{TemplateBinding Padding}" Content="{TemplateBinding SelectedItem}" ContentTemplate="{TemplateBinding SelectionItemTemplate}" ContentTemplateSelector="{TemplateBinding SelectionItemTemplateSelector}" ContentStringFormat="{TemplateBinding SelectionItemStringFormat}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

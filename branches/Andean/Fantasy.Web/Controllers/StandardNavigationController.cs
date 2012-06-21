@@ -14,10 +14,12 @@ using Fantasy.Web.Mvc.Html;
 using Fantasy.Web.Properties;
 using System.Web.Mvc.Ajax;
 using System.Web;
+using Fantasy.ComponentModel;
 namespace Fantasy.Web.Controllers
 {
 
-    [Settings(typeof(StandardNavigationViewSettings))]
+    [Settings(typeof(StandardNavigationViewSettings)),
+    ResourceCaption(typeof(Resources), "StandardNavigationName")]
     public class StandardNavigationController : Controller, INavigationViewController, ICustomerizableViewController
     {
         public ViewResult Default(Guid? objId)

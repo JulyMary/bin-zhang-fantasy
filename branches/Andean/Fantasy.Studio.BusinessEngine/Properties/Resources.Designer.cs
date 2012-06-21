@@ -97,6 +97,24 @@ namespace Fantasy.Studio.BusinessEngine.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Browse custom views.
+        /// </summary>
+        public static string BrowseApplicationViewDescription {
+            get {
+                return ResourceManager.GetString("BrowseApplicationViewDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Browse....
+        /// </summary>
+        public static string BrowseApplicationViewText {
+            get {
+                return ResourceManager.GetString("BrowseApplicationViewText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Properties.
         /// </summary>
         public static string BusinessPropertyEditorTitle {
