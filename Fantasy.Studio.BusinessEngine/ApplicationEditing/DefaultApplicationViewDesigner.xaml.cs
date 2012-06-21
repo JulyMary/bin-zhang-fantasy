@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Fantasy.Web.Design;
+
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
@@ -26,10 +26,6 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         }
 
         #region IViewDesigner Members
-
-
-
-
 
         public void LoadSettings(Fantasy.BusinessEngine.IBusinessEntity entity, System.Xml.Linq.XElement setting)
         {
@@ -60,17 +56,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         #region IObjectWithSite Members
 
-        public IServiceProvider Site
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public IServiceProvider Site { get; set; }
+        
 
         #endregion
     }

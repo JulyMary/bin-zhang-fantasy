@@ -13,8 +13,10 @@ using Fantasy.BusinessEngine.Security;
 using Fantasy.Web.Mvc.Html;
 using Fantasy.Web.Mvc;
 using System.Web.Mvc.Ajax;
+using Fantasy.ComponentModel;
 namespace Fantasy.Web.Controllers
 {
+    [ResourceCaption(typeof(Resources), "StandardSelectionName")]
     public class StandardSelectionController : Controller, INavigationViewController, ICustomerizableViewController
     {
         #region INavigationViewController Members
@@ -24,27 +26,35 @@ namespace Fantasy.Web.Controllers
             BusinessApplication application = BusinessEngineContext.Current.Application;
             BusinessObject entryObject = application.EntryObject;
 
-            IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+            BusinessClass allowedClass = GetAllowedClass(parentId, parentProperty);
 
-            BusinessObject parent = es.Load<BusinessObject>(parentId);
-            BusinessObjectDescriptor desc = new BusinessObjectDescriptor(parent);
-
-            BusinessClass allowedClass = desc.Properties[parentProperty].ReferencedClass;
-
-            if (allowedClass == null)
-            {
-                throw new ArgumentException(String.Format(Resources.StdSelInvalidPropertyText, parent.Name, parentProperty));
-            }
-
-            JsTreeNode root = this.CreateTreeItem(entryObject, 0);
+            JsTreeNode root = this.CreateTreeItem(entryObject, 0, allowedClass, parentId, parentProperty);
 
             return PartialView(root);
 
         }
 
-        public JsonResult LoadChildren(Guid objId, string property)
+        private BusinessClass GetAllowedClass(Guid parentId, string parentProperty)
         {
             IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+
+            BusinessObject parent = es.Load<BusinessObject>(parentId);
+            BusinessObjectDescriptor desc = new BusinessObjectDescriptor(parent);
+
+            BusinessClass rs = desc.Properties[parentProperty].ReferencedClass;
+
+            if (rs == null)
+            {
+                throw new ArgumentException(String.Format(Resources.StdSelInvalidPropertyText, parent.Name, parentProperty));
+            }
+
+            return rs;
+        }
+
+        public JsonResult LoadChildren(Guid objId, string property, Guid parentId, string parentProperty)
+        {
+            IEntityService es = BusinessEngineContext.Current.GetRequiredService<IEntityService>();
+            BusinessClass allowedClass = GetAllowedClass(parentId, parentProperty);
 
             BusinessObject parent = es.Get<BusinessObject>(objId);
             List<JsTreeNode> model = new List<JsTreeNode>();
@@ -93,7 +103,7 @@ namespace Fantasy.Web.Controllers
 
                     foreach (BusinessObject child in children)
                     {
-                        JsTreeNode childNode = CreateTreeItem(child, 1);
+                        JsTreeNode childNode = CreateTreeItem(child, 1, allowedClass, parentId, parentProperty);
                         if (childNode != null)
                         {
                             model.Add(childNode);
@@ -113,46 +123,34 @@ namespace Fantasy.Web.Controllers
         private bool ShowAssocation(BusinessPropertyDescriptor prop)
         {
             bool rs = true;
-            //if (this._settings.Customized)
-            //{
-            //    StandardNavigationViewClassSettings clsSettings = this._settings.ClassSettings.FirstOrDefault(s => s.ClassId == prop.Owner.Object.ClassId);
-            //    if (clsSettings != null && clsSettings.Customized)
-            //    {
-            //        rs = !clsSettings.DisabledChildRoles.Any(s => string.Equals(s, prop.CodeName, StringComparison.OrdinalIgnoreCase));
-            //    }
-            //}
-            //else
+            if (prop.IsScalar)
             {
-                if (prop.IsScalar)
+                Cardinality card;
+                if (prop.MemberType == BusinessObjectMemberTypes.LeftAssociation)
                 {
-                    Cardinality card;
-                    if (prop.MemberType == BusinessObjectMemberTypes.LeftAssociation)
+                    if (prop.Association.LeftNavigatable)
                     {
-                        if (prop.Association.LeftNavigatable)
-                        {
-                            card = new Cardinality(prop.Association.LeftCardinality);
-                            rs = card.IsScalar;
-                        }
-
-
+                        card = new Cardinality(prop.Association.LeftCardinality);
+                        rs = card.IsScalar;
                     }
-                    else
+                }
+                else
+                {
+
+                    if (prop.Association.RightNavigatable)
                     {
-
-                        if (prop.Association.RightNavigatable)
-                        {
-                            card = new Cardinality(prop.Association.RightCardinality);
-                            rs = card.IsScalar;
-                        }
-
+                        card = new Cardinality(prop.Association.RightCardinality);
+                        rs = card.IsScalar;
                     }
 
                 }
+
             }
+            
             return rs;
         }
 
-        internal JsTreeNode CreateTreeItem(BusinessObject obj, int childDeep)
+        private JsTreeNode CreateTreeItem(BusinessObject obj, int childDeep, BusinessClass allowedClass, Guid parentId, string parentProperty)
         {
 
             BusinessObjectDescriptor descriptor = new BusinessObjectDescriptor(obj);
@@ -161,9 +159,12 @@ namespace Fantasy.Web.Controllers
             if (descriptor.Properties["Name"].CanRead == true)
             {
                 JsTreeNode rs = new JsTreeNode();
-                rs.data.title = obj.Name;
+                rs.data.title = "<span data-bind=\"text:Name\"></span>";
                 rs.data.icon = this.Url.ImageList(obj.IconKey);
-                
+                rs.metadata = new { entity=new {Id = obj.Id, Name = obj.Name}, IsSelectable = obj.ClassId == allowedClass.Id };
+                IDictionary<string, object> attrs = new Dictionary<string, object>();
+
+             
 
                 IObjectModelService oms = BusinessEngineContext.Current.GetRequiredService<IObjectModelService>();
                 IImageListService imageList = BusinessEngineContext.Current.GetRequiredService<IImageListService>();
@@ -179,10 +180,11 @@ namespace Fantasy.Web.Controllers
                 {
                     JsTreeNode folderItem = new JsTreeNode();
                     folderItem.data.title = prop.Name;
-                  
+
                     folderItem.metadata = new
                     {
-                        url = this.Url.ApplicationUrl(objectId: obj.Id, action: "LoadChildren", property: prop.CodeName),
+                        url = this.Url.ApplicationUrl(objectId: obj.Id, action: "LoadChildren", property: prop.CodeName, routeValues: new { parentId=parentId, parentProperty= parentProperty }),
+                        IsSelectable = false
                     };
 
                     string imageKey = imageList.GetFolderKey(oms.GetImageKey(prop.ReferencedClass));
@@ -212,10 +214,10 @@ namespace Fantasy.Web.Controllers
 
                             foreach (BusinessObject child in childItems)
                             {
-                                JsTreeNode childNode = CreateTreeItem(child, childDeep - 1);
+                                JsTreeNode childNode = CreateTreeItem(child, childDeep - 1, allowedClass, parentId, parentProperty);
                                 if (childNode != null)
                                 {
-                                    folderItem.children.Add(CreateTreeItem(child, childDeep - 1));
+                                    folderItem.children.Add(CreateTreeItem(child, childDeep - 1, allowedClass, parentId, parentProperty));
                                 }
 
                             }

@@ -129,6 +129,12 @@
   <data name="AssociationFolderName" xml:space="preserve">
     <value>Associations</value>
   </data>
+  <data name="BrowseApplicationViewDescription" xml:space="preserve">
+    <value>Browse custom views</value>
+  </data>
+  <data name="BrowseApplicationViewText" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
   <data name="BusinessPropertyEditorTitle" xml:space="preserve">
     <value>Properties</value>
   </data>

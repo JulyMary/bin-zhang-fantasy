@@ -12,6 +12,5 @@ namespace Fantasy.Web.Models
 
         public Guid ObjId {get;set;}
 
-
     }
 }

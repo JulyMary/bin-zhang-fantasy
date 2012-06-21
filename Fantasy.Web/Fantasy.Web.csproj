@@ -220,6 +220,7 @@
     <Content Include="Content\themes\base\stdnav\stdnav.css" />
     <Content Include="Content\themes\base\editors\textarea.css" />
     <Content Include="Content\themes\base\editors\texteditor.css" />
+    <Content Include="Content\themes\base\stdsel\stdsel.css" />
     <Content Include="Mvc\Html\BusinessUserEditor.cshtml" />
     <Content Include="Mvc\Html\SingleSelectList.cshtml" />
     <Content Include="packages.config" />
@@ -233,8 +234,8 @@
     <None Include="Resources\textarea.png" />
     <None Include="Resources\class.png" />
     <None Include="Resources\user.png" />
+    <None Include="Resources\application.png" />
     <Content Include="Scripts\AjaxLogin.js" />
-    <Content Include="Scripts\datetimeentry\date.js" />
     <Content Include="Scripts\datetimeentry\jquery.datetimeentry-cs.js" />
     <Content Include="Scripts\datetimeentry\jquery.datetimeentry-de.js" />
     <Content Include="Scripts\datetimeentry\jquery.datetimeentry-es.js" />
@@ -316,6 +317,7 @@
     <Content Include="Scripts\Mvc\Html\TextEditor.js" />
     <Content Include="Scripts\Views\standardnavigation.js" />
     <Content Include="Scripts\Views\standardscalar.js" />
+    <Content Include="Scripts\Views\stdsel.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -325,6 +327,7 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Views\StandardSelection\Default.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -340,6 +343,7 @@
     <Compile Include="Controllers\StandardSelectionController.cs" />
     <Compile Include="DisplayOptions.cs" />
     <Compile Include="EntityExtensions\BooleanEditorExtension.cs" />
+    <Compile Include="EntityExtensions\BusinessObjectSelectorExtension.cs" />
     <Compile Include="EntityExtensions\BusinessUserEditorExtension.cs" />
     <Compile Include="EntityExtensions\ClassIdEditorExtension.cs" />
     <Compile Include="EntityExtensions\TextAreaEditorExtension.cs" />

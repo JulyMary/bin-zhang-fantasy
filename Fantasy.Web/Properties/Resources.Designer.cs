@@ -123,6 +123,13 @@ namespace Fantasy.Web.Properties {
             }
         }
         
+        public static System.Drawing.Bitmap BusinessObjectEditorIcon {
+            get {
+                object obj = ResourceManager.GetObject("BusinessObjectEditorIcon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Show user name.
         /// </summary>
@@ -224,6 +231,24 @@ namespace Fantasy.Web.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Business Object Selector. Application : {0}({1}), Entry Object : {0} ({1}).
+        /// </summary>
+        public static string ObjectEditorDescriptor {
+            get {
+                return ResourceManager.GetString("ObjectEditorDescriptor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Business Object Selector.
+        /// </summary>
+        public static string ObjectEditorName {
+            get {
+                return ResourceManager.GetString("ObjectEditorName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There are no property/association named {0} in business class {1}..
         /// </summary>
         public static string PropertyNotFoundMessage {
@@ -254,6 +279,24 @@ namespace Fantasy.Web.Properties {
         public static string StandardNavigationAddChildText {
             get {
                 return ResourceManager.GetString("StandardNavigationAddChildText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard View.
+        /// </summary>
+        public static string StandardNavigationName {
+            get {
+                return ResourceManager.GetString("StandardNavigationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Standard Selection View.
+        /// </summary>
+        public static string StandardSelectionName {
+            get {
+                return ResourceManager.GetString("StandardSelectionName", resourceCulture);
             }
         }
         

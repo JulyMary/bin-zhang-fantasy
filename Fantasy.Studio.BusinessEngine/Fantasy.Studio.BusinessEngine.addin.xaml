@@ -1104,4 +1104,9 @@
         </CommandBinding>
     </Extension>
 
+    <Extension Path="fantasy/studio/businessengine/application/wellknownviews">
+        <Object ID="stdnav" >
+            
+        </Object>
+    </Extension>
 </AddIn>

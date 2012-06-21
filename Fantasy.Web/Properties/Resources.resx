@@ -138,13 +138,16 @@
   <data name="BooleanEditorName" xml:space="preserve">
     <value>Boolean</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="BusinessObjectEditorIcon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\application.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BusinessUserEditorDescription" xml:space="preserve">
     <value>Show user name</value>
   </data>
   <data name="BusinessUserEditorName" xml:space="preserve">
     <value>User</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="CheckBox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\checkbox.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -175,6 +178,12 @@
   <data name="NewBusinessObjectName" xml:space="preserve">
     <value>New {0}</value>
   </data>
+  <data name="ObjectEditorDescriptor" xml:space="preserve">
+    <value>Business Object Selector. Application : {0}({1}), Entry Object : {0} ({1})</value>
+  </data>
+  <data name="ObjectEditorName" xml:space="preserve">
+    <value>Business Object Selector</value>
+  </data>
   <data name="PropertyNotFoundMessage" xml:space="preserve">
     <value>There are no property/association named {0} in business class {1}.</value>
   </data>
@@ -186,6 +195,12 @@
   </data>
   <data name="StandardNavigationAddChildText" xml:space="preserve">
     <value>Add {0}</value>
+  </data>
+  <data name="StandardNavigationName" xml:space="preserve">
+    <value>Standard View</value>
+  </data>
+  <data name="StandardSelectionName" xml:space="preserve">
+    <value>Standard Selection View</value>
   </data>
   <data name="StdSelInvalidPropertyText" xml:space="preserve">
     <value>{0}.{1} is not type of BusinessObject.</value>
