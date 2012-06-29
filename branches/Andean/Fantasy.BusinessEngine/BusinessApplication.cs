@@ -68,9 +68,9 @@ namespace Fantasy.BusinessEngine
 
 
 
-        private ApplicationViewSettings _viewSettings;
+        private XElement _viewSettings;
 
-        public ApplicationViewSettings ApplicationViewSettings
+        public XElement ApplicationViewSettings
         {
             get
             {
@@ -79,13 +79,13 @@ namespace Fantasy.BusinessEngine
 
                     if (!string.IsNullOrEmpty(this.Data.ViewSettings))
                     {
-                        XSerializer ser = new XSerializer(typeof(ApplicationViewSettings));
-                        XElement ele = XElement.Parse(this.Data.ViewSettings);
-                        _viewSettings = (ApplicationViewSettings)ser.Deserialize(ele);
+
+                        _viewSettings = XElement.Parse(this.Data.ViewSettings);
                     }
                     else
                     {
-                        _viewSettings = new ApplicationViewSettings();
+                        XNamespace ns = Consts.ViewSettingsNamespace;
+                        _viewSettings = new XElement(ns + "settings"); 
                     }
 
                 }
@@ -95,26 +95,30 @@ namespace Fantasy.BusinessEngine
 
         public virtual INavigationViewController GetNaviationView()
         {
+            XNamespace ns = Consts.ViewSettingsNamespace;
 
-            INavigationViewController rs; 
+            INavigationViewController rs;
 
-            if (ApplicationViewSettings.NavigationControllerType == null)
+            XElement settings = ApplicationViewSettings.Element(ns + "navigation");
+            
+            if (settings == null)
             {
-                ApplicationViewSettings.NavigationControllerType = Type.GetType("Fantasy.Web.Controllers.StandardNavigationController, Fantasy.Web", true);
+                settings = new XElement(ns + "navigation", new XAttribute(ns + "controller", "Fantasy.Web.Controllers.StandardNavigationController, Fantasy.Web"));
+                ApplicationViewSettings.Add(settings);
             }
 
-            rs = (INavigationViewController)Activator.CreateInstance(ApplicationViewSettings.NavigationControllerType);
+            Type controllerType = Type.GetType((string)settings.Attribute(ns + "controller"), true);
+
+
+
+
+            rs = (INavigationViewController)Activator.CreateInstance(controllerType);
 
             if (rs is ICustomerizableViewController)
             {
-                if (ApplicationViewSettings.NavigationViewSettings == null)
-                {
-                    Type settingsType = ApplicationViewSettings.NavigationControllerType.GetCustomAttribute<SettingsAttribute>(required: true).SettingsType;
-                    ApplicationViewSettings.NavigationViewSettings = Activator.CreateInstance(settingsType);
+               
 
-                }
-
-                ((ICustomerizableViewController)rs).LoadSettings(ApplicationViewSettings.NavigationViewSettings); 
+                ((ICustomerizableViewController)rs).LoadSettings(settings); 
 
             }
 
@@ -134,10 +138,12 @@ namespace Fantasy.BusinessEngine
             BusinessPropertyDescriptor propDesc = objDesc.Properties[propertyName];
             
 
-            ClassViewSettings settings = this.GetClassViewSettings(propDesc.ReferencedClass);
+            XElement settings = this.GetClassViewSettings(propDesc.ReferencedClass);
+
             if (settings != null)
-            {
-                return settings.ControllerType.IsAssignableFrom(typeof(IScalarViewController)) ? ViewType.Obj : ViewType.Col;
+            {   XNamespace ns = Consts.ViewSettingsNamespace;
+                Type controllerType = Type.GetType((string)settings.Attribute(ns + "controller"), true);
+                return typeof(IScalarViewController).IsAssignableFrom(controllerType) ? ViewType.Obj : ViewType.Col;
             }
             else
             {
@@ -160,28 +166,25 @@ namespace Fantasy.BusinessEngine
 
         private object CreateDetialsViewController(BusinessClass @class, Type defaultType)
         {
-            ClassViewSettings viewSettings = GetClassViewSettings(@class);
+            XNamespace ns = Consts.ViewSettingsNamespace;
+            XElement viewSettings = GetClassViewSettings(@class);
+            Type controllerType = defaultType;
             if (viewSettings == null)
             {
-                viewSettings = new ClassViewSettings()
-                {
-                    ClassId = @class.Id,
-                    ControllerType = defaultType
-                };
-                this.ApplicationViewSettings.ClassViewSettings.Add(viewSettings);
+                viewSettings = new XElement(ns + "detail", new XAttribute(ns + "classId", @class.Id), new XAttribute(ns + "controller", defaultType.VersionFreeTypeName()));
+
+                this.ApplicationViewSettings.Add(viewSettings);
+            }
+            else
+            {
+                controllerType = Type.GetType((string)viewSettings.Attribute(ns + "controller"), true);
             }
 
-            object rs = Activator.CreateInstance(viewSettings.ControllerType);
+            object rs = Activator.CreateInstance(controllerType);
 
             if (rs is ICustomerizableViewController)
             {
-                if (viewSettings.Settings == null)
-                {
-                    Type settingsType = ApplicationViewSettings.NavigationControllerType.GetCustomAttribute<SettingsAttribute>(required: true).SettingsType;
-                    viewSettings.Settings = Activator.CreateInstance(settingsType);
-                }
-
-                ((ICustomerizableViewController)rs).LoadSettings(viewSettings.Settings);
+                ((ICustomerizableViewController)rs).LoadSettings(viewSettings);
             }
 
             return rs;
@@ -201,11 +204,12 @@ namespace Fantasy.BusinessEngine
 
         }
 
-        private ClassViewSettings GetClassViewSettings(BusinessClass @class)
+        private XElement GetClassViewSettings(BusinessClass @class)
         {
-            ClassViewSettings viewSettings = this.ApplicationViewSettings.ClassViewSettings.SingleOrDefault(s => s.ClassId == @class.Id,
-                string.Format(Resources.DuplicatedClassViewDefined, @class.FullName, this.Data.FullName));
-            return viewSettings;
+            XNamespace ns = Consts.ViewSettingsNamespace;
+            XElement rs = this.ApplicationViewSettings.Elements(ns + "detail").FirstOrDefault(e => (Guid)e.Attribute(ns + "classId") == @class.Id);
+           
+            return rs;
         }
     }
 }

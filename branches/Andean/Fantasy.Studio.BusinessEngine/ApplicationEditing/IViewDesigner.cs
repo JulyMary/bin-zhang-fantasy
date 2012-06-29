@@ -14,10 +14,9 @@ namespace Fantasy.Studio.BusinessEngine
 
         //event EventHandler DesignTimeHtmlChanged;
 
-        void LoadSettings(IBusinessEntity entity,XElement setting);
+        void LoadSettings(IBusinessEntity entity,object settings);
 
-        XElement SaveSettings();
-
+       
         UIElement UI { get; }
 
         event EventHandler SettingChanged;

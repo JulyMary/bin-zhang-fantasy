@@ -7,6 +7,9 @@ using System.Collections.ObjectModel;
 using Fantasy.AddIns;
 using Fantasy.Studio.BusinessEngine.Properties;
 using Fantasy.Windows;
+using Fantasy.ComponentModel;
+using Fantasy.BusinessEngine;
+using Fantasy.Web;
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
@@ -21,8 +24,9 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             }
         }
 
-        public BusinessApplicationViewDesignPanelModel(IServiceProvider site)
+        public BusinessApplicationViewDesignPanelModel(BusinessApplication app, IServiceProvider site)
         {
+            this.Entity = app;
             this.Site = site;
             this._views = new ObservableCollection<ApplicationView>(AddInTree.Tree.GetTreeNode("fantasy/studio/businessengine/application/wellknownviews").BuildChildItems<ApplicationView>(this, this.Site));
 
@@ -35,6 +39,8 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
         }
 
         public IServiceProvider Site { get; set; }
+
+        public BusinessApplication Entity { get; private set; }
 
 
        // public ApplicationView BrowseButton {get;private set;}
@@ -50,7 +56,40 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                 {
                     _selectedView = value;
                     this.OnPropertyChanged("SelectedView");
+
+                    UpdateDesigner();
                 }
+            }
+        }
+
+        private void UpdateDesigner()
+        {
+            if (_selectedView != null && typeof(ICustomerizableViewController).IsAssignableFrom(_selectedView.Type))
+            {
+
+                Type designerType;
+                EditorAttribute ea = _selectedView.Type.GetCustomAttribute<EditorAttribute>(required: false);
+                if (ea == null)
+                {
+                    designerType = ea.EditorType;
+                }
+                else
+                {
+                    designerType = typeof(DefaultApplicationViewDesigner);
+                }
+
+                IViewDesigner designer = (IViewDesigner)Activator.CreateInstance(designerType);
+                if (designer is IObjectWithSite)
+                {
+                    ((IObjectWithSite)designer).Site = this.Site;
+                }
+
+
+
+
+                
+                
+
             }
         }
 

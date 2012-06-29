@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace Fantasy.Web.Controllers
 {
@@ -10,7 +11,7 @@ namespace Fantasy.Web.Controllers
     {
         #region ICustomerizableViewController Members
 
-        public void LoadSettings(object settings)
+        public void LoadSettings(XElement settings)
         {
             throw new NotImplementedException();
         }

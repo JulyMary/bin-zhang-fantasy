@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 
 namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
@@ -27,19 +28,15 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         #region IViewDesigner Members
 
-        public void LoadSettings(Fantasy.BusinessEngine.IBusinessEntity entity, System.Xml.Linq.XElement setting)
+        public void LoadSettings(Fantasy.BusinessEngine.IBusinessEntity entity, object settings)
         {
             throw new NotImplementedException();
         }
 
-        public System.Xml.Linq.XElement SaveSettings()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public UIElement UI
         {
-            get { throw new NotImplementedException(); }
+            get { return this; }
         }
 
         public event EventHandler SettingChanged;

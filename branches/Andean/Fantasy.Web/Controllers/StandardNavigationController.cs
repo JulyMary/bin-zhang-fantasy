@@ -15,6 +15,8 @@ using Fantasy.Web.Properties;
 using System.Web.Mvc.Ajax;
 using System.Web;
 using Fantasy.ComponentModel;
+using System.Xml.Linq;
+using Fantasy.XSerialization;
 namespace Fantasy.Web.Controllers
 {
 
@@ -358,9 +360,10 @@ namespace Fantasy.Web.Controllers
 
         private StandardNavigationViewSettings _settings;
 
-        public void LoadSettings(object settings)
+        public void LoadSettings(XElement settings)
         {
-            this._settings = (StandardNavigationViewSettings)settings;
+            XSerializer ser = new XSerializer(typeof(StandardNavigationViewSettings));
+            this._settings = (StandardNavigationViewSettings)ser.Deserialize(settings);
         }
 
 
