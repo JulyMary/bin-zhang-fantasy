@@ -14,6 +14,7 @@ using Fantasy.Web.Mvc.Html;
 using Fantasy.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using Fantasy.ComponentModel;
+using System.Xml.Linq;
 namespace Fantasy.Web.Controllers
 {
     [ResourceCaption(typeof(Resources), "StandardSelectionName")]
@@ -241,7 +242,7 @@ namespace Fantasy.Web.Controllers
 
         }
 
-        public void LoadSettings(object settings)
+        public void LoadSettings(XElement settings)
         {
            
         }
