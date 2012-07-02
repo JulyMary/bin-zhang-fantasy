@@ -24,7 +24,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             }
         }
 
-        public BusinessApplicationViewDesignPanelModel(BusinessApplication app, IServiceProvider site)
+        public BusinessApplicationViewDesignPanelModel(BusinessApplicationData app, IServiceProvider site)
         {
             this.Entity = app;
             this.Site = site;
@@ -40,7 +40,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         public IServiceProvider Site { get; set; }
 
-        public BusinessApplication Entity { get; private set; }
+        public BusinessApplicationData Entity { get; private set; }
 
 
        // public ApplicationView BrowseButton {get;private set;}
@@ -83,12 +83,6 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
                 {
                     ((IObjectWithSite)designer).Site = this.Site;
                 }
-
-
-
-
-                
-                
 
             }
         }

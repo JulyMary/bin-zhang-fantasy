@@ -28,7 +28,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 
         #region IViewDesigner Members
 
-        public void LoadSettings(Fantasy.BusinessEngine.IBusinessEntity entity, object settings)
+        public void LoadSettings(Fantasy.BusinessEngine.IBusinessEntity entity, XElement settings)
         {
             throw new NotImplementedException();
         }
@@ -39,15 +39,7 @@ namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
             get { return this; }
         }
 
-        public event EventHandler SettingChanged;
-
-        protected virtual void OnSettingChanged(EventArgs e)
-        {
-            if (this.SettingChanged != null)
-            {
-                this.SettingChanged(this, e);
-            }
-        }
+       
 
         #endregion
 
