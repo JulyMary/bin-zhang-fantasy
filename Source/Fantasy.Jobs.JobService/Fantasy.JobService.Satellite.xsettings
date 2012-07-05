@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settingsFile>
+    <settings type="Fantasy.Jobs.Management.JobManagerSettings">
+        <JobTemplateDirectory>.\Templates</JobTemplateDirectory>
+        <JobDirectory>\\testwin7x32-p\FantasyJobs</JobDirectory>
+        <JobDirectoryUser>testwin7x32-p\bin.zhang</JobDirectoryUser>
+        <JobDirectoryPassword>bZ$1234</JobDirectoryPassword>
+        <JobProcessCount>1</JobProcessCount>
+        <JobHostPath>.\Fantasy.Jobs.JobHost.exe</JobHostPath>
+        <LogDirectory>.\Logs</LogDirectory>
+        <JobRuntimeSchedule enabled="false"/>
+    </settings>
+    <settings type="Fantasy.ServiceModel.ChannelSettings">
+        <Addresses>
+            <address host="testwin7x32-p">
+                <contracts>
+                    <contract>Fantasy.Tracking.ITrackProviderService</contract>
+                    <contract>Fantasy.Tracking.ITrackManagerService</contract>
+                    <contract>Fantasy.Tracking.ITrackListenerService</contract>
+                    <contract>Fantasy.Jobs.Management.IJobService</contract>
+                    <contract>Fantasy.Jobs.Management.IJobEventService</contract>
+                    <contract>Fantasy.Jobs.Solar.ISolar</contract>
+                    <contract>Fantasy.Jobs.Solar.ISatelliteHandler</contract>
+                    <contract>Fantasy.Jobs.Resources.IGlobalMutexService</contract>
+                </contracts>
+            </address>
+        </Addresses>
+    </settings>
+</settingsFile>

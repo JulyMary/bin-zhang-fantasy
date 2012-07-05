@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClickView.Jobs.AbstractService" Collapsed="true">
+    <Position X="13.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAIAgQAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>IService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobManager" Collapsed="true">
+    <Position X="14.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABABAAAAACAAAAAAAAAIIAAAAAAAAAAAIAAAAAAAAEA=</HashCode>
+      <FileName>Management\JobManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_serviceContainer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.DomainUnhandledExcepationService" Collapsed="true">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>DomainUnhandledExcepationService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.ConditionService" Collapsed="true">
+    <Position X="3.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>IConditionService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.JobStatusStorageService" Collapsed="true">
+    <Position X="5.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAEAAAAAAAAAAAAQAAAAAAAAAAIAAEAAAA=</HashCode>
+      <FileName>IJobStatusStorageService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.StringParseService" Collapsed="true">
+    <Position X="7.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAECBAIAAAAAAAAAABAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IStringParserService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.LogConsoleService" Collapsed="true">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAKAAAAAIAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>LogConsoleService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.LogDebugService" Collapsed="true">
+    <Position X="12.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAKAAAAAIAAAAAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>LogDebugService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.LogFileService" Collapsed="true">
+    <Position X="15.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAiAAKAAAAAIAAIAAAAAAgIABAAAACAAAAAEAA=</HashCode>
+      <FileName>LogFileService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.ConnectToUncPathService" Collapsed="true">
+    <Position X="18" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\ConnectToUncPathService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Management.EFJobQueueService" Collapsed="true">
+    <Position X="3.25" Y="11.75" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" ManuallyRouted="true">
+      <Path>
+        <Point X="14.5" Y="7.88" />
+        <Point X="14.5" Y="11.433" />
+        <Point X="4" Y="11.433" />
+        <Point X="4" Y="11.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAgAAAACQQIIAAACBCgUAMCIAAAJACLAAABAgAkAAAA=</HashCode>
+      <FileName>Management\EFJobQueueService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobManagerSettingsReaderService" Collapsed="true">
+    <Position X="20.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\IJobManagerSettingsReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobController" Collapsed="true">
+    <Position X="23.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABCRAOAAAAAAAAYAIEAAIINACIAQECEAAoAAAA=</HashCode>
+      <FileName>Management\JobController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobTemplatesService" Collapsed="true">
+    <Position X="26" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACABIAAAAAIAAQIAAAJAAAAAACAACQAAAAAAA=</HashCode>
+      <FileName>Management\JobTemplatesService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.StandaloneJobDispatcherService" Collapsed="true">
+    <Position X="26" Y="5.75" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.25" />
+        <Point X="14.5" Y="6.062" />
+        <Point X="26" Y="6.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACQCMABAAAEABEIgEAAAAAAEAAEgAAAEAAQAI=</HashCode>
+      <FileName>Management\StandaloneJobDispatcherService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.StartupFolderWatcher" Collapsed="true">
+    <Position X="26" Y="7.25" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="15.25" Y="7.625" />
+        <Point X="26" Y="7.625" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAICAAIAABAgAAAAAAAAAAAIACAAAgAEAAAAAAQ=</HashCode>
+      <FileName>Management\StartupFolderWatcher.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Management.WCFHostService" Collapsed="true">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.25" />
+        <Point X="14.5" Y="6.062" />
+        <Point X="2.5" Y="6.062" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\WCFHostService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceManager" Collapsed="true">
+    <Position X="1" Y="7.25" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="13.75" Y="7.562" />
+        <Point X="2.5" Y="7.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>DAAAAAECQQIAAQAQQEEAAABAAAAIgAAAAAADApAAAAA=</HashCode>
+      <FileName>Resources\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceRequestQueue" Collapsed="true">
+    <Position X="1" Y="8.25" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.88" />
+        <Point X="14.5" Y="8.625" />
+        <Point X="2.5" Y="8.625" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAEAAAAAAAAAAICAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\ResourceRequestQueue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceService" Collapsed="true">
+    <Position X="1" Y="9.25" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.88" />
+        <Point X="14.5" Y="9.562" />
+        <Point X="2.5" Y="9.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAaAgIAAAAAAAAAAAAAAAQAgAAAAAABABAAAAA=</HashCode>
+      <FileName>Resources\ResourceService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.SatelliteGlobalMutexService" Collapsed="true">
+    <Position X="1" Y="10.5" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.88" />
+        <Point X="14.5" Y="10.812" />
+        <Point X="2.5" Y="10.812" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>Resources\SatelliteGlobalMutexService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.ScheduleService" Collapsed="true">
+    <Position X="1" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACAAIAAAAAEAAAAAAEAAAJAAAAAAAAAgAAEAA=</HashCode>
+      <FileName>Scheduling\ScheduleService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Solar.SatelliteJobQueue" Collapsed="true">
+    <Position X="5.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAACQQAAAIACBCgUCEDIAAABACLAAABAgAkACAA=</HashCode>
+      <FileName>Solar\SatelliteJobQueue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Solar.SatelliteManager" Collapsed="true">
+    <Position X="8" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QABAAAACAAJAERAAAAgAAABQBAAIAQAAAAgAAAAACEA=</HashCode>
+      <FileName>Solar\SatelliteManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Solar.SatelliteResourceRequestQueue" Collapsed="true">
+    <Position X="10.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAACAAAAAAAAAAAAAABAAAAACAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Solar\SatelliteResourceRequestQueue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Solar.SatelliteService" Collapsed="true">
+    <Position X="13.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAJAACAAJBCAggADAAQAIoAAAAAACAgABAAEAkGAA=</HashCode>
+      <FileName>Solar\SatelliteService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Solar.SolarActionQueue" Collapsed="true">
+    <Position X="16" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAACAAJAAAAAEAAAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Solar\SolarActionQueue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Solar.SolarJobDispatcherService" Collapsed="true">
+    <Position X="18.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACACNABAABEQBEIgEAAAAIAECAEwAAAAAASAI=</HashCode>
+      <FileName>Solar\SolarJobDispatcherService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.SystemEventsService" Collapsed="true">
+    <Position X="20.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQCAAIAAAAAIAAAAAAAAAAAAAAAAoAAAAAAAAA=</HashCode>
+      <FileName>SystemEventsService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.TrackProgressService" Collapsed="true">
+    <Position X="23.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAACCAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAIAA=</HashCode>
+      <FileName>TrackProgressService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.TrackProviderService" Collapsed="true">
+    <Position X="26" Y="8.5" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.88" />
+        <Point X="14.5" Y="8.875" />
+        <Point X="26" Y="8.875" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAACACAAAAEECAAAgAUAAAAAAAIAQAAAAAIACAA=</HashCode>
+      <FileName>TrackProviderService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.TrackStatusService" Collapsed="true">
+    <Position X="26" Y="10" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.AbstractService" FixedToPoint="true">
+      <Path>
+        <Point X="14.5" Y="7.88" />
+        <Point X="14.5" Y="10.312" />
+        <Point X="26" Y="10.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>TrackStatusService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.WCFSingletonService" Collapsed="true">
+    <Position X="26" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABCAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WCFSingletonService.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobService" Collapsed="true">
+    <Position X="24.5" Y="13.5" Width="1.5" />
+    <InheritanceLine Type="ClickView.Jobs.WCFSingletonService" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="26.375" Y="12.38" />
+        <Point X="26.375" Y="13.125" />
+        <Point X="25.25" Y="13.125" />
+        <Point X="25.25" Y="13.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>BCghAAgQQAABAAACBAAgEACBQEAAIAACAAIEACkQAAA=</HashCode>
+      <FileName>Management\JobService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.GlobalMutexService" Collapsed="true">
+    <Position X="27" Y="13.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAASBAAAAAAAAAAAAAAAAAIIgAAAAAAAABAAAAQ=</HashCode>
+      <FileName>Resources\GlobalMutexService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.ServiceContainer" Collapsed="true">
+    <Position X="14.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACACAAAEAAAAAAAAAAAAAAAAAAQAAAADAAAEQ=</HashCode>
+      <FileName>ServiceContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_parentProvider" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_list" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="ClickView.Jobs.IService" Collapsed="true">
+    <Position X="6.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>IService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="System.IServiceProvider" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="ClickView.Jobs.IJobEngine" Collapsed="true">
+    <Position X="8.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAAACAAAAAAAAAAAAAgAAABACAAAABEAAgAAAA=</HashCode>
+      <FileName>IJobEngine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Management.IJobManager" Collapsed="true">
+    <Position X="12" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IJobManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

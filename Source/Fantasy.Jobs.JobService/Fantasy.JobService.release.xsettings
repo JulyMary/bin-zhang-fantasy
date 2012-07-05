@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settingsFile  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <settings type="Fantasy.Jobs.Management.JobManagerSettings">
+        <JobTemplateDirectory>.\Templates</JobTemplateDirectory>
+        <JobDirectory>.\Jobs</JobDirectory>
+        <JobProcessCount>6</JobProcessCount>
+        <JobHostPath>.\Fantasy.Jobs.JobHost.exe</JobHostPath>
+        <LogDirectory>.\Logs</LogDirectory>
+        <StartupFolders>.\Startup</StartupFolders>
+        <ScheduleDirectory>.\Schedule</ScheduleDirectory>
+        <ScheduleTemplateDirectory>.\ScheduleTemplate</ScheduleTemplateDirectory>
+        <WebSite></WebSite>
+        <JobRuntimeSchedule enabled="false"/>
+    </settings>
+</settingsFile>

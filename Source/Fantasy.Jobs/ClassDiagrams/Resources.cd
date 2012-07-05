@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClickView.Jobs.Resources.ResourceHandle" Collapsed="true">
+    <Position X="4.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAADAEAAAAAAAAAAAAAAAAAAAAAIACAAAAAAA=</HashCode>
+      <FileName>Resources\ResourceHandle.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceManager" Collapsed="true">
+    <Position X="8.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>DAAAAAECQQIAAQAQQEEAAABAAAAIgAAAAAADApAAAAA=</HashCode>
+      <FileName>Resources\ResourceManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_providers" />
+      <Field Name="_allocatedResources" />
+      <Field Name="_handlers" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceParameter" Collapsed="true">
+    <Position X="1.75" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAQAAAAAAAAAAAAgAAAAACA=</HashCode>
+      <FileName>Resources\ResourceParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceRequestQueue" Collapsed="true">
+    <Position X="1.75" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAEAAAAAAAAAAICAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\ResourceRequestQueue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_queue" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceService" Collapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAaAgIAAAAAAAAIAAAAAAQAgCAAAAABABAAAAA=</HashCode>
+      <FileName>Resources\ResourceService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_resources" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.JobHostCountResourceProvider" Collapsed="true">
+    <Position X="0.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAQAAAAAAAAQCAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Resources\JobHostCountResourceProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.JobRuntimeScheduleResourceProvider" Collapsed="true">
+    <Position X="2.5" Y="8.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAEAAAQAAAAAAAAAgAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Resources\JobRuntimeScheduleResourceProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.MutexResourceProvider" Collapsed="true">
+    <Position X="3.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>hAAAAAAABBAAAQAAAAAAAABCAAAIgAAAAAACAJAAAAA=</HashCode>
+      <FileName>Resources\MutexResourceProvider.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.RuntimeScheduleResourceProviderBase" Collapsed="true">
+    <Position X="8.5" Y="5.75" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>BgAAAAAAAlACBQAAAAAARABCAAQIiAAAAAACAJQQAAQ=</HashCode>
+      <FileName>Resources\RuntimeScheduleResourceProviderBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.TaskRuntimeScheduleResourceProvider" Collapsed="true">
+    <Position X="6.25" Y="8.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAEAAAQAAAAAAAAAAAAAAAAAAAAAgAAAQAAA=</HashCode>
+      <FileName>Resources\TaskRuntimeScheduleResourceProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.TemplateRuntimeScheduleResourceProvider" Collapsed="true">
+    <Position X="9.25" Y="8.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAEAAAQAAAAAAAAAAAAAAAAAAAAAgAAAQAAA=</HashCode>
+      <FileName>Resources\TemplateRuntimeScheduleResourceProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.TemplateCountResourceProvider" Collapsed="true">
+    <Position X="0.75" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAQAAAAAAAAQCAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Resources\TemplateCountResourceProvider.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.WaitForResourceProvider" Collapsed="true">
+    <Position X="15.25" Y="8.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAQAAAAAAAARCQAAIgAAAAAACAJAAAAA=</HashCode>
+      <FileName>Resources\WaitForResourceProvider.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.WaitTimeResourceProvider" Collapsed="true">
+    <Position X="12.75" Y="8.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAQAAEAAAAABCAAAIgBAAAAAGAJIAAAQ=</HashCode>
+      <FileName>Resources\WaitTimeResourceProvider.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Resources.ResourceGroup" Collapsed="true">
+    <Position X="4.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAAAAAgAAAAABAAAAAAAAAAAAAAEEAIAAgBQAAAA=</HashCode>
+      <FileName>Resources\ResourceGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Parameters" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Interface Name="ClickView.Jobs.Resources.IResourceHandle" Collapsed="true">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Resources\IResourceHandle.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Resources.IResourceManager" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAQAAAAAAAABAAAAAgAAAAAAAAJAAAAA=</HashCode>
+      <FileName>Resources\IResourceManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Resources.IResourceManagerHandler" Collapsed="true">
+    <Position X="12" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Resources\IResourceManagerHandler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Resources.IResourceProvider" Collapsed="true">
+    <Position X="8.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAABCAAAAgAAAAAACAJAAAAA=</HashCode>
+      <FileName>Resources\IResourceProvider.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Resources.IResourceRequestQueue" Collapsed="true">
+    <Position X="1.75" Y="4.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAACAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Resources\IResourceRequestQueue.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Resources.IResourceService">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>Resources\IResourceService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

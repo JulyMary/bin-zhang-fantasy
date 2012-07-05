@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Fantasy</RootNamespace>
+    <AssemblyName>Fantasy.Base</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\Fantasy.Base.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\Fantasy.Base.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugHost|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugHost\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\Fantasy.Base.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>true</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugHost|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\DebugHost\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Debug\Fantasy.Base.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules;C:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.WindowsAPICodePack">
+      <HintPath>..\Fantasy.Components.Jobs.External\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell">
+      <HintPath>..\Fantasy.Components.Jobs.External\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddIn.cs" />
+    <Compile Include="Collection\Collection.cs" />
+    <Compile Include="Collection\CollectionExtensions.cs" />
+    <Compile Include="Collection\DictionaryExtensions.cs" />
+    <Compile Include="Collection\Key.cs" />
+    <Compile Include="CommandArgsHelper.cs" />
+    <Compile Include="Configuration\ComparsionHelper.cs" />
+    <Compile Include="Configuration\sample.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>sample.settings</DependentUpon>
+    </Compile>
+    <Compile Include="IObjectWithSite.cs" />
+    <Compile Include="IO\CopyProgressRoutineHelper.cs" />
+    <Compile Include="IO\DiskspaceInfo.cs" />
+    <Compile Include="IO\FileLockInfo.cs" />
+    <Compile Include="IO\Interop\NativeMethods.cs" />
+    <Compile Include="IO\Interop\SafeFindHandle.cs" />
+    <Compile Include="IO\LongPathCommon.cs" />
+    <Compile Include="IO\LongPathDirectory.cs" />
+    <Compile Include="IO\LongPathFile.cs" />
+    <Compile Include="IO\TrackableStream.cs" />
+    <Compile Include="IO\WNet.cs" />
+    <Compile Include="MethodInvoker.cs" />
+    <Compile Include="Configuration\SettingsBase.cs" />
+    <Content Include="Configuration\sample.settings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sample.settings.tt</DependentUpon>
+    </Content>
+    <Compile Include="Configuration\SettingStorage.cs" />
+    <Compile Include="ServiceModel\AddressSetting.cs" />
+    <Compile Include="ServiceModel\CallbackExpiredException.cs" />
+    <Compile Include="ServiceModel\ClientFactory.cs" />
+    <Compile Include="ServiceModel\ChannelSettings.cs" />
+    <Compile Include="ServiceModel\ClientRef.cs" />
+    <Compile Include="ServiceModel\DomainUnhandledExcepationService.cs" />
+    <Compile Include="ServiceModel\ICommand.cs" />
+    <Compile Include="ServiceModel\ILogger.cs" />
+    <Compile Include="ServiceModel\IService.cs" />
+    <Compile Include="ServiceModel\LogConsoleService.cs" />
+    <Compile Include="ServiceModel\LogDebugService.cs" />
+    <Compile Include="ServiceModel\LogFileService.cs" />
+    <Compile Include="ServiceModel\LogService.cs" />
+    <Compile Include="ServiceModel\ServiceContainer.cs" />
+    <Compile Include="ServiceModel\ServiceManager.cs" />
+    <Compile Include="ServiceModel\TaskBarProgressMonitor.cs" />
+    <Compile Include="ServiceModel\TaskBarProgressMonitorService.cs" />
+    <Compile Include="ServiceModel\TextLogFileService.cs" />
+    <Compile Include="System.Reflection\MemberInfoExtension.cs" />
+    <Compile Include="System.Threading\ThreadFactory.cs" />
+    <Compile Include="System.Threading\ThreadTaskScheduler.cs" />
+    <Compile Include="System.Xml.Linq\LongPathXNode.cs" />
+    <Compile Include="System.Xml\XmlNormalizer.cs" />
+    <Compile Include="System.Threading\ThreadExtension.cs" />
+    <Compile Include="Tracking\Consts.cs" />
+    <Compile Include="Tracking\EventArgs.cs" />
+    <Compile Include="Tracking\IRefreshable.cs" />
+    <Compile Include="Tracking\ITrackListener.cs" />
+    <Compile Include="Tracking\ITrackListenerService.cs" />
+    <Compile Include="Tracking\ITrackManager.cs" />
+    <Compile Include="Tracking\ITrackManagerService.cs" />
+    <Compile Include="Tracking\ITrackProvider.cs" />
+    <Compile Include="Tracking\ITrackProviderService.cs" />
+    <Compile Include="Tracking\RefreshManager.cs" />
+    <Compile Include="Tracking\RemoteTrack.cs" />
+    <Compile Include="Tracking\RemoteTrackManager.cs" />
+    <Compile Include="Tracking\TrackBase.cs" />
+    <Compile Include="Tracking\TrackExtension.cs" />
+    <Compile Include="Tracking\TrackFactory.cs" />
+    <Compile Include="Tracking\TrackingConfiguration.cs" />
+    <Compile Include="Tracking\TrackListener.cs" />
+    <Compile Include="Tracking\TrackListenerService.cs" />
+    <Compile Include="Tracking\TrackManager.cs" />
+    <Compile Include="Tracking\TrackManagerService.cs" />
+    <Compile Include="Tracking\TrackMetaData.cs" />
+    <Compile Include="Tracking\TrackProperty.cs" />
+    <Compile Include="Tracking\TrackProvider.cs" />
+    <Compile Include="Tracking\TrackProviderService.cs" />
+    <Compile Include="Windows\Forms\FolderBrowserDialogEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="System.Linq.Dynamic\Dynamic.cs" />
+    <Compile Include="IO\LongPath.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceModel\IMessageService.cs" />
+    <Compile Include="ServiceModel\IProgressMonitor.cs" />
+    <Compile Include="ServiceModel\IStatusBarService.cs" />
+    <Compile Include="ServiceModel\MissingRequiredServiceException.cs" />
+    <Compile Include="ServiceModel\ServiceProviderExtension.cs" />
+    <Compile Include="ServiceModel\WCFExceptionHandler.cs" />
+    <Compile Include="Windows\Data\INotifyIndexPropertyChanged.cs" />
+    <Compile Include="Windows\Forms\Win32\FilterByExtension.cs" />
+    <Compile Include="Windows\Forms\Win32\IFolderFilter.cs" />
+    <Compile Include="Windows\Forms\Win32\IFolderFilterSite.cs" />
+    <Compile Include="Windows\Forms\Win32\IMalloc.cs" />
+    <Compile Include="Windows\Forms\Win32\IShellFolder.cs" />
+    <Compile Include="Windows\Forms\Win32\ShellApi.cs" />
+    <Compile Include="System.Xml.Linq\XNodeExtension.cs" />
+    <Compile Include="Windows\NotifyPropertyChangedObject.cs" />
+    <Compile Include="XSerialization\Attributes.cs" />
+    <Compile Include="XSerialization\IXCollectionSerializer.cs" />
+    <Compile Include="XSerialization\IXSerializable.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="XSerialization\NullableConverter.cs" />
+    <Compile Include="XSerialization\XArrayConverter.cs" />
+    <Compile Include="XSerialization\XDateTimeConverter.cs" />
+    <Compile Include="XSerialization\XEnumConverter.cs" />
+    <Compile Include="XSerialization\XException.cs" />
+    <Compile Include="XSerialization\XGuidConverter.cs" />
+    <Compile Include="XSerialization\XHelper.cs" />
+    <Compile Include="XSerialization\XMap.cs" />
+    <Compile Include="XSerialization\XObjectConverter.cs" />
+    <Compile Include="XSerialization\XPrefix.cs" />
+    <Compile Include="XSerialization\XSerializer.cs" />
+    <Compile Include="XSerialization\XTimespanConverter.cs" />
+    <Content Include="Configuration\sample.settings.vb.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sample.settings.vb.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="Configuration\sample.settings">
+      <SubType>Designer</SubType>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>sample.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Configuration\sample.settings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sample.settings.cs</LastGenOutput>
+      <DependentUpon>sample.settings</DependentUpon>
+    </None>
+    <None Include="Configuration\sample.settings.vb.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>sample.settings.vb.vb</LastGenOutput>
+      <DependentUpon>sample.settings</DependentUpon>
+    </None>
+    <None Include="Tracking\App.config" />
+    <None Include="XSerialization\XSerialization.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,48 @@
+﻿@model ScheduleGroup 
+@{
+    ViewBag.Title = "Schedule - Fantasy Job Service";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/Scripts/schedule.index.js")"></script>
+}
+
+@{string groupImage = Url.Content("~/Content/Images/schedulegroup.png");}
+
+<input type="hidden" id="jsonUrl" value="@HttpUtility.UrlDecode(Url.Action("{0}"))" />
+<input type="hidden" id="groupImageUrl" value="@groupImage" />
+<h2>Schedule - Fantasy Job Service</h2>
+<div id="toolbar">
+    <a href="#" id="toolbutton_addgroup" onclick="addGroup()" title="Add Group"><img class="imgingrid" src="@Url.Content("~/Content/Images/folder.add.png")" alt="Add Group" width="24" height="24" /></a>
+    <a href="#" id="toolbutton_removegroup" onclick="removeGroup()" title="Remove Group"><img class="imgingrid" src="@Url.Content("~/Content/Images/folder.delete.png")" alt="Remove Group" width="24" height="24" /></a>
+    <a href="#" id="toolbutton_addschedule" onclick="addSchedule()" title="Add Schedule"><img class="imgingrid" src="@Url.Content("~/Content/Images/schedule.add.png")" alt="Add Schedule" width="24" height="24" /></a>
+</div>
+@Html.Telerik().TreeView().Name("ScheduleTree").BindTo( (System.Collections.IEnumerable)new ScheduleGroup[] {Model}, mappings=>{
+    mappings.For<ScheduleGroup>(binding => binding.ItemDataBound((item, group) =>
+        {
+            item.Text = group.DisplayName;
+            item.ImageUrl = groupImage; 
+            item.Value = group.Path;
+           
+            item.Selected = (string)ViewData["selected"] == group.Path;
+            item.Expanded = group.Path == "." || ((string)ViewData["selected"]).StartsWith(group.Path, StringComparison.OrdinalIgnoreCase);
+            
+             
+        }).Children(parent=>parent.ChildGroups));
+}).ClientEvents(events=>events.OnSelect("ScheduleTreeSelected")) 
+
+
+    <div id="scheduleListContainer">
+        @Html.Action("ScheduleList", new { group = (string)ViewData["selected"] })
+    </div>
+  
+
+   
+<div id="newGroupDialog" title="New Group" class="dialog" style="vertical-align:middle; text-align:right;">
+<div style="margin-top:20px;margin-bottom:20px;">Group Name: <input type="text" id="newGroupDialogName" /></div>
+<div><input type="button" id="newGroupDialog_button_OK" onclick="doAddGroup()" style="width:80px" value="OK" />
+<input type="button" id="newGroupDialog_button_Cancel" onclick="closeDialog('newGroupDialog')" style="width:80px" value="Cancel" /></div>
+</div>
+

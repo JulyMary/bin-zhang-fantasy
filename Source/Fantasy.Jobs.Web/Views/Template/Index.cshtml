@@ -1,0 +1,19 @@
+﻿@model Fantasy.Jobs.JobTemplate[]
+@using Telerik.Web.Mvc.UI           
+
+@{
+    ViewBag.Title = "Templates - Fantasy Job Service";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h2>Templates - Fantasy Job Service</h2>
+@Html.Telerik().Grid(this.Model).Name("Templates").Columns(columns=>
+    {
+        
+        @columns.Bound(c => c.Name).Template(@<span><a href="@Url.Action("Details", new { id = item.id })" ><img alt="details" class="imgingrid" src="@Url.Content("~/Content/Images/log.png")" /></a>@(! string.IsNullOrEmpty(item.Name) ? item.Name : Path.GetFileNameWithoutExtension(item.Location) )</span>).Title("Name");
+        @columns.Bound(c => c.Location).Title("Location");
+        @columns.Bound(c => c.Valid).Template(@<img alt="@item.Valid" class="imgingrid" src="@Url.Content(string.Format("~/Content/images/template/{0}.png", item.Valid ? "tick": "cross"))" />).Title("Valid");
+    }).Sortable()
+

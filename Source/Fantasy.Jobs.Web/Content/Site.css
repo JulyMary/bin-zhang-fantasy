@@ -1,0 +1,160 @@
+body
+{
+    font-size: 75%;
+    font-family: Verdana, Tahoma, Arial, "Helvetica Neue", Helvetica, Sans-Serif;
+    color: #fff;
+    background-color: #333;
+}
+#CalenderContainer {position:absolute;}
+#xlogContainer {position:absolute; left:220px; margin-right:7px;}
+h2, h3 {color:#fff;}
+#navigation{}
+#navigation_container {text-align:right;}
+.first_row {border-bottom:8px solid red}
+
+#ScheduleTree {position:absolute; width:250px;}
+#scheduleListContainer {left: 260px; position: absolute; overflow: hidden; margin-right: 10px;}
+
+.imgingrid
+{
+    width:24px;
+    height:24px;
+    border-width:0px;
+    vertical-align:middle;
+}
+
+.runningjobs-progress
+{
+    width:150px;
+    height:15px;
+}
+.runningjobs-progress-bar
+{
+    width:100%;
+    height:100%;
+}
+
+.runningjobs-progress-text
+{
+    position: absolute;
+    left: 70px;
+}
+
+.runningjobs-progress-large
+{
+    width:300px;
+    height:15px;
+    float:left;
+}
+.runningjobs-progress-bar-large
+{
+    width:100%;
+    height:100%;
+}
+
+.runningjobs-progress-text-large
+{
+    position: absolute;
+    left: 145px;
+}
+
+.runningjobs-status
+{
+    height:100%;
+}
+
+.runningjobs-status-large
+{
+    float:left;
+    margin-left:10px;
+}
+.jobdetails-operationbar-button
+{ 
+    padding : 2px;
+}
+.script-container
+{
+    background-color:#1b2426 !important;
+    padding:10px;
+    border :1px solid #666666;
+}
+
+hr
+{
+    height:2px;
+    background-color:#cccccc;
+    border-width : 0px;
+}
+
+#filter_name
+{
+    width:300px;
+}
+
+#ScheduleTree img
+{
+    width:32px;
+    height:32px;
+    border-width:0px;
+    vertical-align:middle;
+}
+/* Styles for basic forms
+-----------------------------------------------------------*/
+
+fieldset 
+{
+    border:1px solid #ddd;
+    padding:0 1.4em 1.4em 1.4em;
+    margin:0 0 1.5em 0;
+}
+
+legend 
+{
+    font-size:1.2em;
+    font-weight: bold;
+}
+
+textarea 
+{
+    min-height: 75px;
+}
+
+.editor-label 
+{
+    margin: 1em 0 0 0;
+}
+
+.editor-field 
+{
+    margin:0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}

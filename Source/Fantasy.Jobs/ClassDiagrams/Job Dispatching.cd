@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClickView.Jobs.Management.EFJobQueueService" Collapsed="true">
+    <Position X="7" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAgAAAACQQIIAAACBCgUAMCIAAAJACLAAABAgAkAAAA=</HashCode>
+      <FileName>Management\EFJobQueueService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobController" Collapsed="true">
+    <Position X="1" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABCRAOAAAAAAAAYAIEAAIINACIAQECEAAoAAAA=</HashCode>
+      <FileName>Management\JobController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_process" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobMetaData" Collapsed="true">
+    <Position X="4" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AhADAGJABnIjAIAlgRAgIARBJAEgQAKAAgCAjiUUACA=</HashCode>
+      <FileName>Management\JobMetaData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobStartupPriorityFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\JobStartupPriorityFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobStartupProcessCountFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\JobStartupProcessCountFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobStartupStateFilter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\JobStartupStateFilter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.StandaloneJobDispatcherService" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="2.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACQCMABAAAEABEIgEAAAAAAEAAEgAAAEAAQAI=</HashCode>
+      <FileName>Management\StandaloneJobDispatcherService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_queue" />
+      <Field Name="_controller" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_filters" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Management.StartupFolderWatcher" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAICAAIAABAgAAAAAAAAAAAIACAAAgAEAAAAAAQ=</HashCode>
+      <FileName>Management\StartupFolderWatcher.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_jobQueue" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClickView.Jobs.Management.JobProcess" Collapsed="true">
+    <Position X="4.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAASAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Management\JobProcess.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Engine" />
+      <Property Name="Job" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="ClickView.Jobs.Management.IJobController" Collapsed="true">
+    <Position X="1.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQACAAAAAAAAQAIAAAAABACAAAECEAAgAAAA=</HashCode>
+      <FileName>Management\IJobController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Management.IJobDispatcher" Collapsed="true">
+    <Position X="4.75" Y="0.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\IJobDispatcher.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Management.IJobQueue" Collapsed="true">
+    <Position X="7" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAQAAAAAACBCAUAECIAAABACLAAABAgAkAAAA=</HashCode>
+      <FileName>Management\IJobQueue.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Terminates" />
+      <Property Name="Unterminates" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Management.IJobStartupFilter" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Management\IJobStartupFilter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.IJobEngine" Collapsed="true">
+    <Position X="8.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAAACAAAAAAAAAAAAAgAAABACAAAABEAAgAAAA=</HashCode>
+      <FileName>IJobEngine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

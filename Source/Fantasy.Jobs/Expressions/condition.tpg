@@ -1,0 +1,48 @@
+//Tiny Parser Generator v1.2
+//Copyright © Herre Kuijpers 2008-2010
+<% @TinyPG Namespace="Fantasy.Jobs.Expressions" Language="C#" %> 
+<% @Parser Generate="True" %> 
+<% @ParseTree Generate="True" %> 
+<% @Scanner Generate="True" %> 
+
+EOF -> @"^\s*$";
+STRING -> @"@?'(\\'|[^'])*\'";
+INTEGER -> @"\d+";
+DECIMAL -> @"\d+((f|F)|\.\d+(f|F)?)";
+HEX -> @"0x((?i)[a-f\d]\+)";
+PLUSMINUS -> @"\+|\-";
+NEGETIVE -> @"\-";
+MULTDIV -> @"\*|\\|%|/";
+BROPEN -> @"\(";
+BRCLOSE -> @"\)";
+IDENTITY -> @"(?i)(?!(and|or|not|true|false)(\W|$))\w+";
+AND -> @"(?i)and";
+OR -> @"(?i)or";
+NOT -> @"(?i)not";
+COMPARER -> @">=|>|<=|<|==|!=";
+COMMA -> @",";
+DOT -> @"\.|\+";
+BOOL -> @"(?i)true|false";
+
+
+
+
+[Skip] WHITESPACE -> @"\s+"; 
+
+Start -> (OrExpr)?EOF;
+OrExpr -> AndExpr (OR AndExpr)*;
+AndExpr -> NotExpr (AND NotExpr)*;
+NotExpr -> (NOT)? CompareExpr;
+CompareExpr -> AddExpr(COMPARER AddExpr)*;
+AddExpr -> MultExpr (PLUSMINUS MultExpr)*;
+MultExpr -> CastExpr(MULTDIV CastExpr)*;
+CastExpr ->(BROPEN IDENTITY (DOT IDENTITY)*  BRCLOSE)* NegetiveExpr;
+NegetiveExpr -> (NEGETIVE)? Atom; 
+Atom -> BOOL |STRING | Number | Function | BROPEN OrExpr BRCLOSE;
+Number -> INTEGER | DECIMAL | HEX;
+Function -> IDENTITY (DOT IDENTITY)* BROPEN Arguments BRCLOSE;
+Arguments -> (OrExpr(COMMA OrExpr)*)?;
+
+
+
+

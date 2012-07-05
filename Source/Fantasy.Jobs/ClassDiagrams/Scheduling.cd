@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClickView.Jobs.Scheduling.ScheduleLibraryService" Collapsed="true">
+    <Position X="5" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAIAIAAAICCCQARwIAAIAAAEAFAgAAAAABQ=</HashCode>
+      <FileName>Scheduling\ScheduleLibraryService.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_scheduleService" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_schedules" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.Action" Collapsed="true">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\Action.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.CustomAction" Collapsed="true">
+    <Position X="2.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
+      <FileName>Scheduling\CustomAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.InlineAction" Collapsed="true">
+    <Position X="5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAgAAAQAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\InlineAction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.TemplateAction" Collapsed="true">
+    <Position X="7.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\TemplateAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.Trigger" Collapsed="true">
+    <Position X="5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAIAAaAAgAACEABAAAAAIIEAAAAAAAQAAACAAAIA=</HashCode>
+      <FileName>Scheduling\Trigger.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.DailyTrigger" Collapsed="true">
+    <Position X="0.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAGAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\DailyTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.MonthlyDOWTrigger" Collapsed="true">
+    <Position X="2.75" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACIAAAAAQAEAAAAAAAQAAABAAAAA=</HashCode>
+      <FileName>Scheduling\MonthlyDOWTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.MonthlyTrigger" Collapsed="true">
+    <Position X="5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAIAAAAAAAEAAAAAAgQAAAAADAAA=</HashCode>
+      <FileName>Scheduling\MonthlyTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.TimeTrigger" Collapsed="true">
+    <Position X="7.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAEAAAAABAQAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\TimeTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.WeeklyTrigger" Collapsed="true">
+    <Position X="9.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAEAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\WeeklyTrigger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.ScheduleItem" Collapsed="true">
+    <Position X="9.5" Y="2.25" Width="1.5" />
+    <AssociationLine Name="Action" Type="ClickView.Jobs.Scheduling.Action" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.188" Y="2.759" />
+        <Point X="10.188" Y="3.755" />
+        <Point X="6.5" Y="3.755" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Trigger" Type="ClickView.Jobs.Scheduling.Trigger" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.75" Y="2.759" />
+        <Point X="10.75" Y="5.255" />
+        <Point X="6.5" Y="5.255" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAhgAJAExAAAAAQQAIAAAAABAAAQAAAAAAQ=</HashCode>
+      <FileName>Scheduling\ScheduleItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Action" />
+      <Property Name="Trigger" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.ScheduleService" Collapsed="true">
+    <Position X="0.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAACAAIAAAAAEAAAAAAEAAAJAAAAAAAAAgAAEAA=</HashCode>
+      <FileName>Scheduling\ScheduleService.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Scheduling.ScheduleData" Collapsed="true">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <AssociationLine Name="ScheduleItem" Type="ClickView.Jobs.Scheduling.ScheduleItem" FixedToPoint="true">
+      <Path>
+        <Point X="10.312" Y="1.38" />
+        <Point X="10.312" Y="2.25" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.237" Y="0.412" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gAAACAIIIAQAAAAKQAAQAgQKAoAQOAABIAACCAIAgAQ=</HashCode>
+      <FileName>Scheduling\ScheduleData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ScheduleItem" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="ClickView.Jobs.Scheduling.IScheduleService" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Scheduling\IScheduleService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ClickView.Jobs.Scheduling.ActionType">
+    <Position X="0.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scheduling\ActionType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ClickView.Jobs.Scheduling.TriggerType">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAgAAAAAAwA=</HashCode>
+      <FileName>Scheduling\TriggerType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

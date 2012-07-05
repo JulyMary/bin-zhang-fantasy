@@ -1,0 +1,47 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Fantasy Job Service</title>
+    
+    
+    <link href="@Url.Content("~/Content/ui-darkness/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.7.all.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/home.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body {font-family:Verdana; background-color:#333; color:#fff;}
+        h1 {font-size:28px; font-weight:bold; margin:auto; width:100%; }
+        #icons_container {margin:auto; width:512px; margin-top:100px;}
+        img {border:0px;}
+        p {margin-top:0px; margin-bottom:0px; width:128px; text-align:center;}
+        .icon {float:left;}
+        .icon_description {font-size:12px;}
+        
+        .icon-image
+        {
+        }
+    </style>
+</head>
+<body>
+    <br /><br />
+    <h1>Fantasy Job Service</h1>
+    <div id="icons_container"> 
+        <div class="icon"><a href="@Url.Action("Index", "RunningJobs")"><img class="icon-image"  src="@Url.Content("~/Content/images/running.grey.png")" toggleSrc="@Url.Content("~/Content/images/running.png")" alt="Running Jobs" /></a><p class="icon_description">Running Jobs</p></div>       
+        <div class="icon"><a href="@Url.Action("Unterminated", "Jobs")"><img class="icon-image" src="@Url.Content("~/Content/images/unterminated.grey.png")" toggleSrc="@Url.Content("~/Content/images/unterminated.png")" alt="Unterminated Jobs" /></a><p class="icon_description">Unterminated Jobs</p></div>
+        <div class="icon"><a href="@Url.Action("Terminated", "Jobs")"><img class="icon-image" src="@Url.Content("~/Content/images/terminated.grey.png")" toggleSrc="@Url.Content("~/Content/images/terminated.png")" alt="Terminated Jobs" /></a><p class="icon_description">Terminated Jobs</p></div>
+        <div class="icon"><a href="@Url.Action("Details", "ManagerLog")"><img class="icon-image" src="@Url.Content("~/Content/images/log.grey.png")" toggleSrc="@Url.Content("~/Content/images/log.png")" alt="Logs" /></a><p class="icon_description">Logs</p></div>
+        <div class="icon"><a href="@Url.Action("Index", "Template")"><img class="icon-image" src="@Url.Content("~/Content/images/template.grey.png")" toggleSrc="@Url.Content("~/Content/images/template.png")" alt="Template" /></a><p class="icon_description">Template</p></div>
+        <div class="icon"><a href="@Url.Action("Index", "Schedule")"><img class="icon-image" src="@Url.Content("~/Content/images/schedulegroup.grey.png")" toggleSrc="@Url.Content("~/Content/images/schedulegroup.png")" alt="Schedule" /></a><p class="icon_description">Schedule</p></div>
+        @*<div class="icon"><a href=""><img class="icon-image" src="@Url.Content("~/Content/images/settings.grey.png")" alt="Settings" toggleSrc="@Url.Content("~/Content/images/settings.png")" /></a><p class="icon_description">Settings</p></div>*@
+        <div class="icon"></div>
+        <div class="icon"></div>
+    </div>
+</body>
+</html>
