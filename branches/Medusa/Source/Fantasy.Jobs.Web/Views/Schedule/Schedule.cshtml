@@ -1,0 +1,289 @@
+﻿@using Fantasy.Jobs.Scheduling;
+@model ScheduleModel 
+@{string title = Model.IsNew ? "Create Task" : Model.Name;
+  title += " - Schedule - Fantasy Job Service";
+}
+@{
+    ViewBag.Title = title;
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/scripts/jquery.enable.disable.plugin.js")" ></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/schedule.schedule.js")" ></script>
+}
+
+
+@functions
+{
+    private System.Globalization.DateTimeFormatInfo _dateTimeFormatInfo = System.Globalization.DateTimeFormatInfo.GetInstance(null);
+
+    private string TriggerTypeToString(TriggerType type)
+    {
+        switch (type)
+        {
+            case TriggerType.Time:
+                return "One time";
+            case TriggerType.Daily:
+                return "Daily";
+            case TriggerType.Weekly:
+                return "Weekly";
+            case TriggerType.Monthly:
+                return "Monthly";
+            case TriggerType.MonthlyDayOfWeek:
+                return "Monthly days of week";
+            default:
+                throw new Exception("Absurd!");
+
+        }
+    }
+
+    private string GetDisplayString(bool display)
+    {
+        return display ? "" : "display:none";
+        //return "";
+    }
+
+    private string GetCheckedString(bool @checked)
+    {
+        return @checked ? "checked=\"checked\"" : "";
+    }
+}
+
+
+
+<h2>
+    <img src="@Url.Content("~/content/images/schedule.png")" style="width:32px;height:32px;border:none;vertical-align:middle" alt="Schedule" />
+    @title
+</h2>
+@using (Html.BeginForm())
+{
+    <input type="submit" id="saveChangeButton" value="Save Changes" />
+    
+    <style type="text/css">
+       #saveChangeButton {margin-left:570px;} 
+        
+       fieldset {width: 600px; margin-left:60px; float:left; clear:both;}
+       #general label {float: left; clear: both; text-align: right; margin-right: 10px; width: 100px; margin-top:8px;}
+       #general .value {float:left; margin-top:8px;}
+       #general .row {}
+       #general textarea {width:450px; height:150px;}
+       
+       .trigger-options-container {height:180px;margin-top:5px;}
+       #trigger .row {margin-top:8px;}
+       #trigger .sub_row {}
+       #weekly_week_checkboxes, #monthlydow_week_checkboxes {border:1px solid #CCCCCC; background-color:#666; padding:1px; margin:8px;}
+       #monthly_month_checkboxes, #monthlydow_month_checkboxes {background-color: #666; border: 1px solid #ccc; margin: 8px; padding: 1px; width: 450px;}
+       #monthly_days_checkboxes {background-color: #666; border: 1px solid #ccc; margin: 8px; padding: 1px; width: 410px;}
+       #monthlydow_firstlast_checkboxes {padding-left:8px;}
+       
+       #action .row {margin-top:8px;}
+       #action textarea {width:590px;}
+       #InlineXslt {height:300px;}
+       #CustomParams {height:300px;}
+    </style>
+    
+    <fieldset id="general">
+        <legend>General</legend>
+        <div class="row">
+            <label>Name:</label>
+            <div class="value">
+            @if (Model.IsNew)
+            {
+                @Html.TextBoxFor(m => m.Name)
+            }
+            else
+            {
+                @Model.Name 
+            }
+            </div>
+        </div>
+    
+        <div class="row">
+            <label>Location:</label> <div class="value">\@Model.ParentPath</div>
+        </div>
+
+        <div class="row">
+            <label>Author:</label> <div class="value">@Model.Author</div>
+        </div>
+
+        <div class="row">
+            <label>Description:</label> <div class="value">@Html.TextAreaFor(m => m.Description)</div>
+        </div>
+
+        <div class="row">
+            <label>Priority:</label> <div class="value">@Html.Telerik().IntegerTextBoxFor(m => m.Priority).MaxValue(9).MinValue(0).Spinners(false)</div>
+        </div>
+
+        <div class="row">
+            <label>Enabled:</label> <div class="value">@Html.CheckBoxFor(m => m.Enabled)</div>
+        </div>
+    </fieldset>
+    
+    <fieldset id="trigger">
+        <legend>Trigger</legend>
+        <div class="row">
+            @foreach (TriggerType type in Enum.GetValues(typeof(TriggerType)))
+            {
+                string id = "triggerType_" + type.ToString();
+                @Html.RadioButtonFor(m => m.TriggerType, type, new { id = id, @class="trigger-type-radio"}) <label for="@id">@TriggerTypeToString(type)</label>
+            }
+        </div>
+
+        <div id="triggerContainer" class="row">
+            @Html.HiddenFor(m => m.DaysOfWeek, new { id = "DaysOfWeekInput" })
+            @Html.HiddenFor(m => m.DaysOfMonth, new { id = "DaysOfMonthInput" })
+            @Html.HiddenFor(m => m.WeeksOfMonth, new { id = "WeeksOfMonthInput" })
+            @Html.HiddenFor(m => m.MonthsOfYear, new { id = "MonthsOfYearInput" })
+            
+            <div class="sub_row">
+                <label for="starttime-input">Start:</label>
+                <div class="value">@Html.Telerik().DateTimePickerFor(m => m.StartTime).HtmlAttributes(new { style = "width:180px;" })</div>
+            </div>
+            
+            <div id="TimeOptionsContainer" style="@GetDisplayString(Model.TriggerType == TriggerType.Time)" class="trigger-options-container"></div>
+            
+            <div id="DailyOptionsContainer" style="@GetDisplayString(Model.TriggerType == TriggerType.Daily)" class="trigger-options-container sub_row">
+                <label>Recur every:</label>
+                <div class="value">@Html.Telerik().IntegerTextBoxFor(m => m.DaysInterval).MinValue(1).InputHtmlAttributes(new { style = "width:90px;" }) days</div>
+            </div>
+            
+            <div id="WeeklyOptionsContainer" style="@GetDisplayString(Model.TriggerType == TriggerType.Weekly)" class="trigger-options-container sub_row">
+                <label>Recur every: @Html.Telerik().IntegerTextBoxFor(m => m.WeeksInterval).MinValue(1).InputHtmlAttributes(new { style = "width:90px;" }) weeks on:</label>
+                <div id="weekly_week_checkboxes">
+                    @foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        string id = "WeeklyDOW" + d.ToString();
+                        <input type="checkbox" class="weeklyDOW" id="@id" value="@((int)d)"  @GetCheckedString(Model.IsInArray(Model.DaysOfWeek, d)) />
+                        <label for="@id">@_dateTimeFormatInfo.GetDayName(d)</label>  
+                    }
+                </div>
+            </div>
+
+            <div id="MonthlyOptionsContainer" style="@GetDisplayString(Model.TriggerType == TriggerType.Monthly)" class="trigger-options-container sub_row" >
+                <div>
+                    <label>Months:</label>
+                    <div id="monthly_month_checkboxes">
+                    @for (int m = 1; m <= 12; m++)
+                    {
+                        string id = "MonthlyMOY" + m.ToString();
+                        <input type="checkbox" class="monthlyMOY" id="@id" value="@m" @GetCheckedString(Model.IsInArray(Model.MonthsOfYear, m)) />
+                        <label for="@id">@_dateTimeFormatInfo.GetMonthName(m)</label> 
+                    }
+                    </div>
+                </div>
+                <div>
+                    <label>Days:</label>
+                    <div id="monthly_days_checkboxes">
+                    @for (int d = 1; d <= 31; d++)
+                    {
+                        string id = "MonthlyDOM" + d.ToString();
+                        <input type="checkbox" class="monthlyDOM" id="@id" value="@d" @GetCheckedString(Model.IsInArray(Model.DaysOfMonth, d)) />
+                        <label for="@id">@d</label> 
+                    }
+                    @Html.CheckBoxFor(m => m.RunOnLastDayOfMonth) @Html.LabelFor(m => m.RunOnLastDayOfMonth, "Last")
+                    </div>
+                </div>
+            </div>
+
+            <div id="MonthlyDOWOptionsContainer" style="@GetDisplayString(Model.TriggerType == TriggerType.MonthlyDayOfWeek)" class="trigger-options-container sub_row">
+                
+                <label>Months:</label>
+                <div id="monthlydow_month_checkboxes">
+                @for (int m = 1; m <= 12; m++)
+                {
+                    string id = "MonthlyDOWMOY" + m.ToString();
+                    <input type="checkbox" class="monthlyDOWMOY" id="@id" value="@m" @GetCheckedString(Model.IsInArray(Model.MonthsOfYear, m)) />
+                    <label for="@id">@_dateTimeFormatInfo.GetMonthName(m)</label> 
+                }
+                </div>
+                
+                <label>On:</label>
+                <div id="monthlydow_firstlast_checkboxes">
+                @for (WeekOfMonth  w = WeekOfMonth.First; w<= WeekOfMonth.Forth; w++)
+                {
+                    string id = "MonthlyDOWWOM" + w.ToString();
+                    <input type="checkbox" class="monthlyDOWWOM" id="@id" value="@((int)w)" @GetCheckedString(Model.IsInArray(Model.WeeksOfMonth, w)) />
+                    <label for="@id">@w</label> 
+                }                    
+                @Html.CheckBoxFor(m => m.RunOnLastWeekOfMonth) @Html.LabelFor(m => m.RunOnLastWeekOfMonth, "Last")
+                </div>
+
+                <div id="monthlydow_week_checkboxes">              
+                    @foreach (DayOfWeek d in Enum.GetValues(typeof(DayOfWeek)))
+                    {
+                        string id = "MonthlyDOWDOW" + d.ToString();
+                        <input type="checkbox" class="monthlyDOWDOW" id="@id" value="@((int)d)"  @GetCheckedString(Model.IsInArray(Model.DaysOfWeek, d)) />
+                        <label for="@id">@_dateTimeFormatInfo.GetDayName(d)</label>  
+                    }
+                </div>
+
+            </div>
+        </div>
+    
+        <div class="row">
+            <input id="enableRepetitionInput" type="checkbox" @GetCheckedString(! Model.RepetitionInterval.IsNull) /><label for="enableRepetitionInput">Repeat task every:</label>
+            <div id="repetitionContainer">
+            @Html.Telerik().IntegerTextBoxFor(m => m.RepetitionInterval.Hours).MaxValue(24).MinValue(0).Spinners(false).InputHtmlAttributes(new { style = "width:20px;" }) hours
+            @Html.Telerik().IntegerTextBoxFor(m => m.RepetitionInterval.Minutes).MaxValue(60).MinValue(0).Spinners(false).InputHtmlAttributes(new { style = "width:20px;" }) minutes 
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for a duration of:
+            @Html.Telerik().IntegerTextBoxFor(m => m.RepetitionDuration.Hours).MaxValue(24).MinValue(0).Spinners(false).InputHtmlAttributes(new { style = "width:20px;" }) hours
+            @Html.Telerik().IntegerTextBoxFor(m => m.RepetitionDuration.Minutes).MaxValue(60).MinValue(0).Spinners(false).InputHtmlAttributes(new { style = "width:20px;" }) minutes
+            </div> 
+        </div>
+    
+        <div class="row">
+            <input id="enableExpireInput" type="checkbox"  @GetCheckedString(Model.EndBoundary != null) /><label for="enableExpireInput">Expire:</label>
+            <div id="expirecontainer">
+                @Html.Telerik().DateTimePickerFor(m => m.EndBoundary).HtmlAttributes(new { style = "width:180px;" }) 
+            </div>
+        </div>
+    
+        <div class="row">
+            <input id="enableExecuteLimitInput" type="checkbox" @GetCheckedString(Model.ExecutionTimeLimit != null) /> <label for="enableExecuteLimitInput">Maximum execution time:</label>
+            <div id="executeLimitContainer">@Html.Telerik().IntegerTextBoxFor(m => m.ExecutionTimeLimit).MinValue(0).InputHtmlAttributes(new { style = "width:90px" })</div>
+        </div>
+    
+        <div class="row">
+            If the task is already running, then the following rule applies:
+            @Html.Telerik().DropDownListFor(m=>m.MultipleInstance).BindTo(new SelectListItem[] { new SelectListItem() {Text = "Do not start a new instance", Value = InstancesPolicy.IgnoreNew.ToString()},
+       new SelectListItem() {Text = "Run a new instance in parallel", Value=InstancesPolicy.Parallel.ToString()}, new SelectListItem() {Text = "Queue a new instance", Value=InstancesPolicy.Queue.ToString()},
+       new SelectListItem() {Text = "Stop the existing instance", Value=InstancesPolicy.StopExisting.ToString()}}).HtmlAttributes(new {style="width:250px"})   
+        </div>
+
+        <div class="row">
+            @Html.CheckBoxFor(m=>m.StartWhenAvailable) @Html.LabelFor(m => m.StartWhenAvailable, "Run task as soon as posiible after a scheduled start is missed")  
+        </div>
+    </fieldset>
+
+    <fieldset id="action">
+        <legend>Action</legend>
+        <div>
+            <div class="row">
+                @Html.RadioButtonFor(m => m.Action, ActionType.Template, new { id="actionTypeTemplate", @class="action-type-radio" })<label for="actionTypeTemplate">Template</label>
+                @Html.RadioButtonFor(m => m.Action, ActionType.Custom, new { id = "actionTypeCustom", @class = "action-type-radio" })<label for="actionTypeCustom">Custom</label>
+                @Html.RadioButtonFor(m => m.Action, ActionType.Inline, new { id = "actionTypeInline", @class = "action-type-radio" })<label for="actionTypeInline">Inline (XSLT)</label> 
+            </div>
+
+            <div id="actionTypeTemplateContainer" style="@GetDisplayString(Model.Action == ActionType.Template)" class="action-options-container row">
+                <div>@Html.Telerik().DropDownListFor(m=>m.Template).BindTo(new SelectList(Model.AvailableTemplates))</div>   
+            </div>
+             
+            <div id="actionTypeInlineContainer" style="@GetDisplayString(Model.Action == ActionType.Inline)" class="action-options-container row">           
+                @Html.TextAreaFor(m=>m.InlineXslt)
+            </div>
+             
+            <div id="actionTypeCustomContainer" style="@GetDisplayString(Model.Action == ActionType.Custom)" class="action-options-container row">
+                @Html.TextBoxFor(m=>m.CustomActionType)
+            </div>
+        
+            <div id="customParametersContainer" class="row">
+                <label>Custom Parameters:</label>
+                <div>@Html.TextAreaFor(m=>m.CustomParams)</div> 
+            </div> 
+        </div>
+    </fieldset>
+    
+} 

@@ -1,0 +1,31 @@
+﻿@model JobsModel 
+@using Telerik.Web.Mvc.UI
+@{
+    ViewBag.Title = "Terminated Jobs - Fantasy Job Service";
+}
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/scripts/jobfilter.js")"></script>
+}
+<h2>Terminated Jobs - Fantasy Job Service</h2>
+<div id="JobsContainer">
+    @Html.Action("Filter", new { command = this.Model.Command, isTerminated = true })
+    @(Html.Telerik().Grid<Fantasy.Jobs.Management.JobMetaData>().Name("JobList").BindTo(this.Model.Data).DataBinding(databinding =>
+      {
+          databinding.Server().Select("Terminated", "Jobs");
+      }).Columns(columns =>
+      {
+          //columns.Bound(c => c.Id).Visible(false);
+          columns.Bound(c => c.State).Template(@<a href="@Url.Action("Details", "Job", new { id = item.Id })"><img border="0" alt="@Fantasy.Jobs.JobState.ToString(item.State)" src="@Fantasy.Jobs.Web.Controllers.JobStateImageHelper.GetImageUrl(this.Url, item.State)" class="imgingrid" /></a>).Title("State").Filterable(false);
+          columns.Bound(c => c.Template).Title("Template").Filterable(false);
+          columns.Bound(c => c.Name).Title("Name").Groupable(false).Filterable(false);
+          columns.Bound(c => c.CreationTime).Title("Creation Time").Filterable(false);
+          columns.Bound(c => c.Application).Title("Application").Filterable(false);
+          columns.Bound(c => c.User).Title("User").Filterable(false);
+          columns.Bound(c => c.StartTime).Title("Start Time").Filterable(false);
+          columns.Bound(c => c.EndTime).Title("End Time").Filterable(false);
+          columns.Bound(c => c.Priority).Title("Priority").Filterable(false);
+      }).Pageable(settings => settings.Total(this.Model.TotalCount).PageSize(100)).EnableCustomBinding(true).Sortable().Groupable().Filterable())
+</div>
+
+

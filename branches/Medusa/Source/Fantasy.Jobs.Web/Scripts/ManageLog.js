@@ -1,0 +1,3 @@
+﻿$(function () {
+    $('#serverslist').buttonset();
+});

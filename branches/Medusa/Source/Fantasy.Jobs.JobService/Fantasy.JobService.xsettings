@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<settingsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <settings type="Fantasy.Jobs.Management.JobManagerSettings">
+        <JobTemplateDirectory>.\Templates</JobTemplateDirectory>
+        <JobDirectory>.\Jobs</JobDirectory>
+        <JobProcessCount>2</JobProcessCount>
+        <JobHostPath>.\Fantasy.Jobs.JobHost.exe</JobHostPath>
+        <LogDirectory>.\Logs</LogDirectory>
+        <StartupFolders>.\Startup</StartupFolders>
+        <ScheduleDirectory>.\Schedule</ScheduleDirectory>
+        <ScheduleTemplateDirectory>.\ScheduleTemplate</ScheduleTemplateDirectory>
+        <WebSite>http://localhost:3094</WebSite>
+        <JobRuntimeSchedule enabled="true">
+            <Sunday>00:00:00-24:00:00</Sunday>
+            <Monday>00:00:00-24:00:00</Monday>
+            <Tuesday>00:00:00-24:00:00</Tuesday>
+            <Wednesday>00:00:00-24:00:00</Wednesday>
+            <Thursday>00:00:00-24:00:00</Thursday>
+            <Friday>00:00:00-24:00:00</Friday>
+            <Saturday>00:00:00-24:00:00</Saturday>
+        </JobRuntimeSchedule>
+    </settings>
+    <settings type="Fantasy247.Tasks.Properties.Settings"
+              >
+        <ReportSettings
+            enabled="true"
+            sender="bin.zhang@Fantasy.com.au"
+            server="smtp-out.conexim.com.au"
+            account="Fantasy"
+            receiver="bin.zhang@Fantasy.com.au"
+            password="8cm6dVRxCqVTOKZU+1hlTQ=="/>
+    </settings>
+    <settings type="Fantasy.License.Tasks.Properties.Settings">
+        <S3AccessKey>1J5DNZ799ACP7Z9X4PG2</S3AccessKey>
+        <S3SecretKey>/vLhwkDkuWhSBJOHy7tk8ISq6LBoAtVXFOehdQdkrldF8WoC5VlKeZO8u8sC9mGl</S3SecretKey>
+       
+        <S3Buckets>
+            <!--<string>licence-02.Fantasy.com.au</string>-->
+        </S3Buckets>
+        <HttpDirectories>
+            <string>D:\Fantasy Projects\licences</string>
+        </HttpDirectories>
+    </settings>
+</settingsFile>

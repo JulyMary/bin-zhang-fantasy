@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Telerik.Mvc">
+</Property><Property Name="Solution File" Value="C:\Documents and Settings\bin.zhang.DEV-PC01\Desktop\telerikaspnetmvc-2010.q3.1110\Source\Telerik.Mvc.sln">
+</Property><Property Name="Date" Value="Tuesday, 4 January 2011">
+</Property><Property Name="Time" Value="14:36 PM">
+</Property></Properties><Event ErrorLevel="0" Project="Telerik.Web.Mvc" Source="Telerik.Web.Mvc\Telerik.Web.Mvc.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Telerik.Web.Mvc" Source="Telerik.Web.Mvc\Telerik.Web.Mvc.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc.Examples" Source="Telerik.Web.Mvc.Examples\Telerik.Web.Mvc.Examples.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Telerik.Web.Mvc.Examples" Source="Telerik.Web.Mvc.Examples\Telerik.Web.Mvc.Examples.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc.Tests" Source="Telerik.Web.Mvc.Tests\Telerik.Web.Mvc.Tests.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Telerik.Web.Mvc.Tests" Source="Telerik.Web.Mvc.Tests\Telerik.Web.Mvc.Tests.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc.JavaScriptTests" Source="Telerik.Web.Mvc.JavaScriptTests\Telerik.Web.Mvc.JavaScriptTests.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Telerik.Web.Mvc.JavaScriptTests" Source="Telerik.Web.Mvc.JavaScriptTests\Telerik.Web.Mvc.JavaScriptTests.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Telerik.Mvc.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Telerik.Mvc.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc" Source="Telerik.Web.Mvc\Telerik.Web.Mvc.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc" Source="Telerik.Web.Mvc\Telerik.Web.Mvc.csproj" Description="Created rule set file &quot;C:\Documents and Settings\bin.zhang.DEV-PC01\Desktop\telerikaspnetmvc-2010.q3.1110\Source\Telerik.Web.Mvc\Migrated rules for Telerik.Web.Mvc.ruleset&quot; for the &quot;Debug MVC2 (Any CPU)&quot; configuration.">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc.Examples" Source="Telerik.Web.Mvc.Examples\Telerik.Web.Mvc.Examples.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc.Tests" Source="Telerik.Web.Mvc.Tests\Telerik.Web.Mvc.Tests.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Telerik.Web.Mvc.JavaScriptTests" Source="Telerik.Web.Mvc.JavaScriptTests\Telerik.Web.Mvc.JavaScriptTests.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0"?>
+<xlog>
+<message time="2010-06-25 05:26:58Z" category="CVDB" importance="Low" text="Library database path is located in : C:\Program Files\Fantasy\Fantasy Library\CVDB.mdb" />
+<message time="2010-06-25 05:26:58Z" category="CVDB" importance="Low" text="Library media file path is located in: C:\Program Files\Fantasy\Fantasy Library\" />
+<message time="2010-06-25 05:27:45Z" category="FEED" importance="Low" text="Begin acess url:http://australianetwork.com/learningenglish/xml/livingenglish_wmv.xml" />
+<message time="2010-06-25 05:28:01Z" category="FEED" importance="Low" text="Analyzed Feed Information" />
+<message time="2010-06-25 05:28:01Z" category="FEED" importance="Low" text="Added the feed information" />
+<message time="2010-06-25 05:28:01Z" category="FEED" importance="Low" text="Added the media Item in the feed" />
+<message time="2010-06-25 05:30:01Z" category="IMPORT" importance="Low" text="Begin to import file: le27.wmv" />
+<message time="2010-06-25 05:30:02Z" category="IMPORT" importance="Low" text="Begin to import file: le26.wmv" />
+<message time="2010-06-25 05:30:02Z" category="IMPORT_DOWNLOAD" importance="Low" text="Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le27.wmv" />
+<message time="2010-06-25 05:30:02Z" category="IMPORT_DOWNLOAD" importance="Low" text="Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le27.wmv" />
+<message time="2010-06-25 05:30:03Z" category="IMPORT" importance="Low" text="Begin to import file: le25.wmv" />
+<message time="2010-06-25 05:30:03Z" category="IMPORT_DOWNLOAD" importance="Low" text="Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le26.wmv" />
+<message time="2010-06-25 05:30:03Z" category="IMPORT_DOWNLOAD" importance="Low" text="Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le26.wmv" />
+<error time="2010-06-25 05:31:43Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le25.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:31:43Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le25.wmv" />
+<message time="2010-06-25 05:31:43Z" category="IMPORT" importance="Low" text="Begin to import file: le11.wmv" />
+<error time="2010-06-25 05:33:23Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le11.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:33:23Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le11.wmv" />
+<message time="2010-06-25 05:33:23Z" category="IMPORT" importance="Low" text="Begin to import file: le12.wmv" />
+<error time="2010-06-25 05:35:03Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le12.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:35:03Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le12.wmv" />
+<message time="2010-06-25 05:35:03Z" category="IMPORT" importance="Low" text="Begin to import file: le13.wmv" />
+<error time="2010-06-25 05:36:43Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le13.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:36:43Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le13.wmv" />
+<message time="2010-06-25 05:36:43Z" category="IMPORT" importance="Low" text="Begin to import file: le14.wmv" />
+<error time="2010-06-25 05:38:23Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le14.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:38:23Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le14.wmv" />
+<message time="2010-06-25 05:38:23Z" category="IMPORT" importance="Low" text="Begin to import file: le15.wmv" />
+<message time="2010-06-25 05:38:37Z" category="IMPORT_DOWNLOAD" importance="Low" text="Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le27.wmv" />
+<message time="2010-06-25 05:38:37Z" category="IMPORT" importance="Low" text="Imported file successfully: le27.wmv" />
+<message time="2010-06-25 05:38:37Z" category="IMPORT" importance="Low" text="Begin to upload file to library server: le27.wmv" />
+<message time="2010-06-25 05:38:37Z" category="CVDB" importance="Low" text="Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le27.wmv" />
+<message time="2010-06-25 05:38:39Z" category="CVDB" importance="Low" text="Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le27.wmv" />
+<message time="2010-06-25 05:38:39Z" category="IMPORT" importance="Low" text="Uploaded file successfully: le27.wmv" />
+<message time="2010-06-25 05:38:39Z" category="IMPORT" importance="Low" text="Begin to import file: le16.wmv" />
+<message time="2010-06-25 05:40:00Z" category="IMPORT_DOWNLOAD" importance="Low" text="Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le26.wmv" />
+<message time="2010-06-25 05:40:00Z" category="IMPORT" importance="Low" text="Imported file successfully: le26.wmv" />
+<message time="2010-06-25 05:40:00Z" category="IMPORT" importance="Low" text="Begin to upload file to library server: le26.wmv" />
+<message time="2010-06-25 05:40:00Z" category="CVDB" importance="Low" text="Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le26.wmv" />
+<message time="2010-06-25 05:40:01Z" category="IMPORT_DOWNLOAD" importance="Low" text="Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le16.wmv" />
+<message time="2010-06-25 05:40:01Z" category="IMPORT_DOWNLOAD" importance="Low" text="Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le16.wmv" />
+<message time="2010-06-25 05:40:01Z" category="CVDB" importance="Low" text="Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le26.wmv" />
+<message time="2010-06-25 05:40:01Z" category="IMPORT" importance="Low" text="Uploaded file successfully: le26.wmv" />
+<message time="2010-06-25 05:40:01Z" category="IMPORT" importance="Low" text="Begin to import file: le17.wmv" />
+<error time="2010-06-25 05:40:03Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le15.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:40:03Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le15.wmv" />
+<message time="2010-06-25 05:40:03Z" category="IMPORT" importance="Low" text="Begin to import file: le18.wmv" />
+<message time="2010-06-25 05:40:04Z" category="IMPORT_DOWNLOAD" importance="Low" text="Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le18.wmv" />
+<message time="2010-06-25 05:40:04Z" category="IMPORT_DOWNLOAD" importance="Low" text="Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le18.wmv" />
+<error time="2010-06-25 05:41:41Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le17.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:41:41Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le17.wmv" />
+<message time="2010-06-25 05:41:41Z" category="IMPORT" importance="Low" text="Begin to import file: le19.wmv" />
+<error time="2010-06-25 05:43:21Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le19.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:43:21Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le19.wmv" />
+<message time="2010-06-25 05:43:21Z" category="IMPORT" importance="Low" text="Begin to import file: le21.wmv" />
+<error time="2010-06-25 05:45:01Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le21.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:45:01Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le21.wmv" />
+<message time="2010-06-25 05:45:01Z" category="IMPORT" importance="Low" text="Begin to import file: le23.wmv" />
+<error time="2010-06-25 05:46:41Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le23.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:46:41Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le23.wmv" />
+<message time="2010-06-25 05:46:41Z" category="IMPORT" importance="Low" text="Begin to import file: le24.wmv" />
+<error time="2010-06-25 05:48:21Z" category="IMPORT_DOWNLOAD_ERROR" text="Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le24.wmv"><exception message="The operation has timed out" source="System" targetSite="System.Net.WebResponse GetResponse()" stackTrace="   at System.Net.HttpWebRequest.GetResponse()&#xD;&#xA;   at MediaPVManager.DAL.HttpWebMediaOperation.ImportEntity()" helpLink="" /></error>
+<message time="2010-06-25 05:48:21Z" category="IMPORT" importance="Low" text="Imported file unsuccessfully: le24.wmv" />
+<message time="2010-06-25 05:49:24Z" category="IMPORT_DOWNLOAD" importance="Low" text="Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le18.wmv" />
+<message time="2010-06-25 05:49:24Z" category="IMPORT" importance="Low" text="Imported file successfully: le18.wmv" />
+<message time="2010-06-25 05:49:24Z" category="IMPORT" importance="Low" text="Begin to upload file to library server: le18.wmv" />
+<message time="2010-06-25 05:49:24Z" category="CVDB" importance="Low" text="Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le18.wmv" />
+<message time="2010-06-25 05:49:25Z" category="CVDB" importance="Low" text="Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le18.wmv" />
+<message time="2010-06-25 05:49:25Z" category="IMPORT" importance="Low" text="Uploaded file successfully: le18.wmv" />
+<message time="2010-06-25 05:49:44Z" category="IMPORT_DOWNLOAD" importance="Low" text="Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le16.wmv" />
+<message time="2010-06-25 05:49:44Z" category="IMPORT" importance="Low" text="Imported file successfully: le16.wmv" />
+<message time="2010-06-25 05:49:44Z" category="IMPORT" importance="Low" text="Begin to upload file to library server: le16.wmv" />
+<message time="2010-06-25 05:49:44Z" category="CVDB" importance="Low" text="Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le16.wmv" />
+<message time="2010-06-25 05:49:45Z" category="CVDB" importance="Low" text="Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le16.wmv" />
+<message time="2010-06-25 05:49:45Z" category="IMPORT" importance="Low" text="Uploaded file successfully: le16.wmv" />
+</xlog>

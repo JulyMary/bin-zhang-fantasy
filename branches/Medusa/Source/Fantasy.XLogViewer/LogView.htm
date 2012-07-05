@@ -1,0 +1,564 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>asdf</title>
+    <style type="text/css">
+          .message
+          {
+          font-size : small;
+font-family : Courier New; 
+          }
+          .warning
+          {
+          font-size : 9pt;
+          font-family : Courier New; 
+          background-color : Yellow;
+
+          }
+          .error
+          {
+font-family : Courier New; 
+          font-size : 9pt;
+          background-color : Red;
+          }
+
+          .logtable
+          {
+          width:100%;
+          border: thin solid #9bbb59;
+          border-collapse:collapse;
+
+          }
+          td
+          {
+          border: 1px solid #9bbb59;
+          padding:3px;
+          }
+
+          .head
+          {
+          background-color: #9bbb59;
+          font-size: 9pt;
+          font-weight: bold;
+          text-align : center; 
+          }
+        </style>
+  
+
+      <script language="javascript" type="text/javascript">
+// <!CDATA[
+
+          function toggleItems(name, checked) {
+          
+              var rules = document.styleSheets[0].rules;
+              for (var i = 0; i < rules.length; i++) {
+                  if (rules[i].selectorText == name) {
+                      rules[i].style.display = checked ? "" : "none";
+                      break;
+                  }
+              }
+
+          }
+
+          function ShowOuterHTML(e) {
+              alert(e.outerHTML);
+          }
+          
+
+          function toggleException(ele) {
+              var style = ele.style;
+              style.display = style.display == "none" ? "" : "none";
+          }
+          
+
+// ]]>
+      </script>
+</head>
+  <body style="font-size: 9pt" alink="0">
+    <p>
+      <input id="showErrors" type="checkbox" checked="checked"   onclick="toggleItems('.error', this.checked)" />Errors
+          <input id="showMessage" type="checkbox" checked="checked" onclick="toggleItems('.message', this.checked)"/>Messages
+          <input id="showWarning" type="checkbox" checked="checked" onclick="toggleItems('.warning', this.checked)" />Warnings
+        </p>
+    <table class="logtable" cellpadding="0" cellspacing="0">
+      <thead>
+        <tr class="head">
+          <td width="100px">Time</td>
+          <td width="100px">Category</td>
+          <td width="100px">Importance</td>
+          <td>Message</td>
+        </tr>
+      </thead>
+      <tr class="message">
+        <td>2010-06-25 05:26:58Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Library database path is located in : C:\Program Files\Fantasy\Fantasy Library\CVDB.mdb</td>
+      </tr>
+      <tr class="message">
+        <td >2010-06-25 05:26:58Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Library media file path is located in: C:\Program Files\Fantasy\Fantasy Library\</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:27:45Z</td>
+        <td>FEED</td>
+        <td>Low</td>
+        <td>Begin acess url:http://australianetwork.com/learningenglish/xml/livingenglish_wmv.xml</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:28:01Z</td>
+        <td>FEED</td>
+        <td>Low</td>
+        <td>Analyzed Feed Information</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:28:01Z</td>
+        <td>FEED</td>
+        <td>Low</td>
+        <td>Added the feed information</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:28:01Z</td>
+        <td>FEED</td>
+        <td>Low</td>
+        <td>Added the media Item in the feed</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:01Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:02Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:02Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:02Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:03Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le25.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:03Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:30:03Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le26.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:31:43Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le25.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:31:43Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le25.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:31:43Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le11.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:33:23Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le11.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:33:23Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le11.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:33:23Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le12.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:35:03Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le12.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:35:03Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le12.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:35:03Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le13.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:36:43Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le13.wmv
+        <div>
+         <a href="javascript:toggleException(exception5)">Exception</a>
+         <div id="exception5" style="display:none">
+             Message : message <br />
+             Source: source <br />
+             TargetSite: targetSite
+             StackTrace: stackTrace
+         </div>
+        </div></td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:36:43Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le13.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:36:43Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le14.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:38:23Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le14.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:23Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le14.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:23Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le15.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:37Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:37Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file successfully: le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:37Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to upload file to library server: le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:37Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:39Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:39Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Uploaded file successfully: le27.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:38:39Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:00Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:00Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file successfully: le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:00Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to upload file to library server: le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:00Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:01Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:01Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:01Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:01Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Uploaded file successfully: le26.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:01Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le17.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:40:03Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le15.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:03Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le15.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:03Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:04Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Got the stream from url: http://mpegmedia.abc.net.au/australianetwork/livingenglish/le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:40:04Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Created local file: C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le18.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:41:41Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le17.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:41:41Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le17.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:41:41Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le19.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:43:21Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le19.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:43:21Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le19.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:43:21Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le21.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:45:01Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le21.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:45:01Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le21.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:45:01Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le23.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:46:41Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le23.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:46:41Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le23.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:46:41Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to import file: le24.wmv</td>
+      </tr>
+      <tr class="error">
+        <td>2010-06-25 05:48:21Z</td>
+        <td>IMPORT_DOWNLOAD_ERROR</td>
+        <td>
+        </td>
+        <td>Downloaded file unsuccessfully http://mpegmedia.abc.net.au/australianetwork/livingenglish/le24.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:48:21Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file unsuccessfully: le24.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:24Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:24Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file successfully: le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:24Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to upload file to library server: le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:24Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:25Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:25Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Uploaded file successfully: le18.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:44Z</td>
+        <td>IMPORT_DOWNLOAD</td>
+        <td>Low</td>
+        <td>Downloaded file successfully C:\Documents and Settings\bin.zhang\Application Data\Fantasy\MediaCast\le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:44Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Imported file successfully: le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:44Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Begin to upload file to library server: le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:44Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Begin to upload vodcast file:http://mpegmedia.abc.net.au/australianetwork/livingenglish/le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:45Z</td>
+        <td>CVDB</td>
+        <td>Low</td>
+        <td>Uploaded vodcast file successfullyhttp://mpegmedia.abc.net.au/australianetwork/livingenglish/le16.wmv</td>
+      </tr>
+      <tr class="message">
+        <td>2010-06-25 05:49:45Z</td>
+        <td>IMPORT</td>
+        <td>Low</td>
+        <td>Uploaded file successfully: le16.wmv</td>
+      </tr>
+    </table>
+  </body>
+</html>

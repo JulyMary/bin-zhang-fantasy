@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CannotConverTaskOutputParameterToTaskItemText" xml:space="preserve">
+    <value>Cannot convert parameter {1} of task {0} to TaskItem  </value>
+  </data>
+  <data name="CannotFindTemplateByNameText" xml:space="preserve">
+    <value>Cannot find job template with name '{0}'.</value>
+  </data>
+  <data name="CannotFindTemplateByPathText" xml:space="preserve">
+    <value>Cannot find job template at {0}.</value>
+  </data>
+  <data name="CannotSetValueOnMultProgress" xml:space="preserve">
+    <value>Cannot set value on MultProgress.</value>
+  </data>
+  <data name="ConditionNeedsOneXmlMemberText" xml:space="preserve">
+    <value>Condition {0} needs at least one required XmlMember.</value>
+  </data>
+  <data name="ConditionNotBoolText" xml:space="preserve">
+    <value>Evaluate condition did not return boolean value. Source "{0}", Parsed "{1}".</value>
+  </data>
+  <data name="DoNotSupportDivideExactlyText" xml:space="preserve">
+    <value>Do not support divide exactly operation between {0} and {1}.</value>
+  </data>
+  <data name="DoNotSupportMinusStringText" xml:space="preserve">
+    <value>Do not support minus operations on string.</value>
+  </data>
+  <data name="DoNotSupportModulusText" xml:space="preserve">
+    <value>Do not support modulus operation between {0} and {1}.</value>
+  </data>
+  <data name="DoNotSupportMultDivText" xml:space="preserve">
+    <value>Do not support multiple/divide operations between {0} and {1}.</value>
+  </data>
+  <data name="DoNotSupportNagetiveText" xml:space="preserve">
+    <value>Do not support nagetive operation on {0}.</value>
+  </data>
+  <data name="DoNotSupportPlusText" xml:space="preserve">
+    <value>Do not support plus/minus operations between {0} and {1}.</value>
+  </data>
+  <data name="DulplicateElementText" xml:space="preserve">
+    <value>{0} and {1} have same namespace uri '{2}' and name '{3}'.</value>
+  </data>
+  <data name="DulplicateTaskText" xml:space="preserve">
+    <value>Tasks {0} and {1} have same taks name {2} {3}.</value>
+  </data>
+  <data name="DulplicateTemplateNamesText" xml:space="preserve">
+    <value>File {0} and {1} have same template name {2}.</value>
+  </data>
+  <data name="DulplicateXmlTagText" xml:space="preserve">
+    <value>{0} and {1} have same xml tag name {2}.</value>
+  </data>
+  <data name="FailToLoadTemplateText" xml:space="preserve">
+    <value>Cannot not load template file {0}</value>
+  </data>
+  <data name="InlineTaskMemberMustBeXElementText" xml:space="preserve">
+    <value>Task Member with flag Inline must be type of string. Task {0}, Attribute {1}.</value>
+  </data>
+  <data name="InputParamContainsMultipleItemsText" xml:space="preserve">
+    <value>Input parameter {0} of task {1}  contains {1} TaskItems.</value>
+  </data>
+  <data name="InvalidCallTemplateInputText" xml:space="preserve">
+    <value>Input element must set value of  "itemCategory" or "propertyName"</value>
+  </data>
+  <data name="InvalidExpressionText" xml:space="preserve">
+    <value>Invalid expression {0}.</value>
+  </data>
+  <data name="InvalidFilterText" xml:space="preserve">
+    <value>Invalid filter expression {0}.</value>
+  </data>
+  <data name="InvalidJobTransitionText" xml:space="preserve">
+    <value>Job {0} can not transite from {1} to {2}.</value>
+  </data>
+  <data name="InvalidMultProgressStepCountText" xml:space="preserve">
+    <value>Step count must be great than 0</value>
+  </data>
+  <data name="InvalidMultProgressStepsText" xml:space="preserve">
+    <value>Summary of steps must equal 1.</value>
+  </data>
+  <data name="InvalidOutputText" xml:space="preserve">
+    <value>Output element must set value of "itemCategory" or "propertyName"</value>
+  </data>
+  <data name="InvalidProgressValueText" xml:space="preserve">
+    <value>Progress value must between 0 to 1.</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="JobMetaDataFilterTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\jobmetadatafilter.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="LogTaskDefaultCategory" xml:space="preserve">
+    <value>message</value>
+  </data>
+  <data name="MissingResourceNameText" xml:space="preserve">
+    <value>Resource expression {0} missing  name. </value>
+  </data>
+  <data name="NoStartupTargetText" xml:space="preserve">
+    <value>Must assign target name  because template {0} has not default target.</value>
+  </data>
+  <data name="ParseConditionFailedText" xml:space="preserve">
+    <value>ParseCoditionFailed. Source "{0}", Parsed "{1}".</value>
+  </data>
+  <data name="RequireAttrubiteOfTaskText" xml:space="preserve">
+    <value>Require attribute {0} of task {1}.</value>
+  </data>
+  <data name="ScheduleExistsText" xml:space="preserve">
+    <value>Schedule {0} is already exist.</value>
+  </data>
+  <data name="SetTaskParamErrorText" xml:space="preserve">
+    <value>A error occurs when set task {0}'s parameter {1}.</value>
+  </data>
+  <data name="StringParserUndefinedTagWarningText" xml:space="preserve">
+    <value>Undefined tag {0}({1}). Using empty string ("") as default value.</value>
+  </data>
+  <data name="SuccessToLoadAnonymousTemplateText" xml:space="preserve">
+    <value>Success to load anonymous template file {0}.</value>
+  </data>
+  <data name="SuccessToLoadTemplateText" xml:space="preserve">
+    <value>Success to load template file {0}. Template name is {1}.</value>
+  </data>
+  <data name="TargetContinueText" xml:space="preserve">
+    <value>An exception occurs while excuting target '{0}' and was ignored.</value>
+  </data>
+  <data name="TargetTermianteText" xml:space="preserve">
+    <value>An exception occurs while executing target '{0}', job is terminating.</value>
+  </data>
+  <data name="TaskFailedText" xml:space="preserve">
+    <value>Execute task {0} failed.</value>
+  </data>
+  <data name="UndefinedTargetText" xml:space="preserve">
+    <value>Undefined target {0}.</value>
+  </data>
+  <data name="UndefinedTaskOutputParameterText" xml:space="preserve">
+    <value>Task {0} has not output parameter {1}.</value>
+  </data>
+  <data name="UnitlSuccessFailedText" xml:space="preserve">
+    <value>All try elements are failed, until-success is failed.</value>
+  </data>
+  <data name="UnknownTaskText" xml:space="preserve">
+    <value>Unkown task or instruction with uri {0} and name {1}.</value>
+  </data>
+  <data name="UnresolvedFunctionText" xml:space="preserve">
+    <value>Unresolve function {0}.</value>
+  </data>
+  <data name="UntilSuccessAllSkippedText" xml:space="preserve">
+    <value>All try elements are skipped, until-success is failed.</value>
+  </data>
+  <data name="WhenRequireConditionText" xml:space="preserve">
+    <value>'when' instruction requires valid condition.</value>
+  </data>
+</root>

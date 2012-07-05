@@ -1,0 +1,1274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{411DA863-45DF-4745-8580-786D34087A50}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClickView.Jobs.Web</RootNamespace>
+    <AssemblyName>ClickView.Jobs.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\ClickView.Jobs.Web.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\ClickView.Jobs.Web.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;D:\Program Files\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages" />
+    <Reference Include="System.Web.Helpers" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JobController.cs" />
+    <Compile Include="Controllers\JobServiceErrorsAttribute.cs" />
+    <Compile Include="Controllers\JobsGridHelper.cs" />
+    <Compile Include="Controllers\JobStateImageHelper.cs" />
+    <Compile Include="Controllers\ManagerLogController.cs" />
+    <Compile Include="Controllers\ScheduleController.cs" />
+    <Compile Include="Models\ScheduleModel.cs" />
+    <Compile Include="Models\SettingsTreeConfiguration.cs" />
+    <Compile Include="Models\SplitTimeSpan.cs" />
+    <Compile Include="Models\SuccessModel.cs" />
+    <Compile Include="Models\JobFilterModel.cs" />
+    <Compile Include="Models\JobStateModel.cs" />
+    <Compile Include="Models\RunningJobs.cs" />
+    <Compile Include="Controllers\RunningJobsController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
+    <Compile Include="Controllers\JobsController.cs" />
+    <Compile Include="Controllers\XLogHelper.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\JobLogModel.cs" />
+    <Compile Include="Models\JobModel.cs" />
+    <Compile Include="Models\ManagerLogModel.cs" />
+    <Compile Include="Models\JobsModel.cs" />
+    <Compile Include="Models\RunningJobsModel.cs" />
+    <Compile Include="Models\ScheduleGroup.cs" />
+    <Compile Include="Models\XLogItem.cs" />
+    <Compile Include="Models\XLogModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.settings.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings.settings.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\base\jquery-ui.css" />
+    <Content Include="Content\base\jquery.ui.accordion.css" />
+    <Content Include="Content\base\jquery.ui.all.css" />
+    <Content Include="Content\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\base\jquery.ui.base.css" />
+    <Content Include="Content\base\jquery.ui.button.css" />
+    <Content Include="Content\base\jquery.ui.core.css" />
+    <Content Include="Content\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\base\jquery.ui.dialog.css" />
+    <Content Include="Content\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\base\jquery.ui.resizable.css" />
+    <Content Include="Content\base\jquery.ui.selectable.css" />
+    <Content Include="Content\base\jquery.ui.slider.css" />
+    <Content Include="Content\base\jquery.ui.tabs.css" />
+    <Content Include="Content\base\jquery.ui.theme.css" />
+    <Content Include="Content\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.all.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.base.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\black-tie\images\ui-bg_diagonals-thick_8_333333_40x40.png" />
+    <Content Include="Content\black-tie\images\ui-bg_flat_65_ffffff_40x100.png" />
+    <Content Include="Content\black-tie\images\ui-bg_glass_40_111111_1x400.png" />
+    <Content Include="Content\black-tie\images\ui-bg_glass_55_1c1c1c_1x400.png" />
+    <Content Include="Content\black-tie\images\ui-bg_highlight-hard_100_f9f9f9_1x100.png" />
+    <Content Include="Content\black-tie\images\ui-bg_highlight-hard_40_aaaaaa_1x100.png" />
+    <Content Include="Content\black-tie\images\ui-bg_highlight-soft_50_aaaaaa_1x100.png" />
+    <Content Include="Content\black-tie\images\ui-bg_inset-hard_45_cd0a0a_1x100.png" />
+    <Content Include="Content\black-tie\images\ui-bg_inset-hard_55_ffeb80_1x100.png" />
+    <Content Include="Content\black-tie\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\black-tie\images\ui-icons_4ca300_256x240.png" />
+    <Content Include="Content\black-tie\images\ui-icons_bbbbbb_256x240.png" />
+    <Content Include="Content\black-tie\images\ui-icons_ededed_256x240.png" />
+    <Content Include="Content\black-tie\images\ui-icons_ffcf29_256x240.png" />
+    <Content Include="Content\black-tie\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\black-tie\jquery-ui.css" />
+    <Content Include="Content\black-tie\jquery.ui.accordion.css" />
+    <Content Include="Content\black-tie\jquery.ui.all.css" />
+    <Content Include="Content\black-tie\jquery.ui.autocomplete.css" />
+    <Content Include="Content\black-tie\jquery.ui.base.css" />
+    <Content Include="Content\black-tie\jquery.ui.button.css" />
+    <Content Include="Content\black-tie\jquery.ui.core.css" />
+    <Content Include="Content\black-tie\jquery.ui.datepicker.css" />
+    <Content Include="Content\black-tie\jquery.ui.dialog.css" />
+    <Content Include="Content\black-tie\jquery.ui.progressbar.css" />
+    <Content Include="Content\black-tie\jquery.ui.resizable.css" />
+    <Content Include="Content\black-tie\jquery.ui.selectable.css" />
+    <Content Include="Content\black-tie\jquery.ui.slider.css" />
+    <Content Include="Content\black-tie\jquery.ui.tabs.css" />
+    <Content Include="Content\black-tie\jquery.ui.theme.css" />
+    <Content Include="Content\Black\editor.png" />
+    <Content Include="Content\Black\loading.gif" />
+    <Content Include="Content\Black\sprite.png" />
+    <Content Include="Content\Black\treeview-line.png" />
+    <Content Include="Content\Black\treeview-nodes-rtl.png" />
+    <Content Include="Content\Black\treeview-nodes.png" />
+    <Content Include="Content\blitzer\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
+    <Content Include="Content\blitzer\images\ui-bg_dots-small_65_a6a6a6_2x2.png" />
+    <Content Include="Content\blitzer\images\ui-bg_flat_0_333333_40x100.png" />
+    <Content Include="Content\blitzer\images\ui-bg_flat_65_ffffff_40x100.png" />
+    <Content Include="Content\blitzer\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\blitzer\images\ui-bg_glass_55_fbf8ee_1x400.png" />
+    <Content Include="Content\blitzer\images\ui-bg_highlight-hard_100_eeeeee_1x100.png" />
+    <Content Include="Content\blitzer\images\ui-bg_highlight-hard_100_f6f6f6_1x100.png" />
+    <Content Include="Content\blitzer\images\ui-bg_highlight-soft_15_cc0000_1x100.png" />
+    <Content Include="Content\blitzer\images\ui-icons_004276_256x240.png" />
+    <Content Include="Content\blitzer\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\blitzer\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\blitzer\jquery-ui.css" />
+    <Content Include="Content\blitzer\jquery.ui.accordion.css" />
+    <Content Include="Content\blitzer\jquery.ui.all.css" />
+    <Content Include="Content\blitzer\jquery.ui.autocomplete.css" />
+    <Content Include="Content\blitzer\jquery.ui.base.css" />
+    <Content Include="Content\blitzer\jquery.ui.button.css" />
+    <Content Include="Content\blitzer\jquery.ui.core.css" />
+    <Content Include="Content\blitzer\jquery.ui.datepicker.css" />
+    <Content Include="Content\blitzer\jquery.ui.dialog.css" />
+    <Content Include="Content\blitzer\jquery.ui.progressbar.css" />
+    <Content Include="Content\blitzer\jquery.ui.resizable.css" />
+    <Content Include="Content\blitzer\jquery.ui.selectable.css" />
+    <Content Include="Content\blitzer\jquery.ui.slider.css" />
+    <Content Include="Content\blitzer\jquery.ui.tabs.css" />
+    <Content Include="Content\blitzer\jquery.ui.theme.css" />
+    <Content Include="Content\checkbox\empty.png" />
+    <Content Include="Content\checkbox\jquery.checkbox.css" />
+    <Content Include="Content\checkbox\safari-checkbox.png" />
+    <Content Include="Content\cupertino\images\ui-bg_diagonals-thick_90_eeeeee_40x40.png" />
+    <Content Include="Content\cupertino\images\ui-bg_flat_15_cd0a0a_40x100.png" />
+    <Content Include="Content\cupertino\images\ui-bg_glass_100_e4f1fb_1x400.png" />
+    <Content Include="Content\cupertino\images\ui-bg_glass_50_3baae3_1x400.png" />
+    <Content Include="Content\cupertino\images\ui-bg_glass_80_d7ebf9_1x400.png" />
+    <Content Include="Content\cupertino\images\ui-bg_highlight-hard_100_f2f5f7_1x100.png" />
+    <Content Include="Content\cupertino\images\ui-bg_highlight-hard_70_000000_1x100.png" />
+    <Content Include="Content\cupertino\images\ui-bg_highlight-soft_100_deedf7_1x100.png" />
+    <Content Include="Content\cupertino\images\ui-bg_highlight-soft_25_ffef8f_1x100.png" />
+    <Content Include="Content\cupertino\images\ui-icons_2694e8_256x240.png" />
+    <Content Include="Content\cupertino\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\cupertino\images\ui-icons_3d80b3_256x240.png" />
+    <Content Include="Content\cupertino\images\ui-icons_72a7cf_256x240.png" />
+    <Content Include="Content\cupertino\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\cupertino\jquery-ui.css" />
+    <Content Include="Content\cupertino\jquery.ui.accordion.css" />
+    <Content Include="Content\cupertino\jquery.ui.all.css" />
+    <Content Include="Content\cupertino\jquery.ui.autocomplete.css" />
+    <Content Include="Content\cupertino\jquery.ui.base.css" />
+    <Content Include="Content\cupertino\jquery.ui.button.css" />
+    <Content Include="Content\cupertino\jquery.ui.core.css" />
+    <Content Include="Content\cupertino\jquery.ui.datepicker.css" />
+    <Content Include="Content\cupertino\jquery.ui.dialog.css" />
+    <Content Include="Content\cupertino\jquery.ui.progressbar.css" />
+    <Content Include="Content\cupertino\jquery.ui.resizable.css" />
+    <Content Include="Content\cupertino\jquery.ui.selectable.css" />
+    <Content Include="Content\cupertino\jquery.ui.slider.css" />
+    <Content Include="Content\cupertino\jquery.ui.tabs.css" />
+    <Content Include="Content\cupertino\jquery.ui.theme.css" />
+    <Content Include="Content\dark-hive\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_highlight-hard_20_0972a5_1x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_highlight-soft_33_003147_1x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_highlight-soft_35_222222_1x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_highlight-soft_44_444444_1x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Content\dark-hive\images\ui-bg_loop_25_000000_21x21.png" />
+    <Content Include="Content\dark-hive\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\dark-hive\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Content\dark-hive\images\ui-icons_a83300_256x240.png" />
+    <Content Include="Content\dark-hive\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Content\dark-hive\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\dark-hive\jquery-ui.css" />
+    <Content Include="Content\dark-hive\jquery.ui.accordion.css" />
+    <Content Include="Content\dark-hive\jquery.ui.all.css" />
+    <Content Include="Content\dark-hive\jquery.ui.autocomplete.css" />
+    <Content Include="Content\dark-hive\jquery.ui.base.css" />
+    <Content Include="Content\dark-hive\jquery.ui.button.css" />
+    <Content Include="Content\dark-hive\jquery.ui.core.css" />
+    <Content Include="Content\dark-hive\jquery.ui.datepicker.css" />
+    <Content Include="Content\dark-hive\jquery.ui.dialog.css" />
+    <Content Include="Content\dark-hive\jquery.ui.progressbar.css" />
+    <Content Include="Content\dark-hive\jquery.ui.resizable.css" />
+    <Content Include="Content\dark-hive\jquery.ui.selectable.css" />
+    <Content Include="Content\dark-hive\jquery.ui.slider.css" />
+    <Content Include="Content\dark-hive\jquery.ui.tabs.css" />
+    <Content Include="Content\dark-hive\jquery.ui.theme.css" />
+    <Content Include="Content\Default\editor.png" />
+    <Content Include="Content\Default\loading.gif" />
+    <Content Include="Content\Default\sprite.png" />
+    <Content Include="Content\Default\treeview-line.png" />
+    <Content Include="Content\Default\treeview-nodes-rtl.png" />
+    <Content Include="Content\Default\treeview-nodes.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_diagonals-thick_15_0b3e6f_40x40.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_dots-medium_30_0b58a2_4x4.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_dots-small_20_333333_2x2.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_dots-small_30_a32d00_2x2.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_dots-small_40_00498f_2x2.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_flat_40_292929_40x100.png" />
+    <Content Include="Content\dot-luv\images\ui-bg_gloss-wave_20_111111_500x100.png" />
+    <Content Include="Content\dot-luv\images\ui-icons_00498f_256x240.png" />
+    <Content Include="Content\dot-luv\images\ui-icons_98d2fb_256x240.png" />
+    <Content Include="Content\dot-luv\images\ui-icons_9ccdfc_256x240.png" />
+    <Content Include="Content\dot-luv\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\dot-luv\jquery-ui.css" />
+    <Content Include="Content\dot-luv\jquery.ui.accordion.css" />
+    <Content Include="Content\dot-luv\jquery.ui.all.css" />
+    <Content Include="Content\dot-luv\jquery.ui.autocomplete.css" />
+    <Content Include="Content\dot-luv\jquery.ui.base.css" />
+    <Content Include="Content\dot-luv\jquery.ui.button.css" />
+    <Content Include="Content\dot-luv\jquery.ui.core.css" />
+    <Content Include="Content\dot-luv\jquery.ui.datepicker.css" />
+    <Content Include="Content\dot-luv\jquery.ui.dialog.css" />
+    <Content Include="Content\dot-luv\jquery.ui.progressbar.css" />
+    <Content Include="Content\dot-luv\jquery.ui.resizable.css" />
+    <Content Include="Content\dot-luv\jquery.ui.selectable.css" />
+    <Content Include="Content\dot-luv\jquery.ui.slider.css" />
+    <Content Include="Content\dot-luv\jquery.ui.tabs.css" />
+    <Content Include="Content\dot-luv\jquery.ui.theme.css" />
+    <Content Include="Content\eggplant\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_flat_55_994d53_40x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_flat_55_fafafa_40x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_gloss-wave_30_3d3644_500x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_highlight-soft_100_dcd9de_1x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_highlight-soft_100_eae6ea_1x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_highlight-soft_25_30273a_1x100.png" />
+    <Content Include="Content\eggplant\images\ui-bg_highlight-soft_45_5f5964_1x100.png" />
+    <Content Include="Content\eggplant\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\eggplant\images\ui-icons_734d99_256x240.png" />
+    <Content Include="Content\eggplant\images\ui-icons_8d78a5_256x240.png" />
+    <Content Include="Content\eggplant\images\ui-icons_a8a3ae_256x240.png" />
+    <Content Include="Content\eggplant\images\ui-icons_ebccce_256x240.png" />
+    <Content Include="Content\eggplant\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\eggplant\jquery-ui.css" />
+    <Content Include="Content\eggplant\jquery.ui.accordion.css" />
+    <Content Include="Content\eggplant\jquery.ui.all.css" />
+    <Content Include="Content\eggplant\jquery.ui.autocomplete.css" />
+    <Content Include="Content\eggplant\jquery.ui.base.css" />
+    <Content Include="Content\eggplant\jquery.ui.button.css" />
+    <Content Include="Content\eggplant\jquery.ui.core.css" />
+    <Content Include="Content\eggplant\jquery.ui.datepicker.css" />
+    <Content Include="Content\eggplant\jquery.ui.dialog.css" />
+    <Content Include="Content\eggplant\jquery.ui.progressbar.css" />
+    <Content Include="Content\eggplant\jquery.ui.resizable.css" />
+    <Content Include="Content\eggplant\jquery.ui.selectable.css" />
+    <Content Include="Content\eggplant\jquery.ui.slider.css" />
+    <Content Include="Content\eggplant\jquery.ui.tabs.css" />
+    <Content Include="Content\eggplant\jquery.ui.theme.css" />
+    <Content Include="Content\excite-bike\images\ui-bg_diagonals-small_25_c5ddfc_40x40.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_diagonals-thick_20_e69700_40x40.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_diagonals-thick_22_1484e6_40x40.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_diagonals-thick_26_2293f7_40x40.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_flat_0_e69700_40x100.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_flat_0_e6b900_40x100.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_highlight-soft_100_f9f9f9_1x100.png" />
+    <Content Include="Content\excite-bike\images\ui-bg_inset-hard_100_eeeeee_1x100.png" />
+    <Content Include="Content\excite-bike\images\ui-icons_0a82eb_256x240.png" />
+    <Content Include="Content\excite-bike\images\ui-icons_0b54d5_256x240.png" />
+    <Content Include="Content\excite-bike\images\ui-icons_5fa5e3_256x240.png" />
+    <Content Include="Content\excite-bike\images\ui-icons_fcdd4a_256x240.png" />
+    <Content Include="Content\excite-bike\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\excite-bike\jquery-ui.css" />
+    <Content Include="Content\excite-bike\jquery.ui.accordion.css" />
+    <Content Include="Content\excite-bike\jquery.ui.all.css" />
+    <Content Include="Content\excite-bike\jquery.ui.autocomplete.css" />
+    <Content Include="Content\excite-bike\jquery.ui.base.css" />
+    <Content Include="Content\excite-bike\jquery.ui.button.css" />
+    <Content Include="Content\excite-bike\jquery.ui.core.css" />
+    <Content Include="Content\excite-bike\jquery.ui.datepicker.css" />
+    <Content Include="Content\excite-bike\jquery.ui.dialog.css" />
+    <Content Include="Content\excite-bike\jquery.ui.progressbar.css" />
+    <Content Include="Content\excite-bike\jquery.ui.resizable.css" />
+    <Content Include="Content\excite-bike\jquery.ui.selectable.css" />
+    <Content Include="Content\excite-bike\jquery.ui.slider.css" />
+    <Content Include="Content\excite-bike\jquery.ui.tabs.css" />
+    <Content Include="Content\excite-bike\jquery.ui.theme.css" />
+    <Content Include="Content\flick\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\flick\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\flick\images\ui-bg_flat_55_ffffff_40x100.png" />
+    <Content Include="Content\flick\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\flick\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\flick\images\ui-bg_highlight-soft_100_f6f6f6_1x100.png" />
+    <Content Include="Content\flick\images\ui-bg_highlight-soft_25_0073ea_1x100.png" />
+    <Content Include="Content\flick\images\ui-bg_highlight-soft_50_dddddd_1x100.png" />
+    <Content Include="Content\flick\images\ui-icons_0073ea_256x240.png" />
+    <Content Include="Content\flick\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\flick\images\ui-icons_666666_256x240.png" />
+    <Content Include="Content\flick\images\ui-icons_ff0084_256x240.png" />
+    <Content Include="Content\flick\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\flick\jquery-ui.css" />
+    <Content Include="Content\flick\jquery.ui.accordion.css" />
+    <Content Include="Content\flick\jquery.ui.all.css" />
+    <Content Include="Content\flick\jquery.ui.autocomplete.css" />
+    <Content Include="Content\flick\jquery.ui.base.css" />
+    <Content Include="Content\flick\jquery.ui.button.css" />
+    <Content Include="Content\flick\jquery.ui.core.css" />
+    <Content Include="Content\flick\jquery.ui.datepicker.css" />
+    <Content Include="Content\flick\jquery.ui.dialog.css" />
+    <Content Include="Content\flick\jquery.ui.progressbar.css" />
+    <Content Include="Content\flick\jquery.ui.resizable.css" />
+    <Content Include="Content\flick\jquery.ui.selectable.css" />
+    <Content Include="Content\flick\jquery.ui.slider.css" />
+    <Content Include="Content\flick\jquery.ui.tabs.css" />
+    <Content Include="Content\flick\jquery.ui.theme.css" />
+    <Content Include="Content\Forest\editor.png" />
+    <Content Include="Content\Forest\loading.gif" />
+    <Content Include="Content\Forest\sprite.png" />
+    <Content Include="Content\Forest\treeview-line.png" />
+    <Content Include="Content\Forest\treeview-nodes-rtl.png" />
+    <Content Include="Content\Forest\treeview-nodes.png" />
+    <Content Include="Content\Hay\editor.png" />
+    <Content Include="Content\Hay\loading.gif" />
+    <Content Include="Content\Hay\sprite.png" />
+    <Content Include="Content\Hay\treeview-line.png" />
+    <Content Include="Content\Hay\treeview-nodes-rtl.png" />
+    <Content Include="Content\Hay\treeview-nodes.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_diagonals-small_40_db4865_40x40.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_diagonals-small_50_93c3cd_40x40.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_diagonals-small_50_ff3853_40x40.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_diagonals-small_75_ccd232_40x40.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_dots-medium_80_ffff38_4x4.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_dots-small_35_35414f_2x2.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_flat_75_ba9217_40x100.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\hot-sneaks\images\ui-bg_white-lines_85_f7f7ba_40x100.png" />
+    <Content Include="Content\hot-sneaks\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\hot-sneaks\images\ui-icons_88a206_256x240.png" />
+    <Content Include="Content\hot-sneaks\images\ui-icons_c02669_256x240.png" />
+    <Content Include="Content\hot-sneaks\images\ui-icons_e1e463_256x240.png" />
+    <Content Include="Content\hot-sneaks\images\ui-icons_ffeb33_256x240.png" />
+    <Content Include="Content\hot-sneaks\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\hot-sneaks\jquery-ui.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.accordion.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.all.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.autocomplete.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.base.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.button.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.core.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.datepicker.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.dialog.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.progressbar.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.resizable.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.selectable.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.slider.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.tabs.css" />
+    <Content Include="Content\hot-sneaks\jquery.ui.theme.css" />
+    <Content Include="Content\humanity\images\ui-bg_flat_75_aaaaaa_40x100.png" />
+    <Content Include="Content\humanity\images\ui-bg_glass_100_f5f0e5_1x400.png" />
+    <Content Include="Content\humanity\images\ui-bg_glass_25_cb842e_1x400.png" />
+    <Content Include="Content\humanity\images\ui-bg_glass_70_ede4d4_1x400.png" />
+    <Content Include="Content\humanity\images\ui-bg_highlight-hard_100_f4f0ec_1x100.png" />
+    <Content Include="Content\humanity\images\ui-bg_highlight-hard_65_fee4bd_1x100.png" />
+    <Content Include="Content\humanity\images\ui-bg_highlight-hard_75_f5f5b5_1x100.png" />
+    <Content Include="Content\humanity\images\ui-bg_inset-soft_100_f4f0ec_1x100.png" />
+    <Content Include="Content\humanity\images\ui-icons_c47a23_256x240.png" />
+    <Content Include="Content\humanity\images\ui-icons_cb672b_256x240.png" />
+    <Content Include="Content\humanity\images\ui-icons_f08000_256x240.png" />
+    <Content Include="Content\humanity\images\ui-icons_f35f07_256x240.png" />
+    <Content Include="Content\humanity\images\ui-icons_ff7519_256x240.png" />
+    <Content Include="Content\humanity\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\humanity\jquery-ui.css" />
+    <Content Include="Content\humanity\jquery.ui.accordion.css" />
+    <Content Include="Content\humanity\jquery.ui.all.css" />
+    <Content Include="Content\humanity\jquery.ui.autocomplete.css" />
+    <Content Include="Content\humanity\jquery.ui.base.css" />
+    <Content Include="Content\humanity\jquery.ui.button.css" />
+    <Content Include="Content\humanity\jquery.ui.core.css" />
+    <Content Include="Content\humanity\jquery.ui.datepicker.css" />
+    <Content Include="Content\humanity\jquery.ui.dialog.css" />
+    <Content Include="Content\humanity\jquery.ui.progressbar.css" />
+    <Content Include="Content\humanity\jquery.ui.resizable.css" />
+    <Content Include="Content\humanity\jquery.ui.selectable.css" />
+    <Content Include="Content\humanity\jquery.ui.slider.css" />
+    <Content Include="Content\humanity\jquery.ui.tabs.css" />
+    <Content Include="Content\humanity\jquery.ui.theme.css" />
+    <Content Include="Content\images\collapse.png" />
+    <Content Include="Content\images\expand.png" />
+    <Content Include="Content\images\folder.add.png" />
+    <Content Include="Content\images\folder.delete.png" />
+    <Content Include="Content\images\log.png" />
+    <Content Include="Content\images\log.grey.png" />
+    <Content Include="Content\images\running.grey.png" />
+    <Content Include="Content\images\schedule.add.png" />
+    <Content Include="Content\images\schedule.delete.png" />
+    <Content Include="Content\images\schedule.png" />
+    <Content Include="Content\images\ScheduleGroup.grey.png" />
+    <Content Include="Content\images\ScheduleGroup.png" />
+    <Content Include="Content\images\search.png" />
+    <Content Include="Content\images\settings.png" />
+    <Content Include="Content\images\settings.grey.png" />
+    <Content Include="Content\images\splitbutton-down.png" />
+    <Content Include="Content\images\template.png" />
+    <Content Include="Content\images\template.grey.png" />
+    <Content Include="Content\images\template\cross.png" />
+    <Content Include="Content\images\template\tick.png" />
+    <Content Include="Content\images\terminated.png" />
+    <Content Include="Content\images\running.png" />
+    <Content Include="Content\images\terminated.grey.png" />
+    <Content Include="Content\images\unterminated.png" />
+    <Content Include="Content\images\unterminated.grey.png" />
+    <Content Include="Content\JobState\all.png" />
+    <Content Include="Content\JobState\RequestStart.png" />
+    <Content Include="Content\JobState\Suspended.png" />
+    <Content Include="Content\JobState\Failed.png" />
+    <Content Include="Content\JobState\UserPaused.png" />
+    <Content Include="Content\JobState\Running.png" />
+    <Content Include="Content\JobState\Cancelled.png" />
+    <Content Include="Content\JobState\Succeed.png" />
+    <Content Include="Content\JobState\Unstarted.png" />
+    <Content Include="Content\jquery.checkbox.css" />
+    <Content Include="Content\le-frog\images\ui-bg_diagonals-small_0_aaaaaa_40x40.png" />
+    <Content Include="Content\le-frog\images\ui-bg_diagonals-thick_15_444444_40x40.png" />
+    <Content Include="Content\le-frog\images\ui-bg_diagonals-thick_95_ffdc2e_40x40.png" />
+    <Content Include="Content\le-frog\images\ui-bg_glass_55_fbf5d0_1x400.png" />
+    <Content Include="Content\le-frog\images\ui-bg_highlight-hard_30_285c00_1x100.png" />
+    <Content Include="Content\le-frog\images\ui-bg_highlight-soft_33_3a8104_1x100.png" />
+    <Content Include="Content\le-frog\images\ui-bg_highlight-soft_50_4eb305_1x100.png" />
+    <Content Include="Content\le-frog\images\ui-bg_highlight-soft_60_4ca20b_1x100.png" />
+    <Content Include="Content\le-frog\images\ui-bg_inset-soft_10_285c00_1x100.png" />
+    <Content Include="Content\le-frog\images\ui-icons_4eb305_256x240.png" />
+    <Content Include="Content\le-frog\images\ui-icons_72b42d_256x240.png" />
+    <Content Include="Content\le-frog\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\le-frog\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\le-frog\jquery-ui.css" />
+    <Content Include="Content\le-frog\jquery.ui.accordion.css" />
+    <Content Include="Content\le-frog\jquery.ui.all.css" />
+    <Content Include="Content\le-frog\jquery.ui.autocomplete.css" />
+    <Content Include="Content\le-frog\jquery.ui.base.css" />
+    <Content Include="Content\le-frog\jquery.ui.button.css" />
+    <Content Include="Content\le-frog\jquery.ui.core.css" />
+    <Content Include="Content\le-frog\jquery.ui.datepicker.css" />
+    <Content Include="Content\le-frog\jquery.ui.dialog.css" />
+    <Content Include="Content\le-frog\jquery.ui.progressbar.css" />
+    <Content Include="Content\le-frog\jquery.ui.resizable.css" />
+    <Content Include="Content\le-frog\jquery.ui.selectable.css" />
+    <Content Include="Content\le-frog\jquery.ui.slider.css" />
+    <Content Include="Content\le-frog\jquery.ui.tabs.css" />
+    <Content Include="Content\le-frog\jquery.ui.theme.css" />
+    <Content Include="Content\mint-choc\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_glass_15_5f391b_1x400.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_gloss-wave_20_1c160d_500x100.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_gloss-wave_25_453326_500x100.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_gloss-wave_30_44372c_500x100.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_highlight-soft_20_201913_1x100.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_highlight-soft_20_619226_1x100.png" />
+    <Content Include="Content\mint-choc\images\ui-bg_inset-soft_10_201913_1x100.png" />
+    <Content Include="Content\mint-choc\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\mint-choc\images\ui-icons_9bcc60_256x240.png" />
+    <Content Include="Content\mint-choc\images\ui-icons_add978_256x240.png" />
+    <Content Include="Content\mint-choc\images\ui-icons_e3ddc9_256x240.png" />
+    <Content Include="Content\mint-choc\images\ui-icons_f1fd86_256x240.png" />
+    <Content Include="Content\mint-choc\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\mint-choc\jquery-ui.css" />
+    <Content Include="Content\mint-choc\jquery.ui.accordion.css" />
+    <Content Include="Content\mint-choc\jquery.ui.all.css" />
+    <Content Include="Content\mint-choc\jquery.ui.autocomplete.css" />
+    <Content Include="Content\mint-choc\jquery.ui.base.css" />
+    <Content Include="Content\mint-choc\jquery.ui.button.css" />
+    <Content Include="Content\mint-choc\jquery.ui.core.css" />
+    <Content Include="Content\mint-choc\jquery.ui.datepicker.css" />
+    <Content Include="Content\mint-choc\jquery.ui.dialog.css" />
+    <Content Include="Content\mint-choc\jquery.ui.progressbar.css" />
+    <Content Include="Content\mint-choc\jquery.ui.resizable.css" />
+    <Content Include="Content\mint-choc\jquery.ui.selectable.css" />
+    <Content Include="Content\mint-choc\jquery.ui.slider.css" />
+    <Content Include="Content\mint-choc\jquery.ui.tabs.css" />
+    <Content Include="Content\mint-choc\jquery.ui.theme.css" />
+    <Content Include="Content\msdropdown\dd.css" />
+    <Content Include="Content\msdropdown\dd_arrow.gif" />
+    <Content Include="Content\Office2007\editor.png" />
+    <Content Include="Content\Office2007\loading.gif" />
+    <Content Include="Content\Office2007\sprite.png" />
+    <Content Include="Content\Office2007\treeview-line.png" />
+    <Content Include="Content\Office2007\treeview-nodes-rtl.png" />
+    <Content Include="Content\Office2007\treeview-nodes.png" />
+    <Content Include="Content\Outlook\editor.png" />
+    <Content Include="Content\Outlook\loading.gif" />
+    <Content Include="Content\Outlook\sprite.png" />
+    <Content Include="Content\Outlook\treeview-line.png" />
+    <Content Include="Content\Outlook\treeview-nodes-rtl.png" />
+    <Content Include="Content\Outlook\treeview-nodes.png" />
+    <Content Include="Content\overcast\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\overcast\images\ui-bg_flat_0_eeeeee_40x100.png" />
+    <Content Include="Content\overcast\images\ui-bg_flat_55_c0402a_40x100.png" />
+    <Content Include="Content\overcast\images\ui-bg_flat_55_eeeeee_40x100.png" />
+    <Content Include="Content\overcast\images\ui-bg_glass_100_f8f8f8_1x400.png" />
+    <Content Include="Content\overcast\images\ui-bg_glass_35_dddddd_1x400.png" />
+    <Content Include="Content\overcast\images\ui-bg_glass_60_eeeeee_1x400.png" />
+    <Content Include="Content\overcast\images\ui-bg_inset-hard_75_999999_1x100.png" />
+    <Content Include="Content\overcast\images\ui-bg_inset-soft_50_c9c9c9_1x100.png" />
+    <Content Include="Content\overcast\images\ui-icons_3383bb_256x240.png" />
+    <Content Include="Content\overcast\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\overcast\images\ui-icons_70b2e1_256x240.png" />
+    <Content Include="Content\overcast\images\ui-icons_999999_256x240.png" />
+    <Content Include="Content\overcast\images\ui-icons_fbc856_256x240.png" />
+    <Content Include="Content\overcast\jquery-ui.css" />
+    <Content Include="Content\overcast\jquery.ui.accordion.css" />
+    <Content Include="Content\overcast\jquery.ui.all.css" />
+    <Content Include="Content\overcast\jquery.ui.autocomplete.css" />
+    <Content Include="Content\overcast\jquery.ui.base.css" />
+    <Content Include="Content\overcast\jquery.ui.button.css" />
+    <Content Include="Content\overcast\jquery.ui.core.css" />
+    <Content Include="Content\overcast\jquery.ui.datepicker.css" />
+    <Content Include="Content\overcast\jquery.ui.dialog.css" />
+    <Content Include="Content\overcast\jquery.ui.progressbar.css" />
+    <Content Include="Content\overcast\jquery.ui.resizable.css" />
+    <Content Include="Content\overcast\jquery.ui.selectable.css" />
+    <Content Include="Content\overcast\jquery.ui.slider.css" />
+    <Content Include="Content\overcast\jquery.ui.tabs.css" />
+    <Content Include="Content\overcast\jquery.ui.theme.css" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_diagonal-maze_20_6e4f1c_10x10.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_diagonal-maze_40_000000_10x10.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_10_eceadf_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_10_f8f7f6_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_15_eceadf_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_15_f7f3de_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_15_ffffff_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_65_654b24_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-bg_fine-grain_68_b83400_60x60.png" />
+    <Content Include="Content\pepper-grinder\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\pepper-grinder\images\ui-icons_3572ac_256x240.png" />
+    <Content Include="Content\pepper-grinder\images\ui-icons_8c291d_256x240.png" />
+    <Content Include="Content\pepper-grinder\images\ui-icons_b83400_256x240.png" />
+    <Content Include="Content\pepper-grinder\images\ui-icons_fbdb93_256x240.png" />
+    <Content Include="Content\pepper-grinder\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\pepper-grinder\jquery-ui.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.accordion.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.all.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.autocomplete.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.base.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.button.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.core.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.datepicker.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.dialog.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.progressbar.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.resizable.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.selectable.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.slider.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.tabs.css" />
+    <Content Include="Content\pepper-grinder\jquery.ui.theme.css" />
+    <Content Include="Content\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\redmond\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\redmond\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\redmond\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\redmond\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\redmond\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\redmond\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\redmond\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\redmond\jquery-ui.css" />
+    <Content Include="Content\redmond\jquery.ui.accordion.css" />
+    <Content Include="Content\redmond\jquery.ui.all.css" />
+    <Content Include="Content\redmond\jquery.ui.autocomplete.css" />
+    <Content Include="Content\redmond\jquery.ui.base.css" />
+    <Content Include="Content\redmond\jquery.ui.button.css" />
+    <Content Include="Content\redmond\jquery.ui.core.css" />
+    <Content Include="Content\redmond\jquery.ui.datepicker.css" />
+    <Content Include="Content\redmond\jquery.ui.dialog.css" />
+    <Content Include="Content\redmond\jquery.ui.progressbar.css" />
+    <Content Include="Content\redmond\jquery.ui.resizable.css" />
+    <Content Include="Content\redmond\jquery.ui.selectable.css" />
+    <Content Include="Content\redmond\jquery.ui.slider.css" />
+    <Content Include="Content\redmond\jquery.ui.tabs.css" />
+    <Content Include="Content\redmond\jquery.ui.theme.css" />
+    <Content Include="Content\safari-checkbox.png" />
+    <Content Include="Content\sh\shCore.css" />
+    <Content Include="Content\sh\shCoreDefault.css" />
+    <Content Include="Content\sh\shCoreDjango.css" />
+    <Content Include="Content\sh\shCoreEclipse.css" />
+    <Content Include="Content\sh\shCoreEmacs.css" />
+    <Content Include="Content\sh\shCoreFadeToGrey.css" />
+    <Content Include="Content\sh\shCoreMDUltra.css" />
+    <Content Include="Content\sh\shCoreMidnight.css" />
+    <Content Include="Content\sh\shCoreRDark.css" />
+    <Content Include="Content\sh\shThemeDefault.css" />
+    <Content Include="Content\sh\shThemeDjango.css" />
+    <Content Include="Content\sh\shThemeEclipse.css" />
+    <Content Include="Content\sh\shThemeEmacs.css" />
+    <Content Include="Content\sh\shThemeFadeToGrey.css" />
+    <Content Include="Content\sh\shThemeMDUltra.css" />
+    <Content Include="Content\sh\shThemeMidnight.css" />
+    <Content Include="Content\sh\shThemeRDark.css" />
+    <Content Include="Content\Simple\editor.png" />
+    <Content Include="Content\Simple\loading.gif" />
+    <Content Include="Content\Simple\sprite.png" />
+    <Content Include="Content\Simple\treeview-line.png" />
+    <Content Include="Content\Simple\treeview-nodes-rtl.png" />
+    <Content Include="Content\Simple\treeview-nodes.png" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\Sitefinity\editor.png" />
+    <Content Include="Content\Sitefinity\loading.gif" />
+    <Content Include="Content\Sitefinity\sprite.png" />
+    <Content Include="Content\Sitefinity\treeview-line.png" />
+    <Content Include="Content\Sitefinity\treeview-nodes-rtl.png" />
+    <Content Include="Content\Sitefinity\treeview-nodes.png" />
+    <Content Include="Content\smoothness\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\smoothness\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\smoothness\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\smoothness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\smoothness\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\smoothness\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\smoothness\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\smoothness\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\smoothness\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\smoothness\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\smoothness\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\smoothness\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\smoothness\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\smoothness\jquery-ui.css" />
+    <Content Include="Content\smoothness\jquery.ui.accordion.css" />
+    <Content Include="Content\smoothness\jquery.ui.all.css" />
+    <Content Include="Content\smoothness\jquery.ui.autocomplete.css" />
+    <Content Include="Content\smoothness\jquery.ui.base.css" />
+    <Content Include="Content\smoothness\jquery.ui.button.css" />
+    <Content Include="Content\smoothness\jquery.ui.core.css" />
+    <Content Include="Content\smoothness\jquery.ui.datepicker.css" />
+    <Content Include="Content\smoothness\jquery.ui.dialog.css" />
+    <Content Include="Content\smoothness\jquery.ui.progressbar.css" />
+    <Content Include="Content\smoothness\jquery.ui.resizable.css" />
+    <Content Include="Content\smoothness\jquery.ui.selectable.css" />
+    <Content Include="Content\smoothness\jquery.ui.slider.css" />
+    <Content Include="Content\smoothness\jquery.ui.tabs.css" />
+    <Content Include="Content\smoothness\jquery.ui.theme.css" />
+    <Content Include="Content\south-street\images\ui-bg_glass_55_fcf0ba_1x400.png" />
+    <Content Include="Content\south-street\images\ui-bg_gloss-wave_100_ece8da_500x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_highlight-hard_100_f5f3e5_1x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_highlight-hard_100_fafaf4_1x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_highlight-hard_15_459e00_1x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_highlight-hard_95_cccccc_1x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_highlight-soft_25_67b021_1x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_highlight-soft_95_ffedad_1x100.png" />
+    <Content Include="Content\south-street\images\ui-bg_inset-soft_15_2b2922_1x100.png" />
+    <Content Include="Content\south-street\images\ui-icons_808080_256x240.png" />
+    <Content Include="Content\south-street\images\ui-icons_847e71_256x240.png" />
+    <Content Include="Content\south-street\images\ui-icons_8dc262_256x240.png" />
+    <Content Include="Content\south-street\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\south-street\images\ui-icons_eeeeee_256x240.png" />
+    <Content Include="Content\south-street\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\south-street\jquery-ui.css" />
+    <Content Include="Content\south-street\jquery.ui.accordion.css" />
+    <Content Include="Content\south-street\jquery.ui.all.css" />
+    <Content Include="Content\south-street\jquery.ui.autocomplete.css" />
+    <Content Include="Content\south-street\jquery.ui.base.css" />
+    <Content Include="Content\south-street\jquery.ui.button.css" />
+    <Content Include="Content\south-street\jquery.ui.core.css" />
+    <Content Include="Content\south-street\jquery.ui.datepicker.css" />
+    <Content Include="Content\south-street\jquery.ui.dialog.css" />
+    <Content Include="Content\south-street\jquery.ui.progressbar.css" />
+    <Content Include="Content\south-street\jquery.ui.resizable.css" />
+    <Content Include="Content\south-street\jquery.ui.selectable.css" />
+    <Content Include="Content\south-street\jquery.ui.slider.css" />
+    <Content Include="Content\south-street\jquery.ui.tabs.css" />
+    <Content Include="Content\south-street\jquery.ui.theme.css" />
+    <Content Include="Content\start\images\ui-bg_flat_55_999999_40x100.png" />
+    <Content Include="Content\start\images\ui-bg_flat_75_aaaaaa_40x100.png" />
+    <Content Include="Content\start\images\ui-bg_glass_45_0078ae_1x400.png" />
+    <Content Include="Content\start\images\ui-bg_glass_55_f8da4e_1x400.png" />
+    <Content Include="Content\start\images\ui-bg_glass_75_79c9ec_1x400.png" />
+    <Content Include="Content\start\images\ui-bg_gloss-wave_45_e14f1c_500x100.png" />
+    <Content Include="Content\start\images\ui-bg_gloss-wave_50_6eac2c_500x100.png" />
+    <Content Include="Content\start\images\ui-bg_gloss-wave_75_2191c0_500x100.png" />
+    <Content Include="Content\start\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\start\images\ui-icons_0078ae_256x240.png" />
+    <Content Include="Content\start\images\ui-icons_056b93_256x240.png" />
+    <Content Include="Content\start\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\start\images\ui-icons_e0fdff_256x240.png" />
+    <Content Include="Content\start\images\ui-icons_f5e175_256x240.png" />
+    <Content Include="Content\start\images\ui-icons_f7a50d_256x240.png" />
+    <Content Include="Content\start\images\ui-icons_fcd113_256x240.png" />
+    <Content Include="Content\start\jquery-ui.css" />
+    <Content Include="Content\start\jquery.ui.accordion.css" />
+    <Content Include="Content\start\jquery.ui.all.css" />
+    <Content Include="Content\start\jquery.ui.autocomplete.css" />
+    <Content Include="Content\start\jquery.ui.base.css" />
+    <Content Include="Content\start\jquery.ui.button.css" />
+    <Content Include="Content\start\jquery.ui.core.css" />
+    <Content Include="Content\start\jquery.ui.datepicker.css" />
+    <Content Include="Content\start\jquery.ui.dialog.css" />
+    <Content Include="Content\start\jquery.ui.progressbar.css" />
+    <Content Include="Content\start\jquery.ui.resizable.css" />
+    <Content Include="Content\start\jquery.ui.selectable.css" />
+    <Content Include="Content\start\jquery.ui.slider.css" />
+    <Content Include="Content\start\jquery.ui.tabs.css" />
+    <Content Include="Content\start\jquery.ui.theme.css" />
+    <Content Include="Content\sunny\images\ui-bg_diagonals-medium_20_d34d17_40x40.png" />
+    <Content Include="Content\sunny\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_gloss-wave_45_817865_500x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_gloss-wave_60_fece2f_500x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_gloss-wave_70_ffdd57_500x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_gloss-wave_90_fff9e5_500x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_highlight-soft_100_feeebd_1x100.png" />
+    <Content Include="Content\sunny\images\ui-bg_inset-soft_30_ffffff_1x100.png" />
+    <Content Include="Content\sunny\images\ui-icons_3d3d3d_256x240.png" />
+    <Content Include="Content\sunny\images\ui-icons_bd7b00_256x240.png" />
+    <Content Include="Content\sunny\images\ui-icons_d19405_256x240.png" />
+    <Content Include="Content\sunny\images\ui-icons_eb990f_256x240.png" />
+    <Content Include="Content\sunny\images\ui-icons_ed9f26_256x240.png" />
+    <Content Include="Content\sunny\images\ui-icons_fadc7a_256x240.png" />
+    <Content Include="Content\sunny\images\ui-icons_ffe180_256x240.png" />
+    <Content Include="Content\sunny\jquery-ui.css" />
+    <Content Include="Content\sunny\jquery.ui.accordion.css" />
+    <Content Include="Content\sunny\jquery.ui.all.css" />
+    <Content Include="Content\sunny\jquery.ui.autocomplete.css" />
+    <Content Include="Content\sunny\jquery.ui.base.css" />
+    <Content Include="Content\sunny\jquery.ui.button.css" />
+    <Content Include="Content\sunny\jquery.ui.core.css" />
+    <Content Include="Content\sunny\jquery.ui.datepicker.css" />
+    <Content Include="Content\sunny\jquery.ui.dialog.css" />
+    <Content Include="Content\sunny\jquery.ui.progressbar.css" />
+    <Content Include="Content\sunny\jquery.ui.resizable.css" />
+    <Content Include="Content\sunny\jquery.ui.selectable.css" />
+    <Content Include="Content\sunny\jquery.ui.slider.css" />
+    <Content Include="Content\sunny\jquery.ui.tabs.css" />
+    <Content Include="Content\sunny\jquery.ui.theme.css" />
+    <Content Include="Content\Sunset\editor.png" />
+    <Content Include="Content\Sunset\loading.gif" />
+    <Content Include="Content\Sunset\sprite.png" />
+    <Content Include="Content\Sunset\treeview-line.png" />
+    <Content Include="Content\Sunset\treeview-nodes-rtl.png" />
+    <Content Include="Content\Sunset\treeview-nodes.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_diamond_10_4f4221_10x8.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_diamond_20_372806_10x8.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_diamond_25_675423_10x8.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_diamond_25_d5ac5d_10x8.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_diamond_8_261803_10x8.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_diamond_8_443113_10x8.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_flat_75_ddd4b0_40x100.png" />
+    <Content Include="Content\swanky-purse\images\ui-bg_highlight-hard_65_fee4bd_1x100.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_070603_256x240.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_e8e2b5_256x240.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_e9cd86_256x240.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_efec9f_256x240.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_f2ec64_256x240.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_f9f2bd_256x240.png" />
+    <Content Include="Content\swanky-purse\images\ui-icons_ff7519_256x240.png" />
+    <Content Include="Content\swanky-purse\jquery-ui.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.accordion.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.all.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.autocomplete.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.base.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.button.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.core.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.datepicker.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.dialog.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.progressbar.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.resizable.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.selectable.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.slider.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.tabs.css" />
+    <Content Include="Content\swanky-purse\jquery.ui.theme.css" />
+    <Content Include="Content\telerik.black.css" />
+    <Content Include="Content\telerik.black.min.css" />
+    <Content Include="Content\telerik.common.css" />
+    <Content Include="Content\telerik.common.min.css" />
+    <Content Include="Content\telerik.default.css" />
+    <Content Include="Content\telerik.default.min.css" />
+    <Content Include="Content\telerik.forest.css" />
+    <Content Include="Content\telerik.forest.min.css" />
+    <Content Include="Content\telerik.hay.css" />
+    <Content Include="Content\telerik.hay.min.css" />
+    <Content Include="Content\telerik.office2007.css" />
+    <Content Include="Content\telerik.office2007.min.css" />
+    <Content Include="Content\telerik.outlook.css" />
+    <Content Include="Content\telerik.outlook.min.css" />
+    <Content Include="Content\telerik.rtl.css" />
+    <Content Include="Content\telerik.simple.css" />
+    <Content Include="Content\telerik.simple.min.css" />
+    <Content Include="Content\telerik.sitefinity.css" />
+    <Content Include="Content\telerik.sitefinity.min.css" />
+    <Content Include="Content\telerik.sunset.css" />
+    <Content Include="Content\telerik.sunset.min.css" />
+    <Content Include="Content\telerik.telerik.css" />
+    <Content Include="Content\telerik.telerik.min.css" />
+    <Content Include="Content\telerik.vista.css" />
+    <Content Include="Content\telerik.vista.min.css" />
+    <Content Include="Content\telerik.web20.css" />
+    <Content Include="Content\telerik.web20.min.css" />
+    <Content Include="Content\telerik.webblue.css" />
+    <Content Include="Content\telerik.webblue.min.css" />
+    <Content Include="Content\telerik.windows7.css" />
+    <Content Include="Content\telerik.windows7.min.css" />
+    <Content Include="Content\Telerik\editor.png" />
+    <Content Include="Content\Telerik\loading.gif" />
+    <Content Include="Content\Telerik\sprite.png" />
+    <Content Include="Content\Telerik\treeview-line.png" />
+    <Content Include="Content\Telerik\treeview-nodes-rtl.png" />
+    <Content Include="Content\Telerik\treeview-nodes.png" />
+    <Content Include="Content\trontastic\images\ui-bg_diagonals-small_50_262626_40x40.png" />
+    <Content Include="Content\trontastic\images\ui-bg_flat_0_303030_40x100.png" />
+    <Content Include="Content\trontastic\images\ui-bg_flat_0_4c4c4c_40x100.png" />
+    <Content Include="Content\trontastic\images\ui-bg_glass_40_0a0a0a_1x400.png" />
+    <Content Include="Content\trontastic\images\ui-bg_glass_55_f1fbe5_1x400.png" />
+    <Content Include="Content\trontastic\images\ui-bg_glass_60_000000_1x400.png" />
+    <Content Include="Content\trontastic\images\ui-bg_gloss-wave_55_000000_500x100.png" />
+    <Content Include="Content\trontastic\images\ui-bg_gloss-wave_85_9fda58_500x100.png" />
+    <Content Include="Content\trontastic\images\ui-bg_gloss-wave_95_f6ecd5_500x100.png" />
+    <Content Include="Content\trontastic\images\ui-icons_000000_256x240.png" />
+    <Content Include="Content\trontastic\images\ui-icons_1f1f1f_256x240.png" />
+    <Content Include="Content\trontastic\images\ui-icons_9fda58_256x240.png" />
+    <Content Include="Content\trontastic\images\ui-icons_b8ec79_256x240.png" />
+    <Content Include="Content\trontastic\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\trontastic\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\trontastic\jquery-ui.css" />
+    <Content Include="Content\trontastic\jquery.ui.accordion.css" />
+    <Content Include="Content\trontastic\jquery.ui.all.css" />
+    <Content Include="Content\trontastic\jquery.ui.autocomplete.css" />
+    <Content Include="Content\trontastic\jquery.ui.base.css" />
+    <Content Include="Content\trontastic\jquery.ui.button.css" />
+    <Content Include="Content\trontastic\jquery.ui.core.css" />
+    <Content Include="Content\trontastic\jquery.ui.datepicker.css" />
+    <Content Include="Content\trontastic\jquery.ui.dialog.css" />
+    <Content Include="Content\trontastic\jquery.ui.progressbar.css" />
+    <Content Include="Content\trontastic\jquery.ui.resizable.css" />
+    <Content Include="Content\trontastic\jquery.ui.selectable.css" />
+    <Content Include="Content\trontastic\jquery.ui.slider.css" />
+    <Content Include="Content\trontastic\jquery.ui.tabs.css" />
+    <Content Include="Content\trontastic\jquery.ui.theme.css" />
+    <Content Include="Content\ui-darkness\images\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_glass_20_555555_1x400.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_glass_40_0078a3_1x400.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_gloss-wave_25_333333_500x100.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_inset-soft_25_000000_1x100.png" />
+    <Content Include="Content\ui-darkness\images\ui-bg_inset-soft_30_f58400_1x100.png" />
+    <Content Include="Content\ui-darkness\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\ui-darkness\images\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Content\ui-darkness\images\ui-icons_a83300_256x240.png" />
+    <Content Include="Content\ui-darkness\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Content\ui-darkness\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\ui-darkness\jquery-ui.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.accordion.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.all.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.autocomplete.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.base.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.button.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.core.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.datepicker.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.dialog.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.progressbar.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.resizable.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.selectable.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.slider.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.tabs.css" />
+    <Content Include="Content\ui-darkness\jquery.ui.theme.css" />
+    <Content Include="Content\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\ui-lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\ui-lightness\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\ui-lightness\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\ui-lightness\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\ui-lightness\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\ui-lightness\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\ui-lightness\jquery-ui.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.accordion.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.all.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.autocomplete.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.base.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.button.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.core.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.datepicker.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.dialog.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.progressbar.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.resizable.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.selectable.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.slider.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.tabs.css" />
+    <Content Include="Content\ui-lightness\jquery.ui.theme.css" />
+    <Content Include="Content\vader\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\vader\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\vader\images\ui-bg_gloss-wave_16_121212_500x100.png" />
+    <Content Include="Content\vader\images\ui-bg_highlight-hard_15_888888_1x100.png" />
+    <Content Include="Content\vader\images\ui-bg_highlight-hard_55_555555_1x100.png" />
+    <Content Include="Content\vader\images\ui-bg_highlight-soft_35_adadad_1x100.png" />
+    <Content Include="Content\vader\images\ui-bg_highlight-soft_60_dddddd_1x100.png" />
+    <Content Include="Content\vader\images\ui-bg_inset-soft_15_121212_1x100.png" />
+    <Content Include="Content\vader\images\ui-icons_666666_256x240.png" />
+    <Content Include="Content\vader\images\ui-icons_aaaaaa_256x240.png" />
+    <Content Include="Content\vader\images\ui-icons_bbbbbb_256x240.png" />
+    <Content Include="Content\vader\images\ui-icons_c98000_256x240.png" />
+    <Content Include="Content\vader\images\ui-icons_cccccc_256x240.png" />
+    <Content Include="Content\vader\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\vader\images\ui-icons_f29a00_256x240.png" />
+    <Content Include="Content\vader\jquery-ui.css" />
+    <Content Include="Content\vader\jquery.ui.accordion.css" />
+    <Content Include="Content\vader\jquery.ui.all.css" />
+    <Content Include="Content\vader\jquery.ui.autocomplete.css" />
+    <Content Include="Content\vader\jquery.ui.base.css" />
+    <Content Include="Content\vader\jquery.ui.button.css" />
+    <Content Include="Content\vader\jquery.ui.core.css" />
+    <Content Include="Content\vader\jquery.ui.datepicker.css" />
+    <Content Include="Content\vader\jquery.ui.dialog.css" />
+    <Content Include="Content\vader\jquery.ui.progressbar.css" />
+    <Content Include="Content\vader\jquery.ui.resizable.css" />
+    <Content Include="Content\vader\jquery.ui.selectable.css" />
+    <Content Include="Content\vader\jquery.ui.slider.css" />
+    <Content Include="Content\vader\jquery.ui.tabs.css" />
+    <Content Include="Content\vader\jquery.ui.theme.css" />
+    <Content Include="Content\Vista\editor.png" />
+    <Content Include="Content\Vista\loading.gif" />
+    <Content Include="Content\Vista\sprite.png" />
+    <Content Include="Content\Web20\editor.png" />
+    <Content Include="Content\Web20\loading.gif" />
+    <Content Include="Content\Web20\sprite.png" />
+    <Content Include="Content\Web20\treeview-line.png" />
+    <Content Include="Content\Web20\treeview-nodes-rtl.png" />
+    <Content Include="Content\Web20\treeview-nodes.png" />
+    <Content Include="Content\WebBlue\editor.png" />
+    <Content Include="Content\WebBlue\loading.gif" />
+    <Content Include="Content\WebBlue\sprite.png" />
+    <Content Include="Content\WebBlue\treeview-line.png" />
+    <Content Include="Content\WebBlue\treeview-nodes-rtl.png" />
+    <Content Include="Content\WebBlue\treeview-nodes.png" />
+    <Content Include="Content\Windows7\editor.png" />
+    <Content Include="Content\Windows7\loading.gif" />
+    <Content Include="Content\Windows7\sprite.png" />
+    <Content Include="Content\xlog\error.png" />
+    <Content Include="Content\xlog\message.png" />
+    <Content Include="Content\xlog\start.png" />
+    <Content Include="Content\xlog\warning.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\common.js" />
+    <Content Include="Scripts\Editor\components.js" />
+    <Content Include="Scripts\Editor\dom.js" />
+    <Content Include="Scripts\Editor\editor.js" />
+    <Content Include="Scripts\Editor\formatblock.js" />
+    <Content Include="Scripts\Editor\image.js" />
+    <Content Include="Scripts\Editor\indent.js" />
+    <Content Include="Scripts\Editor\inlineformat.js" />
+    <Content Include="Scripts\Editor\linebreak.js" />
+    <Content Include="Scripts\Editor\link.js" />
+    <Content Include="Scripts\Editor\lists.js" />
+    <Content Include="Scripts\Editor\range.js" />
+    <Content Include="Scripts\Editor\serializer.js" />
+    <Content Include="Scripts\Editor\system.js" />
+    <Content Include="Scripts\home.js" />
+    <Content Include="Scripts\JobDetails.js" />
+    <Content Include="Scripts\jobfilter.js" />
+    <Content Include="Scripts\jquery-ui-1.8.7.all.min.js" />
+    <Content Include="Scripts\jquery.checkbox.js" />
+    <Content Include="Scripts\jquery.enable.disable.plugin.js" />
+    <Content Include="Scripts\jquery.simpleImageCheck.js" />
+    <Content Include="Scripts\juqery.effects.rotation.js" />
+    <Content Include="Scripts\ManageLog.js" />
+    <Content Include="Scripts\schedule.index.js" />
+    <Content Include="Scripts\schedule.schedule.js" />
+    <Content Include="Scripts\sh\shAutoloader.js" />
+    <Content Include="Scripts\sh\shBrushAppleScript.js" />
+    <Content Include="Scripts\sh\shBrushAS3.js" />
+    <Content Include="Scripts\sh\shBrushBash.js" />
+    <Content Include="Scripts\sh\shBrushColdFusion.js" />
+    <Content Include="Scripts\sh\shBrushCpp.js" />
+    <Content Include="Scripts\sh\shBrushCSharp.js" />
+    <Content Include="Scripts\sh\shBrushCss.js" />
+    <Content Include="Scripts\sh\shBrushDelphi.js" />
+    <Content Include="Scripts\sh\shBrushDiff.js" />
+    <Content Include="Scripts\sh\shBrushErlang.js" />
+    <Content Include="Scripts\sh\shBrushGroovy.js" />
+    <Content Include="Scripts\sh\shBrushJava.js" />
+    <Content Include="Scripts\sh\shBrushJavaFX.js" />
+    <Content Include="Scripts\sh\shBrushJScript.js" />
+    <Content Include="Scripts\sh\shBrushPerl.js" />
+    <Content Include="Scripts\sh\shBrushPhp.js" />
+    <Content Include="Scripts\sh\shBrushPlain.js" />
+    <Content Include="Scripts\sh\shBrushPowerShell.js" />
+    <Content Include="Scripts\sh\shBrushPython.js" />
+    <Content Include="Scripts\sh\shBrushRuby.js" />
+    <Content Include="Scripts\sh\shBrushSass.js" />
+    <Content Include="Scripts\sh\shBrushScala.js" />
+    <Content Include="Scripts\sh\shBrushSql.js" />
+    <Content Include="Scripts\sh\shBrushVb.js" />
+    <Content Include="Scripts\sh\shBrushXml.js" />
+    <Content Include="Scripts\sh\shCore.js" />
+    <Content Include="Scripts\sh\shLegacy.js" />
+    <Content Include="Scripts\telerik.autocomplete.js" />
+    <Content Include="Scripts\telerik.autocomplete.min.js" />
+    <Content Include="Scripts\telerik.calendar.js" />
+    <Content Include="Scripts\telerik.calendar.min.js" />
+    <Content Include="Scripts\telerik.combobox.js" />
+    <Content Include="Scripts\telerik.combobox.min.js" />
+    <Content Include="Scripts\telerik.common.js" />
+    <Content Include="Scripts\telerik.common.min.js" />
+    <Content Include="Scripts\telerik.datepicker.js" />
+    <Content Include="Scripts\telerik.datepicker.min.js" />
+    <Content Include="Scripts\telerik.datetimepicker.js" />
+    <Content Include="Scripts\telerik.draganddrop.js" />
+    <Content Include="Scripts\telerik.draganddrop.min.js" />
+    <Content Include="Scripts\telerik.editor.js" />
+    <Content Include="Scripts\telerik.editor.min.js" />
+    <Content Include="Scripts\telerik.grid.editing.js" />
+    <Content Include="Scripts\telerik.grid.editing.min.js" />
+    <Content Include="Scripts\telerik.grid.filtering.js" />
+    <Content Include="Scripts\telerik.grid.filtering.min.js" />
+    <Content Include="Scripts\telerik.grid.grouping.js" />
+    <Content Include="Scripts\telerik.grid.grouping.min.js" />
+    <Content Include="Scripts\telerik.grid.js" />
+    <Content Include="Scripts\telerik.grid.min.js" />
+    <Content Include="Scripts\telerik.grid.reordering.js" />
+    <Content Include="Scripts\telerik.grid.resizing.js" />
+    <Content Include="Scripts\telerik.grid.resizing.min.js" />
+    <Content Include="Scripts\telerik.list.js" />
+    <Content Include="Scripts\telerik.list.min.js" />
+    <Content Include="Scripts\telerik.menu.js" />
+    <Content Include="Scripts\telerik.menu.min.js" />
+    <Content Include="Scripts\telerik.panelbar.js" />
+    <Content Include="Scripts\telerik.panelbar.min.js" />
+    <Content Include="Scripts\telerik.tabstrip.js" />
+    <Content Include="Scripts\telerik.tabstrip.min.js" />
+    <Content Include="Scripts\telerik.textbox.js" />
+    <Content Include="Scripts\telerik.textbox.min.js" />
+    <Content Include="Scripts\telerik.timepicker.js" />
+    <Content Include="Scripts\telerik.treeview.js" />
+    <Content Include="Scripts\telerik.treeview.min.js" />
+    <Content Include="Scripts\telerik.window.js" />
+    <Content Include="Scripts\telerik.window.min.js" />
+    <Content Include="Scripts\runningJobs.js" />
+    <Content Include="Scripts\jquery.dd.js" />
+    <Content Include="Scripts\jobs.Unterminated.js" />
+    <Content Include="Scripts\XLogView.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Scripts\jquery-1.4.4.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
+    <Content Include="Scripts\MicrosoftAjax.js" />
+    <Content Include="Scripts\MicrosoftAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.js" />
+    <Content Include="Scripts\MicrosoftMvcAjax.debug.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.js" />
+    <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Fantasy.Base\Fantasy.Base.csproj">
+      <Project>{3252341E-6C16-4BF9-9463-91A9CF7D612E}</Project>
+      <Name>Fantasy.Base</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fantasy.Components.Jobs.External\telerikaspnetmvc-2010.q3.1110\Source\Telerik.Web.Mvc\Telerik.Web.Mvc.csproj">
+      <Project>{A7F7C110-D7F0-49B7-8DDA-FD2D1CC6F3B1}</Project>
+      <Name>Telerik.Web.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fantasy.Jobs\Fantasy.Jobs.csproj">
+      <Project>{F6234F4E-CA50-4CC1-A91A-1FEBF54E49D0}</Project>
+      <Name>Fantasy.Jobs</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ManagerLog\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>%28none%29</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\Shared\XLogView.cshtml" />
+    <Content Include="Views\Jobs\Terminated.cshtml" />
+    <Content Include="Views\Template\Index.cshtml" />
+    <Content Include="Views\Template\Details.cshtml" />
+    <Content Include="Views\Home\Default.cshtml" />
+    <Content Include="Views\RunningJobs\Index.cshtml" />
+    <Content Include="Views\RunningJobs\List.cshtml" />
+    <Content Include="Views\Job\Details.cshtml" />
+    <Content Include="Views\Job\Log.cshtml" />
+    <Content Include="Views\Home\ServiceUnavailable.cshtml" />
+    <Content Include="Views\Jobs\Filter.cshtml" />
+    <Content Include="Views\Jobs\Unterminated.cshtml" />
+    <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\Schedule\Index.cshtml" />
+    <Content Include="Views\Schedule\ScheduleList.cshtml" />
+    <Content Include="Views\Schedule\Schedule.cshtml" />
+    <None Include="Properties\Settings.settings.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <LastGenOutput>Settings.settings.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>3094</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

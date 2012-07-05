@@ -1,0 +1,43 @@
+﻿@model Fantasy.Jobs.Web.Models.ManagerLogModel
+@using Telerik.Web.Mvc.UI
+
+@{
+    ViewBag.Title = @String.Format("{0}-Service Log - Fantasy Job Service", Model.Date.ToShortDateString());
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/scripts/XLogView.js")"></script> 
+    <script type="text/javascript" src="@Url.Content("~/scripts/ManageLog.js")"></script> 
+}
+
+<h2>Log - @Model.SelectedServer - Fantasy Job Service</h2>
+<h3>@Model.Date.ToShortDateString()</h3>
+<div id="CalenderContainer">
+    @Html.Telerik().Calendar().Name("Calender").Value(Model.Date).MaxDate(Model.MaxDate).MinDate(Model.MinDate).Selection(settings => settings.Action("Details", new { date = "{0}", server= Model.SelectedServer })
+              .Dates(this.Model.AvailableDates))
+<div id="serverslist">
+
+@foreach (string server in Model.Servers)
+{ 
+      <div>
+            @Html.ActionLink(server, (string)this.ViewContext.RouteData.Values["action"], new { server = server, date = Model.Date })
+      </div>
+}
+</div>
+
+
+
+</div>
+<div id="xlogContainer">
+    @if (this.Model.Log != null)
+    {
+        XLogModel logModel = new XLogModel() { Pageable = true, Log = this.Model.Log };
+    @Html.Partial("XLogView", logModel)
+    }
+    else
+    {
+        <span>Log file is not avaible temporary, please try later.</span>
+    }
+</div>

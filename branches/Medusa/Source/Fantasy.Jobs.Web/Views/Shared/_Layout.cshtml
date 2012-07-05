@@ -1,0 +1,63 @@
+﻿@using Telerik.Web.Mvc.UI
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/ui-darkness/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />  
+    <link href="@Url.Content("~/Content/checkbox/jquery.checkbox.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.7.all.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.checkbox.js")" type="text/javascript"></script> 
+    <script src="@Url.Content("~/Scripts/common.js")" type="text/javascript"></script>
+   
+  
+
+    @Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.black.css"))
+    @Html.Telerik().ScriptRegistrar().Globalization(true)
+    
+    @RenderSection("head", false)
+    
+</head>
+@functions 
+{
+    string[][] Links()
+    {
+        return new string[][]{
+            new string[] {"Default", "Home", "Home"},
+            new string[] {"Index", "RunningJobs", "Running Jobs"},
+            new string[] {"Unterminated", "Jobs", "Unterminated Jobs"},
+            new string[] {"Terminated", "Jobs", "Terminated Jobs" },
+            new string[] {"Details", "ManagerLog", "Logs"},
+            new string[] {"Index", "Template", "Template"},
+            new string[] {"Index", "Schedule", "Schedule"}
+        };
+    }
+}
+<body>
+    <script type="text/javascript">
+        $(function () {
+            $('#navigation').buttonset();
+        });
+    </script>
+    <div id="navigation_container">
+        <div id="navigation">
+            @foreach (string[] link in Links())
+            {
+                if ((string)this.ViewContext.RouteData.Values["action"] != link[0] || (string)this.ViewContext.RouteData.Values["controller"] != link[1])
+                {
+                    @Html.ActionLink(link[2], link[0], link[1]);
+                }
+                else
+                {
+                    <input type="radio" name="currentPage" id="currentPage" checked="checked" /><label for="currentPage">@link[2]</label>
+                }
+            }
+            
+        </div>
+    </div>
+    @RenderBody()
+</body>
+</html>

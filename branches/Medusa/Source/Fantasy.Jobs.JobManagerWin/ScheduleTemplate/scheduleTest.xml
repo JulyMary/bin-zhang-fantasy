@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<params xmlns="urn:schemas-fantasy-com:jobservice-schedule">
+  <scheduleTime>07/03/2011 3:33:00 PM</scheduleTime>
+  <author>Bin Zhang</author>
+  <runTime>07/03/2011 3:33:00 PM</runTime>
+  <name>ABC News</name>
+  <priority>0</priority>
+  <custom xmlns="urn:schemas-fantasy-com:jobservice-schedule">
+      <channel>ABC1</channel>
+      <startTime>07:00:00 PM</startTime>
+      <stopTime>02:30:00 AM</stopTime>
+      <splitTime>07:10:00 PM;01:20:00 AM</splitTime>
+      <_247>247-w7-dev1</_247>
+      <clsUser>dev-pc01\bin.zhang</clsUser>
+      <clsPassword>bZ$1234</clsPassword>
+      <_247User>247-w7-dev1\administrator</_247User>
+      <_247Password>fantasy</_247Password>
+      <dataPath>\\Dev-PC01\Fantasy$\</dataPath>
+      <databasePath>\\Dev-PC01\Fantasy$\CVDB.mdb</databasePath>
+      <dayOffset>-1</dayOffset>
+      <category>1</category>
+      <nameFormat>ABC News {0:yyyy-MM-dd}</nameFormat>
+  </custom>
+</params>

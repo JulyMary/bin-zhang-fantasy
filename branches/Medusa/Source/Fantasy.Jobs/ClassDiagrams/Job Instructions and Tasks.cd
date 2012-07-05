@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ClickView.Jobs.AbstractInstruction" Collapsed="true">
+    <Position X="5.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IInstruction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Choose" Collapsed="true">
+    <Position X="10.25" Y="4.25" Width="1.5" />
+    <AssociationLine Name="Otherwise" Type="ClickView.Jobs.When" FixedToPoint="true">
+      <Path>
+        <Point X="11.188" Y="4.88" />
+        <Point X="11.188" Y="5.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Choose.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Otherwise" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Cases" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ClickView.Jobs.ExecuteTaskInstruction" Collapsed="true">
+    <Position X="12.25" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAgYAIAACQEAQABAGAAAAQCAAIHIAAAAAwQAAAFAA=</HashCode>
+      <FileName>ExecuteTaskInstruction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Sequence" Collapsed="true">
+    <Position X="3.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAABAAAAAAAAIAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Sequence.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Instructions" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ClickView.Jobs.UntilSuccess" Collapsed="true">
+    <Position X="7" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACARAAAAAAAAAABAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UntilSuccess.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ClickView.Jobs.Foreach" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAQAAAAAAAAAAAAgAAAAAAAAAABAACA=</HashCode>
+      <FileName>Foreach.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Retry" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAIAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Retry.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Target" Collapsed="true">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAACAAAUABAEAAAQAAAAACAAgAIEAAAAAABA=</HashCode>
+      <FileName>Target.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Try" Collapsed="true">
+    <Position X="7.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Try.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Using" Collapsed="true">
+    <Position X="12.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQCAgb8AQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Using.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.When" Collapsed="true">
+    <Position X="10.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>When.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClickView.Jobs.Job" Collapsed="true">
+    <Position X="4.25" Y="8" Width="1.5" />
+    <Members>
+      <Field Name="_itemGroups" Hidden="true" />
+    </Members>
+    <AssociationLine Name="_properties" Type="ClickView.Jobs.JobProperty" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="8.503" />
+        <Point X="7.625" Y="8.503" />
+        <Point X="7.625" Y="10.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>FwBggBgKkAIQnSwAAIAFAeCAIAEAQGiQBQgtAACjBAU=</HashCode>
+      <FileName>Job.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_itemGroups" />
+      <Property Name="Engine" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="_properties" />
+      <Property Name="Targets" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Tasks.StartNewJobTask" Collapsed="true">
+    <Position X="2.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAABAAEAAAAQAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\StartNewJobTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Tasks.SleepTask" Collapsed="true">
+    <Position X="4.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAQAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Tasks\SleepTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Tasks.ChangeExtensionTask" Collapsed="true">
+    <Position X="6" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAgAAACAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\ChangeExtensionTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Tasks.CopyTask" Collapsed="true">
+    <Position X="9.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAQAAAAAACAIAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\CopyTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Tasks.DeleteTask" Collapsed="true">
+    <Position X="11.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\Delete.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.Tasks.ErrorTask" Collapsed="true">
+    <Position X="7.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAQAAAAAAAAAAAAAAAAAAAAAIABAAAA=</HashCode>
+      <FileName>Tasks\ErrorTask.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.TaskItem" Collapsed="true">
+    <Position X="2.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IYIAgIAAAACAAAAACAAAAARAAAAABAAAAAAAAAAAiBA=</HashCode>
+      <FileName>TaskItem.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.JobPropertyGroup" Collapsed="true">
+    <Position X="8.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAABAAAAAAAAQAAAAAAAAESAAAAARAABA=</HashCode>
+      <FileName>JobPropertyGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_list" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.JobProperty" Collapsed="true">
+    <Position X="6.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAACAAAAAAAAAAAQAAAAAAAAAAAAgAAAAABA=</HashCode>
+      <FileName>JobProperty.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClickView.Jobs.TaskItemGroup" Collapsed="true">
+    <Position X="4.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAACAABAAAAAAAAQAAAAAAAAESAAAAARAABA=</HashCode>
+      <FileName>TaskItemGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="_list" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ClickView.Jobs.ITask" Collapsed="true">
+    <Position X="7.75" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITask.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.IInstruction" Collapsed="true">
+    <Position X="5.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IInstruction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.IJob" Collapsed="true">
+    <Position X="4.25" Y="8.75" Width="1.5" />
+    <AssociationLine Name="Items" Type="ClickView.Jobs.TaskItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.25" Y="9.005" />
+        <Point X="3.562" Y="9.005" />
+        <Point X="3.562" Y="10.75" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Properties" Type="ClickView.Jobs.JobProperty" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="9.005" />
+        <Point X="6.26" Y="9.005" />
+        <Point X="6.26" Y="11.002" />
+        <Point X="6.5" Y="11.002" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>FwAAAAACEAAAjAwAAAAAAaAAAAEAACAQAAAAAAACBAQ=</HashCode>
+      <FileName>IJob.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+      <Property Name="Properties" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="ClickView.Jobs.IJobEngine" Collapsed="true">
+    <Position X="6.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAAASAAAAAAAAABAAggEAABACAAAABEAAgAAAA=</HashCode>
+      <FileName>IJobEngine.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClickView.Jobs.Resources.IResourceService" Collapsed="true">
+    <Position X="12.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAAAAAAAAAAAAAAAAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>Resources\IResourceService.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

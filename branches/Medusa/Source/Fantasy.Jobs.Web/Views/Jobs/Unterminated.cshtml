@@ -1,0 +1,55 @@
+﻿@model JobsModel 
+@using Telerik.Web.Mvc.UI
+@{
+    ViewBag.Title = "Unterminated Jobs - Fantasy Job Service";
+}
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/scripts/jobfilter.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/jobs.unterminated.js")"></script>
+}
+<h2>Unterminated Jobs - Fantasy Job Service</h2>
+<input type="hidden" value="@HttpUtility.UrlDecode(Url.Action("{0}"))"  id="jsonUrl"/>
+<div id="JobsContainer">
+
+    
+    @Html.Action("Filter", new { command = this.Model.Command, isTerminated = false })
+    @Html.Telerik().Menu().Name("ToolBar").Items(menu =>
+{
+    menu.Add().ImageUrl(Url.Content("~/Content/JobState/running.png")).ImageHtmlAttributes(new { @class = "imgingrid" }).Url("javascript:ChangeJobStateBySelected('ResumeSelected')").Items(p =>
+    {
+        p.Add().Text("Resume All").Url("javascript:ChangeJobStateByFilter('ResumeAll')");
+    });
+    menu.Add().ImageUrl(Url.Content("~/Content/JobState/userpaused.png")).ImageHtmlAttributes(new { @class = "imgingrid" }).Url("javascript:ChangeJobStateBySelected('PauseSelected')").Items(p =>
+    {
+        p.Add().Text("Pause All").Url("javascript:ChangeJobStateByFilter('PauseAll')");
+    });
+    menu.Add().ImageUrl(Url.Content("~/Content/JobState/cancelled.png")).ImageHtmlAttributes(new { @class = "imgingrid" }).Url("javascript:ChangeJobStateBySelected('StopSelected')").Items(p =>
+    {
+        p.Add().Text("Stop All").Url("javascript:ChangeJobStateByFilter('StopAll')");
+    });
+
+}).HtmlAttributes(new { style="width:200px"})
+    <br />
+    @(Html.Telerik().Grid<Fantasy.Jobs.Management.JobMetaData>().Name("JobList").BindTo(this.Model.Data).DataBinding(databinding =>
+      {
+          databinding.Server().Select("Unterminated", "Jobs");
+      }).Columns(columns=>
+      {
+
+          columns.Bound(c => c.Id).Template(@<span><input type="checkbox" class="untermianted-selection-checkbox" id="@("checkbox" + item.Id)" value="@item.Id" /></span>).Sortable(false).Groupable(false).HeaderTemplate(@<input type="checkbox" class="untermianted-selection-checkbox-all" id="checkalljobs" />).Filterable(false).Title("Select All") ; 
+          //columns.Bound(c => c.Id).Visible(false);
+          columns.Bound(c => c.State).Template(@<a href="@Url.Action("Details", "Job", new { id = item.Id })"><img border="0" alt="@Fantasy.Jobs.JobState.ToString(item.State)" src="@Fantasy.Jobs.Web.Controllers.JobStateImageHelper.GetImageUrl(this.Url, item.State)" class="imgingrid" /></a>).Title("State").Filterable(false) ;
+          columns.Bound(c => c.Template).Title("Template").Filterable(false);
+          columns.Bound(c => c.Name).Title("Name").Groupable(false).Filterable(false);
+          columns.Bound(c => c.CreationTime).Title("Creation Time").Filterable(false);
+          columns.Bound(c => c.Application).Title("Application").Filterable(false);
+          columns.Bound(c => c.User).Title("User").Filterable(false);
+          columns.Bound(c => c.StartTime).Title("StartTime").Filterable(false);
+          columns.Bound(c => c.Priority).Title("Priority").Filterable(false);
+      }).Pageable(settings => settings.Total(this.Model.TotalCount).PageSize(100)).EnableCustomBinding(true).Sortable().Groupable().Resizable(resizing => resizing.Columns(true)).Filterable())
+
+</div>
+
+
+

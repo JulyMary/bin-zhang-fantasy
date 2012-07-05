@@ -1,0 +1,25 @@
+﻿<jobStart 
+    Id="92846555-dbc3-44f9-bc22-090a59a4d7b0" 
+    template="UpdateVideoMetaData" 
+    xmlns="urn:schemas-fantasy-com:jobs">
+    
+  <properties>
+    <user>System.Web.Security.FormsIdentity</user>    
+    <application>Fantasy Exchange Online Manager</application>    
+    <nId>1567</nId>    
+    <nVideoTitle>Sunday - Margaret Mahy Segment 17.09.2006 </nVideoTitle>    
+    <nUserOwnerId>442</nUserOwnerId>    
+    <nDateAdded>2008-03-06T00:00:00</nDateAdded>    
+    <nBroadcastDate>2008-03-06T00:00:00</nBroadcastDate>    
+    <nFileSize>0</nFileSize>    
+    <nChannelId>0</nChannelId>    
+    <nDescription>The Mind of MahyShe’s sold millions of books for children and now she has won one of the biggest literary prizes in the world - The Hans Christian Anderson Award For A Lasting Contribution To Childrens Literature also known as The Little Nobel.However Kiwis are only just beginning to recognise the talents of  Margaret Mahy.Features accolades from other New Zealand authors such as Tessa Duder and Kate De Goldi.</nDescription>    
+    <nRating>2</nRating>    
+    <nSeries>Joe's test series</nSeries>    
+    <nCategoryID>33</nCategoryID>
+  </properties>  
+  
+  <items>
+        <src name="C:\\test_clks\\1567.clk" />
+  </items>
+</jobStart>

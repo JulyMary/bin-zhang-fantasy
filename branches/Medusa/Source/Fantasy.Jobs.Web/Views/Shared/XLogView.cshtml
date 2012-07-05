@@ -1,0 +1,132 @@
+﻿@model XLogModel 
+@using Telerik.Web.Mvc.UI 
+@using Telerik.Web.Mvc;
+@using Telerik.Web.Mvc.Infrastructure;
+@using Fantasy.Jobs;
+@using System.Xml.Linq
+
+@functions
+{
+    IEnumerable<XLogItem> Data()
+    {
+        
+        foreach(XElement x in this.Model.Log.Elements())
+        {
+            yield return new XLogItem
+            {
+                Type = x.Name.LocalName, 
+                Time=((DateTime)x.Attribute("time")).ToLocalTime(), 
+                Category=(string)x.Attribute("category"),
+                Importance=(Fantasy.ServiceModel.MessageImportance)Enum.Parse(typeof(Fantasy.ServiceModel.MessageImportance), (string)x.Attribute("importance")),
+                Text=(string)x.Attribute("text"),
+                Exception = x.Element("exception")};
+        }
+    }
+
+    private int _typeIndex = 0;
+    private int _categoryIndex = 0;
+    private int _importanceIndex = 0;
+    
+    private string[] _typeOptions = new string[]{"All", "Start", "Message", "Warning", "Error"};
+    private string[] _importanceOptions = new string[] { "All", "High", "Normal", "Low" };
+    private string[] _categoryOptions;
+ 
+    private void EvalFilterIndexes()
+    {
+        var query = from x in this.Model.Log.Elements() select (string)x.Attribute("category");
+        query = new string[] { "All" }.Union(query.Distinct().OrderBy(x => x));
+        _categoryOptions = query.ToArray();
+        IList<IFilterDescriptor> filters = FilterDescriptorFactory.Create((string)this.Request["XLogView-filter"] ?? string.Empty);
+
+        foreach (FilterDescriptor fd in Fantasy.Jobs.Web.Controllers.JobsGridHelper.GetFilterDescriptors(filters))
+        {
+            if (fd.Member == "Type")
+            {
+                this._typeIndex = Array.IndexOf(_typeOptions, (string)fd.Value);
+            }
+            if (fd.Member == "Category")
+            {
+                this._categoryIndex = Array.IndexOf(_categoryOptions, (string)fd.Value); 
+            }
+            if (fd.Member == "Importance")
+            {
+                this._importanceIndex  = Array.IndexOf(_importanceOptions,((Fantasy.ServiceModel.MessageImportance)Convert.ToInt32(fd.Value)).ToString());
+            }
+        }
+
+           
+    }
+
+    private int _exceptionId = 0;
+    
+    int NextExceptionId()
+    {
+        return _exceptionId++;
+    }
+    
+   
+}
+
+@helper ImageUrl(string type)
+{
+    @Url.Content(string.Format("~/Content/xlog/{0}.png", type))
+}
+
+
+
+@helper TextPanel(XLogItem item)
+{
+    @item.Text 
+    if(item.Exception != null)
+    {
+        string id = String.Format("Exception{0}", this.NextExceptionId());
+        <div style="float:right"><a  href="javascript:toggleException('@id')" style="color:Red">Exception</a></div>
+        <div id="@id" style="display:none" class="exceptionPanel">@WriteException(item.Exception) </div>
+    }
+}
+@helper WriteException(XElement ex)
+{
+    <div>
+    @foreach(XAttribute attr in ex.Attributes())
+    {
+        <span style="font-weight:bold">@attr.Name</span><span>&nbsp;@attr.Value</span><br />;
+    }
+    @if(ex.Element("exception") != null)
+    {
+        <span style="font-weight:bold">InnerException:</span><br />
+        @WriteException(ex.Element("exception"))
+    }
+    </div>
+}
+
+@helper Filter()
+{
+    <div >
+        Type:
+        @Html.Telerik().DropDownList().Name("filter_type").BindTo(new SelectList(_typeOptions)).ClientEvents(events => events.OnChange("onFilterChanged")).SelectedIndex(_typeIndex) 
+        Category:
+        @Html.Telerik().DropDownList().Name("filter_category").BindTo(new SelectList(_categoryOptions)).ClientEvents(events => events.OnChange("onFilterChanged")).SelectedIndex(_categoryIndex)
+        Importance:
+        @Html.Telerik().DropDownList().Name("filter_importance").BindTo(new SelectList(_importanceOptions)).ClientEvents(events=>events.OnChange("onFilterChanged")).SelectedIndex(_importanceIndex) 
+    </div>
+}
+
+@{EvalFilterIndexes();}
+<script type="text/javascript" >
+    function toggleException(div)
+    {
+        $("#" + div).toggle();
+    }
+</script>
+
+@Html.Telerik().Grid(this.Data()).Name("XLogView").Columns(columns =>
+{
+    columns.Bound(c => c.Type).Template(@<img width="24" height="24" alt="@item.Type" src="@ImageUrl(item.Type)" />).Filterable(false);
+    columns.Bound(c => c.Time).Format("{0:T}").Filterable(false);
+    columns.Bound(c => c.Category).Filterable(false);
+    columns.Bound(c => c.Importance).Filterable(false);
+    columns.Template(item => TextPanel(item)).Title("Text");
+
+}).Sortable().Filterable().Groupable().Pageable(paging =>
+                            paging.PageSize(100).Enabled(this.Model.Pageable)).ToolBar(toolbar=>toolbar.Template(x=>Filter()))  
+

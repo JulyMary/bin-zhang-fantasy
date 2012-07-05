@@ -1,0 +1,50 @@
+﻿@model JobFilterModel 
+@using Fantasy.Jobs;
+
+@{string expandImg = Url.Content("~/content/images/expand.png");
+  string collapseImg = Url.Content("~/content/images/collapse.png");
+  string aobImg = Model.AdvancedOptionsVisible ? collapseImg : expandImg;
+  string aobAltImg = Model.AdvancedOptionsVisible ? expandImg : collapseImg;
+  string aoDisplay = Model.AdvancedOptionsVisible ? "" : "display:none";}
+  
+<div style="margin-bottom:20px;"> 
+
+    <div><strong>Input job name or ID:</strong></div>
+    
+    <div>
+        <input id="filter_name" jobUrl="@HttpUtility.UrlDecode(Url.Action("Details", "Job", new {id = "{0}"}))" value="@Model.Name" />
+        <a href="javascript:Search()">
+        <img src="@Url.Content("~/content/images/search.png")" alt="search" class="imgingrid" style="vertical-align:middle;"/></a>
+        <a href="javascript:advanceOptions()"><img id="advanceOptionsButton" src="@aobImg" altSrc="@aobAltImg" alt="search" class="imgingrid" style="vertical-align:middle;"/></a>
+    </div>
+
+    <div id="filter_advance_container" style="@aoDisplay;">
+        
+        <div style="float:left; margin-right:10px;">
+            <div style="margin-top:5px;"><strong>State:</strong></div>
+            <div>@Html.Telerik().DropDownList().Name("filter_state").BindTo(new SelectList(Model.States, "State", "Caption")).SelectedIndex(Model.StateIndex).HtmlAttributes(new { style = "width:250px" })</div>
+        </div>
+            
+        <div style="float:left;">
+            <div style="margin-top:5px;"><strong>Template:</strong></div>
+            <div>@Html.Telerik().DropDownList().Name("filter_template").BindTo(new SelectList(Model.Templates)).SelectedIndex(Model.TemplateIndex).HtmlAttributes(new { style = "width:250px" })</div>
+        </div>
+            
+        <div style="clear:both; float:left; margin-right:10px;">
+            <div style="margin-top:5px;"><strong>Application:</strong></div>
+            <div>@Html.Telerik().DropDownList().Name("filter_application").BindTo(new SelectList(Model.Applications)).SelectedIndex(Model.ApplicationIndex).HtmlAttributes(new { style = "width:250px" })</div>
+        </div>        
+        
+        <div style="float:left;">
+            <div style="margin-top:5px;"><strong>User:</strong></div>
+            <div>@Html.Telerik().DropDownList().Name("filter_user").BindTo(new SelectList(Model.Users)).SelectedIndex(Model.UserIndex).HtmlAttributes(new { style = "width:250px" })</div>
+        </div>                  
+        
+        <div style="clear: both; position: relative; top: 5px;">
+            <div><strong>Creation&nbsp;Time:&nbsp;</strong></div>
+            <div>Between&nbsp;@Html.Telerik().DatePicker().Name("filter_creationTime_low").Value(Model.CreationTimeLow).ShowButton(true).HtmlAttributes(new { style = "width:200px" })
+                 and&nbsp;@Html.Telerik().DatePicker().Name("filter_creationTime_high").Value(Model.CreationTimeHigh).ShowButton(true).HtmlAttributes(new{ style = "width:200px" })</div>
+        </div>
+    </div>
+
+</div>

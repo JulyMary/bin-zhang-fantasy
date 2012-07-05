@@ -1,0 +1,35 @@
+﻿@model JobLogModel
+@{string title = string.Format("{0} - Log - Fantasy Job Service", Model.Job.Name);} 
+
+@{
+    ViewBag.Title = title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section head
+{
+    <script type="text/javascript" src="@Url.Content("~/scripts/XLogView.js")"></script> 
+}
+<div style="margin-top:10px;">
+    <a href="@Url.Action("Details", new {id=this.Model.Job.Id})"><img id="StateImage" border="0" alt="@Fantasy.Jobs.JobState.ToString(Model.Job.State)" src="@Fantasy.Jobs.Web.Controllers.JobStateImageHelper.GetImageUrl(this.Url, Model.Job.State)" style="width:32px;height:32px;float:left;vertical-align:middle;" /></a>
+    <h2 style="float:left; margin:0px; margin-top:5px; margin-left:10px;">@title</h2>
+</div>
+<ul style="clear:both;margin-top: 50px;">
+    <li>Template:&nbsp;@Model.Job.Template</li>
+    <li>Creation Time:&nbsp;@Model.Job.CreationTime</li>
+    <li>Application:&nbsp;@Model.Job.Application</li>
+    <li>User:&nbsp;@Model.Job.User</li>
+    <li>Start Time:&nbsp;@Model.Job.StartTime</li>
+    <li>End Time:&nbsp;@Model.Job.EndTime</li>
+    <li>Priority:&nbsp;@Model.Job.Priority</li>
+</ul> 
+@if (this.Model.Log != null)
+{
+    XLogModel logModel = new XLogModel() { Pageable = false, Log = this.Model.Log };
+    @Html.Partial("XLogView", logModel)
+}
+else
+{
+    <span>Job is running or unstarted</span>
+}

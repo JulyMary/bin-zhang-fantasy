@@ -1,0 +1,41 @@
+﻿@using Fantasy.Jobs.Scheduling;
+@model IEnumerable<ScheduleItem>
+           
+@functions
+
+{
+     private string GetStatus(ScheduleItem item)
+     {
+         if(item.Enabled == false)
+         {
+             return "Disabled";
+         }
+         else if(item.Expired )
+         {
+             return "Expired";
+         }
+         else
+         {
+             return "Ready";
+         }
+     }
+     
+     private string DateTimeToString(DateTime? time )
+     {
+         return time != null ? time.Value.ToString("g") : "Never";
+     }
+}
+
+
+
+@Html.Telerik().Grid(Model).Name("scheduleList").Columns(columns=>
+{
+    columns.Template(@<a href="@Url.Action("Edit", new { path=item.Name})"><img src="@Url.Content("~/Content/Images/schedule.png")" alt="schedule" class="imgingrid" /></a>);
+    columns.Template(item => Path.GetFileNameWithoutExtension(item.Name)).Title("Name");
+    columns.Template(item => GetStatus(item)).Title("Status");
+    columns.Template(item => item.Trigger.Description).Title("Trigger");
+    columns.Template(item => DateTimeToString(item.Trigger.LastRunTime)).Title("Last Run Time");
+    columns.Template(item => DateTimeToString(item.Trigger.NextRunTime)).Title("Next Run Time");
+    columns.Template(item => item.Author).Title("Author");
+    columns.Template(@<a href="javascript:removeSchedule('@item.Name.Replace("\\", "\\\\")')" title="Remove"><img class="imgingrid" src="@Url.Content("~/Content/Images/schedule.delete.png")" alt="Remove" /></a>).Title("Remove");
+}).Resizable(settings=>settings.Columns(true)).Footer(false)

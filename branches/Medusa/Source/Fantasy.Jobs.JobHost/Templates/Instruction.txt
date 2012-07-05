@@ -1,0 +1,11 @@
+﻿1. %
+item property array, like xml path
+
+2. @
+item array, items on script file
+
+3. $
+global property, properties on script file
+
+4. #
+foreach single variable
