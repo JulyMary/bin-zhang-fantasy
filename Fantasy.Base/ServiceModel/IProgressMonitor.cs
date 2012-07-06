@@ -11,7 +11,7 @@ namespace Fantasy.ServiceModel
 {
 
     public enum ProgressMonitorStyle
-    {  
+    {
         Blocks = 0,
         Continuous = 1,
         Marquee = 2,
@@ -56,26 +56,27 @@ namespace Fantasy.ServiceModel
         void Control_HandleCreated(object sender, EventArgs e)
         {
             this._control.HandleCreated -= new EventHandler(Control_HandleCreated);
-            this._control.Invoke(new MethodInvoker(() => {
+            this._control.Invoke(new MethodInvoker(() =>
+            {
                 switch (this.Style)
                 {
                     case ProgressMonitorStyle.Blocks:
                         this._control.Style = ProgressBarStyle.Blocks;
                         break;
                     case ProgressMonitorStyle.Continuous:
-                        this._control.Style = ProgressBarStyle.Continuous; 
+                        this._control.Style = ProgressBarStyle.Continuous;
                         break;
                     case ProgressMonitorStyle.Marquee:
-                        this._control.Style = ProgressBarStyle.Marquee; 
+                        this._control.Style = ProgressBarStyle.Marquee;
                         break;
-                  
+
                 }
                 this._control.Minimum = this.Minimum;
                 this._control.Maximum = this.Maximum;
                 this._control.Value = this.Value;
             }));
 
-            
+
         }
 
         private int _maximum = 100;
@@ -88,7 +89,7 @@ namespace Fantasy.ServiceModel
                 this._maximum = value;
                 if (this._control.IsHandleCreated)
                 {
-                    
+
                     if ((this._control.InvokeRequired))
                     {
                         MethodInvoker<string, int> del = new MethodInvoker<string, int>(SetProperty);
@@ -117,7 +118,7 @@ namespace Fantasy.ServiceModel
                     this._control.Value = value;
                     break;
             }
-           
+
         }
 
         private int _minimum = 0;
@@ -171,7 +172,7 @@ namespace Fantasy.ServiceModel
         {
             get
             {
-               
+
                 return this._style;
             }
             set
@@ -291,12 +292,12 @@ namespace Fantasy.ServiceModel
             set { this._step = value; }
         }
 
-        private ProgressMonitorStyle _style = ProgressMonitorStyle.Blocks; 
+        private ProgressMonitorStyle _style = ProgressMonitorStyle.Blocks;
 
         public ProgressMonitorStyle Style
         {
             get { return _style; }
-            set 
+            set
             {
                 if (_style != value)
                 {
@@ -420,7 +421,7 @@ namespace Fantasy.ServiceModel
             double[] subLengths = (double[])Array.CreateInstance(typeof(double), count);
             double avg = Math.Round(1.0 / Convert.ToDouble(count), 4);
             double total = 0;
-            for (int i = 0; i <count; i++)
+            for (int i = 0; i < count; i++)
             {
                 if (i < count - 1)
                 {
@@ -678,7 +679,7 @@ namespace Fantasy.ServiceModel
 
         private object _syncRoot = new object();
 
-      
+
 
         public int Value
         {
@@ -733,9 +734,9 @@ namespace Fantasy.ServiceModel
                 _owner.Minimum = value;
             }
         }
-     
-	
-       
+
+
+
         private class SubProgress : IProgressMonitor
         {
             private decimal _length;
@@ -814,11 +815,13 @@ namespace Fantasy.ServiceModel
             public ProgressMonitorStyle Style
             {
                 get { return this._parent.Style; }
-                set {
-                    this._parent.Style = value;}
+                set
+                {
+                    this._parent.Style = value;
+                }
             }
 
-           
+
         }
 
         public ProgressMonitorStyle Style
@@ -827,6 +830,123 @@ namespace Fantasy.ServiceModel
             set { this._owner.Style = value; }
         }
 
+
+
+    }
+
+
+    public class MemoryProgressMonitor : IProgressMonitor
+    {
+        #region IProgressMonitor Members
+
+        private int _value = 0;
+
+        public int Value
+        {
+            get { return _value; }
+            set
+            {
+                if (_value != value)
+                {
+                    _value = value;
+                    this.OnValueChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+
+
+        public event EventHandler ValueChanged;
+
+        protected virtual void OnValueChanged(EventArgs e)
+        {
+            if (this.ValueChanged != null)
+            {
+                this.ValueChanged(this, e);
+            }
+        }
+
+        private int _maximum = 100;
+
+        public int Maximum
+        {
+            get { return _maximum; }
+            set
+            {
+                if (_maximum != value)
+                {
+                    _maximum = value;
+                    OnMaximumChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+
+        public event EventHandler MaximumChanged;
+
+        protected virtual void OnMaximumChanged(EventArgs e)
+        {
+            if (this.MaximumChanged != null)
+            {
+                this.MaximumChanged(this, e);
+            }
+        }
+
+
+
+
+        private int _minimum = 0;
+
+        public int Minimum
+        {
+            get { return _minimum; }
+            set
+            {
+                if (_minimum != value)
+                {
+                    _minimum = value;
+                    OnMinimumChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+
+        public event EventHandler MinimumChanged;
+
+        protected virtual void OnMinimumChanged(EventArgs e)
+        {
+            if (this.MinimumChanged != null)
+            {
+                this.MinimumChanged(this, e);
+            }
+        }
+
+        private ProgressMonitorStyle _style = ProgressMonitorStyle.Blocks;
+
+        public ProgressMonitorStyle Style
+        {
+            get { return _style; }
+            set
+            {
+                if (_style != value)
+                {
+                    _style = value;
+                    OnStyleChanged(EventArgs.Empty);
+                }
+            }
+        }
+
+        public event EventHandler StyleChanged;
+
+        protected virtual void OnStyleChanged(EventArgs e)
+        {
+            if (this.StyleChanged != null)
+            {
+                this.StyleChanged(this, e);
+            }
+        }
+
+        #endregion
     }
 
 }

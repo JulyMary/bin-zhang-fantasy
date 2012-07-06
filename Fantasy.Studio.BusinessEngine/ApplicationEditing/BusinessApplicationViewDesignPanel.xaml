@@ -4,10 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="800">
     <Grid>
         <TextBlock Height="23" HorizontalAlignment="Left" Margin="12,12,0,0" Name="textBlock1" Text="Framework View:" VerticalAlignment="Top" />
-        <Border BorderBrush="Silver" BorderThickness="1" Margin="12,41,12,12" Name="border1" />
+        <Border BorderBrush="Silver" BorderThickness="1" Margin="243,41,12,12" Name="border1" />
+        <ListBox Height="547" HorizontalAlignment="Left" Margin="12,41,0,0" Name="listBox1" VerticalAlignment="Top" Width="225" />
         <ComboBox Height="23" Margin="108,12,12,0" Name="comboBox1" VerticalAlignment="Top" />
+        
     </Grid>
 </UserControl>

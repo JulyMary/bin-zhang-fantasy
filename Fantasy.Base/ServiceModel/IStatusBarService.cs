@@ -140,4 +140,22 @@ namespace Fantasy.ServiceModel
         }
     }
 
+    public class ActionStatusBarService : IStatusBarService
+    {
+        Action<string> _action;
+        public ActionStatusBarService(Action<string> action)
+        {
+            this._action = action;
+        }
+
+        #region IStatusBarService Members
+
+        public void SetStatus(string status)
+        {
+            this._action(status);
+        }
+
+        #endregion
+    }
+
 }

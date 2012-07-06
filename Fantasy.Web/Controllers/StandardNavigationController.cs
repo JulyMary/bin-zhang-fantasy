@@ -20,7 +20,7 @@ using Fantasy.XSerialization;
 namespace Fantasy.Web.Controllers
 {
 
-    [Settings(typeof(StandardNavigationViewSettings)),
+    [NavigationView(EnableCustomizeDetailView=true),
     ResourceCaption(typeof(Resources), "StandardNavigationName")]
     public class StandardNavigationController : Controller, INavigationViewController, ICustomerizableViewController
     {

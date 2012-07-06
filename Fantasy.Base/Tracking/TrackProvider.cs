@@ -9,7 +9,7 @@ using Fantasy.ServiceModel;
 
 namespace Fantasy.Tracking
 {
-    class TrackProvider : TrackBase, ITrackProvider, IRefreshable 
+    class TrackProvider : TrackBase, ITrackProvider, IRefreshable
     {
         public TrackFactory Connection { get; private set; }
 
@@ -25,7 +25,7 @@ namespace Fantasy.Tracking
 
         public TrackProvider(TrackFactory connection, string configurationName, Uri uri, Guid id, string name, string category, IDictionary<string, object> values)
         {
-            this.Connection = connection; 
+            this.Connection = connection;
             this._configurationName = configurationName;
             this._uri = uri;
             this.Id = id;
@@ -48,7 +48,7 @@ namespace Fantasy.Tracking
             {
                 try
                 {
-                    
+
 
                     this._wcfProvider = ClientFactory.Create<ITrackProviderService>();
                     List<KeyValuePair<string, object>> values;
@@ -68,7 +68,10 @@ namespace Fantasy.Tracking
                 }
                 catch (Exception error)
                 {
-                    WCFExceptionHandler.CatchKnowns(error);
+                    if (!WCFExceptionHandler.CanCatch(error))
+                    {
+                        throw;
+                    }
                     this._wcfProvider = null;
                 }
             }
@@ -92,8 +95,8 @@ namespace Fantasy.Tracking
                     }
                 });
 
-                invoker.BeginInvoke(null, null); 
-                
+                invoker.BeginInvoke(null, null);
+
             }
 
             base.OnChanged(e);
@@ -105,19 +108,19 @@ namespace Fantasy.Tracking
         {
             if (this._wcfProvider != null)
             {
-                
-                    try
-                    {
-                        this._wcfProvider.Client.Echo();
-                    }
-                    catch (Exception error)
-                    {
-                        WCFExceptionHandler.CatchKnowns(error);
-                        this._wcfProvider = null;
-                    }
-               
 
-               
+                try
+                {
+                    this._wcfProvider.Client.Echo();
+                }
+                catch (Exception error)
+                {
+                    WCFExceptionHandler.CatchKnowns(error);
+                    this._wcfProvider = null;
+                }
+
+
+
             }
             if (this._wcfProvider == null)
             {
@@ -131,7 +134,7 @@ namespace Fantasy.Tracking
 
         public void Dispose()
         {
-            RefreshManager.Unregister(this); 
+            RefreshManager.Unregister(this);
         }
 
         #endregion

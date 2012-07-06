@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Windows;
 using Fantasy.BusinessEngine;
 
-namespace Fantasy.Studio.BusinessEngine
+namespace Fantasy.Studio.BusinessEngine.ApplicationEditing
 {
     public interface IViewDesigner : IObjectWithSite
     {

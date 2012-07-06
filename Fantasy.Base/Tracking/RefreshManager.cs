@@ -14,9 +14,9 @@ namespace Fantasy.Tracking
 
         static RefreshManager()
         {
-            _refreshThread =  ThreadFactory.CreateThread(new ThreadStart(Run)).WithStart();
-           
-            
+            _refreshThread = ThreadFactory.CreateThread(new ThreadStart(Run)).WithStart();
+
+
         }
 
         static void Run()
@@ -37,14 +37,17 @@ namespace Fantasy.Tracking
                     }
                     else
                     {
-                        _list.Remove(weak);
+                        lock (_list)
+                        {
+                            _list.Remove(weak);
+                        }
                     }
-                        
+
                 }
                 );
 
                 Thread.Sleep(5 * 1000);
-               
+
             } while (true);
         }
 
@@ -62,10 +65,10 @@ namespace Fantasy.Tracking
         {
             lock (typeof(RefreshManager))
             {
-                WeakReference weak  = (from w in _list where w.Target == obj select w).SingleOrDefault() ;
+                WeakReference weak = (from w in _list where w.Target == obj select w).SingleOrDefault();
                 if (weak != null)
                 {
-                    _list.Remove(weak); 
+                    _list.Remove(weak);
                 }
             }
         }

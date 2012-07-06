@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Fantasy.BusinessEngine.Collections;
+using System.Xml.Linq;
 
 namespace Fantasy.BusinessEngine
 {
@@ -148,7 +149,7 @@ namespace Fantasy.BusinessEngine
         }
 
 
-        public virtual string ViewSettings
+        protected internal virtual string ViewSettingsXml
         {
             get
             {
@@ -158,6 +159,38 @@ namespace Fantasy.BusinessEngine
             {
                 this.SetValue("ViewSettings", value);
             }
+        }
+
+
+        private XElement _viewSettings;
+
+        public XElement ViewSettings
+        {
+            get
+            {
+                if (_viewSettings == null)
+                {
+
+                    if (!string.IsNullOrEmpty(this.ViewSettingsXml))
+                    {
+
+                        _viewSettings = XElement.Parse(this.ViewSettingsXml);
+                    }
+                    else
+                    {
+                        XNamespace ns = Consts.ViewSettingsNamespace;
+                        _viewSettings = new XElement(ns + "settings");
+                    }
+                    this._viewSettings.Changed += new EventHandler<XObjectChangeEventArgs>(ViewSettingsChanged);
+
+                }
+                return _viewSettings;
+            }
+        }
+
+        void ViewSettingsChanged(object sender, XObjectChangeEventArgs e)
+        {
+            this.ViewSettingsXml = this.ViewSettings.ToString(SaveOptions.DisableFormatting | SaveOptions.OmitDuplicateNamespaces);
         }
 
       

@@ -6,13 +6,14 @@ using System.IO;
 using System.Xml;
 using System.Threading;
 using System.Reflection;
+using System.Xml.Linq;
 
 namespace Fantasy.ServiceModel
 {
-    public abstract class LogFileService : ServiceBase, ILogListener 
+    public abstract class LogFileService : ServiceBase, ILogListener
     {
 
-        private XmlDocument _helperDocument = new XmlDocument();
+
 
         private const string _timePattern = "u";
 
@@ -36,61 +37,61 @@ namespace Fantasy.ServiceModel
 
 
         private object _syncRoot = new object();
-        protected virtual void Log(XmlElement element)
+        protected virtual void Log(XElement element)
         {
             lock (this._syncRoot)
             {
                 StreamWriter writer = this.GetWriter();
-                writer.WriteLine(element.OuterXml);
-                writer.Flush(); 
+                writer.WriteLine(element.ToString(SaveOptions.DisableFormatting | SaveOptions.OmitDuplicateNamespaces));
+                writer.Flush();
             }
         }
 
         public void OnMessage(string category, MessageImportance importance, string message)
         {
-            XmlElement element = this._helperDocument.CreateElement("message");
-            element.SetAttribute("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
-            element.SetAttribute("category", category);
-            element.SetAttribute("importance", importance.ToString());
-            element.SetAttribute("text", message);
+            XElement element = new XElement("message");
+            element.SetAttributeValue("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
+            element.SetAttributeValue("category", category);
+            element.SetAttributeValue("importance", importance.ToString());
+            element.SetAttributeValue("text", message);
             this.Log(element);
         }
 
 
         protected virtual void WriteStart()
         {
-            XmlElement element = this._helperDocument.CreateElement("start");
-            element.SetAttribute("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
-            element.SetAttribute("category", "Start");
-            element.SetAttribute("importance", MessageImportance.High.ToString());
-            element.SetAttribute("text", String.Format("Start. Culture : {0}; UI Culture: {1}.", Thread.CurrentThread.CurrentCulture, Thread.CurrentThread.CurrentUICulture) );
+            XElement element = new XElement("start");
+            element.SetAttributeValue("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
+            element.SetAttributeValue("category", "Start");
+            element.SetAttributeValue("importance", MessageImportance.High.ToString());
+            element.SetAttributeValue("text", String.Format("Start. Culture : {0}; UI Culture: {1}.", Thread.CurrentThread.CurrentCulture, Thread.CurrentThread.CurrentUICulture));
             this.Log(element);
         }
 
         public void OnWaring(string category, Exception exception, MessageImportance importance, string message)
         {
-            XmlElement element = this._helperDocument.CreateElement("warning");
-            element.SetAttribute("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
-            element.SetAttribute("category", category);
-            element.SetAttribute("importance", importance.ToString());
-            element.SetAttribute("text", message);
-            if(exception != null)
+            XElement element = new XElement("warning");
+            element.SetAttributeValue("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
+            element.SetAttributeValue("category", category);
+            element.SetAttributeValue("importance", importance.ToString());
+            element.SetAttributeValue("text", message);
+            if (exception != null)
             {
-                element.AppendChild(this.CreateExceptionElement(exception));
+                element.Add(this.CreateExceptionElement(exception));
             }
 
             this.Log(element);
         }
 
-        private XmlElement CreateExceptionElement(Exception exception)
+        private XElement CreateExceptionElement(Exception exception)
         {
-            XmlElement element = this._helperDocument.CreateElement("exception");
-            element.SetAttribute("type", exception.GetType().ToString()); 
-            element.SetAttribute("message", exception.Message);
-            element.SetAttribute("source", exception.Source);
-            element.SetAttribute("targetSite", exception.TargetSite.ToString());
-            element.SetAttribute("stackTrace", exception.StackTrace);
-            element.SetAttribute("helpLink", exception.HelpLink);
+            XElement element = new XElement("exception");
+            element.SetAttributeValue("type", exception.GetType().ToString());
+            element.SetAttributeValue("message", exception.Message);
+            element.SetAttributeValue("source", exception.Source);
+            element.SetAttributeValue("targetSite", exception.TargetSite.ToString());
+            element.SetAttributeValue("stackTrace", exception.StackTrace);
+            element.SetAttributeValue("helpLink", exception.HelpLink);
 
             var query = from prop in exception.GetType().GetProperties()
                         where prop.DeclaringType != typeof(Exception) && prop.GetIndexParameters().Length == 0
@@ -99,12 +100,12 @@ namespace Fantasy.ServiceModel
             foreach (PropertyInfo pi in query)
             {
                 object value = pi.GetValue(exception, null);
-                element.SetAttribute(pi.Name, value != null ? value.ToString() : "null");
+                element.SetAttributeValue(pi.Name, value != null ? value.ToString() : "null");
             }
 
             if (exception.InnerException != null)
             {
-                element.AppendChild(this.CreateExceptionElement(exception.InnerException));
+                element.Add(this.CreateExceptionElement(exception.InnerException));
             }
 
             return element;
@@ -112,14 +113,14 @@ namespace Fantasy.ServiceModel
 
         public void OnError(string category, Exception exception, string message)
         {
-            XmlElement element = this._helperDocument.CreateElement("error");
-            element.SetAttribute("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
-            element.SetAttribute("category", category);
-            element.SetAttribute("importance", MessageImportance.High.ToString());
-            element.SetAttribute("text", message);
+            XElement element = new XElement("error");
+            element.SetAttributeValue("time", DateTime.Now.ToUniversalTime().ToString(_timePattern));
+            element.SetAttributeValue("category", category);
+            element.SetAttributeValue("importance", MessageImportance.High.ToString());
+            element.SetAttributeValue("text", message);
             if (exception != null)
             {
-                element.AppendChild(this.CreateExceptionElement(exception));
+                element.Add(this.CreateExceptionElement(exception));
             }
 
             this.Log(element);

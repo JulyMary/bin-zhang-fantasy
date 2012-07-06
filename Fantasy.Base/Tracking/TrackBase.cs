@@ -10,13 +10,13 @@ namespace Fantasy.Tracking
     {
         protected Dictionary<string, object> Data = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
-        public virtual  Guid Id { get; set; }
+        public virtual Guid Id { get; set; }
 
         public virtual string Name { get; set; }
 
         public virtual string Category { get; set; }
 
-      
+
 
         protected void InitializeData(IDictionary<string, object> values)
         {
@@ -29,11 +29,14 @@ namespace Fantasy.Tracking
             }
         }
 
-        public virtual string[] PropertyNames 
+        public virtual string[] PropertyNames
         {
             get
             {
-                return this.Data.Keys.ToArray();
+                lock (this.Data)
+                {
+                    return this.Data.Keys.ToArray();
+                }
             }
         }
 
@@ -41,7 +44,7 @@ namespace Fantasy.Tracking
         {
             get
             {
-                lock(this.Data)
+                lock (this.Data)
                 {
                     object rs;
                     this.Data.TryGetValue(name, out rs);
