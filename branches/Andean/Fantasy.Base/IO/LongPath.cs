@@ -34,33 +34,27 @@ namespace Fantasy.IO
 
         public static string GetDirectoryName(string path)
         {
-            Uri uri;
-            string rs;
-            if (Uri.TryCreate(path, UriKind.Absolute, out uri))
-            {
-                rs = uri.LocalPath;
-            }
-            else
-            {
-                rs = path;
-            }
 
-           
-            rs = rs.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            Uri uri = new Uri(path);
 
-           
+            string rs = uri.LocalPath;
+
+
+            if (rs.EndsWith(Path.DirectorySeparatorChar.ToString()))
+            {
+                rs.Remove(rs.Length - 1);
+            }
 
             int index = rs.LastIndexOf(Path.DirectorySeparatorChar);
-            if (index >= 0)
+            if (index > 0)
             {
                 rs = rs.Remove(index);
             }
-            else
-            {
-                rs = string.Empty;
-            }
 
-           
+            if (rs.StartsWith(@"file:\\"))
+            {
+                rs = rs.Substring("file:".Length);
+            }
 
             return rs;
         }
@@ -83,9 +77,9 @@ namespace Fantasy.IO
             Uri rs;
             try
             {
-               r = new Uri(path1);
+                r = new Uri(path1);
             }
-            catch(UriFormatException error)
+            catch (UriFormatException error)
             {
                 throw new UriFormatException(error.Message + " Uri:" + path1);
             }
@@ -98,7 +92,7 @@ namespace Fantasy.IO
             {
                 throw new UriFormatException(error.Message + " Uri:" + path2);
             }
-           
+
             return rs.LocalPath;
             //return Path.Combine(path1, path2);
         }
@@ -107,7 +101,7 @@ namespace Fantasy.IO
         {
             if (paths == null)
             {
-                throw new ArgumentNullException("paths"); 
+                throw new ArgumentNullException("paths");
             }
             if (paths.Length == 0)
             {
@@ -144,10 +138,17 @@ namespace Fantasy.IO
         public static string GetLongPathName(string path)
         {
             StringBuilder rs = new StringBuilder(1024);
-            NativeMethods.GetLongPathName(path, rs, 1024);
+            int len = NativeMethods.GetLongPathName(path, rs, 1024);
+            if (len > 1024)
+            {
+                rs = new StringBuilder(len);
+                len = NativeMethods.GetLongPathName(path, rs, len);
+            }
 
-            return rs.ToString();
+            return rs.ToString(0, len);
         }
+
+
 
         public static string GetExtension(string path)
         {
@@ -165,8 +166,7 @@ namespace Fantasy.IO
 
         public static string GetFileName(string path)
         {
-           return Path.GetFileName(path);
-
+            return Path.GetFileName(path);
         }
 
         public static string GetFileNameWithoutExtension(string path)
@@ -248,5 +248,10 @@ namespace Fantasy.IO
             return Path.HasExtension(path);
         }
 
+        private static Regex escapeRegex = new Regex(@"[\\\/\:\*\?\""\<\>\|]");
+        public static string EscapeFileName(string fileName, string replacement = "")
+        {
+            return escapeRegex.Replace(fileName, replacement).Trim();
+        }
     }
 }

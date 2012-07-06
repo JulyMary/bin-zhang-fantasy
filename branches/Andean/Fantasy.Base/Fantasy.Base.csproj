@@ -191,6 +191,8 @@
     <Compile Include="ComponentModel\ResourceCategoryAttribute.cs" />
     <Compile Include="Configuration\XSettingsConfigurationHandler.cs" />
     <Compile Include="Drawing\IconReader.cs" />
+    <Compile Include="IO\DiskspaceInfo.cs" />
+    <Compile Include="IO\FileLockInfo.cs" />
     <Compile Include="ReferenceTypeAttributeBase.cs" />
     <Compile Include="Reflection\GlobalAssemblyCache.cs" />
     <Compile Include="IEventHandler.cs" />

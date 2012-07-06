@@ -78,9 +78,15 @@ namespace Fantasy.Tracking
                 catch (Exception error)
                 {
 
-                    WCFExceptionHandler.CatchKnowns(error);
-                    this._wcfListener = null;
-                    this.IsActived = false;
+                    if (WCFExceptionHandler.CanCatch(error))
+                    {
+                        this._wcfListener = null;
+                        this.IsActived = false;
+                    }
+                    else
+                    {
+                        throw;
+                    }
 
                 }
 
@@ -94,7 +100,7 @@ namespace Fantasy.Tracking
         {
             if (this._wcfListener != null)
             {
-                
+
                 try
                 {
                     this._wcfListener.Client.Echo();

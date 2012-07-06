@@ -14,7 +14,7 @@ namespace Fantasy.ServiceModel
     {
         private static Dictionary<Type, ChannelFactory> _factories = new Dictionary<Type, ChannelFactory>();
 
-        private static Dictionary<Key<Type, Type>, ChannelFactory> _duplexFactories = new Dictionary<Key<Type, Type>, ChannelFactory>(); 
+        private static Dictionary<Key<Type, Type>, ChannelFactory> _duplexFactories = new Dictionary<Key<Type, Type>, ChannelFactory>();
 
         private static Dictionary<Type, EndpointAddress> _endpointAddresses = new Dictionary<Type, EndpointAddress>();
 
@@ -45,17 +45,17 @@ namespace Fantasy.ServiceModel
             ChannelFactory rs;
             lock (_syncRoot)
             {
-                if(!_factories.TryGetValue(typeof(TChannel), out rs))
+                if (!_factories.TryGetValue(typeof(TChannel), out rs))
                 {
                     ClientSection cs = (ClientSection)System.Configuration.ConfigurationManager.GetSection("system.serviceModel/client");
                     var q1 = from e in cs.Endpoints.Cast<ChannelEndpointElement>() where e.Contract == typeof(TChannel).FullName select e.Name;
                     string configurationName = q1.Single();
                     rs = new ChannelFactory<TChannel>(configurationName);
-                    _factories.Add(typeof(TChannel),rs);
+                    _factories.Add(typeof(TChannel), rs);
                 }
             }
 
-            return (ChannelFactory < TChannel > )rs;
+            return (ChannelFactory<TChannel>)rs;
         }
 
 
@@ -79,7 +79,7 @@ namespace Fantasy.ServiceModel
                     if (addr != null)
                     {
                         string port = string.Empty;
-                       
+
                         if (addr.Port == -1)
                         {
                             if (!uri.IsDefaultPort)
@@ -93,10 +93,10 @@ namespace Fantasy.ServiceModel
                             port = addr.Port.ToString();
                             port = ":" + port;
                         }
-                       
-                        
 
-                        uri = new Uri(string.Format("{0}://{1}{2}{3}", uri.Scheme, addr.Host, port, uri.AbsolutePath)); 
+
+
+                        uri = new Uri(string.Format("{0}://{1}{2}{3}", uri.Scheme, addr.Host, port, uri.AbsolutePath));
                     }
                     rs = new EndpointAddress(uri);
 
@@ -105,22 +105,25 @@ namespace Fantasy.ServiceModel
             return rs;
         }
 
-        public static ClientRef<TChannel> Create<TChannel>()
+        public static ClientRef<TChannel> Create<TChannel>(string uri = null)
         {
-            ChannelFactory<TChannel> factory = (ChannelFactory< TChannel>)GetFactory<TChannel>();
-            EndpointAddress address = GetAddress(typeof(TChannel));
+            ChannelFactory<TChannel> factory = (ChannelFactory<TChannel>)GetFactory<TChannel>();
+            EndpointAddress address = String.IsNullOrEmpty(uri) ? GetAddress(typeof(TChannel)) : new EndpointAddress(uri);
             return new ClientRef<TChannel>(factory.CreateChannel(address));
         }
 
-        public static ClientRef<TChannel> CreateDuplex<TChannel>(object callback)
+
+
+
+        public static ClientRef<TChannel> CreateDuplex<TChannel>(object callback, string uri = null)
         {
             if (callback == null)
             {
-                throw new ArgumentNullException("callback"); 
+                throw new ArgumentNullException("callback");
             }
             DuplexChannelFactory<TChannel> factory = (DuplexChannelFactory<TChannel>)GetDuplexFactory<TChannel>(callback.GetType());
-            EndpointAddress address = GetAddress(typeof(TChannel));
-            return new ClientRef<TChannel>( factory.CreateChannel(new InstanceContext(callback), address));
+            EndpointAddress address = String.IsNullOrEmpty(uri) ? GetAddress(typeof(TChannel)) : new EndpointAddress(uri);
+            return new ClientRef<TChannel>(factory.CreateChannel(new InstanceContext(callback), address));
         }
 
     }

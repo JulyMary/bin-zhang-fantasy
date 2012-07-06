@@ -235,7 +235,7 @@
     <Compile Include="Web\ICollectionViewController.cs" />
     <Compile Include="Web\INavigationViewController.cs" />
     <Compile Include="Web\IScalarViewController.cs" />
-    <Compile Include="Web\SettingsAttribute.cs" />
+    <Compile Include="Web\NavigationViewAttribute.cs" />
     <Compile Include="Web\ViewType.cs" />
     <Compile Include="WellknownCategoryNames.Designer.cs">
       <AutoGen>True</AutoGen>

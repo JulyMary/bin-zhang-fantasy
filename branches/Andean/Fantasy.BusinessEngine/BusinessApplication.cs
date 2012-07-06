@@ -68,43 +68,33 @@ namespace Fantasy.BusinessEngine
 
 
 
-        private XElement _viewSettings;
 
-        public XElement ApplicationViewSettings
+        private XElement _viewSettings;
+        public XElement ViewSettings
         {
             get
             {
                 if (_viewSettings == null)
                 {
 
-                    if (!string.IsNullOrEmpty(this.Data.ViewSettings))
-                    {
-
-                        _viewSettings = XElement.Parse(this.Data.ViewSettings);
-                    }
-                    else
-                    {
-                        XNamespace ns = Consts.ViewSettingsNamespace;
-                        _viewSettings = new XElement(ns + "settings"); 
-                    }
+                    _viewSettings = new XElement(this.Data.ViewSettings);
 
                 }
                 return _viewSettings;
             }
         }
-
         public virtual INavigationViewController GetNaviationView()
         {
             XNamespace ns = Consts.ViewSettingsNamespace;
 
             INavigationViewController rs;
 
-            XElement settings = ApplicationViewSettings.Element(ns + "navigation");
+            XElement settings = this.ViewSettings.Element(ns + "navigation");
             
             if (settings == null)
             {
                 settings = new XElement(ns + "navigation", new XAttribute(ns + "controller", "Fantasy.Web.Controllers.StandardNavigationController, Fantasy.Web"));
-                ApplicationViewSettings.Add(settings);
+                this.ViewSettings.Add(settings);
             }
 
             Type controllerType = Type.GetType((string)settings.Attribute(ns + "controller"), true);
@@ -173,7 +163,7 @@ namespace Fantasy.BusinessEngine
             {
                 viewSettings = new XElement(ns + "detail", new XAttribute(ns + "classId", @class.Id), new XAttribute(ns + "controller", defaultType.VersionFreeTypeName()));
 
-                this.ApplicationViewSettings.Add(viewSettings);
+                this.ViewSettings.Add(viewSettings);
             }
             else
             {
@@ -207,7 +197,7 @@ namespace Fantasy.BusinessEngine
         private XElement GetClassViewSettings(BusinessClass @class)
         {
             XNamespace ns = Consts.ViewSettingsNamespace;
-            XElement rs = this.ApplicationViewSettings.Elements(ns + "detail").FirstOrDefault(e => (Guid)e.Attribute(ns + "classId") == @class.Id);
+            XElement rs = this.ViewSettings.Elements(ns + "detail").FirstOrDefault(e => (Guid)e.Attribute(ns + "classId") == @class.Id);
            
             return rs;
         }

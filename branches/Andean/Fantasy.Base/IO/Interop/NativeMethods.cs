@@ -214,6 +214,14 @@ namespace Fantasy.IO.Interop
         public static extern bool CloseHandle(IntPtr handle);
 
 
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetDiskFreeSpaceEx(string lpDirectoryName,
+        out ulong lpFreeBytesAvailable,
+        out ulong lpTotalNumberOfBytes,
+        out ulong lpTotalNumberOfFreeBytes);
+
+
 
 
         internal static TransactionHandle GetTransactionFromDTC()
