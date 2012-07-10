@@ -38,22 +38,23 @@ namespace Fantasy.Jobs.Management
                 foreach (string folder in folders)
                 {
                     string fullPath = Fantasy.IO.LongPath.Combine(baseDir, folder);
-
-                    foreach (string s in Directory.GetFiles(fullPath, "*.xml", SearchOption.TopDirectoryOnly))
+                    if (LongPathDirectory.Exists(fullPath))
                     {
-                        _fileQueue.Enqueue(s);
+
+                        foreach (string s in Directory.GetFiles(fullPath, "*.xml", SearchOption.TopDirectoryOnly))
+                        {
+                            _fileQueue.Enqueue(s);
+                        }
+
+                        FileSystemWatcher watcher = new FileSystemWatcher(fullPath, "*.xml");
+                        watcher.Created += new FileSystemEventHandler(FileWatcherCreated);
+                        watcher.EnableRaisingEvents = true;
+                        _watchers.Add(watcher);
+
+                       
                     }
-
-                    FileSystemWatcher watcher = new FileSystemWatcher(fullPath, "*.xml");
-                    watcher.Created += new FileSystemEventHandler(FileWatcherCreated);
-                    watcher.EnableRaisingEvents = true;
-                    _watchers.Add(watcher);
-
-                    _addingThread = ThreadFactory.CreateThread(this.AddJobs).WithStart();
-                   
-                    
-
                 }
+                _addingThread = ThreadFactory.CreateThread(this.AddJobs).WithStart();
             });
             base.InitializeService();
         }

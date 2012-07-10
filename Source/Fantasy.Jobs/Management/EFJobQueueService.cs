@@ -62,7 +62,14 @@ namespace Fantasy.Jobs.Management
 
         public IEnumerable<JobMetaData> Terminates
         {
-            get { return this._entities.Terminates; }
+            get {
+                List<JobMetaData> rs;
+                lock (_syncRoot)
+                {
+                    rs = new List<JobMetaData>(this._entities.Terminates);
+                }
+                return rs;
+            }
         }
 
         public JobMetaData FindJobMetaDataById(Guid id)
@@ -190,7 +197,13 @@ namespace Fantasy.Jobs.Management
         }
         public IEnumerable<JobMetaData> FindTerminated(out int totalCount, string filter, string[] args, string order, int skip, int take)
         {
-            return FindJobMetaDataByFilter(out totalCount, this._entities.Terminates, filter, args, order, skip, take);
+            List<JobMetaData> rs;
+            lock (_syncRoot)
+            {
+
+                rs = new List<JobMetaData>( FindJobMetaDataByFilter(out totalCount, this._entities.Terminates, filter, args, order, skip, take));
+            }
+            return rs;
         }
         public IEnumerable<JobMetaData> FindUnterminated(out int totalCount, string filter, string[] args, string order, int skip, int take)
         {
@@ -282,12 +295,14 @@ namespace Fantasy.Jobs.Management
 
         public IEnumerable<JobMetaData> FindAll()
         {
-            List<JobMetaData> uns;
+            List<JobMetaData> rs;
+          
             lock (_syncRoot)
             {
-                uns = new List<JobMetaData>(_unterminates);
+                rs = new List<JobMetaData>(_unterminates);
+                rs.AddRange(this._entities.Terminates);
             }
-            return uns.Union(this._entities.Terminates);
+            return rs;
         }
 
         public event EventHandler<JobQueueEventArgs> Changed;
@@ -426,35 +441,35 @@ namespace Fantasy.Jobs.Management
 
 
 
-       
+
 
 
         public string[] GetAllApplications()
         {
-            List<JobMetaData> uns;
+            List<string> rs = new List<string>();
+
             lock (_syncRoot)
             {
-                uns = new List<JobMetaData>(_unterminates);
+                rs.AddRange(_unterminates.Select(j => j.Application).Distinct());
+                rs.AddRange(this._entities.Terminates.Select(j => j.Application).Distinct());
             }
-            var q1 = from job in uns select job.Application;
-            var q2 = from job in this.Terminates select job.Application;
 
-            var q3 = q1.Distinct().Union(q2.Distinct()).Distinct();
-            return q3.ToArray();
+
+            return rs.Distinct().ToArray();
         }
 
         public string[] GetAllUsers()
         {
-            List<JobMetaData> uns;
+            List<string> rs = new List<string>();
+
             lock (_syncRoot)
             {
-                uns = new List<JobMetaData>(_unterminates);
+                rs.AddRange(_unterminates.Select(j => j.User).Distinct());
+                rs.AddRange(this._entities.Terminates.Select(j => j.User).Distinct());
             }
-            var q1 = from job in uns select job.User;
-            var q2 = from job in this.Terminates select job.User;
 
-            var q3 = q1.Distinct().Union(q2.Distinct()).Distinct();
-            return q3.ToArray();
+
+            return rs.Distinct().ToArray();
         }
 
 
