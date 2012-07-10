@@ -173,7 +173,6 @@
     <Compile Include="Tasks\CreateDirectoryTask.cs" />
     <Compile Include="Tasks\EscapeFileNameTask.cs" />
     <Compile Include="Tasks\SearchFilesTask.cs" />
-    <Compile Include="Utils\Encryption.cs" />
     <Compile Include="Resources\GlobalMutexService.cs" />
     <Compile Include="Resources\JobRuntimeScheduleResourceProvider.cs" />
     <Compile Include="Management\JobManagerSettings.settings.cs">
