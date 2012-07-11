@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Xml.Linq;
 using Fantasy.ServiceModel;
+using System.Runtime.InteropServices;
 
 namespace Fantasy.Jobs.Management
 {
@@ -148,12 +149,31 @@ namespace Fantasy.Jobs.Management
             }
         }
 
+
+        [DllImport("kernel32.dll", EntryPoint = "GetProcessAffinityMask", SetLastError = true)]
+        private static extern bool GetProcessAffinityMask(IntPtr hProcess,
+           out uint lpProcessAffinityMask, out uint lpSystemAffinityMask);
+
+       
+
         private  Process CreateHostProcess(JobMetaData job)
         {
             Process process = new Process();
 
             process.StartInfo.FileName = string.Format("{0}", JobManagerSettings.Default.JobHostFullPath);
-            process.StartInfo.Arguments = string.Format("/id:{0}", job.Id);
+            string args = string.Format("/id:{0}", job.Id);
+            process.StartInfo.Arguments = args;
+
+            uint pm, sm;
+
+            GetProcessAffinityMask(Process.GetCurrentProcess().Handle, out pm, out sm);
+
+            if (pm != 0)
+            {
+                args += "/pid:" + pm.ToString();
+            }
+
+
             process.StartInfo.ErrorDialog = false;
 #if !DEBUG
                 process.StartInfo.CreateNoWindow = true;

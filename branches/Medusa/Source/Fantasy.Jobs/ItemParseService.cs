@@ -78,7 +78,7 @@ namespace Fantasy.Jobs
                         else
                         {
                             string[] names = m.Groups["cate"].Value.Split(new char[] { '.' }, 2);
-                            Job job = this.Site.GetRequiredService<Job>();
+                            IJob job = this.Site.GetRequiredService<IJob>();
 
                             object var;
                             if (job.RuntimeStatus.TryGetValue(names[0], out var))

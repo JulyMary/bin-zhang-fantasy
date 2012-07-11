@@ -10,7 +10,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("retry", NamespaceUri = Consts.XNamespaceURI)] 
-    public class Retry : Sequence 
+    internal class Retry : Sequence 
     {
         public Retry()
         {

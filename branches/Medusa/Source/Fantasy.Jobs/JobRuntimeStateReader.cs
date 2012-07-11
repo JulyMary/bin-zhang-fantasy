@@ -36,7 +36,7 @@ namespace Fantasy.Jobs
 
                 string meta = names.Length > 1 ? names[1] : null;
 
-                Job job = (Job)this.Site.GetService(typeof(Job));
+                IJob job = (Job)this.Site.GetService(typeof(IJob));
 
                 object o;
 

@@ -8,7 +8,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("try", NamespaceUri = Consts.XNamespaceURI)]  
-    public class Try : Sequence, IConditionalObject 
+    internal class Try : Sequence, IConditionalObject 
     {
         public override void Execute()
         {

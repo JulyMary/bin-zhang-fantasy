@@ -8,6 +8,8 @@ using System.Threading;
 using System.Xml;
 using Fantasy.XSerialization;
 using System.Xml.Linq;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace Fantasy.Jobs.JobHost
 {
@@ -22,6 +24,13 @@ namespace Fantasy.Jobs.JobHost
              if (String.IsNullOrEmpty(Environment.GetEnvironmentVariable("ProgramData")))
              {
                  Environment.SetEnvironmentVariable("ProgramData", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), EnvironmentVariableTarget.Process);
+             }
+
+             if (CommandArgumentsHelper.HasArgument("pid"))
+             {
+                 uint pm = UInt32.Parse(CommandArgumentsHelper.GetValue("pid"));
+                 SetProcessAffinityMask(Process.GetCurrentProcess().Handle, pm);
+
              }
            
             //Console.ReadLine(); 
@@ -47,7 +56,12 @@ namespace Fantasy.Jobs.JobHost
 #endif
         }
 
-        static void StartJob(JobEngine engine)
+        [DllImport("kernel32.dll", EntryPoint = "SetProcessAffinityMask")]
+        private static extern bool SetProcessAffinityMask(IntPtr hProcess,
+           uint dwProcessAffinityMask);
+
+
+        private static void StartJob(JobEngine engine)
         {
             string path = CommandArgumentsHelper.GetValue("s");
             XElement doc = XElement.Load(path);

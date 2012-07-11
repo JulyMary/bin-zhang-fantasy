@@ -12,5 +12,7 @@ namespace Fantasy.Jobs
         public const string JobServiceNamespaceURI = "urn:schemas-fantasy-com:jobservice";
 
         public const string ScheduleNamespaceURI = "urn:schemas-fantasy-com:jobservice-schedule";
+
+        public const string LicenceNamespaceURI = "urn:schemas-fantasy-com:licensing";
     }
 }

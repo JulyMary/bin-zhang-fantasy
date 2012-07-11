@@ -126,6 +126,7 @@
     <Reference Include="System.Data.Entity">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization">
@@ -158,6 +159,7 @@
     <Compile Include="DomainUnhandledExcepationService.cs" />
     <Compile Include="ItemParseService.cs" />
     <Compile Include="JobLogFileService.cs" />
+    <Compile Include="Licence.cs" />
     <Compile Include="Management\ConnectToUncPathService.cs" />
     <Compile Include="Management\CpuLoadFactorEvaluator.cs" />
     <Compile Include="Management\IComputerLoadFactorEvaluator.cs" />
@@ -315,6 +317,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Management\FantasyJob.sql" />
+    <None Include="Resources\fantasy.pub.xml" />
     <Content Include="Resources\JobMetaDataFilter.cs" />
     <Compile Include="Management\StartTrackingCommand.cs" />
     <Compile Include="Tasks\ExecuteTask.cs" />

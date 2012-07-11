@@ -12,7 +12,7 @@ using Fantasy.ServiceModel;
 namespace Fantasy.Jobs.Scheduling
 {
     [XSerializable("schedule.data", NamespaceUri = Consts.ScheduleNamespaceURI)]
-    public class ScheduleData : ObjectWithSite
+    internal class ScheduleData : ObjectWithSite
     {
         public ScheduleData()
         {

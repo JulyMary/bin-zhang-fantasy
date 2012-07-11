@@ -6,7 +6,7 @@ using Fantasy.XSerialization;
 namespace Fantasy.Jobs
 {
     [XSerializable("output", NamespaceUri=Consts.XNamespaceURI )]
-    public class TaskOutput : IConditionalObject
+    internal class TaskOutput : IConditionalObject
     {
         [XAttribute("taskParameter")]
         public string TaskParameter { get; set; }

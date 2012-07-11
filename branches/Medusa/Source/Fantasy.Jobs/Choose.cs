@@ -10,11 +10,11 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("choose", NamespaceUri = Consts.XNamespaceURI)]  
-    public class Choose : AbstractInstruction
+    internal class Choose : AbstractInstruction
     {
         public override void Execute()
         {
-            Job job = (Job)this.Site.GetService(typeof(Job));
+            IJob job = (Job)this.Site.GetService(typeof(Job));
             IConditionService conditionService = (IConditionService)this.Site.GetService(typeof(IConditionService));
             When chose = null;
             int index = (int)job.RuntimeStatus.Local.GetValue("chose", -1);

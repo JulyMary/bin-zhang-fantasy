@@ -8,7 +8,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("when", NamespaceUri=Consts.XNamespaceURI )] 
-    public class When : Sequence
+    internal class When : Sequence
     {
         [XAttribute("condition")]
         public string Condition { get; set; }

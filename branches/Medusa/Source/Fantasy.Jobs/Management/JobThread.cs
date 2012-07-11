@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Fantasy.Jobs.Management
 {
-    public class JobThread
+    internal class JobThread
     {
         public JobThread(JobMetaData job, Thread thread, bool isResume)
         {

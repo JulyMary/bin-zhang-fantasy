@@ -92,7 +92,7 @@ namespace Fantasy.Jobs
  
         void IJobEngineEventHandler.HandleLoad(IJobEngine sender)
         {
-            Job job = this.Site.GetService<Job>();
+            IJob job = this.Site.GetService<IJob>();
 
             string name = job.GetProperty("name");
             if (string.IsNullOrWhiteSpace(name))

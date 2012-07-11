@@ -11,7 +11,7 @@ namespace Fantasy.Jobs
 
     [Instruction]
     [XSerializable("until-success", NamespaceUri = Consts.XNamespaceURI)]  
-    public class UntilSuccess : AbstractInstruction
+    internal class UntilSuccess : AbstractInstruction
     {
 
         [XAttribute("failIfAllSkipped")]

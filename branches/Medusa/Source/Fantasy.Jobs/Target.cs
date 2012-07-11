@@ -11,7 +11,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("target", NamespaceUri = Consts.XNamespaceURI)]
-    public class Target : Sequence, IConditionalObject
+    internal class Target : Sequence, IConditionalObject
     {
         private bool _executing = false;
 

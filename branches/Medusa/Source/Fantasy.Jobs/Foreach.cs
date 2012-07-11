@@ -9,7 +9,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("foreach", NamespaceUri = Consts.XNamespaceURI)]
-    public class Foreach : Sequence 
+    internal class Foreach : Sequence 
     {
         public override void Execute()
         {

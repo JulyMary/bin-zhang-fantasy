@@ -168,6 +168,10 @@
   <data name="FailToLoadTemplateText" xml:space="preserve">
     <value>Cannot not load template file {0}</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FantasyPubKey" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\fantasy.pub.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;gb2312</value>
+  </data>
   <data name="InlineTaskMemberMustBeXElementText" xml:space="preserve">
     <value>Task Member with flag Inline must be type of string. Task {0}, Attribute {1}.</value>
   </data>
@@ -198,7 +202,6 @@
   <data name="InvalidProgressValueText" xml:space="preserve">
     <value>Progress value must between 0 to 1.</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="JobMetaDataFilterTemplate" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\jobmetadatafilter.cs;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>

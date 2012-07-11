@@ -16,14 +16,14 @@ namespace Fantasy.Jobs
 
         public string GetTagValue(string tag, IDictionary<string, object> context)
         {
-            Job job = (Job)this.Site.GetService(typeof(IJob));
+            IJob job = (IJob)this.Site.GetService(typeof(IJob));
             return job.GetProperty(tag); 
 
         }
 
         public bool HasTag(string tag, IDictionary<string, object> context)
         {
-            Job job = (Job)this.Site.GetService(typeof(IJob));
+            IJob job = (IJob)this.Site.GetService(typeof(IJob));
             return job != null ? job.HasProperty(tag) : false;
         }
 

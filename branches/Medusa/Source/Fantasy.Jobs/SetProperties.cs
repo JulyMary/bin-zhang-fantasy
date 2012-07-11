@@ -9,7 +9,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("properties", NamespaceUri = Consts.XNamespaceURI)]  
-    public class SetProperties : AbstractInstruction, IConditionalObject
+    internal class SetProperties : AbstractInstruction, IConditionalObject
     {
 
         [XArray(Serializer = typeof(JobPropertiesSerializer))]
