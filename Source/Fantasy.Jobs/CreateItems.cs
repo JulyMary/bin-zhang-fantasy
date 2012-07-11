@@ -11,7 +11,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("items", NamespaceUri = Consts.XNamespaceURI)]  
-    public class CreateItems : AbstractInstruction, IConditionalObject, IXSerializable
+    internal class CreateItems : AbstractInstruction, IConditionalObject, IXSerializable
     {
 
         private List<CreateItemsItem> _list = new List<CreateItemsItem>();

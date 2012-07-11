@@ -11,7 +11,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("using", NamespaceUri = Consts.XNamespaceURI)]
-    public class Using : Sequence
+    internal class Using : Sequence
     {
         public override void Execute()
         {

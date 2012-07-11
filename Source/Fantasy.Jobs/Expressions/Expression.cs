@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Fantasy.Jobs.Expressions
 {
-    public class Expression
+    internal class Expression
     {
         private ParseTree _tree;
 
@@ -79,7 +79,7 @@ namespace Fantasy.Jobs.Expressions
     }
 
 
-    public class ResolveTypeEventArgs : EventArgs
+    internal class ResolveTypeEventArgs : EventArgs
     {
         public ResolveTypeEventArgs(string name)
         {
@@ -91,7 +91,7 @@ namespace Fantasy.Jobs.Expressions
         public Type Type { get; set; }
     }
 
-    public class InvokeFunctionEventArgs : EventArgs
+    internal class InvokeFunctionEventArgs : EventArgs
     {
 
         public InvokeFunctionEventArgs(Type t, string functionName, object[] arguments)

@@ -7,11 +7,11 @@ using System.Text;
 namespace Fantasy.Jobs.Expressions
 {
     #region ParseTree
-    public class ParseErrors : List<ParseError>
+    internal class ParseErrors : List<ParseError>
     {
     }
 
-    public class ParseError
+    internal class ParseError
     {
         private string message;
         private int code;
@@ -43,7 +43,7 @@ namespace Fantasy.Jobs.Expressions
     }
 
     // rootlevel of the node tree
-    public partial class ParseTree : ParseNode
+    partial class ParseTree : ParseNode
     {
         public ParseErrors Errors;
 
@@ -88,7 +88,7 @@ namespace Fantasy.Jobs.Expressions
         }
     }
 
-    public partial class ParseNode
+    partial class ParseNode
     {
         protected string text;
         protected List<ParseNode> nodes;

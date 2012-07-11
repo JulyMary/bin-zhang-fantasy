@@ -14,7 +14,7 @@ namespace Fantasy.Jobs.Resources
     {
         protected IResourceProvider[] _providers;
 
-        protected List<ResourceGroup> _allocatedResources = new List<ResourceGroup>();
+        private List<ResourceGroup> _allocatedResources = new List<ResourceGroup>();
 
         private  Thread _checkThread;
 

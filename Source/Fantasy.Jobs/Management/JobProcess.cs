@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace Fantasy.Jobs.Management
 {
-    public class JobProcess
+    internal class JobProcess
     {
         public JobProcess(JobMetaData job, Process process, bool isResume)
         {

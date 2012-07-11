@@ -7,7 +7,7 @@ using Fantasy.ServiceModel;
 
 namespace Fantasy.Jobs.Resources
 {
-    public class ResourceGroup : ObjectWithSite
+    internal class ResourceGroup : ObjectWithSite
     {
 
         

@@ -20,7 +20,7 @@ namespace Fantasy.Jobs
     
     //public enum TaskExecutionLocation {InProcess, OutProcess}
     [XSerializable("executeTask", NamespaceUri= Consts.XNamespaceURI)]
-    public class ExecuteTaskInstruction : AbstractInstruction, IConditionalObject, IXSerializable
+    internal class ExecuteTaskInstruction : AbstractInstruction, IConditionalObject, IXSerializable
     {
         public ExecuteTaskInstruction()
         {

@@ -214,6 +214,15 @@ namespace Fantasy.Jobs.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;DSAKeyValue&gt;&lt;P&gt;pNmoVnPhu8rkMqg6uB6WUCm6GqZgzmThr2VC9hk0IBmphxSXZ8hBvjb4L6F44tzWCP5hjh8AuNKvEj/xo0Fxqq1WY7sMeDULf+dpmEK9SF57q4+avzFgo3XD/GBSQmRdbyllJHMw0ByFESAFtth4V3ruProvOyyAuCpyrcm21Ac=&lt;/P&gt;&lt;Q&gt;xGgzJOZHsX7FVrJmF7nD1reKGU0=&lt;/Q&gt;&lt;G&gt;dcAwjh26TA66jjAulcub2HUHGMQgyeIDeTvqPAIrPh08bLO886r8e3hkebnLQY1rDasmgCElbBzCNXZUkyZ2H8EYu8ZYuOSdqn/3r0kL61T6nAdSlac0uYiLL5yLAzzKFhZ9bb+pcvhMG6bOsyokgAp+ATFeR2G6wC4zKuW9ykc=&lt;/G&gt;&lt;Y&gt;ToSNpB4eBi2RW540zqN41+vv7ud/J4KxfQfxmLiF8P7GCV1qaVq8MtM3IPCsmSuN8XfbQhElMWz5x5wqBLBLrnDU0dyg3vhrujLiZLZ [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string FantasyPubKey {
+            get {
+                return ResourceManager.GetString("FantasyPubKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Task Member with flag Inline must be type of string. Task {0}, Attribute {1}..
         /// </summary>
         internal static string InlineTaskMemberMustBeXElementText {
@@ -325,7 +334,7 @@ namespace Fantasy.Jobs.Properties {
         ///            var rs = source;
         ///
         ///            
-        ///            &lt;%=enableCondition%&gt;rs = from job in r [rest of string was truncated]&quot;;.
+        ///            &lt;%=enableCondition%&gt;rs = from job in rs wher [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string JobMetaDataFilterTemplate {
             get {

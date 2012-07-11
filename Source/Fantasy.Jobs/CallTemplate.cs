@@ -11,7 +11,7 @@ namespace Fantasy.Jobs
 {
     [Instruction]
     [XSerializable("callTemplate", NamespaceUri = Consts.XNamespaceURI)]
-    public class CallTemplate : AbstractInstruction, IConditionalObject, IXSerializable
+    internal class CallTemplate : AbstractInstruction, IConditionalObject, IXSerializable
     {
        
         public override void Execute()
@@ -22,12 +22,12 @@ namespace Fantasy.Jobs
            
             if (conditionSvc.Evaluate(this))
             {
-                Job parentJob = this.Site.GetRequiredService<Job>();
+                IJob parentJob = this.Site.GetRequiredService<IJob>();
 
                 ServiceContainer childSite = new ServiceContainer();
 
                 _job = new Job() { IsNested = true };
-                _job.ID = parentJob.ID;
+                _job._id = parentJob.ID;
 
                 List<object> services = new List<object>();
                 services.AddRange(AddIn.CreateObjects("jobEngine/job.services/service"));
@@ -55,7 +55,7 @@ namespace Fantasy.Jobs
                     _job.LoadStatus(_jobElement);
                 }
 
-                _job.Execute();
+                ((IJob)_job).Execute();
 
 
                 SetOutputParameters();

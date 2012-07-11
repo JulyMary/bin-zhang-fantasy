@@ -20,7 +20,7 @@ using Fantasy.ServiceModel;
 namespace Fantasy.Jobs
 {
     [XSerializable("job", NamespaceUri=Consts.XNamespaceURI)]     
-    public class Job : MarshalByRefObject, IJob, IObjectWithSite
+    internal class Job : MarshalByRefObject, IJob, IObjectWithSite
     {
         public Job()
         {
@@ -34,13 +34,13 @@ namespace Fantasy.Jobs
             
         }
         [XAttribute("id")]
-        public Guid ID { get; set; }
+        internal Guid _id;
 
         [XAttribute("startupTarget")]
-        public string StartupTarget { get; set; }
+        private string _startupTarget;
 
         [XAttribute("template")]
-        public string TemplateName { get; set; }
+        private string _templateName;
         
         [XElement("runtime")]
         private RuntimeStatus _runtimeStatus = new RuntimeStatus();
@@ -52,27 +52,15 @@ namespace Fantasy.Jobs
 #pragma warning restore 169
 
 
-        public RuntimeStatus RuntimeStatus
-        {
-            get
-            {
-                return _runtimeStatus;
-            }
-        }
+       
 
         
         [XArray( Name="properties", Serializer=typeof(JobPropertiesSerializer)) ]
         private List<JobProperty> _properties = new List<JobProperty>(); 
 
-        public JobProperty[] Properties
-        {
-            get
-            {
-                return _properties.ToArray();
-            }
-        }
+        
 
-        public void RemoveProperty(string name)
+        private void RemoveProperty(string name)
         {
             int index = _properties.BinarySearchBy(name, (p) => p.Name, StringComparer.OrdinalIgnoreCase);
             if (index >= 0)
@@ -82,14 +70,14 @@ namespace Fantasy.Jobs
         }
 
 
-        public string GetProperty(string name)
+        private string GetProperty(string name)
         {
             int index = _properties.BinarySearchBy(name, (p) => p.Name, StringComparer.OrdinalIgnoreCase);
             
             return index >= 0 ? this._properties[index].Value : null;
             
         }
-        public void SetProperty(string name, string value)
+        private void SetProperty(string name, string value)
         {
             int index = _properties.BinarySearchBy(name, (p) => p.Name, StringComparer.OrdinalIgnoreCase);
             JobProperty prop;
@@ -107,35 +95,24 @@ namespace Fantasy.Jobs
 
 
         }
-        public bool HasProperty(string name)
+        private bool HasProperty(string name)
         {
             return _properties.BinarySearchBy(name, (p) => p.Name, StringComparer.OrdinalIgnoreCase) >= 0;
         }
 
+        [XArray(Name = "imports")]
+        [XArrayItem(Name = "import", Type = typeof(ImportAssembly))] 
         private Collection<ImportAssembly> _imports = new Collection<ImportAssembly>();
 
        
 
-        [XArray(Name = "imports")]
-        [XArrayItem(Name = "import", Type=typeof(ImportAssembly))] 
-        public IList<ImportAssembly> Imports
-        {
-            get
-            {
-                return _imports;
-            }
-        }
+        
+      
 
         [XArray(Name = "targets")]     
         [XArrayItem(Name = "target", Type=typeof(Target))] 
         private List<Target> _targets = new List<Target>();
-        public IList<Target> Targets
-        {
-            get
-            {
-                return _targets;
-            }
-        }
+       
 
         private Dictionary<string, int> _targetPriorities = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
@@ -187,7 +164,7 @@ namespace Fantasy.Jobs
         }
  
 
-        public TaskItem AddTaskItem(string name, string category)
+        private TaskItem AddTaskItem(string name, string category)
         {
             TaskItemGroup group;
             if (this._itemGroups.Count > 0 && String.IsNullOrEmpty(this._itemGroups.Last().Condition))
@@ -204,14 +181,14 @@ namespace Fantasy.Jobs
         }
 
        
-        public TaskItemGroup AddTaskItemGroup()
+        private TaskItemGroup AddTaskItemGroup()
         {
             TaskItemGroup rs = new TaskItemGroup();
             this._itemGroups.Add(rs);
             return rs;
         }
 
-        public void RemoveTaskItemGroup(TaskItemGroup group)
+        private void RemoveTaskItemGroup(TaskItemGroup group)
         {
             this._itemGroups.Remove(group);
         }
@@ -220,10 +197,9 @@ namespace Fantasy.Jobs
         [XArrayItem(Name="items", Type=typeof(TaskItemGroup))]
         private List<TaskItemGroup> _itemGroups = new List<TaskItemGroup>();
 
-        public TaskItem[] Items 
+        private TaskItem[] GetItems() 
         {
-            get
-            {
+            
                 List<TaskItem> rs = new List<TaskItem>();
                 foreach (TaskItemGroup group in this._itemGroups)
                 {
@@ -233,10 +209,10 @@ namespace Fantasy.Jobs
                     }
                 }
                 return rs.ToArray();
-            }
+            
         }
 
-        public TaskItem[] GetEvaluatedItemsByCatetory(string category)
+        private TaskItem[] GetEvaluatedItemsByCatetory(string category)
         {
             List<TaskItem> rs = new List<TaskItem>();
             foreach (TaskItemGroup g in this._itemGroups)
@@ -250,7 +226,7 @@ namespace Fantasy.Jobs
             return rs.ToArray();
         }
 
-        public TaskItem GetEvaluatedItemByName(string name)
+        private TaskItem GetEvaluatedItemByName(string name)
         {
 
             TaskItem rs = (from g in this._itemGroups where ConditionService.Evaluate(g)
@@ -259,7 +235,7 @@ namespace Fantasy.Jobs
             return rs;
         }
 
-        public void RemoveTaskItem(TaskItem item)
+        private void RemoveTaskItem(TaskItem item)
         {
             foreach (TaskItemGroup group in this._itemGroups)
             {
@@ -273,19 +249,10 @@ namespace Fantasy.Jobs
         }
 
         #region IObjectWithSite Members
-        private IServiceProvider _site = null;
+      
 
-        public IServiceProvider Site
-        {
-            get
-            {
-                return _site;
-            }
-            set
-            {
-                _site = value;
-            }
-        }
+        public IServiceProvider Site {get;set;}
+       
 
         #endregion
 
@@ -293,7 +260,7 @@ namespace Fantasy.Jobs
         {
             get
             {
-                return (IJobEngine)this._site.GetService(typeof(IJobEngine));  
+                return (IJobEngine)this.Site.GetService(typeof(IJobEngine));  
             }
         }
 
@@ -305,7 +272,7 @@ namespace Fantasy.Jobs
         private List<Assembly> _loadedAssebmlies = new List<Assembly>();
         private Dictionary<XName, Type> _loadedTaskOrInstructionTypes = new Dictionary<XName, Type>();
 
-        public Type ResolveInstructionType(XName name)
+        private Type ResolveInstructionType(XName name)
         {
             
             Type rs;
@@ -397,18 +364,18 @@ namespace Fantasy.Jobs
             this.LoadAssembly(Assembly.GetExecutingAssembly());
             this.AddPropertiesFromStartInfo(startInfo);
             this.AddItemsFromStartInfo(startInfo);
-            this.TemplateName = startInfo.Template; 
+            this._templateName = startInfo.Template; 
             IJobTemplatesService ts = (IJobTemplatesService)this.Site.GetService(typeof(IJobTemplatesService));
             JobTemplate template = ts.GetJobTemplateByName(startInfo.Template);
             if (!string.IsNullOrEmpty(startInfo.Target))
             {
-                this.StartupTarget = startInfo.Target;
+                this._startupTarget = startInfo.Target;
             }
             else
             {
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(template.Content);
-                this.StartupTarget = doc.DocumentElement.GetAttribute("defaultTarget"); 
+                this._startupTarget = doc.DocumentElement.GetAttribute("defaultTarget"); 
             }
 
             this.AddTemplate(template, 1);
@@ -547,7 +514,7 @@ namespace Fantasy.Jobs
             Assembly assembly = import.LoadAssembly(this.Parser);
             if (this.LoadAssembly(assembly))
             {
-                this.Imports.Add(import);
+                this._imports.Add(import);
             }
         }
 
@@ -614,14 +581,14 @@ namespace Fantasy.Jobs
 
        
 
-        public void ExecuteInstruction(IInstruction instruction)
+        private void ExecuteInstruction(IInstruction instruction)
         {
             if (instruction == null)
             {
                 throw new ArgumentNullException("instruction"); 
             }
             instruction.Site = this.Site;
-            this.RuntimeStatus.PushStack();
+            this._runtimeStatus.PushStack();
             try
             {
                 try
@@ -641,13 +608,13 @@ namespace Fantasy.Jobs
             }
             finally
             {
-                this.RuntimeStatus.PopStack();
+                this._runtimeStatus.PopStack();
             }
         }
 
-        public void ExecuteTarget(string targetName)
+        private void ExecuteTarget(string targetName)
         {
-            Target target = (from tgt in this.Targets where StringComparer.OrdinalIgnoreCase.Compare(tgt.Name, targetName) == 0 select tgt).SingleOrDefault();
+            Target target = (from tgt in this._targets where StringComparer.OrdinalIgnoreCase.Compare(tgt.Name, targetName) == 0 select tgt).SingleOrDefault();
 
             if (target == null)
             {
@@ -657,11 +624,11 @@ namespace Fantasy.Jobs
 
         }
 
-        public void Execute()
+        private void Execute()
         {
-            if (string.IsNullOrEmpty(this.StartupTarget))
+            if (string.IsNullOrEmpty(this._startupTarget))
             {
-                throw new InvalidJobStartInfoException(string.Format(Fantasy.Jobs.Properties.Resources.NoStartupTargetText, this.TemplateName));
+                throw new InvalidJobStartInfoException(string.Format(Fantasy.Jobs.Properties.Resources.NoStartupTargetText, this._templateName));
             }
             IResourceService resSvc = this.Engine.GetService<IResourceService>();
             IResourceHandle resHandle = null;
@@ -678,7 +645,7 @@ namespace Fantasy.Jobs
             }
             try
             {
-                this.ExecuteTarget(this.StartupTarget);
+                this.ExecuteTarget(this._startupTarget);
             }
             finally
             {
@@ -704,7 +671,7 @@ namespace Fantasy.Jobs
             List<ResourceParameter> rs = new List<ResourceParameter>();
             if (! IsNested)
             {
-                rs.Add(new ResourceParameter("RunJob", new { template = this.TemplateName }));
+                rs.Add(new ResourceParameter("RunJob", new { template = this._templateName }));
             }
             IStringParser parser = this.Engine.GetRequiredService<IStringParser>();
             string waitAll = parser.Parse(this.GetProperty("WaitAll"));
@@ -734,7 +701,7 @@ namespace Fantasy.Jobs
 
             foreach (XElement ele in element.XPathSelectElements("/cvj:job/cvj:imports/cvj:import", nsMgr))
             {
-                                                                                                ImportAssembly ia = (ImportAssembly)impSer.Deserialize(ele);
+                ImportAssembly ia = (ImportAssembly)impSer.Deserialize(ele);
                 this.LoadAssembly(ia.LoadAssembly(null));
             }
 
@@ -752,6 +719,117 @@ namespace Fantasy.Jobs
             return rs;
         }
 
+
+        #region IJob Members
+
+        TaskItem IJob.AddTaskItem(string name, string category)
+        {
+            return this.AddTaskItem(name, category);
+        }
+
+        void IJob.RemoveTaskItem(TaskItem item)
+        {
+            this.RemoveTaskItem(item);
+        }
+
+        TaskItemGroup IJob.AddTaskItemGroup()
+        {
+            return this.AddTaskItemGroup();
+        }
+
+        void IJob.RemoveTaskItemGroup(TaskItemGroup group)
+        {
+            this.RemoveTaskItemGroup(group);
+        }
+
+        TaskItem[] IJob.GetEvaluatedItemsByCatetory(string category)
+        {
+            return this.GetEvaluatedItemsByCatetory(category);
+        }
+
+        TaskItem IJob.GetEvaluatedItemByName(string name)
+        {
+            return this.GetEvaluatedItemByName(name);
+        }
+
+        TaskItem[] IJob.Items
+        {
+            get { return this.GetItems() ; }
+        }
+
+        Guid IJob.ID
+        {
+            get { return this._id; }
+        }
+
+        string IJob.TemplateName
+        {
+            get { return this._templateName; }
+        }
+
+        JobProperty[] IJob.Properties
+        {
+            get { return this._properties.ToArray(); }
+        }
+
+        string IJob.GetProperty(string name)
+        {
+            return this.GetProperty(name);
+        }
+
+        void IJob.SetProperty(string name, string value)
+        {
+            this.SetProperty(name, value);
+        }
+
+        bool IJob.HasProperty(string name)
+        {
+            return this.HasProperty(name);
+        }
+
+        void IJob.RemoveProperty(string name)
+        {
+            this.RemoveProperty(name);
+        }
+
+        string IJob.StartupTarget
+        {
+            get
+            {
+                return this._startupTarget;
+            }
+            set
+            {
+                this._startupTarget = value;
+            }
+        }
+
+        Type IJob.ResolveInstructionType(XName name)
+        {
+            return this.ResolveInstructionType(name);
+        }
+
+        RuntimeStatus IJob.RuntimeStatus
+        {
+            get { return this._runtimeStatus; }
+        }
+
+        void IJob.Execute()
+        {
+            this.Execute();
+        }
+
+        void IJob.ExecuteInstruction(IInstruction instruction)
+        {
+            this.ExecuteInstruction(instruction);
+        }
+
+        void IJob.ExecuteTarget(string targetName)
+        {
+            this.ExecuteTarget(targetName);
+        }
+
+        #endregion
     }
 
 }

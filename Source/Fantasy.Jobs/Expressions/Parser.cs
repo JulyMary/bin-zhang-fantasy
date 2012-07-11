@@ -7,7 +7,7 @@ namespace Fantasy.Jobs.Expressions
 {
     #region Parser
 
-    public partial class Parser 
+    internal partial class Parser 
     {
         private Scanner scanner;
         private ParseTree tree;

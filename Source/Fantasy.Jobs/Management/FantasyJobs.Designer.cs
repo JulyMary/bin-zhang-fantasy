@@ -24,7 +24,7 @@ namespace Fantasy.Jobs.Management
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class FantasyJobsEntities : ObjectContext
+    internal partial class FantasyJobsEntities : ObjectContext
     {
         #region Constructors
     

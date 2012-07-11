@@ -163,7 +163,7 @@ namespace Fantasy.Jobs
                     FireEvent(delegate(IJobEngineEventHandler handler) { handler.HandleStart(this); });
 
                     this._job = new Job();
-                    this._job.ID = this.JobId;
+                    this._job._id = this.JobId;
 
                     this._serviceContainer.AddService(_job);
                     _job.Initialize();
@@ -173,7 +173,7 @@ namespace Fantasy.Jobs
                     FireEvent(delegate(IJobEngineEventHandler handler) { handler.HandleLoad(this); });
                     this.SaveStatus();
 
-                    _job.Execute();
+                    ((IJob)_job).Execute();
                     exitState = JobState.Succeed;
                     this.SaveStatus();
                 }
@@ -245,7 +245,7 @@ namespace Fantasy.Jobs
 
                         FireEvent(delegate(IJobEngineEventHandler handler) { handler.HandleLoad(this); });
 
-                        _job.Execute();
+                        ((IJob)_job).Execute();
                         exitState = JobState.Succeed;
                         this.SaveStatus();
                     }
@@ -405,7 +405,7 @@ namespace Fantasy.Jobs
                     if (!_abortingSaved)
                     {
                         _abortingSaved = true;
-                        if (!this._job.RuntimeStatus.IsRestoring)
+                        if (!((IJob)this._job).RuntimeStatus.IsRestoring)
                         {
                             this.SaveStatus();
                         }
@@ -415,7 +415,7 @@ namespace Fantasy.Jobs
                 {
 
                     _executingError = error;
-                    if (!this._job.RuntimeStatus.IsRestoring)
+                    if (!((IJob)this._job).RuntimeStatus.IsRestoring)
                     {
                         this.SaveStatus();
                     }
