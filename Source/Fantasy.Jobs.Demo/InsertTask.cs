@@ -37,8 +37,17 @@ namespace Fantasy.Jobs.Demo
 
                 Random random = new Random();
 
-                for (int i = 0; i < this.Count; i++)
+                IJob job = this.Site.GetRequiredService<IJob>();
+                int s = job.RuntimeStatus.Local.GetValue<int>("inserted", 0);
+
+                if (progress != null)
                 {
+                    progress.Value = s;
+                }
+
+                for (int i = s; i < this.Count; i++)
+                {
+                    job.RuntimeStatus.Local["inserted"] = i;
                     pa.Value = random.Next(10000);
                     pb.Value = random.Next(10000);
                     cmd.ExecuteNonQuery();

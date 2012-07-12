@@ -21,25 +21,5 @@
             <Saturday>00:00:00-24:00:00</Saturday>
         </JobRuntimeSchedule>
     </settings>
-    <settings type="Fantasy247.Tasks.Properties.Settings"
-              >
-        <ReportSettings
-            enabled="true"
-            sender="bin.zhang@Fantasy.com.au"
-            server="smtp-out.conexim.com.au"
-            account="Fantasy"
-            receiver="bin.zhang@Fantasy.com.au"
-            password="8cm6dVRxCqVTOKZU+1hlTQ=="/>
-    </settings>
-    <settings type="Fantasy.License.Tasks.Properties.Settings">
-        <S3AccessKey>1J5DNZ799ACP7Z9X4PG2</S3AccessKey>
-        <S3SecretKey>/vLhwkDkuWhSBJOHy7tk8ISq6LBoAtVXFOehdQdkrldF8WoC5VlKeZO8u8sC9mGl</S3SecretKey>
-       
-        <S3Buckets>
-            <!--<string>licence-02.Fantasy.com.au</string>-->
-        </S3Buckets>
-        <HttpDirectories>
-            <string>D:\Fantasy Projects\licences</string>
-        </HttpDirectories>
-    </settings>
+   
 </settingsFile>
