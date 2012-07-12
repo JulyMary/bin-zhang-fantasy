@@ -210,7 +210,7 @@ namespace Fantasy.Jobs.Management
         public string GetJobScript(Guid id)
         {
             string rs = null;
-            string path = String.Format("{0}\\{1}\\{1}.cvjob", JobManagerSettings.Default.JobDirectoryFullPath, id);
+            string path = String.Format("{0}\\{1}\\{1}.job", JobManagerSettings.Default.JobDirectoryFullPath, id);
             if (!File.Exists(path))
             {
                 path += ".bak";

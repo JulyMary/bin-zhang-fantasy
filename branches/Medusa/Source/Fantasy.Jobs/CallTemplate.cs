@@ -145,20 +145,17 @@ namespace Fantasy.Jobs
         }
 
         [XAttribute("template")]
-        public string Template { get; set; }
+        public string Template = null;
 
         [XAttribute("target")]
-        public string Target { get; set; }
+        public string Target = null;
 
 
         [XArray]
         [XArrayItem(Name = "input", Type = typeof(CallTemplateParameter))]
         private IList<CallTemplateParameter> _inputs = new List<CallTemplateParameter>();
 
-        public IList<CallTemplateParameter> Inputs
-	    {
-            get { return _inputs; }
-	    }
+       
 
         [XArray]
         [XArrayItem(Name = "output", Type = typeof(CallTemplateParameter))]
@@ -171,10 +168,21 @@ namespace Fantasy.Jobs
 
         private Job _job = null;
         private XElement _jobElement = null;
-        
+
 
         [XAttribute("condition")]
-        public string Condition { get; set; }
+        private string _condition = null;
+        string IConditionalObject.Condition
+        {
+            get
+            {
+                return this._condition;
+            }
+            set
+            {
+                this._condition = value;
+            }
+        }
 
 #pragma  warning disable 169
         [XNamespace]

@@ -22,24 +22,24 @@ namespace Fantasy.Jobs.Scheduling
         }
 
         [XAttribute("executedCount")]
-        public int ExecutedCount { get; set; }
+        public int ExecutedCount;
 
 
         [XAttribute("name")]
-        public string Name { get; set; }
+        public string Name = null;
 
         [XArray(Name = "history")]
         [XArrayItem(Type = typeof(ScheduleEvent), Name = "event")]
         public List<ScheduleEvent> History { get; private set; }
 
         [XAttribute("nextRunTime")]
-        public DateTime? NextRunTime { get; set; }
+        public DateTime? NextRunTime = null;
 
 
         private DateTime? _lastRunTime;
 
         [XAttribute("expired")]
-        public bool Expired { get; set; }
+        public bool Expired = false;
 
         public ScheduleItem ScheduleItem { get; set; }
 

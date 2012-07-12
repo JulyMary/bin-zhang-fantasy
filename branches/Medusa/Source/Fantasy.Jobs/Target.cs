@@ -132,7 +132,7 @@ namespace Fantasy.Jobs
             ILogger logger = this.Site.GetService<ILogger>();
 
             bool rs = false;
-            switch (this.FailAction)
+            switch (this._failAction)
             {
                 case FailActions.Terminate:
 
@@ -156,7 +156,7 @@ namespace Fantasy.Jobs
                 job.ExecuteTarget(this.OnFail);
             }
 
-            switch (this.FailAction)
+            switch (this._failAction)
             {
                 case FailActions.Throw:
                     rs = true;
@@ -216,30 +216,38 @@ namespace Fantasy.Jobs
         }
 
         [XAttribute("dependsOnTargets", Order = 10)]
-        public string DependsOnTargets { get; set; }
+        public string DependsOnTargets = null;
 
         [XAttribute(NameAttributeName, Order = 0)]
-        public string Name { get; set; }
+        public string Name = null;
 
         internal const string NameAttributeName = "name";
 
-        [XAttribute("condition", Order = 20)]
-        public string Condition { get; set; }
-
-        [XAttribute("onFail", Order = 30)]
-        public string OnFail { get; set; }
-
-        private FailActions _failAction = FailActions.Throw;
-
-        [XAttribute("failAction", Order = 40)]
-        public FailActions FailAction
+        [XAttribute("condition")]
+        private string _condition = null;
+        string IConditionalObject.Condition
         {
-            get { return _failAction; }
-            set { _failAction = value; }
+            get
+            {
+                return this._condition;
+            }
+            set
+            {
+                this._condition = value;
+            }
         }
 
+        [XAttribute("onFail", Order = 30)]
+        public string OnFail = null;
+
+        [XAttribute("failAction", Order = 40)]
+        private FailActions _failAction = FailActions.Throw;
+
+
+
+
         [XAttribute("finally", Order = 50)]
-        public string Finally { get; set; }
+        public string Finally = null;
 
     }
 

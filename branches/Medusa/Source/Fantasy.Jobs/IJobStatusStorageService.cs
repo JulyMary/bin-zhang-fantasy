@@ -62,7 +62,7 @@ namespace Fantasy.Jobs
         {
                 string rs;
                 IJobEngine engine = (IJobEngine)this.Site.GetService(typeof(IJobEngine));
-                rs = string.Format("{0}\\{1}.cvjob", engine.JobDirectory, engine.JobId);
+                rs = string.Format("{0}\\{1}.job", engine.JobDirectory, engine.JobId);
                 return rs;
         }
 

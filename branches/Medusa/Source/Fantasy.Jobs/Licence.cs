@@ -24,5 +24,8 @@ namespace Fantasy.Jobs
         [XAttribute("slave")]
         internal int SlaveCount = 0;
 
+        [XAttribute("key")]
+        internal string key = string.Empty;
+
     }
 }

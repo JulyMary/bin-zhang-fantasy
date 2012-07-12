@@ -11,7 +11,7 @@ namespace Fantasy.Jobs
     internal class When : Sequence
     {
         [XAttribute("condition")]
-        public string Condition { get; set; }
+        public string Condition = null;
 
         public override void Execute()
         {

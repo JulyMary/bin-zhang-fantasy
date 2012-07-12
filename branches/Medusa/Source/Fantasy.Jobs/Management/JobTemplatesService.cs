@@ -52,7 +52,7 @@ namespace Fantasy.Jobs.Management
 
         private void LoadTemplates(DirectoryInfo dir)
         {
-            foreach(FileInfo fi in dir.GetFiles("*.cvjt"))
+            foreach(FileInfo fi in dir.GetFiles("*.jt"))
             {
                 LoadTemplate(fi, false);
             }

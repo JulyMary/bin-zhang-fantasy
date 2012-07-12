@@ -64,10 +64,10 @@ namespace Fantasy.Jobs
         }
 
         [XAttribute("count")]
-        public string Count { get; set; }
+        public string Count = null;
 
         [XAttribute("sleep")]
-        public string Sleep { get; set; }
+        public string Sleep = null;
         
     }
 }

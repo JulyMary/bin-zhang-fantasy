@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template name="demo-insert" defaultTarget="insert"
+          xmlns="urn:schemas-fantasy-com:jobs"
+          xmlns:demo="urn:schemas-fantasy-com:jobs-demo">
+    <import name="Fantasy.Jobs.Demo" />
+    <target name="insert">
+        <demo:insert connectionString="$(connectionString)" count="$(count)" />
+    </target>
+</template>
