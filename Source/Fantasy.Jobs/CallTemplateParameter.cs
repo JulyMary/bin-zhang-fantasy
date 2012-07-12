@@ -7,21 +7,31 @@ using Fantasy.XSerialization;
 namespace Fantasy.Jobs
 {
     [XSerializable("parameters", NamespaceUri = Consts.XNamespaceURI)]
-    public class CallTemplateParameter : IConditionalObject
+    internal class CallTemplateParameter : IConditionalObject
     {
         [XAttribute("itemCategory")]
-        public string ItemCategory { get; set; }
+        public string ItemCategory = null;
 
         [XAttribute("include")]
-        public string Include { get; set; }
+        public string Include = null;
 
         [XAttribute("condition")]
-        public string Condition { get; set; }
+        private string _condition = null;
+        string IConditionalObject.Condition
+        {
+            get
+            {
+                return this._condition;
+            }
+            set
+            {
+                this._condition = value;
+            }
+        }
 
         [XAttribute("propertyName")]
-        public string PropertyName { get; set; }
-
+        public string PropertyName = null;
         [XAttribute("value")]
-        public string Value { get; set; }
+        public string Value = null;
     }
 }

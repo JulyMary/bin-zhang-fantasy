@@ -45,6 +45,17 @@ namespace Fantasy.Jobs
         }
 
         [XAttribute("condition")]
-        public string Condition { get; set; }
+        private string _condition = null;
+        string IConditionalObject.Condition
+        {
+            get
+            {
+                return this._condition;
+            }
+            set
+            {
+                this._condition = value;
+            }
+        }
     }
 }

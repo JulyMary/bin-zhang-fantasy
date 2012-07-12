@@ -57,21 +57,14 @@ namespace Fantasy.Jobs
         }
 
 
-        [XAttribute("var")] 
-        public string Var { get; set; }
+        [XAttribute("var")]
+        public string Var = null;
 
         [XAttribute("in")]
-        public string In { get; set; }
-
-        private bool _skipEmptyString = true;
+        public string In = null;
 
         [XAttribute("skipEmptyString")]
-        public bool SkipEmptyString
-        {
-            get { return _skipEmptyString; }
-            set { _skipEmptyString = value; }
-        }
+        private bool _skipEmptyString = true;
 
-        
     }
 }

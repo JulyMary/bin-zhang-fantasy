@@ -172,34 +172,34 @@ namespace Fantasy.Jobs
         }
 
         [XAttribute("res")]
-        public string Res { get; set; }
+        public string Res = null;
 
         [XAttribute("res1")]
-        public string Res1 { get; set; }
+        public string Res1 = null;
 
         [XAttribute("res2")]
-        public string Res2 { get; set; }
+        public string Res2 = null;
 
         [XAttribute("res3")]
-        public string Res3 { get; set; }
+        public string Res3 = null;
 
         [XAttribute("res4")]
-        public string Res4 { get; set; }
+        public string Res4 = null;
 
         [XAttribute("res5")]
-        public string Res5 { get; set; }
+        public string Res5 = null;
 
         [XAttribute("res6")]
-        public string Res6 { get; set; }
+        public string Res6 = null;
 
         [XAttribute("res7")]
-        public string Res7 { get; set; }
+        public string Res7 = null;
 
         [XAttribute("res8")]
-        public string Res8 { get; set; }
+        public string Res8 = null;
 
         [XAttribute("res9")]
-        public string Res9 { get; set; }
+        public string Res9 = null;
 
 
     }

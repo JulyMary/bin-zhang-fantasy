@@ -20,14 +20,14 @@ namespace Fantasy.Jobs
             int index = (int)job.RuntimeStatus.Local.GetValue("chose", -1);
             if (index == -1)
             {
-                for (int i = 0; i < this.Cases.Count; i++)
+                for (int i = 0; i < this._cases.Count; i++)
                 {
-                    if (!String.IsNullOrWhiteSpace(this.Cases[i].Condition))
+                    if (!String.IsNullOrWhiteSpace(this._cases[i].Condition))
                     {
-                        if (conditionService.Evaluate(this.Cases[i].Condition))
+                        if (conditionService.Evaluate(this._cases[i].Condition))
                         {
                             job.RuntimeStatus.Local["chose"] = i;
-                            chose = this.Cases[i];
+                            chose = this._cases[i];
                             break;
                         }
                     }
@@ -50,7 +50,7 @@ namespace Fantasy.Jobs
             }
             else
             {
-                chose = this.Cases[index]; 
+                chose = this._cases[index]; 
             }
 
             if (chose != null)
@@ -61,17 +61,15 @@ namespace Fantasy.Jobs
             
         }
 
+        [XArray(Order = 10)]
+        [XArrayItem(Name = "when", Type = typeof(When))]
         private IList<When> _cases = new List<When>();
 
-        [XArray(Order=10)]
-        [XArrayItem(Name="when", Type = typeof(When))]
-        public IList<When> Cases
-        {
-            get { return _cases; }
-        }
 
-        [XElement("otherwise", Order=20)]
-        public When Otherwise { get; set; }
+
+
+        [XElement("otherwise", Order = 20)]
+        public When Otherwise = null;
 
 #pragma warning disable 169
         [XNamespace]

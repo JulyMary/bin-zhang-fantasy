@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasy.LicenceSigner", "Fa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasy.Jobs.Activator", "Fantasy.Jobs.Activator\Fantasy.Jobs.Activator.csproj", "{2C22E0DE-2873-4B40-8054-673A96F6FE86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{A93312F3-A2EC-4F2D-A34A-259D5D5B9C8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fantasy.Jobs.Demo", "Fantasy.Jobs.Demo\Fantasy.Jobs.Demo.csproj", "{A9E89341-184A-4F51-832A-C4B04C5F0139}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -444,6 +448,36 @@ Global
 		{2C22E0DE-2873-4B40-8054-673A96F6FE86}.Release|Win32.ActiveCfg = Release|x86
 		{2C22E0DE-2873-4B40-8054-673A96F6FE86}.Release|x86.ActiveCfg = Release|x86
 		{2C22E0DE-2873-4B40-8054-673A96F6FE86}.Release|x86.Build.0 = Release|x86
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.DebugHost|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.DebugHost|Any CPU.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.DebugHost|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.DebugHost|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.DebugHost|Win32.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.DebugHost|x86.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Satellite|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Satellite|Any CPU.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Satellite|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Satellite|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Satellite|Win32.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Satellite|x86.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Solar|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Solar|Any CPU.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Solar|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Solar|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Solar|Win32.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Debug-Solar|x86.ActiveCfg = Debug|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Release|Win32.ActiveCfg = Release|Any CPU
+		{A9E89341-184A-4F51-832A-C4B04C5F0139}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -456,5 +490,6 @@ Global
 		{411DA863-45DF-4745-8580-786D34087A50} = {8DA1B968-EF89-4F17-9CAA-D61BA13ACC09}
 		{A7F7C110-D7F0-49B7-8DDA-FD2D1CC6F3B1} = {8DA1B968-EF89-4F17-9CAA-D61BA13ACC09}
 		{6B1EBC47-788F-4ECD-9265-BE1C86C9A758} = {8DA1B968-EF89-4F17-9CAA-D61BA13ACC09}
+		{A9E89341-184A-4F51-832A-C4B04C5F0139} = {A93312F3-A2EC-4F2D-A34A-259D5D5B9C8E}
 	EndGlobalSection
 EndGlobal

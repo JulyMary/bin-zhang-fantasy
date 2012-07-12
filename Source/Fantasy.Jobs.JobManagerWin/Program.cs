@@ -12,6 +12,7 @@ namespace Fantasy.Jobs.JobManagerWin
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+        [LoaderOptimization(LoaderOptimization.MultiDomain)]
         static void Main()
         {
             if (String.IsNullOrEmpty(Environment.GetEnvironmentVariable("ProgramData")))

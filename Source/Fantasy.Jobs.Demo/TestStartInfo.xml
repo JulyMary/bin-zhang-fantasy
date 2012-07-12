@@ -1,0 +1,8 @@
+﻿<jobStart 
+    template="demo" 
+    xmlns="urn:schemas-fantasy-com:jobs">
+  <properties>
+    <user>Bin</user>    
+    <application>Fantasy Job Service Demo</application>    
+  </properties>  
+</jobStart>

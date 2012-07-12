@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<template name="demo" defaultTarget="demo"
+          xmlns="urn:schemas-fantasy-com:jobs"
+          xmlns:demo="urn:schemas-fantasy-com:jobs-demo">
+    <import name="Fantasy.Jobs.Demo" />
+    <properties>
+        <connectionString>Data Source=.\SQLEXPRESS;Database=FantasyJobsDemo;Initial Catalog=Fantasy;Integrated Security=True;</connectionString>
+        <totalCount>1000000</totalCount>
+        <batchSize>10000</batchSize>
+    </properties>
+
+    <target name="demo">
+        <demo:reset connectionString="$(connectionString)"/>
+        <demo:createStartPoints count="$(totalCount)" step="$(batchSize)">
+            <output taskParameter="startPoints"
+                                propertyName="startPoints" />
+        </demo:createStartPoints>
+        <foreach var="s" in="$(startPoints)">
+            <startNewJob>
+                <jobStart template="demo-insert">
+                    <properties>
+                        <connectionString>$(connectionString)</connectionString>
+                        <count>$(batchSize)</count>
+                    </properties>
+                </jobStart>
+                <output taskParameter="id"
+                        propertyName="subID"></output>
+            </startNewJob>
+            <properties>
+                <subJobs condition="'$(subJobs)' != ''">$(subJobs);$(subID)</subJobs>
+                <subJobs condition="'$(subJobs)' == ''">$(subID)</subJobs>
+            </properties>
+            
+        </foreach>
+        <log message="waiting for inserting finished" category="demo"/>
+        <waitFor jobs="$(subJobs)"/>
+
+        <properties>
+            <subjobs></subjobs>
+        </properties>
+        <foreach var="s" in="$(startPoints)">
+            <startNewJob>
+                <jobStart template="demo-sum">
+                    <properties>
+                        <connectionString>$(connectionString)</connectionString>
+                        <start>#(s)</start>
+                        <count>$(batchSize)</count>
+                    </properties>
+                </jobStart>
+                <output taskParameter="id"
+                        propertyName="subID"></output>
+            </startNewJob>
+            <properties>
+                <subJobs condition="'$(subJobs)' != ''">$(subJobs);$(subID)</subJobs>
+                <subJobs condition="'$(subJobs)' == ''">$(subID)</subJobs>
+            </properties> 
+        </foreach>
+        <log message="waiting for sum operation finished" category="demo"/>
+        <waitFor jobs="$(subJobs)"/>
+        
+    </target>
+
+
+</template>

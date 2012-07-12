@@ -17,15 +17,11 @@ namespace Fantasy.Jobs
         [XAttribute("failIfAllSkipped")]
         private bool _failIfAllSkipped = true;
 
-        public bool FailIfAllSkipped
-        {
-            get { return _failIfAllSkipped; }
-            set { _failIfAllSkipped = value; }
-        }
+       
 
         public override void Execute()
         {
-            if (this.Items.Count > 0)
+            if (this._items.Count > 0)
             {
                 IConditionService conditionSvc = this.Site.GetRequiredService<IConditionService>();
                 IJob job = this.Site.GetRequiredService<IJob>();
@@ -33,11 +29,11 @@ namespace Fantasy.Jobs
                 int index = job.RuntimeStatus.Local.GetValue("until-success.index", 0);
                 bool success = false;
                 bool hasException = false;
-                while (index < this.Items.Count && !success)
+                while (index < this._items.Count && !success)
                 {
                     try
                     {
-                        Try chance = this.Items[index];
+                        Try chance = this._items[index];
                         if (conditionSvc.Evaluate(chance))
                         {
                             if (logger != null)
@@ -96,14 +92,10 @@ namespace Fantasy.Jobs
                
             }
         }
-
-        private IList<Try> _items = new List<Try>();
-
         [XArray(Order = 10)]
         [XArrayItem(Name = "try", Type = typeof(Try))]
-        public IList<Try> Items
-        {
-            get { return _items; }
-        }
+        private IList<Try> _items = new List<Try>();
+
+       
     }
 }
