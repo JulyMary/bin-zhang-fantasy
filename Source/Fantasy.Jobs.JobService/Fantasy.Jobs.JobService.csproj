@@ -232,7 +232,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EmptyClickViewJob.sdf">
+    <None Include="EmptyFantasyJob.sdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Gear.ico" />

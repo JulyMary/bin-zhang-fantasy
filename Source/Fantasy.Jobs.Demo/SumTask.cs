@@ -8,6 +8,7 @@ using System.Data;
 
 namespace Fantasy.Jobs.Demo
 {
+    [Task("sum", Consts.XNamespaceURI)]
     public class SumTask : ObjectWithSite, ITask
     {
 
@@ -20,7 +21,7 @@ namespace Fantasy.Jobs.Demo
             Db.UsingCommand(this.ConnectionString, cmd =>
             {
                 DataTable table = new DataTable();
-                cmd.CommandText = String.Format("select [A], [B] from [dbo].[AddTable] WHERE ID BETWEEN {0} and {1}", this.Start, this.Start + this.Count - 1);
+                cmd.CommandText = String.Format("select [ID], [A], [B] from [dbo].[AddTable] WHERE ID BETWEEN {0} and {1}", this.Start, this.Start + this.Count - 1);
                 using (IDataReader reader = cmd.ExecuteReader())
                 {
                     table.Load(reader);
@@ -35,14 +36,17 @@ namespace Fantasy.Jobs.Demo
                     progress.Maximum = this.Count;
                 }
 
-                cmd.CommandText = "Update [dbo].[AddTable] set C = @C";
+                cmd.CommandText = "Update [dbo].[AddTable] set C = @C where id=@id";
                 SqlParameter pc = cmd.Parameters.Add("C", SqlDbType.Int);
+                SqlParameter pid = cmd.Parameters.Add("id", SqlDbType.Int);
 
                 foreach (DataRow row in table.Rows)
                 {
+                    int id = (int)row["Id"];
                     int a = (int)row["A"];
                     int b = (int)row["B"];
                     pc.Value = a + b;
+                    pid.Value = id;
 
                     cmd.ExecuteNonQuery();
                     if (progress != null)

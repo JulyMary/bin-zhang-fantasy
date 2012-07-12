@@ -4,7 +4,7 @@
     <settings type="Fantasy.Jobs.Management.JobManagerSettings">
         <JobTemplateDirectory>.\Templates</JobTemplateDirectory>
         <JobDirectory>.\Jobs</JobDirectory>
-        <JobProcessCount>2</JobProcessCount>
+        <JobProcessCount>8</JobProcessCount>
         <JobHostPath>.\Fantasy.Jobs.JobHost.exe</JobHostPath>
         <LogDirectory>.\Logs</LogDirectory>
         <StartupFolders>.\Startup</StartupFolders>
