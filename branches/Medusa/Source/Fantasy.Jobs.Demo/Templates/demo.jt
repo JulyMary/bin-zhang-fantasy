@@ -4,7 +4,7 @@
           xmlns:demo="urn:schemas-fantasy-com:jobs-demo">
     <import name="Fantasy.Jobs.Demo" />
     <properties>
-        <connectionString>Data Source=.\SQLEXPRESS;Database=FantasyJobsDemo;Initial Catalog=Fantasy;Integrated Security=True;</connectionString>
+        <connectionString>Data Source=.\SQLEXPRESS;Database=Fantasy;Initial Catalog=FantasyJobsDemo;Integrated Security=True;</connectionString>
         <totalCount>1000000</totalCount>
         <batchSize>10000</batchSize>
     </properties>
@@ -21,6 +21,7 @@
                     <properties>
                         <connectionString>$(connectionString)</connectionString>
                         <count>$(batchSize)</count>
+                        <name>inserting NO.#(s)</name>
                     </properties>
                 </jobStart>
                 <output taskParameter="id"
@@ -36,7 +37,7 @@
         <waitFor jobs="$(subJobs)"/>
 
         <properties>
-            <subjobs></subjobs>
+            <subJobs></subJobs>
         </properties>
         <foreach var="s" in="$(startPoints)">
             <startNewJob>
@@ -45,6 +46,7 @@
                         <connectionString>$(connectionString)</connectionString>
                         <start>#(s)</start>
                         <count>$(batchSize)</count>
+                        <name>sum from #(s)</name>
                     </properties>
                 </jobStart>
                 <output taskParameter="id"
