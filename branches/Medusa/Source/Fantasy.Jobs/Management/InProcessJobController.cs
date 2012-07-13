@@ -82,7 +82,7 @@ namespace Fantasy.Jobs.Management
             JobThread jp = GetJobThreadById(id);
             if (jp != null)
             {
-                 rs = (jp.Thread.ThreadState & (ThreadState.Stopped | ThreadState.Aborted)) > 0;
+                 rs = (jp.Thread.ThreadState & (ThreadState.Stopped | ThreadState.Aborted)) == 0;
             }
 
             return rs;

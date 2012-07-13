@@ -91,6 +91,10 @@ namespace Fantasy.Jobs.Solar
                     {
                         throw;
                     }
+                    else
+                    {
+                        logger.SafeLogError("Solar", error, "WCF error");
+                    }
 
                 }
             }
@@ -111,8 +115,8 @@ namespace Fantasy.Jobs.Solar
                 }
                 catch (Exception error)
                 {
-                   
-                   
+
+                    logger.SafeLogError("Solar", error, "WCF error");
                     logger.SafeLogWarning("Satellite", error, MessageImportance.Normal, "Failed to connect to solor service.");
                     _satelliteHandler.Dispose();
                     _satelliteHandler = null;

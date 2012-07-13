@@ -344,11 +344,15 @@ namespace Fantasy.Jobs.Solar
                             {
                                 if (!WCFExceptionHandler.CanCatch(error))
                                 {
-                                    
+
                                     if (logger != null)
                                     {
-                                        logger.LogError("Dispatch", error, "An error occurs while try start/resume job {0} ({1}) on satellite service {2}.", job.Name, job.Id, data.Satellite); 
+                                        logger.LogError("Dispatch", error, "An error occurs while try start/resume job {0} ({1}) on satellite service {2}.", job.Name, job.Id, data.Satellite);
                                     }
+                                }
+                                else
+                                {
+                                    logger.SafeLogError("Solar", error, "WCF error");
                                 }
                             }
 

@@ -1,18 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <settingsFile>
     <settings type="Fantasy.Jobs.Management.JobManagerSettings">
-        <JobTemplateDirectory>.\Templates</JobTemplateDirectory>
-        <JobDirectory>\\testwin7x32-p\FantasyJobs</JobDirectory>
-        <JobDirectoryUser>testwin7x32-p\bin.zhang</JobDirectoryUser>
-        <JobDirectoryPassword>bZ$1234</JobDirectoryPassword>
-        <JobProcessCount>1</JobProcessCount>
-        <JobHostPath>.\Fantasy.Jobs.JobHost.exe</JobHostPath>
-        <LogDirectory>.\Logs</LogDirectory>
-        <JobRuntimeSchedule enabled="false"/>
+        <JobTemplateDirectory>\\demo-master\JobData\Templates</JobTemplateDirectory>
+        <JobDirectory>\\demo-master\JobData\Jobs</JobDirectory>
+        <JobProcessCount>2</JobProcessCount>
+        <LogDirectory>\\demo-master\JobData\Logs</LogDirectory>
+        
     </settings>
     <settings type="Fantasy.ServiceModel.ChannelSettings">
         <Addresses>
-            <address host="testwin7x32-p">
+            <address host="demo-master">
                 <contracts>
                     <contract>Fantasy.Tracking.ITrackProviderService</contract>
                     <contract>Fantasy.Tracking.ITrackManagerService</contract>

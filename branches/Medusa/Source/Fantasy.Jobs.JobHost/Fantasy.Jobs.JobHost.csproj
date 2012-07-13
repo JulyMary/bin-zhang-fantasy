@@ -138,7 +138,7 @@
     <CodeAnalysisIgnoreBuiltInRules>true</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug-Satellite|x86'">
-    <AppConfig>app.satellite.config</AppConfig>
+    
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\Output\Debug-Satellite\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
