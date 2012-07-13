@@ -5,7 +5,7 @@
     <import name="Fantasy.Jobs.Demo" />
     <properties>
         <connectionString>Data Source=.\SQLEXPRESS;Database=Fantasy;Initial Catalog=FantasyJobsDemo;Integrated Security=True;</connectionString>
-        <totalCount>1000000</totalCount>
+        <totalCount>100000</totalCount>
         <batchSize>10000</batchSize>
     </properties>
 

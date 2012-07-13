@@ -22,7 +22,7 @@ namespace Fantasy.Jobs {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class LogCategories {
+    public class LogCategories {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Fantasy.Jobs {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Fantasy.Jobs.LogCategories", typeof(LogCategories).Assembly);
@@ -51,7 +51,7 @@ namespace Fantasy.Jobs {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Fantasy.Jobs {
         /// <summary>
         ///   Looks up a localized string similar to CustomError.
         /// </summary>
-        internal static string CustomError {
+        public static string CustomError {
             get {
                 return ResourceManager.GetString("CustomError", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Fantasy.Jobs {
         /// <summary>
         ///   Looks up a localized string similar to Engine.
         /// </summary>
-        internal static string Engine {
+        public static string Engine {
             get {
                 return ResourceManager.GetString("Engine", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Fantasy.Jobs {
         /// <summary>
         ///   Looks up a localized string similar to Instruction.
         /// </summary>
-        internal static string Instruction {
+        public static string Instruction {
             get {
                 return ResourceManager.GetString("Instruction", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Fantasy.Jobs {
         /// <summary>
         ///   Looks up a localized string similar to LogTask.
         /// </summary>
-        internal static string LogTask {
+        public static string LogTask {
             get {
                 return ResourceManager.GetString("LogTask", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Fantasy.Jobs {
         /// <summary>
         ///   Looks up a localized string similar to Manager.
         /// </summary>
-        internal static string Manager {
+        public static string Manager {
             get {
                 return ResourceManager.GetString("Manager", resourceCulture);
             }

@@ -231,6 +231,8 @@ namespace Fantasy.Jobs.Solar
 
                             if (logger != null)
                             {
+                                logger.LogError("Solar", error, "WCF error");
+
                                 logger.LogWarning("SatelliteManager", "Satellite {0} is stop working, remove it from satellite manager.", site.Name);
                             }
                         }

@@ -75,6 +75,7 @@ namespace Fantasy.Jobs.Solar
             {
                 if (WCFExceptionHandler.CanCatch(error))
                 {
+                    this.Site.GetService<ILogger>().SafeLogError("Solar", error, "WCF error");
                     lock (_queue)
                     {
                         _queue.Add(action);
