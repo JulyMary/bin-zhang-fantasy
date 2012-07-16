@@ -1,17 +1,19 @@
 ﻿package fantasy.tracking;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[ServiceContract(Namespace = Consts.NamespaceUri, SessionMode = SessionMode.Required, CallbackContract = typeof(ITrackManagerServiceHandler))]
-public interface ITrackManagerService
+import java.rmi.*;
+import java.util.*;
+
+public interface ITrackManagerService extends Remote
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
+
 	TrackMetaData[] GetActivedTrackMetaData();
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 	void Echo();
+	
+	void AddHanlder(UUID id, ITrackManagerServiceHandler handler);
+	
+	void RemoveHandler(UUID id);
+	
+	ITrackProviderService GetProvider(UUID id, String name, String category, TrackProperty[] properties);
 
 }

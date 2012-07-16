@@ -3,7 +3,7 @@
 import java.util.*;
 import fantasy.*;
 
-public interface ITrackListener extends IDisposable
+public interface ITrackListener extends  IDisposable
 {
 	UUID getId();
 	String getName();

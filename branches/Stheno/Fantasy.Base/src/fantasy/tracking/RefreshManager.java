@@ -1,56 +1,79 @@
 ﻿package fantasy.tracking;
 
-public final class RefreshManager
+import fantasy.*;
+import java.lang.ref.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+
+final class RefreshManager implements Runnable
 {
 
-	private static java.util.ArrayList<WeakReference> _list = new java.util.ArrayList<WeakReference>();
-
+	private  java.util.ArrayList<WeakReference<IRefreshable>> _list = new java.util.ArrayList<WeakReference<IRefreshable>>();
+	private static RefreshManager _instance;
 	static
 	{
-		_refreshThread = ThreadFactory.CreateThread(new ThreadStart(Run)).WithStart();
 
+		_instance = new RefreshManager();
+		_refreshThread = ThreadFactory.createAndStart(_instance);
 
 	}
 
-	private static void Run()
+
+
+	@Override
+	public  void run()
 	{
+
 		do
 		{
-			java.util.ArrayList<WeakReference> list;
+			java.util.ArrayList<WeakReference<IRefreshable>> list;
 			synchronized (RefreshManager.class)
 			{
-				list = new java.util.ArrayList<WeakReference>(_list);
+				list = new java.util.ArrayList<WeakReference<IRefreshable>>(_list);
 			}
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			Parallel.ForEach(list, weak =>
+
+			ExecutorService exec = Executors.newCachedThreadPool();
+			try
 			{
-				if (weak.IsAlive)
+				for(WeakReference<IRefreshable> weak : list)
 				{
-					((IRefreshable)weak.Target).Refresh();
-				}
-				else
-				{
-					synchronized (_list)
+					if(!weak.isEnqueued())
 					{
-						_list.remove(weak);
+						((IRefreshable)weak.get()).Refresh();
+					}
+					else
+					{
+						synchronized (RefreshManager.class)
+						{
+							_list.remove(weak);
+						}
 					}
 				}
 			}
-		   );
+			finally
+			{
+				exec.shutdown();
+			}
 
-			Thread.sleep(5 * 1000);
+			try {
+				Thread.sleep(5 * 1000);
+			} catch (InterruptedException e) {
+				return;
+			}
 
 		} while (true);
 	}
 
+	@SuppressWarnings("unused")
 	private static Thread _refreshThread;
 
 	public static void Register(IRefreshable obj)
 	{
 		synchronized (RefreshManager.class)
 		{
-			_list.add(new WeakReference(obj));
+			_instance._list.add(new WeakReference<IRefreshable>(obj));
 		}
 	}
 
@@ -58,13 +81,24 @@ public final class RefreshManager
 	{
 		synchronized (RefreshManager.class)
 		{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-			WeakReference weak = (from w in _list where w.Target == obj select w).SingleOrDefault();
-			if (weak != null)
+			int index = -1;
+			for(int i = 0; i < _instance._list.size(); i ++)
 			{
-				_list.remove(weak);
+				if(_instance._list.get(i).get() == obj)
+				{
+					index = i;
+					break;
+				}
+
 			}
+
+			if(index > 0)
+			{
+				_instance._list.remove(index);
+			}
+
 		}
 	}
+
 
 }
