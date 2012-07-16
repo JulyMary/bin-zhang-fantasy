@@ -19,11 +19,6 @@
       <inputassembly>
         <option>honoroas</option>
         <option>stripoa</option>
-        <file dir="D:\Fantasy\Medusa\Source\Output\Release" name="Fantasy.Jobs.JobHost.exe" />
-      </inputassembly>
-      <inputassembly>
-        <option>honoroas</option>
-        <option>stripoa</option>
         <file dir="D:\Fantasy\Medusa\Source\Output\Release" name="Fantasy.Jobs.JobService.exe" />
       </inputassembly>
     </asmlist>

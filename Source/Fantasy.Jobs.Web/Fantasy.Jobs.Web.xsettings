@@ -2,6 +2,6 @@
 <settingsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
     <settings
         type="Fantasy.Jobs.Web.Properties.Settings">
-        <JobServiceLogDirectory>D:\Fantasy Projects\Medusa\FantasyJobs\Output\Debug\Logs</JobServiceLogDirectory>
+        <JobServiceLogDirectory>D:\Fantasy\Medusa\Source\Output\Debug\Logs</JobServiceLogDirectory>
     </settings>
 </settingsFile>
