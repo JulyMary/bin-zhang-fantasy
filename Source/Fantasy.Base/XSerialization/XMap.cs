@@ -63,18 +63,7 @@ namespace Fantasy.XSerialization
             var query = from t in this.TargetType.Flatten(x=>x.BaseType)
                         let members = t.GetMembers(_memberBindingFlags)
                         from mi in members select mi;
-            List<string> keys = new List<string>();
-            foreach (MemberInfo mi in query)
-            {
-                int n = keys.BinarySearch(mi.Name);
-                if (n < 0)
-                {
-                    keys.Insert(~n, mi.Name);
-                    yield return mi;
-                }
-               
-
-            }
+            return query;
 
         }
 
@@ -86,7 +75,7 @@ namespace Fantasy.XSerialization
         private void LoadAttributeMaps()
         {
             var query = from mi in this.GetAllMembers() 
-                        where mi.IsDefined(typeof(XAttributeAttribute), true)
+                        where mi.IsDefined(typeof(XAttributeAttribute), false)
                             && (mi.MemberType == MemberTypes.Field || (mi.MemberType == MemberTypes.Property && ((PropertyInfo)mi).CanRead && ((PropertyInfo)mi).CanWrite))
                         select new { member = mi, attribute = (XAttributeAttribute)mi.GetCustomAttributes(typeof(XAttributeAttribute), true)[0] };
             foreach (var v in query)
@@ -275,9 +264,9 @@ namespace Fantasy.XSerialization
                 {
 
                     Type collectionType = map.Member is PropertyInfo ? ((PropertyInfo)map.Member).PropertyType : ((FieldInfo)map.Member).FieldType;
-                    object list = this.GetValue(map.Member, instance); 
+                    object list = this.GetValue(map.Member, instance);
 
-                    if (list!= null || collectionType.IsArray )
+                    if (list != null || collectionType.IsArray)
                     {
                         ArrayList tempList = new ArrayList();
                         if (map.Array.Serializer != null)
@@ -327,10 +316,10 @@ namespace Fantasy.XSerialization
                         {
                             foreach (object o in tempList)
                             {
-                                ((IList)list).Add(o); 
+                                ((IList)list).Add(o);
                             }
                         }
-                        else 
+                        else
                         {
                             Type t = GetGenericListType(collectionType);
                             if (t != null)
@@ -342,6 +331,7 @@ namespace Fantasy.XSerialization
                             }
                         }
                     }
+                  
                 }
             }
         }

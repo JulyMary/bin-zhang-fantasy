@@ -98,7 +98,7 @@ namespace Fantasy.Jobs.Management
                     {
                         Licence l = (Licence)ser.Deserialize(le);
 
-                        if (GetMachineCode() == l.MachineCode && DateTime.Now < l.ExpireTime)
+                        if ((GetMachineCode() == l.MachineCode || l.MachineCode == String.Empty) && DateTime.Now < l.ExpireTime)
                         {
                             this._serviceContainer.AddService(l);
                             ThreadFactory.CreateThread(state =>

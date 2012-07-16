@@ -26,7 +26,7 @@ namespace Fantasy.Jobs.Tasks
                 if (ressvc != null)
                 {
                     string jobs = string.Join(";", this.Jobs);
-                    ResourceParameter res = new ResourceParameter("WaitFor", new { mode = this.Mode, jobs=jobs});
+                    ResourceParameter res = new ResourceParameter("WaitFor", new Dictionary<string, string>() { {"mode" , this.Mode.ToString()}, {"jobs", jobs}});
                     if (logger != null)
                     {
                         if (this.Mode == WaitForMode.All)

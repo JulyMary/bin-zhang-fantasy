@@ -136,7 +136,7 @@ namespace Fantasy.Jobs
             IResourceService resSvc = this.Site.GetService<IResourceService>();
             if (resSvc != null)
             {
-                ResourceParameter res = new ResourceParameter("RunTask", new { taskname = this.TaskName, @namespace = this.TaskNamespaceUri });
+                ResourceParameter res = new ResourceParameter("RunTask", new Dictionary<string, string>() { { "taskname", this.TaskName }, {"namespace", this.TaskNamespaceUri }});
                 using (IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res }))
                 {
                     InnerExecute();

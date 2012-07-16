@@ -46,7 +46,7 @@ namespace Fantasy.Jobs.Tasks
                 }
                 if (timeToWait != DateTime.MinValue)
                 {
-                    ResourceParameter res = new ResourceParameter("WaitTime", new { time = timeToWait });
+                    ResourceParameter res = new ResourceParameter("WaitTime", new Dictionary<string, string>(){ { "time", timeToWait.ToString()} });
                     if (logger != null)
                     {
                         logger.LogMessage("Sleep", "Sleep current job till {0}.", timeToWait);

@@ -614,6 +614,7 @@ namespace Fantasy.Jobs
 
         private void ExecuteTarget(string targetName)
         {
+            Logger.SafeLogMessage("Engine", "Execute");
             Target target = (from tgt in this._targets where StringComparer.OrdinalIgnoreCase.Compare(tgt.Name, targetName) == 0 select tgt).SingleOrDefault();
 
             if (target == null)
@@ -645,6 +646,7 @@ namespace Fantasy.Jobs
             }
             try
             {
+               
                 this.ExecuteTarget(this._startupTarget);
             }
             finally
@@ -671,21 +673,21 @@ namespace Fantasy.Jobs
             List<ResourceParameter> rs = new List<ResourceParameter>();
             if (! IsNested)
             {
-                rs.Add(new ResourceParameter("RunJob", new { template = this._templateName }));
+                rs.Add(new ResourceParameter("RunJob", new Dictionary<string, string>() { {"template", this._templateName }}));
             }
             IStringParser parser = this.Engine.GetRequiredService<IStringParser>();
             string waitAll = parser.Parse(this.GetProperty("WaitAll"));
 
             if (!String.IsNullOrEmpty(waitAll))
             {
-                rs.Add(new ResourceParameter("WaitFor", new { jobs = waitAll, mode = WaitForMode.All}));
+                rs.Add(new ResourceParameter("WaitFor", new Dictionary<string, string>() { { "jobs", waitAll }, {"mode" , WaitForMode.All.ToString()} }));
             }
 
             string waitAny = parser.Parse(this.GetProperty("WaitAny"));
 
             if (!String.IsNullOrEmpty(waitAny))
             {
-                rs.Add(new ResourceParameter("WaitFor", new { jobs = waitAll, mode = WaitForMode.Any }));
+                rs.Add(new ResourceParameter("WaitFor", new Dictionary<string, string>() { { "jobs", waitAll }, { "mode", WaitForMode.Any.ToString() } }));
             }
 
             return rs.ToArray();

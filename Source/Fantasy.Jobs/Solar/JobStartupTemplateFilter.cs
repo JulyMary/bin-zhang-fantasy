@@ -16,7 +16,7 @@ namespace Fantasy.Jobs.Solar
             SatelliteManager manager = this.Site.GetRequiredService<SatelliteManager>();
             foreach (JobStartupData data in source)
             {
-                ResourceParameter[] res = new ResourceParameter[] {new ResourceParameter("RunJob", new {template=data.JobMetaData.Template })};
+                ResourceParameter[] res = new ResourceParameter[] {new ResourceParameter("RunJob", new Dictionary<string, string> {{"template" , data.JobMetaData.Template }})};
                 bool canRun = false;
                 if (manager.SafeCallSatellite(data.Satellite, satellite => satellite.IsResourceAvailable(res), out canRun))
                 {

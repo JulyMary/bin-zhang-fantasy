@@ -86,7 +86,10 @@ namespace Fantasy.Jobs
                             logger.LogError(LogCategories.Instruction, Properties.Resources.UntilSuccessAllSkippedText);
                             
                         }
-                        throw new JobException(Properties.Resources.UntilSuccessAllSkippedText);
+                        if (this._failIfAllSkipped)
+                        {
+                            throw new JobException(Properties.Resources.UntilSuccessAllSkippedText);
+                        }
                     }
                 }
                
