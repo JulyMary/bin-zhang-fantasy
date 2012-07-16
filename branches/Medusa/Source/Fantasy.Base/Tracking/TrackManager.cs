@@ -29,15 +29,6 @@ namespace Fantasy.Tracking
             {
                 try
                 {
-                    //InstanceContext context = new InstanceContext(this);
-                    //if (this._configurationName != null && this._uri != null)
-                    //{
-                    //    this._wcfManager = new TrackManagerClient(context, this._configurationName, this._uri.ToString());
-                    //}
-                    //else
-                    //{
-                    //    this._wcfManager = new TrackManagerClient(context);
-                    //}
                     this._wcfManager = ClientFactory.CreateDuplex<ITrackManagerService>(this);
 
                     this._wcfManager.Client.Echo();
