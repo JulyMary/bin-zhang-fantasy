@@ -1,12 +1,15 @@
 ﻿package fantasy.tracking;
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract]
-public class TrackMetaData
+import java.util.*;
+import java.io.*;
+public class TrackMetaData implements Serializable
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4832311918518984032L;
+	//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 	//[DataMember]
-	private UUID privateId = new UUID();
+	private UUID privateId = UUID.randomUUID();
 	public final UUID getId()
 	{
 		return privateId;
@@ -28,8 +31,6 @@ public class TrackMetaData
 		privateName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private String privateCategory;
 	public final String getCategory()
 	{

@@ -1,12 +1,14 @@
 ﻿package fantasy.tracking;
 
-// Use a data contract as illustrated in the sample below to add composite types to service operations
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract]
-public class TrackProperty
+import java.io.Serializable;
+
+public class TrackProperty implements Serializable
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3175591714300737523L;
+	
 	private String privateName;
 	public final String getName()
 	{
@@ -17,55 +19,27 @@ public class TrackProperty
 		privateName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
-	private String privateValue;
-	public final String getValue()
+
+	private Object privateValue;
+	public final Object getValue()
 	{
 		return privateValue;
 	}
-	public final void setValue(String value)
+	public final void setValue(Object value)
 	{
 		privateValue = value;
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
-	private String privateTypeName;
-	public final String getTypeName()
-	{
-		return privateTypeName;
-	}
-	public final void setTypeName(String value)
-	{
-		privateTypeName = value;
 	}
 
 
 	public static TrackProperty Create(String name, Object value)
 	{
-		TrackProperty tempVar = new TrackProperty();
-		tempVar.setName(name);
-		TrackProperty rs = tempVar;
-		if(value != null)
-		{
-			rs.setValue(value.toString());
-			rs.setTypeName(value.getClass().FullName);
-		}
+		TrackProperty rs = new TrackProperty();
+		rs.setName(name);
+		rs.setValue(value);
+		
 		return rs;
 
 	}
 
-	public static Object ToObject(TrackProperty property)
-	{
-		if (property.getTypeName() != null)
-		{
-			java.lang.Class t = java.lang.Class.forName(property.getTypeName());
-			return Convert.ChangeType(property.getValue(), t);
-		}
-		else
-		{
-			return null;
-		}
-	}
+	
 }
