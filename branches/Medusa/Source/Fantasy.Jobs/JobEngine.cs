@@ -324,7 +324,7 @@ namespace Fantasy.Jobs
         public void Sleep(TimeSpan timeout)
         {
             DateTime timeToWait = DateTime.Now + timeout;
-            ResourceParameter res = new ResourceParameter("WaitTime", new { time = timeToWait });
+            ResourceParameter res = new ResourceParameter("WaitTime", new Dictionary<string, string>(){ {"time", timeToWait.ToString()} });
             IResourceService resSvc = this.GetService<IResourceService>();
             if (resSvc != null)
             {

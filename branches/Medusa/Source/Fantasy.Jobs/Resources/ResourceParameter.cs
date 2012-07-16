@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 using System.Reflection;
+using Fantasy.ServiceModel;
 
 namespace Fantasy.Jobs.Resources
 {
     [Serializable]
     public class ResourceParameter
     {
+
+
         public ResourceParameter(string name, object values = null)
         {
             if (name == null)
@@ -31,8 +34,9 @@ namespace Fantasy.Jobs.Resources
                 else
                 {
                     Type t = values.GetType();
-                    foreach (PropertyInfo pi in t.GetProperties())
+                    foreach (PropertyInfo pi in t.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
                     {
+                        
                         object v = pi.GetValue(values, null);
                         string s = v != null ? Convert.ToString(v) : null;
                         this._values.Add(pi.Name, s);

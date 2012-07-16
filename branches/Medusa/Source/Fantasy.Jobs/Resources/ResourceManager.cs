@@ -227,6 +227,7 @@ namespace Fantasy.Jobs.Resources
                                 select new { param = param, provider = provider };
                     foreach (var test in query)
                     {
+
                         object resource = null;
                         available = test.provider.Request(test.param, out resource);
                         if (available)
