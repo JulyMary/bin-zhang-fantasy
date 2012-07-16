@@ -1,49 +1,65 @@
 ﻿package fantasy.tracking;
 
-import fantasy.*;
 import java.lang.ref.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
-final class RefreshManager implements Runnable
+final class RefreshManager 
 {
 
-	private  java.util.ArrayList<WeakReference<IRefreshable>> _list = new java.util.ArrayList<WeakReference<IRefreshable>>();
-	private static RefreshManager _instance;
+	private static  java.util.ArrayList<WeakReference<IRefreshable>> _list = new java.util.ArrayList<WeakReference<IRefreshable>>();
+	private static ScheduledExecutorService _scheduler;
 	static
 	{
 
-		_instance = new RefreshManager();
-		_refreshThread = ThreadFactory.createAndStart(_instance);
+		_scheduler = Executors.newScheduledThreadPool(1);
+		_scheduler.scheduleAtFixedRate(new Runnable(){
+
+			@Override
+			public void run() {
+				refresh();
+			}}, 5, 5, TimeUnit.SECONDS);
+		
 
 	}
-
-
-
-	@Override
-	public  void run()
+	
+    private RefreshManager()
+    {
+    	
+    }
+		   
+	private static  void refresh()
 	{
 
-		do
+		java.util.ArrayList<WeakReference<IRefreshable>> list;
+		synchronized (RefreshManager.class)
 		{
-			java.util.ArrayList<WeakReference<IRefreshable>> list;
-			synchronized (RefreshManager.class)
-			{
-				list = new java.util.ArrayList<WeakReference<IRefreshable>>(_list);
-			}
+			list = new java.util.ArrayList<WeakReference<IRefreshable>>(_list);
+		}
 
 
-			ExecutorService exec = Executors.newCachedThreadPool();
-			try
+		ExecutorService exec = Executors.newCachedThreadPool();
+		try
+		{
+			for(WeakReference<IRefreshable> weak : list)
 			{
-				for(WeakReference<IRefreshable> weak : list)
+				if(!weak.isEnqueued())
 				{
-					if(!weak.isEnqueued())
+					try
 					{
-						((IRefreshable)weak.get()).Refresh();
+						final IRefreshable item = weak.get();
+					    exec.execute(new Runnable(){
+
+							@Override
+							public void run() {
+								
+							   item.refresh();
+							}});
 					}
-					else
+					catch(Exception error)
 					{
 						synchronized (RefreshManager.class)
 						{
@@ -51,54 +67,34 @@ final class RefreshManager implements Runnable
 						}
 					}
 				}
-			}
-			finally
-			{
-				exec.shutdown();
-			}
-
-			try {
-				Thread.sleep(5 * 1000);
-			} catch (InterruptedException e) {
-				return;
-			}
-
-		} while (true);
-	}
-
-	@SuppressWarnings("unused")
-	private static Thread _refreshThread;
-
-	public static void Register(IRefreshable obj)
-	{
-		synchronized (RefreshManager.class)
-		{
-			_instance._list.add(new WeakReference<IRefreshable>(obj));
-		}
-	}
-
-	public static void Unregister(IRefreshable obj)
-	{
-		synchronized (RefreshManager.class)
-		{
-			int index = -1;
-			for(int i = 0; i < _instance._list.size(); i ++)
-			{
-				if(_instance._list.get(i).get() == obj)
+				else
 				{
-					index = i;
-					break;
+					synchronized (RefreshManager.class)
+					{
+						_list.remove(weak);
+					}
 				}
-
 			}
+		}
+		finally
+		{
+			exec.shutdown();
+		}
 
-			if(index > 0)
-			{
-				_instance._list.remove(index);
-			}
+			
+		
+	}
 
+	
+
+	public static void register(IRefreshable obj)
+	{
+		synchronized (RefreshManager.class)
+		{
+			_list.add(new WeakReference<IRefreshable>(obj));
 		}
 	}
 
+	
 
 }

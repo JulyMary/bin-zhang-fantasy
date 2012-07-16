@@ -190,7 +190,7 @@ public class XTypeMap
 	{
 		
 		
-		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).select(new Predicate<Field>(){
+		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).where(new Predicate<Field>(){
 
 			@Override
 			public boolean evaluate(Field arg0) {
@@ -230,7 +230,7 @@ public class XTypeMap
 
 		
 
-		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).select(new Predicate<Field>(){
+		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).where(new Predicate<Field>(){
 
 			@Override
 			public boolean evaluate(Field arg0) {

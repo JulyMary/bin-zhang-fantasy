@@ -7,14 +7,14 @@ public interface ITrackListenerService
 
 	
 
-	TrackProperty[] GetProperties();
+	public HashMap<String, Object> getProperties();
 
 
-	void Echo();
+	public boolean echo();
 	
-	void AddHandler(UUID token, ITrackListenerService handler);
+	public void addHandler(UUID token, IRemoteTrackHandler handler);
 	
-	void RemoveHandler(UUID token);
+	public void removeHandler(UUID token);
 
 
 }

@@ -8,12 +8,14 @@ public interface ITrackManagerService extends Remote
 
 	TrackMetaData[] GetActivedTrackMetaData();
 
-	void Echo();
+	boolean echo();
 	
-	void AddHanlder(UUID id, ITrackManagerServiceHandler handler);
+	void addHanlder(UUID id, ITrackManagerServiceHandler handler);
 	
-	void RemoveHandler(UUID id);
+	void removeHandler(UUID id);
 	
-	ITrackProviderService GetProvider(UUID id, String name, String category, TrackProperty[] properties);
+	ITrackProviderService getProvider(UUID id, String name, String category, HashMap<String, Object> properties) throws RemoteException;
+	
+	ITrackListenerService getListener(UUID id);
 
 }
