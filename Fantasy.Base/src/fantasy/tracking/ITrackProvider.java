@@ -12,5 +12,5 @@ public interface ITrackProvider extends IDisposable
 
 	String[] getPropertyNames();
 
-	TrackFactory getConnection();
+	
 }

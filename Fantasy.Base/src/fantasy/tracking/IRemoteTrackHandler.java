@@ -4,5 +4,7 @@ import java.rmi.Remote;
 
 public interface IRemoteTrackHandler extends Remote
 {
-	void HandleChanged(TrackChangedEventArgs e);
+	void handleChanged(String name, Object newValue);
+	
+	boolean echo();
 }

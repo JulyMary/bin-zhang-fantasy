@@ -4,7 +4,7 @@ public interface ITrackProviderService
 {
 	
 
-	void SetProperty(TrackProperty property);
+	void setItem(String name, Object value);
 
-	void Echo();
+	boolean echo();
 }

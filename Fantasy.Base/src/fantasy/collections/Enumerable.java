@@ -19,7 +19,23 @@ public  class Enumerable<T> implements Iterable<T> {
 		this._source = source;
 	}
 	
-	public Enumerable<T> select(Predicate<T> predicate)
+	public <TResult> Enumerable<TResult> select(Selector<T, TResult> selector)
+	{
+		ArrayList<TResult> rs = new ArrayList<TResult>();
+		for(T item : _source)
+		{
+			
+				rs.add(selector.select(item));
+			
+
+		}
+
+		return new Enumerable<TResult>(rs);
+
+	}
+
+	
+	public Enumerable<T> where(Predicate<T> predicate)
 	{
 		ArrayList<T> rs = new ArrayList<T>();
 		for(T item : _source)
@@ -28,13 +44,11 @@ public  class Enumerable<T> implements Iterable<T> {
 			{
 				rs.add(item);
 			}
+			
 
 		}
-
 		return new Enumerable<T>(rs);
-
 	}
-
 
 	public  T firstOrDefault(Predicate<T> predicate)
 	{
@@ -142,7 +156,7 @@ public  class Enumerable<T> implements Iterable<T> {
 	}
 	
 	
-	public <TKey> Enumerable<T> orderBy(KeySelector<T, TKey> keySelector, Comparator<TKey> comparator) throws NotImplementedException
+	public <TKey> Enumerable<T> orderBy(Selector<T, TKey> keySelector, Comparator<TKey> comparator) throws NotImplementedException
 	{
 		ArrayList<T> rs = new ArrayList<>();
 		for(T item : this._source)
@@ -162,13 +176,13 @@ public  class Enumerable<T> implements Iterable<T> {
 	
 	private class KeyComparator<TKey> implements Comparator<T>
 	{
-		public KeySelector<T, TKey> keySelector;
+		public Selector<T, TKey> keySelector;
 		public Comparator<TKey> innerComparator;
 
 		@Override
 		public int compare(T o1, T o2) {
-			TKey k1 = keySelector.evaluate(o1);
-			TKey k2 = keySelector.evaluate(o2);
+			TKey k1 = keySelector.select(o1);
+			TKey k2 = keySelector.select(o2);
 			
 			return innerComparator.compare(k1, k2);
 			

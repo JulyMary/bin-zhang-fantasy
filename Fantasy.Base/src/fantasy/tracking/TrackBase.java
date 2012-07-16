@@ -1,10 +1,10 @@
 ﻿package fantasy.tracking;
-
+import java.util.*;
 public abstract class TrackBase
 {
-	protected java.util.HashMap<String, Object> Data = new java.util.HashMap<String, Object>(StringComparer.OrdinalIgnoreCase);
+	protected java.util.HashMap<String, Object> Data = new java.util.HashMap<String, Object>();
 
-	private UUID privateId = new UUID();
+	private UUID privateId = UUID.randomUUID();
 	public UUID getId()
 	{
 		return privateId;
@@ -40,7 +40,7 @@ public abstract class TrackBase
 	{
 		if (values != null)
 		{
-			for (java.util.Map.Entry<String, Object> pair : values)
+			for (java.util.Map.Entry<String, Object> pair : values.entrySet())
 			{
 				this.Data.put(pair.getKey(), pair.getValue());
 			}
@@ -51,7 +51,7 @@ public abstract class TrackBase
 	{
 		synchronized (this.Data)
 		{
-			return this.Data.keySet().toArray();
+			return this.Data.keySet().toArray(new String[0]);
 		}
 	}
 
