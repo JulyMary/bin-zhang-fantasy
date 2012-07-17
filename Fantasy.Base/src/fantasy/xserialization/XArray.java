@@ -22,6 +22,8 @@ public @interface XArray
 	@SuppressWarnings("rawtypes")
 	public Class converter();
 	
+	public boolean clear() default true;
+	
 	public XArrayItem[] items();
 	
 }

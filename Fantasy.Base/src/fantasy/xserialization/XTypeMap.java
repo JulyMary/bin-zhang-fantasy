@@ -371,6 +371,10 @@ public class XTypeMap
 					}
 					else if (java.util.List.class.isAssignableFrom(collectionType))
 					{
+						if(map.getArray().clear())
+						{
+						    ((java.util.List)list).clear();
+						}
 						for (Object o : tempList)
 						{
 							((java.util.List)list).add(o);
