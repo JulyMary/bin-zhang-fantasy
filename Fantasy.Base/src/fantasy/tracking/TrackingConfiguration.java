@@ -1,33 +1,30 @@
 ﻿package fantasy.tracking;
 
+
+import java.rmi.*;
+
+
 public final class TrackingConfiguration
 {
 
-	private static java.util.ArrayList<ServiceHost> _hosts = new java.util.ArrayList<ServiceHost>();
+	private static TrackManagerService _service;
 
-	public static void StartTrackingService()
+	public static void StartTrackingService(String uri) throws Exception
 	{
+		
+          _service = new TrackManagerService();
+          Naming.bind(uri, _service);
+          _uri = uri;
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Thread thread = ThreadFactory.CreateThread(()=>{
-			_hosts.addAll(new ServiceHost[] { new ServiceHost(TrackProviderService.class), new ServiceHost(TrackManagerService.class), new ServiceHost(TrackListenerService.class) });
-			for (ServiceHost host : _hosts)
-			{
-				host.Open();
-			}
-	}
-   ).WithStart();
-
-
-		thread.Join();
-
+          
 	}
 
-	public static void CloseTrackingService()
+	
+	private static String _uri = null;
+	
+	public static void CloseTrackingService() throws Exception
 	{
-		for (ServiceHost host : _hosts)
-		{
-			host.Close();
-		}
+		if(_uri != null)
+		Naming.unbind(_uri);
 	}
 }

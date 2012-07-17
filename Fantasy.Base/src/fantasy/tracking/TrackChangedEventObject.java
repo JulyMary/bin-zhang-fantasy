@@ -1,15 +1,15 @@
 ﻿package fantasy.tracking;
 
-import java.io.*;
 import java.util.EventObject;
 
-public class TrackChangedEventArgs extends EventObject implements Serializable
+public class TrackChangedEventObject extends EventObject
 {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8672071739911225336L;
-	public TrackChangedEventArgs(Object source, String name, Object oldValue, Object newValue)
+	private static final long serialVersionUID = 6171519096166110137L;
+	public TrackChangedEventObject(Object source, String name, Object oldValue, Object newValue)
 	{
 		super(source);
 		this.setName(name);

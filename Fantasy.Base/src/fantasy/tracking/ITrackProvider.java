@@ -1,6 +1,7 @@
 ﻿package fantasy.tracking;
-import fantasy.*;
 import java.util.*;
+
+import fantasy.*;
 public interface ITrackProvider extends IDisposable
 {
 	UUID getId();

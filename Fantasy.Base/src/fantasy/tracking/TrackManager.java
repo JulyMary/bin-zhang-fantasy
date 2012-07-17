@@ -1,138 +1,176 @@
 ﻿package fantasy.tracking;
 
-import Fantasy.ServiceModel.*;
+import java.util.*;
+import java.rmi.*;
+import java.rmi.server.*;
 
-public class TrackManager implements ITrackManager, IRefreshable, ITrackManagerServiceHandler
+
+
+class TrackManager extends UnicastRemoteObject implements ITrackManager, IRefreshable, ITrackManagerServiceHandler
 {
-	private ClientRef<ITrackManagerService> _wcfManager;
-	private Uri _uri;
-	private String _configurationName;
-	private Object _syncRoot = new Object();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5466040119213635893L;
 
-	public TrackManager(TrackFactory connection, String configurationName, Uri uri)
+
+	private ITrackManagerService _remoteManager;
+
+	ITrackManagerService getRemoteManager()
 	{
-		this.setConnection(connection);
-		this._configurationName = configurationName;
-		this._uri = uri;
-		this.TryCreateWCF();
-		RefreshManager.Register(this);
+		return this._remoteManager;
 	}
 
-	private void TryCreateWCF()
+	private String _uri;
+	private Object _syncRoot = new Object();
+
+	private UUID _token = UUID.randomUUID();
+
+	public TrackManager(String uri) throws RemoteException
+	{
+		super();
+
+		this._uri = uri;
+		this.tryCreateRemote();
+		RefreshManager.register(this);
+	}
+
+	private void tryCreateRemote()
 	{
 		synchronized (_syncRoot)
 		{
 			try
 			{
-				//InstanceContext context = new InstanceContext(this);
-				//if (this._configurationName != null && this._uri != null)
-				//{
-				//    this._wcfManager = new TrackManagerClient(context, this._configurationName, this._uri.ToString());
-				//}
-				//else
-				//{
-				//    this._wcfManager = new TrackManagerClient(context);
-				//}
-				this._wcfManager = ClientFactory.<ITrackManagerService>CreateDuplex(this);
 
-				this._wcfManager.getClient().Echo();
+				this._remoteManager = (ITrackManagerService)Naming.lookup(this._uri);
+
+				this._remoteManager.addHandler(this._token,this);
+
+				this._remoteManager.echo();
 
 			}
-			catch (RuntimeException error)
+			catch (Exception error)
 			{
-				WCFExceptionHandler.CatchKnowns(error);
-				this._wcfManager = null;
+				_remoteManager = null;
 			}
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITrackManager Members
 
-	public final TrackMetaData[] GetActivedTrackMetaData()
+	public final TrackMetaData[] getActiveTrackMetaData()
 	{
+
+
+		TrackMetaData[] rs = new TrackMetaData[0];
 
 		try
 		{
-			if (this._wcfManager!= null)
+			if (this._remoteManager!= null)
 			{
-				return _wcfManager.getClient().GetActivedTrackMetaData();
+				rs = _remoteManager.getActiveTrackMetaData();
 			}
 		}
-		catch(RuntimeException error)
+		catch(Exception error)
 		{
-			WCFExceptionHandler.CatchKnowns(error);
-			_wcfManager = null;
+
+			_remoteManager = null;
 		}
 
-		return new TrackMetaData[0];
+		return rs;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<TrackActivedEventArgs> TrackActived;
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IRefreshable Members
-
-	public final void Refresh()
+	@Override
+	public final void refresh()
 	{
-		if (this._wcfManager != null)
+		if(_disposed) return;
+		if (this._remoteManager != null)
 		{
 			try
 			{
-				this._wcfManager.getClient().Echo();
+				this._remoteManager.echo();
 			}
-			catch(RuntimeException error)
+			catch(Exception error)
 			{
-				WCFExceptionHandler.CatchKnowns(error);
-				this._wcfManager = null;
+
+				this._remoteManager = null;
 			}
 		}
 
-		if (this._wcfManager == null)
+		if (this._remoteManager == null)
 		{
-			this.TryCreateWCF();
+			this.tryCreateRemote();
+		}
+		
+	}
+
+	@Override
+	public final void handleTrackActived(TrackMetaData track)
+	{
+		TrackActiveEventObject e = new TrackActiveEventObject(this, track);
+		synchronized(this._handlers)
+		{
+			for(ITrackActiveEventListener handler : this._handlers)
+			{
+				handler.HandleActive(e);
+			}
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IDisposable Members
 
-	public final void dispose()
-	{
-		RefreshManager.Unregister(this);
+
+	public boolean echo() {
+
+		return true;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITrackManagerServiceHandler Members
+	private HashSet<ITrackActiveEventListener> _handlers = new HashSet<ITrackActiveEventListener>();
 
-	public final void HandleTrackActived(TrackMetaData track)
-	{
-		if (this.TrackActived != null)
+	@Override
+	public void addHandler(ITrackActiveEventListener handler) {
+		synchronized(this._handlers)
 		{
-			this.TrackActived(this, new TrackActivedEventArgs(track));
+			_handlers.add(handler);
 		}
+
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+	@Override
+	public void removeHandler(ITrackActiveEventListener handler) {
+		synchronized(this._handlers)
+		{
+			_handlers.remove(handler);
+		}
 
-	private TrackFactory privateConnection;
-	public final TrackFactory getConnection()
-	{
-		return privateConnection;
 	}
-	private void setConnection(TrackFactory value)
-	{
-		privateConnection = value;
+
+
+	private boolean _disposed = false;
+
+	@Override
+	public void Dispose() {
+		if(_disposed)
+		{
+			_disposed = true;
+			RefreshManager.unregister(this);
+			ITrackManagerService tm = this._remoteManager;
+			if(tm != null)
+			{
+				try
+				{
+					tm.removeHandler(this._token);
+
+				}
+				catch(Exception e)
+				{
+				}
+
+				this._remoteManager = null;
+			}
+
+		}
+
 	}
+
 }
