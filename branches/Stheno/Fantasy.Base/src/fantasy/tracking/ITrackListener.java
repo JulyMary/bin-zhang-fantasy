@@ -12,4 +12,8 @@ public interface ITrackListener extends  IDisposable
 	Object getItem(String name);
 
 	String[] getPropertyNames();
+	
+	void addHandler(ITrackListenerHandler handler);
+	
+	void removeHandler(ITrackListenerHandler handler);
 }

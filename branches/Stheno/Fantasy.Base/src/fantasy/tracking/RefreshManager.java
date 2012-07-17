@@ -1,11 +1,10 @@
 ﻿package fantasy.tracking;
 
 import java.lang.ref.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
+
+import fantasy.collections.*;
+import java.util.concurrent.*;
 
 final class RefreshManager 
 {
@@ -92,6 +91,23 @@ final class RefreshManager
 		synchronized (RefreshManager.class)
 		{
 			_list.add(new WeakReference<IRefreshable>(obj));
+		}
+	}
+	
+	public static void unregister(final IRefreshable obj)
+	{
+		synchronized (RefreshManager.class)
+		{
+			WeakReference<IRefreshable> ref = new Enumerable<WeakReference<IRefreshable>>(_list).firstOrDefault(new Predicate<WeakReference<IRefreshable>>(){
+
+				@Override
+				public boolean evaluate(WeakReference<IRefreshable> ref) {
+					return ref.get() == obj;
+				}});
+			if(ref != null)
+			{
+				_list.remove(ref);
+			}
 		}
 	}
 

@@ -1,15 +1,11 @@
 ﻿package fantasy.tracking;
 
-import java.rmi.server.*;
 import java.rmi.*;
 import java.util.*;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
-import org.apache.commons.lang3.ObjectUtils;
-
-public final class RemoteTrack extends UnicastRemoteObject implements ITrackProviderService, ITrackListenerService, IRefreshable
+public final class RemoteTrack extends TrackBase implements ITrackProviderService, ITrackListenerService, IRefreshable
 {
 
 
@@ -18,12 +14,13 @@ public final class RemoteTrack extends UnicastRemoteObject implements ITrackProv
 	 */
 	private static final long serialVersionUID = -855997846962891701L;
 
-	public RemoteTrack(UUID id, String name, String category, java.util.Map<String, Object> values) throws RemoteException
+	public RemoteTrack(UUID id, String name, String category, java.util.Map<String, Object> properties) throws RemoteException
 	{
+		super();
 		this.setId(id);
 		this.setName(name);
 		this.setCategory(category);
-		this.InitializeData(values);
+		this.InitializeData(properties);
 		RefreshManager.register(this);
 		
 	}
@@ -47,88 +44,12 @@ public final class RemoteTrack extends UnicastRemoteObject implements ITrackProv
 	}
 
 
-	
-	private HashMap<String, Object> Data = new HashMap<String, Object>();
-
-	private UUID privateId = UUID.randomUUID();
-	public UUID getId()
+	@Override
+	protected void onChanged(TrackChangedEventObject e)
 	{
-		return privateId;
-	}
-	public void setId(UUID value)
-	{
-		privateId = value;
-	}
-
-	private String privateName;
-	public String getName()
-	{
-		return privateName;
-	}
-	public void setName(String value)
-	{
-		privateName = value;
-	}
-
-	private String privateCategory;
-	public String getCategory()
-	{
-		return privateCategory;
-	}
-	public void setCategory(String value)
-	{
-		privateCategory = value;
-	}
-
-
-
-	private void InitializeData(java.util.Map<String, Object> values)
-	{
-		if (values != null)
-		{
-			for (java.util.Map.Entry<String, Object> pair : values.entrySet())
-			{
-				this.Data.put(pair.getKey(), pair.getValue());
-			}
-		}
-	}
-
-	public Object getItem(String name)
-	{
-		synchronized(this.Data)
-		{
-			Object rs = null;
-			rs = this.Data.get(name);
-			return rs;
-		}
-	}
-	public void setItem(String name, Object value)
-	{
-		Object oldValue = null;
-		boolean changed = false;
-		synchronized (this.Data)
-		{
-			oldValue = this.Data.get(name);
-
-			
-			if (ObjectUtils.equals(oldValue, value))
-			{
-				changed = true;
-				this.Data.put(name, value);
-			}
-		}
-
-		if (changed)
-		{
-			this.OnChanged(name, value);
-		}
-	}
-
-
-	
-	
-	private void OnChanged(final String propertyName, final Object value)
-	{
+		
+		final String propertyName = e.getName();
+		final Object value = e.getNewValue();
 		
 		IRemoteTrackHandler[] list;
 		synchronized(_handlers)
@@ -225,6 +146,15 @@ public final class RemoteTrack extends UnicastRemoteObject implements ITrackProv
 	public boolean echo() {
 		return true;
 		
+	}
+
+	@Override
+	public TrackMetaData getMetaData() {
+		TrackMetaData rs = new TrackMetaData();
+		rs.setId(this.getId());
+		rs.setName(this.getName());
+		rs.setCategory(this.getCategory());
+		return rs;
 	}
 
 	

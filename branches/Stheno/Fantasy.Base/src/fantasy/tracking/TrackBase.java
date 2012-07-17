@@ -1,7 +1,20 @@
 ﻿package fantasy.tracking;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-public abstract class TrackBase
+
+import org.apache.commons.lang3.ObjectUtils;
+abstract class TrackBase extends UnicastRemoteObject
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3631356230286619678L;
+	protected TrackBase() throws RemoteException {
+		super();
+		
+	}
+
 	protected java.util.HashMap<String, Object> Data = new java.util.HashMap<String, Object>();
 
 	private UUID privateId = UUID.randomUUID();
@@ -72,7 +85,7 @@ public abstract class TrackBase
 		{
 			oldValue = this.Data.get(name);
 
-			if (Comparer.Default.Compare(oldValue, value) != 0)
+			if (ObjectUtils.equals(oldValue, value))
 			{
 				changed = true;
 				this.Data.put(name, value);
@@ -81,31 +94,14 @@ public abstract class TrackBase
 
 		if (changed)
 		{
-			this.OnChanged(new TrackChangedEventArgs(name, oldValue, value));
+			this.onChanged(new TrackChangedEventObject(this, name, oldValue, value));
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<TrackChangedEventArgs> Changed
-//		{
-//			add
-//			{
-//				this._changed += value;
-//			}
-//			remove
-//			{
-//				this._changed -= value;
-//			}
-//		}
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	private event EventHandler<TrackChangedEventArgs> _changed;
 
-	protected void OnChanged(TrackChangedEventArgs e)
+	protected void onChanged(TrackChangedEventObject e)
 	{
-		if (this._changed != null)
-		{
-			this._changed(this, e);
-		}
+		
 	}
 }

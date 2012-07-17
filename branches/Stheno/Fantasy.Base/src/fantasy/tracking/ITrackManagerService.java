@@ -6,11 +6,11 @@ import java.util.*;
 public interface ITrackManagerService extends Remote
 {
 
-	TrackMetaData[] GetActivedTrackMetaData();
+	TrackMetaData[] getActiveTrackMetaData();
 
 	boolean echo();
 	
-	void addHanlder(UUID id, ITrackManagerServiceHandler handler);
+	void addHandler(UUID id, ITrackManagerServiceHandler handler);
 	
 	void removeHandler(UUID id);
 	

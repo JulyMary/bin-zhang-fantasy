@@ -9,6 +9,7 @@ public interface ITrackListenerService
 
 	public HashMap<String, Object> getProperties();
 
+	public TrackMetaData getMetaData();
 
 	public boolean echo();
 	

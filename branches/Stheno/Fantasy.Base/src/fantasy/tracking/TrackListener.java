@@ -1,242 +1,231 @@
 ﻿package fantasy.tracking;
 
-import Fantasy.ServiceModel.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-public class TrackListener extends TrackBase implements ITrackListener, IRefreshable, ITrackListenerServiceHandler
+import java.util.*;
+import java.util.Map.*;
+import java.util.concurrent.*;
+
+
+class TrackListener extends TrackBase implements ITrackListener, IRefreshable, IRemoteTrackHandler
 {
-	private ClientRef<ITrackListenerService> _wcfListener;
-	private Uri _uri;
-	private String _configurationName;
-
-	private boolean _isActive = false;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8979553077252070077L;
+	private ITrackListenerService _remoteListener;
+	private TrackManager _manager;
 
 	private Object _syncRoot = new Object();
+	
+	private boolean _isActive = false;
+	private UUID _token = UUID.randomUUID();
 
-	public TrackListener(TrackFactory connection, String configurationName, Uri uri, UUID id)
+	public TrackListener(TrackManager manager, UUID id) throws Exception
 	{
-		this.setConnection(connection);
-		this._configurationName = configurationName;
-		this._uri = uri;
-		this.setId(id);
+		super();
+		this._manager = manager;
+		
+		this.setId(id);		
+		ExecutorService executor = Executors.newFixedThreadPool(1);
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task task = Task.Factory.StartNew(() =>
+		try
 		{
-			this.TryCreateWCF(true);
-			RefreshManager.Register(this);
+			executor.execute(new Runnable(){
+
+				@Override
+				public void run() {
+					tryCreateRemote(true);
+					RefreshManager.register(TrackListener.this);
+
+				}});
+
+			executor.awaitTermination(100, TimeUnit.MILLISECONDS);
 		}
-	   );
-		task.Wait(500);
+
+		finally
+		{
+			executor.shutdown();
+		}
 
 	}
 
-	private void TryCreateWCF(boolean init)
+	private void tryCreateRemote(boolean init)
 	{
 		synchronized (_syncRoot)
 		{
-			try
+
+			ITrackManagerService rm = this._manager.getRemoteManager();
+			if(rm != null)
 			{
-				//InstanceContext context = new InstanceContext(this);
-				//if (this._configurationName != null && this._uri != null)
-				//{
-				//    this._wcfListener = new TrackListenerClient(context, this._configurationName, this._uri.ToString());
-				//}
-				//else
-				//{
-				//    this._wcfListener = new TrackListenerClient(context);
-				//}
-				this._wcfListener = ClientFactory.<ITrackListenerService>CreateDuplex(this);
+				
+				TrackMetaData meta = null;
+				HashMap<String, Object> rdata = null;
 
 
-				TrackMetaData data = this._wcfListener.getClient().GetMetaData(this.getId());
-				if (data != null)
+
+				try
 				{
-					this.setName(data.getName());
-					this.setCategory(data.getCategory());
+					this._remoteListener  = rm.getListener(this.getId());
 
-					for (TrackProperty prop : this._wcfListener.getClient().GetProperties())
+					meta = this._remoteListener.getMetaData();
+
+					rdata = this._remoteListener.getProperties();
+					
+					this._remoteListener.addHandler(this._token, this);
+				}
+				catch(Exception exception)
+				{
+					_remoteListener = null;
+				}
+
+				if(_remoteListener != null)
+				{
+					this.setName(meta.getName());
+					this.setCategory(meta.getCategory());
+
+					for (Entry<String, Object> prop : rdata.entrySet())
 					{
-						Object value = TrackProperty.ToObject(prop);
+
 						if (init)
 						{
-							this.Data.put(prop.getName(), value);
+							this.Data.put(prop.getKey(), prop.getValue());
 						}
 						else
 						{
-							this.setItem(prop.getName(), value);
+							this.setItem(prop.getKey(), prop.getValue());
 						}
 					}
-				}
-				this.setIsActived(true);
-
-			}
-			catch (RuntimeException error)
-			{
-
-				if (WCFExceptionHandler.CanCatch(error))
-				{
-					this._wcfListener = null;
-					this.setIsActived(false);
-				}
-				else
-				{
-					throw error;
+					this.setIsActived(true);
 				}
 
 			}
 
+			
 		}
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IRefreshable Members
 
-	public final void Refresh()
+	public final void refresh()
 	{
-		if (this._wcfListener != null)
+		if (this._remoteListener != null)
 		{
 
 			try
 			{
-				this._wcfListener.getClient().Echo();
+				this._remoteListener.echo();
 			}
-			catch (java.lang.Exception e)
+			catch (Exception e)
 			{
-				this._wcfListener = null;
+				this._remoteListener = null;
 			}
 
 		}
-		if (this._wcfListener == null)
+		if (this._remoteListener == null)
 		{
-			this.TryCreateWCF(false);
+			this.tryCreateRemote(false);
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IDisposable Members
-
-	public final void dispose()
+	
+	private boolean _disposed = false;
+	
+	@Override
+	public final void Dispose()
 	{
-		RefreshManager.Unregister(this);
-		if (this._wcfListener != null)
+		if(!_disposed)
 		{
-			try
+			this._disposed = true;
+			RefreshManager.unregister(this);
+			ITrackListenerService remote = this._remoteListener;
+			if (remote != null)
 			{
+				try
+				{
 
-				this._wcfListener.dispose();
+					remote.removeHandler(this._token);
+				}
+				catch (java.lang.Exception e)
+				{
+				}
+				
+				remote = null;
 			}
-			catch (java.lang.Exception e)
-			{
-			}
+			
 		}
+		
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITrackListenerServiceHandler Members
-
-	public final void HandlePropertyChanged(TrackProperty property)
+	public final void handleChanged(String propertyName, Object value)
 	{
-		Object value = TrackProperty.ToObject(property);
-		//System.Diagnostics.Debug.WriteLine("{0}: {1}", property.Name, value); 
-		this.setItem(property.getName(), value);
+		
+		this.setItem(propertyName, value);
 	}
 
 	@Override
-	public Object getItem(String name)
+	protected void onChanged(TrackChangedEventObject e)
 	{
-		return super[name];
-	}
-	@Override
-	public void setItem(String name, Object value)
-	{
-		super[name] = value;
-	}
-
-
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-
-
-	private TrackFactory privateConnection;
-	public final TrackFactory getConnection()
-	{
-		return privateConnection;
-	}
-	private void setConnection(TrackFactory value)
-	{
-		privateConnection = value;
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITrackListenerServiceHandler Members
-
-	public final void Connect()
-	{
-	}
-
-	public final void Echo()
-	{
-
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITrackListenerServiceHandler Members
-
-
-	public final void HandleActived(TrackMetaData metaData, TrackProperty[] properties)
-	{
-		this.setName(metaData.getName());
-		this.setCategory(metaData.getCategory());
-
-		for (TrackProperty prop : properties)
+		for(ITrackListenerHandler handler : this._handlers)
 		{
-			Object value = TrackProperty.ToObject(prop);
-			this.setItem(prop.getName(), value);
+			handler.HandleChanged(e);
 		}
-		this.setIsActived(true);
+	}
+    
+   
 
+	public final boolean echo()
+	{
+         return true;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITrackListener Members
 
 
 	public final boolean getIsActived()
 	{
 		return this._isActive;
 	}
+	
 	public final void setIsActived(boolean value)
 	{
 		if (this._isActive != value)
 		{
 			this._isActive = value;
-			if (this.ActiveStateChanged != null)
+			
+			synchronized(this._handlers)
 			{
-				this.ActiveStateChanged(this, EventArgs.Empty);
+				
+				EventObject e = new EventObject(this);
+				
+				for(ITrackListenerHandler handler : this._handlers)
+				{
+					handler.HandleActiveChanged(e);
+				}
 			}
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler ActiveStateChanged;
+	
+	
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+    private HashSet<ITrackListenerHandler> _handlers = new HashSet<ITrackListenerHandler>();
+
+	@Override
+	public void addHandler(ITrackListenerHandler handler) {
+		synchronized(this._handlers)
+		{
+			this._handlers.add(handler);
+		}
+	}
+
+	@Override
+	public void removeHandler(ITrackListenerHandler handler) {
+		synchronized(this._handlers)
+		{
+			this._handlers.remove(handler);
+		}
+		
+	}
+
 }

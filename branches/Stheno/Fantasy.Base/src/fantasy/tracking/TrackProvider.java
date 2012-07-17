@@ -1,152 +1,165 @@
 ﻿package fantasy.tracking;
 
-import Fantasy.ServiceModel.*;
 
-public class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
+import java.util.*;
+import java.util.concurrent.*;
+
+class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 {
-	private TrackFactory privateConnection;
-	public final TrackFactory getConnection()
-	{
-		return privateConnection;
-	}
-	private void setConnection(TrackFactory value)
-	{
-		privateConnection = value;
-	}
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6690896643120711585L;
 
-	private ClientRef<ITrackProviderService> _wcfProvider;
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning disable 0414
-	private boolean _created = false;
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning restore 0414
 
-	private Uri _uri;
-	private String _configurationName;
+
+
+	private TrackManager _trackManager;
+	
+
+	
+
+    private ITrackProviderService _remoteTrack;
 
 	private Object _syncRoot = new Object();
 
-	public TrackProvider(TrackFactory connection, String configurationName, Uri uri, UUID id, String name, String category, java.util.Map<String, Object> values)
+	public TrackProvider(TrackManager manager, UUID id, String name, String category, java.util.Map<String, Object> values) throws Exception
 	{
-		this.setConnection(connection);
-		this._configurationName = configurationName;
-		this._uri = uri;
+		super();
+		this._trackManager = manager; 
+
 		this.setId(id);
 		this.setName(name);
 		this.setCategory(category);
 		this.InitializeData(values);
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task task = Task.Factory.StartNew(() =>
+		ExecutorService executor = Executors.newFixedThreadPool(1);
+
+		try
 		{
-			this.TryCreateWCF();
-			RefreshManager.Register(this);
+			executor.execute(new Runnable(){
+
+				@Override
+				public void run() {
+					tryCreateRemote();
+					RefreshManager.register(TrackProvider.this);
+
+				}});
+
+			executor.awaitTermination(100, TimeUnit.MILLISECONDS);
 		}
-	   );
-		task.Wait(100);
+
+		finally
+		{
+			executor.shutdown();
+		}
+		
+		
+			
+		
+		
 	}
 
-	private void TryCreateWCF()
+	private void tryCreateRemote()
 	{
 		synchronized (_syncRoot)
 		{
 			try
 			{
 
-
-				this._wcfProvider = ClientFactory.<ITrackProviderService>Create();
-				java.util.ArrayList<java.util.Map.Entry<String, Object>> values;
-				synchronized (this.Data)
+				ITrackManagerService rm = this._trackManager.getRemoteManager(); 
+				if(rm != null)
 				{
-					 values = new java.util.ArrayList<java.util.Map.Entry<String, Object>>(this.Data);
+				this._remoteTrack = rm.getProvider(this.getId(), getName(), this.getCategory(), this.Data);
+				
+				
 				}
-				TrackProperty[] props = new TrackProperty[values.size()];
-				for (int i = 0; i < values.size(); i++)
-				{
-				   props[i] = TrackProperty.Create(values.get(i).getKey(), values.get(i).getValue());
-				}
-
-				this._wcfProvider.getClient().CreateTrackProvider(this.getId(), this.getName(), this.getCategory(), props, true);
-				this._created = true;
 
 			}
-			catch (RuntimeException error)
+			catch (Exception error)
 			{
-				if (!WCFExceptionHandler.CanCatch(error))
-				{
-					throw error;
-				}
-				this._wcfProvider = null;
+				
+				this._remoteTrack = null;
 			}
 		}
 	}
 
 	@Override
-	protected void OnChanged(TrackChangedEventArgs e)
+	protected void onChanged(final TrackChangedEventObject e)
 	{
-		if (this._wcfProvider != null)
+		if (this._remoteTrack != null)
 		{
 //C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			MethodInvoker invoker = new MethodInvoker(() =>
-			{
-				try
-				{
-					TrackProperty prop = TrackProperty.Create(e.getName(), e.getNewValue());
-					this._wcfProvider.getClient().SetProperty(prop);
-				}
-				catch (RuntimeException err)
-				{
-					WCFExceptionHandler.CatchKnowns(err);
-					_wcfProvider = null;
-				}
-			}
-		   );
+			
+			ExecutorService executor = Executors.newFixedThreadPool(1);
 
-			invoker.BeginInvoke(null, null);
+			try
+			{
+				executor.execute(new Runnable(){
+
+					@Override
+					public void run() {
+						
+                        TrackProvider.this._remoteTrack.setItem(e.getName(), e.getNewValue());
+					}});
+
+				
+			}
+
+			finally
+			{
+				executor.shutdown();
+			}
+			
+			
 
 		}
 
-		super.OnChanged(e);
+		super.onChanged(e);
 	}
 
 //C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 		///#region IRefreshable Members
 
-	public final void Refresh()
+	@Override
+	public final void refresh()
 	{
-		if (this._wcfProvider != null)
+		if(_disposed) return;
+		
+		if (this._remoteTrack != null)
 		{
 
 				try
 				{
-					this._wcfProvider.getClient().Echo();
+					this._remoteTrack.echo();
 				}
-				catch (RuntimeException error)
+				catch (Exception error)
 				{
-					WCFExceptionHandler.CatchKnowns(error);
-					this._wcfProvider = null;
+					
+					this._remoteTrack = null;
 				}
 
 
 
 		}
-		if (this._wcfProvider == null)
+		if (this._remoteTrack == null)
 		{
-			this.TryCreateWCF();
+			this.tryCreateRemote();
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IDisposable Members
-
-	public final void dispose()
-	{
-		RefreshManager.Unregister(this);
+	private boolean _disposed = false;
+	@Override
+	public void Dispose() {
+		if(!_disposed)
+		{
+			_disposed = true;
+			RefreshManager.unregister(this);
+			this._remoteTrack = null;
+			
+		}
+		
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }
+
