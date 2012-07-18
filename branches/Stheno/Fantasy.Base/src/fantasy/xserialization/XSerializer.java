@@ -42,13 +42,17 @@ public class XSerializer
 
 	private XTypeMap _map;
 
-	public final void Serialize(Element element, Object o) throws Exception
+	public final void serialize(Element element, Object o) throws Exception
 	{
 		this._map.Save(this.getContext(), element, o);
 	}
 
+	public final Element serialize(Object o) throws Exception
+	{
+		return serialize(o, null);
+	}
 
-	public final Element Serialize(Object o, Namespace[] namespaces) throws Exception
+	public final Element serialize(Object o, Namespace[] namespaces) throws Exception
 	{
 		if (o == null)
 		{
@@ -83,14 +87,14 @@ public class XSerializer
 
 
 
-	public final Object Deserialize(Element element) throws Exception
+	public final Object deserialize(Element element) throws Exception
 	{
 		Object rs = this.getTargetType().newInstance();
-		this.Deserialize(element, rs);
+		this.deserialize(element, rs);
 		return rs;
 	}
 
-	public final void Deserialize(Element element, Object instance) throws Exception
+	public final void deserialize(Element element, Object instance) throws Exception
 	{
 		this._map.Load(this.getContext(), element, instance);
 	}

@@ -131,7 +131,7 @@ class TrackListener extends TrackBase implements ITrackListener, IRefreshable, I
 	private boolean _disposed = false;
 	
 	@Override
-	public final void Dispose()
+	public final void dispose()
 	{
 		if(!_disposed)
 		{
