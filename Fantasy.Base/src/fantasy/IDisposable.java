@@ -1,5 +1,5 @@
 package fantasy;
 
 public interface IDisposable {
-    public void Dispose();
+    public void dispose();
 }

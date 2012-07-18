@@ -149,7 +149,7 @@ class TrackManager extends UnicastRemoteObject implements ITrackManager, IRefres
 	private boolean _disposed = false;
 
 	@Override
-	public void Dispose() {
+	public void dispose() {
 		if(_disposed)
 		{
 			_disposed = true;

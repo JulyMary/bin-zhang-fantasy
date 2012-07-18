@@ -150,7 +150,7 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 
 	private boolean _disposed = false;
 	@Override
-	public void Dispose() {
+	public void dispose() {
 		if(!_disposed)
 		{
 			_disposed = true;

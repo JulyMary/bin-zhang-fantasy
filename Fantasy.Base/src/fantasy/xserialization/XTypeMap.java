@@ -23,126 +23,126 @@ public class XTypeMap
 
 		Collections.sort(this._attributeMaps, new Comparator<XAttributeMap>(){
 			public int compare(XAttributeMap x, XAttributeMap y) {
-			   if(x.getOrder() > y.getOrder())
-			   {
-			       return 1;
-			   }
-			   else if(x.getOrder() == y.getOrder())
-			   {
-				   return 0;
-			   
-			   }
-			   else
-			   {
-			       return -1;
-			   }
-		}});
-		
+				if(x.getOrder() > y.getOrder())
+				{
+					return 1;
+				}
+				else if(x.getOrder() == y.getOrder())
+				{
+					return 0;
+
+				}
+				else
+				{
+					return -1;
+				}
+			}});
+
 		Collections.sort(this._elementMaps, new Comparator<XMemberMap>(){
 			public int compare(XMemberMap x, XMemberMap y)
 			{
 				if(x.getOrder() > y.getOrder())
-				   {
-				       return 1;
-				   }
-				   else if(x.getOrder() == y.getOrder())
-				   {
-					   return 0;
-				   
-				   }
-				   else
-				   {
-				       return -1;
-				   }
+				{
+					return 1;
+				}
+				else if(x.getOrder() == y.getOrder())
+				{
+					return 0;
+
+				}
+				else
+				{
+					return -1;
+				}
 			}
 		});
-		
-		
+
+
 
 	}
 
-	
-	
-	
+
+
+
 	private void LoadNamespaceMap()
 	{
-		
+
 		Field f = new Enumerable<Field>(this.GetAllMembers()).singleOrDefault(new Predicate<Field>(){
 
 			@Override
 			public boolean evaluate(Field arg0) {
-				
+
 				return arg0.isAnnotationPresent(XNamespace.class);
 			}});
-		
+
 		if(f != null)
 		{
 			this._namespaceMap = new XNamespaceMap();
 			this._namespaceMap.setMember(f);
 		}
-		
-	
+
+
 	}
 
 	private XNamespaceMap _namespaceMap = null;
 
 	private void LoadValueMap() throws Exception
 	{
-		
+
 		Field f = new Enumerable<Field>(this.GetAllMembers()).singleOrDefault(new Predicate<Field>(){
 
 			@Override
 			public boolean evaluate(Field arg0) {
-				
+
 				return arg0.isAnnotationPresent(XValue.class);
 			}});
-		
+
 		if(f != null)
 		{
 			XValue anno = f.getAnnotation(XValue.class);
 			this._valueMap = new XValueMap();
 			this._valueMap.setMember(f);
 			this._valueMap.setValue(anno);
-			
+
 			if(anno.converter() != null)
 			{
-			    this._valueMap.setConverter((ITypeConverter)anno.converter().newInstance());
+				this._valueMap.setConverter((ITypeConverter)anno.converter().newInstance());
 			}
 			else
-				
+
 			{
-			    this._valueMap.setConverter(XHelper.getDefault().CreateXConverter(f.getType()));
+				this._valueMap.setConverter(XHelper.getDefault().CreateXConverter(f.getType()));
 			}
-			
+
 		}
-		
-	
+
+
 
 	}
 
-	
+
 	private List<Field> _allMembers = null;
-	
+
 	private List<Field> GetAllMembers()
 	{
 		if(_allMembers == null)
 		{
 			_allMembers = new ArrayList<Field>();
-            Class clz = this.getTargetType();
-            while(clz != Object.class)
-            {
-            	for(Field f : clz.getDeclaredFields())
-            	{
-            		_allMembers.add(f);
-            	}
-            
-               
-            }
-            
-           
+			Class clz = this.getTargetType();
+			while(clz != Object.class)
+			{
+				for(Field f : clz.getDeclaredFields())
+				{
+					_allMembers.add(f);
+				}
+
+
+			}
+
+
 		}
-        return _allMembers;
-            
+		return _allMembers;
+
 	}
 
 	private String GetQualifiedName(String ns, String name)
@@ -152,49 +152,49 @@ public class XTypeMap
 
 	private void LoadAttributeMaps() throws Exception
 	{
- 
-        
+
+
 		for (Field f : this.GetAllMembers())
 		{
 
 			if(f.isAnnotationPresent(XAttribute.class))
 			{
-			    XAttributeMap map = new XAttributeMap();
-			    XAttribute anno = f.getAnnotation(XAttribute.class);
-			    map.setMember(f);
-			    map.setAttribute(anno);
-			    map.setOrder(anno.order());
-			    Class ft = f.getType();
-			    if(!f.isAnnotationPresent(XSerializable.class))
-			    {
-				    if(anno.converter() != null)
-				    {
-					    map.setConverter((ITypeConverter)anno.converter().newInstance());
-				    }
-				    else
-				    {
-					    map.setConverter(XHelper.getDefault().CreateXConverter(ft));
-				    }
-			    }
-			
-			
-			this.getAttributeMaps().add(map);
-			this.getAttributeQNameMaps().put(this.GetQualifiedName(anno.namespaceUri(), anno.name()), map);
+				XAttributeMap map = new XAttributeMap();
+				XAttribute anno = f.getAnnotation(XAttribute.class);
+				map.setMember(f);
+				map.setAttribute(anno);
+				map.setOrder(anno.order());
+				Class ft = f.getType();
+				if(!f.isAnnotationPresent(XSerializable.class))
+				{
+					if(anno.converter() != null)
+					{
+						map.setConverter((ITypeConverter)anno.converter().newInstance());
+					}
+					else
+					{
+						map.setConverter(XHelper.getDefault().CreateXConverter(ft));
+					}
+				}
+
+
+				this.getAttributeMaps().add(map);
+				this.getAttributeQNameMaps().put(this.GetQualifiedName(anno.namespaceUri(), anno.name()), map);
 			}
 		}
 
 	}
 
-	
+
 	private void LoadElementMaps() throws Exception
 	{
-		
-		
+
+
 		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).where(new Predicate<Field>(){
 
 			@Override
 			public boolean evaluate(Field arg0) {
-				
+
 				return arg0.isAnnotationPresent(XElement.class);
 			}}	);
 
@@ -206,17 +206,17 @@ public class XTypeMap
 			map.setElement(anno);
 			map.setOrder(anno.order());
 			Class ft = f.getType();
-			
+
 			if (!ft.isAnnotationPresent(XSerializable.class))
 			{
-				 if(anno.converter() != null)
-				    {
-					    map.setConverter((ITypeConverter)anno.converter().newInstance());
-				    }
-				    else
-				    {
-					    map.setConverter(XHelper.getDefault().CreateXConverter(ft));
-				    }
+				if(anno.converter() != null)
+				{
+					map.setConverter((ITypeConverter)anno.converter().newInstance());
+				}
+				else
+				{
+					map.setConverter(XHelper.getDefault().CreateXConverter(ft));
+				}
 
 			}
 			this.getElementMaps().add(map);
@@ -224,17 +224,17 @@ public class XTypeMap
 	}
 
 
-	
+
 	private void LoadArrayMaps()
 	{
 
-		
+
 
 		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).where(new Predicate<Field>(){
 
 			@Override
 			public boolean evaluate(Field arg0) {
-				
+
 				return ((Field)arg0).isAnnotationPresent(XArray.class);
 			}}	);
 		for (Field f : fields)
@@ -263,7 +263,7 @@ public class XTypeMap
 		if (this._namespaceMap != null)
 		{
 			List<Namespace> mngr = element.getNamespacesInScope();
-			
+
 
 			this.SetValue(this._namespaceMap.getMember(), instance, mngr);
 		}
@@ -273,13 +273,13 @@ public class XTypeMap
 	{
 		if (this._valueMap != null && ! element.getValue().equals(""))
 		{
-			
+
 			java.lang.Class t = this._valueMap.getMember().getType();
 			Object value = this._valueMap.getConverter().convertTo(element.getValue(), t);
 			this.SetValue(this._valueMap.getMember(), instance, value);
 		}
 	}
-	
+
 
 	public final void Load(IServiceProvider context, Element element, Object instance) throws Exception
 	{
@@ -293,13 +293,13 @@ public class XTypeMap
 		}
 	}
 
-	
+
 	private void LoadArrays(IServiceProvider context, Element element, Object instance) throws Exception
 	{
 
-		
+
 		Enumerable<XArrayMap> maps = new Enumerable<XMemberMap>(this.getElementMaps()).ofType(XArrayMap.class);
-		
+
 		for (XArrayMap map : maps)
 		{
 			Element collectionElement = null;
@@ -307,7 +307,7 @@ public class XTypeMap
 			if (!StringUtils2.isNullOrEmpty(map.getArray().name()))
 			{
 				Namespace ns = !StringUtils2.isNullOrEmpty(map.getArray().namespaceUri()) ? Namespace.getNamespace(map.getArray().namespaceUri()) : element.getNamespace();
-				
+
 				collectionElement = element.getChild(map.getArray().name(), ns);
 			}
 			else
@@ -318,7 +318,7 @@ public class XTypeMap
 			if (collectionElement != null)
 			{
 
-				
+
 				java.lang.Class collectionType = map.getMember().getType();
 				Object list = this.GetValue(map.getMember(), instance);
 
@@ -338,7 +338,7 @@ public class XTypeMap
 
 						for (Element itemElement : collectionElement.getChildren())
 						{
-							
+
 							for(XArrayItem ia : map.getArray().items())
 							{
 								if(ia.name() == itemElement.getName() 
@@ -373,14 +373,14 @@ public class XTypeMap
 					{
 						if(map.getArray().clear())
 						{
-						    ((java.util.List)list).clear();
+							((java.util.List)list).clear();
 						}
 						for (Object o : tempList)
 						{
 							((java.util.List)list).add(o);
 						}
 					}
-					
+
 				}
 			}
 		}
@@ -393,7 +393,7 @@ public class XTypeMap
 		{
 
 			Namespace ns = !StringUtils2.isNullOrEmpty(map.getElement().namespaceUri()) ? Namespace.getNamespace(map.getElement().namespaceUri()) : element.getNamespace();
-			
+
 			Element childElement = element.getChild(map.getElement().name(), ns);
 			if (childElement != null)
 			{
@@ -409,7 +409,12 @@ public class XTypeMap
 	{
 		Object value;
 
-		if (targetType.isAnnotationPresent(XSerializer.class))
+		if(targetType == Element.class)
+		{
+			return element.clone();
+		}
+
+		else if (targetType.isAnnotationPresent(XSerializer.class))
 		{
 			XTypeMap map = XHelper.getDefault().GetTypeMap(targetType);
 			value = targetType.newInstance();
@@ -448,7 +453,7 @@ public class XTypeMap
 			this.SaveAttribute(element, attrMap, instance);
 		}
 
-		
+
 		for (XMemberMap memberMap : this._elementMaps)
 		{
 			if (memberMap instanceof XElementMap)
@@ -576,10 +581,21 @@ public class XTypeMap
 	{
 		Object value = this.GetValue(eleMap.getMember(), instance);
 
+
+
 		if (value != null)
 		{
-			Element valEle = this.CreateElement(element, eleMap.getElement().namespaceUri(), eleMap.getElement().name());
-			this.SaveValueToElement(context, valEle, value, eleMap.getConverter());
+			if(eleMap.getMember().getType() == Element.class)
+			{
+				Element valEle = (Element)value;
+				element.addContent(valEle.clone());
+			}
+			else
+			{
+
+				Element valEle = this.CreateElement(element, eleMap.getElement().namespaceUri(), eleMap.getElement().name());
+				this.SaveValueToElement(context, valEle, value, eleMap.getConverter());
+			}
 		}
 	}
 
@@ -596,7 +612,7 @@ public class XTypeMap
 		{
 			String s = (String)converter.convertFrom(value);
 			element.setText(s);
-			
+
 		}
 
 	}
@@ -604,15 +620,15 @@ public class XTypeMap
 
 	private Object GetValue(Field fi, Object instance) throws Exception
 	{
-		
+
 		return fi.get(instance);
-		
-		
+
+
 	}
 
 	private void SetValue(Field fi, Object instance, Object value) throws Exception
 	{
-        ((java.lang.reflect.Field)fi).set(instance, value);
+		((java.lang.reflect.Field)fi).set(instance, value);
 	}
 
 
@@ -626,11 +642,11 @@ public class XTypeMap
 
 			String ns = attrMap.getAttribute().namespaceUri();
 
-			
-			
+
+
 			Attribute node = new Attribute(attrMap.getAttribute().name(), s, Namespace.getNamespace(ns));
 			element.setAttribute(node);
-			
+
 		}
 	}
 
@@ -645,12 +661,12 @@ public class XTypeMap
 	}
 
 	private XSerializable _xSerializableAnnotation;
-	
+
 	public XSerializable getXSerializableAnnotation()
 	{
 		return this._xSerializableAnnotation;
 	}
-	
+
 
 	private java.util.ArrayList<XMemberMap> _elementMaps = new java.util.ArrayList<XMemberMap>();
 	public final java.util.List<XMemberMap> getElementMaps()
@@ -665,7 +681,7 @@ public class XTypeMap
 	}
 
 	private XValueMap _valueMap;
-	
+
 
 
 	public java.util.Map<String, XMemberMap> _elementQNameMaps = new java.util.HashMap<String, XMemberMap>();
