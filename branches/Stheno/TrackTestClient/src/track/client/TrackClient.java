@@ -1,11 +1,56 @@
 package track.client;
 
+import java.io.*;
+import java.util.EventObject;
 import java.util.UUID;
+import java.util.concurrent.Semaphore;
+
+
+import fantasy.tracking.*;
+
 
 public class TrackClient {
 	
-	public void main(String[] args)
+	
+	
+	public static void main(String[] args) throws Exception
 	{
+		ITrackManager manager = TrackManagerFactory.createTrackManager(uri);
+		
+		ITrackListener listener = manager.getListener(id);
+		
+		
+		OutputStreamWriter output =  new OutputStreamWriter(System.out);
+		final BufferedWriter writer = new BufferedWriter(output);
+		listener.addHandler(new ITrackListenerHandler(){
+
+			@Override
+			public void HandleChanged(TrackChangedEventObject e) {
+				try {
+					writer.newLine();
+					writer.write((String)e.getNewValue());
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}
+				
+				
+			}
+
+			@Override
+			public void HandleActiveChanged(EventObject e) {
+				try {
+					writer.newLine();
+					writer.write("active");
+				} catch (IOException e1) {
+				
+					e1.printStackTrace();
+				}
+				
+				
+			}});
+		
+		Thread.sleep(Long.MAX_VALUE);
 		
 	}
 	

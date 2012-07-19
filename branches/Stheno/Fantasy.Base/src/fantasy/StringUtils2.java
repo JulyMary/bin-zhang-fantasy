@@ -13,7 +13,7 @@ public class StringUtils2 {
     	return s == null || s.isEmpty();
     }
     
-    public static boolean isNullOrWhitespace(String s)
+    public static boolean isNullOrWhiteSpace(String s)
     {
     	return s == null || StringUtils.isBlank(s);
     }

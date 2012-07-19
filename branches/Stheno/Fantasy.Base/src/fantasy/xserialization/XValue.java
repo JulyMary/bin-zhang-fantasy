@@ -11,12 +11,12 @@ public @interface XValue {
 
 	
 	
-	public String name();
-	
-	public String namespaceUri();
+//	public String name();
+//	
+//	public String namespaceUri();
 	
 	@SuppressWarnings("rawtypes")
-	public Class converter();
+	public Class converter() default Dummy.class;
 	
 
 

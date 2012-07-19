@@ -3,6 +3,7 @@
 	<name>TrackTestHost</name>
 	<comment></comment>
 	<projects>
+		<project>Fantasy.Base</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

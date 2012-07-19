@@ -15,12 +15,12 @@ public @interface XArray
 	
     public int order() default Integer.MAX_VALUE;
 	
-	public String name();
+	public String name() default "";
 	
-	public String namespaceUri();
+	public String namespaceUri() default "";
 	
 	@SuppressWarnings("rawtypes")
-	public Class converter();
+	public Class converter() default Dummy.class;
 	
 	public boolean clear() default true;
 	
