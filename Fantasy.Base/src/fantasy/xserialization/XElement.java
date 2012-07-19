@@ -8,9 +8,9 @@ public @interface XElement
 	
 	public String name();
 	
-	public String namespaceUri();
+	public String namespaceUri() default "";
 	
 	@SuppressWarnings("rawtypes")
-	public Class converter();
+	public Class converter() default Dummy.class;
 
 }

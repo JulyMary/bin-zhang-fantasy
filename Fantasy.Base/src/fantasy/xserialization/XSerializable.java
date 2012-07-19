@@ -15,6 +15,6 @@ public @interface XSerializable
 	public String namespaceUri();
 
 	@SuppressWarnings("rawtypes")
-	public Class converter();
+	public Class converter() default Dummy.class;
 
 }
