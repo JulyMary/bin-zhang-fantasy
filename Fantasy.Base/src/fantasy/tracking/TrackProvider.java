@@ -1,8 +1,11 @@
 ﻿package fantasy.tracking;
 
 
+import java.rmi.*;
 import java.util.*;
 import java.util.concurrent.*;
+
+
 
 class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 {
@@ -79,7 +82,10 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 			catch (Exception error)
 			{
 				
+				
 				this._remoteTrack = null;
+				
+				
 			}
 		}
 	}
@@ -87,9 +93,10 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 	@Override
 	protected void onChanged(final TrackChangedEventObject e)
 	{
+
+		super.onChanged(e);
 		if (this._remoteTrack != null)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
 			
 			ExecutorService executor = Executors.newFixedThreadPool(1);
 
@@ -100,7 +107,12 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 					@Override
 					public void run() {
 						
-                        TrackProvider.this._remoteTrack.setItem(e.getName(), e.getNewValue());
+                        try {
+							TrackProvider.this._remoteTrack.setItem(e.getName(), e.getNewValue());
+						} catch (RemoteException e) {
+							
+							e.printStackTrace();
+						}
 					}});
 
 				
@@ -115,11 +127,9 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 
 		}
 
-		super.onChanged(e);
+		
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IRefreshable Members
 
 	@Override
 	public final void refresh()

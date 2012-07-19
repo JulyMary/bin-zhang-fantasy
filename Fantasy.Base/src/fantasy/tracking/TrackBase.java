@@ -85,7 +85,7 @@ abstract class TrackBase extends UnicastRemoteObject
 		{
 			oldValue = this.Data.get(name);
 
-			if (ObjectUtils.equals(oldValue, value))
+			if (!ObjectUtils.equals(oldValue, value))
 			{
 				changed = true;
 				this.Data.put(name, value);
@@ -102,6 +102,6 @@ abstract class TrackBase extends UnicastRemoteObject
 
 	protected void onChanged(TrackChangedEventObject e)
 	{
-		
 	}
-}
+	}
+	

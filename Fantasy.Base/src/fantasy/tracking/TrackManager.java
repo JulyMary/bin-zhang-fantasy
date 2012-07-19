@@ -26,7 +26,7 @@ class TrackManager extends UnicastRemoteObject implements ITrackManager, IRefres
 
 	private UUID _token = UUID.randomUUID();
 
-	public TrackManager(String uri) throws RemoteException
+	TrackManager(String uri) throws RemoteException
 	{
 		super();
 
@@ -172,5 +172,18 @@ class TrackManager extends UnicastRemoteObject implements ITrackManager, IRefres
 		}
 
 	}
+	
+  @Override
+   public ITrackProvider getProvider(UUID id, String name, String category, HashMap<String, Object> properties) throws Exception
+   {
+	   return new TrackProvider(this, id, name, category, properties);
+   }
+	
+   @Override
+   public ITrackListener getListener(UUID id) throws Exception
+   {
+	   return new TrackListener(this, id);
+   }
+  
 
 }
