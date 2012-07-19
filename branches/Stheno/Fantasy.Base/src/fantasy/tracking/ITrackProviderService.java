@@ -1,10 +1,12 @@
 ﻿package fantasy.tracking;
 
-public interface ITrackProviderService
+import java.rmi.*;
+
+public interface ITrackProviderService extends Remote
 {
 	
 
-	void setItem(String name, Object value);
+	void setItem(String name, Object value) throws RemoteException;
 
-	boolean echo();
+	boolean echo() throws RemoteException;
 }

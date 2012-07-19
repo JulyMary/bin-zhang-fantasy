@@ -133,7 +133,7 @@ public class TrackManagerService extends UnicastRemoteObject implements ITrackMa
 		synchronized(_trackSyncRoot)
 		{
 			WeakReference<RemoteTrack> wr = this._remoteTracks.get(id);
-			if(!wr.enqueue())
+			if(wr != null && !wr.enqueue())
 			{
 				
 				rs = wr.get();
@@ -252,7 +252,7 @@ public class TrackManagerService extends UnicastRemoteObject implements ITrackMa
 		synchronized(_trackSyncRoot)
 		{
 			WeakReference<RemoteTrack> wr = this._remoteTracks.get(id);
-			if(!wr.enqueue())
+			if(wr != null && !wr.enqueue())
 			{
 				rs = wr.get();
 			}
