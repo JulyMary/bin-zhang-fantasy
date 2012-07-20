@@ -20,6 +20,7 @@ namespace Fantasy.Jobs.Tasks
             this.WorkingDirectory = string.Empty;
             this.Arguments = string.Empty;
             this.WaitForExit = false;
+            this.UseShellExecute = false;
         }
         #region ITask Members
 
@@ -33,8 +34,9 @@ namespace Fantasy.Jobs.Tasks
                 CreateNoWindow = true,
                 ErrorDialog = false,
                 WorkingDirectory = this.WorkingDirectory,
-                RedirectStandardError = this.WaitForExit,
-                RedirectStandardOutput = this.WaitForExit,
+                RedirectStandardError = this.WaitForExit && !this.UseShellExecute,
+                RedirectStandardOutput = this.WaitForExit && !this.UseShellExecute,
+                UseShellExecute = false
             };
 
             Process process = Process.Start(si);
@@ -77,12 +79,16 @@ namespace Fantasy.Jobs.Tasks
 
         }
 
+        private Thread _outputThread;
+
+        private Thread _errorThread;
+       
         private void WaitProcess(Process process)
         {
 
 
-            ThreadFactory.CreateThread(WriteOutput).WithStart(process.StandardOutput);
-            ThreadFactory.CreateThread(WriteOutput).WithStart(process.StandardError);
+            this._outputThread =  ThreadFactory.CreateThread(WriteOutput).WithStart(process.StandardOutput);
+            this._errorThread = ThreadFactory.CreateThread(WriteOutput).WithStart(process.StandardError);
             DateTime startTime = DateTime.Now;
             bool exited = false;
             do
@@ -143,6 +149,9 @@ namespace Fantasy.Jobs.Tasks
 
         [TaskMember("timeout", Description="The amount of time to wai for application to exit." )]
         public TimeSpan Timeout { get; set; }
+
+        [TaskMember("useShellExecute")]
+        public bool UseShellExecute { get; set; }
 
         
 
