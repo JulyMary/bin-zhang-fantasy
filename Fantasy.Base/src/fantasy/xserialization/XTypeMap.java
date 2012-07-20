@@ -104,7 +104,7 @@ public class XTypeMap
 			this._valueMap.setMember(f);
 			this._valueMap.setValue(anno);
 
-			if(anno.converter() != null)
+			if(anno.converter() != Dummy.class)
 			{
 				this._valueMap.setConverter((ITypeConverter)anno.converter().newInstance());
 			}
@@ -167,7 +167,7 @@ public class XTypeMap
 				Class ft = f.getType();
 				if(!f.isAnnotationPresent(XSerializable.class))
 				{
-					if(anno.converter() != null)
+					if(anno.converter() != Dummy.class)
 					{
 						map.setConverter((ITypeConverter)anno.converter().newInstance());
 					}
@@ -209,7 +209,7 @@ public class XTypeMap
 
 			if (!ft.isAnnotationPresent(XSerializable.class))
 			{
-				if(anno.converter() != null)
+				if(anno.converter() != Dummy.class)
 				{
 					map.setConverter((ITypeConverter)anno.converter().newInstance());
 				}
@@ -546,7 +546,7 @@ public class XTypeMap
 								ITypeConverter cvt = null;
 								if (!vt.isAnnotationPresent(XSerializable.class))
 								{
-									cvt = ia.converter() != null ? (ITypeConverter)ia.converter().newInstance() : XHelper.getDefault().CreateXConverter(vt);
+									cvt = ia.converter() != Dummy.class ? (ITypeConverter)ia.converter().newInstance() : XHelper.getDefault().CreateXConverter(vt);
 								}
 								this.SaveValueToElement(context, childElement, child, cvt);
 							}
