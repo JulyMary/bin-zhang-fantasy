@@ -1,6 +1,5 @@
 ﻿package fantasy.jobs;
 
-import Fantasy.IO.*;
 
 public interface ITaskItemMetaDataProvider
 {

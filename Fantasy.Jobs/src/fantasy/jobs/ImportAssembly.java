@@ -1,13 +1,15 @@
 ﻿package fantasy.jobs;
 
-import fantasy.xserialization.*;
+import java.io.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("import", NamespaceUri = Consts.XNamespaceURI)]
+import fantasy.xserialization.*;
+import fantasy.*;
+
+@XSerializable(name = "import", namespaceUri = Consts.XNamespaceURI)
 public class ImportAssembly
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("name")]
+
+	@XAttribute(name = "name")
 	private String privateName;
 	public final String getName()
 	{
@@ -18,60 +20,27 @@ public class ImportAssembly
 		privateName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("path")]
-	private String privatePath;
-	public final String getPath()
-	{
-		return privatePath;
-	}
-	public final void setPath(String value)
-	{
-		privatePath = value;
-	}
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("src")]
-	private String privateSrc;
-	public final String getSrc()
+	public final File LoadAssembly(IStringParser parser)
 	{
-		return privateSrc;
-	}
-	public final void setSrc(String value)
-	{
-		privateSrc = value;
-	}
-
-	public final Assembly LoadAssembly(IStringParser parser)
-	{
-		Assembly rs;
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.getName()))
+		
+		String root = JarUtils.getJar(ImportAssembly.class).getParentFile().getAbsoluteFile().getName();
+		
+		File rs;
+		if (!StringUtils2.isNullOrEmpty(this.getName()))
 		{
+			
+			String name = this.getName();
 			if (parser != null)
 			{
-				this.setName(parser.Parse(this.getName()));
+				name = parser.Parse(name);
 			}
-			rs = Assembly.Load(this.getName());
-		}
-		else if (!DotNetToJavaStringHelper.isNullOrEmpty(this.getPath()))
-		{
-			if (parser != null)
-			{
-				this.setPath(parser.Parse(this.getPath()));
-			}
-
-			String fullPath = this.getPath();
-
-			if (!System.IO.Path.IsPathRooted(fullPath))
-			{
-				fullPath = Fantasy.IO.LongPath.Combine(getSrc(), fullPath);
-			}
-
-			rs = Assembly.LoadFile(fullPath);
+			rs = new File( fantasy.io.Path.combine(root, this.getName()));
 		}
 		else
 		{
-			throw new InvalidOperationException("\"import\" element must has name or path attribute.");
+			throw new IllegalStateException("\"import\" element must has name attribute.");
 		}
 
 		return rs;

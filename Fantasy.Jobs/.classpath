@@ -2,7 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Fantasy.Base"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/Fantasy.Base">
+		<accessrules>
+			<accessrule kind="accessible" pattern="**"/>
+		</accessrules>
+	</classpathentry>
 	<classpathentry kind="lib" path="../external/jdom-2.0.2.jar"/>
+	<classpathentry kind="lib" path="E:/Development/Projects/Fantasy/Stheno/external/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="E:/Development/Projects/Fantasy/Stheno/external/commons-collections-3.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

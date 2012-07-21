@@ -7,5 +7,6 @@ public final class Consts {
 		
 	}
 	
-	public static  String SettingsNameSpace = "urn:schemas-fantasy-com:settings"; 
+	public static final  String SettingsNameSpace = "urn:schemas-fantasy-com:settings"; 
+	public static final  String AddInNameSpace = "urn:schemas-fantasy-com:addin"; 
 }

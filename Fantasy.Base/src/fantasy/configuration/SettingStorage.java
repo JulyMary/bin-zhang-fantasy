@@ -1,15 +1,13 @@
 ﻿package fantasy.configuration;
 
 import java.io.*;
+import java.lang.reflect.Field;
 
 import org.jdom2.*;
-import org.jdom2.filter.*;
-import org.jdom2.xpath.*;
-import java.util.*;
-
 import fantasy.*;
 
 import fantasy.io.Path;
+import fantasy.servicemodel.ServiceContainer;
 import fantasy.xserialization.*;
 
 public final class SettingStorage
@@ -71,17 +69,32 @@ public final class SettingStorage
     		
     	}
     }
+    
+    
+    private static class UserScopeFilter  implements IFieldFilter
+    {
+
+    	public static final UserScopeFilter Instance = new UserScopeFilter();
+    	
+		@Override
+		public boolean filter(Field field) {
+			
+			Scope scope = field.getAnnotation(Scope.class);
+			return scope == null || scope.value() == SettingScope.Users; 
+			
+		}
+    	
+    }
 
 	public static SettingsBase load(SettingsBase data) throws Exception
 	{
 		loadAppSettingsRoot();
 		loadUserSettingsRoot();
 			
+		XSerializable anno = data.getClass().getAnnotation(XSerializable.class);
 		
-		HashMap<String, Object> vars = new HashMap<String, Object>();
-	    vars.put("class",  data.getClass().getName());
-			XPathExpression<Element> xpath = XPathFactory.instance().compile("s:settings[@type=\"$class\"]", new ElementFilter(), vars, Namespace.getNamespace("s", Consts.SettingsNameSpace));
-		Element appSettings = xpath.evaluateFirst(_appSettingsRoot);
+	    Element appSettings = _appSettingsRoot.getChild(anno.name(), Namespace.getNamespace(anno.namespaceUri()));
+		
 		
 		XSerializer ser = new XSerializer(data.getClass());
 		if(appSettings != null)
@@ -89,10 +102,14 @@ public final class SettingStorage
 			ser.deserialize(appSettings, data);
 		}
 			
-		Element userSettings = xpath.evaluateFirst(_userSettingsRoot);
+		Element userSettings =  _userSettingsRoot.getChild(anno.name(), Namespace.getNamespace(anno.namespaceUri()));
 		
 		if(userSettings != null)
 		{
+			
+			ServiceContainer context = new ServiceContainer();
+			context.initializeServices(new Object[]{UserScopeFilter.Instance});
+			ser.setContext(context);
 			ser.deserialize(userSettings, data);
 		}
 			
@@ -103,18 +120,24 @@ public final class SettingStorage
 	public static void save(SettingsBase data) throws Exception
 	{
 		
-		HashMap<String, Object> vars = new HashMap<String, Object>();
-	    vars.put("class",  data.getClass().getName());
-			XPathExpression<Element> xpath = XPathFactory.instance().compile("s:settings[@type=\"$class\"]", new ElementFilter(), vars, Namespace.getNamespace("s", Consts.SettingsNameSpace));
+		
+		XSerializable anno = data.getClass().getAnnotation(XSerializable.class);
+		
+		
+		
+		
+		Element newSettings = new Element(anno.name(), Namespace.getNamespace(anno.namespaceUri()));
+		
+		
 		XSerializer ser = new XSerializer(data.getClass());
 		
-		
-		Element newSettings = new Element("settings", _namespace);
-		newSettings.setAttribute("type",data.getClass().getName());
+		ServiceContainer context = new ServiceContainer();
+		context.initializeServices(new Object[]{UserScopeFilter.Instance});
+		ser.setContext(context);
 		
 		ser.serialize(newSettings, data);
 		
-		Element oldSettings = xpath.evaluateFirst(_userSettingsRoot);
+		Element oldSettings = _userSettingsRoot.getChild(anno.name(), Namespace.getNamespace(anno.namespaceUri()));
 		
 
 		if (oldSettings != null)

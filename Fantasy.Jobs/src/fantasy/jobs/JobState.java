@@ -8,18 +8,12 @@ public final class JobState
 	public static final int Suspended = 4;
 	public static final int Unstarted = 8;
 	public static final int UserPaused = 0x10;
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'unchecked' in this context:
-//ORIGINAL LINE: public const int Terminated = unchecked((int)0x80000000);
-	public static final int Terminated = (int)0x80000000;
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'unchecked' in this context:
-//ORIGINAL LINE: public const int Succeed = unchecked((int)0x80000010);
-	public static final int Succeed = (int)0x80000010;
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'unchecked' in this context:
-//ORIGINAL LINE: public const int Failed = unchecked((int)0x80000020);
-	public static final int Failed = (int)0x80000020;
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to 'unchecked' in this context:
-//ORIGINAL LINE: public const int Cancelled = unchecked((int)0x80000040);
-	public static final int Cancelled = (int)0x80000040;
+
+	public static final int Terminated = 1 << 31;
+
+	public static final int Succeed = Terminated  | 0x10;
+	public static final int Failed = Terminated | 0x20;
+	public static final int Cancelled = Terminated | (int)0x40;
 	public static final int All = Running | RequestStart | Suspended | Unstarted | UserPaused | Suspended | Failed | Cancelled;
 
 	public static String ToString(int state)

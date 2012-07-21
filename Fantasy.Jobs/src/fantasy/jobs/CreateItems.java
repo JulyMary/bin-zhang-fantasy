@@ -1,23 +1,27 @@
 ﻿package fantasy.jobs;
 
+import java.util.*;
+
+import org.jdom2.*;
+
 import fantasy.xserialization.*;
-import fantasy.servicemodel.*;
+import fantasy.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("items", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "items", namespaceUri = Consts.XNamespaceURI)
 public class CreateItems extends AbstractInstruction implements IConditionalObject, IXSerializable
 {
 
 	private java.util.ArrayList<CreateItemsItem> _list = new java.util.ArrayList<CreateItemsItem>();
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
-		IItemParser itemParser = this.getSite().<IItemParser>GetRequiredService();
-		ILogger logger = this.getSite().<ILogger>GetService();
-		IJob job = this.getSite().<IJob>GetRequiredService();
-		IConditionService conditionSvc = this.getSite().<IConditionService>GetRequiredService();
+		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
+		IItemParser itemParser = this.getSite().getRequiredService2(IItemParser.class);
+		IJob job = this.getSite().getRequiredService2(IJob.class);
+		IConditionService conditionSvc = this.getSite().getRequiredService2(IConditionService.class);
 		if (conditionSvc.Evaluate(this))
 		{
 			int index = job.getRuntimeStatus().getLocal().GetValue("createitems.index", 0);
@@ -28,10 +32,11 @@ public class CreateItems extends AbstractInstruction implements IConditionalObje
 				TaskItem[] parsedItems = itemParser.ParseItem(item.getName());
 				if (parsedItems.length > 0)
 				{
-					NameValueCollection meta = new NameValueCollection();
-					for (String name : item.getMetaData().AllKeys)
+					TreeMap<String, String> meta = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+					
+					for (String name : item.getMetaData().keySet())
 					{
-						meta.Add(name, parser.Parse(item.getMetaData()[name]));
+						meta.put(name, parser.Parse(item.getMetaData().get(name)));
 					}
 					if (group == null)
 					{
@@ -41,9 +46,9 @@ public class CreateItems extends AbstractInstruction implements IConditionalObje
 					{
 						TaskItem newItem = group.AddNewItem(parsedItem.getName(), item.getCategory());
 						parsedItem.CopyMetaDataTo(newItem);
-						for (String name : meta)
+						for (String name : meta.keySet())
 						{
-							newItem.setItem(name, meta[name]);
+							newItem.setItem(name, meta.get(name));
 						}
 					}
 
@@ -65,13 +70,11 @@ public class CreateItems extends AbstractInstruction implements IConditionalObje
 		privateCondition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXSerializable Members
 
-	public final void Load(IServiceProvider context, XElement element)
+	public final void Load(IServiceProvider context, Element element) throws Exception
 	{
-		this.setCondition((String)element.Attribute("condition"));
-		for (XElement itemElement : element.Elements())
+		this.setCondition((String)element.getAttributeValue("condition"));
+		for (Element itemElement : element.getChildren())
 		{
 			CreateItemsItem item = new CreateItemsItem();
 			item.Load(context, itemElement);
@@ -79,21 +82,20 @@ public class CreateItems extends AbstractInstruction implements IConditionalObje
 		}
 	}
 
-	public final void Save(IServiceProvider context, XElement element)
+	public final void Save(IServiceProvider context, Element element) throws Exception
 	{
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.getCondition()))
+		if (!StringUtils2.isNullOrEmpty(this.getCondition()))
 		{
-			element.SetAttributeValue("condition", this.getCondition());
+			element.setAttribute("condition", this.getCondition());
 		}
 
 		for (CreateItemsItem item : this._list)
 		{
-			XElement itemElement = new XElement(element.getName().Namespace + item.getCategory());
-			element.Add(itemElement);
+			Element itemElement = new Element(item.getCategory(), element.getNamespace());
+			element.addContent(itemElement);
 			item.Save(context, itemElement);
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
 }

@@ -2,20 +2,16 @@
 
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("parameters", NamespaceUri = Consts.XNamespaceURI)]
+@XSerializable(name = "parameters", namespaceUri = Consts.XNamespaceURI)
 public class CallTemplateParameter implements IConditionalObject
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("itemCategory")]
+	@XAttribute(name = "itemCategory")
 	public String ItemCategory = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("include")]
+	@XAttribute(name = "include")
 	public String Include = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+    @XAttribute(name = "condition")
 	private String _condition = null;
 	public String getCondition()
 	{
@@ -26,10 +22,9 @@ public class CallTemplateParameter implements IConditionalObject
 		this._condition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("propertyName")]
+	@XAttribute(name = "propertyName")
 	public String PropertyName = null;
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("value")]
+	
+	@XAttribute(name = "value")
 	public String Value = null;
 }

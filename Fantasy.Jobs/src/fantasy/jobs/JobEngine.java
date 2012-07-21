@@ -1,8 +1,10 @@
 ﻿package fantasy.jobs;
 
-import fantasy.jobs.Management.*;
+import fantasy.*;
+import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.Resources.*;
+import fantasy.jobs.management.IJobManager;
 import fantasy.servicemodel.*;
 
 public class JobEngine extends MarshalByRefObject implements IJobEngine
@@ -17,12 +19,7 @@ public class JobEngine extends MarshalByRefObject implements IJobEngine
 
 	private Job _job;
 
-	@Override
-	public Object InitializeLifetimeService()
-	{
-		//Never expired;
-		return null;
-	}
+	
 
 
 
@@ -358,7 +355,7 @@ public class JobEngine extends MarshalByRefObject implements IJobEngine
 		}
 	}
 
-	private void StartWorkThread(ThreadStart start)
+	private void StartWorkThread(Runnable start)
 	{
 		this._workThread = ThreadFactory.CreateThread(start).WithStart();
 

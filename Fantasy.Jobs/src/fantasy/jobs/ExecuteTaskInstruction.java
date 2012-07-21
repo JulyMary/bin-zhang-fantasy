@@ -1,14 +1,20 @@
 ﻿package fantasy.jobs;
 
-import fantasy.xserialization.*;
-import fantasy.jobs.Properties.*;
-import fantasy.servicemodel.*;
-import fantasy.jobs.Resources.*;
-import Fantasy.IO.*;
+import java.lang.reflect.*;
+import java.util.*;
 
-//public enum TaskExecutionLocation {InProcess, OutProcess}
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("executeTask", NamespaceUri= Consts.XNamespaceURI)]
+import fantasy.xserialization.*;
+import fantasy.jobs.properties.*;
+import fantasy.servicemodel.*;
+//import fantasy.jobs.resources.*;
+import fantasy.collections.*;
+import fantasy.io.*;
+import fantasy.*;
+import org.jdom2.*;
+
+
+@SuppressWarnings("rawtypes")
+@XSerializable(name = "executeTask", namespaceUri= Consts.XNamespaceURI)
 public class ExecuteTaskInstruction extends AbstractInstruction implements IConditionalObject, IXSerializable
 {
 	public ExecuteTaskInstruction()
@@ -37,7 +43,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 	private java.util.HashMap<String, String> _properties = new java.util.HashMap<String, String>();
 
-	private java.util.ArrayList<XElement> _inlineElements = new java.util.ArrayList<XElement>();
+	private java.util.ArrayList<Element> _inlineElements = new java.util.ArrayList<Element>();
 
 	private String privateCondition;
 	public final String getCondition()
@@ -49,50 +55,39 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		privateCondition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXSerializable Members
 
-	public final void Load(IServiceProvider context, XElement element)
+	public final void Load(IServiceProvider context, Element element) throws Exception
 	{
-		this.setTaskName(element.getName().LocalName);
-		this.setTaskNamespaceUri(element.getName().NamespaceName);
+		this.setTaskName(element.getName());
+		this.setTaskNamespaceUri(element.getNamespaceURI());
 
-		this._xmlNamespaceManager = XHelper.CreateXmlNamespaceManager(element, true);
+		this._xmlNamespaceManager = new NamespaceManager();
+		this._xmlNamespaceManager.setNamespaces(element.getNamespacesInScope().toArray(new Namespace[0]));
 
-		for (XAttribute node : element.Attributes())
+		for (Attribute node : element.getAttributes())
 		{
-			if (!DotNetToJavaStringHelper.isNullOrEmpty(node.getValue()))
+			if (!StringUtils2.isNullOrEmpty(node.getValue()))
 			{
 
-//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
-//				switch (node.Name.LocalName)
-//ORIGINAL LINE: case "condition":
-				if (node.getName().LocalName.equals("condition"))
+				if (node.getName() == "condition" )
 				{
 						this.setCondition(node.getValue());
 				}
 				else
 				{
-						if (!node.IsNamespaceDeclaration)
-						{
-							this._properties.put(node.getName().LocalName, node.getValue());
-						}
-
+				    this._properties.put(node.getName(), node.getValue());
 				}
 			}
 		}
 
-
-
 		XSerializer ser = new XSerializer(TaskOutput.class);
 
-		XName outputName = (XNamespace)Consts.XNamespaceURI + "output";
-		for (XElement child : element.Elements())
+		for (Element child : element.getChildren())
 		{
 
-			if (child.getName() == outputName)
+			if (child.getName() == "output" && child.getNamespaceURI() == Consts.XNamespaceURI)
 			{
-				TaskOutput output = (TaskOutput)ser.Deserialize(child);
+				TaskOutput output = (TaskOutput)ser.deserialize(child);
 				this.getTaskOutputs().add(output);
 			}
 			else
@@ -104,7 +99,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 	}
 
 
-	private XmlNamespaceManager _xmlNamespaceManager;
+	private NamespaceManager _xmlNamespaceManager;
 
 
 
@@ -115,81 +110,78 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		return _taskOutputs;
 	}
 
-	public final void Save(IServiceProvider context, XElement element)
+	public final void Save(IServiceProvider context, Element element) throws Exception
 	{
-		XHelper.AddNamespace(this._xmlNamespaceManager,element);
+		XHelper.AddNamespace(this._xmlNamespaceManager.getNamespaces(),element);
 
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.getCondition()))
+		if (!StringUtils2.isNullOrEmpty(this.getCondition()))
 		{
-			element.SetAttributeValue("condition", this.getCondition());
+			element.setAttribute("condition", this.getCondition());
 
 		}
 
 		for (java.util.Map.Entry<String, String> pair : this._properties.entrySet())
 		{
-			element.SetAttributeValue(pair.getKey(), pair.getValue());
+			element.setAttribute(pair.getKey(), pair.getValue());
 		}
 
 		XSerializer ser = new XSerializer(TaskOutput.class);
 
-		for (XElement inline : this._inlineElements)
+		for (Element inline : this._inlineElements)
 		{
-			XElement newNode = new XElement(inline);
-			element.Add(newNode);
+			Element newNode = inline.clone();
+			element.addContent(newNode);
 		}
 
 		for (TaskOutput output : this.getTaskOutputs())
 		{
-			XElement child = ser.Serialize(output);
-			element.Add(child);
+			Element child = ser.serialize(output);
+			element.addContent(child);
 		}
 
 	}
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
-		IResourceService resSvc = this.getSite().<IResourceService>GetService();
-		if (resSvc != null)
-		{
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-			ResourceParameter res = new ResourceParameter("RunTask", new { taskname = this.getTaskName(), namespace = this.getTaskNamespaceUri() });
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//			using (IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res }))
-			IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res });
-			try
-			{
-				InnerExecute();
-			}
-			finally
-			{
-				handle.dispose();
-			}
-		}
-		else
+		//TODO: implement resource service
+//		IResourceService resSvc = this.getSite().<IResourceService>GetService();
+//		if (resSvc != null)
+//		{
+
+//			ResourceParameter res = new ResourceParameter("RunTask", new { taskname = this.getTaskName(), namespace = this.getTaskNamespaceUri() });
+////			using (IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res }))
+//			IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res });
+//			try
+//			{
+//				InnerExecute();
+//			}
+//			finally
+//			{
+//				handle.dispose();
+//			}
+//		}
+//		else
 		{
 			InnerExecute();
 		}
 	}
 
-	private void InnerExecute()
+	private void InnerExecute() throws  Exception
 	{
-		IConditionService conditionSvc = (IConditionService)this.Site.GetService(IConditionService.class);
-		ILogger logger = (ILogger)this.Site.GetService(ILogger.class);
+		IConditionService conditionSvc = this.getSite().getService2(IConditionService.class);
+		ILogger logger = this.getSite().getService2(ILogger.class);
 
 		if (conditionSvc.Evaluate(this))
 		{
 			logger.LogMessage(LogCategories.getInstruction(), "Execute task {0}", this.getTaskName());
-			IJob job = (IJob)this.Site.GetService(IJob.class);
-			java.lang.Class t = job.ResolveInstructionType((XNamespace)this.TaskNamespaceUri + this.getTaskName());
-			ITask task = (ITask)Activator.CreateInstance(t);
-			System.ComponentModel.Design.ServiceContainer site = new System.ComponentModel.Design.ServiceContainer(this.getSite());
-			site.AddService(ExecuteTaskInstruction.class, this);
-			site.AddService(XmlNamespaceManager.class, this._xmlNamespaceManager);
+			IJob job = this.getSite().getService2(IJob.class);
+			java.lang.Class t = job.ResolveInstructionType(this.getTaskNamespaceUri() , this.getTaskName());
+			ITask task = (ITask)t.newInstance();
+			ServiceContainer taskSite = new ServiceContainer();
+			taskSite.initializeServices(this.getSite(), new Object[]{this, this._xmlNamespaceManager} );
 
-			task.Site = site;
+			task.setSite(taskSite);
 
 			this.SetInputParams(task);
 			try
@@ -198,15 +190,15 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 				if (!success)
 				{
-					throw new TaskFailedException(String.format(Properties.Resources.getTaskFailedText(), this.getTaskName()));
+					throw new TaskFailedException(String.format(Resources.getTaskFailedText(), this.getTaskName()));
 				}
 			}
 			finally
 			{
-				IStatusBarService statusBar = this.getSite().<IStatusBarService>GetService();
+				IStatusBarService statusBar = this.getSite().getService2(IStatusBarService.class);
 				if (statusBar != null)
 				{
-					statusBar.SetStatus("");
+					statusBar.setStatus("");
 				}
 			}
 			this.SetOutputParams(task);
@@ -218,153 +210,182 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 	}
 
 
-	private void SetOutputParams(ITask task)
+	private void SetOutputParams(ITask task) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Func<MemberInfo, TaskMemberAttribute> getAttribute = mi => ((TaskMemberAttribute)mi.GetCustomAttributes(TaskMemberAttribute.class, true)[0]);
 
 		java.lang.Class taskType = task.getClass();
-		IConditionService condition = (IConditionService)this.Site.GetService(IConditionService.class);
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		for (TaskOutput output : this.getTaskOutputs().Where(t => condition.Evaluate(t)))
+		IConditionService condition = (IConditionService)this.getSite().getService(IConditionService.class);
+
+		Enumerable<Field> fields = new Enumerable<Field>(taskType.getFields());
+		
+		for (final TaskOutput output : this.getTaskOutputs())
 		{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-			MemberInfo mi = (from m in taskType.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.GetField | BindingFlags.GetProperty) where m.IsDefined(TaskMemberAttribute.class, true) && (getAttribute(m).Flags & TaskMemberFlags.Output) > 0 && output.getTaskParameter().equals(getAttribute(m).getName()) select m).SingleOrDefault();
-			if(mi != null)
+			
+			if(condition.Evaluate(output))
 			{
-				java.lang.Class memberType = this.GetMemberInfoType(mi);
-				if (!DotNetToJavaStringHelper.isNullOrEmpty(output.getItemCategory()))
+
+				
+				Field field = fields.singleOrDefault(new Predicate<Field>(){
+
+					@Override
+					public boolean evaluate(Field field) {
+						
+						
+						TaskMember anno = field.getAnnotation(TaskMember.class);
+						return (anno.name() == output.getTaskParameter()) 
+								&& Arrays.asList(anno.flags()).indexOf(TaskMemberFlags.Output) >= 0;
+					}});
+				
+			
+			if(field != null)
+			{
+				
+				if (!StringUtils2.isNullOrEmpty(output.getItemCategory()))
 				{
-					CreateTaskItems(task, output, mi);
+					CreateTaskItems(task, output, field);
 				}
 				else
 				{
-					CreateJobProperty(task, output, mi);
+					CreateJobProperty(task, output, field);
 				}
 			}
 			else
 			{
-				throw new JobException(String.format(Properties.Resources.getUndefinedTaskOutputParameterText(), this.getTaskName(), output.getTaskParameter()));
+				throw new JobException(String.format(Resources.getUndefinedTaskOutputParameterText(), this.getTaskName(), output.getTaskParameter()));
+			}
 			}
 
 		}
 	}
 
-	private void CreateJobProperty(ITask task, TaskOutput output, MemberInfo mi)
+	
+	private void appendOutputText(StringBuilder text, Object o) throws Exception
 	{
-		java.lang.Class memberType = this.GetMemberInfoType(mi);
-		StringBuilder text = new StringBuilder();
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		MethodInvoker<Object> AppendText = delegate (Object o)
+		if (o != null)
 		{
-			if (o != null)
+			String s;
+			if (o instanceof TaskItem)
 			{
-				String s;
-				if (o instanceof TaskItem)
+				s = ((TaskItem)o).getName();
+			}
+			else
+			{
+				ITypeConverter cvt = XHelper.getDefault().CreateXConverter(o.getClass());
+				s = (String)cvt.convertFrom(o);
+			}
+			if (!StringUtils2.isNullOrEmpty(s))
+			{
+				if (text.length() > 0)
 				{
-					s = ((TaskItem)o).getName();
+					text.append(";");
 				}
-				else
-				{
-					TypeConverter cvt = XHelper.Default.CreateXConverter(o.getClass());
-					s = (String)cvt.ConvertFrom(o);
-				}
-				if (!DotNetToJavaStringHelper.isNullOrEmpty(s))
-				{
-					if (text.length() > 0)
-					{
-						text.append(";");
-					}
-					text.append(s);
-				}
+				text.append(s);
 			}
 		}
+	}
+	
+	
+	private void CreateJobProperty(ITask task, TaskOutput output, Field field) throws Exception
+	{
+		java.lang.Class memberType = this.GetMemberInfoType(field);
+		StringBuilder text = new StringBuilder();
 
-		Object value = this.GetMemberInfoValue(mi, task);
+
+		Object value = this.GetMemberInfoValue(field, task);
 		if (value != null)
 		{
-			if (value instanceof Array)
+			if (memberType.isArray())
 			{
-				for (Object ele : (Array)value)
+				
+				for (Object ele : Arrays.asList(value))
 				{
-					AppendText(ele);
+					appendOutputText(text, ele);
 				}
 			}
 			else
 			{
-				AppendText(value);
+				appendOutputText(text, value);
 			}
 		}
 
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IJob job = (IJob)this.getSite().getService(IJob.class);
 		job.SetProperty(output.getPropertyName(), text.toString());
 
 	}
 
-	private void CreateTaskItems(ITask task, TaskOutput output, MemberInfo mi)
+	@SuppressWarnings("unchecked")
+	private void CreateTaskItems(ITask task, TaskOutput output, Field field) throws Exception
 	{
-		java.lang.Class memberType = this.GetMemberInfoType(mi);
-
+		
 		TaskItem[] items = null;
-		if (memberType == TaskItem.class)
+		
+		Object value = this.GetMemberInfoValue(field, task);
+		if(value == null)
 		{
-			TaskItem item = (TaskItem)this.GetMemberInfoValue(mi, task);
-			if (item != null)
-			{
-				items = new TaskItem[] { item };
-			}
+			return;
 		}
-		else if (memberType == TaskItem[].class)
+		
+		if (value instanceof TaskItem)
 		{
-			items = (TaskItem[])this.GetMemberInfoValue(mi, task);
+				items = new TaskItem[] { (TaskItem)value };
 		}
-		else if (memberType == String.class || memberType == String[].class || Iterable<String>.class.IsAssignableFrom(memberType))
+		else if (value instanceof TaskItem[])
 		{
-			Object v = this.GetMemberInfoValue(mi, task);
-
-			if (v != null)
-			{
+			items = (TaskItem[])value;
+			
+		}
+		else if (value instanceof String || value instanceof String[] || value instanceof Iterable)
+		{
+			
 				Iterable paths;
-				if (memberType == String.class)
+				if (value instanceof String)
 				{
-					paths = ((String)v).split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+					paths = new Enumerable<String>(StringUtils2.split((String)value, ";", true));
+				}
+				else if(value instanceof String[])
+				{
+					paths = new Enumerable<String>((String[])value);
 				}
 				else
 				{
-					paths = (Iterable)v;
+					paths = (Iterable<String>)value;
 				}
 
-				IJobEngine engine = this.getSite().<IJobEngine>GetRequiredService();
+				IJobEngine engine = this.getSite().getRequiredService2(IJobEngine.class);
 				java.util.ArrayList<TaskItem> list = new java.util.ArrayList<TaskItem>();
-				for (String path : paths)
+				for (Object o : paths)
 				{
-					String name;
-					if (LongPath.IsPathRooted(path))
+					
+					if(o != null)
 					{
-						name = LongPath.GetRelativePath(engine.getJobDirectory() + "\\", path);
+						String path = o instanceof String ? (String)o : o.toString();
+						String name;
+						if (Path.isPathRooted(path))
+						{
+							name = Path.getRelativePath(engine.getJobDirectory(), path);
+						}
+						else
+						{
+							name = path;
+						}
+						TaskItem tempVar = new TaskItem();
+						tempVar.setName(name);
+						list.add(tempVar);
 					}
-					else
-					{
-						name = path;
-					}
-					TaskItem tempVar = new TaskItem();
-					tempVar.setName(name);
-					list.add(tempVar);
 				}
 				items = list.toArray(new TaskItem[]{});
-			}
+			
 		}
 		else
 		{
 
-			throw new JobException(String.format(Properties.Resources.getCannotConverTaskOutputParameterToTaskItemText(), output.getTaskParameter(), this.getTaskName()));
+			throw new JobException(String.format(Resources.getCannotConverTaskOutputParameterToTaskItemText(), output.getTaskParameter(), this.getTaskName()));
 		}
 
 		if (items != null && items.length > 0)
 		{
 
-			IJob job = (IJob)this.Site.GetService(IJob.class);
+			IJob job = this.getSite().getService2(IJob.class);
 			TaskItemGroup group = job.AddTaskItemGroup();
 			for (TaskItem item : items)
 			{
@@ -379,114 +400,127 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 
 
-	private void SetInputParams(ITask task)
+	private void SetInputParams(ITask task) throws Exception
 	{
 		java.lang.Class taskType = task.getClass();
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Func<MemberInfo, TaskMemberAttribute> getAttribute = mi =>((TaskMemberAttribute)mi.GetCustomAttributes(TaskMemberAttribute.class, true)[0]);
+		
+		Enumerable<Field> fields = new Enumerable<Field>(taskType.getFields()).where(new Predicate<Field>(){
+			
+			@Override
+			public boolean evaluate(Field f)
+			{
+				return f.isAnnotationPresent(TaskMember.class) && Arrays.asList(f.getAnnotation(TaskMember.class).flags()).indexOf(TaskMemberFlags.Input) >= 0;
+			}
+		});
+		
 
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-		var query = from mi in taskType.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetField | BindingFlags.SetProperty) where mi.IsDefined(TaskMemberAttribute.class, true) && (getAttribute(mi).Flags & TaskMemberFlags.Input) > 0 select new {Member = mi, Attribute = getAttribute(mi) };
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-		for (var m : query)
+		for (Field field : fields)
 		{
-			MemberInfo mi = m.Member;
-			if (this._properties.containsKey(m.Attribute.getName()))
+			
+			TaskMember anno = field.getAnnotation(TaskMember.class);
+			if (this._properties.containsKey(anno.name()))
 			{
 				try
 				{
-					java.lang.Class memberType = this.GetMemberInfoType(mi);
+					java.lang.Class memberType = this.GetMemberInfoType(field);
 
 					if (memberType == TaskItem.class)
 					{
-						SetTaskItemValue(task, mi, m.Attribute.getName());
+						SetTaskItemValue(task, field, anno.name());
 					}
 					else if (memberType == TaskItem[].class)
 					{
-						SetTaskItemsValue(task, mi, m.Attribute.getName());
+						SetTaskItemsValue(task, field, anno.name());
 					}
-					else if (memberType.IsArray)
+					else if (memberType.isArray())
 					{
-						SetArrayValue(task, mi, m.Attribute.getName());
+						SetArrayValue(task, field, anno.name());
 					}
 					else
 					{
-						SetScalarValue(task, mi, m.Attribute.getName());
+						SetScalarValue(task, field, anno.name());
 					}
 				}
-				catch (ThreadAbortException e)
+				catch (InterruptedException  e)
 				{
+					throw e;
 				}
-				catch (RuntimeException error)
+				catch (Exception error)
 				{
-					throw new JobException(String.format(Properties.Resources.getSetTaskParamErrorText(), this.getTaskName(), m.Attribute.getName()), error);
+					throw new JobException(String.format(Resources.getSetTaskParamErrorText(), this.getTaskName(), anno.name()), error);
 				}
 			}
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			else if ((m.Attribute.Flags & TaskMemberFlags.Inline) > 0 &&　this._inlineElements.Any(e=>e.getName().LocalName.compareToIgnoreCase(m.Attribute.getName()) == 0))
+			else if (Arrays.asList(anno.flags()).indexOf(TaskMemberFlags.Inline) >= 0)
 			{
-				java.lang.Class memberType = this.GetMemberInfoType(mi);
-				if (memberType == XElement.class)
+				java.lang.Class memberType = this.GetMemberInfoType(field);
+				if (memberType == Element.class)
 				{
-					this.SetInlineValue(task, mi, m.Attribute.getName(), m.Attribute.ParseInline);
+					this.SetInlineValue(task, field, anno.name(), anno.parseInline());
 				}
 				else
 				{
-					throw new JobException(String.format(Properties.Resources.getInlineTaskMemberMustBeXElementText(), this.getTaskName(), m.Attribute.getName()));
+					throw new JobException(String.format(Resources.getInlineTaskMemberMustBeElementText(), this.getTaskName(), anno.name()));
 				}
 			}
-			else if ((m.Attribute.Flags & TaskMemberFlags.Required) > 0)
+			else if (Arrays.asList(anno.flags()).indexOf(TaskMemberFlags.Required) >= 0)
 			{
-				throw new JobException(String.format(Properties.Resources.getRequireAttrubiteOfTaskText(), m.Attribute.getName(), this.getTaskName()));
+				throw new JobException(String.format(Resources.getRequireAttrubiteOfTaskText(), anno.name(), this.getTaskName()));
 			}
 		}
 	}
 
-	private void SetInlineValue(ITask task, MemberInfo mi, String elementName, boolean parseInline)
+	private void SetInlineValue(ITask task, Field mi, final String elementName, boolean parseInline) throws Exception
 	{
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		XElement element = this._inlineElements.Find(e => e.getName().LocalName.compareToIgnoreCase(elementName) == 0);
+		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
 
-		XElement val = parseInline ? parser.Parse(element) : new XElement(element);
+		Element element = new Enumerable<Element>(this._inlineElements).firstOrDefault(new Predicate<Element>(){
 
-		this.SetMemberInfoValue(mi, task, val);
+			@Override
+			public boolean evaluate(Element ele) {
+				return ele.getName().toLowerCase() == elementName.toLowerCase();
+			}});
+		
+		if(element != null)
+		{
+			Element val = parseInline ? StringParserUtils.Parse(parser, element, null) : element.clone();
+			this.SetMemberInfoValue(mi, task, val);
+		}
+		
 	}
 
 
-	private void SetScalarValue(ITask task, MemberInfo mi, String param)
+	private void SetScalarValue(ITask task, Field mi, String param) throws Exception
 	{
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
+		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
 		String str = parser.Parse(this._properties.get(param));
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(str))
+		if (!StringUtils2.isNullOrEmpty(str))
 		{
-			TypeConverter cvt = XHelper.Default.CreateXConverter(this.GetMemberInfoType(mi));
-			Object value = cvt.ConvertTo(str, this.GetMemberInfoType(mi));
+			ITypeConverter cvt = XHelper.getDefault().CreateXConverter(this.GetMemberInfoType(mi));
+			Object value = cvt.convertTo(str, this.GetMemberInfoType(mi));
 			this.SetMemberInfoValue(mi, task, value);
 		}
 	}
 
-	private void SetArrayValue(ITask task, MemberInfo mi, String param)
+	private void SetArrayValue(ITask task, Field mi, String param) throws Exception
 	{
 
 		java.lang.Class memberType = this.GetMemberInfoType(mi);
-		java.lang.Class elementType = memberType.GetElementType();
-		java.util.ArrayList temp = new java.util.ArrayList();
-		IStringParser parser = (IStringParser)this.Site.GetService(IStringParser.class);
+		java.lang.Class elementType = memberType.getComponentType();
+		
+		IStringParser parser = (IStringParser)this.getSite().getRequiredService2(IStringParser.class);
 		String str = parser.Parse(this._properties.get(param));
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(str))
+		if (!StringUtils2.isNullOrEmpty(str))
 		{
 
-			String[] strArr = str.split("[;]", -1);
-			Array arr = Array.CreateInstance(elementType, strArr.length);
-			TypeConverter cvt = XHelper.Default.CreateXConverter(elementType);
-			for (int i = 0; i < arr.getLength(); i++)
+			String[] strArr = StringUtils2.split(str, ";", true);
+			Object arr = Array.newInstance(elementType, strArr.length);
+			ITypeConverter cvt = XHelper.getDefault().CreateXConverter(elementType);
+			for (int i = 0; i < Array.getLength(arr); i++)
 			{
-				Object value = cvt.ConvertTo(strArr[i], elementType);
-				arr.SetValue(value, i);
+				Object value = cvt.convertTo(strArr[i], elementType);
+				Array.set(arr, i, value);
+				
 			}
 
 			this.SetMemberInfoValue(mi, task, arr);
@@ -495,16 +529,16 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 
 
-	private void SetTaskItemsValue(ITask task, MemberInfo mi, String param)
+	private void SetTaskItemsValue(ITask task, Field mi, String param) throws Exception
 	{
-		IItemParser parser = this.getSite().<IItemParser>GetRequiredService();
+		IItemParser parser = this.getSite().getRequiredService2(IItemParser.class);
 		TaskItem[] items = parser.ParseItem(this._properties.get(param));
 		this.SetMemberInfoValue(mi, task, items);
 	}
 
-	private void SetTaskItemValue(ITask task, MemberInfo mi, String param)
+	private void SetTaskItemValue(ITask task, Field mi, String param) throws Exception
 	{
-		IItemParser parser = this.getSite().<IItemParser>GetRequiredService();
+		IItemParser parser = this.getSite().getRequiredService2(IItemParser.class);
 		TaskItem[] items = parser.ParseItem(this._properties.get(param));
 		if (items.length == 1)
 		{
@@ -512,43 +546,24 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		}
 		else if (items.length > 1)
 		{
-			throw new JobException(String.format(Properties.Resources.getInputParamContainsMultipleItemsText(), param, this.getTaskName(), items.length));
+			throw new JobException(String.format(Resources.getInputParamContainsMultipleItemsText(), param, this.getTaskName(), items.length));
 		}
 	}
 
-	private java.lang.Class GetMemberInfoType(MemberInfo mi)
+	private java.lang.Class GetMemberInfoType(Field mi)
 	{
-		if (mi.MemberType == MemberTypes.Field)
-		{
-			return ((java.lang.reflect.Field)mi).FieldType;
-		}
-		else
-		{
-			return ((PropertyInfo)mi).PropertyType;
-		}
+		return mi.getType();
 	}
 
-	private void SetMemberInfoValue(MemberInfo mi, Object instance, Object value)
+	private void SetMemberInfoValue(Field mi, Object instance, Object value) throws Exception
 	{
-		if (mi.MemberType == MemberTypes.Field)
-		{
-			((java.lang.reflect.Field)mi).SetValue(instance, value);
-		}
-		else
-		{
-			((PropertyInfo)mi).SetValue(instance, value, null);
-		}
+		mi.set(instance, value);
 	}
 
-	private Object GetMemberInfoValue(MemberInfo mi, Object instance)
+	private Object GetMemberInfoValue(Field mi, Object instance) throws Exception
 	{
-		if (mi.MemberType == MemberTypes.Field)
-		{
-			return ((java.lang.reflect.Field)mi).GetValue(instance);
-		}
-		else
-		{
-			return ((PropertyInfo)mi).GetValue(instance, null);
-		}
+		
+		return mi.get(instance);
+		
 	}
 }

@@ -5,5 +5,5 @@ import fantasy.*;
 
 public interface IInstruction extends IObjectWithSite
 {
-	void Execute();
+	void Execute() throws Exception;
 }

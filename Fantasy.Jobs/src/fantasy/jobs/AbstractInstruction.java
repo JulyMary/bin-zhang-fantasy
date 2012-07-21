@@ -4,5 +4,5 @@ import fantasy.*;
 
 public abstract class AbstractInstruction extends ObjectWithSite implements IInstruction, IObjectWithSite
 {
-	public abstract void Execute();
+	public abstract void Execute() throws Exception;
 }

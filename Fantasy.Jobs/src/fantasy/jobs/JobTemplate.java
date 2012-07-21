@@ -1,16 +1,17 @@
 ﻿package fantasy.jobs;
+import java.io.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract]
 public class JobTemplate implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5399663076529834657L;
 	public JobTemplate()
 	{
 		this.setName("");
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private int privateid;
 	public final int getid()
 	{
@@ -21,8 +22,6 @@ public class JobTemplate implements Serializable
 		privateid = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private String privateLocation;
 	public final String getLocation()
 	{
@@ -33,8 +32,6 @@ public class JobTemplate implements Serializable
 		privateLocation = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private String privateContent;
 	public final String getContent()
 	{
@@ -45,8 +42,6 @@ public class JobTemplate implements Serializable
 		privateContent = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private String privateName;
 	public final String getName()
 	{
@@ -58,8 +53,6 @@ public class JobTemplate implements Serializable
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private boolean privateValid;
 	public final boolean getValid()
 	{
@@ -74,18 +67,11 @@ public class JobTemplate implements Serializable
 	{
 		if (path == null)
 		{
-			throw new ArgumentNullException("path");
+			throw new IllegalArgumentException("path");
 		}
-		String rs = path;
-		if (!Path.IsPathRooted(rs))
-		{
-			String dir = Path.GetDirectoryName(this.getLocation());
-			rs = dir + Path.DirectorySeparatorChar + rs;
-
-			rs = Path.GetFullPath(path);
-		}
-
-		return rs;
+		
+		return new java.io.File(path).getAbsolutePath();
+	
 
 	}
 }

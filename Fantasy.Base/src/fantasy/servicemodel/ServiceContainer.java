@@ -115,10 +115,7 @@ public class ServiceContainer implements IServiceProvider
 	}
 
 	
-	
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IServiceProvider Members
 
 	public Object getService(java.lang.Class serviceType)
 	{
@@ -150,6 +147,19 @@ public class ServiceContainer implements IServiceProvider
 			throw new MissingRequiredServiceException(serviceType);
 		}
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getService2(Class<T> serviceType) {
+		return (T)this.getService(serviceType);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getRequiredService2(Class<T> serviceType) {
+		return (T)this.getRequiredService(serviceType);
 	}
 
 
