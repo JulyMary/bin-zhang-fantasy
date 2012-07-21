@@ -3,15 +3,17 @@
 
 import java.util.*;
 
+import fantasy.*;
 import fantasy.jobs.properties.*;
 import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.*;
 import fantasy.jobs.resources.*;
 import fantasy.servicemodel.*;
+import org.jdom2.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("job", NamespaceUri=Consts.XNamespaceURI)]
+
+@XSerializable(name = "job", namespaceUri=Consts.XNamespaceURI)
 public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 {
 	public Job()
@@ -724,7 +726,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	}
 
 
-	public final void LoadStatus(XElement element)
+	public final void LoadStatus(Element element)
 	{
 
 		XmlNamespaceManager nsMgr = new XmlNamespaceManager(new NameTable());
@@ -745,11 +747,11 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 	}
 
-	public final XElement SaveStatus()
+	public final Element SaveStatus()
 	{
 		XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
 		XSerializer ser = new XSerializer(Job.class);
-		XElement rs = ser.Serialize(this,ns);
+		Element rs = ser.Serialize(this,ns);
 		return rs;
 	}
 
@@ -863,6 +865,4 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		this.ExecuteTarget(targetName);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

@@ -19,6 +19,15 @@ public  class Enumerable<T> implements Iterable<T> {
 		this._source = source;
 	}
 	
+	public Enumerable(T[] source)
+	{
+		if(source == null){
+		    throw new IllegalArgumentException("source");
+		}
+		
+		this._source = Arrays.asList(source);
+	}
+	
 	public <TResult> Enumerable<TResult> select(Selector<T, TResult> selector)
 	{
 		ArrayList<TResult> rs = new ArrayList<TResult>();
@@ -33,6 +42,8 @@ public  class Enumerable<T> implements Iterable<T> {
 		return new Enumerable<TResult>(rs);
 
 	}
+	
+
 
 	
 	public Enumerable<T> where(Predicate<T> predicate)
@@ -191,11 +202,16 @@ public  class Enumerable<T> implements Iterable<T> {
 		
 	}
 	
+	
+	
+	
 
 	@Override
 	public Iterator<T> iterator() {
 		return this._source.iterator();
 	}
+	
+	
 	
 	
 	

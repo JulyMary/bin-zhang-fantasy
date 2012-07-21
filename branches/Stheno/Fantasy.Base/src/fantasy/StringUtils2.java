@@ -1,6 +1,7 @@
 package fantasy;
 
 import org.apache.commons.lang3.StringUtils;
+import fantasy.collections.*;
 
 public class StringUtils2 {
     private StringUtils2()
@@ -149,4 +150,38 @@ public class StringUtils2 {
 		else
 			return s1 != null && s1.equals(s2);
 	}
+	
+	private static String _newline = System.getProperty("line.separator");
+	
+	public static String newLine()
+	{
+	    return _newline;
+	}
+	
+	public static String[] split(String str, String separator, boolean removeEmptyEntites)
+	{
+		  String[] rs;
+	      String[] temp = StringUtils.split(str, separator);
+	      
+	      if(removeEmptyEntites)
+	      {
+	          rs = new Enumerable<String>(temp).where(new Predicate<String>(){
+	        	  @Override
+	        	  public boolean evaluate(String item)
+	        	  {
+	        		  return ! StringUtils2.isNullOrEmpty(item);
+	        	  }
+	          }).toArrayList().toArray(new String[0]);
+	      }
+	      else
+	    	  
+	      {
+	    	  rs = temp;
+	      }
+	      
+	      return rs;
+	      
+	}
+	
+	
 }

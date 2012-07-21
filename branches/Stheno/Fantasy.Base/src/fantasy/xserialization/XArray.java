@@ -11,7 +11,7 @@ public @interface XArray
 {
 	
 	@SuppressWarnings("rawtypes")
-	public Class serializer();
+	public Class serializer() default Dummy.class;
 	
     public int order() default Integer.MAX_VALUE;
 	

@@ -336,6 +336,11 @@ public final class Path
 		return (((((path.length() < 3) || (path.charAt(1) != volumeSeparatorChar)) || (path.charAt(2) != directorySeparatorChar)) || (((path.charAt(0) < 'a') || (path.charAt(0) > 'z')) && ((path.charAt(0) < 'A') || (path.charAt(0) > 'Z')))) && (((path.length() < 2) || (path.charAt(0) != '\\')) || (path.charAt(1) != '\\')));
 	}
 
+	public static String getRelativePath(String base, String path) {
+		String rs = new File(base).toURI().relativize(new File(path).toURI()).getPath(); 
+		return rs;
+	}
+
 	
 	
 }

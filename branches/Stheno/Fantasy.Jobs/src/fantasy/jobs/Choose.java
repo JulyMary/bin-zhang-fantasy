@@ -1,14 +1,17 @@
 ﻿package fantasy.jobs;
 
-import fantasy.xserialization.*;
-import fantasy.jobs.Properties.*;
+import org.jdom2.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("choose", NamespaceUri = Consts.XNamespaceURI)]
+import fantasy.xserialization.*;
+import fantasy.jobs.properties.*;
+import fantasy.*;
+
+@Instruction
+@XSerializable(name = "choose", namespaceUri = Consts.XNamespaceURI)
 public class Choose extends AbstractInstruction
 {
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
 		IJob job = (IJob)this.getSite().getService(Job.class);
 		IConditionService conditionService = (IConditionService)this.getSite().getService(IConditionService.class);
@@ -18,7 +21,7 @@ public class Choose extends AbstractInstruction
 		{
 			for (int i = 0; i < this._cases.size(); i++)
 			{
-				if (!String.IsNullOrWhiteSpace(this._cases.get(i).Condition))
+				if (!StringUtils2.isNullOrWhiteSpace(this._cases.get(i).Condition))
 				{
 					if (conditionService.Evaluate(this._cases.get(i).Condition))
 					{
@@ -29,7 +32,7 @@ public class Choose extends AbstractInstruction
 				}
 				else
 				{
-					throw new JobException(Properties.Resources.getWhenRequireConditionText());
+					throw new JobException(Resources.getWhenRequireConditionText());
 				}
 			}
 
@@ -57,23 +60,18 @@ public class Choose extends AbstractInstruction
 
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Order = 10), XArrayItem(Name = "when", java.lang.Class = typeof(When))]
+	@XArray(order = 10, items=@XArrayItem(name = "when", type = When.class))
 	private java.util.List<When> _cases = new java.util.ArrayList<When>();
 
 
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XElement("otherwise", Order = 20)]
+	@XElement(name = "otherwise", order = 20)
 	public When Otherwise = null;
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning disable 169
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XNamespace]
-	private XmlNamespaceManager _namespaces;
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning restore 169
+
+	@XNamespace
+	private Namespace[] _namespaces;
+
 
 }

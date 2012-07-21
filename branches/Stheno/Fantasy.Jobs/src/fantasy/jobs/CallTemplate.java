@@ -1,8 +1,11 @@
 ﻿package fantasy.jobs;
 
+import java.util.Arrays;
+
 import fantasy.xserialization.*;
 import fantasy.servicemodel.*;
 import fantasy.*;
+
 import org.jdom2.*;
 
 @Instruction
@@ -11,7 +14,7 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 {
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
 		IConditionService conditionSvc = (IConditionService)this.getSite().getService(IConditionService.class);
 		ILogger logger = (ILogger)this.getSite().getService(ILogger.class);
@@ -28,8 +31,9 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 			_job = tempVar;
 			_job.setID(parentJob.getID());
 
+			
 			java.util.ArrayList<Object> services = new java.util.ArrayList<Object>();
-			services.addAll(AddIn.CreateObjects("jobEngine/job.services/service"));
+			services.addAll(Arrays.asList(AddIn.CreateObjects("jobEngine/job.services/service")));
 			services.add(_job);
 
 			childSite.initializeServices(this.getSite(), services.toArray(new Object[]{}));
@@ -73,8 +77,8 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 
 	private void SetOutputParameters()
 	{
-		IItemParser itemParser = (IItemParser)this._job.getSite().getRequiredService(IItemParser.class);
-		IStringParser strParser = (IStringParser)this._job.getSite().getRequiredService(IStringParser.class);
+		IItemParser itemParser = this._job.getSite().getRequiredService2(IItemParser.class);
+		IStringParser strParser = this._job.getSite().getRequiredService2(IStringParser.class);
 		IJob parentJob = (IJob)this.getSite().getRequiredService(IJob.class);
 		TaskItemGroup group = null;
 		for (CallTemplateParameter output : this._outputs)
@@ -95,22 +99,22 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 			}
 			else if (!StringUtils2.isNullOrWhiteSpace(output.PropertyName))
 			{
-				String value = strParser.Parse(output.getValue());
+				String value = strParser.Parse(output.Value);
 				parentJob.SetProperty(output.PropertyName, value);
 			}
 			else
 			{
-				throw new JobException(fantasy.jobs.Properties.Resources.getInvalidOutputText());
+				throw new JobException(fantasy.jobs.properties.Resources.getInvalidOutputText());
 			}
 		}
 	}
 
-	private void AddInputs(JobStartInfo si)
+	private void AddInputs(JobStartInfo si) throws Exception
 	{
-		IItemParser itemParser = this.getSite().<IItemParser>GetRequiredService();
-		IStringParser strParser = this.getSite().<IStringParser>GetRequiredService();
+		IItemParser itemParser = this.getSite().getRequiredService2(IItemParser.class);
+		IStringParser strParser = this.getSite().getRequiredService2(IStringParser.class);
 		TaskItemGroup itemGroup = new TaskItemGroup();
-		IConditionService conditionSvc = this.getSite().<IConditionService>GetRequiredService();
+		IConditionService conditionSvc = this.getSite().getRequiredService2(IConditionService.class);
 		si.getItemGroups().add(itemGroup);
 
 		JobPropertyGroup propGroup = new JobPropertyGroup();
@@ -120,7 +124,7 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 		{
 			if (conditionSvc.Evaluate(input))
 			{
-				if (!String.IsNullOrWhiteSpace(input.ItemCategory))
+				if (!StringUtils2.isNullOrWhiteSpace(input.ItemCategory))
 				{
 					TaskItem[] srcItems = itemParser.ParseItem(input.Include);
 					for (TaskItem srcItem : srcItems)
@@ -129,37 +133,35 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 						srcItem.CopyMetaDataTo(item);
 					}
 				}
-				else if (!String.IsNullOrWhiteSpace(input.PropertyName))
+				else if (!StringUtils2.isNullOrWhiteSpace(input.PropertyName))
 				{
-					String value = strParser.Parse(input.getValue());
+					String value = strParser.Parse(input.Value);
 					JobProperty prop = propGroup.AddNewItem(input.PropertyName);
 					prop.setValue(value);
 				}
 				else
 				{
-					throw new JobException(fantasy.jobs.Properties.Resources.getInvalidCallTemplateInputText());
+					throw new JobException(fantasy.jobs.properties.Resources.getInvalidCallTemplateInputText());
 				}
 			}
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("template")]
+	@XAttribute( name = "template")
 	public String Template = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("target")]
+
+	@XAttribute(name = "target")
 	public String Target = null;
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray, XArrayItem(Name = "input", java.lang.Class = typeof(CallTemplateParameter))]
+	@XArray(items=@XArrayItem(name = "input",type = CallTemplateParameter.class))
 	private java.util.List<CallTemplateParameter> _inputs = new java.util.ArrayList<CallTemplateParameter>();
 
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray, XArrayItem(Name = "output", java.lang.Class = typeof(CallTemplateParameter))]
+
+	@XArray(items=@XArrayItem(name = "output", type = CallTemplateParameter.class))
 	private java.util.List<CallTemplateParameter> _outputs = new java.util.ArrayList<CallTemplateParameter>();
 
 	public final java.util.List<CallTemplateParameter> getOutputs()
@@ -168,52 +170,40 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 	}
 
 	private Job _job = null;
-	private XElement _jobElement = null;
+	private Element _jobElement = null;
 
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String _condition = null;
-	private String getCondition()
+	public String getCondition()
 	{
 		return this._condition;
 	}
-	private void setCondition(String value)
+	public void setCondition(String value)
 	{
 		this._condition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma  warning disable 169
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XNamespace]
-	private XmlNamespaceManager _namespaces;
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning restore 169
+	@XNamespace
+	private Namespace[] _namespaces;
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXSerializable Members
-
-	public final void Load(IServiceProvider context, Element element)
+	@Override
+	public final void Load(IServiceProvider context, Element element) throws Exception
 	{
-		XHelper.Default.LoadByXAttributes(context, element, this);
-		XName name = (XNamespace)Consts.XNamespaceURI + "job";
-		_jobElement = element.Element(name);
+		XHelper.getDefault().LoadByXAttributes(context, element, this);
+		
+		_jobElement = element.getChild("job", Namespace.getNamespace(Consts.XNamespaceURI));
 	}
 
-	public final void Save(IServiceProvider context, XElement element)
+	public final void Save(IServiceProvider context, Element element) throws Exception
 	{
-		XHelper.Default.SaveByXAttributes(context, element, this);
+		XHelper.getDefault().SaveByXAttributes(context, element, this);
 		if (_job != null)
 		{
 			_jobElement = _job.SaveStatus();
 		}
 		if (_jobElement != null)
 		{
-			element.Add(_jobElement);
+			element.addContent(_jobElement);
 		}
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

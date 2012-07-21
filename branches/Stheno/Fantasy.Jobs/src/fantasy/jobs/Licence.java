@@ -2,29 +2,26 @@
 
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("jobservice",NamespaceUri= Consts.LicenceNamespaceURI)]
-public class Licence
+
+@XSerializable(name = "jobservice", namespaceUri= Consts.LicenceNamespaceURI)
+class Licence
 {
+	@XAttribute(name ="expire")
+	public java.util.Date ExpireTime = new java.util.Date(Long.MIN_VALUE);
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("expire")]
-	public java.util.Date ExpireTime = java.util.Date.getMinValue();
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("machine")]
+	@XAttribute(name = "machine")
 	public String MachineCode = "";
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("dev")]
+
+	@XAttribute(name = "dev")
 	public boolean IsDevelopVersion = false;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("slave")]
+
+	@XAttribute(name = "slave")
 	public int SlaveCount = 0;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("key")]
+	@XAttribute(name = "key")
 	public String key = "";
 
 }

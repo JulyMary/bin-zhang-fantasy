@@ -1,12 +1,9 @@
 ﻿package fantasy.jobs;
 
-import Fantasy.IO.*;
+import fantasy.io.*;
 
 public class FileInfoMetaDataProvider implements ITaskItemMetaDataProvider
 {
-
-//C# TO JAVA CONVERTER NOTE: Embedded comments are not maintained by C# to Java Converter
-//ORIGINAL LINE: private static readonly string[] Names = new string[] { "Directory", "Exists", "Extension", "FullName", "FileName", "NameWithoutExtension" /*"CreationTime", "IsReadOnly", "LastAccessTime", "LastWriteTime", "Length", */ };
 	private static final String[] Names = new String[] { "Directory", "Exists", "Extension", "FullName", "FileName", "NameWithoutExtension" };
 
 //C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:

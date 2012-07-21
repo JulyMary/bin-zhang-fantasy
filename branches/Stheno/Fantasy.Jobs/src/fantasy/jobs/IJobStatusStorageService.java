@@ -1,12 +1,12 @@
 ﻿package fantasy.jobs;
 
-import fantasy.servicemodel.*;
+import java.io.*;
 
 public interface IJobStatusStorageService
 {
-	void Save(Stream content);
-	Stream Load();
-	Stream LoadBackup();
+	void Save(InputStream stream );
+	InputStream Load();
+	InputStream LoadBackup();
 
 	boolean getExists();
 }

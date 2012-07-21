@@ -1,36 +1,45 @@
 ﻿package fantasy.jobs;
 
-import fantasy.jobs.Expressions.*;
-import fantasy.jobs.Properties.*;
-import fantasy.servicemodel.*;
+import java.rmi.RemoteException;
 
+import fantasy.jobs.expressions.*;
+import fantasy.jobs.properties.*;
+import fantasy.servicemodel.*;
+import fantasy.*;
 public class ConditionService extends AbstractService implements IConditionService
 {
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IConditionService Members
-	public final boolean Evaluate(String condition)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8396161868800467194L;
+
+	public ConditionService() throws RemoteException {
+		super();
+		
+	}
+
+
+	public final boolean Evaluate(String condition) throws Exception
 	{
-		if (String.IsNullOrWhiteSpace(condition))
+		if (StringUtils2.isNullOrWhiteSpace(condition))
 		{
 			throw new IllegalArgumentException("condition");
 		}
 
-		IStringParser parser = this.Site.<IStringParser>GetRequiredService();
+		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
 		String parsed = condition;
-		ILogger logger = (ILogger)this.Site.GetService(ILogger.class);
+		ILogger logger = this.getSite().getService2(ILogger.class);
 		java.util.HashMap<String, Object> ctx = new java.util.HashMap<String, Object>();
 		ctx.put("c#-style-string", true);
 		parsed = parser.Parse(parsed, ctx);
 
-		if (!String.IsNullOrWhiteSpace(parsed))
+		if (!StringUtils2.isNullOrWhiteSpace(parsed))
 		{
 			Expression expr = new Expression(parsed);
 
 			if (expr.getSuccess())
 			{
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-				expr.InvokeFunction += new EventHandler<InvokeFunctionEventArgs>(ExpressionInvokeFunction);
 
 				Object rs = expr.Eval();
 				if (rs instanceof Boolean)
@@ -43,12 +52,12 @@ public class ConditionService extends AbstractService implements IConditionServi
 				}
 				else
 				{
-					throw new InvalidConditionException(String.format(Properties.Resources.getConditionNotBoolText(), condition, parsed));
+					throw new InvalidConditionException(String.format(Resources.getConditionNotBoolText(), condition, parsed));
 				}
 			}
 			else
 			{
-				throw new InvalidConditionException(String.format(Properties.Resources.getParseConditionFailedText(), condition, parsed));
+				throw new InvalidConditionException(String.format(Resources.getParseConditionFailedText(), condition, parsed));
 			}
 
 
@@ -61,14 +70,14 @@ public class ConditionService extends AbstractService implements IConditionServi
 
 
 
-	public final boolean Evaluate(IConditionalObject obj)
+	public final boolean Evaluate(IConditionalObject obj) throws Exception
 	{
 		if (obj == null)
 		{
-			throw new ArgumentNullException("obj");
+			throw new IllegalArgumentException("obj");
 		}
 
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(obj.getCondition()))
+		if (!StringUtils2.isNullOrEmpty(obj.getCondition()))
 		{
 			return this.Evaluate(obj.getCondition());
 		}
@@ -79,30 +88,5 @@ public class ConditionService extends AbstractService implements IConditionServi
 
 	}
 
-	private void ExpressionInvokeFunction(Object sender, InvokeFunctionEventArgs e)
-	{
-		BindingFlags flags = BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.Public | BindingFlags.IgnoreCase;
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from method in e.getType().getMethods(flags) where StringComparer.OrdinalIgnoreCase.Compare(method.getName(), e.getFunctionName()) == 0 select method;
-		if (query.Any())
-		{
-			try
-			{
-				Object o = Activator.CreateInstance(e.getType());
-				if (o instanceof IObjectWithSite)
-				{
-					((IObjectWithSite)o).Site = this.Site;
-				}
-				e.setResult(e.getType().InvokeMember(e.getFunctionName(), flags, null, o, e.getArguments()));
-				e.setHandled(true);
-			}
-			catch (NoSuchMethodError e)
-			{
-			}
-		}
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+	
 }

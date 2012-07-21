@@ -1,9 +1,13 @@
 ﻿package fantasy.jobs;
 
+import java.util.*;
+
 import fantasy.xserialization.*;
+import fantasy.*;
+import org.jdom2.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("taskitem", NamespaceUri = Consts.XNamespaceURI)]
+@XSerializable(name = "taskitem", namespaceUri = Consts.XNamespaceURI)
 public class CreateItemsItem implements IConditionalObject, IXSerializable
 {
 	private String privateName;
@@ -36,36 +40,36 @@ public class CreateItemsItem implements IConditionalObject, IXSerializable
 		privateCondition = value;
 	}
 
-	private NameValueCollection _metaData = new NameValueCollection(StringComparer.OrdinalIgnoreCase);
-	public final NameValueCollection getMetaData()
+	private TreeMap<String, String> _metaData = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
+	public final TreeMap<String, String> getMetaData()
 	{
 		return _metaData;
 	}
 
 
-	public final void Load(IServiceProvider context, XElement element)
+	public final void Load(IServiceProvider context, Element element)
 	{
-		this.setName((String)element.Attribute("name"));
-		this.setCondition((String)element.Attribute("condition"));
-		this.setCategory(element.getName().LocalName);
-		for (XElement child : element.Elements())
+		this.setName((String)element.getAttributeValue("name"));
+		this.setCondition((String)element.getAttributeValue("condition"));
+		this.setCategory(element.getName());
+		for (Element child : element.getChildren())
 		{
-			this._metaData[child.getName().LocalName] = child.getValue();
+			this._metaData.put(child.getName() ,child.getValue());
 		}
 	}
 
-	public final void Save(IServiceProvider context, XElement element)
+	public final void Save(IServiceProvider context, Element element)
 	{
-		element.SetAttributeValue("name", this.getName());
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.getCondition()))
+		element.setAttribute("name", this.getName());
+		if (!StringUtils2.isNullOrEmpty(this.getCondition()))
 		{
-			element.SetAttributeValue("condition", this.getCondition());
+			element.setAttribute("condition", this.getCondition());
 		}
-		for (String key : this._metaData.AllKeys)
+		for (String key : this._metaData.keySet())
 		{
-			XElement child = new XElement(element.getName().Namespace + key, this._metaData[key]);
+			Element child = new Element(key, element.getNamespace()).addContent(this._metaData.get(key));
 
-			element.Add(child);
+			element.addContent(child);
 		}
 	}
 

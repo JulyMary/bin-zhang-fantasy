@@ -1,6 +1,7 @@
 ﻿package fantasy.jobs;
 
 import fantasy.xserialization.*;
+import fantasy.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 //[XSerializable("status", NamespaceUri=Consts.XNamespaceURI)]

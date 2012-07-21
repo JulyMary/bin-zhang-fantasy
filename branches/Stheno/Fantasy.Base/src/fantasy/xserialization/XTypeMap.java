@@ -251,32 +251,42 @@ public class XTypeMap
 
 	public final void LoadByXAttributes(IServiceProvider context, Element element, Object instance) throws Exception
 	{
-		this.LoadNamespace(element, instance);
-		this.LoadAttributes(element, instance);
+		this.LoadNamespace(context, element, instance);
+		this.LoadAttributes(context, element, instance);
 		this.LoadChildElements(context, element, instance);
 		this.LoadArrays(context, element, instance);
-		this.LoadValue(element, instance);
+		this.LoadValue(context, element, instance);
 	}
 
-	private void LoadNamespace(Element element, Object instance) throws Exception
+	private void LoadNamespace(IServiceProvider context,Element element, Object instance) throws Exception
 	{
 		if (this._namespaceMap != null)
 		{
-			List<Namespace> mngr = element.getNamespacesInScope();
+			IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+
+			if(filter == null || filter.filter(this._namespaceMap.getMember()) )
+			{
+
+				List<Namespace> mngr = element.getNamespacesInScope();
 
 
-			this.SetValue(this._namespaceMap.getMember(), instance, mngr);
+				this.SetValue(this._namespaceMap.getMember(), instance, mngr.toArray(new Namespace[0]));
+			}
 		}
 	}
 
-	private void LoadValue(Element element, Object instance) throws Exception
+	private void LoadValue(IServiceProvider context,Element element, Object instance) throws Exception
 	{
 		if (this._valueMap != null && ! element.getValue().equals(""))
 		{
+			IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
 
-			java.lang.Class t = this._valueMap.getMember().getType();
-			Object value = this._valueMap.getConverter().convertTo(element.getValue(), t);
-			this.SetValue(this._valueMap.getMember(), instance, value);
+			if(filter == null || filter.filter(this._valueMap.getMember()) )
+			{
+				java.lang.Class t = this._valueMap.getMember().getType();
+				Object value = this._valueMap.getConverter().convertTo(element.getValue(), t);
+				this.SetValue(this._valueMap.getMember(), instance, value);
+			}
 		}
 	}
 
@@ -297,11 +307,18 @@ public class XTypeMap
 	private void LoadArrays(IServiceProvider context, Element element, Object instance) throws Exception
 	{
 
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+
 
 		Enumerable<XArrayMap> maps = new Enumerable<XMemberMap>(this.getElementMaps()).ofType(XArrayMap.class);
 
 		for (XArrayMap map : maps)
 		{
+			if(filter != null && ! filter.filter(map.getMember()) )
+			{
+				continue;
+			}
+
 			Element collectionElement = null;
 
 			if (!StringUtils2.isNullOrEmpty(map.getArray().name()))
@@ -325,7 +342,7 @@ public class XTypeMap
 				if (list!= null || collectionType.isArray())
 				{
 					java.util.ArrayList tempList = new java.util.ArrayList();
-					if (map.getArray().serializer() != null)
+					if (map.getArray().serializer() != Dummy.class)
 					{
 						IXCollectionSerializer ser = (IXCollectionSerializer)map.getArray().serializer().newInstance();
 						for (Object o : ser.Load(context, collectionElement))
@@ -388,19 +405,25 @@ public class XTypeMap
 
 	private void LoadChildElements(IServiceProvider context, Element element, Object instance) throws Exception
 	{
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+
+
 		Enumerable<XElementMap> maps = new Enumerable<XMemberMap>(this.getElementMaps()).ofType(XElementMap.class);
 		for (XElementMap map : maps)
 		{
 
-			Namespace ns = !StringUtils2.isNullOrEmpty(map.getElement().namespaceUri()) ? Namespace.getNamespace(map.getElement().namespaceUri()) : element.getNamespace();
-
-			Element childElement = element.getChild(map.getElement().name(), ns);
-			if (childElement != null)
+			if(filter == null || filter.filter(map.getMember()) )
 			{
-				Object value;
-				java.lang.Class t = map.getMember().getType();
-				value = this.ValueFromElement(context, childElement, t, map.getConverter());
-				this.SetValue(map.getMember(), instance, value);
+				Namespace ns = !StringUtils2.isNullOrEmpty(map.getElement().namespaceUri()) ? Namespace.getNamespace(map.getElement().namespaceUri()) : element.getNamespace();
+
+				Element childElement = element.getChild(map.getElement().name(), ns);
+				if (childElement != null)
+				{
+					Object value;
+					java.lang.Class t = map.getMember().getType();
+					value = this.ValueFromElement(context, childElement, t, map.getConverter());
+					this.SetValue(map.getMember(), instance, value);
+				}
 			}
 		}
 	}
@@ -427,45 +450,79 @@ public class XTypeMap
 		return value;
 	}
 
-	private void LoadAttributes(Element element, Object instance) throws Exception
+	private void LoadAttributes(IServiceProvider context,Element element, Object instance) throws Exception
 	{
+
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+
+
+
 		for (XAttributeMap map : this.getAttributeMaps())
 		{
-			String tempVar = map.getAttribute().namespaceUri();
-			Namespace ns = Namespace.getNamespace((tempVar != null) ? tempVar : "");
-			Attribute node = element.getAttribute(map.getAttribute().name(), ns);
-			if (node != null)
+			if(filter == null || filter.filter(map.getMember()) )
 			{
-				ITypeConverter cvt = map.getConverter();
-				java.lang.Class t = map.getMember().getType();
-				Object value = cvt.convertTo(node.getValue(), t);
-				this.SetValue(map.getMember(), instance, value);
+				String tempVar = map.getAttribute().namespaceUri();
+				Namespace ns = Namespace.getNamespace((tempVar != null) ? tempVar : "");
+				Attribute node = element.getAttribute(map.getAttribute().name(), ns);
+				if (node != null)
+				{
+					ITypeConverter cvt = map.getConverter();
+					java.lang.Class t = map.getMember().getType();
+					Object value = cvt.convertTo(node.getValue(), t);
+					this.SetValue(map.getMember(), instance, value);
+				}
 			}
 		}
 	}
 
 	public final void SaveByXAttributes(IServiceProvider context, Element element, Object instance) throws Exception
 	{
-		this.SaveNamespace(element, instance);
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+
+		if(this._namespaceMap != null)
+		{
+			if(filter == null || filter.filter(_namespaceMap.getMember()))
+			{
+				this.SaveNamespace(element, instance);
+			}
+		}
 
 		for (XAttributeMap attrMap : this._attributeMaps)
 		{
-			this.SaveAttribute(element, attrMap, instance);
+
+			if(filter == null || filter.filter(attrMap.getMember()))
+			{
+				this.SaveAttribute(element, attrMap, instance);
+			}
+
+
 		}
 
 
 		for (XMemberMap memberMap : this._elementMaps)
 		{
-			if (memberMap instanceof XElementMap)
+
+			if(filter == null || filter.filter(memberMap.getMember()))
 			{
-				this.SaveElement(context, element, (XElementMap)memberMap, instance);
-			}
-			else
-			{
-				this.SaveArray(context, element, (XArrayMap)memberMap, instance);
+
+				if (memberMap instanceof XElementMap)
+				{
+					this.SaveElement(context, element, (XElementMap)memberMap, instance);
+				}
+				else
+				{
+					this.SaveArray(context, element, (XArrayMap)memberMap, instance);
+				}
 			}
 		}
-		this.SaveValue(element, instance);
+
+		if(this._valueMap != null )
+		{
+			if(filter == null || filter.filter(_valueMap.getMember()))
+			{
+				this.SaveValue(element, instance);
+			}
+		}
 
 	}
 
@@ -511,7 +568,21 @@ public class XTypeMap
 	{
 
 		Object tempVar = this.GetValue(arrMap.getMember(), instance);
-		Iterable collection = (Iterable)((tempVar instanceof Iterable) ? tempVar : null);
+		
+		if(tempVar == null)
+		{
+			return;
+		}
+		
+		Iterable collection = null;
+		if (tempVar instanceof Iterable)
+		{
+			collection = (Iterable)tempVar;
+		}
+		else if(tempVar.getClass().isArray())
+		{
+			collection = Arrays.asList(tempVar);
+		}
 		if (collection != null)
 		{
 			Element collectionElement;
@@ -524,7 +595,7 @@ public class XTypeMap
 				collectionElement = element;
 			}
 
-			if (arrMap.getArray().serializer() != null)
+			if (arrMap.getArray().serializer() != Dummy.class)
 			{
 				IXCollectionSerializer serializer = (IXCollectionSerializer)arrMap.getArray().serializer().newInstance();
 				serializer.Save(context, collectionElement, collection);
