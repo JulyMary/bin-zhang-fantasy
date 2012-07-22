@@ -73,7 +73,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 	
 	}
 	
-	public final void onMessage(String category, MessageImportance importance, String message) throws Exception
+	public  void onMessage(String category, MessageImportance importance, String message) throws Exception
 	{
 		Element element = new Element("message");
 		element.setAttribute("time", now());
@@ -94,7 +94,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 		this.log(element);
 	}
 
-	public final void onWaring(String category, Throwable exception, MessageImportance importance, String message) throws Exception
+	public void onWaring(String category, Throwable exception, MessageImportance importance, String message) throws Exception
 	{
 		Element element = new Element("warning");
 		element.setAttribute("time", now());
@@ -109,7 +109,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 		this.log(element);
 	}
 
-	private Element CreateExceptionElement(Throwable exception) throws Exception
+	protected Element CreateExceptionElement(Throwable exception) throws Exception
 	{
 		Element element = new Element("exception");
 		element.setAttribute("type", exception.getClass().toString());
@@ -146,7 +146,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 		return element;
 	}
 
-	public final void OnError(String category, Throwable exception, String message) throws Exception
+	public void OnError(String category, Throwable exception, String message) throws Exception
 	{
 		Element element = new Element("error");
 		element.setAttribute("time", now());
