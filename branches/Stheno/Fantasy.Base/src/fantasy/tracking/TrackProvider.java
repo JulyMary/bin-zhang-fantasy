@@ -108,7 +108,7 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 					public void run() {
 						
                         try {
-							TrackProvider.this._remoteTrack.setItem(e.getName(), e.getNewValue());
+							TrackProvider.this._remoteTrack.setProperty(e.getName(), e.getNewValue());
 						} catch (RemoteException e) {
 							
 							e.printStackTrace();
@@ -169,6 +169,14 @@ class TrackProvider extends TrackBase implements ITrackProvider, IRefreshable
 			
 		}
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getProperty(String name, T defaultValue) {
+		Object rs = this.getProperty(name);
+		
+		return rs != null ? (T)rs : defaultValue;
 	}
 
 }

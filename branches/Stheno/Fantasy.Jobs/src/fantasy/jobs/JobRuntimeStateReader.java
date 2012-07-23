@@ -1,18 +1,17 @@
 ﻿package fantasy.jobs;
 
+import fantasy.collections.*;
 import fantasy.xserialization.*;
+import fantasy.*;
 
 public class JobRuntimeStateReader extends ObjectWithSite implements ITagValueProvider
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITagValueProvider Members
-
 	public final char getPrefix()
 	{
 		return '#';
 	}
 
-	public final String GetTagValue(String tag, java.util.Map<String, Object> context)
+	public final String GetTagValue(String tag, java.util.Map<String, Object> context) throws Exception
 	{
 		String rs = null;
 		RefObject<String> tempRef_rs = new RefObject<String>(rs);
@@ -22,19 +21,19 @@ public class JobRuntimeStateReader extends ObjectWithSite implements ITagValuePr
 	}
 
 
-	private boolean TryGetValue(String name, java.util.Map<String, Object> context, RefObject<String> value)
+	private boolean TryGetValue(String name, java.util.Map<String, Object> context, RefObject<String> value) throws Exception
 	{
 		boolean rs = false;
 		value.argvalue = null;
-		if (this.Site != null)
+		if (this.getSite() != null)
 		{
 
-			String[] names = name.split(new char[] { '.' }, 2);
+			String[] names = name.split("\\.", 2);
 			name = names[0];
 
 			String meta = names.length > 1 ? names[1] : null;
 
-			IJob job = (Job)this.getSite().GetService(IJob.class);
+			IJob job = (Job)this.getSite().getService(IJob.class);
 
 			Object o = null;
 
@@ -59,8 +58,8 @@ public class JobRuntimeStateReader extends ObjectWithSite implements ITagValuePr
 				}
 				else if(o != null)
 				{
-					TypeConverter cvt = XHelper.Default.CreateXConverter(o.getClass());
-					value.argvalue = cvt.ConvertToString(o);
+					ITypeConverter cvt = XHelper.getDefault().CreateXConverter(o.getClass());
+					value.argvalue = (String)cvt.convertFrom(o);
 				}
 			}
 
@@ -70,7 +69,7 @@ public class JobRuntimeStateReader extends ObjectWithSite implements ITagValuePr
 		return rs;
 	}
 
-	public final boolean HasTag(String tag, java.util.Map<String, Object> context)
+	public final boolean HasTag(String tag, java.util.Map<String, Object> context) throws Exception
 	{
 
 		String value = null;
@@ -81,18 +80,11 @@ public class JobRuntimeStateReader extends ObjectWithSite implements ITagValuePr
 
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITagValueProvider Members
 
 
-	public final boolean IsEnabled(java.util.Map<String, Object> context)
+	public final boolean IsEnabled(java.util.Map<String, Object> context) throws Exception
 	{
-		return (boolean)context.GetValueOrDefault("EnableTaskItemReader", true) && this.Site != null && this.Site.GetService(IJob.class) != null;
+		return MapUtils.getValueOrDefault(context, "EnableTaskItemReader", true) && this.getSite() != null && this.getSite().getService(IJob.class) != null;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

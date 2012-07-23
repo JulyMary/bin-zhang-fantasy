@@ -6,7 +6,7 @@ public interface ITrackProviderService extends Remote
 {
 	
 
-	void setItem(String name, Object value) throws RemoteException;
+	void setProperty(String name, Object value) throws RemoteException;
 
 	boolean echo() throws RemoteException;
 }

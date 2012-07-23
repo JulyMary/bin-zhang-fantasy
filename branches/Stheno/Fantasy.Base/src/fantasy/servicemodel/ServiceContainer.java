@@ -15,12 +15,12 @@ public class ServiceContainer implements IServiceProvider
 	private boolean _initialized = false;
 	private java.util.ArrayList<Object> _list = new java.util.ArrayList<Object>();
 
-	public final void initializeServices(Object[] services)
+	public final void initializeServices(Object[] services) throws Exception
 	{
 		this.initializeServices(null, services);
 	}
 
-	public void initializeServices(IServiceProvider parentProvider, Object[] services)
+	public void initializeServices(IServiceProvider parentProvider, Object[] services) throws Exception
 	{
 		this._parentProvider = parentProvider;
 
@@ -30,7 +30,7 @@ public class ServiceContainer implements IServiceProvider
 		    this._list.add(s1);
 		}
 
-		ILogger logger = (ILogger)this.getService(ILogger.class);
+		ILogger logger = (ILogger)this.getService2(ILogger.class);
 
 
 		for (Object o : this._list)
@@ -45,7 +45,7 @@ public class ServiceContainer implements IServiceProvider
 				{
 					((IService)o).initializeService();
 				}
-				catch(Throwable error)
+				catch(Exception error)
 				{
 					Log.SafeLogError(logger, "Services", error, "Service {0} failed to initialize.", o.getClass().getName());
 					throw error;
@@ -60,7 +60,7 @@ public class ServiceContainer implements IServiceProvider
 		this._initialized = true;
 	}
 
-	public void AddService(Object service)
+	public void AddService(Object service) throws Exception
 	{
 		if (service == null)
 		{
@@ -81,7 +81,7 @@ public class ServiceContainer implements IServiceProvider
 
 	}
 
-	public void removeService(Object service)
+	public void removeService(Object service) throws Exception
 	{
 		int index = this._list.indexOf(service);
 		if (index >= 0)
@@ -96,9 +96,9 @@ public class ServiceContainer implements IServiceProvider
 
 	}
 
-	public void uninitializeServices()
+	public void uninitializeServices() throws Exception
 	{
-		ILogger logger = (ILogger)this.getService(ILogger.class);
+		ILogger logger = (ILogger)this.getService2(ILogger.class);
 		for (int i = this._list.size() - 1; i >= 0; i--)
 		{
 			Object o = this._list.get(i);
@@ -117,7 +117,7 @@ public class ServiceContainer implements IServiceProvider
 	
 
 
-	public Object getService(java.lang.Class serviceType)
+	public Object getService2(java.lang.Class serviceType) throws Exception
 	{
 		if (serviceType == null)
 		{
@@ -133,15 +133,15 @@ public class ServiceContainer implements IServiceProvider
 
 		if (this._parentProvider != null)
 		{
-			return this._parentProvider.getService(serviceType);
+			return this._parentProvider.getService2(serviceType);
 		}
 
 		return null;
 	}
 
 	@Override
-	public Object getRequiredService(Class serviceType) {
-		Object rs = this.getRequiredService(serviceType);
+	public Object getRequiredService2(Class serviceType) {
+		Object rs = this.getRequiredService2(serviceType);
 		if(rs == null)
 		{
 			throw new MissingRequiredServiceException(serviceType);
@@ -151,15 +151,15 @@ public class ServiceContainer implements IServiceProvider
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getService2(Class<T> serviceType) {
-		return (T)this.getService(serviceType);
+	public <T> T getService(Class<T> serviceType) throws Exception {
+		return (T)this.getService2(serviceType);
 		
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T getRequiredService2(Class<T> serviceType) {
-		return (T)this.getRequiredService(serviceType);
+	public <T> T getRequiredService(Class<T> serviceType) {
+		return (T)this.getRequiredService2(serviceType);
 	}
 
 

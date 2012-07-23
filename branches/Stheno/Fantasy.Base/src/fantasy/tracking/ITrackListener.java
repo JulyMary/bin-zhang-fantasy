@@ -9,7 +9,9 @@ public interface ITrackListener extends  IDisposable
 	String getName();
 	String getCategory();
 
-	Object getItem(String name);
+	Object getProperty(String name);
+	
+	<T> T getProperty(String name, T defaultValue);
 
 	String[] getPropertyNames();
 	

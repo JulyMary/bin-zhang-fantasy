@@ -37,7 +37,21 @@ public final class SettingStorage
     {
     	if(_appSettingsRoot == null)
     	{
-    		_appSettingsRoot = JDomUtils.loadElement(_appSettingsLocation);
+    		if(_appSettingsLocation == null)
+    		{
+    			_appSettingsLocation = JavaLibraryUtils.getEntryLibrary().getAbsolutePath() + ".xsettings";
+    		}
+    		
+    		File f = new File(_appSettingsLocation);
+    		
+    		if(f.exists())
+    		{
+    		    _appSettingsRoot = JDomUtils.loadElement(_appSettingsLocation);
+    		}
+    		else
+    		{
+    			_appSettingsRoot = new Element("settingsFile", _namespace);
+    		}
     		
     		
     	}

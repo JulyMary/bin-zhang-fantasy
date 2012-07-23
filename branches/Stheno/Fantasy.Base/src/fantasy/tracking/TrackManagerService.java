@@ -33,9 +33,11 @@ public class TrackManagerService extends UnicastRemoteObject implements ITrackMa
 
 	public final TrackMetaData[] getActiveTrackMetaData()
 	{
-		TrackMetaData[] rs;
+		TrackMetaData[] rs = new TrackMetaData[0];
 		synchronized(_trackSyncRoot)
 		{
+			try
+			{
 			rs = new Enumerable<WeakReference<RemoteTrack>>(_remoteTracks.values()).where(new Predicate<WeakReference<RemoteTrack>>(){
 
 				@Override
@@ -52,6 +54,11 @@ public class TrackManagerService extends UnicastRemoteObject implements ITrackMa
 						rs.setCategory(t.getCategory());
 						return rs;
 					}}).toArrayList().toArray(new TrackMetaData[0]);
+			}
+			catch(Exception error)
+			{
+				
+			}
 		}
 		return rs;
 	}
@@ -162,7 +169,7 @@ public class TrackManagerService extends UnicastRemoteObject implements ITrackMa
 			
 			for(Entry<String, Object> entry : properties.entrySet())
 			{
-				rs.setItem(entry.getKey(), entry.getValue());
+				rs.setProperty(entry.getKey(), entry.getValue());
 			}
 		}
 		

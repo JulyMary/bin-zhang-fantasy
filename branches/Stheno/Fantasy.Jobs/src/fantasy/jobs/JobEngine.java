@@ -3,13 +3,13 @@
 import fantasy.*;
 import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
-import fantasy.jobs.Resources.*;
+import fantasy.jobs.resources.*;
 import fantasy.jobs.management.IJobManager;
 import fantasy.servicemodel.*;
 
 public class JobEngine extends MarshalByRefObject implements IJobEngine
 {
-	public JobEngine(Guid id)
+	public JobEngine(UUID id)
 	{
 		_currentEngine = this;
 		this.setJobId(id);
@@ -377,12 +377,12 @@ public class JobEngine extends MarshalByRefObject implements IJobEngine
 		return _serviceContainer.GetService(serviceType);
 	}
 
-	private Guid privateJobId = new Guid();
-	public final Guid getJobId()
+	private UUID privateJobId = new UUID();
+	public final UUID getJobId()
 	{
 		return privateJobId;
 	}
-	private void setJobId(Guid value)
+	private void setJobId(UUID value)
 	{
 		privateJobId = value;
 	}

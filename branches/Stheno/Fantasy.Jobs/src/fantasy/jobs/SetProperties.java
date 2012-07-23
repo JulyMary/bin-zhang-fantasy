@@ -3,24 +3,25 @@
 import fantasy.xserialization.*;
 import fantasy.servicemodel.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("properties", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "properties", namespaceUri = Consts.XNamespaceURI)
 public class SetProperties extends AbstractInstruction implements IConditionalObject
 {
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Serializer = typeof(JobPropertiesSerializer))]
+	@XArray(serializer = JobPropertiesSerializer.class, items={})
 	private java.util.ArrayList<JobProperty> _list = new java.util.ArrayList<JobProperty>();
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
-		ILogger logger = this.getSite().<ILogger>GetService();
-		IJob job = this.getSite().<IJob>GetRequiredService();
-		IConditionService conditionSvc = this.getSite().<IConditionService>GetRequiredService();
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
+		ILogger logger = this.getSite().getService(ILogger.class);
+		IJob job = this.getSite().getRequiredService(IJob.class);
+		IConditionService conditionSvc = this.getSite().getRequiredService(IConditionService.class);
 		if (conditionSvc.Evaluate(this))
 		{
+			
 			int index = job.getRuntimeStatus().getLocal().GetValue("setproperties.index", 0);
 			while (index < _list.size())
 			{
@@ -31,11 +32,12 @@ public class SetProperties extends AbstractInstruction implements IConditionalOb
 					job.SetProperty(prop.getName(), value);
 					if (logger != null)
 					{
-						logger.LogMessage("property", MessageImportance.Low, "set property {0} as {1}", prop.getName(), value);
+						logger.LogMessage("property", MessageImportance.Low, "set property %1$s as %2$s", prop.getName(), value);
 					}
 				}
 				index++;
 				job.getRuntimeStatus().getLocal().setItem("setproperties.index", index);
+				
 
 			}
 		}
@@ -43,13 +45,13 @@ public class SetProperties extends AbstractInstruction implements IConditionalOb
 	}
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String _condition = null;
-	private String getCondition()
+	public String getCondition()
 	{
 		return this._condition;
 	}
-	private void setCondition(String value)
+	public void setCondition(String value)
 	{
 		this._condition = value;
 	}

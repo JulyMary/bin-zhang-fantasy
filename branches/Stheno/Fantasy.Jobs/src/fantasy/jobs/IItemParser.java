@@ -2,7 +2,7 @@
 
 public interface IItemParser
 {
-	TaskItem[] GetItemByCategory(String category);
-	TaskItem[] GetItemByNames(String names);
-	TaskItem[] ParseItem(String text);
+	TaskItem[] GetItemByCategory(String category) throws Exception;
+	TaskItem[] GetItemByNames(String names) throws Exception;
+	TaskItem[] ParseItem(String text) throws Exception;
 }

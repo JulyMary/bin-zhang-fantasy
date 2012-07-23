@@ -1,12 +1,13 @@
 package fantasy;
 
+@SuppressWarnings("rawtypes")
 public interface IServiceProvider {
-    public Object getService(@SuppressWarnings("rawtypes") Class serviceType);
+    public Object getService2( Class serviceType) throws Exception;
     
-    public <T> T getService2(Class<T> serviceType);
+    public <T> T getService(Class<T> serviceType) throws Exception;
    
-    public Object getRequiredService(@SuppressWarnings("rawtypes") Class serviceType);
+    public Object getRequiredService2(Class serviceType) throws Exception;
     
-    public <T> T getRequiredService2(Class<T> serviceType);
+    public <T> T getRequiredService(Class<T> serviceType) throws Exception;
   
 }

@@ -8,8 +8,9 @@ public interface ITrackProvider extends IDisposable
 	String getName();
 	String getCategory();
 
-	Object getItem(String name);
-	void setItem(String name, Object value);
+	Object getProperty(String name);
+	<T> T getProperty(String name, T defaultValue);
+	void setProperty(String name, Object value);
 
 	String[] getPropertyNames();
 

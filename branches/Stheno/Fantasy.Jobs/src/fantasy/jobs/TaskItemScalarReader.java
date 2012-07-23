@@ -1,40 +1,53 @@
 ﻿package fantasy.jobs;
 
-import fantasy.jobs.Properties.*;
+import fantasy.collections.*;
+
+import fantasy.*;
 
 public class TaskItemScalarReader extends ObjectWithSite implements ITagValueProvider
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITagValueProvider Members
 
 	public final char getPrefix()
 	{
 		return '%';
 	}
 
-	public final String GetTagValue(String tag, java.util.Map<String, Object> context)
+	public final String GetTagValue(String tag, java.util.Map<String, Object> context) throws Exception
 	{
-		String[] expr = tag.split(new char[] { '.' }, 2, StringSplitOptions.RemoveEmptyEntries);
+		final String[] expr = tag.split("\\.", 2);
 
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IJob job = (IJob)this.getSite().getRequiredService(IJob.class);
 
 		TaskItem[] items = job.GetEvaluatedItemsByCatetory(expr[0]);
 
-		Iterable<String> values;
-		if (expr.length > 1)
+		Enumerable<String> values;
+		if(expr.length > 1)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			values = items.Select(x => x[expr[1]]);
+			values = new Enumerable<TaskItem>(items).select(new Selector<TaskItem, String>(){
+
+				@Override
+				public String select(TaskItem item) {
+					return item.getItem(expr[1]);
+				}});
 		}
 		else
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			values = items.Select(x => x.getName());
+			
+			values = new Enumerable<TaskItem>(items).select(new Selector<TaskItem, String>(){
+
+				@Override
+				public String select(TaskItem item) {
+					return item.getName();
+				}});
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		String rs = values.Where(x => !DotNetToJavaStringHelper.isNullOrEmpty(x)).FirstOrDefault();
+
+		String rs = values.firstOrDefault(new Predicate<String>(){
+
+			@Override
+			public boolean evaluate(String s) throws Exception {
+				return !StringUtils2.isNullOrEmpty(s);
+			}});
 		return (rs != null) ? rs : "";
 
 	}
@@ -44,11 +57,10 @@ public class TaskItemScalarReader extends ObjectWithSite implements ITagValuePro
 		return true;
 	}
 
-	public final boolean IsEnabled(java.util.Map<String, Object> context)
+	public final boolean IsEnabled(java.util.Map<String, Object> context) throws Exception
 	{
-		return (boolean)context.GetValueOrDefault("EnableTaskItemReader", true) && this.Site != null && this.Site.GetService(IJob.class) != null;
+		return MapUtils.getValueOrDefault(context, "EnableTaskItemReader", true) && this.getSite() != null && this.getSite().getService(IJob.class) != null;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
 }

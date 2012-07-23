@@ -13,8 +13,8 @@ public class Foreach extends Sequence
 	@Override
 	public void Execute() throws Exception
 	{
-		IJob job = this.getSite().getRequiredService2(IJob.class);
-		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
+		IJob job = this.getSite().getRequiredService(IJob.class);
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 		java.util.HashMap<String, Object> context = new java.util.HashMap<String, Object>();
 		context.put("EnableTaskItemReader", false);
 		String s = parser.Parse(this.In, context);

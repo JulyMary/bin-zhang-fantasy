@@ -18,10 +18,10 @@ public class CreateItems extends AbstractInstruction implements IConditionalObje
 	@Override
 	public void Execute() throws Exception
 	{
-		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
-		IItemParser itemParser = this.getSite().getRequiredService2(IItemParser.class);
-		IJob job = this.getSite().getRequiredService2(IJob.class);
-		IConditionService conditionSvc = this.getSite().getRequiredService2(IConditionService.class);
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
+		IItemParser itemParser = this.getSite().getRequiredService(IItemParser.class);
+		IJob job = this.getSite().getRequiredService(IJob.class);
+		IConditionService conditionSvc = this.getSite().getRequiredService(IConditionService.class);
 		if (conditionSvc.Evaluate(this))
 		{
 			int index = job.getRuntimeStatus().getLocal().GetValue("createitems.index", 0);

@@ -3,12 +3,11 @@
 import fantasy.xserialization.*;
 import fantasy.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("status", NamespaceUri=Consts.XNamespaceURI)]
+@XSerializable(name = "status", namespaceUri=Consts.XNamespaceURI)
 public class RuntimeStatus
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Name="stack"), XArrayItem(Name = "stack.frame", java.lang.Class = typeof(StateBag))]
+
+	@XArray(name="stack", items=@XArrayItem(name = "stack.frame", type = StateBag.class))
 	private java.util.ArrayList<StateBag> _stack = new java.util.ArrayList<StateBag>();
 
 
@@ -25,7 +24,7 @@ public class RuntimeStatus
 	{
 		if (this._stack.size() > 0)
 		{
-			this._stack.removeRange(_position, this._stack.size() - _position + _position);
+			this._stack.subList(_position, this._stack.size()).clear();
 			_position--;
 		}
 	}
@@ -42,8 +41,8 @@ public class RuntimeStatus
 		return _position < this._stack.size() ? this._stack.get(this._position) : null;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XElement("heap")]
+
+	@XElement(name = "heap")
 	private StateBag _global = new StateBag();
 	public final StateBag getGlobal()
 	{

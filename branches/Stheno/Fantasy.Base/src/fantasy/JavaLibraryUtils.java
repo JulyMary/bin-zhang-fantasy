@@ -11,14 +11,14 @@ import org.apache.commons.io.filefilter.SuffixFileFilter;
 import fantasy.io.Path;
 
 @SuppressWarnings("rawtypes") 
-public final class JarUtils {
+public final class JavaLibraryUtils {
 
-	private JarUtils()
+	private JavaLibraryUtils()
 	{
 		
 	}
 	
-	public static File getJar(Class type)
+	public static File getLibrary(Class type)
 	{
 		return new File(type.getProtectionDomain().getCodeSource().getLocation().getPath()); 
 	}
@@ -92,6 +92,18 @@ public final class JarUtils {
 			loadClassesByDirectory(childDirectory, childPackage, list);
 		}
 	}
+	
+	
+	public static File getEntryLibrary() {
+		return _entryLibrary;
+	}
+
+	public static void setEntryLibrary(File _entryLibrary) {
+		JavaLibraryUtils._entryLibrary = _entryLibrary;
+	}
+
+
+	private static File _entryLibrary;
 	
 
 }

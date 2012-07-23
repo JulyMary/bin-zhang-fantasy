@@ -19,9 +19,9 @@ public class ItemParseService extends AbstractService implements IItemParser
 		
 	}
 
-	public final TaskItem[] GetItemByNames(String names)
+	public final TaskItem[] GetItemByNames(String names) throws Exception
 	{
-		IJob job = this.getSite().getService2(IJob.class);
+		IJob job = this.getSite().getService(IJob.class);
 		java.util.ArrayList<TaskItem> rs = new java.util.ArrayList<TaskItem>();
 		for (String name : StringUtils2.split(names, ";", true))
 		{
@@ -41,7 +41,7 @@ public class ItemParseService extends AbstractService implements IItemParser
 		return rs.toArray(new TaskItem[]{});
 	}
 
-	public final TaskItem[] ParseItem(String text)
+	public final TaskItem[] ParseItem(String text) throws Exception
 	{
 		String str = this.ParseStringWithoutItems(text);
 		Pattern reg = Pattern.compile("(?<sym>(#|@|%))\\((?<cate>[\\w]+)\\)");
@@ -80,7 +80,7 @@ public class ItemParseService extends AbstractService implements IItemParser
 						}
 						else
 						{
-							IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
+							IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 							String meta = parser.Parse(m.group());
 							rs.addAll(Arrays.asList(this.GetItemByNames(meta)));
 						}
@@ -89,7 +89,7 @@ public class ItemParseService extends AbstractService implements IItemParser
 					else
 					{
 						String[] names = m.group("cate").split("\\.", 2);
-						IJob job = this.getSite().getRequiredService2(IJob.class);
+						IJob job = this.getSite().getRequiredService(IJob.class);
 
 						Object var = null;
 						RefObject<Object> tempRef_var = new RefObject<Object>(var);
@@ -135,19 +135,19 @@ public class ItemParseService extends AbstractService implements IItemParser
 		return rs.toArray(new TaskItem[]{});
 	}
 
-	public final TaskItem[] GetItemByCategory(String category)
+	public final TaskItem[] GetItemByCategory(String category) throws Exception
 	{
-		IJob job = (IJob)this.getSite().getService2(IJob.class);
+		IJob job = this.getSite().getRequiredService(IJob.class);
 		TaskItem[] items = job.GetEvaluatedItemsByCatetory(category);
 		return items;
 	}
 
-	private String ParseStringWithoutItems(String value)
+	private String ParseStringWithoutItems(String value) throws Exception
 	{
 		java.util.HashMap<String, Object> context = new java.util.HashMap<String, Object>();
 		context.put("EnableTaskItemReader", false);
 
-		IStringParser parser = (IStringParser)this.getSite().getService(IStringParser.class);
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 		return parser.Parse(value, context);
 	}
 

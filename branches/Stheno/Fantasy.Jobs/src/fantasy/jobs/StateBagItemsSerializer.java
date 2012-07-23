@@ -1,24 +1,29 @@
 ﻿package fantasy.jobs;
 
-import fantasy.xserialization.*;
+import org.jdom2.Element;
 
-public class StateBagItemsSerializer extends IXCollectionSerializer
+import fantasy.xserialization.*;
+import fantasy.*;
+
+@SuppressWarnings("rawtypes")
+public class StateBagItemsSerializer implements IXCollectionSerializer
 {
-	public final void Save(IServiceProvider context, XElement element, Iterable collection)
+	public final void Save(IServiceProvider context, Element element,  Iterable collection) throws Exception
 	{
 
-		for (StateBagItem item : collection)
+		for (Object o : collection)
 		{
-			XElement childElement = new XElement(element.getName().Namespace + item.getName());
-			element.Add(childElement);
+			StateBagItem item = (StateBagItem)o;
+			Element childElement = new Element(item.getName(), element.getNamespace());
+			element.addContent(childElement);
 			((IXSerializable)item).Save(context, childElement);
 		}
 	}
 
-	public final Iterable Load(IServiceProvider context, XElement element)
+	public final Iterable Load(IServiceProvider context, Element element) throws Exception
 	{
-		java.util.ArrayList rs = new java.util.ArrayList();
-		for (XElement childElement : element.Elements())
+		java.util.ArrayList<StateBagItem> rs = new java.util.ArrayList<StateBagItem>();
+		for (Element childElement : element.getChildren())
 		{
 			StateBagItem item = new StateBagItem();
 			((IXSerializable)item).Load(context, childElement);

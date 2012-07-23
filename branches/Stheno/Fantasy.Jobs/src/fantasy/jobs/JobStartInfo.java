@@ -51,7 +51,6 @@ public class JobStartInfo implements Serializable
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 	@XAttribute(name = "name")
 	private String privateName;
 	public final String getName()
@@ -63,18 +62,17 @@ public class JobStartInfo implements Serializable
 		privateName = value;
 	}
 
+	@XArray(items = {@XArrayItem(name ="properties", type=JobPropertyGroup.class)})
 	private java.util.ArrayList<JobPropertyGroup> _propertyGroups = new java.util.ArrayList<JobPropertyGroup>();
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray, XArrayItem(Name="properties", java.lang.Class=typeof(JobPropertyGroup))]
+	
 	public final java.util.List<JobPropertyGroup> getPropertyGroups()
 	{
 		return _propertyGroups;
 	}
 
+	@XArray(items = {@XArrayItem(name ="items", type=TaskItemGroup.class)})
 	private java.util.ArrayList<TaskItemGroup> _itemGroups = new java.util.ArrayList<TaskItemGroup>();
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray, XArrayItem(Name="items", java.lang.Class = typeof(TaskItemGroup))]
 	public final java.util.List<TaskItemGroup> getItemGroups()
 	{
 		return _itemGroups;

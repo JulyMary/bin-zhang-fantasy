@@ -17,18 +17,18 @@ public class LogConsoleService extends AbstractService implements ILogListener
 	}
 
 	@Override
-	public void initializeService()
+	public void initializeService() throws Exception
 	{
-		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService(ILogger.class);
+		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService2(ILogger.class);
 		logger.AddListener(this);
 		super.initializeService();
 	}
 
 	@Override
-	public void uninitializeService()
+	public void uninitializeService() throws Exception
 	{
 		super.uninitializeService();
-		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService(ILogger.class);
+		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService2(ILogger.class);
 		logger.RemoveListener(this);
 	}
 

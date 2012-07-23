@@ -1,10 +1,12 @@
 ﻿package fantasy.jobs;
 
 import fantasy.xserialization.*;
+import fantasy.*;
+import org.jdom2.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("state", NamespaceUri= Consts.XNamespaceURI)]
-public class StateBagItem extends IXSerializable
+@SuppressWarnings({"rawtypes", "unchecked"})
+@XSerializable(name = "state", namespaceUri= Consts.XNamespaceURI)
+public class StateBagItem implements IXSerializable
 {
 
 	private String privateName;
@@ -29,57 +31,55 @@ public class StateBagItem extends IXSerializable
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXSerializable Members
-
-	private void Load(IServiceProvider context, XElement element)
+	public void Load(IServiceProvider context, Element element) throws Exception
 	{
-		this.setName(element.getName().LocalName);
-		XNamespace ns = Consts.XNamespaceURI;
-		if(! DotNetToJavaStringHelper.isNullOrEmpty((String)element.Attribute(ns + "type")))
+		this.setName(element.getName());
+		Namespace ns = Namespace.getNamespace(Consts.XNamespaceURI);
+		
+		String typeName = element.getAttributeValue("type", ns);
+		if(! StringUtils2.isNullOrEmpty(typeName))
 		{
 
-			java.lang.Class t = java.lang.Class.forName((String)element.Attribute(ns + "type"), true);
-			if (t.IsDefined(XSerializableAttribute.class, false))
+			
+			Class t = java.lang.Class.forName(typeName);
+			if (t.isAnnotationPresent(XSerializable.class))
 			{
 
 				XSerializer ser = new XSerializer(t);
-				this.setValue(ser.Deserialize(element));
+				this.setValue(ser.deserialize(element));
 			}
 			else
 			{
-				TypeConverter convert = XHelper.Default.CreateXConverter(t);
-				this.setValue(convert.ConvertTo(element.getValue(), t));
+				ITypeConverter convert = XHelper.getDefault().CreateXConverter(t);
+				this.setValue(convert.convertTo(element.getValue(), t));
 			}
 		}
 
 	}
 
-	private void Save(IServiceProvider context, XElement element)
+	public void Save(IServiceProvider context, Element element) throws Exception
 	{
 
 		if (getValue() != null)
 		{
-			XNamespace ns = Consts.XNamespaceURI;
+			Namespace ns = Namespace.getNamespace(Consts.XNamespaceURI);
 			java.lang.Class t = getValue().getClass();
-			element.SetAttributeValue(ns + "type", String.format("%1$s, %2$s", t.FullName, t.Assembly.GetName().getName()));
+			element.setAttribute(ns + "type", t.getName(), ns);
 
-			if (t.IsDefined(XSerializableAttribute.class, false))
+			if (t.isAnnotationPresent(XSerializable.class))
 			{
 				XSerializer ser = new XSerializer(t);
-				ser.Serialize(element, getValue());
+				ser.serialize(element, getValue());
 			}
 			else
 			{
-				TypeConverter convert = XHelper.Default.CreateXConverter(t);
-				String s = (String)convert.ConvertFrom(this.getValue());
-				element.setValue(s);
+				ITypeConverter convert = XHelper.getDefault().CreateXConverter(t);
+				String s = (String)convert.convertFrom(this.getValue());
+				element.setText(s);
 			}
 
 
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

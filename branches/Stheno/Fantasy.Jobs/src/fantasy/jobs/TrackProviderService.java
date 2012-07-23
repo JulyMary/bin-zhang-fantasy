@@ -1,11 +1,28 @@
 ﻿package fantasy.jobs;
 
-import Fantasy.Tracking.*;
+import java.rmi.RemoteException;
+import java.util.*;
+
+import fantasy.*;
+import fantasy.tracking.*;
 import fantasy.servicemodel.*;
 
 public class TrackProviderService extends AbstractService implements ITrackProvider, IJobEngineEventHandler, IDisposable
 
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6317840824010522511L;
+
+
+
+	public TrackProviderService() throws RemoteException {
+		super();
+		
+	}
+
 
 	private ITrackProvider _provider;
 
@@ -14,16 +31,30 @@ public class TrackProviderService extends AbstractService implements ITrackProvi
 
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		IJobEngine engine = this.Site.<IJobEngine>GetService();
+		IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
 		engine.AddHandler(this);
-		super.InitializeService();
+		super.initializeService();
+	}
+	
+	@Override 
+	public void uninitializeService() throws Exception
+	{
+		super.uninitializeService();
+		this.dispose();
 	}
 
-	public final Guid getId()
+	public final UUID getId()
 	{
-		return _provider != null _provider.Id :this.Site.<IJobEngine>GetService().JobId;
+		try
+		{
+		return _provider != null ? _provider.getId() : this.getSite().getRequiredService(IJobEngine.class).getJobId();
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 	}
 
 	public final String getName()
@@ -33,18 +64,27 @@ public class TrackProviderService extends AbstractService implements ITrackProvi
 
 	public final String getCategory()
 	{
-		return _provider != null ? _provider.Category : "";
+		return _provider != null ? _provider.getCategory() : "";
 	}
 
-	public final Object getItem(String name)
+	public final Object getProperty(String name)
 	{
-		return _provider != null ? _provider[name] : _initValues.GetValueOrDefault(name, null);
+		return _provider != null ? _provider.getProperty(name) :  _initValues.get(name);
 	}
-	public final void setItem(String name, Object value)
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getProperty(String name, T defaultValue) {
+		Object rs = this.getProperty(name);
+		
+		return rs != null ? (T)rs : defaultValue;
+	}
+	
+	public final void setProperty(String name, Object value)
 	{
 		if (_provider != null)
 		{
-			_provider[name] = value;
+			_provider.setProperty(name, value);
 		}
 		else
 		{
@@ -54,60 +94,51 @@ public class TrackProviderService extends AbstractService implements ITrackProvi
 
 	public final String[] getPropertyNames()
 	{
-		return _provider != null ? _provider.PropertyNames : _initValues.keySet().toArray();
+		return _provider != null ? _provider.getPropertyNames() : _initValues.keySet().toArray(new String[0]);
 	}
 
-	public final TrackFactory getConnection()
-	{
-		return _provider != null ? _provider.Connection : null;
-	}
+	
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobEngineEventHandler Members
-
-	private void HandleStart(IJobEngine sender)
+	public void HandleStart(IJobEngine sender)
 	{
 
 	}
 
-	private void HandleResume(IJobEngine sender)
+	public void HandleResume(IJobEngine sender)
 	{
 
 	}
 
-	private void HandleExit(IJobEngine sender, JobExitEventArgs e)
+	public void HandleExit(IJobEngine sender, JobExitEventArgs e)
 	{
 
 
 
 	}
 
-	private void HandleLoad(IJobEngine sender)
+	
+	private ITrackManager _manager;
+	
+	public void HandleLoad(IJobEngine sender) throws Exception
 	{
-		IJob job = this.Site.<IJob>GetService();
+		IJob job = this.getSite().getService(IJob.class);
 
 		String name = job.GetProperty("name");
-		if (String.IsNullOrWhiteSpace(name))
+		if (StringUtils2.isNullOrWhiteSpace(name))
 		{
 			name = job.getTemplateName() + new java.util.Date().toString();
 		}
 
-		TrackFactory cnnt = new TrackFactory();
-		_provider = cnnt.CreateProvider(job.getID(), name, "Jobs." + job.getTemplateName(), _initValues);
+		_manager = TrackManagerFactory.createTrackManager();
+
+		_provider = _manager.getProvider(job.getID(), name, "Jobs." + job.getTemplateName(), _initValues);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IDisposable Members
 
 	public final void dispose()
 	{
+		_provider.dispose();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }
