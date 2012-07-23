@@ -78,7 +78,7 @@ public abstract class Sequence extends AbstractInstruction
 			java.util.ArrayList<Object> rs = new java.util.ArrayList<Object>();
 			for (Element childElement : element.getChildren())
 			{
-				java.lang.Class t = job.ResolveInstructionType(childElement.getNamespaceURI(), childElement.getName());
+				java.lang.Class t = job.ResolveInstructionType(childElement.getName(), childElement.getNamespaceURI());
 				if (ITask.class.isAssignableFrom(t))
 				{
 					t = ExecuteTaskInstruction.class;

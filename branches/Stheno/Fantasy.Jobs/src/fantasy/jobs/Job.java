@@ -1,72 +1,66 @@
 ﻿package fantasy.jobs;
 
 
+import java.io.*;
 import java.util.*;
 
 import fantasy.*;
+import fantasy.collections.*;
+
+import fantasy.io.Path;
 import fantasy.jobs.properties.*;
 import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.*;
 import fantasy.jobs.resources.*;
 import fantasy.servicemodel.*;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.*;
 
 
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 @XSerializable(name = "job", namespaceUri=Consts.XNamespaceURI)
-public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
+public class Job  implements IJob, IObjectWithSite
 {
 	public Job()
 	{
 
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		this._imports.Inserted += new EventHandler<CollectionEventArgs<ImportAssembly>>(ImportAssemblyAdded);
+
+		
 	}
 
-	private void ImportAssemblyAdded(Object sender, CollectionEventArgs<ImportAssembly> e)
-	{
-		this.LoadAssembly(e.getValue().LoadAssembly(this.getParser()));
 
-	}
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("id")]
+	@XAttribute(name = "id")
 	public UUID _id;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("startupTarget")]
+
+	@XAttribute(name ="startupTarget")
 	private String _startupTarget;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("template")]
+	@XAttribute(name = "template")
 	private String _templateName;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XElement("runtime")]
+	@XElement(name = "runtime")
 	private RuntimeStatus _runtimeStatus = new RuntimeStatus();
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning disable 169
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XNamespace]
-	private XmlNamespaceManager _namespaces;
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning restore 169
+	@XNamespace
+	private Namespace[] _namespaces;
 
-
-
-
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Name="properties", Serializer=typeof(JobPropertiesSerializer))]
+	@XArray(name="properties", serializer=JobPropertiesSerializer.class, items={})
 	private java.util.ArrayList<JobProperty> _properties = new java.util.ArrayList<JobProperty>();
 
-
-
-	private void RemoveProperty(String name)
+	public void RemoveProperty(String name)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		int index = _properties.BinarySearchBy(name, (p) => p.getName(), StringComparer.OrdinalIgnoreCase);
+		//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
+		int index = CollectionUtils.binarySearchBy(this._properties, name, new Selector<JobProperty, String>(){
+
+			@Override
+			public String select(JobProperty item) {
+				return item.getName();
+			}}, String.CASE_INSENSITIVE_ORDER);
 		if (index >= 0)
 		{
 			_properties.remove(index);
@@ -74,18 +68,30 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	}
 
 
-	private String GetProperty(String name)
+	public String GetProperty(String name)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		int index = _properties.BinarySearchBy(name, (p) => p.getName(), StringComparer.OrdinalIgnoreCase);
+
+		int index = CollectionUtils.binarySearchBy(this._properties, name, new Selector<JobProperty, String>(){
+
+			@Override
+			public String select(JobProperty item) {
+				return item.getName();
+			}}, String.CASE_INSENSITIVE_ORDER);
 
 		return index >= 0 ? this._properties.get(index).getValue() : null;
 
 	}
-	private void SetProperty(String name, String value)
+
+
+	public void SetProperty(String name, String value)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		int index = _properties.BinarySearchBy(name, (p) => p.getName(), StringComparer.OrdinalIgnoreCase);
+
+		int index = CollectionUtils.binarySearchBy(this._properties, name, new Selector<JobProperty, String>(){
+
+			@Override
+			public String select(JobProperty item) {
+				return item.getName();
+			}}, String.CASE_INSENSITIVE_ORDER);
 		JobProperty prop;
 		if (index < 0)
 		{
@@ -103,73 +109,71 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 
 	}
-	private boolean HasProperty(String name)
+	public  boolean HasProperty(String name)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		return _properties.BinarySearchBy(name, (p) => p.getName(), StringComparer.OrdinalIgnoreCase) >= 0;
+		
+		return CollectionUtils.binarySearchBy(this._properties, name, new Selector<JobProperty, String>(){
+
+			@Override
+			public String select(JobProperty item) {
+				return item.getName();
+			}}, String.CASE_INSENSITIVE_ORDER) >= 0;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Name = "imports"), XArrayItem(Name = "import", java.lang.Class = typeof(ImportAssembly))]
-	private Collection<ImportAssembly> _imports = new Collection<ImportAssembly>();
+	@XArray(name = "imports", items = @XArrayItem(name = "import", type = ImportAssembly.class))
+	private ImportList _imports = new ImportList();
 
 
 
 
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Name = "targets"), XArrayItem(Name = "target", java.lang.Class=typeof(Target))]
+
+	@XArray(name = "targets", items= @XArrayItem(name = "target", type= Target.class))
 	private java.util.ArrayList<Target> _targets = new java.util.ArrayList<Target>();
 
 
-	private java.util.HashMap<String, Integer> _targetPriorities = new java.util.HashMap<String, Integer>(StringComparer.OrdinalIgnoreCase);
+	private java.util.TreeMap<String, Integer> _targetPriorities = new java.util.TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
 
 	private IStringParser _parser;
-	private IStringParser getParser()
+	private IStringParser getParser() throws Exception
 	{
 		if (_parser == null)
 		{
-			_parser = (IStringParser)this.getSite().GetService(IStringParser.class);
-			if (_parser == null)
-			{
-				throw new ApplicationException("Missing IStringParserService.");
-			}
+			_parser = (IStringParser)this.getSite().getRequiredService(IStringParser.class);
+
 		}
 		return _parser;
 	}
 
 	private IConditionService _conditionService;
-	private IConditionService getConditionService()
+	private IConditionService getConditionService() throws Exception
 	{
 		if (_conditionService == null)
 		{
-			_conditionService = (IConditionService)this.getSite().GetService(IConditionService.class);
-			if (_conditionService == null)
-			{
-				throw new ApplicationException("Missing IConditionService.");
-			}
+			_conditionService = (IConditionService)this.getSite().getRequiredService(IConditionService.class);
+
 		}
 		return _conditionService;
 	}
 
 	private ILogger _logger;
-	private ILogger getLogger()
+	private ILogger getLogger() throws Exception
 	{
 		if (_logger == null)
 		{
-			_logger = (ILogger)this.getSite().GetService(ILogger.class);
+			_logger = (ILogger)this.getSite().getService(ILogger.class);
 		}
 		return _logger;
 	}
 
 
-	private TaskItem AddTaskItem(String name, String category)
+	public TaskItem AddTaskItem(String name, String category)
 	{
 		TaskItemGroup group;
-		if (this._itemGroups.size() > 0 && DotNetToJavaStringHelper.isNullOrEmpty(this._itemGroups.Last().Condition))
+		if (this._itemGroups.size() > 0 && StringUtils2.isNullOrEmpty(this._itemGroups.get(this._itemGroups.size() - 1).getCondition()))
 		{
-			group = this._itemGroups.Last();
+			group = this._itemGroups.get(this._itemGroups.size() - 1);
 		}
 		else
 		{
@@ -181,67 +185,87 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	}
 
 
-	private TaskItemGroup AddTaskItemGroup()
+	public TaskItemGroup AddTaskItemGroup()
 	{
 		TaskItemGroup rs = new TaskItemGroup();
 		this._itemGroups.add(rs);
 		return rs;
 	}
 
-	private void RemoveTaskItemGroup(TaskItemGroup group)
+	public void RemoveTaskItemGroup(TaskItemGroup group)
 	{
 		this._itemGroups.remove(group);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Name="itemGroups"), XArrayItem(Name="items", java.lang.Class=typeof(TaskItemGroup))]
+	@XArray(name="itemGroups", items= @XArrayItem(name="items", type = TaskItemGroup.class))
 	private java.util.ArrayList<TaskItemGroup> _itemGroups = new java.util.ArrayList<TaskItemGroup>();
 
 	private TaskItem[] GetItems()
 	{
 
-			java.util.ArrayList<TaskItem> rs = new java.util.ArrayList<TaskItem>();
-			for (TaskItemGroup group : this._itemGroups)
+		java.util.ArrayList<TaskItem> rs = new java.util.ArrayList<TaskItem>();
+		for (TaskItemGroup group : this._itemGroups)
+		{
+			for (TaskItem item : group)
 			{
-				for (TaskItem item : group)
-				{
-					rs.add(item);
-				}
+				rs.add(item);
 			}
-			return rs.toArray(new TaskItem[]{});
+		}
+		return rs.toArray(new TaskItem[]{});
 
 	}
 
-	private TaskItem[] GetEvaluatedItemsByCatetory(String category)
+	public TaskItem[] GetEvaluatedItemsByCatetory(final String category) throws Exception
 	{
 		java.util.ArrayList<TaskItem> rs = new java.util.ArrayList<TaskItem>();
 		for (TaskItemGroup g : this._itemGroups)
 		{
 			if (getConditionService().Evaluate(g))
 			{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-				var query = from i in g where String.equals(i.Category, category, StringComparison.OrdinalIgnoreCase) && getConditionService().Evaluate(i) select i;
-				rs.addAll(query);
+
+				Enumerable<TaskItem> query = new Enumerable<TaskItem>(g).where(new Predicate<TaskItem>(){
+
+					@Override
+					public boolean evaluate(TaskItem item) throws Exception {
+						return StringUtils.equalsIgnoreCase(item.getCategory(), category) && Job.this.getConditionService().Evaluate(item);
+					}});
+				rs.addAll(query.toArrayList());
 			}
 		}
 		return rs.toArray(new TaskItem[]{});
 	}
 
-	private TaskItem GetEvaluatedItemByName(String name)
+	public TaskItem GetEvaluatedItemByName(final String name) throws Exception
 	{
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		TaskItem rs = (from g in this._itemGroups where getConditionService().Evaluate(g) from item in g where StringComparer.OrdinalIgnoreCase.Compare(name, item.getName()) == 0 && getConditionService().Evaluate(item) select item).FirstOrDefault();
+		Enumerable<TaskItem> query = new Enumerable<TaskItemGroup>(this._itemGroups).where(new Predicate<TaskItemGroup>(){
+
+			@Override
+			public boolean evaluate(TaskItemGroup g) throws Exception {
+
+				return Job.this.getConditionService().Evaluate(g);
+			}}).from(new Selector<TaskItemGroup, Iterable<TaskItem>>(){
+
+				@Override
+				public Iterable<TaskItem> select(TaskItemGroup g) {
+					return g;
+				}}).where(new Predicate<TaskItem>(){
+
+					@Override
+					public boolean evaluate(TaskItem item) throws Exception {
+						return StringUtils.equalsIgnoreCase(item.getName(), name) && Job.this.getConditionService().Evaluate(item);
+					}});
+
+		TaskItem rs = query.firstOrDefault();
 
 		return rs;
 	}
 
-	private void RemoveTaskItem(TaskItem item)
+	public void RemoveTaskItem(TaskItem item)
 	{
 		for (TaskItemGroup group : this._itemGroups)
 		{
-			int index = group.indexOf(item);
+			int index = group.IndexOf(item);
 			if (index >= 0)
 			{
 				group.RemoveAt(index);
@@ -250,8 +274,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IObjectWithSite Members
+
 
 
 	private IServiceProvider privateSite;
@@ -265,39 +288,44 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
-	private IJobEngine getEngine()
+	private IJobEngine getEngine() throws Exception
 	{
-		return (IJobEngine)this.getSite().GetService(IJobEngine.class);
+		return (IJobEngine)this.getSite().getService(IJobEngine.class);
 	}
 
-	public final void Initialize()
+	public final void Initialize() throws Exception
 	{
-		this.LoadAssembly(Assembly.GetExecutingAssembly());
+		this._imports.addListener(new IImportListListener(){
+
+			@Override
+			public void Added(ImportListAddedEvent e) throws Exception {
+				Job.this.LoadAssembly(e.getImportAssembly().LoadAssembly(Job.this.getParser()));
+
+			}});
+		this.LoadAssembly(JavaLibraryUtils.getLibrary(this.getClass()));
 	}
 
-	private java.util.ArrayList<Assembly> _loadedAssebmlies = new java.util.ArrayList<Assembly>();
-	private java.util.HashMap<XName, java.lang.Class> _loadedTaskOrInstructionTypes = new java.util.HashMap<XName, java.lang.Class>();
+	private java.util.ArrayList<File> _loadedAssebmlies = new java.util.ArrayList<File>();
+	
+	private java.util.HashMap<String, java.lang.Class> _loadedTaskOrInstructionTypes = new java.util.HashMap<String, java.lang.Class>();
 
-	private java.lang.Class ResolveInstructionType(XName name)
+	public java.lang.Class ResolveInstructionType(String name, String namespaceUri)
 	{
 
-		java.lang.Class rs = null;
-		if ((rs = this._loadedTaskOrInstructionTypes.get(name)) != null)
+		String key = namespaceUri + "|" + name;
+		java.lang.Class rs =  this._loadedTaskOrInstructionTypes.get(key);
+		if (rs == null)
 		{
-			return rs;
+			throw new InvalidJobTemplateException(String.format(fantasy.jobs.properties.Resources.getUnknownTaskText(), namespaceUri, name));
+
 		}
-		else
-		{
-			throw new InvalidJobTemplateException(String.format(fantasy.jobs.Properties.Resources.getUnknownTaskText(), name.NamespaceName, name.LocalName));
-		}
+		return rs;
 
 
 	}
 
-	private boolean LoadAssembly(Assembly assembly)
+	private boolean LoadAssembly(File assembly) throws Exception
 	{
 		if (_loadedAssebmlies.indexOf(assembly) < 0)
 		{
@@ -312,27 +340,34 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		}
 	}
 
-	private void LoadInstructionsAndTasks(Assembly assembly)
+	private void LoadInstructionsAndTasks(File assembly) throws Exception
 	{
+		
+		Enumerable<Class> classes = new Enumerable<Class>(JavaLibraryUtils.GetAllClasses(assembly));
 
 		Iterable<java.lang.Class> tasks;
 		try
 		{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-			tasks = from type in assembly.GetTypes() where type.GetCustomAttributes(TaskAttribute.class, false).getLength() == 1 select type;
+			
+			tasks = classes.where(new Predicate<Class>(){
+
+				
+				@Override
+				public boolean evaluate(Class type) throws Exception {
+					return type.isAnnotationPresent(Task.class);
+				}});
 		}
-		catch(ReflectionTypeLoadException error)
+		catch(ClassNotFoundException error)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			String message = String.format("Cannot get types from assembly %1$s. LoaderExceptions:\n %2$s", assembly.FullName, DotNetToJavaStringHelper.join("\n", error.LoaderExceptions.Select(e=>e.Message)));
+			String message = String.format("Cannot get types from library %1$s. LoaderExceptions:\n %2$s", assembly.getAbsolutePath(), error.getMessage());
 			throw new JobException(message, error);
 		}
 		for (java.lang.Class t : tasks)
 		{
-			TaskAttribute ta = (TaskAttribute)t.GetCustomAttributes(TaskAttribute.class, false)[0];
+			Task anno = (Task) t.getAnnotation(Task.class);
 
-
-			XName key = (XNamespace)ta.getNamespaceUri() + ta.getName();
+            String key = anno.namespaceUri() + "|" + anno.name(); 
+			
 
 
 			if (!_loadedTaskOrInstructionTypes.containsKey(key))
@@ -341,101 +376,98 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 			}
 			else
 			{
-				throw new InvalidJobTemplateException(String.format(fantasy.jobs.Properties.Resources.getDulplicateTaskText(), t, this._loadedTaskOrInstructionTypes.get(key), ta.getNamespaceUri(), ta.getName()));
+				throw new InvalidJobTemplateException(String.format(fantasy.jobs.properties.Resources.getDulplicateTaskText(), t, this._loadedTaskOrInstructionTypes.get(key).getName(), anno.namespaceUri(), anno.name()));
 
 			}
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var instructions = from type in assembly.GetTypes() where type.IsDefined(InstructionAttribute.class, false) && type.IsDefined(XSerializableAttribute.class, false) select type;
+		
+		Iterable<java.lang.Class> instructions = classes.where(new Predicate<Class>(){
+
+			@Override
+			public boolean evaluate(Class type) throws Exception {
+				
+				return type.isAnnotationPresent(Instruction.class) && type.isAnnotationPresent(XSerializable.class);
+			}}); 
 		for (java.lang.Class t : instructions)
 		{
-			XSerializableAttribute sa = (XSerializableAttribute)t.GetCustomAttributes(XSerializableAttribute.class, false)[0];
-			XName key = (XNamespace)sa.NamespaceUri + sa.getName();
+			XSerializable anno = (XSerializable)t.getAnnotation(XSerializable.class);
+			String key = anno.namespaceUri() + "|" + anno.name();
 			if (!_loadedTaskOrInstructionTypes.containsKey(key))
 			{
 				this._loadedTaskOrInstructionTypes.put(key, t);
 			}
 			else
 			{
-				throw new InvalidJobTemplateException(String.format(fantasy.jobs.Properties.Resources.getDulplicateTaskText(), t, this._loadedTaskOrInstructionTypes.get(key), sa.NamespaceUri, sa.getName()));
+				throw new InvalidJobTemplateException(String.format(fantasy.jobs.properties.Resources.getDulplicateTaskText(), t, this._loadedTaskOrInstructionTypes.get(key), anno.namespaceUri(), anno.name()));
 			}
 		}
 
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region Build from StartInfo Methods
-
-
-
-
-	public final void LoadStartInfo(JobStartInfo startInfo)
+	public final void LoadStartInfo(JobStartInfo startInfo) throws Exception
 	{
 
-		this.LoadAssembly(Assembly.GetExecutingAssembly());
+		this.LoadAssembly(JavaLibraryUtils.getLibrary(this.getClass()));
 		this.AddPropertiesFromStartInfo(startInfo);
 		this.AddItemsFromStartInfo(startInfo);
 		this._templateName = startInfo.getTemplate();
-		IJobTemplatesService ts = (IJobTemplatesService)this.getSite().GetService(IJobTemplatesService.class);
+		IJobTemplatesService ts = this.getSite().getRequiredService(IJobTemplatesService.class);
 		JobTemplate template = ts.GetJobTemplateByName(startInfo.getTemplate());
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(startInfo.getTarget()))
+		if (!StringUtils2.isNullOrEmpty(startInfo.getTarget()))
 		{
 			this._startupTarget = startInfo.getTarget();
 		}
 		else
 		{
-			XmlDocument doc = new XmlDocument();
-			doc.LoadXml(template.getContent());
-			this._startupTarget = doc.DocumentElement.GetAttribute("defaultTarget");
+			Element ele = JDomUtils.parseElement(template.getContent());
+			
+			this._startupTarget = ele.getAttributeValue("defaultTarget");
 		}
 
 		this.AddTemplate(template, 1);
 	}
 
-	private void AddTemplate(JobTemplate template, int priority)
+	private void AddTemplate(JobTemplate template, int priority) throws Exception
 	{
-		XElement root = XElement.Parse(template.getContent());
+		Element root = JDomUtils.parseElement(template.getContent());
 
 
-		for (XElement element : root.Elements())
+		for (Element element : root.getChildren())
 		{
-//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
-//			switch (element.Name.LocalName)
-//ORIGINAL LINE: case "import":
-			if (element.getName().LocalName.equals("import"))
+			
+			if (element.getName().equals("import"))
 			{
-					this.AddImportFromTemplate(element, template);
+				this.AddImportFromTemplate(element, template);
 			}
-//ORIGINAL LINE: case "include":
-			else if (element.getName().LocalName.equals("include"))
+			
+			else if (element.getName().equals("include"))
 			{
-					this.AddInlcude(element, template, priority);
+				this.AddInlcude(element, template, priority);
 			}
-//ORIGINAL LINE: case "properties":
-			else if (element.getName().LocalName.equals("properties"))
+			//ORIGINAL LINE: case "properties":
+			else if (element.getName().equals("properties"))
 			{
-					this.AddPropertiesFromTemplate(element, priority);
+				this.AddPropertiesFromTemplate(element, priority);
 			}
-//ORIGINAL LINE: case "target":
-			else if (element.getName().LocalName.equals("target"))
+			//ORIGINAL LINE: case "target":
+			else if (element.getName().equals("target"))
 			{
-					this.AddTargetFrom(element, priority);
+				this.AddTargetFrom(element, priority);
 			}
-//ORIGINAL LINE: case "items" :
-			else if (element.getName().LocalName.equals("items"))
+			//ORIGINAL LINE: case "items" :
+			else if (element.getName().equals("items"))
 			{
-					this.AddItemsFromTemplate(element);
+				this.AddItemsFromTemplate(element);
 			}
 		}
 	}
 
-	private void AddItemsFromTemplate(XElement element)
+	private void AddItemsFromTemplate(Element element) throws Exception
 	{
 		XSerializer ser = new XSerializer(TaskItemGroup.class);
-		TaskItemGroup group = (TaskItemGroup)ser.Deserialize(element);
+		TaskItemGroup group = (TaskItemGroup)ser.deserialize(element);
 		for (TaskItem item : group)
 		{
 			item.setName(this.getParser().Parse(item.getName()));
@@ -443,18 +475,24 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		this._itemGroups.add(group);
 	}
 
-	private void AddTargetFrom(XElement element, int priority)
+	private void AddTargetFrom(Element element, int priority) throws Exception
 	{
 
 		int oldPri = 0;
 		boolean needAdd = false;
-		String targetName = (String)element.Attribute(Target.NameAttributeName);
-		if ((oldPri = this._targetPriorities.get(targetName)) != null)
+		final String targetName = element.getAttributeValue(Target.NameAttributeName);
+		if(this._targetPriorities.containsKey(targetName))
 		{
+		    oldPri = (int)this._targetPriorities.get(targetName);
 			if (priority <= oldPri)
 			{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-				Target oldTarget = (from tgt in this._targets where StringComparer.OrdinalIgnoreCase.Compare(tgt.getName(), targetName) == 0 select tgt).Single();
+				
+				Target oldTarget = new Enumerable<Target>(this._targets).single(new Predicate<Target>(){
+
+					@Override
+					public boolean evaluate(Target obj) throws Exception {
+						return StringUtils.equalsIgnoreCase(obj.Name, targetName);
+					}});
 				this._targets.remove(oldTarget);
 				needAdd = true;
 			}
@@ -468,23 +506,23 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 		if (needAdd)
 		{
-			XSerializer tempVar = new XSerializer(Target.class);
-			tempVar.Context = this.getSite();
-			XSerializer ser = tempVar;
+			XSerializer ser = new XSerializer(Target.class);
+			ser.setContext(this.getSite());
+			
 
 			Target target = new Target();
 
-			ser.Deserialize(element, target);
+			ser.deserialize(element, target);
 			this._targets.add(target);
-			this._targetPriorities.put(target.getName(), priority);
+			this._targetPriorities.put(target.Name, priority);
 		}
 
 	}
 
-	private void AddPropertiesFromTemplate(XElement element, int priority)
+	private void AddPropertiesFromTemplate(Element element, int priority) throws Exception
 	{
 		XSerializer ser = new XSerializer(JobPropertyGroup.class);
-		JobPropertyGroup group = (JobPropertyGroup)ser.Deserialize(element);
+		JobPropertyGroup group = (JobPropertyGroup)ser.deserialize(element);
 		if (getConditionService().Evaluate(group))
 		{
 			for (JobProperty property : group)
@@ -499,31 +537,31 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 
 
-	private void AddInlcude(XElement element, JobTemplate template, int priority)
+	private void AddInlcude(Element element, JobTemplate template, int priority) throws Exception
 	{
 		JobTemplate newTemplate;
-		IJobTemplatesService ts = (IJobTemplatesService)this.getSite().GetService(IJobTemplatesService.class);
-		String name = (String)element.Attribute("name");
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(name))
+		IJobTemplatesService ts = (IJobTemplatesService)this.getSite().getRequiredService(IJobTemplatesService.class);
+		String name = element.getAttributeValue("name");
+		if (!StringUtils2.isNullOrEmpty(name))
 		{
 			newTemplate = ts.GetJobTemplateByName(name);
 		}
 		else
 		{
-			String path = (String)element.Attribute("path");
-			if (!DotNetToJavaStringHelper.isNullOrEmpty("path"))
+			String path = (String)element.getAttributeValue("path");
+			if (!StringUtils2.isNullOrEmpty("path"))
 			{
 				path = getParser().Parse(path);
-				if (!System.IO.Path.IsPathRooted(path))
+				if (!Path.isPathRooted(path))
 				{
-					String dir = System.IO.Path.GetDirectoryName(template.getLocation());
-					path = Fantasy.IO.LongPath.Combine(dir, path);
+					String dir = Path.GetDirectoryName(template.getLocation());
+					path = Path.combine(dir, path);
 				}
 				newTemplate = ts.GetJobTemplateByPath(path);
 			}
 			else
 			{
-			   throw new InvalidOperationException("\"include\" element must has name or path attribute.");
+				throw new IllegalStateException("\"include\" element must has name or path attribute.");
 			}
 		}
 
@@ -532,23 +570,23 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	}
 
 
-	private void AddImportFromTemplate(XElement element, JobTemplate template)
+	private void AddImportFromTemplate(Element element, JobTemplate template) throws Exception
 	{
 		XSerializer ser = new XSerializer(ImportAssembly.class);
-		ImportAssembly import = (ImportAssembly)ser.Deserialize(element);
-		import.setSrc(Path.GetDirectoryName(template.getLocation()));
-		Assembly assembly = import.LoadAssembly(this.getParser());
+		ImportAssembly $import = (ImportAssembly)ser.deserialize(element);
+		
+		File assembly = $import.LoadAssembly(this.getParser());
 		if (this.LoadAssembly(assembly))
 		{
-			this._imports.Add(import);
+			this._imports.add($import);
 		}
 	}
 
 
 
-	private java.util.HashMap<String, Integer> _propPriorities = new java.util.HashMap<String, Integer>(StringComparer.OrdinalIgnoreCase);
+	private java.util.TreeMap<String, Integer> _propPriorities = new java.util.TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);
 
-	private void AddPropertiesFromStartInfo(JobStartInfo startInfo)
+	private void AddPropertiesFromStartInfo(JobStartInfo startInfo) throws Exception
 	{
 
 		for (JobPropertyGroup group : startInfo.getPropertyGroups())
@@ -566,7 +604,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		}
 	}
 
-	private void AddItemsFromStartInfo(JobStartInfo startInfo)
+	private void AddItemsFromStartInfo(JobStartInfo startInfo) throws Exception
 	{
 
 
@@ -586,8 +624,9 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 
 		int old = 0;
-		if ((old = this._propPriorities.get(name)) != null)
+		if (this._propPriorities.containsKey(name))
 		{
+			old = this._propPriorities.get(name);
 			if (old >= priority)
 			{
 				this._propPriorities.put(name, priority);
@@ -603,18 +642,15 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 
 	}
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 
-
-	private void ExecuteInstruction(IInstruction instruction)
+	public void ExecuteInstruction(IInstruction instruction) throws Exception
 	{
 		if (instruction == null)
 		{
-			throw new ArgumentNullException("instruction");
+			throw new IllegalArgumentException("instruction");
 		}
-		instruction.Site = this.getSite();
+		instruction.setSite(this.getSite());
 		this._runtimeStatus.PushStack();
 		try
 		{
@@ -623,14 +659,13 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 				instruction.Execute();
 			}
 
-			catch (RuntimeException ex)
+			catch (Exception ex)
 			{
 
 				this.getEngine().SaveStatusForError(ex);
-				if (!(ex instanceof ThreadAbortException))
-				{
-					throw ex;
-				}
+				
+				throw ex;
+				
 			}
 		}
 		finally
@@ -639,26 +674,30 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		}
 	}
 
-	private void ExecuteTarget(String targetName)
+	public void ExecuteTarget(final String targetName) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		Target target = (from tgt in this._targets where StringComparer.OrdinalIgnoreCase.Compare(tgt.getName(), targetName) == 0 select tgt).SingleOrDefault();
+		//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
+		Target target = new Enumerable<Target>(this._targets).singleOrDefault(new Predicate<Target>(){
 
+			@Override
+			public boolean evaluate(Target obj) throws Exception {
+				return StringUtils.equalsIgnoreCase(obj.Name, targetName);
+			}});
 		if (target == null)
 		{
-			throw new JobException(String.format(fantasy.jobs.Properties.Resources.getUndefinedTargetText(), targetName));
+			throw new JobException(String.format(fantasy.jobs.properties.Resources.getUndefinedTargetText(), targetName));
 		}
 		this.ExecuteInstruction(target);
 
 	}
 
-	private void Execute()
+	public void Execute() throws Exception
 	{
-		if (DotNetToJavaStringHelper.isNullOrEmpty(this._startupTarget))
+		if (StringUtils2.isNullOrEmpty(this._startupTarget))
 		{
-			throw new InvalidJobStartInfoException(String.format(fantasy.jobs.Properties.Resources.getNoStartupTargetText(), this._templateName));
+			throw new InvalidJobStartInfoException(String.format(fantasy.jobs.properties.Resources.getNoStartupTargetText(), this._templateName));
 		}
-		IResourceService resSvc = this.getEngine().<IResourceService>GetService();
+		IResourceService resSvc = this.getEngine().getService(IResourceService.class);
 		IResourceHandle resHandle = null;
 		if (resSvc != null)
 		{
@@ -702,23 +741,23 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		java.util.ArrayList<ResourceParameter> rs = new java.util.ArrayList<ResourceParameter>();
 		if (! getIsNested())
 		{
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
+			//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
 			rs.add(new ResourceParameter("RunJob", new { template = this._templateName }));
 		}
 		IStringParser parser = this.getEngine().<IStringParser>GetRequiredService();
 		String waitAll = parser.Parse(this.GetProperty("WaitAll"));
 
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(waitAll))
+		if (!StringUtils2.isNullOrEmpty(waitAll))
 		{
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
+			//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
 			rs.add(new ResourceParameter("WaitFor", new { jobs = waitAll, mode = WaitForMode.All}));
 		}
 
 		String waitAny = parser.Parse(this.GetProperty("WaitAny"));
 
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(waitAny))
+		if (!StringUtils2.isNullOrEmpty(waitAny))
 		{
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
+			//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
 			rs.add(new ResourceParameter("WaitFor", new { jobs = waitAll, mode = WaitForMode.Any }));
 		}
 
@@ -733,7 +772,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		nsMgr.AddNamespace("cvj", Consts.XNamespaceURI);
 		XSerializer impSer = new XSerializer(ImportAssembly.class);
 
-		for (XElement ele : element.XPathSelectElements("/cvj:job/cvj:imports/cvj:import", nsMgr))
+		for (Element ele : element.XPathSelectElements("/cvj:job/cvj:imports/cvj:import", nsMgr))
 		{
 			ImportAssembly ia = (ImportAssembly)impSer.Deserialize(ele);
 			this.LoadAssembly(ia.LoadAssembly(null));
@@ -756,40 +795,8 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJob Members
 
-	private TaskItem AddTaskItem(String name, String category)
-	{
-		return this.AddTaskItem(name, category);
-	}
-
-	private void RemoveTaskItem(TaskItem item)
-	{
-		this.RemoveTaskItem(item);
-	}
-
-	private TaskItemGroup AddTaskItemGroup()
-	{
-		return this.AddTaskItemGroup();
-	}
-
-	private void RemoveTaskItemGroup(TaskItemGroup group)
-	{
-		this.RemoveTaskItemGroup(group);
-	}
-
-	private TaskItem[] GetEvaluatedItemsByCatetory(String category)
-	{
-		return this.GetEvaluatedItemsByCatetory(category);
-	}
-
-	private TaskItem GetEvaluatedItemByName(String name)
-	{
-		return this.GetEvaluatedItemByName(name);
-	}
-
-	private TaskItem[] getItems()
+	public TaskItem[] getItems()
 	{
 		return this.GetItems();
 	}
@@ -798,71 +805,43 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	{
 		return this._id;
 	}
-	
+
 	void setID(UUID value)
 	{
 		this._id = value;
 	}
 
-	private String getTemplateName()
+	public String getTemplateName()
 	{
 		return this._templateName;
 	}
 
-	private JobProperty[] getProperties()
+	public JobProperty[] getProperties()
 	{
 		return this._properties.toArray(new JobProperty[]{});
 	}
 
-	private String GetProperty(String name)
-	{
-		return this.GetProperty(name);
-	}
 
-	private void SetProperty(String name, String value)
-	{
-		this.SetProperty(name, value);
-	}
-
-	private boolean HasProperty(String name)
-	{
-		return this.HasProperty(name);
-	}
-
-	private void RemoveProperty(String name)
-	{
-		this.RemoveProperty(name);
-	}
-
-	private String getStartupTarget()
+	public String getStartupTarget()
 	{
 		return this._startupTarget;
 	}
-	private void setStartupTarget(String value)
+	public void setStartupTarget(String value)
 	{
 		this._startupTarget = value;
 	}
 
-	private java.lang.Class ResolveInstructionType(XName name)
-	{
-		return this.ResolveInstructionType(name);
-	}
 
-	private RuntimeStatus getRuntimeStatus()
+
+	public RuntimeStatus getRuntimeStatus()
 	{
 		return this._runtimeStatus;
 	}
 
-	
 
-	private void ExecuteInstruction(IInstruction instruction)
-	{
-		this.ExecuteInstruction(instruction);
-	}
 
-	private void ExecuteTarget(String targetName)
-	{
-		this.ExecuteTarget(targetName);
-	}
+
+
+
 
 }

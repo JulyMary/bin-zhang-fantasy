@@ -4,44 +4,44 @@ import java.util.*;
 
 public interface IJob
 {
-	TaskItem AddTaskItem(String name, String category);
-	void RemoveTaskItem(TaskItem item);
+	TaskItem AddTaskItem(String name, String category)throws Exception;
+	void RemoveTaskItem(TaskItem item)throws Exception;
 
-	TaskItemGroup AddTaskItemGroup();
-	void RemoveTaskItemGroup(TaskItemGroup group);
+	TaskItemGroup AddTaskItemGroup()throws Exception;
+	void RemoveTaskItemGroup(TaskItemGroup group)throws Exception;
 
 
-	TaskItem[] GetEvaluatedItemsByCatetory(String category);
+	TaskItem[] GetEvaluatedItemsByCatetory(String category)throws Exception;
 
-	TaskItem GetEvaluatedItemByName(String name);
+	TaskItem GetEvaluatedItemByName(String name)throws Exception;
 
-	TaskItem[] getItems();
+	TaskItem[] getItems()throws Exception;
 
-	UUID getID();
+	UUID getID() throws Exception;
 
-	String getTemplateName();
+	String getTemplateName() throws Exception;
 
-	JobProperty[] getProperties();
-	String GetProperty(String name);
+	JobProperty[] getProperties() throws Exception;
+	String GetProperty(String name) throws Exception;
 
-	void SetProperty(String name, String value);
+	void SetProperty(String name, String value) throws Exception;
 
-	boolean HasProperty(String name);
+	boolean HasProperty(String name) throws Exception;
 
-	void RemoveProperty(String name);
+	void RemoveProperty(String name) throws Exception;
 	String getStartupTarget();
-	void setStartupTarget(String value);
+	void setStartupTarget(String value) throws Exception;
 
 	@SuppressWarnings("rawtypes")
-	java.lang.Class ResolveInstructionType(String name, String namespace);
+	Class ResolveInstructionType(String name, String namespace) throws Exception;
 
-	RuntimeStatus getRuntimeStatus();
+	RuntimeStatus getRuntimeStatus() throws Exception;
 
-	void Execute();
+	void Execute() throws Exception;
 
-	void ExecuteInstruction(IInstruction instruction);
+	void ExecuteInstruction(IInstruction instruction) throws Exception;
 
-	void ExecuteTarget(String targetName);
+	void ExecuteTarget(String targetName) throws Exception;
 
 
 
