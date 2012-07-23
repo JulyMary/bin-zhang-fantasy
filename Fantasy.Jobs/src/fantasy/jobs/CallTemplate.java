@@ -16,13 +16,13 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 	@Override
 	public void Execute() throws Exception
 	{
-		IConditionService conditionSvc = (IConditionService)this.getSite().getService(IConditionService.class);
-		ILogger logger = (ILogger)this.getSite().getService(ILogger.class);
-		IJobEngine engine = (IJobEngine)this.getSite().getRequiredService(IJobEngine.class);
+		IConditionService conditionSvc = (IConditionService)this.getSite().getService2(IConditionService.class);
+		ILogger logger = (ILogger)this.getSite().getService2(ILogger.class);
+		IJobEngine engine = (IJobEngine)this.getSite().getRequiredService2(IJobEngine.class);
 
 		if (conditionSvc.Evaluate(this))
 		{
-			IJob parentJob = (IJob)this.getSite().getRequiredService(IJob.class);
+			IJob parentJob = (IJob)this.getSite().getRequiredService2(IJob.class);
 
 			ServiceContainer childSite = new ServiceContainer();
 
@@ -75,11 +75,11 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 
 	}
 
-	private void SetOutputParameters()
+	private void SetOutputParameters() throws Exception
 	{
-		IItemParser itemParser = this._job.getSite().getRequiredService2(IItemParser.class);
-		IStringParser strParser = this._job.getSite().getRequiredService2(IStringParser.class);
-		IJob parentJob = (IJob)this.getSite().getRequiredService(IJob.class);
+		IItemParser itemParser = this._job.getSite().getRequiredService(IItemParser.class);
+		IStringParser strParser = this._job.getSite().getRequiredService(IStringParser.class);
+		IJob parentJob = (IJob)this.getSite().getRequiredService2(IJob.class);
 		TaskItemGroup group = null;
 		for (CallTemplateParameter output : this._outputs)
 		{
@@ -111,10 +111,10 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 
 	private void AddInputs(JobStartInfo si) throws Exception
 	{
-		IItemParser itemParser = this.getSite().getRequiredService2(IItemParser.class);
-		IStringParser strParser = this.getSite().getRequiredService2(IStringParser.class);
+		IItemParser itemParser = this.getSite().getRequiredService(IItemParser.class);
+		IStringParser strParser = this.getSite().getRequiredService(IStringParser.class);
 		TaskItemGroup itemGroup = new TaskItemGroup();
-		IConditionService conditionSvc = this.getSite().getRequiredService2(IConditionService.class);
+		IConditionService conditionSvc = this.getSite().getRequiredService(IConditionService.class);
 		si.getItemGroups().add(itemGroup);
 
 		JobPropertyGroup propGroup = new JobPropertyGroup();

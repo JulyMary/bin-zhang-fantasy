@@ -2,8 +2,8 @@
 
 public interface IJobEngineEventHandler
 {
-	void HandleStart(IJobEngine sender);
-	void HandleResume(IJobEngine sender);
-	void HandleLoad(IJobEngine sender);
-	void HandleExit(IJobEngine sender, JobExitEventArgs e);
+	void HandleStart(IJobEngine sender) throws Exception;
+	void HandleResume(IJobEngine sender) throws Exception;
+	void HandleLoad(IJobEngine sender) throws Exception;
+	void HandleExit(IJobEngine sender, JobExitEventArgs e) throws Exception;
 }

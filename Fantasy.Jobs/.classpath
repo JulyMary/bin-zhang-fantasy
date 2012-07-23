@@ -8,7 +8,9 @@
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="lib" path="../external/jdom-2.0.2.jar"/>
-	<classpathentry kind="lib" path="E:/Development/Projects/Fantasy/Stheno/external/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="E:/Development/Projects/Fantasy/Stheno/external/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="../external/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="../external/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="../external/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="../external/joda-time-2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

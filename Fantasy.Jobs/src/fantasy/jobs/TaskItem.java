@@ -2,10 +2,13 @@
 
 import java.util.*;
 
-import fantasy.xserialization.*;
+import org.apache.commons.lang3.StringUtils;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[, XSerializable("taskitem",NamespaceUri = Consts.XNamespaceURI)]
+import fantasy.xserialization.*;
+import fantasy.*;
+import org.jdom2.*;
+
+@XSerializable(name = "taskitem", namespaceUri = Consts.XNamespaceURI)
 public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 {
 
@@ -29,18 +32,16 @@ public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 		privateCategory = value;
 	}
 
-	private TreeMap<String, String> _metaData = new TreeMap<String, String>(StringComparer.OrdinalIgnoreCase);
+	private TreeMap<String, String> _metaData = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
 
 	public final String getItem(String index)
 	{
 		if (index == null)
 		{
-			throw new ArgumentNullException("index");
+			throw new IllegalArgumentException("index");
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		ITaskItemMetaDataProvider provider = (from p in MetaDataProviders where p.GetNames(this).ToList().Exists(x => StringComparer.OrdinalIgnoreCase.Compare(x, index) == 0) select p).FirstOrDefault();
+		ITaskItemMetaDataProvider provider = providerForName(index);
 
 		if (provider != null)
 		{
@@ -48,25 +49,42 @@ public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 		}
 		else
 		{
-			return this._metaData[index];
+			return this._metaData.get(index);
 		}
 
 
 	}
+	
+	
+	private ITaskItemMetaDataProvider providerForName(String name)
+	{
+		
+		for(ITaskItemMetaDataProvider p : MetaDataProviders)
+		{
+			for(String s : p.GetNames(this))
+			{
+				if(StringUtils.equalsIgnoreCase(s, name))
+				{
+					return p;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
 	public final void setItem(String index, String value)
 	{
 		if (index == null)
 		{
-			throw new ArgumentNullException("index");
+			throw new IllegalArgumentException("index");
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		ITaskItemMetaDataProvider provider = (from p in MetaDataProviders where p.GetNames(this).ToList().Exists(x => StringComparer.OrdinalIgnoreCase.Compare(x, index) == 0) select p).FirstOrDefault();
+		ITaskItemMetaDataProvider provider = providerForName(index);
 
 		if (provider == null)
 		{
-			this._metaData[index] = value;
+			this._metaData.put(index, value);
 		}
 
 	}
@@ -78,61 +96,70 @@ public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 
 	public final String[] getMetaDataNames()
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		return (from provider in MetaDataProviders let names = provider.GetNames(this) from name in names select name).Union(this._metaData.AllKeys).toArray();
+		
+		ArrayList<String> rs = new ArrayList<String>();
+		
+		for(ITaskItemMetaDataProvider p : MetaDataProviders)
+		{
+			for(String s : p.GetNames(this))
+			{
+				rs.add(s);
+			}
+		}
+		
+		rs.addAll(this._metaData.keySet());
+		
+		
+		return rs.toArray(new String[0]);
 	}
 
 
 
 	public final boolean HasMetaData(String name)
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from key in getMetaDataNames() where (StringComparer.OrdinalIgnoreCase.Compare(name, key) == 0) select key;
-		return query.Count() > 0;
+		return this._metaData.containsKey(name) || this.providerForName(name) != null;
+
 	}
 
 	public final void RemoveMetaData(String name)
 	{
-		this._metaData.Remove(name);
+		this._metaData.remove(name);
 	}
 
 	public final void CopyMetaDataTo(TaskItem destinationItem)
 	{
-		for (String key : this._metaData.AllKeys)
+		for (String key : this._metaData.keySet())
 		{
-			destinationItem.setItem(key, this._metaData[key]);
+			destinationItem.setItem(key, this._metaData.get(key));
 		}
 	}
 
-	public final void Load(IServiceProvider context, XElement element)
+	public final void Load(IServiceProvider context, Element element)
 	{
-		this.setName((String)element.Attribute("name"));
-		this.setCondition((String)element.Attribute("condition"));
-		this.setCategory(element.getName().LocalName);
-		for (XElement child : element.Elements())
+		this.setName((String)element.getAttributeValue("name"));
+		this.setCondition((String)element.getAttributeValue("condition"));
+		this.setCategory(element.getName());
+		for (Element child : element.getChildren())
 		{
-			this._metaData[child.getName().LocalName] = child.getValue();
+			this._metaData.put(child.getName() ,child.getValue());
 		}
 	}
 
-	public final void Save(IServiceProvider context, XElement element)
+	public final void Save(IServiceProvider context, Element element)
 	{
-		element.SetAttributeValue("name", this.getName());
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.getCondition()))
+		element.setAttribute("name", this.getName());
+		if (!StringUtils2.isNullOrEmpty(this.getCondition()))
 		{
-			element.SetAttributeValue("condition", this.getCondition());
+			element.setAttribute("condition", this.getCondition());
 		}
-		for (String key : this._metaData.AllKeys)
+		for (String key : this._metaData.keySet())
 		{
-			XElement child = new XElement(element.getName().Namespace + key, this._metaData[key]);
+			Element child = new Element(key,element.getNamespace());
+			child.setText(this._metaData.get(key));
 
-			element.Add(child);
+			element.addContent(child);
 		}
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ICloneable Members
 
 	public final Object clone()
 	{
@@ -143,14 +170,7 @@ public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 		return rs;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IConditionalObject Members
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String privateCondition;
 	public final String getCondition()
 	{
@@ -161,8 +181,6 @@ public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 		privateCondition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 
 	private static ITaskItemMetaDataProvider[] MetaDataProviders = new ITaskItemMetaDataProvider[] { new NameAndCategoryMetaDataProvider(), new FileInfoMetaDataProvider() };

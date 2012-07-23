@@ -4,6 +4,7 @@ import java.util.*;
 
 
 import org.jdom2.*;
+import org.joda.time.*;
 
 import fantasy.IServiceProvider;
 import fantasy.ITypeConverter;
@@ -24,6 +25,7 @@ public class XHelper
 		this._converters.add(new Type2Converter(Date.class, new XDateTimeConverter()));
 		this._converters.add(new Type2Converter(UUID.class, new XUUIDConverter()));
 		this._converters.add(new Type2Converter(Array.class, new XArrayConverter()));
+		this._converters.add(new Type2Converter(Interval.class, new DurationConverter()));
 		
 		PrimitiveConverter pc = new PrimitiveConverter();
 		

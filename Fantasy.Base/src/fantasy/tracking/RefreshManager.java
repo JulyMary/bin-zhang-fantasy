@@ -98,16 +98,24 @@ final class RefreshManager
 	{
 		synchronized (RefreshManager.class)
 		{
-			WeakReference<IRefreshable> ref = new Enumerable<WeakReference<IRefreshable>>(_list).firstOrDefault(new Predicate<WeakReference<IRefreshable>>(){
-
-				@Override
-				public boolean evaluate(WeakReference<IRefreshable> ref) {
-					return ref.get() == obj;
-				}});
-			if(ref != null)
+			try
 			{
-				_list.remove(ref);
+				WeakReference<IRefreshable> ref = new Enumerable<WeakReference<IRefreshable>>(_list).firstOrDefault(new Predicate<WeakReference<IRefreshable>>(){
+
+					@Override
+					public boolean evaluate(WeakReference<IRefreshable> ref) {
+						return ref.get() == obj;
+					}});
+				if(ref != null)
+				{
+					_list.remove(ref);
+				}
 			}
+			catch(Exception error)
+			{
+				
+			}
+			
 		}
 	}
 

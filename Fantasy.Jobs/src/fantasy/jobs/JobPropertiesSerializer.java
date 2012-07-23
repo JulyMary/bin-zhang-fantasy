@@ -1,26 +1,35 @@
 ﻿package fantasy.jobs;
 
-import fantasy.xserialization.*;
+import org.jdom2.*;
 
-public class JobPropertiesSerializer extends IXCollectionSerializer
+import fantasy.xserialization.*;
+import fantasy.*;
+
+
+@SuppressWarnings("rawtypes")
+public class JobPropertiesSerializer implements IXCollectionSerializer
 {
 
-	public final void Save(IServiceProvider context, XElement element, Iterable collection)
+	public final void Save(IServiceProvider context, Element element,  Iterable collection) throws Exception
 	{
 
+		Namespace ns = element.getNamespace();
 
-		for (JobProperty item : collection)
+		for (Object item : collection)
 		{
-			XElement childElement = new XElement(element.getName().Namespace + item.getName());
-			element.Add(childElement);
-			item.Save(context, childElement);
+			
+			JobProperty prop = (JobProperty)item;
+			
+			Element childElement = new Element(prop.getName(),ns);
+			element.addContent(childElement);
+			prop.Save(context, childElement);
 		}
 	}
 
-	public final Iterable Load(IServiceProvider context, XElement element)
+	public final Iterable Load(IServiceProvider context, Element element) throws Exception
 	{
-		java.util.ArrayList rs = new java.util.ArrayList();
-		for (XElement childElement : element.Elements())
+		java.util.ArrayList<JobProperty> rs = new java.util.ArrayList<JobProperty>();
+		for (Element childElement : element.getChildren())
 		{
 			JobProperty item = new JobProperty();
 			item.Load(context, childElement);

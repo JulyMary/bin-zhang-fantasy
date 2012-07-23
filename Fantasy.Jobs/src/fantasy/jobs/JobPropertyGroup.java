@@ -1,13 +1,18 @@
 ﻿package fantasy.jobs;
 
+import java.io.*;
+
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("properties", NamespaceUri=Consts.XNamespaceURI)]
-public class JobPropertyGroup implements IConditionalObject, Iterable, Cloneable, Serializable
+@XSerializable(name = "properties", namespaceUri=Consts.XNamespaceURI)
+public class JobPropertyGroup implements IConditionalObject, Iterable<JobProperty>, Cloneable, Serializable
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Serializer = typeof(JobPropertiesSerializer))]
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -848315926536200958L;
+	@XArray(serializer = JobPropertiesSerializer.class, items = { })
 	private java.util.ArrayList<JobProperty> _list = new java.util.ArrayList<JobProperty>();
 
 	public final JobProperty[] toArray()
@@ -56,8 +61,7 @@ public class JobPropertyGroup implements IConditionalObject, Iterable, Cloneable
 		this._list.remove(index);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String privateCondition;
 	public final String getCondition()
 	{
@@ -68,7 +72,7 @@ public class JobPropertyGroup implements IConditionalObject, Iterable, Cloneable
 		privateCondition = value;
 	}
 
-	public final java.util.Iterator GetEnumerator()
+	public final java.util.Iterator<JobProperty> iterator()
 	{
 		return this._list.iterator();
 	}

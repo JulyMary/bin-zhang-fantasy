@@ -1,11 +1,19 @@
 ﻿package fantasy.jobs;
 
+import java.io.*;
+
+import org.jdom2.*;
+
+import fantasy.*;
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("property", NamespaceUri=Consts.XNamespaceURI)]
-public class JobProperty extends IXSerializable implements Cloneable, IConditionalObject, Serializable
+@XSerializable(name = "property", namespaceUri=Consts.XNamespaceURI)
+public class JobProperty implements IXSerializable , Cloneable, IConditionalObject, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2244505658037378778L;
 	private String privateName;
 	public final String getName()
 	{
@@ -16,8 +24,7 @@ public class JobProperty extends IXSerializable implements Cloneable, ICondition
 		privateName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XValue]
+	@XValue
 	private String privateValue;
 	public final String getValue()
 	{
@@ -37,19 +44,18 @@ public class JobProperty extends IXSerializable implements Cloneable, ICondition
 		return tempVar;
 	}
 
-	public final void Load(IServiceProvider context, XElement element)
+	public final void Load(IServiceProvider context, Element element) throws Exception
 	{
-		this.setName(element.getName().LocalName);
-		XHelper.Default.LoadByXAttributes(context, element, this);
+		this.setName(element.getName());
+		XHelper.getDefault().LoadByXAttributes(context, element, this);
 	}
 
-	public final void Save(IServiceProvider context, XElement element)
+	public final void Save(IServiceProvider context, Element element) throws Exception
 	{
-		XHelper.Default.SaveByXAttributes(context, element, this);
+		XHelper.getDefault().SaveByXAttributes(context, element, this);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String privateCondition;
 	public final String getCondition()
 	{

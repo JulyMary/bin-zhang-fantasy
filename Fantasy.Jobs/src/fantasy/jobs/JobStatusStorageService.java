@@ -1,98 +1,104 @@
 ﻿package fantasy.jobs;
 
+import java.io.*;
+import java.nio.file.*;
+
+import java.rmi.RemoteException;
+
+import org.apache.commons.io.*;
+
 import fantasy.servicemodel.*;
 
 public class JobStatusStorageService extends AbstractService implements IJobStatusStorageService
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStorageService Members
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5680865010716980001L;
 
-	public final boolean getExists()
-	{
-		return File.Exists(this.GetFileName());
+	public JobStatusStorageService() throws RemoteException {
+		super();
+		
 	}
 
-	public final void Save(Stream stream)
+	public final boolean getExists() throws Exception
 	{
-		String name = this.GetFileName();
-		if (File.Exists(name))
+		return new File(this.GetFileName()).exists();
+	}
+
+	public final void Save(InputStream input) throws Exception
+	{
+		Path path = Paths.get(this.GetFileName());
+		if (Files.exists(path))
 		{
-			File.Copy(name, name + ".bak", true);
+			Files.copy(path, Paths.get(this.GetFileName() + ".bak"), StandardCopyOption.REPLACE_EXISTING);
 		}
 
-		FileStream fs = new FileStream(name, FileMode.Create);
+		OutputStream output = Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		
+		
+		
 
 		try
 		{
-			int count = 0;
-			byte[] buffer = new byte[1024];
-			do
-			{
-
-				count = stream.Read(buffer, 0, buffer.length);
-				fs.Write(buffer, 0, count);
-
-			} while (count == buffer.length);
+			IOUtils.copy(input, output);
 		}
 		finally
 		{
-			fs.Close();
+			output.close();
 		}
 
 	}
 
-	private String GetFileName()
+	private String GetFileName() throws Exception
 	{
 			String rs;
-			IJobEngine engine = (IJobEngine)this.Site.GetService(IJobEngine.class);
+			IJobEngine engine = this.getSite().getService(IJobEngine.class);
 			rs = String.format("%1$s\\%2$s.job", engine.getJobDirectory(), engine.getJobId());
 			return rs;
 	}
 
 
 
-	public final Stream Load()
+	public final InputStream Load() throws Exception
 	{
 		String name = this.GetFileName();
 		return InnerLoad(name);
 	}
 
-	private static Stream InnerLoad(String name)
+	private static InputStream InnerLoad(String name) throws Exception
 	{
 
-		MemoryStream rs = new MemoryStream();
-		if (File.Exists(name))
+		Path path = Paths.get(name);
+		
+		BufferedInputStream rs = null; 
+		
+		
+		if (Files.exists(path))
 		{
-			FileStream fs = new FileStream(name, FileMode.Open);
+			InputStream fs = Files.newInputStream(path, StandardOpenOption.READ);
+			
 			try
 			{
-				int count = 0;
-				byte[] buffer = new byte[1024];
-				do
-				{
-
-					count = fs.Read(buffer, 0, buffer.length);
-					rs.Write(buffer, 0, count);
-
-				} while (count == buffer.length);
+				rs = new BufferedInputStream(fs);
 			}
 			finally
 			{
-				fs.Close();
+				fs.close();
 			}
 		}
-		rs.Position = 0;
+		
 
 		return rs;
 	}
 
-	public final Stream LoadBackup()
+	public final InputStream LoadBackup() throws Exception
 	{
 		String name = this.GetFileName() + ".bak";
 		return InnerLoad(name);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+	
+
 }

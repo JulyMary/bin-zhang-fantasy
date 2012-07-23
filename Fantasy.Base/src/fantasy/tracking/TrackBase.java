@@ -68,7 +68,7 @@ abstract class TrackBase extends UnicastRemoteObject
 		}
 	}
 
-	public Object getItem(String name)
+	public Object getProperty(String name)
 	{
 		synchronized(this.Data)
 		{
@@ -77,7 +77,7 @@ abstract class TrackBase extends UnicastRemoteObject
 			return rs;
 		}
 	}
-	public void setItem(String name, Object value)
+	public void setProperty(String name, Object value)
 	{
 		Object oldValue = null;
 		boolean changed = false;

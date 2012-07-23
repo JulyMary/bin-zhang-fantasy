@@ -49,12 +49,20 @@ public class DefaultUncaughtExcepationService extends AbstractService implements
 		{
 			if (this.getSite() != null)
 			{
-				ILogger logger = (ILogger)this.getSite().getService(ILogger.class);
+				ILogger logger;
+				try {
+					logger = (ILogger)this.getSite().getService2(ILogger.class);
+				
 				if (logger != null)
 				{
 
 					logger.LogError("JVM", error, "An unhandled exception is throwed by current JVM.");
 
+				}
+				
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}

@@ -2,10 +2,10 @@
 
 public interface IService
 {
-	void initializeService();
-	void uninitializeService();
+	void initializeService() throws Exception;
+	void uninitializeService() throws Exception;;
 	
-	void addServiceListener(IServiceListener listener);
-	void removeServiceListener(IServiceListener listener);
+	void addServiceListener(IServiceListener listener) throws Exception;;
+	void removeServiceListener(IServiceListener listener) throws Exception;;
 
 }

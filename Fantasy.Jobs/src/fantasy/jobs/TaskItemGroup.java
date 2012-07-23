@@ -1,13 +1,21 @@
 ﻿package fantasy.jobs;
 
-import fantasy.xserialization.*;
+import java.io.Serializable;
+import org.jdom2.Element;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("items",NamespaceUri=Consts.XNamespaceURI)]
+import fantasy.xserialization.*;
+import fantasy.*;
+
+@XSerializable(name = "items",namespaceUri=Consts.XNamespaceURI)
+@SuppressWarnings("rawtypes") 
 public class TaskItemGroup implements IConditionalObject, Iterable<TaskItem>, Cloneable, Serializable
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Serializer=typeof(ItemsSerializer))]
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7185313619078834413L;
+	@XArray(serializer=ItemsSerializer.class, items={})
 	private java.util.ArrayList<TaskItem> _list = new java.util.ArrayList<TaskItem>();
 
 	public final TaskItem[] toArray()
@@ -61,8 +69,7 @@ public class TaskItemGroup implements IConditionalObject, Iterable<TaskItem>, Cl
 		return _list.indexOf(item);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String privateCondition;
 	public final String getCondition()
 	{
@@ -73,38 +80,27 @@ public class TaskItemGroup implements IConditionalObject, Iterable<TaskItem>, Cl
 		privateCondition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IEnumerable Members
 
-	private java.util.Iterator GetEnumerator()
+	private static class ItemsSerializer implements IXCollectionSerializer
 	{
-		return this.iterator();
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 
-	private static class ItemsSerializer extends IXCollectionSerializer
-	{
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-			///#region IXCollectionSerializer Members
-
-		public final void Save(IServiceProvider context, XElement element, Iterable collection)
+		public final void Save(IServiceProvider context, Element element, Iterable collection)
 		{
 
-			for (TaskItem item : collection)
+			for (Object o : collection)
 			{
-				XElement childElement = new XElement(element.getName().Namespace + item.getCategory());
-				element.Add(childElement);
+				TaskItem item = (TaskItem)o;
+				Element childElement = new Element(item.getCategory(), element.getNamespace());
+				element.addContent(childElement);
 				item.Save(context, childElement);
 			}
 		}
 
-		public final Iterable Load(IServiceProvider context, XElement element)
+		public final Iterable Load(IServiceProvider context, Element element)
 		{
-			java.util.ArrayList rs = new java.util.ArrayList();
-			for (XElement childElement : element.Elements())
+			java.util.ArrayList<TaskItem> rs = new java.util.ArrayList<TaskItem>();
+			for (Element childElement : element.getChildren())
 			{
 				TaskItem item = new TaskItem();
 				item.Load(context, childElement);
@@ -114,19 +110,16 @@ public class TaskItemGroup implements IConditionalObject, Iterable<TaskItem>, Cl
 			return rs;
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-			///#endregion
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IEnumerable<TaskItem> Members
-
-	public final java.util.Iterator<TaskItem> GetEnumerator()
+	@Override
+	public final java.util.Iterator<TaskItem> iterator()
 	{
 		return this._list.iterator();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+	
+	
+
 }

@@ -22,10 +22,10 @@ public class ImportAssembly
 
 	
 
-	public final File LoadAssembly(IStringParser parser)
+	public final File LoadAssembly(IStringParser parser) throws Exception
 	{
 		
-		String root = JarUtils.getJar(ImportAssembly.class).getParentFile().getAbsoluteFile().getName();
+		String root = JavaLibraryUtils.getLibrary(ImportAssembly.class).getParentFile().getAbsoluteFile().getName();
 		
 		File rs;
 		if (!StringUtils2.isNullOrEmpty(this.getName()))

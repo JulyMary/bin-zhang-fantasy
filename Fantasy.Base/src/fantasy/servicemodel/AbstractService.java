@@ -17,7 +17,7 @@ public abstract class AbstractService extends UnicastRemoteObject implements ISe
 
 
 	private static final long serialVersionUID = 2406667265617843257L;
-	public void initializeService()
+	public void initializeService() throws Exception
 	{
 		EventObject e = new EventObject(this);
 		for(IServiceListener listener : this._listeners)
@@ -26,7 +26,7 @@ public abstract class AbstractService extends UnicastRemoteObject implements ISe
 		}
 	}
 
-	public void uninitializeService()
+	public void uninitializeService() throws Exception
 	{
 		EventObject e = new EventObject(this);
 		for(IServiceListener listener : this._listeners)

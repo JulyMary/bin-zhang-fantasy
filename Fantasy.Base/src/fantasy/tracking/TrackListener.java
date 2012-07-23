@@ -92,7 +92,7 @@ class TrackListener extends TrackBase implements ITrackListener, IRefreshable, I
 						}
 						else
 						{
-							this.setItem(prop.getKey(), prop.getValue());
+							this.setProperty(prop.getKey(), prop.getValue());
 						}
 					}
 					this.setIsActived(true);
@@ -160,7 +160,7 @@ class TrackListener extends TrackBase implements ITrackListener, IRefreshable, I
 	public final void handleChanged(String propertyName, Object value)
 	{
 		
-		this.setItem(propertyName, value);
+		this.setProperty(propertyName, value);
 	}
 
 	@Override
@@ -226,6 +226,14 @@ class TrackListener extends TrackBase implements ITrackListener, IRefreshable, I
 			this._handlers.remove(handler);
 		}
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getProperty(String name, T defaultValue) {
+		Object rs = this.getProperty(name);
+		
+		return rs != null ? (T)rs : defaultValue;
 	}
 
 }

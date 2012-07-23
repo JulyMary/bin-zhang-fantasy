@@ -1,9 +1,7 @@
 ﻿package fantasy.jobs;
 
-import fantasy.jobs.Properties.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Flags]
+
 public enum TaskMemberFlags
 {
 	Input(1),

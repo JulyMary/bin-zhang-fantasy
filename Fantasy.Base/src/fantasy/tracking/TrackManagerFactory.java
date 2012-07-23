@@ -13,4 +13,10 @@ public final class TrackManagerFactory {
 		return new TrackManager(uri);
 		
 	}
+
+
+	public static ITrackManager createTrackManager() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

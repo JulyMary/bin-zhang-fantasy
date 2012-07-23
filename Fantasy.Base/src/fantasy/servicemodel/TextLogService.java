@@ -5,9 +5,6 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.rmi.RemoteException;
 
-
-import fantasy.*;
-
 public abstract class TextLogService extends AbstractService implements ILogListener
 {
 
@@ -25,28 +22,28 @@ public abstract class TextLogService extends AbstractService implements ILogList
 	
 	String _newline = System.getProperty("line.separator");
 	@Override
-	public void initializeService()
+	public void initializeService() throws Exception
 	{
-		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService(ILogger.class);
+		ILogger logger = this.getSite().getRequiredService(ILogger.class);
 		logger.AddListener(this);
 		super.initializeService();
 	}
 
 	@Override
-	public void uninitializeService()
+	public void uninitializeService() throws Exception
 	{
 		super.uninitializeService();
-		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService(ILogger.class);
+		ILogger logger  = this.getSite().getRequiredService(ILogger.class);
 		logger.RemoveListener(this);
 	}
 
 
-	public final void onMessage(String category, MessageImportance importance, String message) throws Exception
+	public void onMessage(String category, MessageImportance importance, String message) throws Exception
 	{
 		this.getWriter().write(String.format("[%1$s] Message : %2$s", new java.util.Date(), message));
 	}
 
-	public final void onWaring(String category, Throwable exception, MessageImportance importance, String message) throws Exception
+	public void onWaring(String category, Throwable exception, MessageImportance importance, String message) throws Exception
 	{
 		this.getWriter().write(String.format("[%1$s] Warning : %2$s", new java.util.Date(), message));
 		if (exception != null)
@@ -115,7 +112,7 @@ public abstract class TextLogService extends AbstractService implements ILogList
 		}
 	}
 
-	public final void onError(String category, Throwable exception, String message) throws Exception
+	public void onError(String category, Throwable exception, String message) throws Exception
 	{
 		this.writeLine(String.format("[%1$s] Error : %2$s", new java.util.Date(), message));
 		if (exception != null)

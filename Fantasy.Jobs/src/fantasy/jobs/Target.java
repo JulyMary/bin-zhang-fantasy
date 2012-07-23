@@ -1,26 +1,30 @@
 ﻿package fantasy.jobs;
 
+import java.util.Arrays;
+
 import fantasy.xserialization.*;
-import fantasy.jobs.Properties.*;
+import fantasy.jobs.properties.*;
+import fantasy.*;
 import fantasy.servicemodel.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("target", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "target", namespaceUri = Consts.XNamespaceURI)
 public class Target extends Sequence implements IConditionalObject
 {
 	private boolean _executing = false;
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
 
 		if (!HasExecuted() && !_executing)
 		{
 			_executing = true;
 
-			IJob job = (IJob)this.Site.GetService(IJob.class);
+			IJob job = this.getSite().getRequiredService(IJob.class);
 
-			ILogger logger = (ILogger)this.Site.GetService(ILogger.class);
+			ILogger logger = this.getSite().getService(ILogger.class);
 			boolean hasError = false;
 			try
 			{
@@ -29,7 +33,7 @@ public class Target extends Sequence implements IConditionalObject
 
 					if (logger != null)
 					{
-						logger.LogMessage(LogCategories.getInstruction(), MessageImportance.Low, "Execute target {0}.", this.getName());
+						logger.LogMessage(LogCategories.getInstruction(), MessageImportance.Low, "Execute target {0}.", this.Name);
 					}
 
 					if (!job.getRuntimeStatus().getLocal().GetValue("target.executingFinally", false))
@@ -39,7 +43,7 @@ public class Target extends Sequence implements IConditionalObject
 							throw new JobException("Resuming onFail operation.");
 						}
 
-						IConditionService conditionsvc = (IConditionService)this.Site.GetService(IConditionService.class);
+						IConditionService conditionsvc = (IConditionService)this.getSite().getRequiredService(IConditionService.class);
 						if (conditionsvc.Evaluate(this))
 						{
 							ExecuteDependsOnTargets();
@@ -49,32 +53,37 @@ public class Target extends Sequence implements IConditionalObject
 					}
 
 				}
-				catch (ThreadAbortException e)
+				catch (InterruptedException e)
 				{
-
+                    throw e;
 				}
 				catch (RuntimeException error)
 				{
-					logger.SafeLogError(LogCategories.getInstruction(), error, "An error occurs when execute target {0}.", this.getName());
+					Log.SafeLogError(logger, LogCategories.getInstruction(), error, "An error occurs when execute target %1$s.", this.Name);
 					hasError = true;
 
 				}
-				//bool rethrow = false;
+				
 				if (hasError)
 				{
+					
 					try
 					{
+						if(Thread.interrupted())
+						{
+							throw new InterruptedException();
+						}
 						job.getRuntimeStatus().getLocal().setItem("target.rethrow", true);
 						job.getRuntimeStatus().getLocal().setItem("target.rethrow", OnError());
 
 					}
-					catch (ThreadAbortException e2)
+					catch (InterruptedException e2)
 					{
-
+                        throw e2;
 					}
-					catch (RuntimeException error)
+					catch (Exception error)
 					{
-						logger.SafeLogError(LogCategories.getInstruction(), error, "An error occurs when execute onFailed of target {0}.", this.getName());
+						Log.SafeLogError(logger, LogCategories.getInstruction(), error, "An error occurs when execute onFailed of target %1$s.", this.Name);
 						job.getRuntimeStatus().getLocal().setItem("target.rethrow", true);
 					}
 				}
@@ -85,7 +94,7 @@ public class Target extends Sequence implements IConditionalObject
 
 				if (job.getRuntimeStatus().getLocal().GetValue("target.rethrow", false))
 				{
-					throw new JobException(String.format("An error occurs when execute target %1$s.", this.getName()));
+					throw new JobException(String.format("An error occurs when execute target %1$s.", this.Name));
 				}
 			}
 			finally
@@ -98,20 +107,20 @@ public class Target extends Sequence implements IConditionalObject
 	}
 
 
-	private void OnFinal()
+	private void OnFinal() throws Exception
 	{
 		try
 		{
-			IJob job = this.getSite().<IJob>GetRequiredService();
-			if (!DotNetToJavaStringHelper.isNullOrEmpty(this.Finally))
+			IJob job = this.getSite().getRequiredService(IJob.class);
+			if (!StringUtils2.isNullOrEmpty(this.Finally))
 			{
 				job.getRuntimeStatus().getLocal().setItem("target.executingFinally", true);
 				job.ExecuteTarget(this.Finally);
 			}
 		}
-		catch (ThreadAbortException e)
+		catch (InterruptedException e)
 		{
-
+            throw e;
 		}
 		catch (RuntimeException e2)
 		{
@@ -122,10 +131,10 @@ public class Target extends Sequence implements IConditionalObject
 
 	}
 
-	private boolean OnError()
+	private boolean OnError() throws Exception
 	{
-		IJob job = this.getSite().<IJob>GetRequiredService();
-		ILogger logger = this.getSite().<ILogger>GetService();
+		IJob job = this.getSite().getRequiredService(IJob.class);
+		ILogger logger = this.getSite().getService(ILogger.class);
 
 		boolean rs = false;
 		switch (this._failAction)
@@ -134,19 +143,21 @@ public class Target extends Sequence implements IConditionalObject
 
 				if (logger != null)
 				{
-					logger.LogError(LogCategories.getInstruction(), Properties.Resources.getTargetTermianteText(), this.getName());
+					logger.LogError(LogCategories.getInstruction(), Resources.getTargetTermianteText(), this.Name);
 				}
 				break;
 			case Continue:
 				if (logger != null)
 				{
-					logger.LogError(LogCategories.getInstruction(), Properties.Resources.getTargetContinueText(), this.getName());
+					logger.LogError(LogCategories.getInstruction(), Resources.getTargetContinueText(), this.Name);
 				}
 				break;
+		default:
+			break;
 		}
 
 
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.OnFail))
+		if (!StringUtils2.isNullOrEmpty(this.OnFail))
 		{
 			job.getRuntimeStatus().getLocal().setItem("target.executingOnFail", true);
 			job.ExecuteTarget(this.OnFail);
@@ -158,29 +169,36 @@ public class Target extends Sequence implements IConditionalObject
 				rs = true;
 				break;
 			case Terminate:
-				IJobEngine engine = this.getSite().<IJobEngine>GetRequiredService();
+				IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
 				engine.Fail();
 				break;
+		default:
+			break;
 		}
 		return rs;
 	}
 
-	private void ExecuteDependsOnTargets()
+	private void ExecuteDependsOnTargets() throws Exception
 	{
-		IStringParser parser = (IStringParser)this.Site.GetService(IStringParser.class);
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IStringParser parser =this.getSite().getRequiredService(IStringParser.class);
+		IJob job = (IJob)this.getSite().getRequiredService(IJob.class);
 		String[] targets;
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(this.DependsOnTargets))
+		if (!StringUtils2.isNullOrEmpty(this.DependsOnTargets))
 		{
 			String s = parser.Parse(this.DependsOnTargets);
-			if (!String.IsNullOrWhiteSpace(s))
+			if (!StringUtils2.isNullOrWhiteSpace(s))
 			{
-				targets = parser.Parse(this.DependsOnTargets).split("[;]", -1);
+				targets = parser.Parse(this.DependsOnTargets).split(";", -1);
 				int index = (int)job.getRuntimeStatus().getLocal().GetValue("target.dependsOnTarget.index", 0);
 				while (index < targets.length)
 				{
+					if(Thread.interrupted())
+					{
+						throw new InterruptedException();
+					}
+					
 					String name = targets[index];
-					if (!String.IsNullOrWhiteSpace(name))
+					if (!StringUtils2.isNullOrWhiteSpace(name))
 					{
 						job.ExecuteTarget(targets[index]);
 					}
@@ -191,61 +209,52 @@ public class Target extends Sequence implements IConditionalObject
 		}
 	}
 
-	private void SetAsExecuted()
+	private void SetAsExecuted() throws Exception
 	{
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IJob job = (IJob)this.getSite().getRequiredService(IJob.class);
 		String[] oldValue = (String[])job.getRuntimeStatus().getGlobal().GetValue(ExecutedTargetsVarName, new String[0]);
 		String[] newValue = new String[oldValue.length + 1];
 		System.arraycopy(oldValue, 0, newValue, 0, oldValue.length);
-		newValue[newValue.length - 1] = this.getName();
+		newValue[newValue.length - 1] = this.Name;
 		job.getRuntimeStatus().getGlobal().setItem(ExecutedTargetsVarName, newValue);
 	}
 
 	private static final String ExecutedTargetsVarName = "targets.executedTargets";
 
-	private boolean HasExecuted()
+	private boolean HasExecuted() throws Exception
 	{
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IJob job = (IJob)this.getSite().getRequiredService(IJob.class);
 		String[] executed = (String[])job.getRuntimeStatus().getGlobal().getItem(ExecutedTargetsVarName);
 
-		return executed != null ? Array.indexOf(executed, this.getName()) >= 0 : false;
+		return executed != null ? Arrays.asList(executed).indexOf(this.Name) >= 0 : false;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("dependsOnTargets", Order = 10)]
+	@XAttribute(name = "dependsOnTargets", order = 10)
 	public String DependsOnTargets = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute(NameAttributeName, Order = 0)]
+	@XAttribute(name = "name", order = 0)
 	public String Name = null;
 
 	public static final String NameAttributeName = "name";
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String _condition = null;
-	private String getCondition()
+	public String getCondition()
 	{
 		return this._condition;
 	}
-	private void setCondition(String value)
+	public void setCondition(String value)
 	{
 		this._condition = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("onFail", Order = 30)]
+	@XAttribute(name = "onFail", order = 30)
 	public String OnFail = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("failAction", Order = 40)]
+	@XAttribute(name = "failAction", order = 40)
 	private FailActions _failAction = FailActions.Throw;
 
-
-
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("finally", Order = 50)]
+	@XAttribute(name = "finally", order = 50)
 	public String Finally = null;
 
 }

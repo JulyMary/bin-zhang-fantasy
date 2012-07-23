@@ -2,5 +2,5 @@ package fantasy.collections;
 
 public interface Predicate<T> {
 
-	public boolean evaluate(T obj);
+	public boolean evaluate(T obj) throws Exception;
 }

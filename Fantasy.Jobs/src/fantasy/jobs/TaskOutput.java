@@ -2,12 +2,11 @@
 
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("output", NamespaceUri=Consts.XNamespaceURI)]
+@XSerializable(name = "output", namespaceUri=Consts.XNamespaceURI)
 public class TaskOutput implements IConditionalObject
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("taskParameter")]
+
+	@XAttribute(name = "taskParameter")
 	private String privateTaskParameter;
 	public final String getTaskParameter()
 	{
@@ -18,8 +17,7 @@ public class TaskOutput implements IConditionalObject
 		privateTaskParameter = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("propertyName")]
+	@XAttribute(name = "propertyName")
 	private String privatePropertyName;
 	public final String getPropertyName()
 	{
@@ -30,8 +28,7 @@ public class TaskOutput implements IConditionalObject
 		privatePropertyName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("itemCategory")]
+	@XAttribute(name = "itemCategory")
 	private String privateItemCategory;
 	public final String getItemCategory()
 	{
@@ -42,8 +39,7 @@ public class TaskOutput implements IConditionalObject
 		privateItemCategory = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String privateCondition;
 	public final String getCondition()
 	{

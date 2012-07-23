@@ -1,11 +1,11 @@
 ﻿package fantasy.jobs;
 
 import fantasy.xserialization.*;
-import fantasy.jobs.Properties.*;
-import fantasy.jobs.Resources.*;
+import fantasy.jobs.resource.*;
+import fantasy.jobs.properties.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("using", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "using", namespaceUri = Consts.XNamespaceURI)
 public class Using extends Sequence
 {
 	@Override
@@ -15,14 +15,14 @@ public class Using extends Sequence
 		java.util.ArrayList<ResourceParameter> parameters = new java.util.ArrayList<ResourceParameter>();
 		for (String str : strs)
 		{
-			if (!String.IsNullOrWhiteSpace(str))
+			if (!StringUtils2.IsNullOrWhiteSpace(str))
 			{
 				ResourceParameter parameter = CreateParameterFromString(str);
 				parameters.add(parameter);
 			}
 		}
 
-		IResourceService svc = this.getSite().<IResourceService>GetService();
+		IResourceService svc = this.getSite().getService(IResourceService.Class);
 		if (parameters.size() > 0 && svc != null)
 		{
 //C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
@@ -92,7 +92,7 @@ public class Using extends Sequence
 
 		if (rs.getName() == null)
 		{
-			throw new JobException(String.format(Properties.Resources.getMissingResourceNameText(), text));
+			throw new JobException(String.format(Resources.getMissingResourceNameText(), text));
 		}
 
 		return rs;
@@ -128,55 +128,55 @@ public class Using extends Sequence
 				else
 				{
 //C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
-//					switch (m.Groups["char"].Value)
+//					switch (m.group("char").Value)
 //ORIGINAL LINE: case "a":
-					if (m.Groups["char"].getValue().equals("a"))
+					if (m.group("char").getValue().equals("a"))
 					{
-							value = '\a';
+							value = '\u0007';
 					}
 //ORIGINAL LINE: case "b":
-					else if (m.Groups["char"].getValue().equals("b"))
+					else if (m.group("char").getValue().equals("b"))
 					{
 							value = '\b';
 					}
 //ORIGINAL LINE: case "f":
-					else if (m.Groups["char"].getValue().equals("f"))
+					else if (m.group("char").getValue().equals("f"))
 					{
 							value = '\f';
 					}
 //ORIGINAL LINE: case "n":
-					else if (m.Groups["char"].getValue().equals("n"))
+					else if (m.group("char").getValue().equals("n"))
 					{
 							value = '\n';
 					}
 //ORIGINAL LINE: case "r":
-					else if (m.Groups["char"].getValue().equals("r"))
+					else if (m.group("char").getValue().equals("r"))
 					{
 							value = '\r';
 					}
 //ORIGINAL LINE: case "t":
-					else if (m.Groups["char"].getValue().equals("t"))
+					else if (m.group("char").getValue().equals("t"))
 					{
 							value = '\t';
 					}
 //ORIGINAL LINE: case "v":
-					else if (m.Groups["char"].getValue().equals("v"))
+					else if (m.group("char").getValue().equals("v"))
 					{
-							value = '\v';
+							value = '\u000b';
 					}
 //ORIGINAL LINE: case "'":
-					else if (m.Groups["char"].getValue().equals("'"))
+					else if (m.group("char").getValue().equals("'"))
 					{
 							value = '\'';
 					}
 //ORIGINAL LINE: case "\\":
-					else if (m.Groups["char"].getValue().equals("\\"))
+					else if (m.group("char").getValue().equals("\\"))
 					{
 							value = '\\';
 					}
 					else
 					{
-							throw new InvalidOperationException(String.format("Unrecognized escape sequences in string '%1$s'.", text));
+							throw new IllegalStateException(String.format("Unrecognized escape sequences in string '%1$s'.", text));
 
 					}
 				}

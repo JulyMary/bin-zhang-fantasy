@@ -27,9 +27,9 @@ public class ConditionService extends AbstractService implements IConditionServi
 			throw new IllegalArgumentException("condition");
 		}
 
-		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 		String parsed = condition;
-		ILogger logger = this.getSite().getService2(ILogger.class);
+		ILogger logger = this.getSite().getService(ILogger.class);
 		java.util.HashMap<String, Object> ctx = new java.util.HashMap<String, Object>();
 		ctx.put("c#-style-string", true);
 		parsed = parser.Parse(parsed, ctx);

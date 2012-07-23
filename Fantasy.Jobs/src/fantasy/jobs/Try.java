@@ -3,24 +3,23 @@
 import fantasy.xserialization.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("try", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "try", namespaceUri = Consts.XNamespaceURI)
 public class Try extends Sequence implements IConditionalObject
 {
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
-		super.ExecuteSequence();
+		this.ExecuteSequence();
 	}
 
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("condition")]
+	@XAttribute(name = "condition")
 	private String _condition = null;
-	private String getCondition()
+	public String getCondition()
 	{
 		return this._condition;
 	}
-	private void setCondition(String value)
+	public void setCondition(String value)
 	{
 		this._condition = value;
 	}

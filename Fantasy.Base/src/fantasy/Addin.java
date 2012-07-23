@@ -53,9 +53,9 @@ public final class AddIn extends SettingsBase implements IXSerializable {
 	}
 	
 	
-	public static <T> T[] CreateObjects(Class<T> type, String xpath) throws Exception
+	public static <T> T[] CreateObjects(Class<T> type, String path) throws Exception
 	{
-		Object[] temp = CreateObjects(xpath);
+		Object[] temp = CreateObjects(path);
 		
 		T[] rs = (T[]) Array.newInstance(type, temp.length);
 		for(int i = 0; i < temp.length; i ++)
@@ -99,10 +99,10 @@ public final class AddIn extends SettingsBase implements IXSerializable {
 		return rs.toArray(new java.lang.Class[0]);
 	}
 
-	public static Object[] CreateObjects(String xpath) throws Exception
+	public static Object[] CreateObjects(String path) throws Exception
 	{
 		
-		java.lang.Class[] types = GetTypes(xpath);
+		java.lang.Class[] types = GetTypes(path);
 		Object[] rs;
 		if (types != null)
 		{

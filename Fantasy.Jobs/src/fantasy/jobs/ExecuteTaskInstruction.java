@@ -169,13 +169,13 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 	private void InnerExecute() throws  Exception
 	{
-		IConditionService conditionSvc = this.getSite().getService2(IConditionService.class);
-		ILogger logger = this.getSite().getService2(ILogger.class);
+		IConditionService conditionSvc = this.getSite().getService(IConditionService.class);
+		ILogger logger = this.getSite().getService(ILogger.class);
 
 		if (conditionSvc.Evaluate(this))
 		{
 			logger.LogMessage(LogCategories.getInstruction(), "Execute task {0}", this.getTaskName());
-			IJob job = this.getSite().getService2(IJob.class);
+			IJob job = this.getSite().getService(IJob.class);
 			java.lang.Class t = job.ResolveInstructionType(this.getTaskNamespaceUri() , this.getTaskName());
 			ITask task = (ITask)t.newInstance();
 			ServiceContainer taskSite = new ServiceContainer();
@@ -195,7 +195,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 			}
 			finally
 			{
-				IStatusBarService statusBar = this.getSite().getService2(IStatusBarService.class);
+				IStatusBarService statusBar = this.getSite().getService(IStatusBarService.class);
 				if (statusBar != null)
 				{
 					statusBar.setStatus("");
@@ -214,7 +214,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 	{
 
 		java.lang.Class taskType = task.getClass();
-		IConditionService condition = (IConditionService)this.getSite().getService(IConditionService.class);
+		IConditionService condition = (IConditionService)this.getSite().getService2(IConditionService.class);
 
 		Enumerable<Field> fields = new Enumerable<Field>(taskType.getFields());
 		
@@ -308,7 +308,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 			}
 		}
 
-		IJob job = (IJob)this.getSite().getService(IJob.class);
+		IJob job = (IJob)this.getSite().getService2(IJob.class);
 		job.SetProperty(output.getPropertyName(), text.toString());
 
 	}
@@ -351,7 +351,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 					paths = (Iterable<String>)value;
 				}
 
-				IJobEngine engine = this.getSite().getRequiredService2(IJobEngine.class);
+				IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
 				java.util.ArrayList<TaskItem> list = new java.util.ArrayList<TaskItem>();
 				for (Object o : paths)
 				{
@@ -385,7 +385,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		if (items != null && items.length > 0)
 		{
 
-			IJob job = this.getSite().getService2(IJob.class);
+			IJob job = this.getSite().getService(IJob.class);
 			TaskItemGroup group = job.AddTaskItemGroup();
 			for (TaskItem item : items)
 			{
@@ -472,7 +472,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 	private void SetInlineValue(ITask task, Field mi, final String elementName, boolean parseInline) throws Exception
 	{
-		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 
 		Element element = new Enumerable<Element>(this._inlineElements).firstOrDefault(new Predicate<Element>(){
 
@@ -492,7 +492,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 	private void SetScalarValue(ITask task, Field mi, String param) throws Exception
 	{
-		IStringParser parser = this.getSite().getRequiredService2(IStringParser.class);
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 		String str = parser.Parse(this._properties.get(param));
 		if (!StringUtils2.isNullOrEmpty(str))
 		{
@@ -508,7 +508,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		java.lang.Class memberType = this.GetMemberInfoType(mi);
 		java.lang.Class elementType = memberType.getComponentType();
 		
-		IStringParser parser = (IStringParser)this.getSite().getRequiredService2(IStringParser.class);
+		IStringParser parser = (IStringParser)this.getSite().getRequiredService(IStringParser.class);
 		String str = parser.Parse(this._properties.get(param));
 		if (!StringUtils2.isNullOrEmpty(str))
 		{
@@ -531,14 +531,14 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 	private void SetTaskItemsValue(ITask task, Field mi, String param) throws Exception
 	{
-		IItemParser parser = this.getSite().getRequiredService2(IItemParser.class);
+		IItemParser parser = this.getSite().getRequiredService(IItemParser.class);
 		TaskItem[] items = parser.ParseItem(this._properties.get(param));
 		this.SetMemberInfoValue(mi, task, items);
 	}
 
 	private void SetTaskItemValue(ITask task, Field mi, String param) throws Exception
 	{
-		IItemParser parser = this.getSite().getRequiredService2(IItemParser.class);
+		IItemParser parser = this.getSite().getRequiredService(IItemParser.class);
 		TaskItem[] items = parser.ParseItem(this._properties.get(param));
 		if (items.length == 1)
 		{

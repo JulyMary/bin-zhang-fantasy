@@ -1,11 +1,14 @@
 ﻿package fantasy.jobs;
 
+import org.jdom2.Element;
+import org.jdom2.Namespace;
+import fantasy.*;
+
 import fantasy.xserialization.*;
 
 public abstract class Sequence extends AbstractInstruction
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Serializer = typeof(InstructionsSerializer))]
+	@XArray(serializer = InstructionsSerializer.class, items={})
 	private java.util.ArrayList<IInstruction> _instructions = new java.util.ArrayList<IInstruction>();
 
 	public final java.util.List<IInstruction> getInstructions()
@@ -13,27 +16,25 @@ public abstract class Sequence extends AbstractInstruction
 		return _instructions;
 	}
 
+	@XNamespace
+	protected Namespace[] _namespaces;
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning disable 169
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XNamespace]
-	protected XmlNamespaceManager _namespaces;
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-///#pragma warning restore 169
-
-	protected final void ResetSequenceIndex()
+	protected final void ResetSequenceIndex() throws Exception
 	{
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IJob job = (IJob)this.getSite().getRequiredService(IJob.class);
 		job.getRuntimeStatus().getLocal().setItem("sequence.current", 0);
 	}
 
-	protected void ExecuteSequence()
+	protected void ExecuteSequence() throws Exception
 	{
-		IJob job = (IJob)this.Site.GetService(IJob.class);
+		IJob job = (IJob)this.getSite().getRequiredService(IJob.class);
 		int index = (int)job.getRuntimeStatus().getLocal().GetValue("sequence.current", 0);
 		while (index < this.getInstructions().size())
 		{
+			if(Thread.interrupted())
+			{
+				throw new InterruptedException();
+			}
 			job.ExecuteInstruction(this.getInstructions().get(index));
 
 			index++;
@@ -42,59 +43,56 @@ public abstract class Sequence extends AbstractInstruction
 		}
 	}
 
-	private static class InstructionsSerializer extends IXCollectionSerializer
+	@SuppressWarnings("rawtypes") 
+	private static class InstructionsSerializer implements IXCollectionSerializer
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXCollectionSerializer Members
 
-	public final void Save(IServiceProvider context, XElement element, Iterable collection)
-	{
-		for (Object inst : collection)
+
+		public final void Save(IServiceProvider context, Element element,Iterable collection) throws Exception
 		{
-			java.lang.Class t = inst.getClass();
-			XSerializer tempVar = new XSerializer(t);
-			tempVar.Context = context;
-			XSerializer ser = tempVar;
-			XElement childElement;
-			if (t != ExecuteTaskInstruction.class)
+			for (Object inst : collection)
 			{
-				childElement = ser.Serialize(inst);
-			}
-			else
-			{
-				ExecuteTaskInstruction taskInst = (ExecuteTaskInstruction)inst;
-				//string prefix = element.GetPrefixOfNamespace(taskInst.TaskNamespaceUri);
-				childElement = new XElement((XNamespace)taskInst.getTaskNamespaceUri() + taskInst.getTaskName());
-				ser.Serialize(childElement, taskInst);
-			}
+				java.lang.Class t = inst.getClass();
+				XSerializer tempVar = new XSerializer(t);
+				tempVar.setContext(context);
+				XSerializer ser = tempVar;
+				Element childElement;
+				if (t != ExecuteTaskInstruction.class)
+				{
+					childElement = ser.serialize(inst);
+				}
+				else
+				{
+					ExecuteTaskInstruction taskInst = (ExecuteTaskInstruction)inst;
+					childElement = new Element(taskInst.getTaskName(), Namespace.getNamespace(taskInst.getTaskNamespaceUri()));
+					ser.serialize(childElement, taskInst);
+				}
 
-			element.Add(childElement);
-		}
-	}
-
-	public final Iterable Load(IServiceProvider context, XElement element)
-	{
-		IJob job = (IJob)context.GetService(IJob.class);
-		java.util.ArrayList rs = new java.util.ArrayList();
-		for (XElement childElement : element.Elements())
-		{
-			java.lang.Class t = job.ResolveInstructionType(childElement.getName());
-			if (Array.indexOf(t.GetInterfaces(), IInstruction.class) < 0)
-			{
-				t = ExecuteTaskInstruction.class;
+				element.addContent(childElement);
 			}
-			XSerializer tempVar = new XSerializer(t);
-			tempVar.Context = context;
-			XSerializer ser = tempVar;
-			Object inst = ser.Deserialize(childElement);
-			rs.add(inst);
 		}
 
-		return rs;
+		public final Iterable Load(IServiceProvider context, Element element) throws Exception
+		{
+			IJob job = context.getService(IJob.class);
+			java.util.ArrayList<Object> rs = new java.util.ArrayList<Object>();
+			for (Element childElement : element.getChildren())
+			{
+				java.lang.Class t = job.ResolveInstructionType(childElement.getNamespaceURI(), childElement.getName());
+				if (ITask.class.isAssignableFrom(t))
+				{
+					t = ExecuteTaskInstruction.class;
+				}
+				XSerializer ser = new XSerializer(t);
+				ser.setContext(context);
+
+				Object inst = ser.deserialize(childElement);
+				rs.add(inst);
+			}
+
+			return rs;
+
+		}
 
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-}
 }

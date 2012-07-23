@@ -13,8 +13,8 @@ public class Choose extends AbstractInstruction
 	@Override
 	public void Execute() throws Exception
 	{
-		IJob job = (IJob)this.getSite().getService(Job.class);
-		IConditionService conditionService = (IConditionService)this.getSite().getService(IConditionService.class);
+		IJob job = (IJob)this.getSite().getService2(Job.class);
+		IConditionService conditionService = (IConditionService)this.getSite().getService2(IConditionService.class);
 		When chose = null;
 		int index = (int)job.getRuntimeStatus().getLocal().GetValue("chose", -1);
 		if (index == -1)

@@ -10,7 +10,7 @@ public class When extends Sequence
 	public String Condition = null;
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
 		this.ExecuteSequence();
 	}

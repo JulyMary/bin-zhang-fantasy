@@ -13,7 +13,7 @@ public final class JobState
 
 	public static final int Succeed = Terminated  | 0x10;
 	public static final int Failed = Terminated | 0x20;
-	public static final int Cancelled = Terminated | (int)0x40;
+	public static final int Cancelled = Terminated | 0x40;
 	public static final int All = Running | RequestStart | Suspended | Unstarted | UserPaused | Suspended | Failed | Cancelled;
 
 	public static String ToString(int state)

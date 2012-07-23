@@ -1,7 +1,5 @@
 package fantasy.jobs.properties;
 
-import java.util.Locale;
-
 public final class Resources {
 
 	private Resources()
@@ -90,17 +88,42 @@ public final class Resources {
 		return null;
 	}
 
-	public static Locale getSetTaskParamErrorText() {
+	public static String getSetTaskParamErrorText() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public static Locale getInlineTaskMemberMustBeElementText() {
+	public static String getInlineTaskMemberMustBeElementText() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public static String getRequireAttrubiteOfTaskText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getStringParserUndefinedTagWarningText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getTargetTermianteText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getTargetContinueText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getUnitlSuccessFailedText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getUntilSuccessAllSkippedText() {
 		// TODO Auto-generated method stub
 		return null;
 	}

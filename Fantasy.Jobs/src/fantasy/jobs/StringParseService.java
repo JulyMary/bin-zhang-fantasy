@@ -1,40 +1,76 @@
 ﻿package fantasy.jobs;
 
-import fantasy.jobs.Properties.*;
+import java.util.*;
+import java.util.regex.*;
+
+import fantasy.collections.*;
+import fantasy.jobs.properties.*;
 import fantasy.servicemodel.*;
+import fantasy.*;
 
 public class StringParseService extends AbstractService implements IStringParser
 {
-	public StringParseService()
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6646487132759689523L;
+
+	public StringParseService() throws Exception
 	{
-		this._providers = AddIn.<ITagValueProvider>CreateObjects("jobEngine/tagValueProviders/provider");
+		
+	}
+	
+
+	
+	@Override
+	public void initializeService() throws Exception
+	{
+		this._providers = AddIn.CreateObjects(ITagValueProvider.class, "jobEngine/tagValueProviders/provider");
+		for (Object o : this._providers)
+		{
+			if (o instanceof IObjectWithSite)
+			{
+				((IObjectWithSite)o).setSite(this.getSite());
+			}
+		}
+		super.initializeService();
 	}
 
 	protected ITagValueProvider[] _providers;
 
-	public final String Parse(String value, java.util.Map<String, Object> context)
+	public final String Parse(String value, Map<String, Object> context) throws Exception
 	{
 
 		if (value != null)
 		{
-			if (context == null)
-			{
-				context = new java.util.HashMap<String, Object>();
-			}
+			
+			final Map<String, Object> context2 = context == null ? new java.util.HashMap<String, Object>() : context;
+			
+			
 			StringBuilder prefixes = new StringBuilder();
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			Iterable<ITagValueProvider> providers = this._providers.Where(x => x.IsEnabled(context));
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			for (char prefix : providers.Select(p => p.Prefix).Distinct())
+
+			Enumerable<ITagValueProvider> enabledProviders = new Enumerable<ITagValueProvider>(this._providers).where(new Predicate<ITagValueProvider>(){
+
+				@Override
+				public boolean evaluate(ITagValueProvider obj) throws Exception {
+					return obj.IsEnabled(context2);
+				}});
+			
+			Enumerable<Character> chars = enabledProviders.select(new Selector<ITagValueProvider, Character>(){
+
+				@Override
+				public Character select(ITagValueProvider item) {
+					return item.getPrefix();
+				}}).Distinct();
+
+			for (Character prefix : chars)
 			{
 				prefixes.append('\\');
 				prefixes.append(prefix);
 			}
 			String tagRegex = "(?<prefix>[" + prefixes.toString() + "])\\((?<tag>[^)]+)\\)";
-			String rs = InnerParse(value, context, providers, tagRegex);
+			String rs = InnerParse(value, context, enabledProviders, tagRegex);
 			return rs;
 		}
 		else
@@ -44,23 +80,23 @@ public class StringParseService extends AbstractService implements IStringParser
 
 	}
 
-	private String InnerParse(String value, java.util.Map<String, Object> context, Iterable<ITagValueProvider> providers, String tagRegex)
+	private String InnerParse(String value, java.util.Map<String, Object> context, Iterable<ITagValueProvider> providers, String tagRegex) throws Exception
 	{
-		Regex reg = new Regex(tagRegex);
+		Pattern reg = Pattern.compile(tagRegex);
 		StringBuilder rs = new StringBuilder();
 		int s = 0;
 		while (s < value.length())
 		{
-			Match m = reg.Match(value, s);
-			if (m.Success)
+			Matcher m = reg.matcher(value.substring(s));
+			if (m.lookingAt())
 			{
-				rs.append(value.substring(s, m.Index));
-				String tagValue = this.GetTagValue(m.Groups["prefix"].getValue(), m.Groups["tag"].getValue(), context, providers);
+				rs.append(value.substring(s, m.start()));
+				String tagValue = this.GetTagValue(m.group("prefix"), m.group("tag"), context, providers);
 				if (tagValue != null)
 				{
 					rs.append(this.InnerParse(tagValue, context, providers, tagRegex));
 				}
-				s = m.Index + m.getLength();
+				s = m.end();
 			}
 			else
 			{
@@ -72,21 +108,21 @@ public class StringParseService extends AbstractService implements IStringParser
 		return rs.toString();
 	}
 
-	private String GetTagValue(String prefix, String tag, java.util.Map<String, Object> context, Iterable<ITagValueProvider> providers)
+	private String GetTagValue(String prefix, String tag, java.util.Map<String, Object> context, Iterable<ITagValueProvider> providers) throws Exception
 	{
 		for (ITagValueProvider provider : providers)
 		{
 			if ((new Character(provider.getPrefix())).toString().equals(prefix) && provider.HasTag(tag, context))
 			{
 				String rs = provider.GetTagValue(tag, context);
-				if (!DotNetToJavaStringHelper.isNullOrEmpty(rs) && (boolean)context.GetValueOrDefault("c#-style-string", false))
+				if (!StringUtils2.isNullOrEmpty(rs) &&  MapUtils.getValueOrDefault(context, "c#-style-string", false))
 				{
 					StringBuilder sb = new StringBuilder();
-					for (char c : rs)
+					for (char c : rs.toCharArray())
 					{
 						switch (c)
 						{
-							case '\a':
+							case '\u0007':
 								sb.append("\\a");
 								break;
 							case '\b':
@@ -104,7 +140,7 @@ public class StringParseService extends AbstractService implements IStringParser
 							case '\t':
 								sb.append("\\t");
 								break;
-							case '\v':
+							case '\u000b':
 								sb.append("\\v");
 								break;
 							case '\'':
@@ -127,33 +163,30 @@ public class StringParseService extends AbstractService implements IStringParser
 
 		if (this.getLogger() != null)
 		{
-			this.getLogger().LogWarning("StringParse", Properties.Resources.getStringParserUndefinedTagWarningText(), prefix, tag);
+			this.getLogger().LogWarning("StringParse", Resources.getStringParserUndefinedTagWarningText(), prefix, tag);
 		}
 
 		return "";
 	}
 
 	private ILogger _logger;
-	public final ILogger getLogger()
+	public final ILogger getLogger() throws Exception
 	{
-		if (_logger == null && this.Site != null)
+		if (_logger == null && this.getSite() != null)
 		{
-			_logger = (ILogger)this.Site.GetService(ILogger.class);
+			_logger = (ILogger)this.getSite().getService(ILogger.class);
 		}
 		return _logger;
 	}
 
+
+
 	@Override
-	public void InitializeService()
-	{
-		for (Object o : this._providers)
-		{
-			if (o instanceof IObjectWithSite)
-			{
-				((IObjectWithSite)o).Site = this.Site;
-			}
-		}
-		super.InitializeService();
+	public String Parse(String value) throws Exception {
+		
+		return this.Parse(value, null);
 	}
+
+	
 
 }

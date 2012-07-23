@@ -1,17 +1,18 @@
 ﻿package fantasy.jobs;
 
+import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("stateBag", NamespaceUri=Consts.XNamespaceURI)]
+@XSerializable(name = "stateBag", namespaceUri=Consts.XNamespaceURI)
 public class StateBag implements IStateBag
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Serializer=typeof(StateBagItemsSerializer))]
-	private java.util.ArrayList<StateBagItem> _items = new java.util.ArrayList<StateBagItem>();
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IStateBag Members
+	@XArray(serializer=StateBagItemsSerializer.class, items = {})
+	private ArrayList<StateBagItem> _items = new ArrayList<StateBagItem>();
+
 
 	public final Object getItem(String name)
 	{
@@ -31,16 +32,17 @@ public class StateBag implements IStateBag
 			StateBagItem tempVar = new StateBagItem();
 			tempVar.setName(name);
 			tempVar.setValue(value);
-			this._items.add(~index, tempVar);
+			this._items.add(tempVar);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public final <T> T GetValue(String name, T defaultValue)
 	{
 		int index = this.indexOf(name);
 		if (index >= 0)
 		{
-			return (T)this._items[index].getValue();
+			return (T)this._items.get(index).getValue();
 		}
 		else
 		{
@@ -49,11 +51,20 @@ public class StateBag implements IStateBag
 		}
 	}
 
-	private int IndexOf(String name)
+	private int indexOf(String name)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		int rs = _items.BinarySearchBy(name, item => item.getName(), StringComparer.OrdinalIgnoreCase);
-		return rs;
+
+		for(int i = 0; i < this._items.size(); i ++)
+		{
+			if(StringUtils.equalsIgnoreCase(name,  this._items.get(i).getName()))
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+		
+		
 	}
 
 	public final int getCount()
@@ -63,8 +74,13 @@ public class StateBag implements IStateBag
 
 	public final String[] getNames()
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		return (from state in this._items select state.getName()).toArray();
+		ArrayList<String> rs = new ArrayList<String>(this._items.size());
+		for(StateBagItem item : this._items)
+		{
+			rs.add(item.getName());
+		}
+		
+		return rs.toArray(new String[0]);
 	}
 
 	public final void Remove(String name)
@@ -81,33 +97,12 @@ public class StateBag implements IStateBag
 		this._items.clear();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IEnumerable<StateItem> Members
-
-	public final java.util.Iterator<StateBagItem> GetEnumerator()
+	public final java.util.Iterator<StateBagItem> iterator()
 	{
 		return this._items.iterator();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IEnumerable Members
-
-	private java.util.Iterator GetEnumerator()
-	{
-		return this.iterator();
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IStateBag Members
 
 
 	public final boolean ContainsState(String name)
@@ -115,6 +110,4 @@ public class StateBag implements IStateBag
 		return this.indexOf(name) >= 0;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

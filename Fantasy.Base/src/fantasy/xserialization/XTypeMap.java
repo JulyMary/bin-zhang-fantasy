@@ -229,7 +229,8 @@ public class XTypeMap
 	{
 
 
-
+        try
+        {
 		Enumerable<Field> fields = new Enumerable<Field>(this.GetAllMembers()).where(new Predicate<Field>(){
 
 			@Override
@@ -246,6 +247,11 @@ public class XTypeMap
 			map.setOrder(anno.order());
 			this.getElementMaps().add(map);
 		}
+        }
+        catch(Exception error)
+        {
+        	
+        }
 
 	}
 
@@ -262,7 +268,7 @@ public class XTypeMap
 	{
 		if (this._namespaceMap != null)
 		{
-			IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+			IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
 			if(filter == null || filter.filter(this._namespaceMap.getMember()) )
 			{
@@ -279,7 +285,7 @@ public class XTypeMap
 	{
 		if (this._valueMap != null && ! element.getValue().equals(""))
 		{
-			IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+			IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
 			if(filter == null || filter.filter(this._valueMap.getMember()) )
 			{
@@ -307,7 +313,7 @@ public class XTypeMap
 	private void LoadArrays(IServiceProvider context, Element element, Object instance) throws Exception
 	{
 
-		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
 
 		Enumerable<XArrayMap> maps = new Enumerable<XMemberMap>(this.getElementMaps()).ofType(XArrayMap.class);
@@ -405,7 +411,7 @@ public class XTypeMap
 
 	private void LoadChildElements(IServiceProvider context, Element element, Object instance) throws Exception
 	{
-		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
 
 		Enumerable<XElementMap> maps = new Enumerable<XMemberMap>(this.getElementMaps()).ofType(XElementMap.class);
@@ -453,7 +459,7 @@ public class XTypeMap
 	private void LoadAttributes(IServiceProvider context,Element element, Object instance) throws Exception
 	{
 
-		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
 
 
@@ -477,7 +483,7 @@ public class XTypeMap
 
 	public final void SaveByXAttributes(IServiceProvider context, Element element, Object instance) throws Exception
 	{
-		IFieldFilter filter = context != null ? (IFieldFilter)context.getService(IFieldFilter.class) : null;
+		IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
 		if(this._namespaceMap != null)
 		{

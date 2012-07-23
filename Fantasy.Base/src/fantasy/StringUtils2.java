@@ -158,10 +158,11 @@ public class StringUtils2 {
 	    return _newline;
 	}
 	
-	public static String[] split(String str, String separator, boolean removeEmptyEntites)
+	
+	public static String[] split(String str, String separator, int max,  boolean removeEmptyEntites) throws Exception
 	{
-		  String[] rs;
-	      String[] temp = StringUtils.split(str, separator);
+		 String[] rs;
+	      String[] temp = StringUtils.split(str, separator, max);
 	      
 	      if(removeEmptyEntites)
 	      {
@@ -180,6 +181,11 @@ public class StringUtils2 {
 	      }
 	      
 	      return rs;
+	}
+	
+	public static String[] split(String str, String separator, boolean removeEmptyEntites) throws Exception
+	{
+		 return split(str, separator, Integer.MAX_VALUE, removeEmptyEntites);
 	      
 	}
 	

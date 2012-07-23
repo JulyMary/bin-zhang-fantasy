@@ -15,9 +15,6 @@ public abstract class LogFileService extends AbstractService implements ILogList
 {
 
 
-
-	
-
 	/**
 	 * 
 	 */
@@ -30,22 +27,26 @@ public abstract class LogFileService extends AbstractService implements ILogList
 
 	String _newline = System.getProperty("line.separator");
 	private static SimpleDateFormat _roundTripFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"); 
+	protected String getCharset()
+	{
+		return "UTF-8'";
+	}
 	protected abstract OutputStreamWriter getWriter();
 
 	@Override
-	public void initializeService()
+	public void initializeService() throws Exception
 	{
 		_xmlOutputter = new XMLOutputter(Format.getCompactFormat().setLineSeparator(""));
-		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService(ILogger.class);
+		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService2(ILogger.class);
 		logger.AddListener(this);
 		super.initializeService();
 	}
 
 	@Override
-	public void uninitializeService()
+	public void uninitializeService() throws Exception
 	{
 		super.uninitializeService();
-		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService(ILogger.class);
+		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService2(ILogger.class);
 		logger.RemoveListener(this);
 	}
 
@@ -146,7 +147,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 		return element;
 	}
 
-	public void OnError(String category, Throwable exception, String message) throws Exception
+	public void onError(String category, Throwable exception, String message) throws Exception
 	{
 		Element element = new Element("error");
 		element.setAttribute("time", now());

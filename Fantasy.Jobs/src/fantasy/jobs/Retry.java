@@ -1,70 +1,79 @@
 ﻿package fantasy.jobs;
 
+import org.joda.time.Duration;
+
 import fantasy.xserialization.*;
 import fantasy.servicemodel.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("retry", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "retry", namespaceUri = Consts.XNamespaceURI)
 public class Retry extends Sequence
 {
 	public Retry()
 	{
-		this.size() = "1";
+		this.Count = "1";
 		this.Sleep = "00:00:00";
 	}
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
-		IJob job = this.getSite().<IJob>GetRequiredService();
-		IJobEngine engine = this.getSite().<IJobEngine>GetRequiredService();
-		ILogger logger = this.getSite().<ILogger>GetService();
+		IJob job = this.getSite().getRequiredService(IJob.class);
+		IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
+		ILogger logger = this.getSite().getService(ILogger.class);
 		boolean success = false;
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
-		int count = Integer.parseInt(parser.Parse(this.size()));
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
+		int count = Integer.parseInt(parser.Parse(this.Count));
 		int times = job.getRuntimeStatus().getLocal().GetValue("retry.times", 0);
-		TimeSpan sleep = TimeSpan.Parse(parser.Parse(this.Sleep));
+		Duration sleep = Duration.parse(parser.Parse(this.Sleep));
 		while (times < count && !success)
 		{
 
+			if(Thread.interrupted())
+			{
+				throw new InterruptedException();
+			}
 			try
 			{
 				this.ExecuteSequence();
 				success = true;
 			}
-			catch(RuntimeException error)
+		    catch(InterruptedException error)
+		    {
+		    	throw error;
+		    }
+			catch(Exception error)
 			{
-				if (!(error instanceof ThreadAbortException))
-				{
+				
 					times++;
 					job.getRuntimeStatus().getLocal().setItem("retry.times", times);
 					if (times < count)
 					{
 						job.getRuntimeStatus().getLocal().setItem("sequence.current", 0);
-						logger.LogError(LogCategories.getInstruction(), error, "Retry instruction catchs a exception, will try again later.");
-						if (sleep > TimeSpan.Zero)
+						Log.SafeLogError(logger, LogCategories.getInstruction(), error, "Retry instruction catchs a exception, will try again later.");
+						
+						if (sleep.isLongerThan(Duration.ZERO))
 						{
 						   engine.Sleep(sleep);
 						}
 					}
 					else
 					{
-						logger.LogError(LogCategories.getInstruction(), error, "Retry instruction catchs a exception and repeat times exceed maximum number ({0}).", this.size());
+						Log.SafeLogError(logger, LogCategories.getInstruction(), error, "Retry instruction catchs a exception and repeat times exceed maximum number (%1$s).", this.Count);
+						
 						throw error;
 					}
-				}
+				
 			}
 
 
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("count")]
+	@XAttribute(name = "count")
 	public String Count = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("sleep")]
+	@XAttribute(name = "sleep")
 	public String Sleep = null;
 
 }

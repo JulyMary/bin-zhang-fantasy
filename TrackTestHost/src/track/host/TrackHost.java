@@ -31,7 +31,7 @@ public class TrackHost {
     		message = reader.readLine();
     		if(!StringUtils2.isNullOrEmpty(message))
     		{
-    			provider.setItem("message", message);
+    			provider.setProperty("message", message);
     		}
     	}while(!StringUtils2.isNullOrEmpty(message));
     	

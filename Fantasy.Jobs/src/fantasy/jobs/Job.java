@@ -130,7 +130,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	{
 		if (_parser == null)
 		{
-			_parser = (IStringParser)this.Site.GetService(IStringParser.class);
+			_parser = (IStringParser)this.getSite().GetService(IStringParser.class);
 			if (_parser == null)
 			{
 				throw new ApplicationException("Missing IStringParserService.");
@@ -144,7 +144,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	{
 		if (_conditionService == null)
 		{
-			_conditionService = (IConditionService)this.Site.GetService(IConditionService.class);
+			_conditionService = (IConditionService)this.getSite().GetService(IConditionService.class);
 			if (_conditionService == null)
 			{
 				throw new ApplicationException("Missing IConditionService.");
@@ -158,7 +158,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	{
 		if (_logger == null)
 		{
-			_logger = (ILogger)this.Site.GetService(ILogger.class);
+			_logger = (ILogger)this.getSite().GetService(ILogger.class);
 		}
 		return _logger;
 	}
@@ -270,7 +270,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 
 	private IJobEngine getEngine()
 	{
-		return (IJobEngine)this.Site.GetService(IJobEngine.class);
+		return (IJobEngine)this.getSite().GetService(IJobEngine.class);
 	}
 
 	public final void Initialize()
@@ -379,7 +379,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 		this.AddPropertiesFromStartInfo(startInfo);
 		this.AddItemsFromStartInfo(startInfo);
 		this._templateName = startInfo.getTemplate();
-		IJobTemplatesService ts = (IJobTemplatesService)this.Site.GetService(IJobTemplatesService.class);
+		IJobTemplatesService ts = (IJobTemplatesService)this.getSite().GetService(IJobTemplatesService.class);
 		JobTemplate template = ts.GetJobTemplateByName(startInfo.getTemplate());
 		if (!DotNetToJavaStringHelper.isNullOrEmpty(startInfo.getTarget()))
 		{
@@ -502,7 +502,7 @@ public class Job extends MarshalByRefObject implements IJob, IObjectWithSite
 	private void AddInlcude(XElement element, JobTemplate template, int priority)
 	{
 		JobTemplate newTemplate;
-		IJobTemplatesService ts = (IJobTemplatesService)this.Site.GetService(IJobTemplatesService.class);
+		IJobTemplatesService ts = (IJobTemplatesService)this.getSite().GetService(IJobTemplatesService.class);
 		String name = (String)element.Attribute("name");
 		if (!DotNetToJavaStringHelper.isNullOrEmpty(name))
 		{

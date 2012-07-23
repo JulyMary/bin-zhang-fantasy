@@ -2,31 +2,34 @@
 
 import fantasy.xserialization.*;
 import fantasy.servicemodel.*;
+import fantasy.jobs.properties.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Instruction, XSerializable("until-success", NamespaceUri = Consts.XNamespaceURI)]
+@Instruction
+@XSerializable(name = "until-success", namespaceUri = Consts.XNamespaceURI)
 public class UntilSuccess extends AbstractInstruction
 {
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("failIfAllSkipped")]
+	@XAttribute(name = "failIfAllSkipped")
 	private boolean _failIfAllSkipped = true;
 
 
 
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
 		if (this._items.size() > 0)
 		{
-			IConditionService conditionSvc = this.getSite().<IConditionService>GetRequiredService();
-			IJob job = this.getSite().<IJob>GetRequiredService();
-			ILogger logger = this.getSite().<ILogger>GetService();
+			IConditionService conditionSvc = this.getSite().getRequiredService(IConditionService.class);
+			IJob job = this.getSite().getRequiredService(IJob.class);
+			ILogger logger = this.getSite().getService(ILogger.class);
 			int index = job.getRuntimeStatus().getLocal().GetValue("until-success.index", 0);
 			boolean success = false;
 			boolean hasException = false;
 			while (index < this._items.size() && !success)
 			{
+				if(Thread.interrupted())
+				{
+					throw new InterruptedException();
+				}
 				try
 				{
 					Try chance = this._items.get(index);
@@ -41,13 +44,13 @@ public class UntilSuccess extends AbstractInstruction
 					}
 					else
 					{
-						logger.LogMessage(LogCategories.getInstruction(), "Skip try No.{0}", index);
+						Log.SafeLogMessage(logger, LogCategories.getInstruction(), "Skip try No.{0}", index);
 					}
 
 				}
-				catch (ThreadAbortException e)
+				catch (InterruptedException e)
 				{
-
+                     throw e;
 				}
 				catch (RuntimeException error)
 				{
@@ -71,25 +74,27 @@ public class UntilSuccess extends AbstractInstruction
 				{
 					if (logger != null)
 					{
-						logger.LogError(LogCategories.getInstruction(), Properties.Resources.getUnitlSuccessFailedText());
+						logger.LogError(LogCategories.getInstruction(), Resources.getUnitlSuccessFailedText());
 					}
-					throw new JobException(Properties.Resources.getUnitlSuccessFailedText());
+					throw new JobException(Resources.getUnitlSuccessFailedText());
 				}
 				else
 				{
 					if (logger != null)
 					{
-						logger.LogError(LogCategories.getInstruction(), Properties.Resources.getUntilSuccessAllSkippedText());
+						logger.LogError(LogCategories.getInstruction(), Resources.getUntilSuccessAllSkippedText());
 
 					}
-					throw new JobException(Properties.Resources.getUntilSuccessAllSkippedText());
+					throw new JobException(Resources.getUntilSuccessAllSkippedText());
 				}
 			}
 
 		}
 	}
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Order = 10), XArrayItem(Name = "try", java.lang.Class = typeof(Try))]
+
+	
+	
+	@XArray(order = 10, items=@XArrayItem(name = "try", type = Try.class))
 	private java.util.List<Try> _items = new java.util.ArrayList<Try>();
 
 

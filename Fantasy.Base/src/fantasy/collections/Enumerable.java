@@ -44,9 +44,18 @@ public  class Enumerable<T> implements Iterable<T> {
 	}
 	
 
+	public Enumerable<T> Distinct()
+	{
+		HashSet<T> rs = new HashSet<T>();
+		for(T item : this._source)
+		{
+			rs.add(item);
+		}
+		return new Enumerable<T>(rs);
+	}
 
 	
-	public Enumerable<T> where(Predicate<T> predicate)
+	public Enumerable<T> where(Predicate<T> predicate) throws Exception
 	{
 		ArrayList<T> rs = new ArrayList<T>();
 		for(T item : _source)
@@ -61,7 +70,7 @@ public  class Enumerable<T> implements Iterable<T> {
 		return new Enumerable<T>(rs);
 	}
 
-	public  T firstOrDefault(Predicate<T> predicate)
+	public  T firstOrDefault(Predicate<T> predicate) throws Exception
 	{
 		for(T item : this._source)
 		{
@@ -74,7 +83,7 @@ public  class Enumerable<T> implements Iterable<T> {
 		return null;
 	}
 
-	public T first(Predicate<T> predicate)
+	public T first(Predicate<T> predicate) throws Exception
 	{
 		T rs = firstOrDefault(predicate);
 		if(rs == null)
@@ -196,11 +205,11 @@ public  class Enumerable<T> implements Iterable<T> {
 			TKey k2 = keySelector.select(o2);
 			
 			return innerComparator.compare(k1, k2);
-			
-			
 		}
 		
 	}
+	
+	
 	
 	
 	
