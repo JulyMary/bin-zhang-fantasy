@@ -6,7 +6,7 @@ import java.util.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.properties.*;
 import fantasy.servicemodel.*;
-//import fantasy.jobs.resources.*;
+import fantasy.jobs.resources.*;
 import fantasy.collections.*;
 import fantasy.io.*;
 import fantasy.*;
@@ -144,24 +144,28 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 	@Override
 	public void Execute() throws Exception
 	{
-		//TODO: implement resource service
-//		IResourceService resSvc = this.getSite().<IResourceService>GetService();
-//		if (resSvc != null)
-//		{
+		
+		IResourceService resSvc = this.getSite().getService(IResourceService.class);
+		if (resSvc != null)
+		{
+			
+			HashMap<String, String>parameters= new HashMap<String, String>();
+			parameters.put("taskname",  this.getTaskName());
+			parameters.put("namespace", this.getTaskNamespaceUri());
 
-//			ResourceParameter res = new ResourceParameter("RunTask", new { taskname = this.getTaskName(), namespace = this.getTaskNamespaceUri() });
-////			using (IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res }))
-//			IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res });
-//			try
-//			{
-//				InnerExecute();
-//			}
-//			finally
-//			{
-//				handle.dispose();
-//			}
-//		}
-//		else
+			ResourceParameter res = new ResourceParameter("RunTask", parameters);
+		
+			IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res });
+			try
+			{
+				InnerExecute();
+			}
+			finally
+			{
+				handle.dispose();
+			}
+		}
+		else
 		{
 			InnerExecute();
 		}
@@ -176,7 +180,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		{
 			logger.LogMessage(LogCategories.getInstruction(), "Execute task {0}", this.getTaskName());
 			IJob job = this.getSite().getService(IJob.class);
-			java.lang.Class t = job.ResolveInstructionType(this.getTaskNamespaceUri() , this.getTaskName());
+			java.lang.Class t = job.ResolveInstructionType(this.getTaskName(),this.getTaskNamespaceUri());
 			ITask task = (ITask)t.newInstance();
 			ServiceContainer taskSite = new ServiceContainer();
 			taskSite.initializeServices(this.getSite(), new Object[]{this, this._xmlNamespaceManager} );

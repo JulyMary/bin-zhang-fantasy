@@ -1,5 +1,7 @@
 package fantasy.jobs.properties;
 
+import java.util.Locale;
+
 public final class Resources {
 
 	private Resources()
@@ -124,6 +126,31 @@ public final class Resources {
 	}
 
 	public static String getUntilSuccessAllSkippedText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getMissingResourceNameText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getUnknownTaskText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getDulplicateTaskText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getUndefinedTargetText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getNoStartupTargetText() {
 		// TODO Auto-generated method stub
 		return null;
 	}

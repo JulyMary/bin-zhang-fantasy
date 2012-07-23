@@ -17,17 +17,14 @@ public class ResourceParameter implements Serializable
 		}
 		this.setName(name);
 
-       
+
 		if (values != null)
 		{
-			
-				for (java.util.Map.Entry<String, String> kv :  values.entrySet())
-				{
-					_values.put(kv.getKey(), kv.getValue());
-				}
-			
-			
 
+			for (java.util.Map.Entry<String, String> kv :  values.entrySet())
+			{
+				_values.put(kv.getKey(), kv.getValue());
+			}
 		}
 	}
 

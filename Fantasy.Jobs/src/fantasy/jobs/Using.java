@@ -1,32 +1,36 @@
 ﻿package fantasy.jobs;
 
+import java.util.regex.*;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fantasy.xserialization.*;
-import fantasy.jobs.resource.*;
+import fantasy.jobs.resources.*;
 import fantasy.jobs.properties.*;
+import fantasy.*;
 
 @Instruction
 @XSerializable(name = "using", namespaceUri = Consts.XNamespaceURI)
 public class Using extends Sequence
 {
 	@Override
-	public void Execute()
+	public void Execute() throws Exception
 	{
 		String[] strs = new String[] { this.Res, this.Res1, this.Res2, this.Res3, this.Res4, this.Res5, this.Res6, this.Res7, this.Res8, this.Res9 };
 		java.util.ArrayList<ResourceParameter> parameters = new java.util.ArrayList<ResourceParameter>();
 		for (String str : strs)
 		{
-			if (!StringUtils2.IsNullOrWhiteSpace(str))
+			if (!StringUtils2.isNullOrWhiteSpace(str))
 			{
 				ResourceParameter parameter = CreateParameterFromString(str);
 				parameters.add(parameter);
 			}
 		}
 
-		IResourceService svc = this.getSite().getService(IResourceService.Class);
+		IResourceService svc = this.getSite().getService(IResourceService.class);
 		if (parameters.size() > 0 && svc != null)
 		{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//			using (IResourceHandle handle = svc.Request(parameters.ToArray()))
+
 			IResourceHandle handle = svc.Request(parameters.toArray(new ResourceParameter[]{}));
 			try
 			{
@@ -43,29 +47,30 @@ public class Using extends Sequence
 		}
 	}
 
-	private ResourceParameter CreateParameterFromString(String text)
+	private ResourceParameter CreateParameterFromString(String text) throws Exception
 	{
 
 		ResourceParameter rs = new ResourceParameter();
 
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
+		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 		java.util.HashMap<String, Object> ctx = new java.util.HashMap<String, Object>();
-		Regex itemExpr = new Regex("(?<key>[^=]*)=(?<value>(\"(\\\\\"|[^\"])*\\\")|('(\\\\'|[^'])*\\')|([^;]*));?");
-		Regex quotaExpr = new Regex("^'(?<value>(\\\\'|[^'])*)\\'$");
-		Regex dquotaExpr = new Regex("^\"(?<value>(\\\\\"|[^\"])*)\\\"$");
+		Pattern itemExpr = Pattern.compile("(?<key>[^=]*)=(?<value>(\"(\\\\\"|[^\"])*\\\")|('(\\\\'|[^'])*\\')|([^;]*));?");
+		Pattern quotaExpr = Pattern.compile("^'(?<value>(\\\\'|[^'])*)\\'$");
+		Pattern dquotaExpr = Pattern.compile("^\"(?<value>(\\\\\"|[^\"])*)\\\"$");
 
-		for (Match itemMatch : itemExpr.Matches(text))
+		Matcher itemMatch = itemExpr.matcher(text);
+		while (itemMatch.find())
 		{
-			String key = itemMatch.Groups["key"].getValue();
-			String value = itemMatch.Groups["value"].getValue();
+			String key = itemMatch.group("key");
+			String value = itemMatch.group("value");
 			boolean isCsString = false;
 
-			for (Regex strReg : new Regex[] { quotaExpr, dquotaExpr })
+			for (Pattern strReg : new Pattern[] { quotaExpr, dquotaExpr })
 			{
-				Match strMatch = strReg.Match(value);
-				if (strMatch.Success)
+				Matcher strMatch = strReg.matcher(value);
+				if (strMatch.matches())
 				{
-					value = strMatch.Groups["value"].getValue();
+					value = strMatch.group("value");
 					isCsString = true;
 					break;
 				}
@@ -80,7 +85,7 @@ public class Using extends Sequence
 				value = DecodeCsString(value);
 			}
 
-			if (StringComparer.OrdinalIgnoreCase.Compare("name", key) == 0)
+			if (StringUtils.equalsIgnoreCase("name", key))
 			{
 				rs.setName(value);
 			}
@@ -102,75 +107,65 @@ public class Using extends Sequence
 
 	private String DecodeCsString(String text)
 	{
-		Regex reg = new Regex("\\\\(0x(?<hex4>[0-9a-fA-F]{4})|0x(?<hex2>[0-9a-fA-F]{2})|(?<oct>[0-7]{3})|(?<char>.?))");
+		Pattern reg = Pattern.compile("\\\\(0x(?<hex4>[0-9a-fA-F]{4})|0x(?<hex2>[0-9a-fA-F]{2})|(?<oct>[0-7]{3})|(?<char>.?))");
 		StringBuilder rs = new StringBuilder();
 		int s = 0;
 		while (s < text.length())
 		{
-			Match m = reg.Match(text, s);
-			if (m.Success)
+			Matcher m = reg.matcher(text.substring(s));
+			if (m.lookingAt())
 			{
-				rs.append(text.substring(s, m.Index));
+				rs.append(text.substring(s, m.start()));
 
 				char value;
-				if (m.Groups["hex4"].Success)
+				if (m.group("hex4") != null)
 				{
-					value = Convert.ToChar(Integer.parseInt(m.Groups["hex4"].getValue(), 16));
+					value = (char)Integer.parseInt(m.group("hex4"), 16);
 				}
-				else if (m.Groups["hex2"].Success)
+				else if (m.group("hex2") != null)
 				{
-					value = Convert.ToChar(Integer.parseInt(m.Groups["hex2"].getValue(), 16));
+					value =(char)Integer.parseInt(m.group("hex2"), 16);
 				}
-				else if (m.Groups["oct"].Success)
+				else if (m.group("oct") != null)
 				{
-					value = Convert.ToChar(Integer.parseInt(m.Groups["oct"].getValue(), 8));
+					value = (char)Integer.parseInt(m.group("oct"), 8);
 				}
 				else
 				{
-//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
-//					switch (m.group("char").Value)
-//ORIGINAL LINE: case "a":
-					if (m.group("char").getValue().equals("a"))
+
+					if (m.group("char").equals("a"))
 					{
 							value = '\u0007';
 					}
-//ORIGINAL LINE: case "b":
-					else if (m.group("char").getValue().equals("b"))
+					else if (m.group("char").equals("b"))
 					{
 							value = '\b';
 					}
-//ORIGINAL LINE: case "f":
-					else if (m.group("char").getValue().equals("f"))
+					else if (m.group("char").equals("f"))
 					{
 							value = '\f';
 					}
-//ORIGINAL LINE: case "n":
-					else if (m.group("char").getValue().equals("n"))
+					else if (m.group("char").equals("n"))
 					{
 							value = '\n';
 					}
-//ORIGINAL LINE: case "r":
-					else if (m.group("char").getValue().equals("r"))
+					else if (m.group("char").equals("r"))
 					{
 							value = '\r';
 					}
-//ORIGINAL LINE: case "t":
-					else if (m.group("char").getValue().equals("t"))
+					else if (m.group("char").equals("t"))
 					{
 							value = '\t';
 					}
-//ORIGINAL LINE: case "v":
-					else if (m.group("char").getValue().equals("v"))
+					else if (m.group("char").equals("v"))
 					{
 							value = '\u000b';
 					}
-//ORIGINAL LINE: case "'":
-					else if (m.group("char").getValue().equals("'"))
+					else if (m.group("char").equals("'"))
 					{
 							value = '\'';
 					}
-//ORIGINAL LINE: case "\\":
-					else if (m.group("char").getValue().equals("\\"))
+					else if (m.group("char").equals("\\"))
 					{
 							value = '\\';
 					}
@@ -181,7 +176,7 @@ public class Using extends Sequence
 					}
 				}
 				rs.append(value);
-				s = m.Index + m.getLength();
+				s = m.end();
 			}
 			else
 			{
@@ -193,44 +188,39 @@ public class Using extends Sequence
 		return rs.toString();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res")]
+	@XAttribute(name = "res")
 	public String Res = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res1")]
+	@XAttribute(name ="res1")
 	public String Res1 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res2")]
+	@XAttribute(name ="res2")
 	public String Res2 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res3")]
+
+	@XAttribute(name ="res3")
 	public String Res3 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res4")]
+	@XAttribute(name ="res4")
 	public String Res4 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res5")]
+
+	@XAttribute(name ="res5")
 	public String Res5 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res6")]
+
+	@XAttribute(name ="res6")
 	public String Res6 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res7")]
+
+	@XAttribute(name ="res7")
 	public String Res7 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res8")]
+
+	@XAttribute(name ="res8")
 	public String Res8 = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("res9")]
+	@XAttribute(name ="res9")
 	public String Res9 = null;
 
 

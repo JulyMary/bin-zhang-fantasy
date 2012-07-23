@@ -20,6 +20,6 @@ public interface IJobEngine extends IServiceProvider
 	void AddHandler(IJobEngineEventHandler handler);
 	void RemoveHandler(IJobEngineEventHandler handler);
 
-	void SaveStatusForError(RuntimeException error);
+	void SaveStatusForError(Exception error);
 	void SaveStatus();
 }
