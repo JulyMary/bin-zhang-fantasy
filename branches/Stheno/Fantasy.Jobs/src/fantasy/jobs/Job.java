@@ -8,15 +8,13 @@ import fantasy.*;
 import fantasy.collections.*;
 
 import fantasy.io.Path;
-import fantasy.jobs.properties.*;
 import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
-import fantasy.jobs.*;
 import fantasy.jobs.resources.*;
-import fantasy.servicemodel.*;
-
 import org.apache.commons.lang3.StringUtils;
 import org.jdom2.*;
+import org.jdom2.filter.*;
+import org.jdom2.xpath.*;
 
 
 
@@ -54,7 +52,7 @@ public class Job  implements IJob, IObjectWithSite
 
 	public void RemoveProperty(String name)
 	{
-		//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
+		
 		int index = CollectionUtils.binarySearchBy(this._properties, name, new Selector<JobProperty, String>(){
 
 			@Override
@@ -156,17 +154,6 @@ public class Job  implements IJob, IObjectWithSite
 		}
 		return _conditionService;
 	}
-
-	private ILogger _logger;
-	private ILogger getLogger() throws Exception
-	{
-		if (_logger == null)
-		{
-			_logger = (ILogger)this.getSite().getService(ILogger.class);
-		}
-		return _logger;
-	}
-
 
 	public TaskItem AddTaskItem(String name, String category)
 	{
@@ -676,7 +663,7 @@ public class Job  implements IJob, IObjectWithSite
 
 	public void ExecuteTarget(final String targetName) throws Exception
 	{
-		//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
+		
 		Target target = new Enumerable<Target>(this._targets).singleOrDefault(new Predicate<Target>(){
 
 			@Override
@@ -735,62 +722,68 @@ public class Job  implements IJob, IObjectWithSite
 		_isNested = value;
 	}
 
-
-	private ResourceParameter[] CreateExecuteResourceParameters()
+	 @SuppressWarnings("unused")
+	private ResourceParameter[] CreateExecuteResourceParameters() throws Exception
 	{
 		java.util.ArrayList<ResourceParameter> rs = new java.util.ArrayList<ResourceParameter>();
 		if (! getIsNested())
 		{
-			//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-			rs.add(new ResourceParameter("RunJob", new { template = this._templateName }));
+			
+			rs.add(new ResourceParameter(new Resource(){ String name = "RunJob"; String template = Job.this._templateName; }));
 		}
-		IStringParser parser = this.getEngine().<IStringParser>GetRequiredService();
-		String waitAll = parser.Parse(this.GetProperty("WaitAll"));
+		IStringParser parser = this.getEngine().getRequiredService(IStringParser.class);
+		final String waitAll = parser.Parse(this.GetProperty("WaitAll"));
 
 		if (!StringUtils2.isNullOrEmpty(waitAll))
 		{
-			//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-			rs.add(new ResourceParameter("WaitFor", new { jobs = waitAll, mode = WaitForMode.All}));
+			
+			rs.add(new ResourceParameter(new Resource() {String name="WaitFor"; String jobs = waitAll; WaitForMode mode = WaitForMode.All;}));
 		}
 
 		String waitAny = parser.Parse(this.GetProperty("WaitAny"));
 
 		if (!StringUtils2.isNullOrEmpty(waitAny))
 		{
-			//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-			rs.add(new ResourceParameter("WaitFor", new { jobs = waitAll, mode = WaitForMode.Any }));
+			
+			rs.add(new ResourceParameter(new Resource() {String name="WaitFor"; String jobs = waitAll; WaitForMode mode = WaitForMode.Any;}));
 		}
 
 		return rs.toArray(new ResourceParameter[]{});
 	}
 
 
-	public final void LoadStatus(Element element)
+	public final void LoadStatus(Element element) throws Exception
 	{
 
-		XmlNamespaceManager nsMgr = new XmlNamespaceManager(new NameTable());
-		nsMgr.AddNamespace("cvj", Consts.XNamespaceURI);
+		
+		Namespace ns = Namespace.getNamespace(Consts.XNamespaceURI, "j");
+		
+		XPathExpression<Element> xpath = XPathFactory.instance().compile("/j:job/j:imports/:import", new ElementFilter(), null, ns);
+		
 		XSerializer impSer = new XSerializer(ImportAssembly.class);
 
-		for (Element ele : element.XPathSelectElements("/cvj:job/cvj:imports/cvj:import", nsMgr))
+		for (Element ele : xpath.evaluate(element))
 		{
-			ImportAssembly ia = (ImportAssembly)impSer.Deserialize(ele);
+			ImportAssembly ia = (ImportAssembly)impSer.deserialize(ele);
 			this.LoadAssembly(ia.LoadAssembly(null));
 		}
 
-		XSerializer tempVar = new XSerializer(Job.class);
-		tempVar.Context = this.getSite();
-		XSerializer jobser = tempVar;
+		XSerializer jobser = new XSerializer(Job.class);
+		jobser.setContext(this.getSite());
+		
 
-		jobser.Deserialize(element, this);
+		jobser.deserialize(element, this);
 
 	}
 
-	public final Element SaveStatus()
+	public final Element SaveStatus() throws Exception
 	{
-		XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+		
+		Namespace ns = Namespace.getNamespace(Consts.XNamespaceURI, "j");
+		
+		
 		XSerializer ser = new XSerializer(Job.class);
-		Element rs = ser.Serialize(this,ns);
+		Element rs = ser.serialize(this,new Namespace[]{ns});
 		return rs;
 	}
 

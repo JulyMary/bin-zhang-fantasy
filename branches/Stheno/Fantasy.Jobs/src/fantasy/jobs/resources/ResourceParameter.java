@@ -1,6 +1,12 @@
 ﻿package fantasy.jobs.resources;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+
+import org.apache.commons.lang3.StringUtils;
+
+import fantasy.collections.*;
 
 public class ResourceParameter implements Serializable
 {
@@ -9,6 +15,7 @@ public class ResourceParameter implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = -3823660117179524383L;
+
 	public ResourceParameter(String name, java.util.Map<String, String> values)
 	{
 		if (name == null)
@@ -23,9 +30,52 @@ public class ResourceParameter implements Serializable
 
 			for (java.util.Map.Entry<String, String> kv :  values.entrySet())
 			{
-				_values.put(kv.getKey(), kv.getValue());
+				this._values.put(kv.getKey(), kv.getValue());
 			}
 		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public ResourceParameter(Resource resource) throws Exception
+	{
+		Enumerable<Field> fields = Flatterner.flatternAncestors(resource.getClass(), new Selector<Class, Class>(){
+
+			@Override
+			public Class select(Class item) {
+				Class rs = item.getSuperclass();
+				return Resource.class.isAssignableFrom(rs) ? rs : null;
+			}})
+			.from(new Selector<Class, Iterable<Field>>(){
+
+				@Override
+				public Iterable<Field> select(Class item) {
+					return Arrays.asList(item.getDeclaredFields());
+				}});
+		
+		for(Field f : fields)
+		{
+			f.setAccessible(true);
+			Object v = f.get(resource);
+			if(v != null)
+			{
+				String str = v instanceof String ? (String)v : v.toString();
+				
+				if(StringUtils.equalsIgnoreCase(f.getName(), "name"))
+				{
+					this.setName(str);
+				}
+				else
+				{
+					this._values.put(f.getName(), str);
+				}
+			}
+		}
+		
+		if (this.getName() == null)
+		{
+			throw new IllegalArgumentException("resource");
+		}
+		    
 	}
 
 	public ResourceParameter()

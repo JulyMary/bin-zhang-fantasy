@@ -142,6 +142,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 	}
 
 	@Override
+	 @SuppressWarnings("unused")
 	public void Execute() throws Exception
 	{
 		
@@ -153,7 +154,11 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 			parameters.put("taskname",  this.getTaskName());
 			parameters.put("namespace", this.getTaskNamespaceUri());
 
-			ResourceParameter res = new ResourceParameter("RunTask", parameters);
+			ResourceParameter res = new ResourceParameter(new Resource(){
+				String name = "RunTask";
+				String taskName = ExecuteTaskInstruction.this.getTaskName();
+				String namespace = ExecuteTaskInstruction.this.getTaskNamespaceUri();
+				});
 		
 			IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res });
 			try

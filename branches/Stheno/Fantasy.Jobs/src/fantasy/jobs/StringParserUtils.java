@@ -10,7 +10,7 @@ public final class StringParserUtils
 	public static Element Parse(IStringParser parser, Element element, java.util.Map<String, Object> context) throws Exception
 	{
 		Element rs = element.clone();
-		for (Element content : Flatterner.flattern(rs, new Selector<Element, Iterable<Element>>(){
+		for (Element content : Flatterner.flatternChildren(rs, new Selector<Element, Iterable<Element>>(){
 
 			@Override
 			public Iterable<Element> select(Element item) {

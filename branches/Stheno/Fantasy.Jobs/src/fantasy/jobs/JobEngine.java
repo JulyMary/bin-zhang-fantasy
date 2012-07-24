@@ -1,13 +1,17 @@
 ﻿package fantasy.jobs;
 
+import java.rmi.server.UnicastRemoteObject;
+import java.util.*;
+
 import fantasy.*;
 import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.resources.*;
-import fantasy.jobs.management.IJobManager;
+import fantasy.jobs.management.*;
 import fantasy.servicemodel.*;
+import fantasy.io.*;
 
-public class JobEngine extends MarshalByRefObject implements IJobEngine
+public class JobEngine extends UnicastRemoteObject implements IJobEngine
 {
 	public JobEngine(UUID id)
 	{
@@ -23,12 +27,12 @@ public class JobEngine extends MarshalByRefObject implements IJobEngine
 
 
 
-	private ManualResetEvent _waitEvent = new ManualResetEvent(false);
+	private Object _waitEvent = new Object();
 	private IJobManager _jobManager;
 
 	private Thread _workThread = null;
 
-	private java.util.ArrayList<IJobEngineEventHandler> _eventHandlers = new java.util.ArrayList<IJobEngineEventHandler>();
+	private java.util.HashSet<IJobEngineEventHandler> _eventHandlers = new java.util.HashSet<IJobEngineEventHandler>();
 
 	private static IJobEngine _currentEngine = null;
 
@@ -42,24 +46,24 @@ public class JobEngine extends MarshalByRefObject implements IJobEngine
 
 		_jobManager = new JobManagerAccessor().GetJobManager();
 
-		IJobManagerSettingsReader reader = (IJobManagerSettingsReader)_jobManager.GetService(IJobManagerSettingsReader.class);
-		_jobDirectory = String.format(String.format("%1$s\\%2$s", reader.<String>GetSetting("JobDirectoryFullPath"), this.getJobId()));
-		if (!Directory.Exists(_jobDirectory))
+		IJobManagerSettingsReader reader = (IJobManagerSettingsReader)_jobManager.getService(IJobManagerSettingsReader.class);
+		_jobDirectory = String.format(String.format("%1$s\\%2$s", reader.getSetting(String.class, "JobDirectoryFullPath"), this.getJobId()));
+		if (!Directory.exists(_jobDirectory))
 		{
-			Directory.CreateDirectory(_jobDirectory);
+			Directory.create(_jobDirectory);
 		}
 
-		ILogger logger = _jobManager.<ILogger>GetService();
+		ILogger logger = _jobManager.getService(ILogger.class);
 		try
 		{
 			//Initialize Services from app.config
 			java.util.ArrayList<Object> services = new java.util.ArrayList<Object>();
-			services.addAll(AddIn.CreateObjects("jobEngine/engine.services/service"));
-			services.addAll(AddIn.CreateObjects("jobEngine/job.services/service"));
+			services.addAll(Arrays.asList(AddIn.CreateObjects("jobEngine/engine.services/service")));
+			services.addAll(Arrays.asList(AddIn.CreateObjects("jobEngine/job.services/service")));
 			services.add(this);
-			this._serviceContainer.InitializeServices(_jobManager, services.toArray(new Object[]{}));
+			this._serviceContainer.initializeServices(_jobManager, services.toArray(new Object[]{}));
 			//Register to Manager
-			IJobController controller = (IJobController)_jobManager.GetService(IJobController.class);
+			IJobController controller = (IJobController)_jobManager.getService(IJobController.class);
 			controller.RegisterJobEngine(this);
 		}
 		catch(RuntimeException error)
