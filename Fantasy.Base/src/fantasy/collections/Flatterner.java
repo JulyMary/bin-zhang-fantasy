@@ -11,8 +11,63 @@ public class Flatterner {
 	{
 
 	}
+	
+	
+	public static <T> Enumerable<T> flatternAncestors(T child, Selector<T, T> selector)
+	{
+		return new Enumerable<T>(new AncestorIterable<T>(child, selector ));
+	}
+	
+	
+	private static class AncestorIterable<T> implements Iterable<T>
+	{
+		public AncestorIterable(T child, Selector<T, T> selector)
+		{
+			this._child = child;
+			this._selector = selector;
+		}
 
-	public static <T>  Enumerable<T> flattern(T ancestor, Selector<T, Iterable<T>> selector)
+		@Override
+		public Iterator<T> iterator() {
+			return new AncestorIterator<T>(this._child, this._selector);
+		}
+		
+		private T _child;
+		private Selector<T, T> _selector;
+		
+	}
+	
+	
+	private static class AncestorIterator<T> implements Iterator<T>
+	{
+		public AncestorIterator(T child, Selector<T, T> selector)
+		{
+			this._next = child;
+			this._selector = selector;
+		}
+
+		private T _next;
+	
+		private Selector<T, T> _selector;
+		@Override
+		public boolean hasNext() {
+			return _next != null;
+		}
+		@Override
+		public T next() {
+			T rs = _next;
+			_next = _selector.select(_next);
+			return rs;
+		}
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+		
+	}
+
+	public static <T>  Enumerable<T> flatternChildren(T ancestor, Selector<T, Iterable<T>> selector)
 	{
 		Iterable<T> rs = new FlatternerIterable<T>(ancestor, selector);
 
