@@ -2,12 +2,16 @@
 
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
+import java.util.concurrent.*;
+
+import org.jdom2.Element;
+import org.joda.time.*;
 
 import fantasy.*;
+import fantasy.ThreadFactory;
 import fantasy.jobs.management.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.resources.*;
-import fantasy.jobs.management.*;
 import fantasy.servicemodel.*;
 import fantasy.io.*;
 
@@ -47,7 +51,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		_jobManager = new JobManagerAccessor().GetJobManager();
 
 		IJobManagerSettingsReader reader = (IJobManagerSettingsReader)_jobManager.getService(IJobManagerSettingsReader.class);
-		_jobDirectory = String.format(String.format("%1$s\\%2$s", reader.getSetting(String.class, "JobDirectoryFullPath"), this.getJobId()));
+		_jobDirectory = String.format(String.format("%1$s\\%2$s", reader.GetSetting(String.class, "JobDirectoryFullPath"), this.getJobId()));
 		if (!Directory.exists(_jobDirectory))
 		{
 			Directory.create(_jobDirectory);
@@ -66,7 +70,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			IJobController controller = (IJobController)_jobManager.getService(IJobController.class);
 			controller.RegisterJobEngine(this);
 		}
-		catch(RuntimeException error)
+		catch(Exception error)
 		{
 			if (logger != null)
 			{
@@ -78,58 +82,87 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 
 
-	private void FireEvent(MethodInvoker<IJobEngineEventHandler> method)
+	private void FireEvent(final MethodInvoker<IJobEngineEventHandler> method)
 	{
 		java.util.ArrayList<IJobEngineEventHandler> expired = new java.util.ArrayList<IJobEngineEventHandler>();
-		// foreach(IJobEngineEventHandler handler in this._eventHandlers) 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Parallel.ForEach(this._eventHandlers.toArray(new IJobEngineEventHandler[]{}), handler =>
+
+		IJobEngineEventHandler[] handlers;
+		synchronized(this._eventHandlers)
 		{
-			try
-			{
-				method(handler);
-			}
-			catch (java.lang.Exception e)
-			{
-				_eventHandlers.remove(handler);
-			}
+			handlers = this._eventHandlers.toArray(new IJobEngineEventHandler[0]);
 		}
-	   );
+
+		ExecutorService exec = Executors.newCachedThreadPool();
+		try
+		{
+			for(final IJobEngineEventHandler handler : handlers)
+			{
+				exec.execute(new Runnable(){
+
+					@Override
+					public void run() {
+						try
+						{
+							method.invoke(handler);
+						}
+						catch (java.lang.Exception e)
+						{
+							synchronized(JobEngine.this._eventHandlers)
+							{
+								_eventHandlers.remove(handler);
+							}
+						}
+					}});
+
+			}
+			exec.wait();
+		}
+		finally
+		{
+			exec.shutdown();
+		}
+
+
+
 
 
 	}
 
 	public final void WaitForExit()
 	{
-		_waitEvent.WaitOne();
-		_serviceContainer.UninitializeServices();
+		_waitEvent.wait();
+		_serviceContainer.uninitializeServices();
 	}
 
 	private void OnExit(int exitCode)
 	{
 		try
 		{
-			JobExitEventArgs e = new JobExitEventArgs(exitCode);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			FireEvent(delegate(IJobEngineEventHandler handler)
-			{
-				handler.HandleExit(this, e);
-			}
-		   );
+			final JobExitEventArgs e = new JobExitEventArgs(exitCode);
+			FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+
+				@Override
+				public void invoke(IJobEngineEventHandler obj) throws Exception {
+					obj.HandleExit(JobEngine.this, e);
+					
+				}});
+			
+		  
 		}
-		catch (ThreadAbortException e)
+		catch (InterruptedException e)
 		{
+			throw e;
 		}
-		catch (RuntimeException error)
+		catch (Exception error)
 		{
-			ILogger logger = this.<ILogger>GetService();
+			ILogger logger = this.getService(ILogger.class);
 			if (logger != null)
 			{
 				logger.LogError(LogCategories.getEngine(), error, "A error occurs when job is exiting.");
 			}
 		}
 
-		_waitEvent.Set();
+		_waitEvent.notifyAll();
 	}
 
 	private int _abortState = JobState.Suspended;
@@ -311,7 +344,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		if (this._workThread != null && this._workThread.isAlive())
 		{
 			this._abortState = JobState.Cancelled;
-			this._workThread.stop();
+			this._workThread.interrupt();
 		}
 	}
 
@@ -320,7 +353,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		if (this._workThread != null && this._workThread.isAlive())
 		{
 			this._abortState = JobState.Suspended;
-			this._workThread.stop();
+			this._workThread.interrupt();
 		}
 	}
 
@@ -329,7 +362,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		if (this._workThread != null && this._workThread.isAlive())
 		{
 			this._abortState = JobState.UserPaused;
-			this._workThread.stop();
+			this._workThread.interrupt();
 		}
 	}
 
@@ -338,30 +371,28 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		if (this._workThread != null && this._workThread.isAlive())
 		{
 			this._abortState = JobState.Failed;
-			this._workThread.stop();
+			this._workThread.interrupt();
 		}
 	}
 
-	public final void Sleep(TimeSpan timeout)
+	public final void Sleep(Duration timeout)
 	{
-		java.util.Date timeToWait = new java.util.Date() + timeout;
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-		ResourceParameter res = new ResourceParameter("WaitTime", new { time = timeToWait });
-		IResourceService resSvc = this.<IResourceService>GetService();
+		final java.util.Date timeToWait =   Instant.now().plus(timeout).toDate();
+		ResourceParameter res = new ResourceParameter(new Resource(){String name = "WaitTime"; Date time = timeToWait;});
+		IResourceService resSvc = this.getService(IResourceService.class);
 		if (resSvc != null)
 		{
 			IResourceHandle handle = resSvc.Request(new ResourceParameter[] { res });
-			if (handle != null)
-			{
-				handle.dispose();
-			}
+			
+			handle.dispose();
+			
 
 		}
 	}
 
 	private void StartWorkThread(Runnable start)
 	{
-		this._workThread = ThreadFactory.CreateThread(start).WithStart();
+		this._workThread = ThreadFactory.createAndStart(start);
 
 
 	}
@@ -376,12 +407,12 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		this._eventHandlers.remove(handler);
 	}
 
-	public final Object GetService(java.lang.Class serviceType)
+	public final<T> T GetService(java.lang.Class<T> serviceType) throws Exception
 	{
-		return _serviceContainer.GetService(serviceType);
+		return _serviceContainer.getService(serviceType);
 	}
 
-	private UUID privateJobId = new UUID();
+	private UUID privateJobId = UUID.randomUUID();
 	public final UUID getJobId()
 	{
 		return privateJobId;
@@ -405,27 +436,14 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		return _jobDirectory;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
 	private RuntimeException _executingError;
 	private boolean _abortingSaved = false;
 
 	public final void SaveStatus()
 	{
-		XElement ele = this._job.SaveStatus();
-		MemoryStream stream = new MemoryStream();
-		XmlWriterSettings tempVar = new XmlWriterSettings();
-		tempVar.Encoding = Encoding.UTF8;
-		tempVar.Indent = true;
-		tempVar.IndentChars = "    ";
-		tempVar.NamespaceHandling = NamespaceHandling.OmitDuplicates;
-		XmlWriterSettings settings = tempVar;
-		XmlWriter writer = XmlWriter.Create(stream, settings);
-		ele.Save(writer);
-		writer.Close();
-		stream.Seek(0, SeekOrigin.Begin);
-		this.<IJobStatusStorageService>GetRequiredService().Save(stream);
+		Element ele = this._job.SaveStatus();
+		
+		this.getRequiredService(IJobStatusStorageService.class).Save();
 
 	}
 

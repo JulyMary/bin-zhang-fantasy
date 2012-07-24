@@ -35,12 +35,17 @@ public class ServiceContainer implements IServiceProvider
 
 		for (Object o : this._list)
 		{
+			if(Thread.interrupted())
+			{
+				throw new InterruptedException();
+			}
 			if (o instanceof IObjectWithSite)
 			{
 				((IObjectWithSite)o).setSite(this);
 			}
 			if (o instanceof IService)
 			{
+				
 				try
 				{
 					((IService)o).initializeService();
