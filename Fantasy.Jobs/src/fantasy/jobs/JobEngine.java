@@ -1,5 +1,6 @@
 ﻿package fantasy.jobs;
 
+import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.*;
@@ -17,9 +18,8 @@ import fantasy.io.*;
 
 public class JobEngine extends UnicastRemoteObject implements IJobEngine
 {
-	public JobEngine(UUID id)
+	public JobEngine(UUID id) throws Exception
 	{
-		_currentEngine = this;
 		this.setJobId(id);
 	}
 
@@ -28,9 +28,6 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 	private Job _job;
 
 	
-
-
-
 	private Object _waitEvent = new Object();
 	private IJobManager _jobManager;
 
@@ -38,14 +35,9 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 	private java.util.HashSet<IJobEngineEventHandler> _eventHandlers = new java.util.HashSet<IJobEngineEventHandler>();
 
-	private static IJobEngine _currentEngine = null;
+	
 
-	public static IJobEngine getCurrentEngine()
-	{
-		return _currentEngine;
-	}
-
-	public final void Initialize()
+	public final void Initialize() throws Exception
 	{
 
 		_jobManager = new JobManagerAccessor().GetJobManager();
@@ -82,9 +74,9 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 
 
-	private void FireEvent(final MethodInvoker<IJobEngineEventHandler> method)
+	private void FireEvent(final MethodInvoker<IJobEngineEventHandler> method) throws Exception
 	{
-		java.util.ArrayList<IJobEngineEventHandler> expired = new java.util.ArrayList<IJobEngineEventHandler>();
+		
 
 		IJobEngineEventHandler[] handlers;
 		synchronized(this._eventHandlers)
@@ -128,13 +120,13 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 	}
 
-	public final void WaitForExit()
+	public final void WaitForExit() throws Exception
 	{
 		_waitEvent.wait();
 		_serviceContainer.uninitializeServices();
 	}
 
-	private void OnExit(int exitCode)
+	private void OnExit(int exitCode) throws Exception
 	{
 		try
 		{
@@ -151,7 +143,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		}
 		catch (InterruptedException e)
 		{
-			throw e;
+			
 		}
 		catch (Exception error)
 		{
@@ -171,16 +163,17 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 	{
 
 //C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		ThreadStart del = delegate()
+		Runnable del = new Runnable(){public void run()
 		{
 
 			int exitState = JobState.Failed;
+			IJobEngine self = JobEngine.this;
 			ILogger logger = (ILogger)this.GetService(ILogger.class);
 			try
 			{
 
 
-
+              
 
 				if (logger != null)
 				{
@@ -189,26 +182,33 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 				}
 
 //C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				FireEvent(delegate(IJobEngineEventHandler handler)
-				{
-					handler.HandleStart(this);
-				}
-			   );
+				FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+					
+					@Override
+					public void invoke(IJobEngineEventHandler handler)
+					{
+						handler.HandleStart(JobEngine.this);
+					}
+				});
+				
 
-				this._job = new Job();
-				this._job._id = this.getJobId();
+				self._job = new Job();
+				self._job._id = self.getJobId();
 
-				this._serviceContainer.AddService(_job);
+				self._serviceContainer.AddService(_job);
 				_job.Initialize();
 
 				_job.LoadStartInfo((JobStartInfo)startInfo);
 
 //C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				FireEvent(delegate(IJobEngineEventHandler handler)
-				{
-					handler.HandleLoad(this);
-				}
-			   );
+               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+					
+					@Override
+					public void invoke(IJobEngineEventHandler handler)
+					{
+						handler.HandleLoad(JobEngine.this);
+					}
+				});
 				this.SaveStatus();
 
 				((IJob)_job).Execute();
@@ -216,23 +216,16 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 				this.SaveStatus();
 			}
 
-			catch (ThreadAbortException e)
+			catch (InterruptedException e)
 			{
 				exitState = _abortState;
 			}
-			catch (RuntimeException error)
+			catch (Exception error)
 			{
 				if (logger != null)
 				{
 					logger.LogError(LogCategories.getEngine(), error, "A fatal error occurs, exit excuting.");
-					if (error instanceof ReflectionTypeLoadException)
-					{
-						for (RuntimeException child : ((ReflectionTypeLoadException)error).LoaderExceptions)
-						{
-							logger.LogMessage(LogCategories.getEngine(), "Load exception.");
-							logger.LogError(LogCategories.getEngine(), child, "Load exception.");
-						}
-					}
+					
 				}
 			}
 			finally
@@ -241,10 +234,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 				{
 					logger.LogMessage(LogCategories.getEngine(), "Exit with code {0}.", JobState.ToString(exitState));
 				}
-				this.OnExit(exitState);
+				JobEngine.this.OnExit(exitState);
 			}
-		}
-
+		}};
+		
 		this.StartWorkThread(del);
 	}
 
