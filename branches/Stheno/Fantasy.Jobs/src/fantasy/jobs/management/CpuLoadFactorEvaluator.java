@@ -1,53 +1,72 @@
 ﻿package fantasy.jobs.management;
 
+import java.util.concurrent.*;
+import fantasy.*;
+
+import org.hyperic.sigar.*;
+
 public class CpuLoadFactorEvaluator extends ObjectWithSite implements IComputerLoadFactorEvaluator
 {
 
-	private Thread _refreshThread;
-	private PerformanceCounter _cpuCounter;
-	public CpuLoadFactorEvaluator()
+	
+	private Sigar _sigar = new Sigar();
+	ScheduledExecutorService _scheduler;
+	public CpuLoadFactorEvaluator() throws SigarException
 	{
-		PerformanceCounter tempVar = new PerformanceCounter();
-		tempVar.CategoryName = "Processor";
-		tempVar.CounterName = "% Processor Time";
-		tempVar.InstanceName = "_Total";
-		_cpuCounter = tempVar;
-		_cpuCounter.NextValue();
-		double idle = (100.0 - _cpuCounter.NextValue()) / 100.0;
+		CpuPerc cpuPerc = this._sigar.getCpuPerc();
+		
+		
+		double idle = cpuPerc.getIdle();
 		for (int i = 0; i < 10; i++)
 		{
 			_idle[i] = idle;
 		}
-		_refreshThread = ThreadFactory.CreateThread(Refresh).WithStart();
+		
+		
+		_scheduler = Executors.newScheduledThreadPool(1);
+		_scheduler.scheduleAtFixedRate(new Runnable(){
+
+			@Override
+			public void run() {
+				CpuLoadFactorEvaluator.this.refresh();
+			}}, 1, 1, TimeUnit.SECONDS);
 
 	}
 
 	private double[] _idle = new double[10];
+	private int _index = 0;
 
-	private void Refresh()
+	private void refresh()
 	{
 
 
-		int n = 0;
-		while (true)
+	
+	
+			try {
+				_idle[_index] = this._sigar.getCpuPerc().getIdle();
+				_index++;
+				_index %= 10;
+			} catch (SigarException e) {
+				
+				e.printStackTrace();
+			}
+
+	}
+
+
+	public final double Evaluate() throws Exception
+	{
+		IJobController controller = null;
+	
+		controller = this.getSite().getRequiredService(IJobController.class);
+		
+		double sum = 0;
+		for(double d : _idle)
 		{
-			Thread.sleep(1 * 1000);
-			_idle[n] = (100 - _cpuCounter.NextValue()) / 100;
-			n++;
-			n %= 10;
+			sum +=d;
 		}
+		
+		return sum / 10 * controller.GetAvailableProcessCount();
 	}
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IComputerLoadFactorEvaluator Members
-
-	public final double Evaluate()
-	{
-		IJobController controller = this.getSite().<IJobController>GetService();
-		return _idle.Sum() / 10 * controller.GetAvailableProcessCount();
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

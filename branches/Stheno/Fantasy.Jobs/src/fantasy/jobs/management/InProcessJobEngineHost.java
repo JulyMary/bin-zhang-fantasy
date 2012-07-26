@@ -10,7 +10,7 @@ public class InProcessJobEngineHost extends MarshalByRefObject
 
 
 
-	public final void Run(JobManager manager, Guid jobId)
+	public final void Run(JobManager manager, UUID jobId)
 	{
 
 		(new JobManagerAccessor()).SetJobManager(manager);

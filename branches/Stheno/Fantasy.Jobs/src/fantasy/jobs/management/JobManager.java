@@ -80,7 +80,7 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 			DSACryptoServiceProvider dsa = new DSACryptoServiceProvider();
 			try
 			{
-				dsa.FromXmlString(Fantasy.Jobs.Properties.Resources.getFantasyPubKey());
+				dsa.FromXmlString(fantasy.jobs.properties.Resources.getFantasyPubKey());
 				DSASignatureDeformatter formatter = new DSASignatureDeformatter(dsa);
 				formatter.SetHashAlgorithm("SHA1");
 				isValidSignature = formatter.VerifySignature(tb, Convert.FromBase64String(signature));

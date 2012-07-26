@@ -1,6 +1,6 @@
 ﻿package fantasy.jobs;
 
-import java.rmi.RemoteException;
+import java.io.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 import java.util.concurrent.*;
@@ -11,13 +11,21 @@ import org.joda.time.*;
 import fantasy.*;
 import fantasy.ThreadFactory;
 import fantasy.jobs.management.*;
-import fantasy.xserialization.*;
 import fantasy.jobs.resources.*;
 import fantasy.servicemodel.*;
 import fantasy.io.*;
 
+
+@SuppressWarnings("rawtypes") 
 public class JobEngine extends UnicastRemoteObject implements IJobEngine
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3597754801453285429L;
+
+
+
 	public JobEngine(UUID id) throws Exception
 	{
 		this.setJobId(id);
@@ -159,16 +167,24 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 	private int _abortState = JobState.Suspended;
 
-	public final void Start(JobStartInfo startInfo)
+	
+	
+	
+	public final void Start(final JobStartInfo startInfo)
 	{
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
 		Runnable del = new Runnable(){public void run()
 		{
 
 			int exitState = JobState.Failed;
-			IJobEngine self = JobEngine.this;
-			ILogger logger = (ILogger)this.GetService(ILogger.class);
+			
+			ILogger logger = null;
+			try {
+				logger = (ILogger)JobEngine.this.getService(ILogger.class);
+			} catch (Exception e1) {
+			
+				e1.printStackTrace();
+			}
 			try
 			{
 
@@ -181,39 +197,37 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 				}
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
 				FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
 					
 					@Override
-					public void invoke(IJobEngineEventHandler handler)
+					public void invoke(IJobEngineEventHandler handler) throws Exception
 					{
 						handler.HandleStart(JobEngine.this);
 					}
 				});
 				
 
-				self._job = new Job();
-				self._job._id = self.getJobId();
+				JobEngine.this._job = new Job();
+				JobEngine.this._job._id = JobEngine.this.getJobId();
 
-				self._serviceContainer.AddService(_job);
+				JobEngine.this._serviceContainer.AddService(_job);
 				_job.Initialize();
 
 				_job.LoadStartInfo((JobStartInfo)startInfo);
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
                FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
 					
 					@Override
-					public void invoke(IJobEngineEventHandler handler)
+					public void invoke(IJobEngineEventHandler handler) throws Exception
 					{
 						handler.HandleLoad(JobEngine.this);
 					}
 				});
-				this.SaveStatus();
+               JobEngine.this.SaveStatus();
 
 				((IJob)_job).Execute();
 				exitState = JobState.Succeed;
-				this.SaveStatus();
+				JobEngine.this.SaveStatus();
 			}
 
 			catch (InterruptedException e)
@@ -234,7 +248,12 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 				{
 					logger.LogMessage(LogCategories.getEngine(), "Exit with code {0}.", JobState.ToString(exitState));
 				}
-				JobEngine.this.OnExit(exitState);
+				try {
+					JobEngine.this.OnExit(exitState);
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
 			}
 		}};
 		
@@ -243,20 +262,25 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 
 
-	public final void Resume(JobStartInfo startInfo)
+	public final void Resume(JobStartInfo startInfo) throws Exception
 	{
 
-		IJobStatusStorageService storage = this.<IJobStatusStorageService>GetService();
+		IJobStatusStorageService storage = this.getService(IJobStatusStorageService.class);
 		if (storage.getExists())
 		{
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			ThreadStart del = delegate()
+			Runnable del =  new Runnable(){public void run()
 			{
 				int exitState = JobState.Failed;
 
 
-				ILogger logger = (ILogger)this.GetService(ILogger.class);
+				ILogger logger = null;
+				try {
+					logger = (ILogger)JobEngine.this.getService(ILogger.class);
+				} catch (Exception e1) {
+					
+					e1.printStackTrace();
+				}
 				try
 				{
 
@@ -265,37 +289,43 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 						logger.LogMessage(LogCategories.getEngine(), "Resume");
 					}
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					FireEvent(delegate(IJobEngineEventHandler handler)
-					{
-						handler.HandleResume(this);
-					}
-				   );
+		               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+							
+							@Override
+							public void invoke(IJobEngineEventHandler handler) throws Exception
+							{
+								handler.HandleResume(JobEngine.this);
+							}
+						});
 
-					this._job = new Job();
 
-					this._serviceContainer.AddService(_job);
+		            JobEngine.this._job = new Job();
+
+		            JobEngine.this._serviceContainer.AddService(_job);
 					_job.Initialize();
-					Stream stream = this.<IJobStatusStorageService>GetRequiredService().Load();
-					XElement ele = XElement.Load(stream);
+					InputStream stream = JobEngine.this.getRequiredService(IJobStatusStorageService.class).Load();
+					Element ele = JDomUtils.loadElement(stream);
 					_job.LoadStatus(ele);
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					FireEvent(delegate(IJobEngineEventHandler handler)
-					{
-						handler.HandleLoad(this);
-					}
-				   );
+		               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+							
+							@Override
+							public void invoke(IJobEngineEventHandler handler) throws Exception
+							{
+								handler.HandleLoad(JobEngine.this);
+							}
+						});
+
 
 					((IJob)_job).Execute();
 					exitState = JobState.Succeed;
-					this.SaveStatus();
+					JobEngine.this.SaveStatus();
 				}
-				catch (ThreadAbortException e)
+				catch (InterruptedException e)
 				{
 					exitState = _abortState;
 				}
-				catch (RuntimeException error)
+				catch (Exception error)
 				{
 
 					if (logger != null)
@@ -309,9 +339,15 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					{
 						logger.LogMessage(LogCategories.getEngine(), "Exit with code {0}.", JobState.ToString(exitState));
 					}
-					this.OnExit(exitState);
+					try {
+						JobEngine.this.OnExit(exitState);
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}
 				}
 			}
+			 };
 
 			this.StartWorkThread(del);
 		}
@@ -319,18 +355,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		{
 			this.Start(startInfo);
 		}
+		
 	}
 
-	private void ResumeEntryPoint(Object resumeInfo)
-	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		FireEvent(delegate(IJobEngineEventHandler handler)
-		{
-			handler.HandleResume(this);
-		}
-	   );
-		this.OnExit(JobState.Succeed);
-	}
+	
 
 	public final void Terminate()
 	{
@@ -368,7 +396,8 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		}
 	}
 
-	public final void Sleep(Duration timeout)
+	@SuppressWarnings("unused")
+	public final void Sleep(Duration timeout) throws Exception
 	{
 		final java.util.Date timeToWait =   Instant.now().plus(timeout).toDate();
 		ResourceParameter res = new ResourceParameter(new Resource(){String name = "WaitTime"; Date time = timeToWait;});
@@ -400,7 +429,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		this._eventHandlers.remove(handler);
 	}
 
-	public final<T> T GetService(java.lang.Class<T> serviceType) throws Exception
+	public final<T> T getService(java.lang.Class<T> serviceType) throws Exception
 	{
 		return _serviceContainer.getService(serviceType);
 	}
@@ -415,10 +444,6 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		privateJobId = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobEngine Members
-
-
 	private String _jobDirectory = null;
 	public final String getJobDirectory()
 	{
@@ -429,28 +454,35 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		return _jobDirectory;
 	}
 
-	private RuntimeException _executingError;
+	private Exception _executingError;
 	private boolean _abortingSaved = false;
 
-	public final void SaveStatus()
+	public final void SaveStatus() throws Exception
 	{
 		Element ele = this._job.SaveStatus();
 		
-		this.getRequiredService(IJobStatusStorageService.class).Save();
+		ByteArrayOutputStream output = new ByteArrayOutputStream();
+		
+		JDomUtils.saveElement(ele, output);
+		
+		ByteArrayInputStream input = new ByteArrayInputStream(output.toByteArray());
+		
+		
+		this.getRequiredService(IJobStatusStorageService.class).Save(input);
 
 	}
 
-	public final void SaveStatusForError(RuntimeException error)
+	public final void SaveStatusForError(Exception error) throws Exception
 	{
 
 		if (_job != null)
 		{
-			if (error instanceof ThreadAbortException)
+			if (error instanceof InterruptedException)
 			{
 				if (!_abortingSaved)
 				{
 					_abortingSaved = true;
-					if (!((IJob)this._job).getRuntimeStatus().IsRestoring)
+					if (!((IJob)this._job).getRuntimeStatus().getIsRestoring())
 					{
 						this.SaveStatus();
 					}
@@ -460,7 +492,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			{
 
 				_executingError = error;
-				if (!((IJob)this._job).getRuntimeStatus().IsRestoring)
+				if (!((IJob)this._job).getRuntimeStatus().getIsRestoring())
 				{
 					this.SaveStatus();
 				}
@@ -468,6 +500,27 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			}
 		}
 
+	}
+
+
+
+	@Override
+	public Object getService2(Class serviceType) throws Exception {
+		return this._serviceContainer.getService2(serviceType);
+	}
+
+
+
+	@Override
+	public Object getRequiredService2(Class serviceType) throws Exception {
+		return this._serviceContainer.getRequiredService2(serviceType);
+	}
+
+
+
+	@Override
+	public <T> T getRequiredService(Class<T> serviceType) throws Exception {
+		return this._serviceContainer.getRequiredService(serviceType);
 	}
 
 }

@@ -1,7 +1,7 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.Jobs.Properties.*;
-import Fantasy.ServiceModel.*;
+import fantasy.jobs.properties.*;
+import fantasy.servicemodel.*;
 
 public class EFJobQueueService extends AbstractService implements IJobQueue
 {
@@ -61,7 +61,7 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 		return rs;
 	}
 
-	public final JobMetaData FindJobMetaDataById(Guid id)
+	public final JobMetaData FindJobMetaDataById(UUID id)
 	{
 		synchronized (_syncRoot)
 		{
@@ -345,7 +345,7 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void Resume(Guid id)
+	public final void Resume(UUID id)
 	{
 		JobMetaData meta = this.FindJobMetaDataById(id);
 		if (meta != null)
@@ -363,7 +363,7 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void Cancel(Guid id)
+	public final void Cancel(UUID id)
 	{
 		JobMetaData meta = this.FindJobMetaDataById(id);
 		if (meta != null)
@@ -392,7 +392,7 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void Suspend(Guid id)
+	public final void Suspend(UUID id)
 	{
 		JobMetaData meta = this.FindJobMetaDataById(id);
 		if (meta != null)
@@ -420,7 +420,7 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void UserPause(Guid id)
+	public final void UserPause(UUID id)
 	{
 		JobMetaData meta = this.FindJobMetaDataById(id);
 		if (meta != null)
@@ -505,7 +505,7 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 
 
 
-	public final boolean IsTerminated(Guid id)
+	public final boolean IsTerminated(UUID id)
 	{
 		synchronized (_syncRoot)
 		{

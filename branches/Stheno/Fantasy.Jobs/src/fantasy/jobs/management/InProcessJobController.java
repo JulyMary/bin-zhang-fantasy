@@ -68,7 +68,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 
 
-	public final boolean IsJobProccessExisted(Guid id)
+	public final boolean IsJobProccessExisted(UUID id)
 	{
 		boolean rs = false;
 		JobThread jp = GetJobThreadById(id);
@@ -88,7 +88,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		queue.ApplyChange(job);
 	}
 
-	private void SetJobExited(Guid id, int exitState)
+	private void SetJobExited(UUID id, int exitState)
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null)
@@ -169,7 +169,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 	}
 
-	public void Cancel(Guid id)
+	public void Cancel(UUID id)
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -178,7 +178,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		}
 	}
 
-	public void Suspend(Guid id)
+	public void Suspend(UUID id)
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -188,7 +188,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 	}
 
-	public void UserPause(Guid id)
+	public void UserPause(UUID id)
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -197,7 +197,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		}
 	}
 
-	private JobThread GetJobThreadById(Guid id)
+	private JobThread GetJobThreadById(UUID id)
 	{
 		synchronized (_syncRoot)
 		{
