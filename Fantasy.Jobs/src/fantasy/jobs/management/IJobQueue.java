@@ -1,6 +1,7 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.Jobs.Properties.*;
+import fantasy.*;
+import fantasy.jobs.properties.*;
 
 public interface IJobQueue
 {
@@ -8,9 +9,9 @@ public interface IJobQueue
 
 	Iterable<JobMetaData> getTerminates();
 
-	JobMetaData FindJobMetaDataById(Guid id);
+	JobMetaData FindJobMetaDataById(UUID id);
 
-	boolean IsTerminated(Guid id);
+	boolean IsTerminated(UUID id);
 
 	Iterable<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take);
 	Iterable<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take);
@@ -20,10 +21,10 @@ public interface IJobQueue
 	JobMetaData CreateJobMetaData();
 
 	void ApplyChange(JobMetaData job);
-	void Resume(Guid id);
-	void Cancel(Guid id);
-	void Suspend(Guid id);
-	void UserPause(Guid id);
+	void Resume(UUID id);
+	void Cancel(UUID id);
+	void Suspend(UUID id);
+	void UserPause(UUID id);
 
 //C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
 //	event EventHandler<JobQueueEventArgs> Changed;

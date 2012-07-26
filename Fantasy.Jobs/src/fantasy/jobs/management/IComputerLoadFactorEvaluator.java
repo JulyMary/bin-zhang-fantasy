@@ -2,5 +2,5 @@
 
 public interface IComputerLoadFactorEvaluator
 {
-	double Evaluate();
+	double Evaluate() throws Exception;
 }

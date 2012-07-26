@@ -1,6 +1,6 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.Jobs.Properties.*;
+import fantasy.jobs.properties.*;
 import Fantasy.ServiceModel.*;
 
 public interface IJobMetaDataFilter

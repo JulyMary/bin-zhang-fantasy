@@ -70,7 +70,7 @@ public class JobController extends AbstractService implements IJobController, IJ
 		}
 	}
 
-	public final boolean IsJobProccessExisted(Guid id)
+	public final boolean IsJobProccessExisted(UUID id)
 	{
 		boolean rs = false;
 		JobProcess jp = GetJobProcessById(id);
@@ -101,7 +101,7 @@ public class JobController extends AbstractService implements IJobController, IJ
 		queue.ApplyChange(job);
 	}
 
-	private void SetJobExited(Guid id, int exitState)
+	private void SetJobExited(UUID id, int exitState)
 	{
 		JobProcess jp = this.GetJobProcessById(id);
 		if (jp != null)
@@ -202,7 +202,7 @@ public class JobController extends AbstractService implements IJobController, IJ
 
 	}
 
-	public void Cancel(Guid id)
+	public void Cancel(UUID id)
 	{
 		JobProcess jp = this.GetJobProcessById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -211,7 +211,7 @@ public class JobController extends AbstractService implements IJobController, IJ
 		}
 	}
 
-	public void Suspend(Guid id)
+	public void Suspend(UUID id)
 	{
 		JobProcess jp = this.GetJobProcessById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -221,7 +221,7 @@ public class JobController extends AbstractService implements IJobController, IJ
 
 	}
 
-	public void UserPause(Guid id)
+	public void UserPause(UUID id)
 	{
 		JobProcess jp = this.GetJobProcessById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -230,7 +230,7 @@ public class JobController extends AbstractService implements IJobController, IJ
 		}
 	}
 
-	private JobProcess GetJobProcessById(Guid id)
+	private JobProcess GetJobProcessById(UUID id)
 	{
 		synchronized (_syncRoot)
 		{

@@ -8,18 +8,18 @@ import fantasy.*;
 
 public interface IJobEngine extends IServiceProvider
 {
-	UUID getJobId();
-	String getJobDirectory();
-	void Start(JobStartInfo startInfo);
-	void Resume(JobStartInfo startInfo);
-	void Terminate();
-	void Suspend();
-	void UserPause();
-	void Fail();
-	void Sleep(Duration timeToSleep);
-	void AddHandler(IJobEngineEventHandler handler);
-	void RemoveHandler(IJobEngineEventHandler handler);
+	UUID getJobId() throws Exception;
+	String getJobDirectory() throws Exception;
+	void Start(JobStartInfo startInfo) throws Exception;
+	void Resume(JobStartInfo startInfo) throws Exception;
+	void Terminate() throws Exception;
+	void Suspend() throws Exception;
+	void UserPause() throws Exception;
+	void Fail() throws Exception;
+	void Sleep(Duration timeToSleep) throws Exception;
+	void AddHandler(IJobEngineEventHandler handler) throws Exception;
+	void RemoveHandler(IJobEngineEventHandler handler) throws Exception;
 
-	void SaveStatusForError(Exception error);
-	void SaveStatus();
+	void SaveStatusForError(Exception error) throws Exception;
+	void SaveStatus() throws Exception;
 }

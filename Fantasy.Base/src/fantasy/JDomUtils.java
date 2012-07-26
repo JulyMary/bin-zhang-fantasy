@@ -1,6 +1,7 @@
 package fantasy;
 
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -22,6 +23,16 @@ public final class JDomUtils {
 		SAXBuilder builder = new SAXBuilder();
 		java.io.File xmlFile = new java.io.File(path);
 		Document document = (Document) builder.build(xmlFile);
+		Element rs = document.getRootElement();
+
+		return rs;
+	}
+	
+	public static Element loadElement(InputStream stream) throws Exception
+	{
+		SAXBuilder builder = new SAXBuilder();
+		
+		Document document = (Document) builder.build(stream);
 		Element rs = document.getRootElement();
 
 		return rs;
@@ -51,6 +62,20 @@ public final class JDomUtils {
 		{
 			stream.close();
 		}
+	}
+	
+	public static void saveElement(Element element, OutputStream stream , Format format) throws Exception
+	{
+		Document doc = new Document();
+		doc.addContent(element.clone());
+	    new XMLOutputter(format).output(doc, stream);
+		
+	}
+	
+	public static void saveElement(Element element, OutputStream stream) throws Exception
+	{
+		saveElement(element, stream, _defaultFormat);
+		
 	}
 
 	public static void saveElement(Element element, String path) throws Exception

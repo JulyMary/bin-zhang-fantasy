@@ -24,27 +24,27 @@ public class JobService extends WCFSingletonService implements IJobService
 		return job;
 	}
 
-	public final void Resume(Guid id)
+	public final void Resume(UUID id)
 	{
 		getQueue().Resume(id);
 	}
 
-	public final void Cancel(Guid id)
+	public final void Cancel(UUID id)
 	{
 		getQueue().Cancel(id);
 	}
 
-	public final void Pause(Guid id)
+	public final void Pause(UUID id)
 	{
 		getQueue().UserPause(id);
 	}
 
-	private JobMetaData[] GetJobMetaDataByIds(Guid[] ids)
+	private JobMetaData[] GetJobMetaDataByIds(UUID[] ids)
 	{
 		if (ids != null)
 		{
 			java.util.ArrayList<JobMetaData> rs = new java.util.ArrayList<JobMetaData>();
-			for (Guid id : ids)
+			for (UUID id : ids)
 			{
 				JobMetaData job = getQueue().FindJobMetaDataById(id);
 				if (job != null)
@@ -79,7 +79,7 @@ public class JobService extends WCFSingletonService implements IJobService
 
 
 
-	public final void Resume(Guid[] ids)
+	public final void Resume(UUID[] ids)
 	{
 		JobMetaData[] jobs = GetJobMetaDataByIds(ids);
 		Resume(jobs);
@@ -114,7 +114,7 @@ public class JobService extends WCFSingletonService implements IJobService
 		}
 	}
 
-	public final void Cancel(Guid[] ids)
+	public final void Cancel(UUID[] ids)
 	{
 		JobMetaData[] jobs = this.GetJobMetaDataByIds(ids);
 		this.Cancel(jobs);
@@ -150,7 +150,7 @@ public class JobService extends WCFSingletonService implements IJobService
 		}
 	}
 
-	public final void Pause(Guid[] ids)
+	public final void Pause(UUID[] ids)
 	{
 		JobMetaData[] jobs = this.GetJobMetaDataByIds(ids);
 		this.Pause(jobs);
@@ -172,7 +172,7 @@ public class JobService extends WCFSingletonService implements IJobService
 	}
 
 
-	public final JobMetaData FindJobById(Guid id)
+	public final JobMetaData FindJobById(UUID id)
 	{
 		return getQueue().FindJobMetaDataById(id);
 	}
@@ -194,7 +194,7 @@ public class JobService extends WCFSingletonService implements IJobService
 
 	}
 
-	public final String GetJobLog(Guid id)
+	public final String GetJobLog(UUID id)
 	{
 		String path = String.format("%1$s\\%2$s\\%2$s.xlog", JobManagerSettings.getDefault().getJobDirectoryFullPath(), id);
 		String rs = null;
@@ -210,7 +210,7 @@ public class JobService extends WCFSingletonService implements IJobService
 		return rs;
 	}
 
-	public final String GetJobScript(Guid id)
+	public final String GetJobScript(UUID id)
 	{
 		String rs = null;
 		String path = String.format("%1$s\\%2$s\\%2$s.job", JobManagerSettings.getDefault().getJobDirectoryFullPath(), id);
