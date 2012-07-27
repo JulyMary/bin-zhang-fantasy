@@ -1,84 +1,128 @@
 ﻿package fantasy.jobs.management;
 
+import java.sql.*;
+import java.util.*;
+
+import fantasy.servicemodel.*;
+import fantasy.*;
 
 
 
-public class FantasyJobsEntities
+class FantasyJobsEntities implements IDisposable
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region Constructors
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = -305858857547134842L;
 
-	/** 
-	 Initializes a new FantasyJobsEntities object using the connection string found in the 'FantasyJobsEntities' section of the application configuration file.
-	 
-	*/
-	public FantasyJobsEntities()
+	public FantasyJobsEntities() throws Exception
 	{
-		super("name=FantasyJobsEntities", "FantasyJobsEntities");
-		this.ContextOptions.LazyLoadingEnabled = true;
-		OnContextCreated();
-	}
-
-	/** 
-	 Initialize a new FantasyJobsEntities object.
-	 
-	*/
-	public FantasyJobsEntities(String connectionString)
-	{
-		super(connectionString, "FantasyJobsEntities");
-		this.ContextOptions.LazyLoadingEnabled = true;
-		OnContextCreated();
-	}
-
-	/** 
-	 Initialize a new FantasyJobsEntities object.
-	 
-	*/
-	public FantasyJobsEntities(EntityConnection connection)
-	{
-		super(connection, "FantasyJobsEntities");
-		this.ContextOptions.LazyLoadingEnabled = true;
-		OnContextCreated();
+	   
+		 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 	}
 
 
-	/** 
-	 No Metadata Documentation available.
-	 
-	*/
-	public final ObjectSet<JobMetaData> getUnterminates()
-	{
-		if ((_Unterminates == null))
+	@Override
+	public void dispose() {
+		
+		synchronized(_poolSync)
 		{
-			_Unterminates = super.<JobMetaData>CreateObjectSet("Unterminates");
+			for(Connection cnnt : _poolingConnections)
+			{
+				try {
+					cnnt.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		return _Unterminates;
 	}
-	private ObjectSet<JobMetaData> _Unterminates;
+    
+    private Connection getConnection() throws Exception
+    {
+    	Connection rs = null;
+    	synchronized(_poolSync)
+    	{
+    		int index = _poolingConnections.size() - 1;
+    		if(index >= 0)
+    		{
+    			rs = _poolingConnections.remove(index);
+    			
+    		}
+    		else
+    		{
+    			rs = DriverManager.getConnection(JobManagerSettings.getJobsDbConnectionString());
+    			
+    		}
+    		
+    		_busyConnections.add(rs);
+    	}
+    	
+    	return rs;
+    }
+    
+    private void revokeConnection(Connection connection)
+    {
+    	synchronized(_poolSync)
+    	{
+    		_busyConnections.remove(connection);
+    		
+    		_poolingConnections.add(connection);
+    	}
+    }
+    
+    
+    private Object _poolSync = new Object();
+    
+    private ArrayList<Connection> _poolingConnections = new ArrayList<Connection>();
+    
+    private ArrayList<Connection> _busyConnections = new ArrayList<Connection>();
+	
+	
+	
 
-	/** 
-	 No Metadata Documentation available.
-	 
-	*/
-	public final ObjectSet<JobMetaData> getTerminates()
+	public List<JobMetaData> getUnterminated() throws Exception
 	{
-		if ((_Terminates == null))
+		ArrayList<JobMetaData> rs = new ArrayList<JobMetaData>();
+		
+		String sql = "select * from APP.CV_JOB_JOBS";
+		Connection cnnt = this.getConnection();
+		Statement stmt = null;
+		try
 		{
-			_Terminates = super.<JobMetaData>CreateObjectSet("Terminates");
+			stmt = cnnt.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			while(set.next())
+			{
+				rs.add(this.readMetadata(set));
+			}
+			set.close();
+			
 		}
-		return _Terminates;
+		finally
+		{
+			if(stmt != null)
+			{
+				stmt.close();
+			}
+			this.revokeConnection(cnnt);
+		}
+		
+		return rs;
 	}
-	private ObjectSet<JobMetaData> _Terminates;
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region AddTo Methods
 
-	/** 
-	 Deprecated Method for adding a new object to the Unterminates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-	 
-	*/
+	
+	private JobMetaData readMetadata(ResultSet set) {
+		JobMetaData rs = new JobMetaData();
+		
+		rs.setId(value)
+		
+		return rs;
+	}
+
+
 	public final void AddToUnterminates(JobMetaData jobMetaData)
 	{
 		super.AddObject("Unterminates", jobMetaData);
@@ -92,6 +136,11 @@ public class FantasyJobsEntities
 	{
 		super.AddObject("Terminates", jobMetaData);
 	}
+
+
+
+
+	
 
 //C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 		///#endregion

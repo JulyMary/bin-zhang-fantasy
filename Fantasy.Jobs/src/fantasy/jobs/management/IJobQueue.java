@@ -1,5 +1,7 @@
 ﻿package fantasy.jobs.management;
 
+import java.util.UUID;
+
 import fantasy.*;
 import fantasy.jobs.properties.*;
 
