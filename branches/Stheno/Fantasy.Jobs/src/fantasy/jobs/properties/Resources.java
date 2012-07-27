@@ -1,6 +1,5 @@
 package fantasy.jobs.properties;
 
-import java.util.Locale;
 
 public final class Resources {
 
