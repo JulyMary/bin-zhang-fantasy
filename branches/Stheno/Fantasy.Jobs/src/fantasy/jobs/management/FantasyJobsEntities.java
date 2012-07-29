@@ -2,18 +2,15 @@
 
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
-import fantasy.servicemodel.*;
 import fantasy.*;
 
 
 
 class FantasyJobsEntities implements IDisposable
 {
-/**
-	 * 
-	 */
-	private static final long serialVersionUID = -305858857547134842L;
+
 
 	public FantasyJobsEntities() throws Exception
 	{
@@ -32,7 +29,7 @@ class FantasyJobsEntities implements IDisposable
 				try {
 					cnnt.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}
@@ -82,7 +79,7 @@ class FantasyJobsEntities implements IDisposable
 	
 	
 
-	public List<JobMetaData> getUnterminated() throws Exception
+	public List<JobMetaData> getUnterminates() throws Exception
 	{
 		ArrayList<JobMetaData> rs = new ArrayList<JobMetaData>();
 		
@@ -114,34 +111,187 @@ class FantasyJobsEntities implements IDisposable
 
 
 	
-	private JobMetaData readMetadata(ResultSet set) {
+	private JobMetaData readMetadata(ResultSet record) throws Exception {
 		JobMetaData rs = new JobMetaData();
 		
-		rs.setId(value)
+          rs.setId(UUID.nameUUIDFromBytes(record.getBytes("ID")));
+          byte[] parentId = record.getBytes("PARENTID");
+          if(parentId != null)
+          {
+        	  rs.setParentId(UUID.nameUUIDFromBytes(parentId));
+          }
+          rs.setTemplate(record.getString("TEMPLATE"));
+          rs.setName(record.getString("Name"));
+          rs.setState(record.getInt("STATE"));
+          rs.setPriority(record.getInt("PRIORITY"));
+          rs.setStartTime(ToDate(record.getTimestamp("STARTTIME")));
+          rs.setEndTime(ToDate(record.getTimestamp("ENDTIME")));
+          rs.setCreationTime(ToDate(record.getTimestamp("CREATIONTIME")));
+          rs.setApplication(record.getString("APPLICATION"));
+          rs.setUser(record.getString("USER_"));
+        
+          rs.setStartInfo(record.getString("STARTINFO"));
+          rs.setTag(record.getString("TAG"));
+          
 		
 		return rs;
 	}
-
-
-	public final void AddToUnterminates(JobMetaData jobMetaData)
+	
+	private static Date ToDate(Timestamp time)
+	
 	{
-		super.AddObject("Unterminates", jobMetaData);
+		if(time == null)
+		{
+			return null;
+		}
+		else
+		{
+			return new Date(time.getTime());
+		}
 	}
 
-	/** 
-	 Deprecated Method for adding a new object to the Terminates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-	 
-	*/
-	public final void AddToTerminates(JobMetaData jobMetaData)
+
+	public final void AddToUnterminates(JobMetaData job) throws Exception
 	{
-		super.AddObject("Terminates", jobMetaData);
+		
+		String sql = "INSERT INFO APP.CV_JOB_JOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG )" +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?)";
+	    Connection cnnt = this.getConnection();
+	    PreparedStatement stmt = null;
+	    try
+	    {
+	    	stmt = cnnt.prepareStatement(sql);
+	    	stmt.setBytes(1,UUIDUtils.getBytes(job.getId()));
+	    	stmt.setBytes(2,UUIDUtils.getBytes(job.getParentId()));
+	    	stmt.setString(3, job.getTemplate());
+	    	stmt.setString(4,  job.getName());
+	    	stmt.setInt(5, job.getState());
+	    	stmt.setTimestamp(6, new Timestamp(job.getCreationTime().getTime()));
+	    	stmt.setString(7, job.getApplication());
+	    	stmt.setString(8, job.getUser());
+	    	stmt.setString(9, job.getStartInfo());
+	    	stmt.setString(10, job.getTag());
+	    	
+	    	stmt.execute();
+	    }
+	    finally
+	    {
+	    	if(stmt != null)
+	    	{
+	    		stmt.close();
+	    	}
+	    	this.revokeConnection(cnnt);
+	    	
+	    }
+
+
 	}
-
-
-
 
 	
+	public final void SetState(JobMetaData job) throws Exception
+	{
+        String sql = "UPDATE APP.CV_JOB_JOBS set STATE = ? where ID = ?";
+		Connection cnnt = this.getConnection();
+	    PreparedStatement stmt = null;
+	    try
+	    {
+	    	stmt = cnnt.prepareStatement(sql);
+	    	stmt.setInt(1, job.getState());
+	    	stmt.setBytes(2,UUIDUtils.getBytes(job.getId()));
+	    	stmt.execute();
+	    }
+	    finally
+	    {
+	    	if(stmt != null)
+	    	{
+	    		stmt.close();
+	    	}
+	    	this.revokeConnection(cnnt);
+	    	
+	    }
+	}
+	
+	public final void setStart(JobMetaData job) throws Exception
+	{
+		String sql = "UPDATE APP.CV_JOB_JOBS set STATE = ?, STARTTIME = ? where ID = ?";
+		
+		Connection cnnt = this.getConnection();
+	    PreparedStatement stmt = null;
+	    try
+	    {
+	    	stmt = cnnt.prepareStatement(sql);
+	    	stmt.setInt(1, job.getState());
+	    	stmt.setTimestamp(2, new Timestamp(job.getStartTime().getTime()));
+	    	stmt.setBytes(3,UUIDUtils.getBytes(job.getId()));
+	    	stmt.execute();
+	    }
+	    finally
+	    {
+	    	if(stmt != null)
+	    	{
+	    		stmt.close();
+	    	}
+	    	this.revokeConnection(cnnt);
+	    	
+	    }
+		
+	}
+	
+	public final void MoveToTerminates(JobMetaData job) throws Exception
+	{
+		
+		String dSql = "DELETE FROM APP.CV_JOB_JOBS where ID = X'%1$s'"; 
+		String iSql = "INSERT INFO APP.CV_JOB_ARCHIVEDJOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, STARTTIME, ENDTIME)" +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?)";
+		Statement dStatement = null;
+		PreparedStatement iStatement = null;
+		
+	    Connection cnnt = this.getConnection();
+	    try
+	    {
+	    	cnnt.setAutoCommit(false);
+	    	cnnt.createStatement();
+	    	dStatement = cnnt.createStatement();
+	    	try
+	    	{
+	    	dStatement.execute(String.format(dSql, UUIDUtils.toString(job.getId(), "n")));
+	    	}
+	    	finally
+	    	{
+	    		dStatement.close();
+	    	}
+	    	iStatement = cnnt.prepareStatement(iSql);
+	    	
+	    	iStatement.setBytes(1,UUIDUtils.getBytes(job.getId()));
+	    	iStatement.setBytes(2,UUIDUtils.getBytes(job.getParentId()));
+	    	iStatement.setString(3, job.getTemplate());
+	    	iStatement.setString(4,  job.getName());
+	    	iStatement.setInt(5, job.getState());
+	    	iStatement.setTimestamp(6, new Timestamp(job.getCreationTime().getTime()));
+	    	iStatement.setString(7, job.getApplication());
+	    	iStatement.setString(8, job.getUser());
+	    	iStatement.setString(9, job.getStartInfo());
+	    	iStatement.setString(10, job.getTag());
+	    	iStatement.setTimestamp(11, new Timestamp(job.getStartTime().getTime()));
+	    	iStatement.setTimestamp(12, new Timestamp(job.getEndTime().getTime()));
+	    	try
+	    	{
+	    	    iStatement.execute();
+	    	}
+	    	finally
+	    	{
+	    		iStatement.close();
+	    	}
+	    	cnnt.commit();
+	    }
+	    finally
+	    {
+	    	cnnt.setAutoCommit(true);
+	    	this.revokeConnection(cnnt);
+	    }
+	    
+	    
+	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
 }

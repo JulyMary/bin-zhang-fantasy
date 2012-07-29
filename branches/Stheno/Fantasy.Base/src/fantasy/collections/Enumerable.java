@@ -2,7 +2,6 @@ package fantasy.collections;
 
 import java.util.*;
 
-import fantasy.NotImplementedException;
 
 
 @SuppressWarnings("rawtypes")
@@ -210,8 +209,12 @@ public  class Enumerable<T> implements Iterable<T> {
 		return rs;
 	}
 
+	public <TKey> Enumerable<T> orderBy(Selector<T, TKey> keySelector)
+	{
+		return this.orderBy(keySelector, null);
+	}
 
-	public <TKey> Enumerable<T> orderBy(Selector<T, TKey> keySelector, Comparator<TKey> comparator) throws NotImplementedException
+	public <TKey> Enumerable<T> orderBy(Selector<T, TKey> keySelector, Comparator<TKey> comparator)
 	{
 		ArrayList<T> rs = new ArrayList<>();
 		for(T item : this._source)

@@ -1,7 +1,10 @@
 ﻿package fantasy.jobs.management;
 
+import java.util.*;
+
 import fantasy.jobs.properties.*;
 import fantasy.servicemodel.*;
+import fantasy.collections.*;
 
 public class EFJobQueueService extends AbstractService implements IJobQueue
 {
@@ -11,29 +14,27 @@ public class EFJobQueueService extends AbstractService implements IJobQueue
 	private java.util.ArrayList<JobMetaData> _unterminates = new java.util.ArrayList<JobMetaData>();
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
 		_entities = new FantasyJobsEntities();
-		_entities.Connection.Open();
-		_unterminates.addAll(_entities.getUnterminates());
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		_unterminates.SortBy(m => m.Id);
-		for (JobMetaData job : _unterminates)
-		{
-			if (job.getState() == JobState.Running)
-			{
-				job.setState(JobState.Suspended);
-				this.ApplyChange(job);
-			}
-		}
-		super.InitializeService();
+		
+		
+		_unterminates = new Enumerable<JobMetaData>(_entities.getUnterminates()).orderBy(new Selector<JobMetaData, UUID>(){
+
+			@Override
+			public UUID select(JobMetaData item) {
+				return item.getId();
+			}}).toArrayList();
+		
+	
+		super.initializeService();
 	}
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
-		super.UninitializeService();
-		_entities.Connection.Close();
+		super.uninitializeService();
+	
 		_entities.dispose();
 	}
 
