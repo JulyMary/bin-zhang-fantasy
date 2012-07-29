@@ -18,7 +18,7 @@ public interface IJobQueue
 	Iterable<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take);
 	Iterable<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take);
 
-	Iterable<JobMetaData> FindAll();
+
 
 	JobMetaData CreateJobMetaData();
 
