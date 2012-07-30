@@ -1,16 +1,13 @@
 ﻿package fantasy.jobs.management;
 
-public class InProcessJobEngineHost extends MarshalByRefObject
+import java.util.UUID;
+
+import fantasy.jobs.JobEngine;
+
+public class InProcessJobEngineHost
 {
-	@Override
-	public Object InitializeLifetimeService()
-	{
-		return null;
-	}
-
-
-
-	public final void Run(JobManager manager, UUID jobId)
+	
+	public final void Run(JobManager manager, UUID jobId) throws Exception
 	{
 
 		(new JobManagerAccessor()).SetJobManager(manager);

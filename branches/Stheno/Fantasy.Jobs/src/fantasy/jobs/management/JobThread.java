@@ -1,5 +1,7 @@
 ﻿package fantasy.jobs.management;
 
+import fantasy.jobs.*;
+
 public class JobThread
 {
 	public JobThread(JobMetaData job, Thread thread, boolean isResume)
@@ -7,7 +9,6 @@ public class JobThread
 		this.setThread(thread);
 		this.setJob(job);
 		this.setIsResume(isResume);
-		this.setExitEvent(new ManualResetEvent(false));
 	}
 
 	private Thread privateThread;
@@ -32,15 +33,12 @@ public class JobThread
 	}
 
 
-	private ManualResetEvent privateExitEvent;
-	public final ManualResetEvent getExitEvent()
+	private Object privateExitEvent = new Object();
+	public final Object getExitEvent()
 	{
 		return privateExitEvent;
 	}
-	private void setExitEvent(ManualResetEvent value)
-	{
-		privateExitEvent = value;
-	}
+	
 
 
 	private boolean privateIsResume;

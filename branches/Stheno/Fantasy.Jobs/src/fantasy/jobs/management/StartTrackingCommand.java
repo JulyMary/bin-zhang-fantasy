@@ -1,18 +1,16 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.Tracking.*;
+import fantasy.servicemodel.*;
+import fantasy.tracking.*;
 
 public class StartTrackingCommand implements ICommand
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ICommand Members
 
-	public final Object Execute(Object args)
+
+	public final Object Execute(Object args) throws Exception
 	{
 		TrackingConfiguration.StartTrackingService();
 		return null;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

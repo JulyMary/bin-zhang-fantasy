@@ -1,5 +1,10 @@
 ﻿package fantasy.jobs.management;
 
+import java.util.concurrent.Executors;
+
+import fantasy.*;
+import fantasy.servicemodel.*;
+
 public class StartDispatchingCommand implements ICommand, IObjectWithSite
 {
 
@@ -14,17 +19,19 @@ public class StartDispatchingCommand implements ICommand, IObjectWithSite
 	}
 
 
-	public final Object Execute(Object args)
+	public final Object Execute(Object args) throws Exception
 	{
-		IJobDispatcher disp = (IJobDispatcher)this.getSite().GetService(IJobDispatcher.class);
+		final IJobDispatcher disp = (IJobDispatcher)this.getSite().getService(IJobDispatcher.class);
 		if (disp != null)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			Task.Factory.StartNew(() =>
-			{
-				disp.Start();
-			}
-		   );
+			
+			Executors.callable(new Runnable(){
+
+				@Override
+				public void run() {
+					disp.Start();
+					
+				}});
 		}
 
 

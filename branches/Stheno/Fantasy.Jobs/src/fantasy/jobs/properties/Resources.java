@@ -153,5 +153,10 @@ public final class Resources {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public static String getInvalidJobTransitionText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

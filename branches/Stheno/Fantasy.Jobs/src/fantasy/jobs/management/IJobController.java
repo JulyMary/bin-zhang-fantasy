@@ -7,27 +7,27 @@ import fantasy.jobs.*;
 public interface IJobController
 {
 
-	void StartJob(JobMetaData job);
+	void StartJob(JobMetaData job) throws Exception;
 
-	void Resume(JobMetaData job);
+	void Resume(JobMetaData job) throws Exception;
 
-	void Cancel(UUID id);
+	void Cancel(UUID id) throws Exception;
 
-	void Suspend(UUID id);
+	void Suspend(UUID id) throws Exception;
 
-	void UserPause(UUID id);
-
-
+	void UserPause(UUID id) throws Exception;
 
 
-	int GetAvailableProcessCount();
 
 
-	boolean IsJobProccessExisted(UUID id);
+	int GetAvailableProcessCount() throws Exception;
 
-	JobMetaData[] GetRunningJobs();
 
-	void RegisterJobEngine(IJobEngine engine);
+	boolean IsJobProccessExisted(UUID id) throws Exception;
 
-	void SuspendAll(boolean waitForExit);
+	JobMetaData[] GetRunningJobs() throws Exception;
+
+	void RegisterJobEngine(IJobEngine engine) throws Exception; 
+
+	void SuspendAll(boolean waitForExit) throws Exception; 
 }

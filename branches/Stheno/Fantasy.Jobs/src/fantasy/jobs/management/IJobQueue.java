@@ -1,47 +1,39 @@
 ﻿package fantasy.jobs.management;
 
-import java.util.UUID;
+import java.util.*;
 
 import fantasy.*;
-import fantasy.jobs.properties.*;
+
 
 public interface IJobQueue
 {
 	Iterable<JobMetaData> getUnterminates();
 
-	Iterable<JobMetaData> getTerminates();
+	
 
-	JobMetaData FindJobMetaDataById(UUID id);
+	JobMetaData FindJobMetaDataById(UUID id) throws Exception;
 
-	boolean IsTerminated(UUID id);
+	boolean IsTerminated(UUID id) throws Exception;
 
-	Iterable<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take);
-	Iterable<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take);
+	List<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	List<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
 
 
 
 	JobMetaData CreateJobMetaData();
 
-	void ApplyChange(JobMetaData job);
-	void Resume(UUID id);
-	void Cancel(UUID id);
-	void Suspend(UUID id);
-	void UserPause(UUID id);
+	void Add(JobMetaData job) throws Exception;
+	void UpdateState(JobMetaData job, boolean isStart) throws Exception;
+	void Archive(JobMetaData job) throws Exception;
+	void Resume(UUID id) throws Exception;
+	void Cancel(UUID id) throws Exception;
+	void Suspend(UUID id) throws Exception;
+	void UserPause(UUID id) throws Exception;
+	
+	
+	void addListener(IJobQueueListener listener);
+	void removeListener(IJobQueueListener listener);
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<JobQueueEventArgs> Changed;
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<JobQueueEventArgs> Added;
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<JobQueueEventArgs> RequestCancel;
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<JobQueueEventArgs> RequestSuspend;
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<JobQueueEventArgs> RequestUserPause;
 
 
 	String[] GetAllApplications();

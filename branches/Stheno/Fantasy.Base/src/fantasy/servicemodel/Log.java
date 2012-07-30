@@ -44,6 +44,7 @@ public final class Log
 			logger.LogError(category, exception, String.format(message, messageArgs));
 		}
 	}
+	
 	public static void SafeLogError(ILogger logger, String category, String message, Object... messageArgs)
 	{
 		if (logger != null)
@@ -51,4 +52,5 @@ public final class Log
 			logger.LogError(category, String.format(message, messageArgs));
 		}
 	}
+	
 }

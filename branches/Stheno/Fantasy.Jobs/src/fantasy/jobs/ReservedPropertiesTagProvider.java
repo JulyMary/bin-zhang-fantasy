@@ -46,7 +46,7 @@ public class ReservedPropertiesTagProvider extends ObjectWithSite implements ITa
 		}
 		else if (tag.toLowerCase().equals("templatedir"))
 		{
-				return this.getSite().getRequiredService(IJobManagerSettingsReader.class).GetSetting(String.class, "JobTemplateDirectoryFullPath");
+				return this.getSite().getRequiredService(IJobManagerSettingsReader.class).getSetting(String.class, "JobTemplateDirectoryFullPath");
 		}
 		else if (tag.toLowerCase().equals("jobid"))
 		{

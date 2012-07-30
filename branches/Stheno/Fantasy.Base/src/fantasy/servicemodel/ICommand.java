@@ -2,5 +2,5 @@
 
 public interface ICommand
 {
-	Object Execute(Object args);
+	Object Execute(Object args) throws Exception;
 }

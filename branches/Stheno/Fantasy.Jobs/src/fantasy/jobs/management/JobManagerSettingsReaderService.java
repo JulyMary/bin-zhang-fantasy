@@ -6,15 +6,15 @@ public class JobManagerSettingsReaderService extends AbstractService implements 
 {
 
 	@Override
-	public void InitializeService()
+	public void initializeService()
 	{
-		super.InitializeService();
+		super.initializeService();
 	}
 
 //C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 		///#region IJobManagerSettingsReader Members
 
-	public final Object GetSetting(String name)
+	public final Object getSetting(String name)
 	{
 		java.lang.Class t = JobManagerSettings.class;
 		PropertyInfo prop = t.GetProperty(name);
