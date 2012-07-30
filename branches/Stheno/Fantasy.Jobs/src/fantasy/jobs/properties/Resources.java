@@ -1,5 +1,7 @@
 package fantasy.jobs.properties;
 
+import fantasy.servicemodel.MessageImportance;
+
 
 public final class Resources {
 
@@ -155,6 +157,36 @@ public final class Resources {
 	}
 
 	public static String getInvalidJobTransitionText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getDulplicateTemplateNamesText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static MessageImportance getSuccessToLoadTemplateText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getSuccessToLoadAnonymousTemplateText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getFailToLoadTemplateText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getCannotFindTemplateByNameText() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String getCannotFindTemplateByPathText() {
 		// TODO Auto-generated method stub
 		return null;
 	}

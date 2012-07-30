@@ -2,5 +2,5 @@
 
 public interface IJobStartupFilter
 {
-	Iterable<JobMetaData> Filter(Iterable<JobMetaData> source);
+	Iterable<JobMetaData> Filter(Iterable<JobMetaData> source) throws Exception;
 }

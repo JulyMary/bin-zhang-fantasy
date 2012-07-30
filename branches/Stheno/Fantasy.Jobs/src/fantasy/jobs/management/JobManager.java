@@ -9,6 +9,10 @@ import fantasy.servicemodel.*;
 
 public class JobManager extends UnicastRemoteObject implements IJobManager
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4653233011893159359L;
 	private JobManager() throws RemoteException
 	{
 

@@ -42,7 +42,7 @@ public  class Enumerable<T> implements Iterable<T> {
 	}
 
 
-	public Enumerable<T> Distinct()
+	public Enumerable<T> distinct()
 	{
 		HashSet<T> rs = new HashSet<T>();
 		for(T item : this._source)
@@ -55,17 +55,110 @@ public  class Enumerable<T> implements Iterable<T> {
 
 	public Enumerable<T> where(Predicate<T> predicate) throws Exception
 	{
-		ArrayList<T> rs = new ArrayList<T>();
-		for(T item : _source)
-		{
-			if(predicate.evaluate(item))
-			{
-				rs.add(item);
-			}
 
-
-		}
+		WhereIterable rs = new WhereIterable(this._source, predicate);
+		
 		return new Enumerable<T>(rs);
+	}
+	
+	
+	private class WhereIterable implements Iterable<T>
+	{
+		
+		public WhereIterable(Iterable<T> source, Predicate<T> predicate)
+		{
+			this._predicate = predicate;
+			this._source = source;
+		}
+		
+		private Iterable<T> _source;
+		private Predicate<T> _predicate;
+		
+		
+		private int state = 0;
+
+		@Override
+		public Iterator<T> iterator() {
+			return new WhereIterator(this._source, this._predicate);
+		}
+		
+	}
+	
+	private class WhereIterator implements Iterator<T>
+	{
+		
+		public WhereIterator(Iterable<T> source, Predicate<T> predicate)
+		{
+			this._predicate = predicate;
+			this._source = source.iterator();
+		}
+		
+		private Iterator<T> _source;
+		private Predicate<T> _predicate;
+		private T _current;
+		
+		
+		//0: need To Find Next, 1: return current, 2 : end 
+		private int _state = 0;
+
+
+		@Override
+		public boolean hasNext() {
+			if(_state == 0)
+			{
+				this.findNext();
+			}
+			
+			return _state != 2;
+		}
+
+
+		private void findNext() throws UnsupportedOperationException {
+			while(this._state == 0)
+			{
+				if(this._source.hasNext())
+				{
+					T item = this._source.next();
+					try {
+						if(this._predicate.evaluate(item))
+						{
+							this._current = item;
+						}
+					} catch (Exception e) {
+						throw new UnsupportedOperationException(e);
+					}
+					
+				}
+				else	
+				{
+					this._state = 2;
+				}
+			}
+			
+		}
+
+
+		@Override
+		public T next() {
+			if(_state == 0)
+			{
+				this.findNext();
+			}
+			if(_state == 2)
+			{
+				throw new NoSuchElementException();
+			}
+			T rs = this._current;
+			this._state = 0;
+			return rs;
+		}
+
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
 	}
 
 
@@ -209,6 +302,22 @@ public  class Enumerable<T> implements Iterable<T> {
 		return rs;
 	}
 
+	
+	public <TKey> Enumerable<T> orderByDescending(Selector<T, TKey> keySelector)
+	{
+		return this.orderByDescending(keySelector, null);
+	}
+	
+	public <TKey> Enumerable<T> orderByDescending(Selector<T, TKey> keySelector, Comparator<TKey> comparator)
+	{
+		KeyComparator<TKey> kc = new KeyComparator<TKey>();
+		kc.keySelector = keySelector;
+		kc.innerComparator = comparator != null ? comparator : new NaturalComparator<TKey>(); 
+		
+		OrderByIterable rs = new OrderByIterable(this._source, new ReverseComparator<T>(kc));
+		return new Enumerable<T>(rs);
+	}
+	
 	public <TKey> Enumerable<T> orderBy(Selector<T, TKey> keySelector)
 	{
 		return this.orderBy(keySelector, null);
@@ -216,21 +325,91 @@ public  class Enumerable<T> implements Iterable<T> {
 
 	public <TKey> Enumerable<T> orderBy(Selector<T, TKey> keySelector, Comparator<TKey> comparator)
 	{
-		ArrayList<T> rs = new ArrayList<>();
-		for(T item : this._source)
-		{
-			rs.add(item);
-		}
-
-
+		
 		KeyComparator<TKey> kc = new KeyComparator<TKey>();
 		kc.keySelector = keySelector;
 		kc.innerComparator = comparator != null ? comparator : new NaturalComparator<TKey>(); 
 
-		Collections.sort(rs, kc);
+		OrderByIterable rs = new OrderByIterable(this._source, kc);
 
 		return new Enumerable<T>(rs);
 	}
+	
+	
+	private class OrderByIterable implements Iterable<T>
+	{
+		
+		public OrderByIterable(Iterable<T> source, Comparator<T> comparator)
+		{
+			this._source = source;
+			this._comparer = comparator;
+		}
+		
+		private Iterable<T> _source;
+		private Comparator<T> _comparer;
+
+		@Override
+		public Iterator<T> iterator() {
+			return new OrderByIterator(this._source, this._comparer);
+		}
+		
+	}
+	
+	private class OrderByIterator implements Iterator<T>
+	{
+		
+		public OrderByIterator(Iterable<T> source, Comparator<T> comparator)
+		{
+			_list = new ArrayList<T>();
+			for(T item : source)
+			{
+				_list.add(item);
+			}
+			this._comparer = comparator;
+		}
+		
+		
+		private ArrayList<T> _list;
+		
+		private int _index = 0;
+		private Comparator<T> _comparer;
+		@Override
+		public boolean hasNext() {
+			
+			return _index < _list.size();
+		}
+		@Override
+		public T next() {
+			if(_index >= _list.size())
+			{
+				throw new NoSuchElementException();
+			}
+			
+			T rs;
+			for(int i = this._list.size() - 1; i > this._index ; i --)
+			{
+				T x = this._list.get(i);
+				T y = this._list.get(i - 1);
+				if(this._comparer.compare(x,  y) < 0)
+				{
+					this._list.set(i, y);
+					this._list.set(i - 1, x);
+				}
+			}
+			
+			rs = this._list.get(this._index);
+			this._index ++;
+			return rs;
+			
+		}
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+
+	}
+	
 
 	private class KeyComparator<TKey> implements Comparator<T>
 	{
@@ -261,10 +440,6 @@ public  class Enumerable<T> implements Iterable<T> {
 		
 		return new Enumerable<T2>(rs);
 	}
-
-
-
-
 
 
 

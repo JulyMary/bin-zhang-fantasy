@@ -62,7 +62,7 @@ public class StringParseService extends AbstractService implements IStringParser
 				@Override
 				public Character select(ITagValueProvider item) {
 					return item.getPrefix();
-				}}).Distinct();
+				}}).distinct();
 
 			for (Character prefix : chars)
 			{

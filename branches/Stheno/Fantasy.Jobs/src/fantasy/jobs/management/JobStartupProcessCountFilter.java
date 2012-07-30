@@ -1,39 +1,22 @@
 ﻿package fantasy.jobs.management;
 
-public class JobStartupProcessCountFilter implements IJobStartupFilter, IObjectWithSite
-{
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStartupFilter Members
+import java.util.*;
+import fantasy.*;
 
-	public final Iterable<JobMetaData> Filter(Iterable<JobMetaData> source)
+public class JobStartupProcessCountFilter extends ObjectWithSite implements IJobStartupFilter
+{
+
+	public final Iterable<JobMetaData> Filter(Iterable<JobMetaData> source) throws Exception
 	{
-		IJobController ctrl = this.getSite().<IJobController>GetRequiredService();
+		IJobController ctrl = this.getSite().getRequiredService(IJobController.class);
 		if (ctrl.GetRunningJobs().length < JobManagerSettings.getDefault().getJobProcessCount())
 		{
 			return source;
 		}
 		else
 		{
-			return new JobMetaData[] { };
+			return new ArrayList<JobMetaData>();
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IObjectWithSite Members
-
-	private IServiceProvider privateSite;
-	public final IServiceProvider getSite()
-	{
-		return privateSite;
-	}
-	public final void setSite(IServiceProvider value)
-	{
-		privateSite = value;
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

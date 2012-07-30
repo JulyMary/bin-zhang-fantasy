@@ -31,7 +31,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 	{
 		return "UTF-8'";
 	}
-	protected abstract OutputStreamWriter getWriter();
+	protected abstract OutputStreamWriter getWriter() throws Exception;
 
 	@Override
 	public void initializeService() throws Exception
