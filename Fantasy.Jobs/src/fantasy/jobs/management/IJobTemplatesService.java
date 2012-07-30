@@ -7,8 +7,8 @@ import fantasy.jobs.*;
 
 public interface IJobTemplatesService
 {
-	JobTemplate GetJobTemplateByName(String name);
-	JobTemplate GetJobTemplateByPath(String path);
+	JobTemplate GetJobTemplateByName(String name) throws Exception;
+	JobTemplate GetJobTemplateByPath(String path) throws Exception;;
 
-	JobTemplate[] GetJobTemplates();
+	JobTemplate[] GetJobTemplates() throws Exception;;
 }

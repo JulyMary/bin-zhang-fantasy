@@ -1,17 +1,40 @@
 ﻿package fantasy.jobs.management;
 
+import java.io.*;
+import java.rmi.RemoteException;
+
+import org.apache.commons.io.filefilter.*;
+import org.apache.commons.lang3.StringUtils;
+import org.jdom2.*;
+
+import fantasy.JDomUtils;
+import fantasy.jobs.*;
 import fantasy.jobs.properties.*;
-import Fantasy.ServiceModel.*;
+import fantasy.servicemodel.*;
+import fantasy.*;
+import fantasy.collections.*;
+
 
 public class JobTemplatesService extends AbstractService implements IJobTemplatesService
 {
 
+	public JobTemplatesService() throws RemoteException {
+		super();
+		
+	}
+
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5787564023533957679L;
 	private ILogger _logger;
-	public final ILogger getLogger()
+	public final ILogger getLogger() throws Exception
 	{
 		if (_logger == null)
 		{
-			_logger = (ILogger)this.getSite().GetService(ILogger.class);
+			_logger =this.getSite().getService(ILogger.class);
 		}
 		return _logger;
 	}
@@ -24,49 +47,52 @@ public class JobTemplatesService extends AbstractService implements IJobTemplate
 	private int _sequence = 0;
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		DirectoryInfo dir = new DirectoryInfo(JobManagerSettings.getDefault().getJobTemplateDirectoryFullPath());
-		if (dir.Exists)
+		File dir = new File(JobManagerSettings.getDefault().getJobTemplateDirectoryFullPath());
+		if (dir.exists())
 		{
 			LoadTemplates(dir);
 		}
-		super.InitializeService();
+		super.initializeService();
 	}
 
-	private void LoadTemplates(DirectoryInfo dir)
+	private void LoadTemplates(File dir) throws Exception
 	{
-		for(FileInfo fi : dir.GetFiles("*.jt"))
+		for(File fi : dir.listFiles((FileFilter)new SuffixFileFilter(".jt")))
 		{
 			LoadTemplate(fi, false);
 		}
-		for (DirectoryInfo sub : dir.GetDirectories())
+		for (File sub : dir.listFiles((FileFilter)DirectoryFileFilter.INSTANCE))
 		{
 			LoadTemplates(sub);
 		}
 	}
 
-	private void LoadTemplate(FileInfo fi, boolean replace)
+	private void LoadTemplate(File fi, boolean replace) throws Exception
 	{
-		JobTemplate template = new JobTemplate();
+		final JobTemplate template = new JobTemplate();
 		template.setid(this._sequence++);
-		template.setLocation(fi.FullName);
+		template.setLocation(fi.getAbsolutePath());
 		template.setValid(false);
 		try
 		{
 
 
-			XmlDocument doc = new XmlDocument();
+			Element element =  JDomUtils.loadElement(fi.getAbsolutePath());
 
-			String text = File.ReadAllText(fi.FullName);
-			template.setContent(text);
-			doc.LoadXml(text);
-			template.setName(doc.DocumentElement.GetAttribute("name"));
+			
+			template.setName(element.getAttributeValue("name"));
 
-			if (!DotNetToJavaStringHelper.isNullOrEmpty(template.getName()))
+			if (!StringUtils2.isNullOrEmpty(template.getName()))
 			{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-				JobTemplate old = (from t in this._templates where (StringComparer.OrdinalIgnoreCase.Compare(t.getName(), template.getName()) == 0) select t).SingleOrDefault();
+
+				JobTemplate old = new Enumerable<JobTemplate>(this._templates).firstOrDefault(new Predicate<JobTemplate>(){
+
+					@Override
+					public boolean evaluate(JobTemplate t) throws Exception {
+						return StringUtils.equalsIgnoreCase(template.getName(), t.getName());
+					}});
 				if(old != null)
 				{
 					if(replace)
@@ -75,25 +101,25 @@ public class JobTemplatesService extends AbstractService implements IJobTemplate
 					}
 					else
 					{
-						throw new ApplicationException(String.format(Properties.Resources.getDulplicateTemplateNamesText(), old.getLocation(), fi.FullName, old.getName()));
+						throw new IllegalStateException(String.format(Resources.getDulplicateTemplateNamesText(), old.getLocation(), fi.getAbsolutePath(), old.getName()));
 					}
 				}
 				template.setValid(true);
 				this._templates.add(template);
-				getLogger().LogMessage(LogCategories.getManager(), Properties.Resources.getSuccessToLoadTemplateText(), fi.FullName, template.getName());
+				getLogger().LogMessage(LogCategories.getManager(), Resources.getSuccessToLoadTemplateText(), fi.getAbsolutePath(), template.getName());
 			}
 			else
 			{
 				template.setValid(true);
 				this._templates.add(template);
 
-				getLogger().LogMessage(LogCategories.getManager(), Properties.Resources.getSuccessToLoadAnonymousTemplateText(), fi.FullName);
+				getLogger().LogMessage(LogCategories.getManager(), Resources.getSuccessToLoadAnonymousTemplateText(), fi.getAbsolutePath());
 			}
 
 		}
-		catch(RuntimeException ex)
+		catch(Exception ex)
 		{
-			getLogger().LogWarning(LogCategories.getManager(), ex, MessageImportance.High, Properties.Resources.getFailToLoadTemplateText(), fi.FullName);
+			getLogger().LogWarning(LogCategories.getManager(), ex, MessageImportance.High, Resources.getFailToLoadTemplateText(), fi.getAbsolutePath());
 		}
 		if (!template.getValid())
 		{
@@ -103,41 +129,41 @@ public class JobTemplatesService extends AbstractService implements IJobTemplate
 
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobTemplatesService Members
-
-	public final JobTemplate GetJobTemplateByName(String name)
+	public final JobTemplate GetJobTemplateByName(final String name) throws Exception
 	{
-		try
-		{
+			
+			JobTemplate rs = new Enumerable<JobTemplate>(this._templates).firstOrDefault(new Predicate<JobTemplate>(){
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-			return (from template in this._templates where StringComparer.OrdinalIgnoreCase.Compare(template.getName(), name) == 0 select template).Single();
-		}
-		catch (InvalidOperationException e)
-		{
-			throw new JobException(String.format(Properties.Resources.getCannotFindTemplateByNameText(), name));
-		}
+					@Override
+					public boolean evaluate(JobTemplate t) throws Exception {
+						return StringUtils.equalsIgnoreCase(name, t.getName());
+					}});
+			if(rs == null)
+			{
+				throw new JobException(String.format(Resources.getCannotFindTemplateByNameText(), name));
+			}
+			
+			return rs;
+		
+		
 
 	}
 
-	public final JobTemplate GetJobTemplateByPath(String path)
+	public final JobTemplate GetJobTemplateByPath(final String path) throws Exception
 	{
-		Uri uri = new Uri(path);
-		try
-		{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-			return (from template in this._templates where (new Uri(template.getLocation())) == uri select template).Single();
-		}
-		catch (InvalidOperationException e)
-		{
-			throw new JobException(String.format(Properties.Resources.getCannotFindTemplateByPathText(), path));
-		}
-	}
+		JobTemplate rs = new Enumerable<JobTemplate>(this._templates).firstOrDefault(new Predicate<JobTemplate>(){
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+			@Override
+			public boolean evaluate(JobTemplate t) throws Exception {
+				return StringUtils.equalsIgnoreCase(path, t.getLocation());
+			}});
+		if(rs == null)
+		{
+			throw new JobException(String.format(Resources.getCannotFindTemplateByPathText(), path));
+		}
+
+		return rs;
+	}
 
 
 	public final JobTemplate[] GetJobTemplates()
