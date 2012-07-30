@@ -4,7 +4,6 @@ import java.util.*;
 
 
 
-@SuppressWarnings("rawtypes")
 public  class Enumerable<T> implements Iterable<T> {
 
 
