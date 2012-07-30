@@ -124,9 +124,9 @@ class FantasyJobsEntities implements IDisposable
           rs.setName(record.getString("Name"));
           rs.setState(record.getInt("STATE"));
           rs.setPriority(record.getInt("PRIORITY"));
-          rs.setStartTime(ToDate(record.getTimestamp("STARTTIME")));
-          rs.setEndTime(ToDate(record.getTimestamp("ENDTIME")));
-          rs.setCreationTime(ToDate(record.getTimestamp("CREATIONTIME")));
+          rs.setStartTime(toDate(record.getTimestamp("STARTTIME")));
+          rs.setEndTime(toDate(record.getTimestamp("ENDTIME")));
+          rs.setCreationTime(toDate(record.getTimestamp("CREATIONTIME")));
           rs.setApplication(record.getString("APPLICATION"));
           rs.setUser(record.getString("USER_"));
         
@@ -137,7 +137,7 @@ class FantasyJobsEntities implements IDisposable
 		return rs;
 	}
 	
-	private static Date ToDate(Timestamp time)
+	private static Date toDate(Timestamp time)
 	
 	{
 		if(time == null)
@@ -151,7 +151,7 @@ class FantasyJobsEntities implements IDisposable
 	}
 
 
-	public final void AddToUnterminates(JobMetaData job) throws Exception
+	public final void addToUnterminates(JobMetaData job) throws Exception
 	{
 		
 		String sql = "INSERT INFO APP.CV_JOB_JOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG )" +
@@ -188,7 +188,7 @@ class FantasyJobsEntities implements IDisposable
 	}
 
 	
-	public final void SetState(JobMetaData job) throws Exception
+	public final void setState(JobMetaData job) throws Exception
 	{
         String sql = "UPDATE APP.CV_JOB_JOBS set STATE = ? where ID = ?";
 		Connection cnnt = this.getConnection();
@@ -237,7 +237,7 @@ class FantasyJobsEntities implements IDisposable
 		
 	}
 	
-	public final void MoveToTerminates(JobMetaData job) throws Exception
+	public final void moveToTerminates(JobMetaData job) throws Exception
 	{
 		
 		String dSql = "DELETE FROM APP.CV_JOB_JOBS where ID = X'%1$s'"; 
@@ -291,6 +291,94 @@ class FantasyJobsEntities implements IDisposable
 	    }
 	    
 	    
+	}
+	
+	
+	public int getTerminatedCount() throws Exception
+	{
+
+		int rs;
+		String sql = "select count(*) from APP.CV_JOB_ARCHIVEDJOBS";
+		Connection cnnt = this.getConnection();
+		Statement stmt = null;
+		try
+		{
+			stmt = cnnt.createStatement();
+			ResultSet set = stmt.executeQuery(sql);
+			set.next();
+			
+			rs = set.getInt(1);
+			set.close();
+			
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				stmt.close();
+			}
+			this.revokeConnection(cnnt);
+		}
+		
+		return rs;
+	}
+	
+	public List<JobMetaData> query(String table, String filter, String order, int take, int skip) throws Exception
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from ").append(table);
+		
+		if(!StringUtils2.isNullOrEmpty(filter))
+		{
+			sql.append(" where ").append(filter);
+		}
+		
+		if(!StringUtils2.isNullOrEmpty(order))
+		{
+			sql.append(" order by ").append(order);
+		
+		}
+		if(skip > 0)
+		{
+			sql.append(" offset ").append(skip).append(" rows");
+		}
+		
+		if(take < Integer.MAX_VALUE)
+		{
+			sql.append(" fetch ").append(take).append(" rows only");
+		
+		}
+		
+		
+		
+       ArrayList<JobMetaData> rs = new ArrayList<JobMetaData>();
+		
+		
+		Connection cnnt = this.getConnection();
+		Statement stmt = null;
+		try
+		{
+			stmt = cnnt.createStatement();
+			ResultSet set = stmt.executeQuery(sql.toString());
+			while(set.next())
+			{
+				rs.add(this.readMetadata(set));
+			}
+			set.close();
+			
+		}
+		finally
+		{
+			if(stmt != null)
+			{
+				stmt.close();
+			}
+			this.revokeConnection(cnnt);
+		}
+		
+		return rs;
+		
+		
 	}
 
 

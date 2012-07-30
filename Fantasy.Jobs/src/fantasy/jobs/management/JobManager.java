@@ -1,25 +1,32 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.ServiceModel.*;
-import Fantasy.IO.*;
-import Fantasy.XSerialization.*;
-import Fantasy.Jobs.Utils.*;
+import java.rmi.*;
+import java.rmi.server.*;
+import java.util.Arrays;
 
-public class JobManager extends MarshalByRefObject implements IJobManager
+import fantasy.*;
+import fantasy.servicemodel.*;
+
+public class JobManager extends UnicastRemoteObject implements IJobManager
 {
-	private JobManager()
+	private JobManager() throws RemoteException
 	{
 
 	}
 
-
-	@Override
-	public Object InitializeLifetimeService()
+    
+	static
 	{
-		return null;
+		try {
+			_default = new JobManager();
+		} catch (RemoteException e) {
+			
+			e.printStackTrace();
+		}
 	}
+	
 
-	private static JobManager _default = new JobManager();
+	private static JobManager _default;
 	public static JobManager getDefault()
 	{
 		return _default;
@@ -27,7 +34,7 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 
 	private ServiceContainer _serviceContainer = new ServiceContainer();
 
-	private String GetContentString(XElement element)
+/*	private String GetContentString(Element element)
 	{
 		StringBuilder rs = new StringBuilder();
 		for (XElement child : element.Descendants())
@@ -48,9 +55,6 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 	}
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-//#if !DEBUG
 	private boolean CheckLicence()
 	{
 		boolean rs = false;
@@ -64,8 +68,7 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 			String content = GetContentString(root);
 			byte[] tb;
 			boolean isValidSignature = false;
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//			using (SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider())
+
 			SHA1CryptoServiceProvider sha = new SHA1CryptoServiceProvider();
 			try
 			{
@@ -75,8 +78,6 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 			{
 				sha.dispose();
 			}
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//			using (DSACryptoServiceProvider dsa = new DSACryptoServiceProvider())
 			DSACryptoServiceProvider dsa = new DSACryptoServiceProvider();
 			try
 			{
@@ -101,7 +102,6 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 					if (GetMachineCode().equals(l.MachineCode) && new java.util.Date() < l.ExpireTime)
 					{
 						this._serviceContainer.AddService(l);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
 						ThreadFactory.CreateThread(state =>
 						{
 							java.util.Date t = (java.util.Date)state;
@@ -122,7 +122,6 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 							java.util.Random r = new java.util.Random();
 							int i = r.nextInt(Environment.ProcessorCount);
 
-//C# TO JAVA CONVERTER WARNING: Unsigned integer types have no direct equivalent in Java:
 //ORIGINAL LINE: uint m = 1u << i;
 							int m = 1u << i;
 
@@ -138,15 +137,8 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 
 		return rs;
 	}
-//#else
-	private boolean CheckLicence()
-	{
-		return true;
-	}
-//#endif
-
-//C# TO JAVA CONVERTER WARNING: Java does not allow user-defined value types. The behavior of this class will differ from the original:
-//ORIGINAL LINE: private struct HardwareKey
+	
+	
 	private final static class HardwareKey
 	{
 		public String Key;
@@ -233,30 +225,36 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 		System.loadLibrary("kernel32.dll");
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: C# optional parameters are not converted to Java:
-//ORIGINAL LINE: public void Start(IServiceProvider parentServices = null)
-	public final void Start(IServiceProvider parentServices)
+	*/
+	private boolean CheckLicence()
 	{
-		java.util.ArrayList<Object> services = new java.util.ArrayList<Object>(AddIn.CreateObjects("jobService/services/service"));
+		return true;
+	}
+
+
+	public final void Start(IServiceProvider parentServices) throws Exception
+	{
+		java.util.ArrayList<Object> services = new java.util.ArrayList<Object>(Arrays.asList(AddIn.CreateObjects("jobService/services/service")));
 		services.add(this);
-		_serviceContainer.InitializeServices(parentServices, services.toArray(new Object[]{}));
+		_serviceContainer.initializeServices(parentServices, services.toArray(new Object[]{}));
 		if (CheckLicence())
 		{
-			Object[] commands = AddIn.CreateObjects("jobService/startupCommands/command");
+			ICommand[] commands = AddIn.CreateObjects(ICommand.class, "jobService/startupCommands/command");
 
 			for (ICommand command : commands)
 			{
 				if (command instanceof IObjectWithSite)
 				{
-					((IObjectWithSite)command).Site = this;
+					((IObjectWithSite)command).setSite(this);
 				}
 				command.Execute(null);
 			}
 		}
 		else
 		{
-			ILogger logger = this.<ILogger>GetService();
-			logger.LogError("Licence", "Licence is invalid or expired.");
+			ILogger logger = this.getService(ILogger.class);
+			Log.SafeLogError(logger, "Licence", "Licence is invalid or expired.");
+			
 
 			Stop();
 		}
@@ -264,23 +262,39 @@ public class JobManager extends MarshalByRefObject implements IJobManager
 
 	private boolean _stopped = false;
 
-	public final void Stop()
+	public final void Stop() throws Exception
 	{
 		if (!_stopped)
 		{
 			this._stopped = true;
-			this._serviceContainer.UninitializeServices();
+			this._serviceContainer.uninitializeServices();
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IServiceProvider Members
 
-	public final Object GetService(java.lang.Class serviceType)
+	public final <T> T getService(java.lang.Class<T> serviceType) throws Exception
 	{
-		return _serviceContainer.GetService(serviceType);
+		return _serviceContainer.getService(serviceType);
+	}
+	
+	@Override
+	public Object getService2(@SuppressWarnings("rawtypes") Class serviceType) throws Exception {
+		return this._serviceContainer.getService2(serviceType);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
+
+	@Override
+	public Object getRequiredService2(@SuppressWarnings("rawtypes") Class serviceType) throws Exception {
+		return this._serviceContainer.getRequiredService2(serviceType);
+	}
+
+
+
+	@Override
+	public <T> T getRequiredService(Class<T> serviceType) throws Exception {
+		return this._serviceContainer.getRequiredService(serviceType);
+	}
+
+
 }

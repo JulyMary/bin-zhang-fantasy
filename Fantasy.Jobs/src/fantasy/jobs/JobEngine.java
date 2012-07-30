@@ -51,7 +51,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		_jobManager = new JobManagerAccessor().GetJobManager();
 
 		IJobManagerSettingsReader reader = (IJobManagerSettingsReader)_jobManager.getService(IJobManagerSettingsReader.class);
-		_jobDirectory = String.format(String.format("%1$s\\%2$s", reader.GetSetting(String.class, "JobDirectoryFullPath"), this.getJobId()));
+		_jobDirectory = String.format(String.format("%1$s\\%2$s", reader.getSetting(String.class, "JobDirectoryFullPath"), this.getJobId()));
 		if (!Directory.exists(_jobDirectory))
 		{
 			Directory.create(_jobDirectory);

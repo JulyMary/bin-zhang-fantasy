@@ -1,63 +1,81 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.ServiceModel.*;
-import Fantasy.XSerialization.*;
+import java.rmi.RemoteException;
+import java.util.*;
+import java.util.concurrent.*;
+
+import fantasy.JDomUtils;
+import fantasy.jobs.*;
+import fantasy.servicemodel.*;
+import fantasy.xserialization.*;
+import org.jdom2.*;
 
 public class InProcessJobController extends AbstractService implements IJobController, IJobEngineEventHandler
 {
-	public InProcessJobController()
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -16713493158777951L;
+
+
+
+	public InProcessJobController() throws RemoteException
 	{
-	   _appDomainSetup = new AppDomainSetup();
-			_appDomainSetup.ApplicationBase = System.Environment.CurrentDirectory;
-			_appDomainSetup.DisallowBindingRedirects = false;
-			_appDomainSetup.DisallowCodeDownload = true;
-			_appDomainSetup.ConfigurationFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+	      super();
 	}
 
-	private Thread _checkProcessThread;
+	ScheduledExecutorService _scheduler;
+
+	
 
 	@Override
-	public Object InitializeLifetimeService()
+	public void initializeService() throws Exception
 	{
-		return null;
+		
+		_scheduler = Executors.newScheduledThreadPool(1);
+		_scheduler.scheduleAtFixedRate(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					InProcessJobController.this.CheckThreadExist();
+				}
+				
+				catch (Exception e) {
+					
+					
+				}
+			}}, 30, 30, TimeUnit.SECONDS);
+		
+		super.initializeService();
 	}
 
-	@Override
-	public void InitializeService()
-	{
-		_checkProcessThread = ThreadFactory.CreateThread(this.CheckThreadExist).WithStart();
-		super.InitializeService();
-	}
-
-	private void CheckThreadExist()
+	private void CheckThreadExist() throws Exception
 	{
 
-		while (true)
+		synchronized (_syncRoot)
 		{
-			Thread.sleep(30 * 1000);
-			synchronized (_syncRoot)
+			for (JobThread jt : new java.util.ArrayList<JobThread>(this._threads))
 			{
-				for (JobThread jt : new java.util.ArrayList<JobThread>(this._threads))
+				boolean exited = true;
+				exited = !jt.getThread().isAlive();
+				if (exited)
 				{
-					boolean exited = true;
-					exited = (jt.getThread().ThreadState & (ThreadState.Aborted | ThreadState.Stopped)) > 0;
-					if (exited)
-					{
-						this.SetJobExited(jt.getJob().getId(), JobState.Failed);
-					}
+					this.SetJobExited(jt.getJob().getId(), JobState.Failed);
 				}
 			}
 		}
+		
 	}
 
 	private boolean _uninitializing = false;
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
 
 		_uninitializing = true;
-		this._checkProcessThread.stop();
-		super.UninitializeService();
+		_scheduler.shutdownNow();
+		super.uninitializeService();
 		this.SuspendAll(true);
 
 	}
@@ -74,7 +92,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		JobThread jp = GetJobThreadById(id);
 		if (jp != null)
 		{
-			 rs = (jp.getThread().ThreadState & (ThreadState.Stopped | ThreadState.Aborted)) == 0;
+			 rs = jp.getThread().isAlive();
 		}
 
 		return rs;
@@ -82,13 +100,9 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 	private Object _syncRoot = new Object();
 
-	private void CommitChange(JobMetaData job)
-	{
-		IJobQueue queue = this.getSite().<IJobQueue>GetRequiredService();
-		queue.ApplyChange(job);
-	}
+	
 
-	private void SetJobExited(UUID id, int exitState)
+	private void SetJobExited(UUID id, int exitState) throws Exception
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null)
@@ -103,17 +117,19 @@ public class InProcessJobController extends AbstractService implements IJobContr
 						jp.getJob().setEndTime(new java.util.Date());
 					}
 					this._threads.remove(jp);
-					this.CommitChange(jp.getJob());
+					
+					this.getSite().getRequiredService(IJobQueue.class).Archive(jp.getJob());
+					
 				}
 				finally
 				{
-					jp.getExitEvent().Set();
+					jp.getExitEvent().notifyAll();
 				}
 			}
 		}
 	}
 
-	public void Resume(JobMetaData job)
+	public void Resume(JobMetaData job) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -124,36 +140,34 @@ public class InProcessJobController extends AbstractService implements IJobContr
 			this._threads.add(jp);
 			thread.start();
 			job.setState(JobState.Running);
-			this.CommitChange(job);
+			this.getSite().getRequiredService(IJobQueue.class).UpdateState(job, false);
 		}
 	}
 
 
-	private AppDomainSetup _appDomainSetup;
+	
 
-	private Thread CreateHostThread(JobMetaData job)
+	private Thread CreateHostThread(final JobMetaData job)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Thread rs = ThreadFactory.CreateThread(() =>
-		{
-			AppDomain dm = AppDomain.CreateDomain("AppDomain_" + job.getId().toString(), null, _appDomainSetup);
-			try
-			{
-				InProcessJobEngineHost jobHost = (InProcessJobEngineHost)dm.CreateInstanceAndUnwrap(InProcessJobEngineHost.class.getPackage().FullName, InProcessJobEngineHost.class.FullName);
-				jobHost.Run(JobManager.getDefault(), job.getId());
-			}
-			finally
-			{
-				AppDomain.Unload(dm);
-			}
-		}
-	   );
+		Thread rs = fantasy.ThreadFactory.createAndStart(new Runnable(){
+
+			@Override
+			public void run() {
+				InProcessJobEngineHost jobHost = new InProcessJobEngineHost();
+				try {
+					jobHost.Run(JobManager.getDefault(), job.getId());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}});
 
 		return rs;
 	}
 
 
-	public void StartJob(JobMetaData job)
+	public void StartJob(JobMetaData job) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -164,12 +178,12 @@ public class InProcessJobController extends AbstractService implements IJobContr
 			thread.start();
 			job.setStartTime(new java.util.Date());
 			job.setState(JobState.Running);
-			CommitChange(job);
+			this.getSite().getRequiredService(IJobQueue.class).UpdateState(job, true);
 		}
 
 	}
 
-	public void Cancel(UUID id)
+	public void Cancel(UUID id) throws Exception
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -178,7 +192,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		}
 	}
 
-	public void Suspend(UUID id)
+	public void Suspend(UUID id) throws Exception
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -188,7 +202,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 	}
 
-	public void UserPause(UUID id)
+	public void UserPause(UUID id) throws Exception
 	{
 		JobThread jp = this.GetJobThreadById(id);
 		if (jp != null && jp.getEngine() != null)
@@ -201,22 +215,29 @@ public class InProcessJobController extends AbstractService implements IJobContr
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-			return (from p in this._threads where p.Job.Id == id select p).SingleOrDefault();
+			for(JobThread jt : this._threads)
+			{
+				if(jt.getJob().getId().equals(id))
+				{
+					return jt;
+				}
+			}
 		}
+		
+		return null;
 	}
 
-	public void RegisterJobEngine(IJobEngine engine)
+	public void RegisterJobEngine(IJobEngine engine) throws Exception
 	{
 		JobThread jp = this.GetJobThreadById(engine.getJobId());
 		if (jp != null)
 		{
 			jp.setEngine(engine);
 			engine.AddHandler(this);
-			XElement doc = XElement.Parse(jp.getJob().getStartInfo());
+			Element doc = JDomUtils.parseElement(jp.getJob().getStartInfo());
 
 			XSerializer ser = new XSerializer(JobStartInfo.class);
-			JobStartInfo si = (JobStartInfo)ser.Deserialize(doc);
+			JobStartInfo si = (JobStartInfo)ser.deserialize(doc);
 			if (!jp.getIsResume())
 			{
 				engine.Start(si);
@@ -229,32 +250,25 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		}
 	}
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobEngineEventHandler Members
-
-	private void HandleStart(IJobEngine sender)
+	public void HandleStart(IJobEngine sender)
 	{
 
 	}
 
-	private void HandleResume(IJobEngine sender)
+	public void HandleResume(IJobEngine sender)
 	{
 
 	}
 
-	private void HandleExit(IJobEngine sender, JobExitEventArgs e)
+	public void HandleExit(IJobEngine sender, JobExitEventArgs e) throws Exception
 	{
 		this.SetJobExited(sender.getJobId(), e.getExitState());
 	}
 
-	private void HandleLoad(IJobEngine sender)
+	public void HandleLoad(IJobEngine sender)
 	{
 
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 	public int GetAvailableProcessCount()
 	{
@@ -280,42 +294,53 @@ public class InProcessJobController extends AbstractService implements IJobContr
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			return this._threads.Select(p => p.Job).toArray();
+			JobMetaData[] rs = new JobMetaData[this._threads.size()];
+			
+			for(int i = 0; i < rs.length; i ++)
+			{
+				rs[i] = this._threads.get(i).getJob();
+						
+			}
+			
+			return rs;
 		}
 	}
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobController Members
-
-
-	public final void SuspendAll(boolean waitForExit)
+	public final void SuspendAll(boolean waitForExit) throws Exception
 	{
 		JobThread[] process;
 		synchronized (this._threads)
 		{
 			process = this._threads.toArray(new JobThread[]{});
 		}
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Parallel.ForEach(this._threads.toArray(new JobThread[]{}), p =>
+		
+		ExecutorService exec =  Executors.newCachedThreadPool();
+		for(final JobThread jt : process)
 		{
-			try
-			{
-				if (p.Thread.IsAlive)
-				{
-					p.Engine.Suspend();
-					p.ExitEvent.WaitOne(10*1000);
-				}
-			}
-			catch (java.lang.Exception e)
-			{
-			}
+			exec.execute(new Runnable(){
+
+				@Override
+				public void run() {
+					try
+					{
+						if (jt.getThread().isAlive())
+						{
+							jt.getEngine().Suspend();
+							jt.getEngine().wait(10*1000);
+						}
+					}
+					catch (Exception e)
+					{
+					}
+					
+				}});
 		}
-	   );
+		
+		exec.shutdown();
+		exec.wait();
+		
+
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

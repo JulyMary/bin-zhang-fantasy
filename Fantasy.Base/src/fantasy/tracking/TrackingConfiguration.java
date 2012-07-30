@@ -18,6 +18,11 @@ public final class TrackingConfiguration
 
           
 	}
+	
+	public static void StartTrackingService() throws Exception
+	{
+		
+	}
 
 	
 	private static String _uri = null;
