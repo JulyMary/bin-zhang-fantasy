@@ -105,5 +105,11 @@ public final class JavaLibraryUtils {
 
 	private static File _entryLibrary;
 	
+	
+	public static String extractToFullPath(String path)
+	{
+		return Path.combine(new File(getEntryLibrary().getParent()).getAbsolutePath(), SystemUtils.expandEnvironmentVariables(path));
+	}
+	
 
 }

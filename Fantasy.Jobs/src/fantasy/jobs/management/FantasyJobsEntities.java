@@ -49,7 +49,7 @@ class FantasyJobsEntities implements IDisposable
     		}
     		else
     		{
-    			rs = DriverManager.getConnection(JobManagerSettings.getJobsDbConnectionString());
+    			rs = DriverManager.getConnection(JobManagerSettings.getDefault().getJobsDbConnectionString());
     			
     		}
     		
@@ -83,7 +83,7 @@ class FantasyJobsEntities implements IDisposable
 	{
 		ArrayList<JobMetaData> rs = new ArrayList<JobMetaData>();
 		
-		String sql = "select * from APP.CV_JOB_JOBS";
+		String sql = "select * from APP.FTS_JOB_JOBS";
 		Connection cnnt = this.getConnection();
 		Statement stmt = null;
 		try
@@ -154,7 +154,7 @@ class FantasyJobsEntities implements IDisposable
 	public final void addToUnterminates(JobMetaData job) throws Exception
 	{
 		
-		String sql = "INSERT INFO APP.CV_JOB_JOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG )" +
+		String sql = "INSERT INFO APP.FTS_JOB_JOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG )" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?)";
 	    Connection cnnt = this.getConnection();
 	    PreparedStatement stmt = null;
@@ -190,7 +190,7 @@ class FantasyJobsEntities implements IDisposable
 	
 	public final void setState(JobMetaData job) throws Exception
 	{
-        String sql = "UPDATE APP.CV_JOB_JOBS set STATE = ? where ID = ?";
+        String sql = "UPDATE APP.FTS_JOB_JOBS set STATE = ? where ID = ?";
 		Connection cnnt = this.getConnection();
 	    PreparedStatement stmt = null;
 	    try
@@ -213,7 +213,7 @@ class FantasyJobsEntities implements IDisposable
 	
 	public final void setStart(JobMetaData job) throws Exception
 	{
-		String sql = "UPDATE APP.CV_JOB_JOBS set STATE = ?, STARTTIME = ? where ID = ?";
+		String sql = "UPDATE APP.FTS_JOB_JOBS set STATE = ?, STARTTIME = ? where ID = ?";
 		
 		Connection cnnt = this.getConnection();
 	    PreparedStatement stmt = null;
@@ -240,8 +240,8 @@ class FantasyJobsEntities implements IDisposable
 	public final void moveToTerminates(JobMetaData job) throws Exception
 	{
 		
-		String dSql = "DELETE FROM APP.CV_JOB_JOBS where ID = X'%1$s'"; 
-		String iSql = "INSERT INFO APP.CV_JOB_ARCHIVEDJOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, STARTTIME, ENDTIME)" +
+		String dSql = "DELETE FROM APP.FTS_JOB_JOBS where ID = X'%1$s'"; 
+		String iSql = "INSERT INFO APP.FTS_JOB_ARCHIVEDJOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, STARTTIME, ENDTIME)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?)";
 		Statement dStatement = null;
 		PreparedStatement iStatement = null;
@@ -298,7 +298,7 @@ class FantasyJobsEntities implements IDisposable
 	{
 
 		int rs;
-		String sql = "select count(*) from APP.CV_JOB_ARCHIVEDJOBS";
+		String sql = "select count(*) from APP.FTS_JOB_ARCHIVEDJOBS";
 		Connection cnnt = this.getConnection();
 		Statement stmt = null;
 		try

@@ -1,7 +1,6 @@
 ﻿package fantasy.jobs;
 
-import java.util.Properties;
-import java.util.regex.*;
+import fantasy.*;
 
 public class EnvironmentVariablesReader implements ITagValueProvider
 {
@@ -14,23 +13,7 @@ public class EnvironmentVariablesReader implements ITagValueProvider
 	{
 		
 		String rs = "${" + tag + "}"; 
-		Properties properties = System.getProperties(); 
-		String pattern = "\\$\\{([A-Za-z0-9]+)\\}"; 
-		Pattern expr = Pattern.compile(pattern); 
-		Matcher matcher = expr.matcher(rs); 
-		while (matcher.find()) { 
-		    Object envValue = properties.get(matcher.group(1).toUpperCase()); 
-		    if (envValue == null) { 
-		        envValue = ""; 
-		    } else { 
-		        envValue = envValue.toString().replace("\\", "\\\\"); 
-		    } 
-		    Pattern subexpr = Pattern.compile(Pattern.quote(matcher.group(0))); 
-		    rs = subexpr.matcher(rs).replaceAll((String)envValue); 
-		} 
-
-		
-		return rs;
+		return SystemUtils.expandEnvironmentVariables(rs);
 	}
 
 	@Override
@@ -52,7 +35,4 @@ public class EnvironmentVariablesReader implements ITagValueProvider
 	{
 		return true;
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

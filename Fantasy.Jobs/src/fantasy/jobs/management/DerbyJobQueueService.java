@@ -83,7 +83,8 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 			if (rs == null)
 			{
-			    List<JobMetaData> list = this._entities.query("APP.CV_JOB_ARCHIVEDJOBS", null, null, Integer.MAX_VALUE, 0);
+				String filter = String.format("ID = x'%1$s'", UUIDUtils.toString(id, "n"));
+			    List<JobMetaData> list = this._entities.query("APP.FTS_JOB_ARCHIVEDJOBS", filter, null, Integer.MAX_VALUE, 0);
 			    
 			    if(list.size() > 0)
 			    {
@@ -184,7 +185,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 			totalCount.argvalue = this._entities.getTerminatedCount();
 			
-			rs = this._entities.query("APP.CV_JOB_ARCHIVEDJOBS", filter, order, take, skip);
+			rs = this._entities.query("APP.FTS_JOB_ARCHIVEDJOBS", filter, order, take, skip);
 		}
 		return rs;
 	}
@@ -194,7 +195,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		synchronized (_syncRoot)
 		{
 			totalCount.argvalue = this._unterminates.size();
-			rs = this._entities.query("APP.CV_JOB_JOBS", filter, order, take, skip);
+			rs = this._entities.query("APP.FTS_JOB_JOBS", filter, order, take, skip);
 		}
 
 		return rs;
@@ -210,7 +211,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 	
 	private HashSet<IJobQueueListener> _listeners = new HashSet<IJobQueueListener>();
 
-	protected void onChanged(JobMetaData job)
+	protected void onChanged(JobMetaData job) throws Exception
 	{
 		synchronized(_listeners)
 		{
@@ -221,7 +222,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	protected void onAdded(JobMetaData job)
+	protected void onAdded(JobMetaData job) throws Exception
 	{
 		synchronized(_listeners)
 		{
@@ -250,7 +251,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 	
-	private void onRequestCancel(JobMetaData job)
+	private void onRequestCancel(JobMetaData job) throws Exception
 	{
 		synchronized(_listeners)
 		{
@@ -312,7 +313,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	private void onRequestSuspend(JobMetaData meta) {
+	private void onRequestSuspend(JobMetaData meta) throws Exception {
 		synchronized(_listeners)
 		{
 			for(IJobQueueListener listener: _listeners)
@@ -349,7 +350,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 
 
-	private void onRequestUserPause(JobMetaData meta) {
+	private void onRequestUserPause(JobMetaData meta) throws Exception {
 		synchronized(_listeners)
 		{
 			for(IJobQueueListener listener: _listeners)
