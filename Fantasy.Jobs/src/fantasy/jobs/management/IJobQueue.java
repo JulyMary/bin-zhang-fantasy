@@ -33,6 +33,11 @@ public interface IJobQueue
 	
 	void addListener(IJobQueueListener listener);
 	void removeListener(IJobQueueListener listener);
+	
+	int getTerminatedCount() throws Exception;
+	
+	int getUnterminatedCount() throws Exception;
+	
 
 
 

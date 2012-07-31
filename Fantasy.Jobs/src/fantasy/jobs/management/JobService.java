@@ -1,45 +1,70 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.IO.*;
-import Fantasy.Configuration.*;
+import fantasy.servicemodel.AbstractService;
+import fantasy.io.*;
+import fantasy.jobs.*;
+import fantasy.configuration.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple, Namespace=Consts.JobServiceNamespaceURI)]
-public class JobService extends WCFSingletonService implements IJobService
+import java.lang.reflect.*;
+import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import fantasy.*;
+import fantasy.collections.*;
+
+import org.apache.commons.io.FileUtils;
+import org.jdom2.*;
+
+public class JobService extends AbstractService implements IJobService
 {
 
-	private IJobQueue getQueue()
-	{
-		return JobManager.getDefault().<IJobQueue>GetRequiredService();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2913864011750791636L;
+
+
+
+	public JobService() throws RemoteException {
+		super();
+		
 	}
 
 
 
-	public final JobMetaData StartJob(String startInfo)
+	private IJobQueue getQueue() throws Exception
+	{
+		return JobManager.getDefault().getRequiredService(IJobQueue.class);
+	}
+
+
+
+	public final JobMetaData StartJob(String startInfo) throws Exception
 	{
 
 		JobMetaData job = getQueue().CreateJobMetaData();
 		job.LoadXml(startInfo);
-		getQueue().ApplyChange(job);
+		getQueue().Add(job);
 		return job;
 	}
 
-	public final void Resume(UUID id)
+	public final void Resume(UUID id) throws Exception
 	{
 		getQueue().Resume(id);
 	}
 
-	public final void Cancel(UUID id)
+	public final void Cancel(UUID id) throws Exception
 	{
 		getQueue().Cancel(id);
 	}
 
-	public final void Pause(UUID id)
+	public final void Pause(UUID id) throws Exception
 	{
 		getQueue().UserPause(id);
 	}
 
-	private JobMetaData[] GetJobMetaDataByIds(UUID[] ids)
+	private JobMetaData[] GetJobMetaDataByIds(UUID[] ids) throws Exception
 	{
 		if (ids != null)
 		{
@@ -79,65 +104,83 @@ public class JobService extends WCFSingletonService implements IJobService
 
 
 
-	public final void Resume(UUID[] ids)
+	public final void Resume(UUID[] ids) throws Exception
 	{
 		JobMetaData[] jobs = GetJobMetaDataByIds(ids);
 		Resume(jobs);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: C# optional parameters are not converted to Java:
-//ORIGINAL LINE: public void ResumeByFilter(string filter, string[] args = null)
-	public final void ResumeByFilter(String filter, String[] args)
+	public final void ResumeByFilter(String filter) throws Exception
 	{
 		int total = 0;
 		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, args, null, 0, Integer.MAX_VALUE).toArray();
+		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
 		total = tempRef_total.argvalue;
 		this.Resume(jobs);
 	}
 
 
-	private void Cancel(JobMetaData[] jobs)
+	private void Cancel(JobMetaData[] jobs) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from job in jobs where !job.IsTerminated orderby job.State != JobState.Running select job;
+		
+		Enumerable<JobMetaData> query = new Enumerable<JobMetaData>(jobs).where(new Predicate<JobMetaData>(){
+
+			@Override
+			public boolean evaluate(JobMetaData job) throws Exception {
+				return !job.getIsTerminated(); 
+			}})
+			.orderBy(new Selector<JobMetaData, Boolean>(){
+
+				@Override
+				public Boolean select(JobMetaData item) {
+					return item.getState() != JobState.Running;
+				}});
+		
 		for (JobMetaData job : query)
 		{
 			try
 			{
 				getQueue().Cancel(job.getId());
 			}
-			catch (java.lang.Exception e)
+			catch (Exception e)
 			{
 			}
 		}
 	}
 
-	public final void Cancel(UUID[] ids)
+	public final void Cancel(UUID[] ids) throws Exception
 	{
 		JobMetaData[] jobs = this.GetJobMetaDataByIds(ids);
 		this.Cancel(jobs);
 	}
 
-
-//C# TO JAVA CONVERTER TODO TASK: C# optional parameters are not converted to Java:
-//ORIGINAL LINE: public void CancelByFilter(string filter, string[] args = null)
-	public final void CancelByFilter(String filter, String[] args)
+	public final void CancelByFilter(String filter) throws Exception
 	{
 		int total = 0;
 		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, args, null, 0, Integer.MAX_VALUE).toArray();
+		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
 		total = tempRef_total.argvalue;
 		Cancel(jobs);
 
 	}
 
-	private void Pause(JobMetaData[] jobs)
+	private void Pause(JobMetaData[] jobs) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from job in jobs where job.IsTerminated == false && job.State != JobState.UserPaused orderby job.State != JobState.Running select job;
+
+		Enumerable<JobMetaData> query = new Enumerable<JobMetaData>(jobs).where(new Predicate<JobMetaData>(){
+
+			@Override
+			public boolean evaluate(JobMetaData job) throws Exception {
+				return job.getState() != JobState.UserPaused; 
+			}})
+			.orderBy(new Selector<JobMetaData, Boolean>(){
+
+				@Override
+				public Boolean select(JobMetaData item) {
+					return item.getState() != JobState.Running;
+				}});
+		
+	
 		for (JobMetaData job : query)
 		{
 			try
@@ -150,7 +193,7 @@ public class JobService extends WCFSingletonService implements IJobService
 		}
 	}
 
-	public final void Pause(UUID[] ids)
+	public final void Pause(UUID[] ids) throws Exception
 	{
 		JobMetaData[] jobs = this.GetJobMetaDataByIds(ids);
 		this.Pause(jobs);
@@ -159,50 +202,44 @@ public class JobService extends WCFSingletonService implements IJobService
 
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: C# optional parameters are not converted to Java:
-//ORIGINAL LINE: public void PauseByFilter(string filter, string[] args = null)
-	public final void PauseByFilter(String filter, String[] args)
+	public final void PauseByFilter(String filter) throws Exception
 	{
 		int total = 0;
 		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, args, null, 0, Integer.MAX_VALUE).toArray();
+		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
 		total = tempRef_total.argvalue;
 		Pause(jobs);
 	}
 
 
-	public final JobMetaData FindJobById(UUID id)
+	public final JobMetaData FindJobById(UUID id) throws Exception
 	{
 		return getQueue().FindJobMetaDataById(id);
 	}
 
-	public final JobMetaData[] FindAllJobs()
+	
+
+	public final JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter,  String order, int skip, int take) throws Exception
 	{
-		return getQueue().FindAll().toArray();
+		return getQueue().FindUnterminated(totalCount, filter,  order, skip, take).toArray(new JobMetaData[0]);
 	}
 
-	public final JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take)
-	{
-		return getQueue().FindUnterminated(totalCount, filter, args, order, skip, take).toArray();
-	}
-
-	public final JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take)
+	public final JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception
 	{
 
-		return getQueue().FindTerminated(totalCount, filter, args, order, skip, take).toArray();
+		return getQueue().FindTerminated(totalCount, filter, order, skip, take).toArray(new JobMetaData[0]);
 
 	}
 
-	public final String GetJobLog(UUID id)
+	public final String GetJobLog(UUID id) throws Exception
 	{
 		String path = String.format("%1$s\\%2$s\\%2$s.xlog", JobManagerSettings.getDefault().getJobDirectoryFullPath(), id);
 		String rs = null;
 		try
 		{
-			rs = LongPathFile.ReadAllText(path);
+			rs = File.readAllText(path, "UTF-8");
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 
 		}
@@ -210,21 +247,21 @@ public class JobService extends WCFSingletonService implements IJobService
 		return rs;
 	}
 
-	public final String GetJobScript(UUID id)
+	public final String GetJobScript(UUID id) throws Exception
 	{
 		String rs = null;
 		String path = String.format("%1$s\\%2$s\\%2$s.job", JobManagerSettings.getDefault().getJobDirectoryFullPath(), id);
-		if (!File.Exists(path))
+		if (!File.exists(path))
 		{
 			path += ".bak";
 		}
-		if (File.Exists(path))
+		if (File.exists(path))
 		{
 			try
 			{
-				rs = File.ReadAllText(path);
+				rs = File.readAllText(path, "UTF-8");
 			}
-			catch (IOException e)
+			catch (Exception e)
 			{
 
 			}
@@ -233,82 +270,70 @@ public class JobService extends WCFSingletonService implements IJobService
 		return rs;
 	}
 
-	public final String GetManagerLog(java.util.Date date)
+	public final String GetManagerLog(java.util.Date date) throws Exception
 	{
-		XElement rs = new XElement("xlog");
+		Element rs = new Element("xlog");
 		String path = JobManagerSettings.getDefault().getLogDirectoryFullPath();
-		path = LongPath.Combine(path, date.ToString("yyyy-MM-dd") + ".xlog");
-		if (LongPathFile.Exists(path))
+		
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		
+		path = Path.combine(path,fmt.format(date) + ".xlog");
+		if (File.exists(path))
 		{
-			java.util.ArrayList<XElement> nodes = new java.util.ArrayList<XElement>();
-			FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-			StreamReader reader = new StreamReader(fs);
-			try
+			
+			for(String line : FileUtils.readLines(new java.io.File(path), "UTF-8"))
 			{
-				String line;
-				while (!reader.EndOfStream)
-				{
-					line = reader.ReadLine();
-
-					try
-					{
-						XElement node = XElement.Parse(line);
-						rs.Add(node);
-					}
-					catch (java.lang.Exception e)
-					{
-					}
-				}
+				Element node = JDomUtils.parseElement(line);
+				rs.addContent(node);
 			}
-			finally
-			{
-				reader.Close();
-			}
-
+			
 
 		}
 
-		return rs.toString();
+		return JDomUtils.toString(rs);
 	}
 
-	public final java.util.Date[] GetManagerLogAvaiableDates()
+	public final java.util.Date[] GetManagerLogAvaiableDates() throws Exception
 	{
 		java.util.ArrayList<java.util.Date> rs = new java.util.ArrayList<java.util.Date>();
 		String path = JobManagerSettings.getDefault().getLogDirectoryFullPath();
 
-		for (String fullPath : LongPathDirectory.EnumerateFiles(path, "*.xlog"))
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		for (String fullPath : Directory.enumerateFiles(path, "*.xlog"))
 		{
-			String name = Path.GetFileNameWithoutExtension(fullPath);
-			java.util.Date date = new java.util.Date(java.util.Date.parse(name));
+			String name = Path.getFileNameWithoutExtension(fullPath);
+			java.util.Date date = fmt.parse(name);
 			rs.add(date);
 		}
-		rs.Sort();
+		
+		Collections.sort(rs);
+		
 		return rs.toArray(new java.util.Date[]{});
 	}
 
-	public final JobTemplate[] GetJobTemplates()
+	public final JobTemplate[] GetJobTemplates() throws Exception
 	{
-		IJobTemplatesService svc = JobManager.getDefault().<IJobTemplatesService>GetRequiredService();
+		IJobTemplatesService svc = JobManager.getDefault().getRequiredService(IJobTemplatesService.class);
 		return svc.GetJobTemplates();
 	}
 
-	public final int GetTerminatedCount()
+	public final int GetTerminatedCount() throws Exception
 	{
-		return getQueue().getTerminates().Count();
+		return getQueue().getTerminatedCount();
 	}
 
-	public final int GetUnterminatedCount()
+	public final int GetUnterminatedCount() throws Exception
 	{
-		return getQueue().getUnterminates().Count();
+		return getQueue().getUnterminatedCount();
 	}
 
 
-	public final String[] GetAllApplications()
+	public final String[] GetAllApplications() throws Exception
 	{
 		return getQueue().GetAllApplications();
 	}
 
-	public final String[] GetAllUsers()
+	public final String[] GetAllUsers() throws Exception
 	{
 		return getQueue().GetAllUsers();
 	}
@@ -317,42 +342,66 @@ public class JobService extends WCFSingletonService implements IJobService
 
 
 
-	public final String GetSettings(String typeName)
+	public final String GetSettings(String typeName) throws Exception
 	{
-		return GetDefaultSettingsInstance(typeName).ToXml();
+		return GetDefaultSettingsInstance(typeName).toXml();
 	}
 
-	public final void SetSettings(String typeName, String xml)
+	public final void SetSettings(String typeName, String xml) throws Exception
 	{
 		SettingsBase settings = this.GetDefaultSettingsInstance(typeName);
-		settings.Renew(xml);
-		settings.Save();
+		settings.renew(xml);
+		settings.save();
 	}
 
 
-	private SettingsBase GetDefaultSettingsInstance(String typeName)
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private SettingsBase GetDefaultSettingsInstance(String typeName) throws Exception
 	{
-		java.lang.Class t = java.lang.Class.forName(typeName, true);
-		SettingsBase rs = (SettingsBase)t.InvokeMember("Default", BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Static, null, null, null);
-		return rs;
+		java.lang.Class t = java.lang.Class.forName(typeName);
+		
+		Method method = t.getDeclaredMethod("getDefault");
+		
+		method.setAccessible(true);
+		
+		return (SettingsBase) method.invoke(null);
+		
 	}
 
 	public final String Version()
 	{
-		Assembly assembly = Assembly.GetCallingAssembly();
-		return assembly.GetName().Version.toString();
+		return "2.0.0.0";
 	}
-
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobService Members
 
 
 	public final String GetLocation()
 	{
-		return LongPath.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+		return JavaLibraryUtils.getEntryLibrary().getParent();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
+	
+	private TreeMap<UUID, IJobServiceListener> _listeners = new TreeMap<UUID, IJobServiceListener>();
+
+	@Override
+	public void addListener(UUID token, IJobServiceListener listener)
+			throws Exception {
+		synchronized(this._listeners)
+		{
+			this._listeners.put(token, listener);
+		}
+		
+	}
+
+
+
+	@Override
+	public void removeListener(UUID token) throws Exception {
+		synchronized(this._listeners)
+		{
+			this._listeners.remove(token);
+		}
+		
+	}
+
 }

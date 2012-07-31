@@ -410,5 +410,21 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		
 	}
 
+	@Override
+	public int getTerminatedCount() throws Exception {
+		synchronized (_syncRoot)
+		{
+			return this._entities.getTerminatedCount();
+		}
+	}
+
+	@Override
+	public int getUnterminatedCount() {
+		synchronized (_syncRoot)
+		{
+			return this._unterminates.size();
+		}
+	}
+
 
 }

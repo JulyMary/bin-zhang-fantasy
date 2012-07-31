@@ -1,5 +1,11 @@
 package fantasy.io;
 
+import java.util.*;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.TrueFileFilter;
+import org.apache.commons.io.filefilter.WildcardFileFilter;
+
 
 
 public final class Directory {
@@ -37,6 +43,23 @@ public final class Directory {
 			
 			file.mkdir();
 		}
+	}
+
+	
+	public static Iterable<String> enumerateFiles(String path, String pattern) {
+		return enumerateFiles(path, pattern, true);
+	}
+
+	public static Iterable<String> enumerateFiles(String path, String pattern, boolean recursive) {
+		
+	    ArrayList<String> rs = new ArrayList<String>();
+	    
+		for(java.io.File f : FileUtils.listFiles(new java.io.File(path), new WildcardFileFilter(pattern), recursive ? TrueFileFilter.INSTANCE : null))
+		{
+			rs.add(f.getAbsolutePath());
+		}
+		return rs;
+		
 	}
 	
 	

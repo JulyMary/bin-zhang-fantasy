@@ -12,61 +12,61 @@ public interface IJobService extends Remote
 
 	String Version();
 
-	JobMetaData StartJob(String startInfo);
+	JobMetaData StartJob(String startInfo) throws Exception;
 
 
-	void Resume(UUID id);
+	void Resume(UUID id) throws Exception;
 
 
-	void Cancel(UUID id);
+	void Cancel(UUID id) throws Exception;
 
-	void Pause(UUID id);
+	void Pause(UUID id) throws Exception;
 
-	void Resume(UUID[] ids);
+	void Resume(UUID[] ids) throws Exception;
 
-	void Cancel(UUID[] ids);
+	void Cancel(UUID[] ids) throws Exception;
 
-	void Pause(UUID[] ids);
+	void Pause(UUID[] ids) throws Exception;
 
-	void ResumeByFilter(String filter);
+	void ResumeByFilter(String filter) throws Exception;
 
-	void CancelByFilter(String filter);
+	void CancelByFilter(String filter) throws Exception;
 
-	void PauseByFilter(String filter);
+	void PauseByFilter(String filter) throws Exception;
 
-	JobMetaData FindJobById(UUID id);
+	JobMetaData FindJobById(UUID id) throws Exception;
 
-	JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take);
+	JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
 
-	JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take);
+	JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
 
-	int GetTerminatedCount();
+	int GetTerminatedCount() throws Exception;
 
-	int GetUnterminatedCount();
+	int GetUnterminatedCount() throws Exception;
 
-	String GetJobLog(UUID id);
+	String GetJobLog(UUID id) throws Exception;
 
-	String GetManagerLog(java.util.Date date);
+	String GetManagerLog(java.util.Date date) throws Exception;
 
-	java.util.Date[] GetManagerLogAvaiableDates();
-
-
-	JobTemplate[] GetJobTemplates();
-
-	String GetJobScript(UUID id);
+	java.util.Date[] GetManagerLogAvaiableDates() throws Exception;
 
 
-	String[] GetAllApplications();
+	JobTemplate[] GetJobTemplates() throws Exception;
 
-	String[] GetAllUsers();
+	String GetJobScript(UUID id) throws Exception;
 
 
-	String GetSettings(String typeName);
+	String[] GetAllApplications() throws Exception;
 
-	void SetSettings(String typeName, String xml);
+	String[] GetAllUsers() throws Exception;
+
+
+	String GetSettings(String typeName) throws Exception;
+
+	void SetSettings(String typeName, String xml) throws Exception;
 
 	String GetLocation();
 	
-	void addListener(UUID token, IJobServiceListener listener);
-	void removeListener(UUID token);
+	void addListener(UUID token, IJobServiceListener listener) throws Exception;
+	void removeListener(UUID token) throws Exception;
 }
