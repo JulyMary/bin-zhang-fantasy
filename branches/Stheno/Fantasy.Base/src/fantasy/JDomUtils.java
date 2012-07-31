@@ -82,4 +82,18 @@ public final class JDomUtils {
 	{
 		saveElement(element, path, _defaultFormat);
 	}
+	
+	
+	public static String toString(Element element) throws Exception
+	{
+		return toString(element, _defaultFormat);
+	}
+	
+	public static String toString(Element element, Format format) throws Exception
+	{
+		
+		Document doc = new Document();
+		doc.addContent(element.clone());
+	    return new XMLOutputter(format).outputString(doc);
+	}
 }
