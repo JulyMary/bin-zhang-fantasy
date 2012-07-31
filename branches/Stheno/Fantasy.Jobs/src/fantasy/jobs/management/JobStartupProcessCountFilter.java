@@ -9,7 +9,7 @@ public class JobStartupProcessCountFilter extends ObjectWithSite implements IJob
 	public final Iterable<JobMetaData> Filter(Iterable<JobMetaData> source) throws Exception
 	{
 		IJobController ctrl = this.getSite().getRequiredService(IJobController.class);
-		if (ctrl.GetRunningJobs().length < JobManagerSettings.getDefault().getJobProcessCount())
+		if (ctrl.GetRunningJobs().length < JobManagerSettings.getDefault().getMaxDegreeOfParallelism())
 		{
 			return source;
 		}

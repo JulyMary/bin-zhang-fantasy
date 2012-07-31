@@ -157,7 +157,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 				try {
 					jobHost.Run(JobManager.getDefault(), job.getId());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				
@@ -270,13 +270,13 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 	}
 
-	public int GetAvailableProcessCount()
+	public int GetAvailableProcessCount() throws Exception
 	{
 		if (!_uninitializing)
 		{
 			synchronized (_syncRoot)
 			{
-				return JobManagerSettings.getDefault().getJobProcessCount() - this._threads.size();
+				return JobManagerSettings.getDefault().getMaxDegreeOfParallelism() - this._threads.size();
 			}
 		}
 		else

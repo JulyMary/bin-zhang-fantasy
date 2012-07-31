@@ -1,64 +1,104 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.Jobs.Resources.*;
-import Fantasy.ServiceModel.*;
+import java.rmi.*;
+import java.util.*;
 
-public class StandaloneJobDispatcherService extends AbstractService implements IJobDispatcher
+import fantasy.collections.*;
+import fantasy.jobs.*;
+import fantasy.jobs.resources.*;
+import fantasy.servicemodel.*;
+import fantasy.*;
+
+public class StandaloneJobDispatcherService extends AbstractService implements IJobDispatcher, IJobQueueListener
 {
-	@Override
-	public void InitializeService()
-	{
-		this._queue = (IJobQueue)this.getSite().GetService(IJobQueue.class);
-		this._filters = AddIn.<IJobStartupFilter>CreateObjects("jobService/startupFilters/filter");
-		this._waitHandle = new AutoResetEvent(false);
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9077723331377116255L;
 
-		_startJobThread = ThreadFactory.CreateThread(this.Run);
+	public StandaloneJobDispatcherService() throws RemoteException {
+		super();
+		
+	}
+	
+	
+	private UUID _resourceHandlerID = UUID.randomUUID();
+
+	@Override
+	public void initializeService() throws Exception
+	{
+		this._queue = (IJobQueue)this.getSite().getRequiredService(IJobQueue.class);
+		this._filters = AddIn.CreateObjects(IJobStartupFilter.class, "jobService/startupFilters/filter");
+		this._waitHandle = new Object();
+
+		_startJobThread = ThreadFactory.create(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					StandaloneJobDispatcherService.this.Run();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+				
+			}});
 
 		for (IJobStartupFilter filter : this._filters)
 		{
 			if (filter instanceof IObjectWithSite)
 			{
-				((IObjectWithSite)filter).Site = this.Site;
+				((IObjectWithSite)filter).setSite(this.getSite());
 			}
 		}
+		
+		this._queue.addListener(this);
+		
+		
 
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.Added += new EventHandler<JobQueueEventArgs>(QueueChanged);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.Changed += new EventHandler<JobQueueEventArgs>(QueueChanged);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.RequestCancel += new EventHandler<JobQueueEventArgs>(QueueRequestCancel);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.RequestSuspend += new EventHandler<JobQueueEventArgs>(QueueRequestSuspend);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.RequestUserPause += new EventHandler<JobQueueEventArgs>(QueueRequestUserPause);
 
-		_resourceQueue = this.getSite().<IResourceRequestQueue>GetService();
-		_resourceManager = this.getSite().<IResourceManager>GetService();
+		_resourceQueue = this.getSite().getService(IResourceRequestQueue.class);
+		_resourceManager = this.getSite().getService(IResourceManager.class);
 		if (_resourceManager != null)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-			_resourceManager.Available += new EventHandler(ResourceAvailable);
+            _resourceManager.RegisterHandler(new IResourceManagerHandler(){
+
+				@Override
+				public void Revoke(UUID id) {
+					
+				}
+
+				@Override
+				public void Available() {
+					ResourceAvailable();
+					
+				}
+
+				@Override
+				public UUID Id() {
+					return _resourceHandlerID;
+				}});
+			
 		}
 
-		this._controller = this.getSite().<IJobController>GetRequiredService();
+		this._controller = this.getSite().getRequiredService(IJobController.class);
 
-		super.InitializeService();
+		super.initializeService();
 	}
 
-	private void ResourceAvailable(Object sender, EventArgs e)
+	private void ResourceAvailable()
 	{
-		this._waitHandle.Set();
+		this._waitHandle.notifyAll();
 	}
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
-		this._startJobThread.stop();
-		super.UninitializeService();
+		this._startJobThread.interrupt();
+		super.uninitializeService();
 	}
 
-	private AutoResetEvent _waitHandle;
+	private Object _waitHandle;
 
 	private Thread _startJobThread;
 
@@ -75,62 +115,74 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 		_startJobThread.start();
 	}
 
-	private void QueueRequestUserPause(Object sender, JobQueueEventArgs e)
+	public  void RequestUserPause(JobMetaData job) throws Exception
 	{
-		IJobController controller = (IJobController)this.getSite().GetService(IJobController.class);
-		controller.UserPause(e.getJob().getId());
+		IJobController controller = (IJobController)this.getSite().getRequiredService(IJobController.class);
+		controller.UserPause(job.getId());
 	}
 
-	private void QueueRequestSuspend(Object sender, JobQueueEventArgs e)
+	public void RequestSuspend(JobMetaData job) throws Exception
 	{
-		IJobController controller = (IJobController)this.getSite().GetService(IJobController.class);
-		controller.Suspend(e.getJob().getId());
+		IJobController controller = (IJobController)this.getSite().getRequiredService(IJobController.class);
+		controller.Suspend(job.getId());
 	}
 
-	private void QueueRequestCancel(Object sender, JobQueueEventArgs e)
+	public void RequestCancel(JobMetaData job) throws Exception
 	{
-		IJobController controller = (IJobController)this.getSite().GetService(IJobController.class);
-		controller.Cancel(e.getJob().getId());
+		IJobController controller = (IJobController)this.getSite().getRequiredService(IJobController.class);
+		controller.Cancel(job.getId());
 	}
 
-	private void QueueChanged(Object sender, JobQueueEventArgs e)
+	public void Changed(JobMetaData job)
 	{
-		this._waitHandle.Set();
+		this._waitHandle.notifyAll();
+	}
+	
+	public void Added(JobMetaData job) throws Exception
+	{
+		this._waitHandle.notifyAll();
 	}
 
 	public final void TryDispatch()
 	{
-		_waitHandle.Set();
+		this._waitHandle.notifyAll();
 	}
 
-	public final void Run()
+	public final void Run() throws Exception
 	{
-		ILogger logger = this.getSite().<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		while (true)
 		{
 
 			try
 			{
 
-				while (TryStartAJob());
+				while (TryStartAJob())
+				{
+					if(Thread.interrupted())
+					{
+						throw new InterruptedException();
+					}
+				}
 			}
-			catch (ThreadAbortException e)
+			catch (InterruptedException e)
 			{
+				throw e;
 			}
-			catch(RuntimeException error)
+			catch(Exception error)
 			{
 				if (logger != null)
 				{
 					logger.LogError(LogCategories.getManager(), error, "An error occurs when try start a new job.");
 				}
 			}
-			_waitHandle.WaitOne();
+			_waitHandle.wait();
 		}
 	}
 
 	private boolean _starting = false;
 
-	private boolean TryStartAJob()
+	private boolean TryStartAJob() throws Exception
 	{
 		boolean rs = false;
 		if (!_starting)
@@ -144,14 +196,14 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 					jobs = filter.Filter(jobs);
 				}
 
-				JobMetaData job = jobs.FirstOrDefault();
+				JobMetaData job = new Enumerable<JobMetaData>(jobs).firstOrDefault();
 				if (job != null)
 				{
 					if (this._resourceQueue != null)
 					{
 						this._resourceQueue.UnregisterResourceRequest(job.getId());
 					}
-					ILogger logger = this.getSite().<ILogger>GetService();
+					ILogger logger = this.getSite().getService(ILogger.class);
 					if (job.getState() == JobState.Unstarted)
 					{
 						job.setState(JobState.RequestStart);

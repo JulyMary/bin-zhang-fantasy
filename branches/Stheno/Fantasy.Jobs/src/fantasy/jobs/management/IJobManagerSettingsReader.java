@@ -5,5 +5,5 @@
 public interface IJobManagerSettingsReader
 {
 	
-	<T> T getSetting(Class<T> type, String name);
+	<T> T getSetting(Class<T> type, String name) throws Exception;
 }
