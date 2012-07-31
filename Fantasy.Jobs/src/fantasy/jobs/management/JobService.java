@@ -9,6 +9,8 @@ import java.lang.reflect.*;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.*;
+
 
 import fantasy.*;
 import fantasy.collections.*;
@@ -16,7 +18,7 @@ import fantasy.collections.*;
 import org.apache.commons.io.FileUtils;
 import org.jdom2.*;
 
-public class JobService extends AbstractService implements IJobService
+public class JobService extends AbstractService implements IJobService, IJobQueueListener
 {
 
 	/**
@@ -402,6 +404,123 @@ public class JobService extends AbstractService implements IJobService
 			this._listeners.remove(token);
 		}
 		
+	}
+
+
+
+	@Override
+	public void echo() throws Exception {
+		
+		
+	}
+
+
+
+	@Override
+	public void Changed(final JobMetaData job) throws Exception {
+		
+		TreeMap<UUID, IJobServiceListener> listeners;
+		synchronized(this._listeners)
+		{
+			
+			listeners = new TreeMap<UUID, IJobServiceListener>(this._listeners);
+			
+		}
+		
+		for(final Map.Entry<UUID, IJobServiceListener> entry : listeners.entrySet())
+		{
+			Executors.callable(new Runnable(){
+
+				@Override
+				public void run() {
+					try
+					{
+						entry.getValue().Changed(job);
+					}
+					catch(Exception error)
+					{
+						synchronized(JobService.this._listeners)
+						{
+							JobService.this._listeners.remove(entry.getKey());
+						}
+					}
+					
+				}});
+		}
+		
+	}
+
+
+
+	@Override
+	public void Added(final JobMetaData job) throws Exception {
+		TreeMap<UUID, IJobServiceListener> listeners;
+		synchronized(this._listeners)
+		{
+			
+			listeners = new TreeMap<UUID, IJobServiceListener>(this._listeners);
+			
+		}
+		
+		for(final Map.Entry<UUID, IJobServiceListener> entry : listeners.entrySet())
+		{
+			Executors.callable(new Runnable(){
+
+				@Override
+				public void run() {
+					try
+					{
+						entry.getValue().Added(job);
+					}
+					catch(Exception error)
+					{
+						synchronized(JobService.this._listeners)
+						{
+							JobService.this._listeners.remove(entry.getKey());
+						}
+					}
+					
+				}});
+		}
+	}
+	
+	
+	@Override
+	public void initializeService() throws Exception
+	{
+		
+		this.getQueue().addListener(this);
+		
+		
+		super.initializeService();
+	}
+	
+	@Override
+	public void uninitializeService() throws Exception
+	{
+		super.uninitializeService();
+		this.getQueue().removeListener(this);
+	}
+
+
+
+	@Override
+	public void RequestCancel(JobMetaData job) throws Exception {
+		
+	}
+
+
+
+	@Override
+	public void RequestSuspend(JobMetaData job) throws Exception {
+		
+	}
+
+
+
+	@Override
+	public void RequestUserPause(JobMetaData job) throws Exception {
+	
 	}
 
 }

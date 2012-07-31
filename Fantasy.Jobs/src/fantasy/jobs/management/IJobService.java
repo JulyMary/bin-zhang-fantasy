@@ -65,8 +65,10 @@ public interface IJobService extends Remote
 
 	void SetSettings(String typeName, String xml) throws Exception;
 
-	String GetLocation();
+	String GetLocation() throws Exception;
 	
 	void addListener(UUID token, IJobServiceListener listener) throws Exception;
 	void removeListener(UUID token) throws Exception;
+	
+	void echo() throws Exception;
 }
