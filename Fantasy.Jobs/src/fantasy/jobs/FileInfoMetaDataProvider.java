@@ -6,9 +6,6 @@ public class FileInfoMetaDataProvider implements ITaskItemMetaDataProvider
 {
 	private static final String[] Names = new String[] { "Directory", "Exists", "Extension", "FullName", "FileName", "NameWithoutExtension" };
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITaskItemMetaDataProvider Members
-
 	public final String[] GetNames(TaskItem item)
 	{
 		return FileInfoMetaDataProvider.Names;
@@ -16,47 +13,35 @@ public class FileInfoMetaDataProvider implements ITaskItemMetaDataProvider
 
 	public final String GetData(TaskItem item, String name)
 	{
-		Uri dir = new Uri(JobEngine.getCurrentEngine().getJobDirectory() + "\\");
-		Uri full = new Uri(dir, item.getName());
-		String path = full.IsFile ? full.LocalPath : full.toString();
-//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
-//		switch (name.ToLower())
-//ORIGINAL LINE: case "namewithoutextension" :
+
 		if (name.toLowerCase().equals("namewithoutextension"))
 		{
-				return LongPath.GetFileNameWithoutExtension(path).toLowerCase();
+				return Path.getFileNameWithoutExtension(name);
 		}
-//ORIGINAL LINE: case "filename":
 		else if (name.toLowerCase().equals("filename"))
 		{
-				return LongPath.GetFileName(path);
+				return Path.getFileName(name);
 		}
-//ORIGINAL LINE: case "exists":
 		else if (name.toLowerCase().equals("exists"))
 		{
-				return LongPathFile.Exists(path).toString();
+				return File.exists(name) ? "true" : "false";
 		}
-//ORIGINAL LINE: case "extension":
 		else if (name.toLowerCase().equals("extension"))
 		{
-				return LongPath.GetExtension(path);
+				return Path.getExtension(name);
 		}
-//ORIGINAL LINE: case "fullname":
 		else if (name.toLowerCase().equals("fullname"))
 		{
-				return path;
+				return Path.getFullPath(name);
 		}
-//ORIGINAL LINE: case "directory":
 		else if (name.toLowerCase().equals("directory"))
 		{
-				return LongPath.GetDirectoryName(path);
+				return Path.getDirectoryName(name);
 		}
 		else
 		{
-				throw new NotSupportedException();
+				throw new UnsupportedOperationException();
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

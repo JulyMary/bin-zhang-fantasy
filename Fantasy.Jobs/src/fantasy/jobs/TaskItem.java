@@ -1,5 +1,6 @@
 ﻿package fantasy.jobs;
 
+import java.io.Serializable;
 import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,9 +10,13 @@ import fantasy.*;
 import org.jdom2.*;
 
 @XSerializable(name = "taskitem", namespaceUri = Consts.XNamespaceURI)
-public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
+public class TaskItem implements IXSerializable, Cloneable, IConditionalObject, Serializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8092952054534622690L;
 	private String privateName;
 	public final String getName()
 	{
@@ -31,6 +36,7 @@ public class TaskItem implements IXSerializable, Cloneable, IConditionalObject
 	{
 		privateCategory = value;
 	}
+	
 
 	private TreeMap<String, String> _metaData = new TreeMap<String, String>(String.CASE_INSENSITIVE_ORDER);
 

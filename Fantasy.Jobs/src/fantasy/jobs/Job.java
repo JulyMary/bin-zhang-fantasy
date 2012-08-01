@@ -541,7 +541,7 @@ public class Job  implements IJob, IObjectWithSite
 				path = getParser().Parse(path);
 				if (!Path.isPathRooted(path))
 				{
-					String dir = Path.GetDirectoryName(template.getLocation());
+					String dir = Path.getDirectoryName(template.getLocation());
 					path = Path.combine(dir, path);
 				}
 				newTemplate = ts.GetJobTemplateByPath(path);

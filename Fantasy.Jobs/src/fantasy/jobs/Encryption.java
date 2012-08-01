@@ -1,12 +1,14 @@
 ﻿package fantasy.jobs;
 
+@SuppressWarnings("unused")
 public final class Encryption
 {
 
 
-	private static String _passPhrase = "Cl1ckV!3w"; // can be any string
+	private static String _passPhrase = "F^nt^3y"; // can be any string
 	private static String _saltValue = "JobS1v1c3"; // can be any string
 	private static String _hashAlgorithm = "SHA1"; // can be "MD5"
+	
 	private static int _passwordIterations = 2; // can be any number
 	private static String _initVector = "@1B2c3D4e5F6g7H8"; // must be 16 bytes
 	private static int _keySize = 256; // can be 192 or 128
@@ -51,7 +53,8 @@ public final class Encryption
 	*/
 	public static String Encrypt(String plainText)
 	{
-		if (DotNetToJavaStringHelper.isNullOrEmpty(plainText))
+		return plainText;
+/*		if (DotNetToJavaStringHelper.isNullOrEmpty(plainText))
 		{
 			return plainText;
 		}
@@ -114,7 +117,7 @@ public final class Encryption
 		String cipherText = Convert.ToBase64String(cipherTextBytes);
 
 		// Return encrypted string.
-		return cipherText;
+		return cipherText;*/
 	}
 
 	/** 
@@ -163,8 +166,9 @@ public final class Encryption
 	*/
 	public static String Decrypt(String cipherText)
 	{
+		return cipherText;
 
-		if (DotNetToJavaStringHelper.isNullOrEmpty(cipherText))
+		/*if (DotNetToJavaStringHelper.isNullOrEmpty(cipherText))
 		{
 			return cipherText;
 		}
@@ -225,7 +229,7 @@ public final class Encryption
 		String plainText = Encoding.UTF8.GetString(plainTextBytes, 0, decryptedByteCount);
 
 		// Return decrypted string.   
-		return plainText;
+		return plainText;*/
 	}
 
 	public static String Decrypt(String cipherText, boolean throwException)

@@ -1,100 +1,149 @@
 ﻿package fantasy.jobs.management;
 
-import Fantasy.IO.*;
-import Fantasy.ServiceModel.*;
+import fantasy.*;
+import fantasy.io.*;
+import fantasy.jobs.*;
+import fantasy.servicemodel.*;
+
+import java.nio.file.*;
+
+import java.rmi.RemoteException;
+import java.util.*;
+import java.io.*;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class StartupFolderWatcher extends AbstractService
 {
 
-	private java.util.ArrayList<FileSystemWatcher> _watchers = new java.util.ArrayList<FileSystemWatcher>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4723449494856707652L;
+
+
+	public StartupFolderWatcher() throws RemoteException {
+		super();
+		
+	}
+
+	private HashMap<WatchKey, java.nio.file.Path> _watchers = new HashMap<WatchKey, java.nio.file.Path>();
 	private IJobQueue _jobQueue;
 
-	private java.util.LinkedList<String> _fileQueue = new java.util.LinkedList<String>();
-	private Object _syncRoot = new Object();
-	private Thread _addingThread;
+	private Thread _watchThread;
+	
+	private WatchService _watcher; 
 
-	private AutoResetEvent _waitHandler = new AutoResetEvent(false);
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
 
-		_jobQueue = this.getSite().<IJobQueue>GetRequiredService();
+		_jobQueue = this.getSite().getRequiredService(IJobQueue.class);
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task.Factory.StartNew(() =>
+		this._watchThread = ThreadFactory.createAndStart(new Runnable(){
+
+			@Override
+			public void run() {
+				
+				try {
+					StartupFolderWatcher.this.startWatch();
+				} catch (Exception e) {
+					
+					e.printStackTrace();
+				}
+			}});
+		
+		super.initializeService();
+	}
+	
+	
+	private void startWatch() throws Exception
+	{
+		this._watcher = FileSystems.getDefault().newWatchService();
+		String[] folders = StringUtils2.split(JobManagerSettings.getDefault().getStartupFolders(), ";", true);
+		for(String folder : folders)
 		{
-			String[] folders = JobManagerSettings.getDefault().getStartupFolders().split("[;]", -1);
-			String baseDir = Path.GetDirectoryName(Assembly.GetEntryAssembly().getLocation());
-			for (String folder : folders)
+			String fullPath = JavaLibraryUtils.extractToFullPath(folder);
+			if(Directory.exists(fullPath))
 			{
-				String fullPath = Fantasy.IO.LongPath.Combine(baseDir, folder);
-				if (LongPathDirectory.Exists(fullPath))
+				boolean found = false;
+				do
 				{
-					for (String s : Directory.GetFiles(fullPath, "*.xml", SearchOption.TopDirectoryOnly))
+					found = false;
+					for(String s : Directory.enumerateFiles(fullPath, "*.xml", false))
 					{
-						_fileQueue.offer(s);
+						found = true;
+						this.StartJob(s);
 					}
-					FileSystemWatcher watcher = new FileSystemWatcher(fullPath, "*.xml");
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-					watcher.Created += new FileSystemEventHandler(FileWatcherCreated);
-					watcher.EnableRaisingEvents = true;
-					_watchers.add(watcher);
 				}
+				while(found);
+				
+				
+				this.register(fullPath);
 			}
-			_addingThread = ThreadFactory.CreateThread(this.AddJobs).WithStart();
+			
 		}
-	   );
-		super.InitializeService();
-	}
-
-
-	private void AddJobs()
-	{
-		while (true)
+		
+		while(true)
 		{
-			String file = null;
-
-			synchronized (this._fileQueue)
+			WatchKey key;
+			try
 			{
-				if (this._fileQueue.size() > 0)
+				key = this._watcher.take();
+			}
+			catch(InterruptedException error)
+			{
+				return;
+			}
+
+			try
+			{
+				for(WatchEvent<?> event : key.pollEvents())
 				{
+					WatchEvent.Kind<?> kind = event.kind();
+					if(kind == StandardWatchEventKinds.ENTRY_CREATE || kind == StandardWatchEventKinds.ENTRY_MODIFY)
+					{
+						@SuppressWarnings("unchecked")
+						WatchEvent<java.nio.file.Path> ev = (WatchEvent<java.nio.file.Path>)event;
+						java.nio.file.Path filename = ev.context();
 
-					file = this._fileQueue.poll();
+						String fullPath = this._watchers.get(key).resolve(filename).toAbsolutePath().toString();
+						if(StringUtils.equalsIgnoreCase(fantasy.io.Path.getExtension(fullPath), ".xml"))
+						{
+						    this.StartJob(fullPath);
+						}
+					}
+
 				}
 			}
-
-			if (file != null)
+			finally
 			{
-				this.StartJob(file);
-			}
-			else
-			{
-				this._waitHandler.WaitOne();
+				key.reset();
 			}
 
 
 		}
 	}
 
-
-	private void FileWatcherCreated(Object sender, FileSystemEventArgs e)
-	{
-		synchronized (this._fileQueue)
-		{
-			if (!this._fileQueue.contains(e.FullPath))
-			{
-				this._fileQueue.offer(e.FullPath);
-				this._waitHandler.Set();
-			}
-		}
+	
+	private void register(String path) throws IOException 
+	{         
+		java.nio.file.Path dir = java.nio.file.Paths.get(path);
+		WatchKey key = dir.register(this._watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_MODIFY);  
+		this._watchers.put(key, dir);
 	}
+	
+	
+
+
+	
 
 
 
-	private void StartJob(String path)
+	private void StartJob(String path) throws Exception
 	{
-		ILogger logger = this.getSite().<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		try
 		{
 
@@ -105,9 +154,9 @@ public class StartupFolderWatcher extends AbstractService
 				JobMetaData job = _jobQueue.CreateJobMetaData();
 				job.LoadXml(xml);
 
-				_jobQueue.ApplyChange(job);
+				_jobQueue.Add(job);
 
-				File.Delete(path);
+				fantasy.io.File.delete(path);
 
 				if (logger != null)
 				{
@@ -117,10 +166,10 @@ public class StartupFolderWatcher extends AbstractService
 
 
 		}
-		catch (ThreadAbortException e)
+		catch (InterruptedException e)
 		{
 		}
-		catch (RuntimeException error)
+		catch (Exception error)
 		{
 			if (logger != null)
 			{
@@ -130,7 +179,7 @@ public class StartupFolderWatcher extends AbstractService
 			try
 			{
 
-				File.Delete(path);
+				fantasy.io.File.delete(path);
 			}
 			catch (java.lang.Exception e2)
 			{
@@ -140,15 +189,15 @@ public class StartupFolderWatcher extends AbstractService
 
 	}
 
-	private String ReadStartInfo(String path)
+	private String ReadStartInfo(String path) throws Exception
 	{
 		String rs = null;
-		while(rs == null && File.Exists(path))
+		while(rs == null && fantasy.io.File.exists(path))
 		{
 			try
 			{
 
-				rs = File.ReadAllText(path);
+				rs = fantasy.io.File.readAllText(path);
 
 			}
 			catch (IOException e)
@@ -162,16 +211,11 @@ public class StartupFolderWatcher extends AbstractService
 	}
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
 
-		super.UninitializeService();
-		this._addingThread.stop();
-		for (FileSystemWatcher w : this._watchers)
-		{
-			//w.EnableRaisingEvents = false;
-			w.dispose();
-		}
+		super.uninitializeService();
+		this._watchThread.interrupt();
 	}
 
 }
