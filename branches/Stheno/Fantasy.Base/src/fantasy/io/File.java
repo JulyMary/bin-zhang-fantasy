@@ -42,5 +42,11 @@ public final class File {
 		java.io.File f = new java.io.File(path);
 		return f.exists() && f.isFile();
 	}
+
+	public static boolean delete(String path) {
+	
+		return new java.io.File(path).delete();
+		
+	}
 }
 

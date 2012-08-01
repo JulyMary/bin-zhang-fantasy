@@ -141,7 +141,7 @@ public final class Path
 	}
 
 	
-	public static String GetDirectoryName(String path)
+	public static String getDirectoryName(String path)
 	{
 		if (path != null)
 		{
@@ -153,7 +153,7 @@ public final class Path
 		return null;
 	}
 
-	public static String GetExtension(String path)
+	public static String getExtension(String path)
 	{
 		if (path == null)
 		{
@@ -268,7 +268,7 @@ public final class Path
 		return num;
 	}
 
-	public static String GetTempFileName() throws Exception
+	public static String getTempFileName() throws Exception
 	{
 		
 		File f = File.createTempFile("fts", null);
@@ -280,12 +280,12 @@ public final class Path
 	}
 
 
-	public static String GetTempPath()
+	public static String getTempPath()
 	{
 		return System.getProperty("java.io.tmpdir");
 	}
 
-	public static boolean HasExtension(String path)
+	public static boolean hasExtension(String path)
 	{
 		if (path != null)
 		{
