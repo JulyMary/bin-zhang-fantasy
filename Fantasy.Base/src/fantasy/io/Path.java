@@ -87,7 +87,7 @@ public final class Path
 		}
 	}
 
-	public static String combine(String[] paths)
+	public static String combine(String[] paths) throws Exception
 	{
 		if (paths == null || paths.length < 2)
 		{
@@ -106,12 +106,16 @@ public final class Path
 			}
 		}
 		
-		return rs.toString();
+		
+		return rs.normalize().toString();
+		
+	
+		
 	}
 	
 	
 
-	public static String combine(String path1, String path2)
+	public static String combine(String path1, String path2) throws Exception
 	{
 		if ((path1 == null) || (path2 == null))
 		{
@@ -120,7 +124,7 @@ public final class Path
 		return combine(new String[]{path1, path2});
 	}
 
-	public static String combine(String path1, String path2, String path3)
+	public static String combine(String path1, String path2, String path3) throws Exception
 	{
 		if (((path1 == null) || (path2 == null)) || (path3 == null))
 		{
@@ -130,7 +134,7 @@ public final class Path
 		return combine(new String[]{path1, path2, path3});
 	}
 
-	public static String combine(String path1, String path2, String path3, String path4)
+	public static String combine(String path1, String path2, String path3, String path4) throws Exception
 	{
 		if (((path1 == null) || (path2 == null)) || ((path3 == null) || (path4 == null)))
 		{
@@ -225,7 +229,7 @@ public final class Path
 		return (char[]) RealInvalidPathChars.clone();
 	}
 
-	public static String GetPathRoot(String path)
+	public static String getPathRoot(String path)
 	{
 		if (path == null)
 		{

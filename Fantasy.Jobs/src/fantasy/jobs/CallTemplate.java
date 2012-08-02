@@ -3,6 +3,7 @@
 import java.util.Arrays;
 
 import fantasy.xserialization.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.servicemodel.*;
 import fantasy.*;
 
@@ -70,7 +71,7 @@ public class CallTemplate extends AbstractInstruction implements IConditionalObj
 		}
 		else if (logger != null)
 		{
-			logger.LogMessage(LogCategories.getInstruction(), "Skip callTemplate {0}", this.Template);
+			logger.LogMessage(LogCategories.getInstruction(), Resources.getSkipCallTemplateMessage(), this.Template);
 		}
 
 	}

@@ -11,6 +11,7 @@ import org.joda.time.*;
 import fantasy.*;
 import fantasy.ThreadFactory;
 import fantasy.jobs.management.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.jobs.resources.*;
 import fantasy.servicemodel.*;
 import fantasy.io.*;
@@ -74,7 +75,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		{
 			if (logger != null)
 			{
-				logger.LogError("Engine", error,"Job {0} initialze failed", this.getJobId());
+				logger.LogError(LogCategories.getEngine(), error, Resources.getJobInitializeFailedMessage(), this.getJobId());
 			}
 			throw error;
 		}
@@ -115,7 +116,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					}});
 
 			}
-			exec.wait();
+			exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 		}
 		finally
 		{
@@ -130,7 +131,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 	public final void WaitForExit() throws Exception
 	{
-		_waitEvent.wait();
+		synchronized(this._waitEvent)
+		{
+		    _waitEvent.wait();
+		}
 		_serviceContainer.uninitializeServices();
 	}
 
@@ -158,11 +162,14 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			ILogger logger = this.getService(ILogger.class);
 			if (logger != null)
 			{
-				logger.LogError(LogCategories.getEngine(), error, "A error occurs when job is exiting.");
+				logger.LogError(LogCategories.getEngine(), error, Resources.getJobExitErrorMessage());
 			}
 		}
 
-		_waitEvent.notifyAll();
+		synchronized(this._waitEvent)
+		{
+		    _waitEvent.notifyAll();
+		}
 	}
 
 	private int _abortState = JobState.Suspended;
@@ -193,7 +200,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 				if (logger != null)
 				{
-					logger.LogMessage(LogCategories.getEngine(), "Start");
+					logger.LogMessage(LogCategories.getEngine(), Resources.getStartMessage());
 
 				}
 
@@ -238,7 +245,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			{
 				if (logger != null)
 				{
-					logger.LogError(LogCategories.getEngine(), error, "A fatal error occurs, exit excuting.");
+					logger.LogError(LogCategories.getEngine(), error, Resources.getJobFatalErrorMessage());
 					
 				}
 			}
@@ -246,7 +253,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			{
 				if (logger != null)
 				{
-					logger.LogMessage(LogCategories.getEngine(), "Exit with code {0}.", JobState.ToString(exitState));
+					logger.LogMessage(LogCategories.getEngine(), Resources.getJobExitMessage(), JobState.ToString(exitState));
 				}
 				try {
 					JobEngine.this.OnExit(exitState);
@@ -286,7 +293,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 					if (logger != null)
 					{
-						logger.LogMessage(LogCategories.getEngine(), "Resume");
+						logger.LogMessage(LogCategories.getEngine(), Resources.getResumeMessage());
 					}
 
 		               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
@@ -330,14 +337,14 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 					if (logger != null)
 					{
-						logger.LogError(LogCategories.getEngine(), error, "A fatal error occurs, exit excuting.");
+						logger.LogError(LogCategories.getEngine(), error, Resources.getJobFatalErrorMessage());
 					}
 				}
 				finally
 				{
 					if (logger != null)
 					{
-						logger.LogMessage(LogCategories.getEngine(), "Exit with code {0}.", JobState.ToString(exitState));
+						logger.LogMessage(LogCategories.getEngine(), Resources.getJobExitMessage(), JobState.ToString(exitState));
 					}
 					try {
 						JobEngine.this.OnExit(exitState);

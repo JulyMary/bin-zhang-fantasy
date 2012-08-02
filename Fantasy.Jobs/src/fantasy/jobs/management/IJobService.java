@@ -10,7 +10,7 @@ import fantasy.jobs.*;
 public interface IJobService extends Remote
 {
 
-	String Version();
+	String Version() throws Exception;
 
 	JobMetaData StartJob(String startInfo) throws Exception;
 

@@ -72,7 +72,7 @@ public final class AddIn extends SettingsBase implements IXSerializable {
 		
 		String[] segs = path.split("/");
 		
-		StringBuilder xpath = new StringBuilder(path);
+		StringBuilder xpath = new StringBuilder();
 		for(String seg : segs)
 		{
 			if(xpath.length() > 0)

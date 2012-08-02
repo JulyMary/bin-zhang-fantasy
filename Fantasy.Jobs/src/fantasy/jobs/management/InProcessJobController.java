@@ -46,6 +46,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 					
 				}
 			}}, 30, 30, TimeUnit.SECONDS);
+		_scheduler.shutdown();
 		
 		super.initializeService();
 	}
@@ -123,7 +124,10 @@ public class InProcessJobController extends AbstractService implements IJobContr
 				}
 				finally
 				{
-					jp.getExitEvent().notifyAll();
+					synchronized(jp.getExitEvent())
+					{
+					    jp.getExitEvent().notifyAll();
+					}
 				}
 			}
 		}
@@ -338,7 +342,8 @@ public class InProcessJobController extends AbstractService implements IJobContr
 		}
 		
 		exec.shutdown();
-		exec.wait();
+		exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		
 		
 
 	}

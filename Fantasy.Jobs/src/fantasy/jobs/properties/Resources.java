@@ -1,7 +1,5 @@
 package fantasy.jobs.properties;
 
-import fantasy.servicemodel.MessageImportance;
-
 
 public final class Resources {
 
@@ -11,184 +9,244 @@ public final class Resources {
 	}
 
 	public static String getInvalidOutputText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Output element must set value of \"itemCategory\" or \"propertyName\"";
 	}
 
 	public static String getInvalidCallTemplateInputText() {
-		// TODO Auto-generated method stub
-		
-		return null;
+		return "Input element must set value of  \"itemCategory\" or \"propertyName\"";
 	}
 
 	public static String getWhenRequireConditionText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "'when' instruction requires valid condition.";
 	}
 
 	public static String getMemberNotFoundExeptionText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "%1$s does not contain method %2$s.";
 	}
 
 	public static String getDoNotSupportMinusStringText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Do not support minus operations on string.";
 	}
 
 	public static String getDoNotSupportPlusText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Do not support plus/minus operations between %1$s and %2$s.";
 	}
 
 	public static String getDoNotSupportDivideExactlyText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Do not support divide exactly operation between %1$s and %2$s.";
 	}
 
 	public static String getDoNotSupportModulusText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Do not support modulus operation between %1$s and %2$s.";
 	}
 
 	public static String getDoNotSupportMultDivText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Do not support multiple/divide operations between %1$s and %2$s.";
 	}
 
 	public static String getDoNotSupportNagetiveText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Do not support nagetive operation on %1$s.";
 	}
 
 	public static String getConditionNotBoolText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Evaluate condition did not return boolean value. Source \"%1$s\", Parsed \"%2$s\".";
 	}
 
 	public static String getParseConditionFailedText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "ParseCoditionFailed. Source \"%1$s\", Parsed \"%2$s\".";
 	}
 
 	public static String getTaskFailedText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Execute task %1$s failed.";
 	}
 
 	public static String getUndefinedTaskOutputParameterText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Task %1$s has not output parameter %2$s.";
 	}
 
 	public static String getCannotConverTaskOutputParameterToTaskItemText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Cannot convert parameter %2$s of task %1$s to TaskItem.";
 	}
 
 	public static String getInputParamContainsMultipleItemsText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Input parameter %1$s of task %2$s contains %3$d TaskItems.";
 	}
 
 	public static String getSetTaskParamErrorText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "A error occurs when set task %1$s's parameter %2$s.";
 	}
 
 	public static String getInlineTaskMemberMustBeElementText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Task Member with flag Inline must be type of org.jdom2.Element. Task %1$s, Attribute $2$s.";
 	}
 
 	public static String getRequireAttrubiteOfTaskText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Require attribute %1$s of task %2$s.";
 	}
 
 	public static String getStringParserUndefinedTagWarningText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Undefined tag %1$s(%2$s). Using empty string (\"\") as default value.";
 	}
 
 	public static String getTargetTermianteText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "An exception occurs while executing target '%1$s', job is terminating.";
 	}
 
 	public static String getTargetContinueText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "An exception occurs while excuting target '%1$s' and was ignored.";
 	}
 
 	public static String getUnitlSuccessFailedText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "All try elements are failed, until-success is failed.";
 	}
 
 	public static String getUntilSuccessAllSkippedText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "All try elements are skipped, until-success is failed.";
 	}
 
 	public static String getMissingResourceNameText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Resource expression %1$s missing  name.";
 	}
 
 	public static String getUnknownTaskText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Unkown task or instruction with uri %1$s and name %2$s.";
 	}
 
 	public static String getDulplicateTaskText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Tasks %1$s and %2$s have same taks name %3$s %4$s.";
 	}
 
 	public static String getUndefinedTargetText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Undefined target %1$s.";
 	}
 
 	public static String getNoStartupTargetText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Must assign target name  because template %1$s has not default target.";
 	}
 
 	public static String getInvalidJobTransitionText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Job %1$s can not transite from %2$s to %3$s.";
 	}
 
 	public static String getDulplicateTemplateNamesText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "File %1$s and %2$s have same template name %3$s.";
 	}
 
-	public static MessageImportance getSuccessToLoadTemplateText() {
-		// TODO Auto-generated method stub
-		return null;
+	public static String getSuccessToLoadTemplateText() {
+		return "Success to load template file %1$s. Template name is %2$s.";
 	}
 
 	public static String getSuccessToLoadAnonymousTemplateText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Success to load anonymous template file %1$s.";
 	}
 
 	public static String getFailToLoadTemplateText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Cannot not load template file %1$s";
 	}
 
 	public static String getCannotFindTemplateByNameText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Cannot find job template with name '%1$s'.";
 	}
 
 	public static String getCannotFindTemplateByPathText() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Cannot find job template at %1$s.";
+	}
+
+	public static String getJobInitializeFailedMessage() {
+		return "Job %1$s initialze failed.";
+	}
+
+	public static String getJobExitErrorMessage() {
+		
+		return "A error occurs when job is exiting.";
+	}
+
+	public static String getJobFatalErrorMessage() {
+	
+		return "A fatal error occurs, exit excuting.";
+	}
+
+	public static String getJobExitMessage() {
+		
+		return "Exit with code %1$s.";
+	}
+
+	public static String getRetryLaterMessage() {
+		
+		return "Retry instruction catchs a exception, will try again later.";
+	}
+
+	public static String getRetryExceedLimitMessage() {
+		
+		return "Retry instruction catchs a exception and repeat times exceed maximum number (%1$s).";
+	}
+
+	public static String getTaskExecuteErrorMessage() {
+		
+		return "An error occurs when execute target %1$s.";
+	}
+
+	public static String getExecuteOnFailedErrorMessage() {
+		
+		return "An error occurs when execute onFailed of target %1$s.";
+	}
+
+	public static String getTryNextMessage() {
+
+		return "try instruction faild, try next one.";
+	}
+
+    public static String getStartJobMessage() {
+		
+		return "Start Job %1$s (%2$s).";
+	}
+
+	public static String getResumeJobMessage() {
+		return "Resume Job %1$s (%2$s).";
+	}
+	
+	public static String getLoadJobStartInfoFileMessage() {
+		return  "Load job start info at %1$s.";
+	}
+
+	public static String getSkipCallTemplateMessage() {
+		return "Skip callTemplate %1$s";
+	}
+
+	public static String getEvalConditionMessage() {
+		return "Source: %1$s, Parsed: %2$s, Value: %3$s.";
+	}
+
+	public static String getExecuteTaskMessage() {
+		return  "Execute task %1$s.";
+	}
+
+	public static String getSkipTaskMessage() {
+		return "Skip task %1$s.";
+	}
+
+	public static String getStartMessage() {
+		return "Start";
+	}
+
+	public static String getResumeMessage() {
+		return "Resume";
+	}
+
+	public static String getSetPropertyMessage() {
+		return "set property %1$s as %2$s";
+	}
+
+	public static String getExecuteTargetMessage() {
+		return "Execute target %1$s.";
+	}
+
+	public static String getExecuteTryMessage() {
+		return "Execute try No.%1$d";
+	}
+
+	public static String getSkipTryMessage() {
+		return "Skip try No.%1$d.";
 	}
 	
 }

@@ -98,17 +98,25 @@ public final class JavaLibraryUtils {
 		return _entryLibrary;
 	}
 
-	public static void setEntryLibrary(File _entryLibrary) {
-		JavaLibraryUtils._entryLibrary = _entryLibrary;
+	public static void setEntryLibrary(File entryLibrary) {
+		JavaLibraryUtils._entryLibrary = entryLibrary;
 	}
 
 
 	private static File _entryLibrary;
 	
 	
-	public static String extractToFullPath(String path)
+	public static String extractToFullPath(String path) throws Exception
 	{
-		return Path.combine(new File(getEntryLibrary().getParent()).getAbsolutePath(), SystemUtils.expandEnvironmentVariables(path));
+		
+		File f = getEntryLibrary();
+		if(f.isFile())
+		{
+			f = f.getParentFile();
+		}
+		
+		
+		return Path.combine(f.getAbsolutePath(), SystemUtils.expandEnvironmentVariables(path));
 	}
 	
 

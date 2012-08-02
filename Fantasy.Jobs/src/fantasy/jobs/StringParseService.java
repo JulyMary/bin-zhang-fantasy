@@ -163,7 +163,7 @@ public class StringParseService extends AbstractService implements IStringParser
 
 		if (this.getLogger() != null)
 		{
-			this.getLogger().LogWarning("StringParse", Resources.getStringParserUndefinedTagWarningText(), prefix, tag);
+			this.getLogger().LogWarning(LogCategories.getStringParse(), Resources.getStringParserUndefinedTagWarningText(), prefix, tag);
 		}
 
 		return "";

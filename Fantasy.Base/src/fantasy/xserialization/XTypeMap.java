@@ -135,7 +135,7 @@ public class XTypeMap
 				{
 					_allMembers.add(f);
 				}
-
+                clz = clz.getSuperclass();
 
 			}
 
@@ -698,6 +698,7 @@ public class XTypeMap
 	private Object GetValue(Field fi, Object instance) throws Exception
 	{
 
+		
 		return fi.get(instance);
 
 

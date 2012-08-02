@@ -30,6 +30,8 @@ public class CpuLoadFactorEvaluator extends ObjectWithSite implements IComputerL
 			public void run() {
 				CpuLoadFactorEvaluator.this.refresh();
 			}}, 1, 1, TimeUnit.SECONDS);
+		
+		_scheduler.shutdown();
 
 	}
 

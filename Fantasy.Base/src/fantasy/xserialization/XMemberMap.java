@@ -26,5 +26,6 @@ import java.lang.reflect.Field;
 		public final void setMember(Field value)
 		{
 			privateMember = value;
+			value.setAccessible(true);
 		}
 	}

@@ -21,6 +21,7 @@ final class RefreshManager
 			public void run() {
 				refresh();
 			}}, 5, 5, TimeUnit.SECONDS);
+		_scheduler.shutdown();
 		
 
 	}
