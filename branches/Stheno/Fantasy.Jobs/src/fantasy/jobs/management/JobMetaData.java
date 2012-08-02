@@ -7,8 +7,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Element;
 
-import fantasy.JDomUtils;
 import fantasy.*;
+import fantasy.collections.*;
 import fantasy.jobs.*;
 
 
@@ -198,10 +198,15 @@ public class JobMetaData implements Serializable
 		return (this.getState() & JobState.Terminated) == JobState.Terminated;
 	}
 
-	private String GetStartInfoProperty(Element root, String name)
+	private String GetStartInfoProperty(Element root, String name) throws Exception
 	{
 		
-		for(Element group : root.getChildren("properties"))
+		for(Element group : new Enumerable<Element>(root.getChildren()).where(new Predicate<Element>(){
+
+			@Override
+			public boolean evaluate(Element obj) throws Exception {
+				return obj.getName() == "properties";
+			}}))
 		{
 			for(Element prop : group.getChildren())
 			{

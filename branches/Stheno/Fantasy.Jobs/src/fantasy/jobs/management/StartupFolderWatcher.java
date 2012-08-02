@@ -198,7 +198,7 @@ public class StartupFolderWatcher extends AbstractService
 			try
 			{
 
-				rs = fantasy.io.File.readAllText(path);
+				rs = fantasy.io.File.readAllText(path, "UTF-8");
 
 			}
 			catch (IOException e)

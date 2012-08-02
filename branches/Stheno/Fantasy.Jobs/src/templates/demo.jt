@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<template name="demo" defaultTarget="demo"
+          xmlns="urn:schemas-fantasy-com:jobs">
+   
+    <properties>
+       
+    </properties>
+
+    <target name="demo">
+     
+        
+    </target>
+
+
+</template>
