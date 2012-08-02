@@ -29,7 +29,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 	private static SimpleDateFormat _roundTripFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"); 
 	protected String getCharset()
 	{
-		return "UTF-8'";
+		return "UTF-8";
 	}
 	protected abstract OutputStreamWriter getWriter() throws Exception;
 

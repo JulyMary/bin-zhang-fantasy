@@ -8,7 +8,7 @@ import fantasy.jobs.management.JobManager;
 public class Program {
     public static void main(String[] args) throws IOException
     {
-    	
+    	boolean exit = false;
     	
     	JavaLibraryUtils.setEntryLibrary(JavaLibraryUtils.getLibrary(Program.class));
     	
@@ -17,17 +17,22 @@ public class Program {
     		
 			prog.onStart();
 		} catch (Exception e) {
-		    return;
+		    exit = true;
 		}
     	
-    	
-    	System.in.read();
+    	if(!exit)
+    	{
+    	//System.in.read();
     	
     	try {
 			prog.onStop();
 		} catch (Exception e) {
-			return;
+			e.printStackTrace();
+			exit = true;
 		}
+    	}
+    	
+    	Runtime.getRuntime().exit(0);
     	
     	
     	

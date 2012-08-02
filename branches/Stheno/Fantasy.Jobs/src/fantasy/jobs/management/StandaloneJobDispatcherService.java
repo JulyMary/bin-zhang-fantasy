@@ -5,6 +5,7 @@ import java.util.*;
 
 import fantasy.collections.*;
 import fantasy.jobs.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.jobs.resources.*;
 import fantasy.servicemodel.*;
 import fantasy.*;
@@ -88,7 +89,10 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 
 	private void ResourceAvailable()
 	{
-		this._waitHandle.notifyAll();
+		synchronized(this._waitHandle)
+		{
+		    this._waitHandle.notifyAll();
+		}
 	}
 
 	@Override
@@ -135,17 +139,26 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 
 	public void Changed(JobMetaData job)
 	{
-		this._waitHandle.notifyAll();
+		synchronized(this._waitHandle)
+		{
+		    this._waitHandle.notifyAll();
+		}
 	}
 	
 	public void Added(JobMetaData job) throws Exception
 	{
-		this._waitHandle.notifyAll();
+		synchronized(this._waitHandle)
+		{
+		    this._waitHandle.notifyAll();
+		}
 	}
 
 	public final void TryDispatch()
 	{
-		this._waitHandle.notifyAll();
+		synchronized(this._waitHandle)
+		{
+		    this._waitHandle.notifyAll();
+		}
 	}
 
 	public final void Run() throws Exception
@@ -176,7 +189,10 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 					logger.LogError(LogCategories.getManager(), error, "An error occurs when try start a new job.");
 				}
 			}
-			_waitHandle.wait();
+			synchronized(this._waitHandle)
+			{
+			   _waitHandle.wait();
+			}
 		}
 	}
 
@@ -209,7 +225,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 						job.setState(JobState.RequestStart);
 						if (logger != null)
 						{
-							logger.LogMessage("Dispatching", "Start Job {0} ({1}).", job.getName(), job.getId());
+							logger.LogMessage(LogCategories.getDispatching(), Resources.getStartJobMessage(), job.getName(), job.getId());
 						}
 
 
@@ -220,7 +236,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 						job.setState(JobState.RequestStart);
 						if (logger != null)
 						{
-							logger.LogMessage("Dispatching", "Resume Job {0} ({1}).", job.getName(), job.getId());
+							logger.LogMessage(LogCategories.getDispatching(), Resources.getResumeJobMessage(), job.getName(), job.getId());
 						}
 						_controller.Resume(job);
 					}

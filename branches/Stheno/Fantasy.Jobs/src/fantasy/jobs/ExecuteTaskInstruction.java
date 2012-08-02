@@ -183,7 +183,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 		if (conditionSvc.Evaluate(this))
 		{
-			logger.LogMessage(LogCategories.getInstruction(), "Execute task {0}", this.getTaskName());
+			logger.LogMessage(LogCategories.getInstruction(), Resources.getExecuteTaskMessage(), this.getTaskName());
 			IJob job = this.getSite().getService(IJob.class);
 			java.lang.Class t = job.ResolveInstructionType(this.getTaskName(),this.getTaskNamespaceUri());
 			ITask task = (ITask)t.newInstance();
@@ -214,7 +214,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		}
 		else if(logger != null)
 		{
-			logger.LogMessage(LogCategories.getInstruction(), "Skip task {0}", this.getTaskName());
+			logger.LogMessage(LogCategories.getInstruction(), Resources.getSkipTaskMessage(), this.getTaskName());
 		}
 	}
 

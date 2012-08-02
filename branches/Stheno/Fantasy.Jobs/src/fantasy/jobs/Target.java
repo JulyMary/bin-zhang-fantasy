@@ -33,7 +33,7 @@ public class Target extends Sequence implements IConditionalObject
 
 					if (logger != null)
 					{
-						logger.LogMessage(LogCategories.getInstruction(), MessageImportance.Low, "Execute target {0}.", this.Name);
+						logger.LogMessage(LogCategories.getInstruction(), MessageImportance.Low, Resources.getExecuteTargetMessage(), this.Name);
 					}
 
 					if (!job.getRuntimeStatus().getLocal().GetValue("target.executingFinally", false))
@@ -57,9 +57,9 @@ public class Target extends Sequence implements IConditionalObject
 				{
                     throw e;
 				}
-				catch (RuntimeException error)
+				catch (Exception error)
 				{
-					Log.SafeLogError(logger, LogCategories.getInstruction(), error, "An error occurs when execute target %1$s.", this.Name);
+					Log.SafeLogError(logger, LogCategories.getInstruction(), error, Resources.getTaskExecuteErrorMessage(), this.Name);
 					hasError = true;
 
 				}
@@ -83,7 +83,7 @@ public class Target extends Sequence implements IConditionalObject
 					}
 					catch (Exception error)
 					{
-						Log.SafeLogError(logger, LogCategories.getInstruction(), error, "An error occurs when execute onFailed of target %1$s.", this.Name);
+						Log.SafeLogError(logger, LogCategories.getInstruction(), error, Resources.getExecuteOnFailedErrorMessage(), this.Name);
 						job.getRuntimeStatus().getLocal().setItem("target.rethrow", true);
 					}
 				}
@@ -94,7 +94,7 @@ public class Target extends Sequence implements IConditionalObject
 
 				if (job.getRuntimeStatus().getLocal().GetValue("target.rethrow", false))
 				{
-					throw new JobException(String.format("An error occurs when execute target %1$s.", this.Name));
+					throw new JobException(String.format(Resources.getTaskExecuteErrorMessage(), this.Name));
 				}
 			}
 			finally

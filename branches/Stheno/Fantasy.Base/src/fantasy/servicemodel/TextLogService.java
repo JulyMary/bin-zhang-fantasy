@@ -4,6 +4,8 @@ import java.io.*;
 
 import java.lang.reflect.*;
 import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public abstract class TextLogService extends AbstractService implements ILogListener
 {
@@ -40,12 +42,12 @@ public abstract class TextLogService extends AbstractService implements ILogList
 
 	public void onMessage(String category, MessageImportance importance, String message) throws Exception
 	{
-		this.getWriter().write(String.format("[%1$s] Message : %2$s", new java.util.Date(), message));
+		this.getWriter().write(String.format("[%1$s] Message : %2$s", now(), message));
 	}
 
 	public void onWaring(String category, Throwable exception, MessageImportance importance, String message) throws Exception
 	{
-		this.getWriter().write(String.format("[%1$s] Warning : %2$s", new java.util.Date(), message));
+		this.getWriter().write(String.format("[%1$s] Warning : %2$s", now(), message));
 		if (exception != null)
 		{
 			this.writeException(exception, 0);
@@ -114,11 +116,20 @@ public abstract class TextLogService extends AbstractService implements ILogList
 
 	public void onError(String category, Throwable exception, String message) throws Exception
 	{
-		this.writeLine(String.format("[%1$s] Error : %2$s", new java.util.Date(), message));
+		this.writeLine(String.format("[%1$s] Error : %2$s", now(), message));
 		if (exception != null)
 		{
 			this.writeException(exception, 0);
 		}
+	}
+	
+	private static SimpleDateFormat _roundTripFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS"); 
+	private String now()
+	{
+		
+		return _roundTripFormat.format(new Date());
+		
+	
 	}
 
 }

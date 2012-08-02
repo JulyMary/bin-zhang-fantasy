@@ -46,7 +46,7 @@ public class ConditionService extends AbstractService implements IConditionServi
 				{
 					if (logger != null)
 					{
-						logger.LogMessage("condition", MessageImportance.Low, "Source: {0}, Parsed: {1}, Value: {2}", condition, parsed, rs);
+						logger.LogMessage(LogCategories.getCondition(), MessageImportance.Low, Resources.getEvalConditionMessage(), condition, parsed, rs);
 					}
 					return ((Boolean)rs).booleanValue();
 				}

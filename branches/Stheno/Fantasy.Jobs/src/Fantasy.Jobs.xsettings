@@ -1,3 +1,19 @@
 <?xml version="1.0"?>
-<xsl     >
-</xsl>
+<settings xmlns="urn:schemas-fantasy-com:settings">
+	<addIn xmlns="urn:schemas-fantasy-com:addin">
+		<jobService>
+			<services>
+		        <service type="fantasy.servicemodel.DefaultUncaughtExcepationService"/>	
+                <service type="fantasy.jobs.management.JobManagerSettingsReaderService"/>
+                <service type="fantasy.servicemodel.LogService" />
+                <service type="fantasy.jobs.management.LogFileService"/>
+                <service type="fantasy.jobs.management.JobTemplatesService"/>
+                <service type="fantasy.jobs.management.DerbyJobQueueService"/>
+                <service type="fantasy.jobs.management.InProcessJobController"/>
+                <service type="fantasy.jobs.management.StandaloneJobDispatcherService"/>											
+                <service type="fantasy.jobs.management.StartupFolderWatcher"/>
+                <service type="fantasy.jobs.management.JobService"/>
+			</services>	
+		</jobService>
+	</addIn>
+</settings>

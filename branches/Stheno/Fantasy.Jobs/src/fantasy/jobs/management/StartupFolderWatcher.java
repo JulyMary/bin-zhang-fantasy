@@ -3,6 +3,7 @@
 import fantasy.*;
 import fantasy.io.*;
 import fantasy.jobs.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.servicemodel.*;
 
 import java.nio.file.*;
@@ -160,7 +161,7 @@ public class StartupFolderWatcher extends AbstractService
 
 				if (logger != null)
 				{
-					logger.LogMessage(LogCategories.getManager(), "Load job start info at {0}", path);
+					logger.LogMessage(LogCategories.getManager(), Resources.getLoadJobStartInfoFileMessage(), path);
 				}
 			}
 

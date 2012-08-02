@@ -238,6 +238,7 @@ public class JobManager extends UnicastRemoteObject implements IJobManager
 
 	public final void Start(IServiceProvider parentServices) throws Exception
 	{
+		
 		java.util.ArrayList<Object> services = new java.util.ArrayList<Object>(Arrays.asList(AddIn.CreateObjects("jobService/services/service")));
 		services.add(this);
 		_serviceContainer.initializeServices(parentServices, services.toArray(new Object[]{}));
@@ -268,10 +269,17 @@ public class JobManager extends UnicastRemoteObject implements IJobManager
 
 	public final void Stop() throws Exception
 	{
-		if (!_stopped)
+		try
 		{
-			this._stopped = true;
-			this._serviceContainer.uninitializeServices();
+			if (!_stopped)
+			{
+				this._stopped = true;
+				this._serviceContainer.uninitializeServices();
+			}
+		}
+		finally
+		{
+			 UnicastRemoteObject.unexportObject(this, true); 
 		}
 	}
 

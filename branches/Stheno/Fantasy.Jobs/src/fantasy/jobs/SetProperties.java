@@ -1,6 +1,7 @@
 ﻿package fantasy.jobs;
 
 import fantasy.xserialization.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.servicemodel.*;
 
 @Instruction
@@ -32,7 +33,7 @@ public class SetProperties extends AbstractInstruction implements IConditionalOb
 					job.SetProperty(prop.getName(), value);
 					if (logger != null)
 					{
-						logger.LogMessage("property", MessageImportance.Low, "set property %1$s as %2$s", prop.getName(), value);
+						logger.LogMessage(LogCategories.getProperty(), MessageImportance.Low, Resources.getSetPropertyMessage(), prop.getName(), value);
 					}
 				}
 				index++;

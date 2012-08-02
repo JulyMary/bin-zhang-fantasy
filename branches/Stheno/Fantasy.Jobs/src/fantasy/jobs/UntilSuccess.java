@@ -37,14 +37,14 @@ public class UntilSuccess extends AbstractInstruction
 					{
 						if (logger != null)
 						{
-							logger.LogMessage(LogCategories.getInstruction(), "Execute try No.{0}", index);
+							logger.LogMessage(LogCategories.getInstruction(), Resources.getExecuteTryMessage(), index);
 						}
 						job.ExecuteInstruction(chance);
 						success = true;
 					}
 					else
 					{
-						Log.SafeLogMessage(logger, LogCategories.getInstruction(), "Skip try No.{0}", index);
+						Log.SafeLogMessage(logger, LogCategories.getInstruction(), Resources.getSkipTryMessage(), index);
 					}
 
 				}
@@ -58,7 +58,7 @@ public class UntilSuccess extends AbstractInstruction
 					job.getRuntimeStatus().getLocal().setItem("until-success.index", index);
 					if (logger != null)
 					{
-						logger.LogError(LogCategories.getInstruction(), error, "try instruction faild, try next one.");
+						logger.LogError(LogCategories.getInstruction(), error, Resources.getTryNextMessage());
 
 					}
 				}

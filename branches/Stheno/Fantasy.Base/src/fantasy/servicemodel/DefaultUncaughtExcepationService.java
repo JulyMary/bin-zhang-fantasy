@@ -3,6 +3,9 @@
 import java.lang.Thread.*;
 import java.rmi.RemoteException;
 
+import fantasy.properties.Resources;
+
+
 public class DefaultUncaughtExcepationService extends AbstractService implements UncaughtExceptionHandler
 {
 	/**
@@ -56,12 +59,12 @@ public class DefaultUncaughtExcepationService extends AbstractService implements
 				if (logger != null)
 				{
 
-					logger.LogError("JVM", error, "An unhandled exception is throwed by current JVM.");
+					logger.LogError(Resources.getSystemCategory(), error, Resources.getUnhandledExceptionMessage());
 
 				}
 				
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}

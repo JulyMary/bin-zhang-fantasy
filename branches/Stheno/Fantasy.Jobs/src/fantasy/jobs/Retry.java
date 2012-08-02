@@ -3,6 +3,7 @@
 import org.joda.time.Duration;
 
 import fantasy.xserialization.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.servicemodel.*;
 
 @Instruction
@@ -50,7 +51,7 @@ public class Retry extends Sequence
 					if (times < count)
 					{
 						job.getRuntimeStatus().getLocal().setItem("sequence.current", 0);
-						Log.SafeLogError(logger, LogCategories.getInstruction(), error, "Retry instruction catchs a exception, will try again later.");
+						Log.SafeLogError(logger, LogCategories.getInstruction(), error, Resources.getRetryLaterMessage());
 						
 						if (sleep.isLongerThan(Duration.ZERO))
 						{
@@ -59,7 +60,7 @@ public class Retry extends Sequence
 					}
 					else
 					{
-						Log.SafeLogError(logger, LogCategories.getInstruction(), error, "Retry instruction catchs a exception and repeat times exceed maximum number (%1$s).", this.Count);
+						Log.SafeLogError(logger, LogCategories.getInstruction(), error, Resources.getRetryExceedLimitMessage(), this.Count);
 						
 						throw error;
 					}

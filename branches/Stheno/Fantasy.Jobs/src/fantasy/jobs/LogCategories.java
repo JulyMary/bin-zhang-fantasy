@@ -60,4 +60,44 @@ public class LogCategories
 	{
 		return "Manager";
 	}
+
+
+
+
+
+	public static String getStringParse() {
+		
+		return "String Parse";
+	}
+
+
+
+
+
+	public static String getDispatching() {
+		
+		return "Dispatching";
+	}
+
+
+
+
+
+	public static String getCondition() {
+		return "Condition";
+	}
+
+
+
+
+
+	public static String getProperty() {
+		return "Property";
+	}
+
+
+
+
+
+	
 }

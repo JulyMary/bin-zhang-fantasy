@@ -3,6 +3,7 @@
 import java.io.*;
 import java.lang.reflect.Field;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.*;
 import fantasy.*;
 
@@ -37,9 +38,32 @@ public final class SettingStorage
     {
     	if(_appSettingsRoot == null)
     	{
+    		
     		if(_appSettingsLocation == null)
     		{
-    			_appSettingsLocation = JavaLibraryUtils.getEntryLibrary().getAbsolutePath() + ".xsettings";
+    			File f = JavaLibraryUtils.getEntryLibrary();
+    			
+    			if(f.isDirectory())
+    			{
+    				
+    				String name;
+    
+        			if(StringUtils.equalsIgnoreCase(f.getName(), "bin"))
+        			{
+        				name = f.getParentFile().getName();
+        			}
+        			else
+        			{
+        				name = f.getName();
+        			}
+    				
+    			    _appSettingsLocation = Path.combine(JavaLibraryUtils.getEntryLibrary().getAbsolutePath() , name + ".xsettings");
+    			}
+    			else
+    				
+    			{
+    				 _appSettingsLocation = JavaLibraryUtils.getEntryLibrary().getAbsolutePath() + ".xsettings";
+    			}
     		}
     		
     		File f = new File(_appSettingsLocation);
@@ -50,7 +74,7 @@ public final class SettingStorage
     		}
     		else
     		{
-    			_appSettingsRoot = new Element("settingsFile", _namespace);
+    			_appSettingsRoot = new Element("settings", _namespace);
     		}
     		
     		
@@ -76,7 +100,7 @@ public final class SettingStorage
     		}
     		else
     		{
-    			_userSettingsRoot = new Element("settingsFile", _namespace);
+    			_userSettingsRoot = new Element("settings", _namespace);
     		
     			
     		}
