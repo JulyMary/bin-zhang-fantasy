@@ -214,6 +214,7 @@ public  class Enumerable<T> implements Iterable<T> {
 						if(this._predicate.evaluate(item))
 						{
 							this._current = item;
+							this._state = 1;
 						}
 					} catch (Exception e) {
 						throw new UnsupportedOperationException(e);

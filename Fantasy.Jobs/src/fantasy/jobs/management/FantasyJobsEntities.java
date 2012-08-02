@@ -154,8 +154,8 @@ class FantasyJobsEntities implements IDisposable
 	public final void addToUnterminates(JobMetaData job) throws Exception
 	{
 		
-		String sql = "INSERT INFO APP.FTS_JOB_JOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG )" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?)";
+		String sql = "INSERT INTO APP.FTS_JOB_JOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, PRIORITY)" +
+				" VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?)";
 	    Connection cnnt = this.getConnection();
 	    PreparedStatement stmt = null;
 	    try
@@ -171,6 +171,7 @@ class FantasyJobsEntities implements IDisposable
 	    	stmt.setString(8, job.getUser());
 	    	stmt.setString(9, job.getStartInfo());
 	    	stmt.setString(10, job.getTag());
+	    	stmt.setInt(11, job.getPriority());
 	    	
 	    	stmt.execute();
 	    }
@@ -241,8 +242,8 @@ class FantasyJobsEntities implements IDisposable
 	{
 		
 		String dSql = "DELETE FROM APP.FTS_JOB_JOBS where ID = X'%1$s'"; 
-		String iSql = "INSERT INFO APP.FTS_JOB_ARCHIVEDJOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, STARTTIME, ENDTIME)" +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?)";
+		String iSql = "INSERT INTO APP.FTS_JOB_ARCHIVEDJOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, STARTTIME, ENDTIME, PRIORITY)" +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?)";
 		Statement dStatement = null;
 		PreparedStatement iStatement = null;
 		
@@ -274,6 +275,7 @@ class FantasyJobsEntities implements IDisposable
 	    	iStatement.setString(10, job.getTag());
 	    	iStatement.setTimestamp(11, new Timestamp(job.getStartTime().getTime()));
 	    	iStatement.setTimestamp(12, new Timestamp(job.getEndTime().getTime()));
+	    	iStatement.setInt(13, job.getPriority());
 	    	try
 	    	{
 	    	    iStatement.execute();

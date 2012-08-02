@@ -16,4 +16,7 @@
 			</services>	
 		</jobService>
 	</addIn>
+	<JobManagerSettings xmlns="urn:schemas-fantasy-com:jobservice">
+		<StartupFolders>.\Startup</StartupFolders>
+	</JobManagerSettings>
 </settings>
