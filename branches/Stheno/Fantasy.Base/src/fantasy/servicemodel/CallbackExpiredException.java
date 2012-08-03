@@ -1,14 +1,16 @@
 ﻿package fantasy.servicemodel;
 
-public class CallbackExpiredException
+public class CallbackExpiredException extends RuntimeException
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6215782633571433993L;
 	public CallbackExpiredException()
 	{
 		this.setMessage("Callback expired.");
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private String privateMessage;
 	public final String getMessage()
 	{

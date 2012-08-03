@@ -3,6 +3,8 @@ package fantasy.rmi;
 import java.net.URL;
 import java.util.*;
 
+import org.apache.commons.lang3.StringUtils;
+
 
 import fantasy.*;
 import fantasy.collections.Enumerable;
@@ -33,7 +35,7 @@ public class ClientSettings {
 			@Override
 			public boolean evaluate(EndPoint obj) throws Exception {
 				
-				return obj.getTypeName() == type.getName();
+				return StringUtils.equals(obj.getTypeName(), type.getName());
 			}});
 		
 		

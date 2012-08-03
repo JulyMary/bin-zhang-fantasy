@@ -6,6 +6,7 @@ import java.lang.reflect.*;
 import fantasy.*;
 import fantasy.collections.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.*;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
@@ -64,7 +65,7 @@ public class XTypeMap
 
 
 
-	private void LoadNamespaceMap()
+	private void LoadNamespaceMap() throws Exception
 	{
 
 		Field f = new Enumerable<Field>(this.GetAllMembers()).singleOrDefault(new Predicate<Field>(){
@@ -283,7 +284,7 @@ public class XTypeMap
 
 	private void LoadValue(IServiceProvider context,Element element, Object instance) throws Exception
 	{
-		if (this._valueMap != null && ! element.getValue().equals(""))
+		if (this._valueMap != null && ! StringUtils2.isNullOrWhiteSpace(element.getValue()))
 		{
 			IFieldFilter filter = context != null ? (IFieldFilter)context.getService2(IFieldFilter.class) : null;
 
@@ -364,8 +365,8 @@ public class XTypeMap
 
 							for(XArrayItem ia : map.getArray().items())
 							{
-								if(ia.name() == itemElement.getName() 
-										&& (ia.namespaceUri() == itemElement.getNamespaceURI() || (StringUtils2.isNullOrEmpty(ia.namespaceUri()) && itemElement.getNamespaceURI() == collectionElement.getNamespaceURI())))
+								if(StringUtils.equals(ia.name() , itemElement.getName()) 
+										&& (StringUtils.equals(ia.namespaceUri(), itemElement.getNamespaceURI()) || (StringUtils2.isNullOrEmpty(ia.namespaceUri()) && StringUtils.equals(itemElement.getNamespaceURI(), collectionElement.getNamespaceURI()))))
 								{
 									ITypeConverter cvt = null;
 
@@ -443,7 +444,7 @@ public class XTypeMap
 			return element.clone();
 		}
 
-		else if (targetType.isAnnotationPresent(XSerializer.class))
+		else if (targetType.isAnnotationPresent(XSerializable.class))
 		{
 			XTypeMap map = XHelper.getDefault().GetTypeMap(targetType);
 			value = targetType.newInstance();

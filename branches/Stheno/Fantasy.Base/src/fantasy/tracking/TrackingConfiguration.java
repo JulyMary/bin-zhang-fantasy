@@ -1,7 +1,7 @@
 ﻿package fantasy.tracking;
 
 
-import java.rmi.*;
+import fantasy.rmi.RmiUtils;
 
 
 public final class TrackingConfiguration
@@ -9,27 +9,16 @@ public final class TrackingConfiguration
 
 	private static TrackManagerService _service;
 
-	public static void StartTrackingService(String uri) throws Exception
-	{
-		
-          _service = new TrackManagerService();
-          Naming.bind(uri, _service);
-          _uri = uri;
-
-          
-	}
+	
 	
 	public static void StartTrackingService() throws Exception
 	{
-		
+		   _service = new TrackManagerService();
+	       RmiUtils.bind(_service);
 	}
 
-	
-	private static String _uri = null;
-	
 	public static void CloseTrackingService() throws Exception
 	{
-		if(_uri != null)
-		Naming.unbind(_uri);
+		  RmiUtils.unbind(_service);
 	}
 }

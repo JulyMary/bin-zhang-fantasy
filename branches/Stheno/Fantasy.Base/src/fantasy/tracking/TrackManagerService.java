@@ -29,8 +29,6 @@ public class TrackManagerService extends UnicastRemoteObject implements ITrackMa
 		
 	}
 
-
-
 	public final TrackMetaData[] getActiveTrackMetaData()
 	{
 		TrackMetaData[] rs = new TrackMetaData[0];

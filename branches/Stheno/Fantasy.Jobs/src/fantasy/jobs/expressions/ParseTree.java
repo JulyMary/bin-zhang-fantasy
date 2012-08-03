@@ -74,7 +74,7 @@ public class ParseTree extends ParseNode
 			@Override
 			public boolean evaluate(Method method) {
 				boolean rs = false;
-				if(Modifier.isStatic(method.getModifiers()) && method.getName() == functionName)
+				if(Modifier.isStatic(method.getModifiers()) && method.getName().equals(functionName))
 				{
 					Class[] ptypes = method.getParameterTypes();
 					

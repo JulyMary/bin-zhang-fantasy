@@ -355,12 +355,12 @@ public  class Enumerable<T> implements Iterable<T> {
 		return this.singleOrDefault(new TruePredicate<T>());
 	}
 
-	public  T singleOrDefault(Predicate<T> predicate)
+	public  T singleOrDefault(Predicate<T> predicate) throws Exception
 	{
 		T rs = null;
 		for(T item : this._source)
 		{
-			if(predicate.equals(item))
+			if(predicate.evaluate(item))
 			{
 				if(rs == null)
 				{

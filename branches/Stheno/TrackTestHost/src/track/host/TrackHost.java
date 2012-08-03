@@ -40,13 +40,9 @@ public class TrackHost {
     
     private static void initTrackService() throws Exception
     {
-//    	if (System.getSecurityManager() == null) {
-//		    System.setSecurityManager(new RMISecurityManager());
-//		}
+
     	
-    	LocateRegistry.createRegistry(9000); 
-    	
-    	TrackingConfiguration.StartTrackingService(uri);
+    	TrackingConfiguration.StartTrackingService();
 
     }
     

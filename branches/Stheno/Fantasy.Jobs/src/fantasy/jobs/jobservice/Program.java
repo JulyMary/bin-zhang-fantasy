@@ -17,6 +17,7 @@ public class Program {
 
 			prog.onStart();
 		} catch (Exception e) {
+			e.printStackTrace();
 			exit = true;
 		}
 

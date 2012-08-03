@@ -77,7 +77,7 @@ public final class JavaLibraryUtils {
 		for(File javaFile : directory.listFiles((FileFilter)new SuffixFileFilter(".java")))
 		{
 			String className = Path.getFileNameWithoutExtension(javaFile.getName());
-			if(packageName != "")
+			if( !StringUtils2.isNullOrEmpty(packageName ))
 			{
 				className = packageName + "." + className;
 			}
@@ -88,7 +88,7 @@ public final class JavaLibraryUtils {
 		
 		for(File childDirectory : directory.listFiles((FileFilter)DirectoryFileFilter.INSTANCE ))
 		{
-			String childPackage = packageName != "" ? packageName + "." + childDirectory.getName() : childDirectory.getName();
+			String childPackage = !StringUtils2.isNullOrEmpty(packageName) ? packageName + "." + childDirectory.getName() : childDirectory.getName();
 			loadClassesByDirectory(childDirectory, childPackage, list);
 		}
 	}
