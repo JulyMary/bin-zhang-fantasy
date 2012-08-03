@@ -7,18 +7,27 @@ public class PrimitiveConverter implements ITypeConverter {
 	@Override
 	public Object convertFrom(Object value) throws Exception {
 		
-		return value.toString();
+		return value != null ? value.toString() : null;
 		
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object convertTo(Object value, @SuppressWarnings("rawtypes") Class t)
 			throws Exception {
 		
 		String s = (String)value;
 		
-		if(t == int.class || t == Integer.class)
+		
+		if(t.isEnum())
+		{
+			return Enum.valueOf(t, s);
+			
+			
+		}
+				
+		else if(t == int.class || t == Integer.class)
 		{
 			return Integer.parseInt((String)value);
 		}

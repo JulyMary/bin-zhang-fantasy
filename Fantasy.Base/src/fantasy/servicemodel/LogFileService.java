@@ -36,7 +36,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 	@Override
 	public void initializeService() throws Exception
 	{
-		_xmlOutputter = new XMLOutputter(Format.getCompactFormat().setLineSeparator(""));
+	
 		ILogger logger = (ILogger)((IServiceProvider)this.getSite()).getService2(ILogger.class);
 		logger.AddListener(this);
 		super.initializeService();
@@ -51,7 +51,7 @@ public abstract class LogFileService extends AbstractService implements ILogList
 	}
 
 
-	XMLOutputter _xmlOutputter;
+	XMLOutputter _xmlOutputter =  new XMLOutputter(Format.getCompactFormat().setLineSeparator(""));
 
 	private Object _syncRoot = new Object();
 	protected void log(Element element) throws Exception

@@ -9,7 +9,7 @@ public class CollectionUtils {
     	
     	
     	int low = 0;
-    	int high = source.size();
+    	int high = source.size() - 1;
     	while (low <= high)
     	{
     		int middle = low + ((high - low) >> 1);

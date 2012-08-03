@@ -89,7 +89,7 @@ public class XSerializer
 
 	public final Object deserialize(Element element) throws Exception
 	{
-		Object rs = this.getTargetType().newInstance();
+		Object rs = Activator.createInstance(this.getTargetType());
 		this.deserialize(element, rs);
 		return rs;
 	}

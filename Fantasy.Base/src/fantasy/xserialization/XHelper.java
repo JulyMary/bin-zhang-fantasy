@@ -14,6 +14,7 @@ public class XHelper
 	
 	private java.util.HashMap<java.lang.Class, XTypeMap> _maps = new java.util.HashMap<java.lang.Class, XTypeMap>();
 	private java.util.ArrayList<Type2Converter> _converters = new java.util.ArrayList<Type2Converter>();
+	private PrimitiveConverter _defaultConverter = new PrimitiveConverter();
 
 
 	private Object _syncRoot = new Object();
@@ -26,15 +27,7 @@ public class XHelper
 		this._converters.add(new Type2Converter(UUID.class, new XUUIDConverter()));
 		this._converters.add(new Type2Converter(Array.class, new XArrayConverter()));
 		this._converters.add(new Type2Converter(Interval.class, new DurationConverter()));
-		
-		PrimitiveConverter pc = new PrimitiveConverter();
-		
-		for(Class c : new Class[]{int.class, Integer.class, byte.class, Byte.class, short.class, Short.class, long.class, Long.class, float.class, Float.class, Double.class, double.class, boolean.class, Boolean.class, char.class, Character.class, String.class})
-		{
-			this._converters.add(new Type2Converter(c, pc));
-		}
-		
-		
+
 	}
 	
 	
@@ -128,8 +121,12 @@ public class XHelper
 				}
 			}
 			t = t.getSuperclass();
-		} while (rs == null && t != Object.class);
+		} while (rs == null && t != null);
 		
+		if(rs == null)
+		{
+			rs = this._defaultConverter;
+		}
 
 		return rs;
 	}

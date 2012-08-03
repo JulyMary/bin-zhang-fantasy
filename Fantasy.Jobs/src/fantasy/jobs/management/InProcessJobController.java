@@ -153,7 +153,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 
 	private Thread CreateHostThread(final JobMetaData job)
 	{
-		Thread rs = fantasy.ThreadFactory.createAndStart(new Runnable(){
+		Thread rs = fantasy.ThreadFactory.create(new Runnable(){
 
 			@Override
 			public void run() {

@@ -138,7 +138,10 @@ public class TrackProviderService extends AbstractService implements ITrackProvi
 
 	public final void dispose()
 	{
-		_provider.dispose();
+		if(_provider != null)
+		{
+		    _provider.dispose();
+		}
 	}
 
 }

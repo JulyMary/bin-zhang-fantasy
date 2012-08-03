@@ -9,10 +9,8 @@ import java.lang.reflect.*;
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.*;
-
-
 import fantasy.*;
+import fantasy.ThreadFactory;
 import fantasy.collections.*;
 
 import org.apache.commons.io.FileUtils;
@@ -429,7 +427,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 		
 		for(final Map.Entry<UUID, IJobServiceListener> entry : listeners.entrySet())
 		{
-			Executors.callable(new Runnable(){
+			ThreadFactory.queueUserWorkItem(new Runnable(){
 
 				@Override
 				public void run() {
@@ -464,7 +462,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 		
 		for(final Map.Entry<UUID, IJobServiceListener> entry : listeners.entrySet())
 		{
-			Executors.callable(new Runnable(){
+			ThreadFactory.queueUserWorkItem(new Runnable(){
 
 				@Override
 				public void run() {

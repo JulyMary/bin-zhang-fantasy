@@ -4,6 +4,9 @@ import java.util.*;
 import java.rmi.*;
 import java.rmi.server.*;
 
+import fantasy.StringUtils2;
+import fantasy.rmi.RmiSettings;
+
 
 
 class TrackManager extends UnicastRemoteObject implements ITrackManager, IRefreshable, ITrackManagerServiceHandler
@@ -26,11 +29,11 @@ class TrackManager extends UnicastRemoteObject implements ITrackManager, IRefres
 
 	private UUID _token = UUID.randomUUID();
 
-	TrackManager(String uri) throws RemoteException
+	TrackManager(String uri) throws Exception
 	{
 		super();
 
-		this._uri = uri;
+		this._uri = !StringUtils2.isNullOrEmpty(uri) ? uri : RmiSettings.getDefault().getClient().GetUrl(ITrackManagerService.class).toString();
 		this.tryCreateRemote();
 		RefreshManager.register(this);
 	}

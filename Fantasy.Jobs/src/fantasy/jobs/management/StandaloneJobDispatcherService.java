@@ -40,7 +40,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 					StandaloneJobDispatcherService.this.Run();
 				} catch (Exception e) {
 					
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 				
 			}});
@@ -177,6 +177,10 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 						throw new InterruptedException();
 					}
 				}
+				synchronized(this._waitHandle)
+				{
+				   _waitHandle.wait();
+				}
 			}
 			catch (InterruptedException e)
 			{
@@ -189,10 +193,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 					logger.LogError(LogCategories.getManager(), error, "An error occurs when try start a new job.");
 				}
 			}
-			synchronized(this._waitHandle)
-			{
-			   _waitHandle.wait();
-			}
+			
 		}
 	}
 

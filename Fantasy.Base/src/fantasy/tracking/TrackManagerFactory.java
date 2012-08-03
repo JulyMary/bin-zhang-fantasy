@@ -15,8 +15,7 @@ public final class TrackManagerFactory {
 	}
 
 
-	public static ITrackManager createTrackManager() {
-		// TODO Auto-generated method stub
-		return null;
+	public static ITrackManager createTrackManager() throws Exception {
+		return new TrackManager(null);
 	}
 }

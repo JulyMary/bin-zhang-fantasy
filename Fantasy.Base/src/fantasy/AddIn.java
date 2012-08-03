@@ -109,7 +109,7 @@ public final class AddIn extends SettingsBase implements IXSerializable {
 			rs = new Object[types.length];
 			for (int i = 0; i < rs.length; i++)
 			{
-				rs[i] = types[i].newInstance();
+				rs[i] = Activator.createInstance(types[i]);
 			}
 		}
 		else

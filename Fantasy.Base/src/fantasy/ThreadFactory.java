@@ -1,10 +1,15 @@
 package fantasy;
 
+import java.util.concurrent.*;
+
 public final class ThreadFactory {
     private  ThreadFactory()
     {
     	
     }
+    
+    
+    private static ExecutorService _defaultPool = Executors.newCachedThreadPool();
     
     public static Thread create(Runnable runnable)
     {
@@ -21,6 +26,11 @@ public final class ThreadFactory {
     	rs.start();
     	
     	return rs;
+    }
+    
+    public static void queueUserWorkItem(Runnable runnable)
+    {
+    	_defaultPool.execute(runnable);
     }
     
     

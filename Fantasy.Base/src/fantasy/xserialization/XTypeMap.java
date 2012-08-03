@@ -107,7 +107,7 @@ public class XTypeMap
 
 			if(anno.converter() != Dummy.class)
 			{
-				this._valueMap.setConverter((ITypeConverter)anno.converter().newInstance());
+				this._valueMap.setConverter((ITypeConverter)Activator.createInstance(anno.converter()));
 			}
 			else
 
@@ -170,7 +170,7 @@ public class XTypeMap
 				{
 					if(anno.converter() != Dummy.class)
 					{
-						map.setConverter((ITypeConverter)anno.converter().newInstance());
+						map.setConverter((ITypeConverter)Activator.createInstance(anno.converter()));
 					}
 					else
 					{
@@ -212,7 +212,7 @@ public class XTypeMap
 			{
 				if(anno.converter() != Dummy.class)
 				{
-					map.setConverter((ITypeConverter)anno.converter().newInstance());
+					map.setConverter((ITypeConverter)Activator.createInstance(anno.converter()));
 				}
 				else
 				{
@@ -351,7 +351,8 @@ public class XTypeMap
 					java.util.ArrayList tempList = new java.util.ArrayList();
 					if (map.getArray().serializer() != Dummy.class)
 					{
-						IXCollectionSerializer ser = (IXCollectionSerializer)map.getArray().serializer().newInstance();
+						
+						IXCollectionSerializer ser = (IXCollectionSerializer)Activator.createInstance(map.getArray().serializer());
 						for (Object o : ser.Load(context, collectionElement))
 						{
 							tempList.add(o);
@@ -372,7 +373,7 @@ public class XTypeMap
 
 									if (!ia.type().isAnnotationPresent(XSerializable.class))
 									{
-										cvt = ia.converter() != null ? (ITypeConverter)ia.converter().newInstance() : XHelper.getDefault().CreateXConverter(ia.type());
+										cvt = ia.converter() != null ? (ITypeConverter)Activator.createInstance(ia.converter()) : XHelper.getDefault().CreateXConverter(ia.type());
 									}
 									Object value = this.ValueFromElement(context, itemElement, ia.type(), cvt);
 									tempList.add(value);
@@ -447,7 +448,7 @@ public class XTypeMap
 		else if (targetType.isAnnotationPresent(XSerializable.class))
 		{
 			XTypeMap map = XHelper.getDefault().GetTypeMap(targetType);
-			value = targetType.newInstance();
+			value = Activator.createInstance(targetType);
 			map.Load(context, element, value);
 		}
 		else
@@ -604,7 +605,7 @@ public class XTypeMap
 
 			if (arrMap.getArray().serializer() != Dummy.class)
 			{
-				IXCollectionSerializer serializer = (IXCollectionSerializer)arrMap.getArray().serializer().newInstance();
+				IXCollectionSerializer serializer = (IXCollectionSerializer)Activator.createInstance(arrMap.getArray().serializer());
 				serializer.Save(context, collectionElement, collection);
 			}
 			else
@@ -624,7 +625,7 @@ public class XTypeMap
 								ITypeConverter cvt = null;
 								if (!vt.isAnnotationPresent(XSerializable.class))
 								{
-									cvt = ia.converter() != Dummy.class ? (ITypeConverter)ia.converter().newInstance() : XHelper.getDefault().CreateXConverter(vt);
+									cvt = ia.converter() != Dummy.class ? (ITypeConverter)Activator.createInstance(ia.converter()) : XHelper.getDefault().CreateXConverter(vt);
 								}
 								this.SaveValueToElement(context, childElement, child, cvt);
 							}
