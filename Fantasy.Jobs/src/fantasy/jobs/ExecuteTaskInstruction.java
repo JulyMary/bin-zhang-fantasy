@@ -10,6 +10,8 @@ import fantasy.jobs.resources.*;
 import fantasy.collections.*;
 import fantasy.io.*;
 import fantasy.*;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.*;
 
 
@@ -69,7 +71,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 			if (!StringUtils2.isNullOrEmpty(node.getValue()))
 			{
 
-				if (node.getName() == "condition" )
+				if (node.getName().equals("condition"))
 				{
 						this.setCondition(node.getValue());
 				}
@@ -85,7 +87,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 		for (Element child : element.getChildren())
 		{
 
-			if (child.getName() == "output" && child.getNamespaceURI() == Consts.XNamespaceURI)
+			if (child.getName().equals("output") && child.getNamespaceURI().equals(Consts.XNamespaceURI))
 			{
 				TaskOutput output = (TaskOutput)ser.deserialize(child);
 				this.getTaskOutputs().add(output);
@@ -241,7 +243,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 						
 						
 						TaskMember anno = field.getAnnotation(TaskMember.class);
-						return (anno.name() == output.getTaskParameter()) 
+						return (anno.name().equals(output.getTaskParameter())) 
 								&& Arrays.asList(anno.flags()).indexOf(TaskMemberFlags.Output) >= 0;
 					}});
 				
@@ -487,7 +489,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 
 			@Override
 			public boolean evaluate(Element ele) {
-				return ele.getName().toLowerCase() == elementName.toLowerCase();
+				return StringUtils.equalsIgnoreCase(ele.getName(), elementName);
 			}});
 		
 		if(element != null)

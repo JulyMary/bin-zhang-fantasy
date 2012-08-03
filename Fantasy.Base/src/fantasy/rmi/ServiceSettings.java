@@ -1,7 +1,9 @@
 package fantasy.rmi;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
 
 import fantasy.*;
 import fantasy.collections.*;
@@ -26,24 +28,30 @@ public class ServiceSettings {
 		return this._baseAddress;
 	}
 	
-	public URL GetUrl(@SuppressWarnings("rawtypes") final Class type) throws Exception
+	public URI GetUrl(@SuppressWarnings("rawtypes") Class type) throws Exception
 	{
-		ServicePoint point = new Enumerable<ServicePoint>(this._services).single(new Predicate<ServicePoint>(){
+		
+		final String name = type.getName();
+		
+		ServicePoint point = new Enumerable<ServicePoint>(this.getServices()).single(new Predicate<ServicePoint>(){
 
 			@Override
 			public boolean evaluate(ServicePoint obj) throws Exception {
 				
-				return obj.getTypeName() == type.getName();
+				return StringUtils.equals(obj.getTypeName(), name);
 			}});
 		
 		
 		if(!StringUtils2.isNullOrEmpty(this._baseAddress))
 		{
-			return new URL(new URL(this._baseAddress), point.getAddress());
+			URI root = new URI(this._baseAddress);
+			return root.resolve( point.getAddress());
+			
+		
 		}
 		else
 		{
-			return new URL(point.getAddress());
+			return new URI(point.getAddress());
 		}
 		
 		

@@ -373,28 +373,30 @@ public class ParseNode
 			@SuppressWarnings("unchecked")
 			int cmp = ComparatorUtils.naturalComparator().compare(rs, val);
 
-			if ((String)this.GetValue(tree, TokenType.COMPARER, i - 1) ==">=" )
+			String v = (String)this.GetValue(tree, TokenType.COMPARER, i - 1);
+			
+			if (v.equals(">=") )
 			{
 					rs = cmp >= 0;
 			}
 
-			else if ((String)this.GetValue(tree, TokenType.COMPARER, i - 1) == (">"))
+			else if (v.equals(">"))
 			{
 					rs = cmp > 0;
 			}
-			else if ((String)this.GetValue(tree, TokenType.COMPARER, i - 1) ==("<="))
+			else if (v.equals("<="))
 			{
 					rs = cmp <= 0;
 			}
-			else if ((String)this.GetValue(tree, TokenType.COMPARER, i - 1)==("<"))
+			else if (v.equals("<"))
 			{
 					rs = cmp < 0;
 			}
-			else if ((String)this.GetValue(tree, TokenType.COMPARER, i - 1)==("=="))
+			else if (v.equals("=="))
 			{
 					rs = cmp == 0;
 			}
-			else if ((String)this.GetValue(tree, TokenType.COMPARER, i - 1)==("!="))
+			else if (v.equals("!="))
 			{
 					rs = cmp != 0;
 			}
@@ -454,22 +456,22 @@ public class ParseNode
 				{
 
 					String newType = EvalType(o);
-					int op = (String)this.GetValue(tree, TokenType.PLUSMINUS, i - 1) == ("+") ? 1 : -1;
+					int op = ((String)this.GetValue(tree, TokenType.PLUSMINUS, i - 1)).equals("+") ? 1 : -1;
 
-					if (oldType == "int" && newType =="int" )
+					if (oldType.equals("int") && newType.equals("int") )
 					{
 						rs = ((Integer)rs).intValue() + op * ((Integer)o).intValue();
 					}
-					else if (oldType == "int"  && newType == "dec")
+					else if (oldType.equals("int")  && newType.equals("dec"))
 					{
 						rs = (double)rs + op * (double)o;
 						oldType = "dec";
 					}
-					else if (oldType == "dec" && (newType =="dec" || newType =="int"))
+					else if (oldType.equals("dec") && (newType.equals("dec") || newType.equals("int")))
 					{
 						rs = (double)rs + op * (double)o;
 					}
-					else if (oldType == "str" && newType =="str")
+					else if (oldType.equals("str") && newType.equals("str"))
 					{
 						if (op == 1)
 						{
@@ -591,7 +593,7 @@ public class ParseNode
 	protected Object EvalNegetiveExpr(ParseTree tree, Object... paramlist) throws Exception
 	{
 		Object rs = this.GetValue(tree, TokenType.Atom, 0);
-		if ((String)this.GetValue(tree, TokenType.NEGETIVE, 0) == ("-"))
+		if (((String)this.GetValue(tree, TokenType.NEGETIVE, 0)).equals("-"))
 		{
 			String type = this.EvalType(rs);
 

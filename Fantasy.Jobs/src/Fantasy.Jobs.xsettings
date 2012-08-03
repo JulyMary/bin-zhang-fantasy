@@ -13,9 +13,20 @@
                 <service type="fantasy.jobs.management.StandaloneJobDispatcherService"/>											
                 <service type="fantasy.jobs.management.StartupFolderWatcher"/>
                 <service type="fantasy.jobs.management.JobService"/>
-			</services>	
+			</services>
+			<startupCommands>
+				<command type="fantasy.tracking.StartTrackingServiceCommand"/>		
+			</startupCommands>	
 		</jobService>
 	</addIn>
+	<rmi>
+		<services baseAddress="rmi://localhost:9000/">
+		    <service type="fantasy.tracking.TrackManagerService" address="ITrackManagerService" />
+		</services>
+		<client baseAddress="rmi://localhost:9000/">
+				<endpoint type="fantasy.tracking.ITrackManagerService" address="ITrackManagerService"/> 
+		</client>
+	</rmi>
 	<JobManagerSettings xmlns="urn:schemas-fantasy-com:jobservice">
 		<StartupFolders>.\Startup</StartupFolders>
 	</JobManagerSettings>

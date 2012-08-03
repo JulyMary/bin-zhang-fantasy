@@ -38,7 +38,7 @@ public class JobManagerSettingsReaderService extends AbstractService implements 
 
 			@Override
 			public boolean evaluate(Method method) throws Exception {
-				return method.getName() == "get" + name;
+				return method.getName().equals("get" + name);
 			}});
 		
 		
@@ -53,7 +53,7 @@ public class JobManagerSettingsReaderService extends AbstractService implements 
 
 				@Override
 				public boolean evaluate(Field field) throws Exception {
-					return field.getName() == name;
+					return field.getName().equals(name);
 				}});
 			if(field != null)
 			{

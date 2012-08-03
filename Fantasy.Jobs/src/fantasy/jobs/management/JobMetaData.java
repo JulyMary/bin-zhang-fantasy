@@ -205,7 +205,7 @@ public class JobMetaData implements Serializable
 
 			@Override
 			public boolean evaluate(Element obj) throws Exception {
-				return obj.getName() == "properties";
+				return obj.getName().equals("properties");
 			}}))
 		{
 			for(Element prop : group.getChildren())
