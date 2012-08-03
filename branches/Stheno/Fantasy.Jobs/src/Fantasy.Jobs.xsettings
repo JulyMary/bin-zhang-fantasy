@@ -7,6 +7,7 @@
                 <service type="fantasy.jobs.management.JobManagerSettingsReaderService"/>
                 <service type="fantasy.servicemodel.LogService" />
                 <service type="fantasy.jobs.management.LogFileService"/>
+                <service type="fantasy.servicemodel.LogConsoleService"/>
                 <service type="fantasy.jobs.management.JobTemplatesService"/>
                 <service type="fantasy.jobs.management.DerbyJobQueueService"/>
                 <service type="fantasy.jobs.management.InProcessJobController"/>
@@ -15,9 +16,40 @@
                 <service type="fantasy.jobs.management.JobService"/>
 			</services>
 			<startupCommands>
-				<command type="fantasy.tracking.StartTrackingServiceCommand"/>		
-			</startupCommands>	
+				<command type="fantasy.tracking.StartTrackingServiceCommand"/>	
+                <command type="fantasy.jobs.management.StartDispatchingCommand" />	
+			</startupCommands>
+			<startupFilters>
+				<filter type="fantasy.jobs.management.JobStartupProcessCountFilter"/>	
+                <filter type="fantasy.jobs.management.JobStartupStateFilter"/>
+                <filter type="fantasy.jobs.management.JobStartupPriorityFilter"/>	
+               
+			</startupFilters>	
 		</jobService>
+		<jobEngine>
+			<engine.services>
+				<service type="fantasy.servicemodel.LogService" />
+				<service type="fantasy.servicemodel.LogConsoleService"/>
+				<service type="fantasy.jobs.JobLogFileService"/>
+				<service type="fantasy.jobs.JobStatusStorageService"/>	
+                <service type="fantasy.jobs.TrackProviderService"/>	
+                <service type="fantasy.jobs.TrackProgressService"/>
+                <service type="fantasy.jobs.TrackStatusService"/>
+			</engine.services>
+			<job.services>
+				<service type="fantasy.jobs.ConditionService"/>
+                <service type="fantasy.jobs.StringParseService"/>
+                <service type="fantasy.jobs.ItemParseService"/>	
+			</job.services>
+			 <tagValueProviders>
+                <provider type="fantasy.jobs.ReservedPropertiesTagProvider" />
+                <provider type="fantasy.jobs.TaskItemScalarReader" />
+                <provider type="fantasy.jobs.TaskItemAggregateReader" />
+                <provider type="fantasy.jobs.JobRuntimeStateReader"/>
+                <provider type="fantasy.jobs.JobPropertyReader"/>
+                <provider type="fantasy.jobs.EnvironmentVariablesReader"/>
+            </tagValueProviders>	
+		</jobEngine>
 	</addIn>
 	<rmi>
 		<services baseAddress="rmi://localhost:9000/">
@@ -29,5 +61,6 @@
 	</rmi>
 	<JobManagerSettings xmlns="urn:schemas-fantasy-com:jobservice">
 		<StartupFolders>.\Startup</StartupFolders>
+		<MaxDegreeOfParallelism>1</MaxDegreeOfParallelism>
 	</JobManagerSettings>
 </settings>

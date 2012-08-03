@@ -62,9 +62,9 @@ public class StateBagItem implements IXSerializable
 
 		if (getValue() != null)
 		{
-			Namespace ns = Namespace.getNamespace(Consts.XNamespaceURI);
+			Namespace ns = Namespace.getNamespace("job", Consts.XNamespaceURI);
 			java.lang.Class t = getValue().getClass();
-			element.setAttribute(ns + "type", t.getName(), ns);
+			element.setAttribute("type", t.getName(), ns);
 
 			if (t.isAnnotationPresent(XSerializable.class))
 			{

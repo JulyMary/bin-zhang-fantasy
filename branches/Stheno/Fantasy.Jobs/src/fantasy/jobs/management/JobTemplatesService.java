@@ -79,7 +79,11 @@ public class JobTemplatesService extends AbstractService implements IJobTemplate
 		{
 
 
-			Element element =  JDomUtils.loadElement(fi.getAbsolutePath());
+			
+			String text = fantasy.io.File.readAllText(fi.getAbsolutePath(), "UTF-8");
+			template.setContent(text);
+			
+			Element element =  JDomUtils.parseElement(text);
 
 			
 			template.setName(element.getAttributeValue("name"));

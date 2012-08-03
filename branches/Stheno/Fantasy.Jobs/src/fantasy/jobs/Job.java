@@ -779,7 +779,7 @@ public class Job  implements IJob, IObjectWithSite
 	public final Element SaveStatus() throws Exception
 	{
 		
-		Namespace ns = Namespace.getNamespace(Consts.XNamespaceURI, "j");
+		Namespace ns = Namespace.getNamespace("j", Consts.XNamespaceURI);
 		
 		
 		XSerializer ser = new XSerializer(Job.class);

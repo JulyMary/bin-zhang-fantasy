@@ -116,11 +116,12 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					}});
 
 			}
-			exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+			
 		}
 		finally
 		{
 			exec.shutdown();
+			exec.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
 		}
 
 
@@ -261,6 +262,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					
 					e.printStackTrace();
 				}
+				
 			}
 		}};
 		

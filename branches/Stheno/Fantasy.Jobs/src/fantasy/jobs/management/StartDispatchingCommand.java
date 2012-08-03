@@ -1,7 +1,5 @@
 ﻿package fantasy.jobs.management;
 
-import java.util.concurrent.Executors;
-
 import fantasy.*;
 import fantasy.servicemodel.*;
 
@@ -25,7 +23,7 @@ public class StartDispatchingCommand implements ICommand, IObjectWithSite
 		if (disp != null)
 		{
 			
-			Executors.callable(new Runnable(){
+			ThreadFactory.queueUserWorkItem(new Runnable(){
 
 				@Override
 				public void run() {
