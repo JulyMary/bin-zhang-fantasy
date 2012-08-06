@@ -113,6 +113,15 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		synchronized (_syncRoot)
 		{
 			this._entities.addToUnterminates(job);
+			
+			int pos =  CollectionUtils.binarySearchBy(this._unterminates, job.getId(), new Selector<JobMetaData, UUID>(){
+
+				@Override
+				public UUID select(JobMetaData item) {
+					return item.getId();
+				}});
+			this._unterminates.add(~pos, job);
+			
 		}
 		
 		this.onAdded(job);

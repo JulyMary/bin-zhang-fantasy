@@ -54,7 +54,7 @@ public final class Encryption
 	public static String Encrypt(String plainText)
 	{
 		return plainText;
-/*		if (DotNetToJavaStringHelper.isNullOrEmpty(plainText))
+/*		if (StringUtils2.isNullOrEmpty(plainText))
 		{
 			return plainText;
 		}
@@ -168,7 +168,7 @@ public final class Encryption
 	{
 		return cipherText;
 
-		/*if (DotNetToJavaStringHelper.isNullOrEmpty(cipherText))
+		/*if (StringUtils2.isNullOrEmpty(cipherText))
 		{
 			return cipherText;
 		}

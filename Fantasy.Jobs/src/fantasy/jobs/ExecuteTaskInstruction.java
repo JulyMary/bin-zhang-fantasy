@@ -197,12 +197,7 @@ public class ExecuteTaskInstruction extends AbstractInstruction implements ICond
 			this.SetInputParams(task);
 			try
 			{
-				boolean success = task.Execute();
-
-				if (!success)
-				{
-					throw new TaskFailedException(String.format(Resources.getTaskFailedText(), this.getTaskName()));
-				}
+				task.Execute();
 			}
 			finally
 			{

@@ -14,5 +14,5 @@ public @interface TaskMember
 	String name();
 	TaskMemberFlags[] flags() default TaskMemberFlags.Input;
 	boolean parseInline() default true;
-	String description();
+	String description() default "";
 }

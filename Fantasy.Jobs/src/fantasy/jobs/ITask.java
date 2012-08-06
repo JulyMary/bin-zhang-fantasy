@@ -4,5 +4,5 @@ import fantasy.*;
 
 public interface ITask extends IObjectWithSite
 {
-	boolean Execute();
+	void Execute() throws Exception;
 }

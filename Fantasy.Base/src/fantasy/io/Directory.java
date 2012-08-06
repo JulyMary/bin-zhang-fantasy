@@ -61,6 +61,19 @@ public final class Directory {
 		return rs;
 		
 	}
+
+
+	public static void delete(String path, boolean recursive) throws Exception {
+		
+		if(recursive)
+		{
+			FileUtils.deleteDirectory(new java.io.File(path));
+		}
+		else
+		{
+			new java.io.File(path).delete();
+		}
+	}
 	
 	
 	
