@@ -24,8 +24,10 @@ public class XArrayConverter implements ITypeConverter
 			StringBuilder rs = new StringBuilder();
 
 			ITypeConverter ec = XHelper.getDefault().CreateXConverter(et);
-			for (Object element : (Iterable)value)
+			for (int i = 0; i < Array.getLength(value); i ++)
 			{
+				Object element = Array.get(value, i);
+				
 				if (rs.length() > 0)
 				{
 					rs.append(' ');

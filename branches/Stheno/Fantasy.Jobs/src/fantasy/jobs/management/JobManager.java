@@ -187,7 +187,7 @@ public class JobManager extends UnicastRemoteObject implements IJobManager
 					{
 						if (o.getClass().IsArray)
 						{
-							w.Write(DotNetToJavaStringHelper.join("", (Iterable)o));
+							w.Write(StringUtils2.join("", (Iterable)o));
 
 						}
 						else

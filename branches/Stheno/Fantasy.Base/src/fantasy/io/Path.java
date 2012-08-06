@@ -345,6 +345,11 @@ public final class Path
 		return rs;
 	}
 
+	public static String escapeFileName(String source, String replacement) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

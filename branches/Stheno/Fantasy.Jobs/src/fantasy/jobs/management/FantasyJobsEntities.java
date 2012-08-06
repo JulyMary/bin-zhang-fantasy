@@ -114,11 +114,11 @@ class FantasyJobsEntities implements IDisposable
 	private JobMetaData readMetadata(ResultSet record) throws Exception {
 		JobMetaData rs = new JobMetaData();
 		
-          rs.setId(UUID.nameUUIDFromBytes(record.getBytes("ID")));
-          byte[] parentId = record.getBytes("PARENTID");
+          rs.setId(UUID.fromString(record.getString("ID")));
+          String parentId = record.getString("PARENTID");
           if(parentId != null)
           {
-        	  rs.setParentId(UUID.nameUUIDFromBytes(parentId));
+        	  rs.setParentId(UUID.fromString(parentId));
           }
           rs.setTemplate(record.getString("TEMPLATE"));
           rs.setName(record.getString("Name"));
@@ -161,8 +161,8 @@ class FantasyJobsEntities implements IDisposable
 	    try
 	    {
 	    	stmt = cnnt.prepareStatement(sql);
-	    	stmt.setBytes(1,UUIDUtils.getBytes(job.getId()));
-	    	stmt.setBytes(2,UUIDUtils.getBytes(job.getParentId()));
+	    	stmt.setString(1,job.getId().toString());
+	    	stmt.setString(2,job.getParentId() != null ? job.getParentId().toString() : null);
 	    	stmt.setString(3, job.getTemplate());
 	    	stmt.setString(4,  job.getName());
 	    	stmt.setInt(5, job.getState());
@@ -198,7 +198,7 @@ class FantasyJobsEntities implements IDisposable
 	    {
 	    	stmt = cnnt.prepareStatement(sql);
 	    	stmt.setInt(1, job.getState());
-	    	stmt.setBytes(2,UUIDUtils.getBytes(job.getId()));
+	    	stmt.setString(2,job.getId().toString());
 	    	stmt.execute();
 	    }
 	    finally
@@ -223,7 +223,7 @@ class FantasyJobsEntities implements IDisposable
 	    	stmt = cnnt.prepareStatement(sql);
 	    	stmt.setInt(1, job.getState());
 	    	stmt.setTimestamp(2, new Timestamp(job.getStartTime().getTime()));
-	    	stmt.setBytes(3,UUIDUtils.getBytes(job.getId()));
+	    	stmt.setString(3,job.getId().toString());
 	    	stmt.execute();
 	    }
 	    finally
@@ -241,10 +241,10 @@ class FantasyJobsEntities implements IDisposable
 	public final void moveToTerminates(JobMetaData job) throws Exception
 	{
 		
-		String dSql = "DELETE FROM APP.FTS_JOB_JOBS where ID = X'%1$s'"; 
+		String dSql = "DELETE FROM APP.FTS_JOB_JOBS where ID = ?"; 
 		String iSql = "INSERT INTO APP.FTS_JOB_ARCHIVEDJOBS (ID, PARENTID, TEMPLATE, NAME, STATE, CREATIONTIME, APPLICATION, USER_, STARTINFO, TAG, STARTTIME, ENDTIME, PRIORITY)" +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ? ,? ,?, ?, ?, ?)";
-		Statement dStatement = null;
+		PreparedStatement dStatement = null;
 		PreparedStatement iStatement = null;
 		
 	    Connection cnnt = this.getConnection();
@@ -252,10 +252,11 @@ class FantasyJobsEntities implements IDisposable
 	    {
 	    	cnnt.setAutoCommit(false);
 	    	cnnt.createStatement();
-	    	dStatement = cnnt.createStatement();
+	    	dStatement = cnnt.prepareStatement(dSql);
 	    	try
 	    	{
-	    	dStatement.execute(String.format(dSql, UUIDUtils.toString(job.getId(), "n")));
+	    		dStatement.setString(1, job.getId().toString());
+	    	    dStatement.execute();
 	    	}
 	    	finally
 	    	{
@@ -263,8 +264,8 @@ class FantasyJobsEntities implements IDisposable
 	    	}
 	    	iStatement = cnnt.prepareStatement(iSql);
 	    	
-	    	iStatement.setBytes(1,UUIDUtils.getBytes(job.getId()));
-	    	iStatement.setBytes(2,UUIDUtils.getBytes(job.getParentId()));
+	    	iStatement.setString(1,job.getId().toString());
+	    	iStatement.setString(2,job.getParentId() != null ? job.getParentId().toString() : null);
 	    	iStatement.setString(3, job.getTemplate());
 	    	iStatement.setString(4,  job.getName());
 	    	iStatement.setInt(5, job.getState());

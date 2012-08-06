@@ -53,6 +53,26 @@ public class StringUtils2 {
 
 		return result;
 	}
+	
+	public static String join(String separator, Iterable<?> items)
+	{
+		StringBuilder rs = new StringBuilder();
+		for(Object o : items)
+		{
+			if(o != null)
+			{
+				String s = o.toString();
+				if(rs.length() > 0)
+				{
+					rs.append(separator);
+				}
+				rs.append(s);
+			}
+		}
+		return rs.toString();
+	}
+	
+	
 
 	//------------------------------------------------------------------------------------
 	//	This method replaces the .NET static string method 'TrimEnd'.

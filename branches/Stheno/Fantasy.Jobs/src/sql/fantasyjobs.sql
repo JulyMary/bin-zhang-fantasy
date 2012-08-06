@@ -1,8 +1,8 @@
-drop table  CV_JOB_JOBS;
+drop table  FTS_JOB_JOBS;
 
 CREATE TABLE FTS_JOB_JOBS(
-	Id CHAR(16) FOR BIT DATA NOT NULL,
-	ParentId  CHAR(16) FOR BIT DATA,
+	Id CHAR(36) NOT NULL,
+	ParentId  CHAR(36),
 	Template varchar(100) NOT NULL,
 	Name varchar (100) NOT NULL,
 	State integer NOT NULL,
@@ -21,11 +21,11 @@ CREATE TABLE FTS_JOB_JOBS(
 );
 
 
-drop table  CV_JOB_ARCHIVEDJOBS;
+drop table  FTS_JOB_ARCHIVEDJOBS;
 
 CREATE TABLE FTS_JOB_ARCHIVEDJOBS(
-	Id CHAR(16) FOR BIT DATA NOT NULL,
-	ParentId  CHAR(16) FOR BIT DATA,
+	Id CHAR(36) NOT NULL,
+	ParentId  CHAR(36),
 	Template varchar(100) NOT NULL,
 	Name varchar (100) NOT NULL,
 	State integer NOT NULL,

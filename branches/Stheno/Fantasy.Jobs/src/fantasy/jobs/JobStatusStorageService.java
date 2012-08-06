@@ -35,11 +35,8 @@ public class JobStatusStorageService extends AbstractService implements IJobStat
 			Files.copy(path, Paths.get(this.GetFileName() + ".bak"), StandardCopyOption.REPLACE_EXISTING);
 		}
 
-		OutputStream output = Files.newOutputStream(path, StandardOpenOption.APPEND, StandardOpenOption.CREATE);
+		OutputStream output = Files.newOutputStream(path, StandardOpenOption.CREATE);
 		
-		
-		
-
 		try
 		{
 			IOUtils.copy(input, output);
