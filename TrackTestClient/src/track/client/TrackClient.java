@@ -3,9 +3,6 @@ package track.client;
 import java.io.*;
 import java.util.EventObject;
 import java.util.UUID;
-import java.util.concurrent.Semaphore;
-
-
 import fantasy.tracking.*;
 
 

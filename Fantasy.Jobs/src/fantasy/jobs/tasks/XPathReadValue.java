@@ -1,84 +1,61 @@
 ﻿package fantasy.jobs.tasks;
 
+import org.jdom2.*;
+import org.jdom2.filter.*;
+import org.jdom2.xpath.*;
+
+
 import fantasy.io.*;
-import fantasy.servicemodel.*;
 import fantasy.*;
 import fantasy.jobs.*;
 import fantasy.jobs.Consts;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Task("xpathReadValue", Consts.XNamespaceURI, Description="Using XPath to read value from xml file")]
+@Task(name = "xpathReadValue", namespaceUri = Consts.XNamespaceURI, description="Using XPath to read value from xml file")
 public class XPathReadValue extends ObjectWithSite implements ITask
 {
-	public final boolean Execute()
+	public final void Execute() throws Exception
 	{
 		java.util.ArrayList<String> values = new java.util.ArrayList<String>();
-		if (getInclude() != null && getInclude().length > 0)
+		if (this.Include != null && this.Include.length > 0)
 		{
+			IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
+			INamespaceManager mngr = this.getSite().getRequiredService(INamespaceManager.class);
+			XPathExpression<?> expression = XPathFactory.instance().compile(this.XPath, Filters.fpassthrough(), null, mngr.getNamespaces());
 
-			for (TaskItem item : getInclude())
+			for (TaskItem item : this.Include)
 			{
-				String file = item.getItem("fullname");
-				XDocument doc = LongPathXNode.LoadXDocument(file);
+				String file = Path.combine(engine.getJobDirectory(), item.getName());
+				Document doc = JDomUtils.loadDocument(file);
 
-
-
-
-				XmlNamespaceManager mngr = this.getSite().<XmlNamespaceManager>GetRequiredService();
-				Iterable targets = (Iterable)doc.XPathEvaluate(getXPath(), mngr);
+				Iterable<?> targets = expression.evaluate(doc);
 
 				for (Object target : targets)
 				{
-					if (target instanceof XElement)
+					if (target instanceof Element)
 					{
-						values.add((String)(XElement)target);
+						values.add(((Element)target).getTextTrim());
 					}
-					else if (target instanceof XAttribute)
+					else if (target instanceof Attribute)
 					{
-						values.add((String)(XAttribute)target);
+						values.add(((Attribute)target).getValue());
 					}
 				}
 
 			}
 		}
-		this.setValue(values.toArray(new String[]{}));
+		this.Value = values.toArray(new String[]{});
 
-		return true;
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("include", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The list of items from those to retrive values")]
-	private TaskItem[] privateInclude;
-	public final TaskItem[] getInclude()
-	{
-		return privateInclude;
-	}
-	public final void setInclude(TaskItem[] value)
-	{
-		privateInclude = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("xpath", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The XPath expression to read value.")]
-	private String privateXPath;
-	public final String getXPath()
-	{
-		return privateXPath;
-	}
-	public final void setXPath(String value)
-	{
-		privateXPath = value;
-	}
+	@TaskMember(name = "include", flags = {TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The list of items from those to retrive values")
+	public TaskItem[] Include;
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("value", Flags = TaskMemberFlags.Output, Description="A list of string contains the value read form include items using specified XPath.")]
-	private String[] privateValue;
-	public final String[] getValue()
-	{
-		return privateValue;
-	}
-	public final void setValue(String[] value)
-	{
-		privateValue = value;
-	}
+	@TaskMember(name = "xpath", flags = {TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The XPath expression to read value.")
+	public String XPath;
+	
+
+    @TaskMember(name = "value", flags = TaskMemberFlags.Output, description="A list of string contains the value read form include items using specified XPath.")
+	private String[] Value;
+	
 }

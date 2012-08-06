@@ -1,130 +1,101 @@
 ﻿package fantasy.jobs.tasks;
 
+import java.util.*;
+
+import org.jdom2.*;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.*;
+
+
 import fantasy.io.*;
-import fantasy.servicemodel.*;
 import fantasy.*;
 import fantasy.jobs.*;
 import fantasy.jobs.Consts;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Task("xpathWriteElement", Consts.XNamespaceURI, Description="Using XPath to write xml element to xml file")]
+@Task(name = "xpathWriteElement", namespaceUri= Consts.XNamespaceURI, description="Using XPath to write xml element to xml file")
 public class XPathWriteElementTask extends XmlTaskBase
 {
-	public XPathWriteElementTask()
-	{
-		this.setMode(XPathWriteElementMode.Add);
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITask Members
+	
 
 	@Override
-	public boolean Execute()
+	public void Execute() throws Exception
 	{
-		if (getInclude() != null && getInclude().length > 0)
+		if (this.Include != null && this.Include.length > 0)
 		{
 
-			XmlNamespaceManager mngr = this.getSite().<XmlNamespaceManager>GetRequiredService();
-			for (TaskItem item : getInclude())
+			INamespaceManager mngr = this.getSite().getRequiredService(INamespaceManager.class);
+			IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
+			
+			XPathExpression<Element> expression = XPathFactory.instance().compile(this.XPath, Filters.element(), null, mngr.getNamespaces());
+
+			for (TaskItem item : this.Include)
 			{
-				String file = item.getItem("fullname");
-				XDocument doc = LongPathXNode.LoadXDocument(file);
+				String file = Path.combine(engine.getJobDirectory(), item.getName());
+				Document doc = JDomUtils.loadDocument(file);
 
 
-				XElement[] targets = doc.XPathSelectElements(getXPath(), mngr).toArray();
+				Iterable<Element> targets = expression.evaluate(doc);
 
-				for (XElement target : targets)
+				for (Element target : targets)
 				{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-					XElement[] newElements = (from e in this.getContent().Elements() select new XElement(e)).toArray();
+					List<Content> newElements = this.Content.cloneContent();
 
-					switch (this.getMode())
+					switch (this.Mode)
 					{
 						case AddAfterSelf:
-							target.AddAfterSelf(newElements);
+						{
+							int index = target.getParentElement().indexOf(target);
+							target.getParentElement().addContent(index + 1, newElements);
+						}
 							break;
 						case AddBeforeSelf:
-							target.AddBeforeSelf(newElements);
+						{
+							int index = target.getParentElement().indexOf(target);
+							target.getParentElement().addContent(index, newElements);
+						}
 							break;
 						case AddFirst:
-							target.AddFirst(newElements);
+							target.addContent(0, newElements);
 							break;
 						case Add:
-							target.Add(newElements);
+							target.addContent(newElements);
 							break;
 						case ReplaceWith:
-							target.ReplaceWith(newElements);
+							{
+								int index = target.getParentElement().indexOf(target);
+								Element parent = target.getParentElement();
+								target.detach();
+								parent.addContent(index, newElements);
+							}
 							break;
 						case ReplaceAll:
-							target.ReplaceAll(newElements);
+							target.setContent(newElements);
 							break;
 					}
 				}
 
-				XmlWriter writer = XmlWriter.Create(file, this.getXmlWriterSettings());
-				try
-				{
-					doc.WriteTo(writer);
-				}
-				finally
-				{
-					writer.Close();
-				}
+				JDomUtils.saveDocument(doc, file, this.getFormat());
 
 			}
 		}
-		return true;
+		
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("include", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The list of items to write.")]
-	private TaskItem[] privateInclude;
-	public final TaskItem[] getInclude()
-	{
-		return privateInclude;
-	}
-	public final void setInclude(TaskItem[] value)
-	{
-		privateInclude = value;
-	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("xpath", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="A XPath expression indicating the target elements to write.")]
-	private String privateXPath;
-	public final String getXPath()
-	{
-		return privateXPath;
-	}
-	public final void setXPath(String value)
-	{
-		privateXPath = value;
-	}
+	@TaskMember(name = "include", flags = { TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The list of items to write to.")
+	public TaskItem[] Include;
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("content", Flags = TaskMemberFlags.Input | TaskMemberFlags.Inline | TaskMemberFlags.Required, ParseInline=true, Description="The XML content to write.")]
-	private XElement privateContent;
-	public final XElement getContent()
-	{
-		return privateContent;
-	}
-	public final void setContent(XElement value)
-	{
-		privateContent = value;
-	}
+    @TaskMember(name = "content", flags = {TaskMemberFlags.Input, TaskMemberFlags.Inline, TaskMemberFlags.Required}, description="The XML content to write to.")
+	public Element Content;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("mode", Description="A value indicating how the conent write to target elements. Default is Add for adding new a child element in the end of target elements.")]
-	private XPathWriteElementMode privateMode = XPathWriteElementMode.forValue(0);
-	private XPathWriteElementMode getMode()
-	{
-		return privateMode;
-	}
-	private void setMode(XPathWriteElementMode value)
-	{
-		privateMode = value;
-	}
+    @TaskMember(name = "xpath", flags = {TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The XPath expression indicating the target elements in incude XML files.")
+	public String XPath;
+
+
+    @TaskMember(name = "mode", description="A value indicating how the conent write to target elements. Default is Add for adding new a child element in the end of target elements.")
+	public XPathWriteElementMode Mode = XPathWriteElementMode.Add;
+	
 }

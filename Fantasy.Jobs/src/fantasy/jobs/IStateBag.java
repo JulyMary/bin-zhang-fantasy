@@ -2,7 +2,7 @@
 
 public interface IStateBag extends Iterable<StateBagItem>
 {
-Object getItem(String name);
+    Object getItem(String name);
 	void setItem(String name, Object value);
 
 	int getCount();

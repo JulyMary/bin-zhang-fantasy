@@ -37,6 +37,16 @@ public final class JDomUtils {
 
 		return rs;
 	}
+	
+	public static Document loadDocument(String path) throws Exception
+	{
+		SAXBuilder builder = new SAXBuilder();
+		java.io.File xmlFile = new java.io.File(path);
+		Document rs = (Document) builder.build(xmlFile);
+		
+
+		return rs;
+	}
 
 
 	public static Element parseElement(String xml) throws Exception
@@ -62,6 +72,24 @@ public final class JDomUtils {
 		{
 			stream.close();
 		}
+	}
+	
+	public static void saveDocument(Document document, String path, Format format) throws Exception
+	{
+		OutputStream stream = fantasy.io.File.Create(path);
+		try
+		{
+			new XMLOutputter(format).output(document, stream);
+		}
+		finally
+		{
+			stream.close();
+		}
+	}
+	
+	public static void saveDocument(Document document, String path) throws Exception
+	{
+		saveDocument(document, path, _defaultFormat);
 	}
 	
 	public static void saveElement(Element element, OutputStream stream , Format format) throws Exception
