@@ -1,19 +1,17 @@
 ﻿package fantasy.jobs.tasks;
 
 
-import fantasy.io.*;
-import fantasy.servicemodel.*;
-import fantasy.*;
+import org.jdom2.*;
+
 import fantasy.jobs.*;
 import fantasy.jobs.Consts;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Task("xpathSetElement", Consts.XNamespaceURI, Description="Using XPath to set xml element value to xml file")]
+@Task(name = "xpathSetElement", namespaceUri= Consts.XNamespaceURI, description="Using XPath to set xml element value to xml file")
 public class XPathSetElementTask extends XPathSetValueTaskBase
 {
 	@Override
-	protected void SetValue(XElement element, XmlNamespaceManager nsMgr)
+	protected void SetValue(Element element, INamespaceManager nsMgr)
 	{
-		element.setValue(this.getValue());
+		element.setText(this.Value);
 	}
 }

@@ -35,7 +35,7 @@ public abstract class XmlTaskBase extends ObjectWithSite implements ITask
 	}
 
 
-	public abstract void Execute();
+	public abstract void Execute() throws Exception;
 
 
 	@TaskMember(name="encoding", description="The configured output encoding.")

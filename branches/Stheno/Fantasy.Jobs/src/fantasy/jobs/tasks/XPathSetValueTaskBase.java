@@ -1,86 +1,63 @@
 ﻿package fantasy.jobs.tasks;
 
+import org.jdom2.*;
+import org.jdom2.filter.Filters;
+import org.jdom2.xpath.XPathExpression;
+import org.jdom2.xpath.XPathFactory;
+
 import fantasy.io.*;
-import fantasy.servicemodel.*;
 import fantasy.*;
 import fantasy.jobs.*;
-import fantasy.jobs.Consts;
+
+
 
 public abstract class XPathSetValueTaskBase extends XmlTaskBase
 {
 
-	protected abstract void SetValue(XElement element, XmlNamespaceManager nsMgr);
+	protected abstract void SetValue(Element element, INamespaceManager nsMgr) throws Exception;
 
 	@Override
-	public boolean Execute()
+	public void Execute() throws Exception
 	{
-		IStringParser parser = this.getSite().<IStringParser>GetRequiredService();
-		if (getInclude() != null && getInclude().length > 0)
+		
+		if (this.Include != null && this.Include.length > 0)
 		{
-			for (TaskItem item : getInclude())
+			
+			IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
+			INamespaceManager mngr = this.getSite().getRequiredService(INamespaceManager.class);
+			XPathExpression<Element> expression = XPathFactory.instance().compile(this.XPath, Filters.element(), null, mngr.getNamespaces());
+
+			
+			for (TaskItem item : this.Include)
 			{
 
 
-				String file = item.getItem("fullname");
-				XDocument doc = LongPathXNode.LoadXDocument(file);
-				XmlNamespaceManager mngr = this.getSite().<XmlNamespaceManager>GetRequiredService();
+				String file = Path.combine(engine.getJobDirectory(), item.getName());
+				Document doc = JDomUtils.loadDocument(file);
+				
+				Iterable<Element> targets = expression.evaluate(doc);
 
-				Iterable<XElement> targets = (Iterable<XElement>)doc.XPathSelectElements(getXPath(), mngr);
-
-				for (XElement target : targets)
+				for (Element target : targets)
 				{
 					SetValue(target, mngr);
 				}
 
-				FileStream fs = LongPathFile.Open(file, FileMode.Create, FileAccess.ReadWrite);
-				XmlWriter writer = XmlWriter.Create(fs, this.getFormat());
-				try
-				{
-					doc.WriteTo(writer);
-				}
-				finally
-				{
-					writer.Close();
-				}
+				JDomUtils.saveDocument(doc, file);
 			}
 		}
 
-		return true;
+		
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("include", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The list of items to set values")]
-	private TaskItem[] privateInclude;
-	public final TaskItem[] getInclude()
-	{
-		return privateInclude;
-	}
-	public final void setInclude(TaskItem[] value)
-	{
-		privateInclude = value;
-	}
+	@TaskMember(name = "include", flags = {TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The list of items to set values")
+	public TaskItem[] Include;
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("xpath", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The XPath expression indicating the target elements in incude XML files.")]
-	private String privateXPath;
-	public final String getXPath()
-	{
-		return privateXPath;
-	}
-	public final void setXPath(String value)
-	{
-		privateXPath = value;
-	}
+	@TaskMember(name = "xpath", flags = {TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The XPath expression indicating the target elements in incude XML files.")
+	public String XPath;
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("value", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The value to set to.")]
-	private String privateValue;
-	public final String getValue()
-	{
-		return privateValue;
-	}
-	public final void setValue(String value)
-	{
-		privateValue = value;
-	}
+    @TaskMember(name = "value", flags = {TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The value to set to.")
+	public String Value;
+	
 }

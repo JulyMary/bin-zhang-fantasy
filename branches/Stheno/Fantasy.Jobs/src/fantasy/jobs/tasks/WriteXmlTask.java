@@ -1,71 +1,50 @@
 ﻿package fantasy.jobs.tasks;
 
+import org.jdom2.*;
+
+import fantasy.collections.*;
 import fantasy.io.*;
-import fantasy.servicemodel.*;
 import fantasy.*;
 import fantasy.jobs.*;
 import fantasy.jobs.Consts;
+
+@Task(name="writeXml", namespaceUri=Consts.XNamespaceURI, description="Write xml to file")
 public class WriteXmlTask extends XmlTaskBase
 {
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("include", Flags = TaskMemberFlags.Input | TaskMemberFlags.Required, Description="The list of items to write to.")]
-	private TaskItem[] privateInclude;
-	public final TaskItem[] getInclude()
-	{
-		return privateInclude;
-	}
-	public final void setInclude(TaskItem[] value)
-	{
-		privateInclude = value;
-	}
+	@TaskMember(name = "include", flags = { TaskMemberFlags.Input, TaskMemberFlags.Required}, description="The list of items to write to.")
+	public TaskItem[] Include;
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[TaskMember("content", Flags = TaskMemberFlags.Input | TaskMemberFlags.Inline | TaskMemberFlags.Required, Description="The XML content to write to.")]
-	private XElement privateContent;
-	public final XElement getContent()
-	{
-		return privateContent;
-	}
-	public final void setContent(XElement value)
-	{
-		privateContent = value;
-	}
+    @TaskMember(name = "content", flags = {TaskMemberFlags.Input, TaskMemberFlags.Inline, TaskMemberFlags.Required}, description="The XML content to write to.")
+	public Element Content;
+	
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ITask Members
+
 
 	@Override
-	public boolean Execute()
+	public void Execute() throws Exception
 	{
-		if (this.getInclude() != null && this.getInclude().length > 0)
+		if (this.Include != null && this.Include.length > 0)
 		{
 
+			IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
 
-			XElement root = this.getContent().Elements().First();
+			Element root = new Enumerable<Element>(this.Content.getChildren()).first();
 
 
-			for (TaskItem item : this.getInclude())
+			for (TaskItem item : this.Include)
 			{
 
-				String path = item.getItem("fullname");
+				String path = Path.combine(engine.getJobDirectory(), item.getName());
 
-				XmlWriter writer = XmlWriter.Create(path, this.getFormat());
-				try
-				{
-					root.WriteTo(writer);
-				}
-				finally
-				{
-					writer.Close();
-				}
+				JDomUtils.saveElement(root, path, this.getFormat());
+
 			}
 		}
 
-		return true;
+		
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

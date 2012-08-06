@@ -52,10 +52,10 @@
 		</jobEngine>
 	</addIn>
 	<rmi>
-		<services baseAddress="rmi://localhost:9000/">
+		<services baseAddress="rmi://localhost:8999/">
 		    <service type="fantasy.tracking.TrackManagerService" address="ITrackManagerService" />
 		</services>
-		<client baseAddress="rmi://localhost:9000/">
+		<client baseAddress="rmi://localhost:8999/">
 				<endpoint type="fantasy.tracking.ITrackManagerService" address="ITrackManagerService"/> 
 		</client>
 	</rmi>
