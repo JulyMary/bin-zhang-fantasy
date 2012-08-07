@@ -52,7 +52,7 @@ public class ItemParseService extends AbstractService implements IItemParser
 			while (s < str.length())
 			{
 				Matcher m = reg.matcher(str.substring(s));
-				if (m.lookingAt())
+				if (m.find())
 				{
 					String itemNames = str.substring(s, m.start());
 					if (!StringUtils2.isNullOrEmpty(itemNames))

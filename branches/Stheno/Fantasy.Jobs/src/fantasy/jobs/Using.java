@@ -113,7 +113,7 @@ public class Using extends Sequence
 		while (s < text.length())
 		{
 			Matcher m = reg.matcher(text.substring(s));
-			if (m.lookingAt())
+			if (m.find())
 			{
 				rs.append(text.substring(s, m.start()));
 

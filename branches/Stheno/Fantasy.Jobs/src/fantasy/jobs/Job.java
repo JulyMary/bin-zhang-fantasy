@@ -2,6 +2,7 @@
 
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 import fantasy.*;
@@ -293,7 +294,7 @@ public class Job  implements IJob, IObjectWithSite
 		this.LoadAssembly(JavaLibraryUtils.getLibrary(this.getClass()));
 	}
 
-	private java.util.ArrayList<File> _loadedAssebmlies = new java.util.ArrayList<File>();
+	private java.util.TreeSet<String> _loadedAssebmlies = new java.util.TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
 	
 	private java.util.HashMap<String, java.lang.Class> _loadedTaskOrInstructionTypes = new java.util.HashMap<String, java.lang.Class>();
 
@@ -314,9 +315,10 @@ public class Job  implements IJob, IObjectWithSite
 
 	private boolean LoadAssembly(File assembly) throws Exception
 	{
-		if (_loadedAssebmlies.indexOf(assembly) < 0)
+		String path = Paths.get(assembly.getAbsolutePath()).normalize().toString();
+		if (!_loadedAssebmlies.contains(path))
 		{
-			this._loadedAssebmlies.add(assembly);
+			this._loadedAssebmlies.add(path);
 			this.LoadInstructionsAndTasks(assembly);
 			return true;
 
