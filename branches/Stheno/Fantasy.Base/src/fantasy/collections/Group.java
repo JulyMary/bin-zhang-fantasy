@@ -25,6 +25,15 @@ class Group<TKey, TElement> implements IGrouping<TKey, TElement>{
 	
 	
 	ArrayList<TElement> elements = new ArrayList<TElement>();
+	@Override
+	public int count() {
+		return elements.size();
+	}
+
+	@Override
+	public Enumerable<TElement> toEnumerable() {
+		return new Enumerable<TElement>(this.elements);
+	}
 
     
 }

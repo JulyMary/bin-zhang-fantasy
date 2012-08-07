@@ -49,9 +49,4 @@ public class TaskCountSetting
 		return ComparsionHelper.DeepEquals(this, obj);
 	}
 
-	@Override
-	public int hashCode()
-	{
-		return super.hashCode();
-	}
 }

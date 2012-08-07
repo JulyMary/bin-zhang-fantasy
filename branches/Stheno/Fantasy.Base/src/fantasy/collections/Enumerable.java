@@ -26,7 +26,7 @@ public  class Enumerable<T> implements Iterable<T> {
 		this._source = new ArrayIterable(source);
 	}
 	
-	private class ArrayIterable implements Iterable<T>
+	private class ArrayIterable implements Iterable<T>, ICountable
 	{
 		public ArrayIterable(T[] source)
 		{
@@ -40,6 +40,17 @@ public  class Enumerable<T> implements Iterable<T> {
 		}
 		
 		private T[] _source;
+		
+		public T[] getSource()
+		{
+			return _source;
+		}
+
+		@Override
+		public int count() {
+			
+			return _source.length;
+		}
 		
 	}
 	
@@ -648,11 +659,211 @@ public  class Enumerable<T> implements Iterable<T> {
 				return item;
 			}});
 	}
+	
+	public int count()
+	{
+		if(this._source instanceof Collection<?>)
+		{
+			return ((Collection<?>)this._source).size();
+		}
+		else if(this._source instanceof ICountable)
+		{
+			return ((ICountable)this._source).count();
+		}
+		else
+		{
+			int rs = 0;
+			Iterator<T> iterator = this.iterator();
+			while(iterator.hasNext())
+			{
+				iterator.next();
+				rs ++;
+			}
+			
+			return rs;
+		}
+	}
+	
+	public Enumerable<T> reverse()
+	{
+		if(this._source instanceof Enumerable<?>.ArrayIterable)
+		{
+			ArrayReverseIterable rs = new ArrayReverseIterable(((ArrayIterable)this._source).getSource());
+			return new Enumerable<T>(rs);
+		}
+		else if ((this._source instanceof List<?>) && (this._source instanceof RandomAccess))
+		{
+			return new Enumerable<T>( new ReverseIterable((List<T>)this._source));
+		}
+		else
+		{
+			ArrayList<T> rs = new ArrayList<T>();
+			for(T element : this._source)
+			{
+				rs.add(element);
+			}
+			return new Enumerable<T>(rs);
+		}
+	}
+	
+	
+	private class ArrayReverseIterable implements Iterable<T>
+	{
+		public ArrayReverseIterable(T[] source)
+		{
+			this._source = source;
+		}
+		
+		private T[] _source;
 
+		@Override
+		public Iterator<T> iterator() {
+			return new ArrayReverseIterator(this._source);
+		}
+	}
+	
+	
+	private class ArrayReverseIterator implements Iterator<T>
+	{
+		public ArrayReverseIterator(T[] source)
+		{
+			this._source = source;
+			this._position = this._source.length;
+		}
+		
+		private T[] _source;
 
+		@Override
+		public boolean hasNext() {
+			return _position >= 0;
+		}
 
+		private int _position;
+		
+		@Override
+		public T next() {
+			T rs = this._source[this._position];
+			this._position --;
+			return rs;
+		}
 
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+	}
+	
+	private class ReverseIterable implements Iterable<T>
+	{
+		public ReverseIterable(List<T> source)
+		{
+			this._source = source;
+		}
+		
+		private List<T> _source;
 
+		@Override
+		public Iterator<T> iterator() {
+			return new ReverseIterator(this._source);
+		}
+	}
+	
+	private class ReverseIterator implements Iterator<T>
+	{
+		public ReverseIterator(List<T> source)
+		{
+			this._source = source;
+			this._position = this._source.size()- 1;
+		}
+		
+		private List<T> _source;
+
+		@Override
+		public boolean hasNext() {
+			return _position >= 0;
+		}
+
+		private int _position;
+		
+		@Override
+		public T next() {
+			T rs = this._source.get(this._position);
+			this._position --;
+			return rs;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+	}
+	
+	public Enumerable<T> take(int count)
+	{
+		return new Enumerable<T>(new TakeIterable(this._source, count));
+	}
+	
+	private class TakeIterable implements Iterable<T>
+	{
+		public TakeIterable(Iterable<T> source, int take)
+		{
+			this._source = source;
+			this._take = take;
+		}
+		
+		private Iterable<T> _source;
+		int _take;
+		
+
+		@Override
+		public Iterator<T> iterator() {
+			return new TakeIterator(this._source, this._take);
+		}
+		
+	}
+	
+	private class TakeIterator implements Iterator<T>
+	{
+		
+		public TakeIterator(Iterable<T> source, int take)
+		{
+			this._source = source.iterator();
+			this._take = take;
+		}
+		
+		private Iterator<T> _source;
+		int _take;
+		int _position = 0;
+
+		@Override
+		public boolean hasNext() {
+			return _position < this._take && _source.hasNext();
+		}
+
+		@Override
+		public T next() {
+			if(this._position < this._take)
+			{
+				T rs = _source.next();
+				this._position ++;
+				return rs;
+			}
+			else
+			{
+				throw new NoSuchElementException();
+			
+			}
+			
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+	}
 
 }
 
