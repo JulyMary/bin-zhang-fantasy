@@ -4,6 +4,7 @@ import fantasy.*;
 
 public interface IResourceHandle extends IDisposable
 {
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<RevokeArgs> Revoke;
+	
+	void addListener(IResourceHandleListener listener);
+	void removeListener(IResourceHandleListener listener);
 }

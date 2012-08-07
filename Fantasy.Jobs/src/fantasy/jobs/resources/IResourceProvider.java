@@ -4,19 +4,17 @@ import fantasy.*;
 
 public interface IResourceProvider
 {
-	boolean CanHandle(String name);
+	boolean CanHandle(String name)  throws Exception;
 
-	void Initialize();
+	void Initialize()  throws Exception;
 
-	boolean IsAvailable(ResourceParameter parameter);
+	boolean IsAvailable(ResourceParameter parameter)  throws Exception;
 
-	boolean Request(ResourceParameter parameter, RefObject<Object> resource);
+	boolean Request(ResourceParameter parameter, RefObject<Object> resource)  throws Exception;
 
-	void Release(Object resource);
+	void Release(Object resource) throws Exception;
+	
+	void addListener(IResourceProviderListener listener);
+	void removeListener(IResourceProviderListener listener);
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler Available;
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	event EventHandler<ProviderRevokeArgs> Revoke;
 }

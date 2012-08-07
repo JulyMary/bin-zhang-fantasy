@@ -73,4 +73,6 @@ public final class UUIDUtils {
         long hi = 1L << (digits * 4);
         return Long.toHexString(hi | (val & (hi - 1))).substring(1);
     }
+	
+	public static final UUID Empty  = new UUID(0,0);
 }

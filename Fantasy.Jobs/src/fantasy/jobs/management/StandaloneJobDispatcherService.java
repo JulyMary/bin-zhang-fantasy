@@ -23,8 +23,6 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 	}
 	
 	
-	private UUID _resourceHandlerID = UUID.randomUUID();
-
 	@Override
 	public void initializeService() throws Exception
 	{
@@ -62,24 +60,13 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 		_resourceManager = this.getSite().getService(IResourceManager.class);
 		if (_resourceManager != null)
 		{
-            _resourceManager.RegisterHandler(new IResourceManagerHandler(){
-
+            _resourceManager.addListener(new IResourceManagerListener(){
 				@Override
-				public void Revoke(UUID id) {
-					
-				}
-
-				@Override
-				public void Available() {
+				public void available(EventObject e) {
 					ResourceAvailable();
 					
-				}
-
-				@Override
-				public UUID Id() {
-					return _resourceHandlerID;
 				}});
-			
+
 		}
 
 		this._controller = this.getSite().getRequiredService(IJobController.class);

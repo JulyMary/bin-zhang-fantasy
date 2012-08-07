@@ -56,7 +56,7 @@ public class JobMetaData implements Serializable
 			_Id = value;	
 		}
 	}
-	private UUID _Id = UUID.randomUUID();
+	private UUID _Id = UUIDUtils.Empty;
 
 	public final UUID getParentId()
 	{

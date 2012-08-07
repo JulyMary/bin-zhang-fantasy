@@ -724,22 +724,26 @@ public class Job  implements IJob, IObjectWithSite
 		_isNested = value;
 	}
 
-	 @SuppressWarnings("unused")
+	
 	private ResourceParameter[] CreateExecuteResourceParameters() throws Exception
 	{
 		java.util.ArrayList<ResourceParameter> rs = new java.util.ArrayList<ResourceParameter>();
 		if (! getIsNested())
 		{
+			HashMap<String, String> args = new HashMap<String, String>();
+			args.put("template", this._templateName);
 			
-			rs.add(new ResourceParameter(new Resource(){ String name = "RunJob"; String template = Job.this._templateName; }));
+			rs.add(new ResourceParameter("RunJob", args));
 		}
 		IStringParser parser = this.getEngine().getRequiredService(IStringParser.class);
 		final String waitAll = parser.Parse(this.GetProperty("WaitAll"));
 
 		if (!StringUtils2.isNullOrEmpty(waitAll))
 		{
-			
-			rs.add(new ResourceParameter(new Resource() {String name="WaitFor"; String jobs = waitAll; WaitForMode mode = WaitForMode.All;}));
+			HashMap<String, String> args = new HashMap<String, String>();
+			args.put("jobs", waitAll);
+			args.put("mode", WaitForMode.All.name());
+			rs.add(new ResourceParameter("WaitFor", args));
 		}
 
 		String waitAny = parser.Parse(this.GetProperty("WaitAny"));
@@ -747,7 +751,11 @@ public class Job  implements IJob, IObjectWithSite
 		if (!StringUtils2.isNullOrEmpty(waitAny))
 		{
 			
-			rs.add(new ResourceParameter(new Resource() {String name="WaitFor"; String jobs = waitAll; WaitForMode mode = WaitForMode.Any;}));
+			HashMap<String, String> args = new HashMap<String, String>();
+			args.put("jobs", waitAny);
+			args.put("mode", WaitForMode.Any.name());
+			rs.add(new ResourceParameter("WaitFor", args));
+			
 		}
 
 		return rs.toArray(new ResourceParameter[]{});

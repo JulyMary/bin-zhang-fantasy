@@ -1,6 +1,8 @@
 ﻿package fantasy.tracking;
 import java.util.*;
 import java.io.*;
+
+import fantasy.UUIDUtils;
 public class TrackMetaData implements Serializable
 {
 /**
@@ -9,7 +11,7 @@ public class TrackMetaData implements Serializable
 	private static final long serialVersionUID = -4832311918518984032L;
 	//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 	//[DataMember]
-	private UUID privateId = UUID.randomUUID();
+	private UUID privateId = UUIDUtils.Empty;
 	public final UUID getId()
 	{
 		return privateId;

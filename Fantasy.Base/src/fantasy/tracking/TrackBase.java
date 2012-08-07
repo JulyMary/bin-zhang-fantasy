@@ -4,6 +4,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import org.apache.commons.lang3.ObjectUtils;
+
+import fantasy.UUIDUtils;
 abstract class TrackBase extends UnicastRemoteObject
 {
 	/**
@@ -17,7 +19,7 @@ abstract class TrackBase extends UnicastRemoteObject
 
 	protected java.util.HashMap<String, Object> Data = new java.util.HashMap<String, Object>();
 
-	private UUID privateId = UUID.randomUUID();
+	private UUID privateId = UUIDUtils.Empty;
 	public UUID getId()
 	{
 		return privateId;
