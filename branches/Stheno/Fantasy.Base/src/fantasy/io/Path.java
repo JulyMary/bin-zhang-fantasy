@@ -3,6 +3,8 @@ package fantasy.io;
 import java.io.File;
 import java.nio.file.*;
 
+import org.apache.commons.io.FilenameUtils;
+
 public final class Path
 {
 	
@@ -93,21 +95,25 @@ public final class Path
 		{
 			throw new IllegalArgumentException("paths");
 		}
-		java.nio.file.Path rs = null;
-		for(String seg : paths)
+		
+		String rs = null;
+	
+		for(int i = paths.length - 1; i >= 0; i --)
 		{
 			if(rs == null)
 			{
-				rs = Paths.get(seg);
+				rs = paths[i];
 			}
 			else
 			{
-				rs = Paths.get(rs.toString(), seg);
+				rs = FilenameUtils.concat(paths[i], rs);
 			}
 		}
 		
 		
-		return rs.normalize().toString();
+		
+		
+	    return rs;
 		
 	
 		

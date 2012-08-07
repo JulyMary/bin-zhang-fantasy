@@ -20,7 +20,7 @@ public final class SystemUtils {
 		String pattern = "\\$\\{([A-Za-z0-9]+)\\}"; 
 		Pattern expr = Pattern.compile(pattern); 
 		Matcher matcher = expr.matcher(rs); 
-		while (matcher.lookingAt()) { 
+		while (matcher.find()) { 
 		    Object envValue = properties.get(matcher.group(1).toUpperCase()); 
 		    if (envValue == null) { 
 		        envValue = ""; 

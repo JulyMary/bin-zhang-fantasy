@@ -4,15 +4,18 @@ import java.util.*;
 
 public interface IResourceManager
 {
-	UUID Request(UUID jobId, ResourceParameter[] parameters);
+	UUID Request(UUID jobId, ResourceParameter[] parameters) throws Exception;
 
-	void Release(UUID id);
+	void Release(UUID id) throws Exception;
 
-	boolean IsAvailable(ResourceParameter[] parameters);
+	boolean IsAvailable(ResourceParameter[] parameters) throws Exception;
 
-	void RegisterHandler(IResourceManagerHandler handler);
+	void addConsumer(IResourceConsumer handler) throws Exception;
 
-	void UnregisterHandler(UUID id);
+	void removeConsumer(UUID id) throws Exception;
+	
+	void addListener(IResourceManagerListener listener);
+	void removeListener(IResourceManagerListener listener);
 
 
 

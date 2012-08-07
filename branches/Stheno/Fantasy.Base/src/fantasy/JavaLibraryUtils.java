@@ -74,7 +74,7 @@ public final class JavaLibraryUtils {
 	private static void loadClassesByDirectory(File directory, String packageName, ArrayList<Class> list) throws Exception
 	{
 		
-		for(File javaFile : directory.listFiles((FileFilter)new SuffixFileFilter(".java")))
+		for(File javaFile : directory.listFiles((FileFilter)new SuffixFileFilter(".class")))
 		{
 			String className = Path.getFileNameWithoutExtension(javaFile.getName());
 			if( !StringUtils2.isNullOrEmpty(packageName ))

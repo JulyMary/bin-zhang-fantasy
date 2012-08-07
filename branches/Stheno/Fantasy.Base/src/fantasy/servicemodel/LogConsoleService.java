@@ -46,7 +46,10 @@ public class LogConsoleService extends AbstractService implements ILogListener
 	public final void onError(String category, Throwable exception, String message)
 	{
 		System.out.println("Error: " + message);
-		exception.printStackTrace(System.out);
+		if(exception != null)
+		{
+		    exception.printStackTrace(System.out);
+		}
 		
 	}
 

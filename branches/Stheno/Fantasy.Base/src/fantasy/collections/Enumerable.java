@@ -611,6 +611,43 @@ public  class Enumerable<T> implements Iterable<T> {
 	public Iterator<T> iterator() {
 		return this._source.iterator();
 	}
+	
+	
+	public <TKey> Enumerable<IGrouping<TKey, T>> groupBy(Selector<T, TKey> keySelector)
+	{
+		return groupBy(keySelector, null);
+	}
+	
+	public <TKey> Enumerable<IGrouping<TKey, T>> groupBy(Selector<T, TKey> keySelector, Comparator<TKey> comparator)
+	{
+		if(comparator == null)
+		{
+			comparator = new NaturalComparator<TKey>();
+		}
+		
+		TreeMap<TKey, Group<TKey,T>> rs = new TreeMap<TKey, Group<TKey,T>>(comparator);
+		
+		for(T element : this._source)
+		{
+			TKey key = keySelector.select(element);
+			Group<TKey,T> group = rs.get(key);
+			if(group == null)
+			{
+				group = new Group<TKey, T>(key);
+				rs.put(key, group);
+			}
+			group.elements.add(element);
+			
+			
+		}
+		
+		return new Enumerable<Group<TKey, T>>(rs.values()).select(new Selector<Group<TKey, T>, IGrouping<TKey, T>>(){
+
+			@Override
+			public IGrouping<TKey, T> select(Group<TKey, T> item) {
+				return item;
+			}});
+	}
 
 
 

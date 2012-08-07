@@ -2,6 +2,7 @@
 
 import java.io.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -405,11 +406,15 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		}
 	}
 
-	@SuppressWarnings("unused")
+	
 	public final void Sleep(Duration timeout) throws Exception
 	{
 		final java.util.Date timeToWait =   Instant.now().plus(timeout).toDate();
-		ResourceParameter res = new ResourceParameter(new Resource(){String name = "WaitTime"; Date time = timeToWait;});
+		
+		HashMap<String, String> args = new HashMap<String, String>();
+		args.put("time", new SimpleDateFormat().format(timeToWait));
+		
+		ResourceParameter res = new ResourceParameter("WaitTime", args);
 		IResourceService resSvc = this.getService(IResourceService.class);
 		if (resSvc != null)
 		{
@@ -443,7 +448,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		return _serviceContainer.getService(serviceType);
 	}
 
-	private UUID privateJobId = UUID.randomUUID();
+	private UUID privateJobId = UUIDUtils.Empty;
 	public final UUID getJobId()
 	{
 		return privateJobId;

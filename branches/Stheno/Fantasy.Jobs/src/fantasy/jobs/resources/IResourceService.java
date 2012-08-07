@@ -2,9 +2,9 @@
 
 public interface IResourceService
 {
-	IResourceHandle Request(ResourceParameter[] parameter);
+	IResourceHandle Request(ResourceParameter[] parameter) throws Exception;
 
-	IResourceHandle TryRequest(ResourceParameter[] parameters);
+	IResourceHandle TryRequest(ResourceParameter[] parameters) throws Exception;
 
-	void Release(IResourceHandle resource);
+	void Release(IResourceHandle resource) throws Exception;
 }
