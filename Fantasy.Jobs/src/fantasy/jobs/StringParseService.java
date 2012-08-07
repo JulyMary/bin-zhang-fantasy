@@ -70,7 +70,7 @@ public class StringParseService extends AbstractService implements IStringParser
 				prefixes.append(prefix);
 			}
 			String tagRegex = "(?<prefix>[" + prefixes.toString() + "])\\((?<tag>[^)]+)\\)";
-			String rs = InnerParse(value, context, enabledProviders, tagRegex);
+			String rs = InnerParse(value, context2, enabledProviders, tagRegex);
 			return rs;
 		}
 		else
@@ -88,7 +88,7 @@ public class StringParseService extends AbstractService implements IStringParser
 		while (s < value.length())
 		{
 			Matcher m = reg.matcher(value.substring(s));
-			if (m.lookingAt())
+			if (m.find())
 			{
 				rs.append(value.substring(s, m.start()));
 				String tagValue = this.GetTagValue(m.group("prefix"), m.group("tag"), context, providers);

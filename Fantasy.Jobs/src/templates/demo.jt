@@ -7,8 +7,13 @@
     </properties>
 
     <target name="demo">
-     
-        
+        <searchFiles path="@(source)">
+            <output taskParameter="result"  itemCategory="sourceFile"/>  
+        </searchFiles> 
+        <copy source="@(sourceFile)" targetDirectory="@(target)">
+            <output taskParameter="target" itemCategory="targetFile"/>    
+        </copy>
+        <error message="log error" condition="'$(user)' == 'Bin'"/>
     </target>
 
 

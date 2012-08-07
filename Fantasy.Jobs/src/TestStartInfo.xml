@@ -6,4 +6,8 @@
     <user>Bin</user>    
     <application>Fantasy Job Service Demo</application>
   </properties>
+  <items>
+    <source name="D:\Fantasy\Stheno\Fantasy.Jobs\bin\sql"/> 
+    <target name="D:\Fantasy\Stheno\Fantasy.Jobs\bin\sql2"/>
+  </items>
 </jobStart>

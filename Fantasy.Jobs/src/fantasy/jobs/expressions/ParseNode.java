@@ -217,7 +217,7 @@ public class ParseNode
 			while (s < text.length())
 			{
 				Matcher m = reg.matcher(text.substring(s));
-				if (m.lookingAt())
+				if (m.find())
 				{
 					rs.append(text.substring(s, m.start()));
 
@@ -593,7 +593,7 @@ public class ParseNode
 	protected Object EvalNegetiveExpr(ParseTree tree, Object... paramlist) throws Exception
 	{
 		Object rs = this.GetValue(tree, TokenType.Atom, 0);
-		if (((String)this.GetValue(tree, TokenType.NEGETIVE, 0)).equals("-"))
+		if (StringUtils.equals((String)this.GetValue(tree, TokenType.NEGETIVE, 0), "-"))
 		{
 			String type = this.EvalType(rs);
 
