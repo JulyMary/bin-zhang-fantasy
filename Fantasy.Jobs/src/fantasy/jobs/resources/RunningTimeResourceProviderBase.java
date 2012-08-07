@@ -1,19 +1,16 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Jobs.Scheduling.*;
-import Fantasy.Jobs.Management.*;
-import Microsoft.Win32.*;
+import fantasy.jobs.scheduling.*;
+import fantasy.jobs.management.*;
 import fantasy.servicemodel.*;
+import fantasy.*;
 
-public abstract class RuntimeScheduleResourceProviderBase extends ObjectWithSite implements IResourceProvider
+public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 {
 
 	private Object _syncRoot = new Object();
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IResourceProvider Members
 
 	public final boolean CanHandle(String name)
 	{
@@ -203,12 +200,14 @@ public abstract class RuntimeScheduleResourceProviderBase extends ObjectWithSite
 
 		for (Resource res : expiredResources)
 		{
-			this.OnRevoke(res);
+			ProviderRevokeArgs e = new ProviderRevokeArgs(this);
+			e.setResource(res);
+			this.onRevoke(e);
 		}
 
 		if (available)
 		{
-			this.OnAvailable();
+			this.onAvailable();
 		}
 
 
@@ -220,35 +219,9 @@ public abstract class RuntimeScheduleResourceProviderBase extends ObjectWithSite
 
 	}
 
-	protected void OnAvailable()
-	{
-		if (this.Available != null)
-		{
-			this.Available(this, EventArgs.Empty);
-		}
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler Available;
-
-	protected void OnRevoke(Resource res)
-	{
-		if (this.Revoke != null)
-		{
-			ProviderRevokeArgs tempVar = new ProviderRevokeArgs();
-			tempVar.setResource(res);
-			this.Revoke(this, tempVar);
-		}
-	}
+	
 
 
-
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<ProviderRevokeArgs> Revoke;
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 	private java.util.ArrayList<Resource> _resources = new java.util.ArrayList<Resource>();
 

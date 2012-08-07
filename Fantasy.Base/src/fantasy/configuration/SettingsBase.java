@@ -47,7 +47,7 @@ public class SettingsBase implements INotifyPropertyChanged
 	private HashSet<IPropertyChangedListener> _listeners = new HashSet<IPropertyChangedListener>();
 
 
-	protected void onPropertyChanged(String name)
+	protected void onPropertyChanged(String name) throws Exception
 	{
 		PropertyChangedEvent e = new PropertyChangedEvent(this, name);
 		synchronized(_listeners)

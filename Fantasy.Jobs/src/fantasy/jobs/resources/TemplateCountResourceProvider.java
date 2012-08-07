@@ -2,7 +2,7 @@
 
 import Fantasy.Jobs.Management.*;
 
-public class TemplateCountResourceProvider extends ConcurrentCountResourceProviderBase
+public class TemplateCountResourceProvider extends CapacityResourceProviderBase
 {
 
 	@Override

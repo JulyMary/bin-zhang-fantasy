@@ -1,9 +1,9 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Jobs.Management.*;
-import Fantasy.Jobs.Utils.*;
+import fantasy.jobs.management.*;
+import fantasy.jobs.utils.*;
 
-public class WaitForResourceProvider extends ObjectWithSite implements IResourceProvider
+public class WaitForResourceProvider extends ResourceProvider implements IResourceProvider
 {
 
 	private MemoryCache _cache;

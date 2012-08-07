@@ -1,8 +1,8 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Jobs.Management.*;
+import fantasy.jobs.management.*;
 
-public class TaskCountResouseProvider extends ConcurrentCountResourceProviderBase
+public class TaskCountResouseProvider extends CapacityResourceProviderBase
 {
 	@Override
 	public boolean CanHandle(String name)

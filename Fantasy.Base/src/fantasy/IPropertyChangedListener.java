@@ -2,5 +2,5 @@ package fantasy;
 
 public interface IPropertyChangedListener {
     
-	void propertyChanged(PropertyChangedEvent e);
+	void propertyChanged(PropertyChangedEvent e) throws Exception;
 }

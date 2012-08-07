@@ -1,16 +1,15 @@
 ﻿package fantasy.jobs.resources;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fantasy.*;
+import fantasy.collections.*;
 
-public abstract class CapacityResourceProviderBase extends ObjectWithSite implements IResourceProvider
+public abstract class CapacityResourceProviderBase extends ResourceProvider implements IResourceProvider
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IResourceProvider Members
-
-
 	protected Object _syncRoot = new Object();
 
-	protected void TryRevoke()
+	protected void TryRevoke() throws Exception
 	{
 		java.util.ArrayList<Resource> temp;
 		synchronized (_syncRoot)
@@ -18,22 +17,26 @@ public abstract class CapacityResourceProviderBase extends ObjectWithSite implem
 			temp = new java.util.ArrayList<Resource>(this._allocated);
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from res in temp group res by res.getKey() into g select g;
+		Enumerable<IGrouping<String,Resource>> query = new Enumerable<Resource>(temp).groupBy(new Selector<Resource, String>(){
 
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-		for (var group : query)
+			@Override
+			public String select(Resource item) {
+				return item.Key;
+			}});
+
+		for (IGrouping<String,Resource> group : query)
 		{
 			int max = GetMaxCount(group.getKey());
-			int count = group.Count();
+			int count = group.count();
 			if (count > max)
 			{
-				for (Resource res : group.Reverse().Take(count - max))
+				for (Resource res : group.toEnumerable().reverse().take(count - max))
 				{
 					try
 					{
-						this.OnRevoke(res);
+						ProviderRevokeArgs e = new ProviderRevokeArgs(this);
+						e.setResource(res);
+						this.onRevoke(e);
 					}
 					finally
 					{
@@ -53,29 +56,29 @@ public abstract class CapacityResourceProviderBase extends ObjectWithSite implem
 
 	public abstract boolean CanHandle(String name);
 
-	public void Initialize()
-	{
-
-	}
-
 	protected String GetKey(ResourceParameter parameter)
 	{
 		return "";
 	}
 
-	protected abstract int GetMaxCount(String key);
+	protected abstract int GetMaxCount(String key) throws Exception;
 
-	private int GetAllocatedCount(String key)
+	private int GetAllocatedCount(final String key) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from r in this.getAllocated() where r.getKey() == key select r;
-		int rs = query.Count();
+		
+		int rs = new Enumerable<Resource>(this.getAllocated()).where(new Predicate<Resource>(){
+
+			@Override
+			public boolean evaluate(Resource obj) throws Exception {
+				return StringUtils.equals(obj.Key, key);
+			}}).count();
+
+		
 		return rs;
 	}
 
 
-	public boolean IsAvailable(ResourceParameter parameter)
+	public boolean IsAvailable(ResourceParameter parameter) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -87,14 +90,14 @@ public abstract class CapacityResourceProviderBase extends ObjectWithSite implem
 		}
 	}
 
-	public boolean Request(ResourceParameter parameter, RefObject<Object> resource)
+	public boolean Request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
 			if (IsAvailable(parameter))
 			{
 				Resource tempVar = new Resource();
-				tempVar.setKey(this.GetKey(parameter));
+				tempVar.Key = this.GetKey(parameter);
 				Resource rs = tempVar;
 
 				this.getAllocated().add(rs);
@@ -109,18 +112,18 @@ public abstract class CapacityResourceProviderBase extends ObjectWithSite implem
 		}
 	}
 
-	public final void Release(Object resource)
+	public final void Release(Object resource) throws Exception
 	{
 		boolean available;
 		synchronized (_syncRoot)
 		{
 			Resource res = (Resource)resource;
 			this._allocated.remove(res);
-			int max = this.GetMaxCount(res.getKey());
+			int max = this.GetMaxCount(res.Key);
 			if (max < Integer.MAX_VALUE)
 			{
 
-				int count = GetAllocatedCount(res.getKey());
+				int count = GetAllocatedCount(res.Key);
 				available = count < max;
 			}
 			else
@@ -132,39 +135,14 @@ public abstract class CapacityResourceProviderBase extends ObjectWithSite implem
 
 		if (available)
 		{
-			this.OnAvailable();
+			this.onAvailable();
 		}
 	}
 
-	protected void OnAvailable()
-	{
-		if (this.Available != null)
-		{
-			this.Available(this, EventArgs.Empty);
-		}
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler Available;
-
-	protected void OnRevoke(Resource res)
-	{
-		if (this.Revoke != null)
-		{
-			ProviderRevokeArgs tempVar = new ProviderRevokeArgs();
-			tempVar.setResource(res);
-			this.Revoke(this, tempVar);
-		}
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<ProviderRevokeArgs> Revoke;
-
+	
 	protected static class Resource
 	{
 		public String Key;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }
