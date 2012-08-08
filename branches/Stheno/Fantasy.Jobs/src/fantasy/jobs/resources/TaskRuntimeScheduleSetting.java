@@ -2,7 +2,7 @@
 
 import Fantasy.Configuration.*;
 
-public class TaskRuntimeScheduleSetting extends RuntimeScheduleSetting
+public class TaskRuntimeScheduleSetting extends RunningTimeSetting
 {
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 	//[XmlAttribute("name")]

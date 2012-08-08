@@ -13,13 +13,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 
 
-	public final boolean CanHandle(String name)
-	{
-		return InternalCanHandle(name);
-	}
-
-
-	protected abstract boolean InternalCanHandle(String name);
+	
 
 
 	protected IScheduleService _scheduleService;
@@ -42,13 +36,13 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 //	}
 
 
-	protected abstract RuntimeScheduleSetting getSetting(String id);
+	protected abstract RunningTimeSetting getSetting(String id) throws Exception;
 	protected abstract String getResourceId(ResourceParameter parameter);
 
-	public final boolean isAvailable(ResourceParameter parameter)
+	public final boolean isAvailable(ResourceParameter parameter) throws Exception
 	{
 		String id = this.getResourceId(parameter);
-		RuntimeScheduleSetting setting = this.getSetting(id);
+		RunningTimeSetting setting = this.getSetting(id);
 		if (setting.IsDisabledOrInPeriod(new java.util.Date()))
 		{
 			return true;
@@ -62,7 +56,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 
 
-	public final boolean Request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
+	public final boolean request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 
 		boolean rs = false;
@@ -70,7 +64,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 		{
 			resource.argvalue = null;
 			String id = this.getResourceId(parameter);
-			RuntimeScheduleSetting setting = this.getSetting(id);
+			RunningTimeSetting setting = this.getSetting(id);
 			Resource res = this.findOrCreateResource(id);
 			if (setting.IsDisabledOrInPeriod(new java.util.Date()))
 			{
@@ -99,7 +93,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 				this._resources.add(rs);
 
-				CreateSchedule(id);
+				createSchedule(id);
 			}
 
 
@@ -107,9 +101,9 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 		}
 	}
 
-	private ScheduledResource CreateSchedule(String id)
+	private ScheduledResource createSchedule(String id) throws Exception
 	{
-		RuntimeScheduleSetting setting = this.getSetting(id);
+		RunningTimeSetting setting = this.getSetting(id);
 		ScheduledResource tempVar = new ScheduledResource();
 		tempVar.setId(id);
 		tempVar.setScheduleSetting(setting);
@@ -150,12 +144,14 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 		schedule.setCookie(cookie);
 
 	}
+	
+	
 
 	private void registerPeriodEnd(final ScheduledResource schedule, final java.util.Date endTime)
 	{
 
 
-		final RuntimeScheduleSetting setting = schedule.getScheduleSetting();
+		final RunningTimeSetting setting = schedule.getScheduleSetting();
 		long cookie = this._scheduleService.register(endTime, new Action(){
 
 			@Override
@@ -198,7 +194,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 			for (Resource resource : this._resources)
 			{
-				ScheduledResource schedule = this.CreateSchedule(resource.getId());
+				ScheduledResource schedule = this.createSchedule(resource.getId());
 				if (schedule.getScheduleSetting().IsDisabledOrInPeriod(now))
 				{
 					available = true;
@@ -226,7 +222,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 	}
 
 
-	public void Release(Object resource)
+	public void release(Object resource)
 	{
 
 	}
@@ -265,12 +261,12 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 			privateCookie = value;
 		}
 
-		private RuntimeScheduleSetting privateScheduleSetting;
-		public final RuntimeScheduleSetting getScheduleSetting()
+		private RunningTimeSetting privateScheduleSetting;
+		public final RunningTimeSetting getScheduleSetting()
 		{
 			return privateScheduleSetting;
 		}
-		public final void setScheduleSetting(RuntimeScheduleSetting value)
+		public final void setScheduleSetting(RunningTimeSetting value)
 		{
 			privateScheduleSetting = value;
 		}
