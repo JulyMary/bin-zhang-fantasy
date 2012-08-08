@@ -2,7 +2,7 @@
 
 import Fantasy.Configuration.*;
 
-public class TaskRuntimeScheduleSettings extends RuntimeScheduleSetting
+public class TaskRuntimeScheduleSettings extends RunningTimeSetting
 {
 
 	private java.util.ArrayList<TaskRuntimeScheduleSetting> _tasks = new java.util.ArrayList<TaskRuntimeScheduleSetting>();

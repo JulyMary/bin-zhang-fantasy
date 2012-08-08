@@ -1,25 +1,23 @@
 ﻿package fantasy.jobs.resources;
 
-import org.joda.time.*;
-
 public final class TimeOfDayPeriod
 {
-	private Duration privateStart;
-	public Duration getStart()
+	private org.joda.time.Period privateStart;
+	public org.joda.time.Period getStart()
 	{
 		return privateStart;
 	}
-	public void setStart(Duration value)
+	public void setStart(org.joda.time.Period value)
 	{
 		privateStart = value;
 	}
 
-	private Duration privateEnd;
-	public Duration getEnd()
+	private org.joda.time.Period privateEnd;
+	public org.joda.time.Period getEnd()
 	{
 		return privateEnd;
 	}
-	public void setEnd(Duration value)
+	public void setEnd(org.joda.time.Period value)
 	{
 		privateEnd = value;
 	}

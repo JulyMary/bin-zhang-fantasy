@@ -1,9 +1,12 @@
 ﻿package fantasy.jobs.resources;
-import java.util.regex.Pattern;
 
-import org.joda.time.Duration;
+import java.text.ParseException;
+import java.util.regex.*;
 
+import org.jdom2.Element;
+import fantasy.IServiceProvider;
 import fantasy.xserialization.*;
+import fantasy.*;
 
 @XSerializable(name="DayRunningTime", namespaceUri=fantasy.jobs.Consts.XNamespaceURI)
 public class DayRunningTimeSetting implements IXSerializable
@@ -43,51 +46,24 @@ public class DayRunningTimeSetting implements IXSerializable
 
 
 
-	public final void ReadXml(System.Xml.XmlReader reader)
-	{
-		this.getPeriods().clear();
-		reader.MoveToContent();
-		String value = reader.ReadElementString();
-
-
-		if (!String.IsNullOrWhiteSpace(value))
-		{
-			for (String periodText : value.split(new char[] {';'}, StringSplitOptions.RemoveEmptyEntries))
-			{
-				String[] times = periodText.split("[-]", -1);
-				if (times.length == 2)
-				{
-					TimeOfDayPeriod period = new TimeOfDayPeriod();
-					period.setStart(PaseTimeSpan(times[0]));
-					period.setEnd(PaseTimeSpan(times[1]));
-					this.getPeriods().add(period.clone());
-				}
-				else
-				{
-					throw new FormatException("Invalid period format.");
-				}
-
-			}
-		}
-	}
 
 
 	private static final Pattern _timeSpanRegex = Pattern.compile("^\\s*(?<h>\\d{1,2}):(?<m>\\d{1,2}):(?<s>\\d{1,2})\\s*$");
-	private static final org.joda.time.Period _oneDay = new org.joda.time.Period().withDays(1);
-	private TimeSpan PaseTimeSpan(String text)
+	private static final org.joda.time.Period _oneDay = org.joda.time.Period.days(1);
+	private org.joda.time.Period paseDuration(String text) throws Exception
 	{
-		Match match = _timeSpanRegex.Match(text);
-		if (match.Success)
+		Matcher match = _timeSpanRegex.matcher(text);
+		if (match.lookingAt())
 		{
-			int h = Integer.parseInt(match.Groups["h"].getValue());
-			int m = Integer.parseInt(match.Groups["m"].getValue());
-			int s = Integer.parseInt(match.Groups["s"].getValue());
+			int h = Integer.parseInt(match.group("h"));
+			int m = Integer.parseInt(match.group("m"));
+			int s = Integer.parseInt(match.group("s"));
 
-			TimeSpan rs = new TimeSpan(h, m, s);
+			org.joda.time.Period rs = org.joda.time.Period.hours(h).withMinutes(m).withSeconds(s);
 
-			if (rs > _oneDay)
+			if (rs.toStandardDuration().isLongerThan(_oneDay.toStandardDuration()))
 			{
-				throw new OverflowException("Period time must between 00:00:00 to 24:00:00");
+				throw new ParseException("Period time must between 00:00:00 to 24:00:00", 0);
 			}
 
 			return rs;
@@ -95,12 +71,42 @@ public class DayRunningTimeSetting implements IXSerializable
 		}
 		else
 		{
-			throw new FormatException("Invalid period time format.");
+			throw new  ParseException("Invalid period time format.", 0);
 		}
 	}
 
-	public final void WriteXml(System.Xml.XmlWriter writer)
-	{
+	
+	@Override
+	public void Load(IServiceProvider context, Element element)
+			throws Exception {
+
+       String value = element.getTextTrim();
+       
+       if (!StringUtils2.isNullOrWhiteSpace(value))
+		{
+			for (String periodText : StringUtils2.split(value, ";",true))
+			{
+				String[] times = StringUtils2.split(periodText, "-", true);
+				if (times.length == 2)
+				{
+					TimeOfDayPeriod period = new TimeOfDayPeriod();
+					period.setStart(paseDuration(times[0]));
+					period.setEnd(paseDuration(times[1]));
+					this.getPeriods().add(period);
+				}
+				else
+				{
+					throw new ParseException("Invalid period format.", 0);
+				}
+
+			}
+		}
+		
+	}
+
+	@Override
+	public void Save(IServiceProvider context, Element element)
+			throws Exception {
 		StringBuilder text = new StringBuilder();
 		for (TimeOfDayPeriod period : this.getPeriods())
 		{
@@ -108,8 +114,9 @@ public class DayRunningTimeSetting implements IXSerializable
 			{
 				text.append(';');
 			}
-			text.append(String.format("%02d:%1.2d:%2.2d-%3.2d:%4.2d:%5.2d", period.getStart().Days * 24 + period.getStart().Hours, period.getStart().Minutes, period.getStart().Seconds, period.getEnd().Days * 24 + period.getEnd().Hours, period.getEnd().Minutes, period.getEnd().Seconds));
+			text.append(String.format("%02d:%1.2d:%2.2d-%3.2d:%4.2d:%5.2d", period.getStart().getDays() * 24 + period.getStart().getHours(), period.getStart().getMinutes(), period.getStart().getSeconds(), period.getEnd().getDays() * 24 + period.getEnd().getHours(), period.getEnd().getMinutes(), period.getEnd().getSeconds()));
 		}
-		writer.WriteString(text.toString());
+		element.setText(text.toString());
+		
 	}
 }
