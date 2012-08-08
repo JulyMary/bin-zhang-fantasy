@@ -14,9 +14,9 @@ public class JobRuntimeScheduleResourceProvider extends RuntimeScheduleResourceP
 	}
 
 	@Override
-	public void Initialize()
+	public void initialize()
 	{
-		super.Initialize();
+		super.initialize();
 //C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
 		JobManagerSettings.Default.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(JobManagerSettings_PropertyChanged);
 	}

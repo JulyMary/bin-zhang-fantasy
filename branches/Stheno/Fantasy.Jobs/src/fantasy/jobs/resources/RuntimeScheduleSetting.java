@@ -1,20 +1,15 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Configuration.*;
+import java.util.*;
 
+import fantasy.configuration.*;
+import fantasy.xserialization.*;
+
+@XSerializable(name="runningTimeSchedule", namespaceUri=fantasy.jobs.Consts.XNamespaceURI)
 public class RuntimeScheduleSetting
 {
-	@Override
-	public boolean equals(Object obj)
-	{
-		return ComparsionHelper.DeepEquals(this, obj);
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return super.hashCode();
-	}
+	
+	
 
 	public final DayRuntimeSetting[] getDaySettings()
 	{
@@ -25,9 +20,8 @@ public class RuntimeScheduleSetting
 
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlAttribute("enabled")]
-	private boolean privateEnabled;
+    @XAttribute(name = "enabled")
+	private boolean privateEnabled = false;
 	public final boolean getEnabled()
 	{
 		return privateEnabled;
@@ -37,9 +31,7 @@ public class RuntimeScheduleSetting
 		privateEnabled = value;
 	}
 
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Monday")]
+	@XElement(name = "Monday")
 	private DayRuntimeSetting privateMonday;
 	public final DayRuntimeSetting getMonday()
 	{
@@ -50,8 +42,7 @@ public class RuntimeScheduleSetting
 		privateMonday = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Tuesday")]
+	@XElement(name = "Tuesday")
 	private DayRuntimeSetting privateTuesday;
 	public final DayRuntimeSetting getTuesday()
 	{
@@ -62,8 +53,8 @@ public class RuntimeScheduleSetting
 		privateTuesday = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Wednesday")]
+	@XElement(name = "Wednesday")
+	
 	private DayRuntimeSetting privateWednesday;
 	public final DayRuntimeSetting getWednesday()
 	{
@@ -74,8 +65,7 @@ public class RuntimeScheduleSetting
 		privateWednesday = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Thursday")]
+	@XElement(name = "Thursday")
 	private DayRuntimeSetting privateThursday;
 	public final DayRuntimeSetting getThursday()
 	{
@@ -86,8 +76,7 @@ public class RuntimeScheduleSetting
 		privateThursday = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Friday")]
+	@XElement(name = "Friday")
 	private DayRuntimeSetting privateFriday;
 	public final DayRuntimeSetting getFriday()
 	{
@@ -98,8 +87,7 @@ public class RuntimeScheduleSetting
 		privateFriday = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Saturday")]
+	@XElement(name = "Saturday")
 	private DayRuntimeSetting privateSaturday;
 	public final DayRuntimeSetting getSaturday()
 	{
@@ -110,8 +98,7 @@ public class RuntimeScheduleSetting
 		privateSaturday = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlElement("Sunday")]
+	@XElement(name = "Sunday")
 	private DayRuntimeSetting privateSunday;
 	public final DayRuntimeSetting getSunday()
 	{
@@ -129,7 +116,12 @@ public class RuntimeScheduleSetting
 	{
 		if (this.getEnabled())
 		{
-			DayRuntimeSetting settings = this.getDaySettings()[(int)datetime.DayOfWeek];
+			
+			Calendar cal=Calendar.getInstance();
+			 cal.setTime(datetime);
+
+			
+			DayRuntimeSetting settings = this.getDaySettings()[cal.get(Calendar.DAY_OF_WEEK)];
 			if (settings != null)
 			{
 				TimeSpan time = datetime.TimeOfDay;

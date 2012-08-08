@@ -1,8 +1,12 @@
 ﻿package fantasy.jobs.resources;
+import java.util.regex.Pattern;
 
-import Fantasy.Configuration.*;
+import org.joda.time.Duration;
 
-public class DayRuntimeSetting implements IXmlSerializable
+import fantasy.xserialization.*;
+
+@XSerializable(name="DayRunningTime", namespaceUri=fantasy.jobs.Consts.XNamespaceURI)
+public class DayRunningTimeSetting implements IXSerializable
 {
 	private java.util.ArrayList<TimeOfDayPeriod> _periods = new java.util.ArrayList<TimeOfDayPeriod>();
 	public final java.util.ArrayList<TimeOfDayPeriod> getPeriods()
@@ -13,12 +17,12 @@ public class DayRuntimeSetting implements IXmlSerializable
 	@Override
 	public boolean equals(Object obj)
 	{
-		DayRuntimeSetting other = (DayRuntimeSetting)((obj instanceof DayRuntimeSetting) ? obj : null);
+		DayRunningTimeSetting other = (DayRunningTimeSetting)((obj instanceof DayRunningTimeSetting) ? obj : null);
 		if (other != null && other.getPeriods().size() == this.getPeriods().size())
 		{
 			for (int i = 0; i < this.getPeriods().size(); i++)
 			{
-				if (this.getPeriods().get(i).getStart() != other.getPeriods().get(i).getStart() || this.getPeriods().get(i).getEnd() != other.getPeriods().get(i).getEnd())
+				if (!this.getPeriods().get(i).getStart().equals(other.getPeriods().get(i).getStart()) || !this.getPeriods().get(i).getEnd().equals(other.getPeriods().get(i).getEnd()))
 				{
 					return false;
 				}
@@ -37,13 +41,7 @@ public class DayRuntimeSetting implements IXmlSerializable
 		return super.hashCode();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXmlSerializable Members
 
-	public final System.Xml.Schema.XmlSchema GetSchema()
-	{
-		return null;
-	}
 
 	public final void ReadXml(System.Xml.XmlReader reader)
 	{
@@ -74,8 +72,8 @@ public class DayRuntimeSetting implements IXmlSerializable
 	}
 
 
-	private static final Regex _timeSpanRegex = new Regex("^\\s*(?<h>\\d{1,2}):(?<m>\\d{1,2}):(?<s>\\d{1,2})\\s*$");
-	private static final TimeSpan _oneDay = new TimeSpan(1, 0, 0, 0);
+	private static final Pattern _timeSpanRegex = Pattern.compile("^\\s*(?<h>\\d{1,2}):(?<m>\\d{1,2}):(?<s>\\d{1,2})\\s*$");
+	private static final org.joda.time.Period _oneDay = new org.joda.time.Period().withDays(1);
 	private TimeSpan PaseTimeSpan(String text)
 	{
 		Match match = _timeSpanRegex.Match(text);
@@ -114,7 +112,4 @@ public class DayRuntimeSetting implements IXmlSerializable
 		}
 		writer.WriteString(text.toString());
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

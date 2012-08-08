@@ -18,7 +18,7 @@ public class LogService extends AbstractService implements ILogger
 	private static final long serialVersionUID = -7349623958104505450L;
 	private Object _syncRoot = new Object();
 
-	private void FireEvent(MethodInvoker<ILogListener> method)
+	private void FireEvent(Action1<ILogListener> method)
 	{
 		ILogListener[] listeners;
 		synchronized (_syncRoot)
@@ -31,7 +31,7 @@ public class LogService extends AbstractService implements ILogger
 		{
 			try
 			{
-				method.invoke(listener);
+				method.act(listener);
 			}
 			catch (java.lang.Exception e)
 			{
@@ -61,9 +61,9 @@ public class LogService extends AbstractService implements ILogger
 		}
 		final String message2 = message;
 
-		this.FireEvent(new MethodInvoker<ILogListener>()
+		this.FireEvent(new Action1<ILogListener>()
 		{
-			public void invoke(ILogListener listener) throws Exception
+			public void act(ILogListener listener) throws Exception
 			{
 			    listener.onMessage(category, importance, message2);
 			}
@@ -85,9 +85,9 @@ public class LogService extends AbstractService implements ILogger
 		}
 		
 		final String message2 = message;
-		this.FireEvent(new MethodInvoker<ILogListener>()
+		this.FireEvent(new Action1<ILogListener>()
 				{
-					public void invoke(ILogListener listener) throws Exception
+					public void act(ILogListener listener) throws Exception
 					{
 						listener.onWaring(category, exception, importance, message2);
 					}
@@ -111,9 +111,9 @@ public class LogService extends AbstractService implements ILogger
 		message = String.format(message, messageArgs);
 		
 		final String message2 = message;
-		this.FireEvent(new MethodInvoker<ILogListener>()
+		this.FireEvent(new Action1<ILogListener>()
 				{
-					public void invoke(ILogListener listener) throws Exception
+					public void act(ILogListener listener) throws Exception
 					{
 						listener.onError(category, exception, message2);
 					}

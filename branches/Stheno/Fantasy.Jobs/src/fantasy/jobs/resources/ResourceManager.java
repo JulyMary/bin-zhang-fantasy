@@ -87,7 +87,7 @@ public class ResourceManager extends AbstractService implements IResourceManager
 					
 				}});
 
-			provider.Initialize();
+			provider.initialize();
 		}
 
 		super.initializeService();
@@ -293,11 +293,11 @@ public class ResourceManager extends AbstractService implements IResourceManager
 				{
 					for(IResourceProvider provider : this._providers)
 					{
-						if(provider.CanHandle(param.getName()))
+						if(provider.canHandle(param.getName()))
 						{
 							Object resource = null;
 							RefObject<Object> tempRef_resource = new RefObject<Object>(resource);
-							available = provider.Request(param, tempRef_resource);
+							available = provider.request(param, tempRef_resource);
 							resource = tempRef_resource.argvalue;
 							if (available)
 							{
@@ -361,9 +361,9 @@ public class ResourceManager extends AbstractService implements IResourceManager
 			{
 				for(IResourceProvider provider : this._providers)
 				{
-					if(provider.CanHandle(param.getName()))
+					if(provider.canHandle(param.getName()))
 					{
-						if(!provider.IsAvailable(param))
+						if(!provider.isAvailable(param))
 						{
 							return false;
 						}
