@@ -1,27 +1,25 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Configuration.*;
+import org.joda.time.*;
 
-//C# TO JAVA CONVERTER WARNING: Java does not allow user-defined value types. The behavior of this class will differ from the original:
-//ORIGINAL LINE: public struct TimeOfDayPeriod
 public final class TimeOfDayPeriod
 {
-	private TimeSpan privateStart = new TimeSpan();
-	public TimeSpan getStart()
+	private Duration privateStart;
+	public Duration getStart()
 	{
 		return privateStart;
 	}
-	public void setStart(TimeSpan value)
+	public void setStart(Duration value)
 	{
 		privateStart = value;
 	}
 
-	private TimeSpan privateEnd = new TimeSpan();
-	public TimeSpan getEnd()
+	private Duration privateEnd;
+	public Duration getEnd()
 	{
 		return privateEnd;
 	}
-	public void setEnd(TimeSpan value)
+	public void setEnd(Duration value)
 	{
 		privateEnd = value;
 	}

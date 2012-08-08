@@ -9,7 +9,7 @@ public abstract class CapacityResourceProviderBase extends ResourceProvider impl
 {
 	protected Object _syncRoot = new Object();
 
-	protected void TryRevoke() throws Exception
+	protected void tryRevoke() throws Exception
 	{
 		java.util.ArrayList<Resource> temp;
 		synchronized (_syncRoot)
@@ -26,7 +26,7 @@ public abstract class CapacityResourceProviderBase extends ResourceProvider impl
 
 		for (IGrouping<String,Resource> group : query)
 		{
-			int max = GetMaxCount(group.getKey());
+			int max = getMaxCount(group.getKey());
 			int count = group.count();
 			if (count > max)
 			{
@@ -54,16 +54,16 @@ public abstract class CapacityResourceProviderBase extends ResourceProvider impl
 		return _allocated;
 	}
 
-	public abstract boolean CanHandle(String name);
+	public abstract boolean canHandle(String name);
 
-	protected String GetKey(ResourceParameter parameter)
+	protected String getKey(ResourceParameter parameter)
 	{
 		return "";
 	}
 
-	protected abstract int GetMaxCount(String key) throws Exception;
+	protected abstract int getMaxCount(String key) throws Exception;
 
-	private int GetAllocatedCount(final String key) throws Exception
+	private int getAllocatedCount(final String key) throws Exception
 	{
 		
 		int rs = new Enumerable<Resource>(this.getAllocated()).where(new Predicate<Resource>(){
@@ -78,26 +78,26 @@ public abstract class CapacityResourceProviderBase extends ResourceProvider impl
 	}
 
 
-	public boolean IsAvailable(ResourceParameter parameter) throws Exception
+	public boolean isAvailable(ResourceParameter parameter) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-			String key = this.GetKey(parameter);
-			int count = this.GetAllocatedCount(key);
-			int max = this.GetMaxCount(key);
+			String key = this.getKey(parameter);
+			int count = this.getAllocatedCount(key);
+			int max = this.getMaxCount(key);
 
 			return count < max;
 		}
 	}
 
-	public boolean Request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
+	public boolean request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-			if (IsAvailable(parameter))
+			if (isAvailable(parameter))
 			{
 				Resource tempVar = new Resource();
-				tempVar.Key = this.GetKey(parameter);
+				tempVar.Key = this.getKey(parameter);
 				Resource rs = tempVar;
 
 				this.getAllocated().add(rs);
@@ -112,18 +112,18 @@ public abstract class CapacityResourceProviderBase extends ResourceProvider impl
 		}
 	}
 
-	public final void Release(Object resource) throws Exception
+	public final void release(Object resource) throws Exception
 	{
 		boolean available;
 		synchronized (_syncRoot)
 		{
 			Resource res = (Resource)resource;
 			this._allocated.remove(res);
-			int max = this.GetMaxCount(res.Key);
+			int max = this.getMaxCount(res.Key);
 			if (max < Integer.MAX_VALUE)
 			{
 
-				int count = GetAllocatedCount(res.Key);
+				int count = getAllocatedCount(res.Key);
 				available = count < max;
 			}
 			else

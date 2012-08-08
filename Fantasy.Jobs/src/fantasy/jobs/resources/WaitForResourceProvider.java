@@ -1,56 +1,67 @@
 ﻿package fantasy.jobs.resources;
 
+import java.util.*;
+
+import org.apache.commons.lang3.StringUtils;
+
+import fantasy.*;
+import fantasy.collections.*;
+
 import fantasy.jobs.management.*;
-import fantasy.jobs.utils.*;
+
+import fantasy.runtime.caching.SimpleCache;
 
 public class WaitForResourceProvider extends ResourceProvider implements IResourceProvider
 {
 
-	private MemoryCache _cache;
+	private SimpleCache<ArrayList<UUID>> _cache = new SimpleCache<ArrayList<UUID>>(60*60, 60*60);
 
 	private Object _syncRoot = new Object();
 
-	CacheItemPolicy tempVar = new CacheItemPolicy();
-	tempVar.SlidingExpiration = new TimeSpan(1, 0, 0);
-	private static final CacheItemPolicy _cachePolicy = tempVar;
+	
 
-	public final boolean CanHandle(String name)
+	public final boolean canHandle(String name)
 	{
-		return String.equals(name, "WaitFor", StringComparison.OrdinalIgnoreCase);
+		return StringUtils.equalsIgnoreCase("WaitFor", name);
+		
 	}
 
-	public final void Initialize()
+	public final void initialize()
 	{
-		_cache = new MemoryCache("WaitForResourceProvider");
+		
 	}
 
-	private String GetKey(String ids)
+	private String getKey(String ids) throws Exception
 	{
-		MemoryStream stream = new MemoryStream(Encoding.Unicode.GetBytes(ids));
-		return MD5HashCodeHelper.GetMD5HashCode(stream);
+	
+		return MD5HashCodeHelper.compute(ids);
 	}
 
-	public final boolean IsAvailable(ResourceParameter parameter)
+	public final boolean isAvailable(ResourceParameter parameter) throws Exception
 	{
 
-		String ids = parameter.getValues().GetValueOrDefault("jobs", "");
-		if (!DotNetToJavaStringHelper.isNullOrEmpty(ids))
+		String ids = parameter.getValues().get("jobs");
+		if (!StringUtils2.isNullOrEmpty(ids))
 		{
-//ORIGINAL LINE: WaitForMode model = (WaitForMode)Enum.Parse(typeof(WaitForMode), parameter.Values.GetValueOrDefault("mode", "All"), true);
-//C# TO JAVA CONVERTER WARNING: Java does not have a 'ignoreCase' parameter for the static 'valueOf' method of enum types:
-			WaitForMode model = WaitForMode.valueOf(parameter.getValues().GetValueOrDefault("mode", "All"));
-			String key = model.toString() + this.GetKey(ids);
+
+			WaitForMode model = WaitForMode.valueOf(MapUtils.getValueOrDefault(parameter.getValues(), "mode", "All"));
+			String key = model.toString() + this.getKey(ids);
 			java.util.ArrayList<UUID> waitList;
 			synchronized (_syncRoot)
 			{
-				waitList = (java.util.ArrayList<UUID>)this._cache[key];
+				waitList = this._cache.get(key);
 				if (waitList == null)
 				{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-					waitList = (from id in parameter.getValues().GetValueOrDefault("jobs", "").split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries) select new UUID(id)).ToList();
+					waitList = new Enumerable<String>(StringUtils2.split(ids, ";",true)).select(new Selector<String, UUID>(){
+
+						@Override
+						public UUID select(String item) {
+							
+							return UUID.fromString(item);
+						}}).toArrayList();  
 				}
 
-				_cache.Add(key, waitList, _cachePolicy);
+				_cache.put(key, waitList);
 			}
 
 			if (waitList.size() > 0)
@@ -58,14 +69,14 @@ public class WaitForResourceProvider extends ResourceProvider implements IResour
 				synchronized (waitList)
 				{
 					java.util.ArrayList<UUID> temp = new java.util.ArrayList<UUID>(waitList);
-					IJobQueue queue = this.Site.<IJobQueue>GetRequiredService();
+					IJobQueue queue = this.getSite().getRequiredService(IJobQueue.class);
 
 					if (model == WaitForMode.All)
 					{
 						for (UUID id : temp)
 						{
-							JobMetaData job = queue.FindJobMetaDataById(id);
-							if (! queue.IsTerminated(id))
+							
+							if (!queue.IsTerminated(id))
 							{
 								return false;
 							}
@@ -103,36 +114,14 @@ public class WaitForResourceProvider extends ResourceProvider implements IResour
 
 	}
 
-	public final boolean Request(ResourceParameter parameter, RefObject<Object> resource)
+	public final boolean request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 		resource.argvalue = null;
-		return this.IsAvailable(parameter);
+		return this.isAvailable(parameter);
 	}
 
-	public final void Release(Object resource)
+	public final void release(Object resource)
 	{
 
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler Available
-//		{
-//			add
-//			{
-//			}
-//			remove
-//			{
-//			}
-//		}
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<ProviderRevokeArgs> Revoke
-//		{
-//			add
-//			{
-//			}
-//			remove
-//			{
-//			}
-//		}
 }

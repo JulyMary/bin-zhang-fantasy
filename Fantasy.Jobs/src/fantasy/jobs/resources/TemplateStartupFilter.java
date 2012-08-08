@@ -1,52 +1,59 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Jobs.Management.*;
+import org.apache.commons.lang3.StringUtils;
+
+import fantasy.*;
+import fantasy.collections.*;
+import fantasy.jobs.management.*;
 
 public class TemplateStartupFilter extends ObjectWithSite implements IJobStartupFilter
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStartupFilter Members
 
-	public final Iterable<JobMetaData> Filter(Iterable<JobMetaData> source)
+
+	public final Iterable<JobMetaData> Filter(Iterable<JobMetaData> source) throws Exception
 	{
-		 IJobController controller = this.Site.<IJobController>GetRequiredService();
+		 IJobController controller = this.getSite().getRequiredService(IJobController.class);
 
-		 JobMetaData[] running = controller.GetRunningJobs();
+		 final JobMetaData[] running = controller.GetRunningJobs();
+		 
+		 return new Enumerable<JobMetaData>(source).where(new Predicate<JobMetaData>(){
 
+			@Override
+			public boolean evaluate(JobMetaData job) throws Exception {
+				final String template = job.getTemplate();
 
-		for (JobMetaData job : source)
-		{
-			String template = job.getTemplate();
+				int max = TemplateStartupFilter.this.getMaxCount(template);
+				int exists = 0;
+				if (max < Integer.MAX_VALUE)
+				{
+					exists = new Enumerable<JobMetaData>(running).where(new Predicate<JobMetaData>(){
 
-			int max = this.GetMaxCount(template);
-			int exists = 0;
-			if (max < Integer.MAX_VALUE)
-			{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				exists = running.Where(j => String.equals(j.Template, template, StringComparison.OrdinalIgnoreCase)).Count();
-			}
-			if (exists < max)
-			{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-				yield return job;
-			}
-		}
+						@Override
+						public boolean evaluate(JobMetaData j) throws Exception {
+							return StringUtils.equalsIgnoreCase(j.getTemplate(), template);
+						}}).count(); 
+				}
+				
+				return exists < max;
+			}});
+
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 
 
 
 
-	private int GetMaxCount(String name)
+	private int getMaxCount(final String key) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from t in JobManagerSettings.getDefault().getConcurrentTemplateCount().getTemplates() where name.equals(t.getName()) select t;
-		TemplateCountSetting setting = query.SingleOrDefault();
+		TemplateCapacitySetting setting = new Enumerable<TemplateCapacitySetting>(JobManagerSettings.getDefault().getTemplateCapacity().getTemplates()).firstOrDefault(new Predicate<TemplateCapacitySetting>(){
 
-		return setting != null ? setting.getCount() : JobManagerSettings.getDefault().getConcurrentTemplateCount().getCount();
+			@Override
+			public boolean evaluate(TemplateCapacitySetting s) throws Exception {
+				
+				return StringUtils.equals(s.getName() ,key);
+			}});
+
+		return setting != null ? setting.getCapacity() : JobManagerSettings.getDefault().getTemplateCapacity().getCapacity();
+
 	}
 }

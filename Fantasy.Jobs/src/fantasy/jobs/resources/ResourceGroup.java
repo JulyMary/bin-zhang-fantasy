@@ -80,7 +80,7 @@ public class ResourceGroup extends ObjectWithSite
 			Object res = pair.getValue();
 			try
 			{
-				provider.Release(res);
+				provider.release(res);
 
 			}
 			catch (InterruptedException e)

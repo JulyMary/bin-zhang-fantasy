@@ -84,7 +84,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 
 
-	private void FireEvent(final MethodInvoker<IJobEngineEventHandler> method) throws Exception
+	private void FireEvent(final Action1<IJobEngineEventHandler> method) throws Exception
 	{
 		
 
@@ -105,7 +105,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					public void run() {
 						try
 						{
-							method.invoke(handler);
+							method.act(handler);
 						}
 						catch (java.lang.Exception e)
 						{
@@ -145,10 +145,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		try
 		{
 			final JobExitEventArgs e = new JobExitEventArgs(exitCode);
-			FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+			FireEvent(new Action1<IJobEngineEventHandler>(){
 
 				@Override
-				public void invoke(IJobEngineEventHandler obj) throws Exception {
+				public void act(IJobEngineEventHandler obj) throws Exception {
 					obj.HandleExit(JobEngine.this, e);
 					
 				}});
@@ -206,10 +206,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 				}
 
-				FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+				FireEvent(new Action1<IJobEngineEventHandler>(){
 					
 					@Override
-					public void invoke(IJobEngineEventHandler handler) throws Exception
+					public void act(IJobEngineEventHandler handler) throws Exception
 					{
 						handler.HandleStart(JobEngine.this);
 					}
@@ -224,10 +224,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 
 				_job.LoadStartInfo((JobStartInfo)startInfo);
 
-               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+               FireEvent(new Action1<IJobEngineEventHandler>(){
 					
 					@Override
-					public void invoke(IJobEngineEventHandler handler) throws Exception
+					public void act(IJobEngineEventHandler handler) throws Exception
 					{
 						handler.HandleLoad(JobEngine.this);
 					}
@@ -299,10 +299,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 						logger.LogMessage(LogCategories.getEngine(), Resources.getResumeMessage());
 					}
 
-		               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+		               FireEvent(new Action1<IJobEngineEventHandler>(){
 							
 							@Override
-							public void invoke(IJobEngineEventHandler handler) throws Exception
+							public void act(IJobEngineEventHandler handler) throws Exception
 							{
 								handler.HandleResume(JobEngine.this);
 							}
@@ -317,10 +317,10 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					Element ele = JDomUtils.loadElement(stream);
 					_job.LoadStatus(ele);
 
-		               FireEvent(new MethodInvoker<IJobEngineEventHandler>(){
+		               FireEvent(new Action1<IJobEngineEventHandler>(){
 							
 							@Override
-							public void invoke(IJobEngineEventHandler handler) throws Exception
+							public void act(IJobEngineEventHandler handler) throws Exception
 							{
 								handler.HandleLoad(JobEngine.this);
 							}

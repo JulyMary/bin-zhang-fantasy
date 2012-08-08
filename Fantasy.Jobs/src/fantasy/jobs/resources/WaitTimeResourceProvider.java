@@ -1,9 +1,15 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Jobs.Scheduling.*;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+
+import org.apache.commons.lang3.StringUtils;
+
+import fantasy.*;
+import fantasy.jobs.scheduling.*;
 import fantasy.servicemodel.*;
 
-public class WaitTimeResourceProvider extends ObjectWithSite implements IResourceProvider
+public class WaitTimeResourceProvider extends ResourceProvider implements IResourceProvider
 {
 
 	private java.util.ArrayList<java.util.Date> _queue = new java.util.ArrayList<java.util.Date>();
@@ -14,22 +20,22 @@ public class WaitTimeResourceProvider extends ObjectWithSite implements IResourc
 
 	private long _scheduleCookie = -1;
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IResourceProvider Members
-
-	public final boolean CanHandle(String name)
+	public final boolean canHandle(String name)
 	{
-		return String.equals("WaitTime", name, StringComparison.OrdinalIgnoreCase);
+		return StringUtils.equalsIgnoreCase("WaitTime", name);
+		
 	}
 
-	public final void Initialize()
+	public final void initialize() throws Exception
 	{
-		_scheduleService = this.Site.<IScheduleService>GetRequiredService();
+		_scheduleService = this.getSite().getRequiredService(IScheduleService.class);
 	}
 
-	public final boolean IsAvailable(ResourceParameter parameter)
+	private SimpleDateFormat _format = new SimpleDateFormat();
+	public final boolean isAvailable(ResourceParameter parameter) throws Exception
 	{
-		java.util.Date time = new java.util.Date(java.util.Date.parse(parameter.getValues().get("time")));
+		
+		java.util.Date time = _format.parse(parameter.getValues().get("time"));
 		if (time.compareTo(new java.util.Date()) <= 0)
 		{
 			return true;
@@ -42,10 +48,10 @@ public class WaitTimeResourceProvider extends ObjectWithSite implements IResourc
 	}
 
 
-	private void OnTime()
+	private void onTime() throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		java.util.Date fireTime = java.util.Date.getMinValue();
+		ILogger logger = this.getSite().getService(ILogger.class);
+		java.util.Date fireTime = new java.util.Date(Long.MIN_VALUE);
 		synchronized (_syncRoot)
 		{
 			while (this._queue.size() > 0 && this._queue.get(0).compareTo(new java.util.Date()) < 0)
@@ -56,7 +62,13 @@ public class WaitTimeResourceProvider extends ObjectWithSite implements IResourc
 
 			if (this._queue.size() > 0)
 			{
-				this._scheduleCookie = _scheduleService.Register(_queue.get(0), OnTime);
+				this._scheduleCookie = _scheduleService.register(_queue.get(0), new Action(){
+
+					@Override
+					public void act() throws Exception {
+						 onTime();
+						
+					}});
 			}
 			else
 			{
@@ -64,16 +76,16 @@ public class WaitTimeResourceProvider extends ObjectWithSite implements IResourc
 			}
 
 		}
-		logger.SafeLogMessage("WaitTime", "Requested WaitTime before {0} are available.", fireTime);
-		this.OnAvailable();
+		Log.SafeLogMessage(logger, "WaitTime", "Requested WaitTime before %1$s are available.", _format.format(fireTime));
+		this.onAvailable();
 	}
 
-	public final boolean Request(ResourceParameter parameter, RefObject<Object> resource)
+	public final boolean request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 
 		boolean rs;
 		resource.argvalue = null;
-		java.util.Date time = new java.util.Date(java.util.Date.parse(parameter.getValues().get("time")));
+		java.util.Date time = _format.parse(parameter.getValues().get("time"));
 		if (time.compareTo(new java.util.Date()) > 0)
 		{
 
@@ -87,12 +99,12 @@ public class WaitTimeResourceProvider extends ObjectWithSite implements IResourc
 		return rs;
 	}
 
-	private void RegisterTime(java.util.Date time)
+	private void RegisterTime(java.util.Date time) throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		synchronized (this._syncRoot)
 		{
-			int pos = this._queue.BinarySearch(time);
+			int pos = Collections.binarySearch(this._queue,time);
 			if (pos < 0)
 			{
 				pos = ~pos;
@@ -101,47 +113,29 @@ public class WaitTimeResourceProvider extends ObjectWithSite implements IResourc
 				{
 					if (this._scheduleCookie != -1)
 					{
-						_scheduleService.Unregister(this._scheduleCookie);
+						_scheduleService.unregister(this._scheduleCookie);
 					}
 
-					this._scheduleCookie = _scheduleService.Register(time, OnTime);
+					this._scheduleCookie = _scheduleService.register(time, new Action(){
+
+						@Override
+						public void act() throws Exception {
+							onTime();
+							
+						}});
 
 				}
 			}
 
-			logger.SafeLogMessage("WaitTime", "Register wait time {0}", time);
+			Log.SafeLogMessage(logger, "WaitTime", "Register wait time %1$s", _format.format(time));
 		}
 	}
 
-	public final void Release(Object resource)
+	public final void release(Object resource)
 	{
 
 	}
-
-	private void OnAvailable()
-	{
-		if (this.Available != null)
-		{
-			ILogger logger = this.Site.<ILogger>GetService();
-			//logger.SafeLogMessage("WaitTime", "OnAvailable called.");
-			this.Available(this, EventArgs.Empty);
-		}
-	}
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler Available;
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<ProviderRevokeArgs> Revoke
-//		{
-//			add
-//			{
-//			}
-//			remove
-//			{
-//			}
-//		}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }
+
+	
+

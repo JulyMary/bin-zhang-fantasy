@@ -1,9 +1,10 @@
 ﻿package fantasy.jobs.resources;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import fantasy.jobs.scheduling.*;
-import fantasy.jobs.management.*;
-import fantasy.servicemodel.*;
 import fantasy.*;
+import fantasy.collections.*;
 
 public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 {
@@ -23,32 +24,31 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 	protected IScheduleService _scheduleService;
 
-	public void Initialize()
+	public void initialize() throws Exception
 	{
-		_scheduleService = this.Site.<IScheduleService>GetRequiredService();
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		SystemEvents.TimeChanged += new EventHandler(SystemEvents_TimeChanged);
+		_scheduleService = this.getSite().getRequiredService(IScheduleService.class);
+
 	}
 
-	private void SystemEvents_TimeChanged(Object sender, EventArgs e)
+//	private void SystemEvents_TimeChanged(Object sender, EventArgs e)
+//	{
+//		ILogger logger = this.Site.<ILogger>GetService();
+//		if (logger != null)
+//		{
+//			logger.LogMessage("ScheduleResourceProvider", "System time changed. Rescheduling.");
+//		}
+//
+//		this.Reschedule();
+//	}
+
+
+	protected abstract RuntimeScheduleSetting getSetting(String id);
+	protected abstract String getResourceId(ResourceParameter parameter);
+
+	public final boolean isAvailable(ResourceParameter parameter)
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		if (logger != null)
-		{
-			logger.LogMessage("ScheduleResourceProvider", "System time changed. Rescheduling.");
-		}
-
-		this.Reschedule();
-	}
-
-
-	protected abstract RuntimeScheduleSetting GetSetting(String id);
-	protected abstract String GetResourceId(ResourceParameter parameter);
-
-	public final boolean IsAvailable(ResourceParameter parameter)
-	{
-		String id = this.GetResourceId(parameter);
-		RuntimeScheduleSetting setting = this.GetSetting(id);
+		String id = this.getResourceId(parameter);
+		RuntimeScheduleSetting setting = this.getSetting(id);
 		if (setting.IsDisabledOrInPeriod(new java.util.Date()))
 		{
 			return true;
@@ -62,16 +62,16 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 
 
-	public final boolean Request(ResourceParameter parameter, RefObject<Object> resource)
+	public final boolean Request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 
 		boolean rs = false;
 		synchronized (_syncRoot)
 		{
 			resource.argvalue = null;
-			String id = this.GetResourceId(parameter);
-			RuntimeScheduleSetting setting = this.GetSetting(id);
-			Resource res = this.FindOrCreateResource(id);
+			String id = this.getResourceId(parameter);
+			RuntimeScheduleSetting setting = this.getSetting(id);
+			Resource res = this.findOrCreateResource(id);
 			if (setting.IsDisabledOrInPeriod(new java.util.Date()))
 			{
 				rs = true;
@@ -81,12 +81,16 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 		return rs;
 	}
 
-	private Resource FindOrCreateResource(String id)
+	private Resource findOrCreateResource(final String id) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			Resource rs = this._resources.Find(r => id.equals(r.Id));
+			Resource rs = new Enumerable<Resource>(this._resources).firstOrDefault(new Predicate<Resource>(){
+
+				@Override
+				public boolean evaluate(Resource obj) throws Exception {
+					return obj.getId().equals(id);
+				}});
 			if (rs == null)
 			{
 				Resource tempVar = new Resource();
@@ -105,7 +109,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 
 	private ScheduledResource CreateSchedule(String id)
 	{
-		RuntimeScheduleSetting setting = this.GetSetting(id);
+		RuntimeScheduleSetting setting = this.getSetting(id);
 		ScheduledResource tempVar = new ScheduledResource();
 		tempVar.setId(id);
 		tempVar.setScheduleSetting(setting);
@@ -119,51 +123,59 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 			{
 				if (now.compareTo(period.getStart()) < 0)
 				{
-					this.RegisterPeriodStart(rs, period);
+					this.registerPeriodStart(rs, period);
 				}
 				else
 				{
-					this.RegisterPeriodEnd(rs, period.getEnd());
+					this.registerPeriodEnd(rs, period.getEnd());
 				}
 			}
 		}
 		return rs;
 	}
 
-	private void RegisterPeriodStart(ScheduledResource schedule, Period period)
+	private void registerPeriodStart(final ScheduledResource schedule, final Period period)
 	{
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		long cookie = this._scheduleService.Register(period.getStart(), () =>
-		{
-			this.RegisterPeriodEnd(schedule, period.getEnd());
-			Thread.sleep(1);
-			this.OnAvailable();
-		}
-	   );
+		long cookie = this._scheduleService.register(period.getStart(), new Action(){
+
+			@Override
+			public void act() throws Exception {
+				RunningTimeResourceProviderBase.this.registerPeriodEnd(schedule, period.getEnd());
+				Thread.sleep(1);
+				RunningTimeResourceProviderBase.this.onAvailable();
+				
+			}}); 
+		
 		schedule.setCookie(cookie);
 
 	}
 
-	private void RegisterPeriodEnd(ScheduledResource schedule, java.util.Date endTime)
+	private void registerPeriodEnd(final ScheduledResource schedule, final java.util.Date endTime)
 	{
 
 
-		RuntimeScheduleSetting setting = schedule.getScheduleSetting();
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		long cookie = this._scheduleService.Register(endTime, () =>
-		{
-			Period period = setting.GetPeriod(endTime.AddTicks(1));
-			this.RegisterPeriodStart(schedule, period);
-			Resource res = this.FindOrCreateResource(schedule.getId());
-			this.OnRevoke(res);
-		}
-	   );
+		final RuntimeScheduleSetting setting = schedule.getScheduleSetting();
+		long cookie = this._scheduleService.register(endTime, new Action(){
+
+			@Override
+			public void act() throws Exception {
+				Period period = setting.GetPeriod(DateUtils.addMilliseconds(endTime,1));
+				RunningTimeResourceProviderBase.this.registerPeriodStart(schedule, period);
+				Resource res = RunningTimeResourceProviderBase.this.findOrCreateResource(schedule.getId());
+				ProviderRevokeArgs e = new ProviderRevokeArgs(RunningTimeResourceProviderBase.this);
+				e.setResource(res);
+				RunningTimeResourceProviderBase.this.onRevoke(e);
+				
+			}}); 
+		
+		
+	
 		schedule.setCookie(cookie);
 	}
 
 
-	protected final void Reschedule()
+	protected final void reschedule() throws Exception
 	{
 
 		boolean available = false;
@@ -174,7 +186,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 			{
 				if (schedule.getCookie() > 0)
 				{
-					_scheduleService.Unregister(schedule.getCookie());
+					_scheduleService.unregister(schedule.getCookie());
 					schedule.setCookie(0);
 				}
 			}
