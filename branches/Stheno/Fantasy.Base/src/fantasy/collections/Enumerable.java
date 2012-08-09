@@ -647,7 +647,7 @@ public  class Enumerable<T> implements Iterable<T> {
 				group = new Group<TKey, T>(key);
 				rs.put(key, group);
 			}
-			group.elements.add(element);
+			group.add(element);
 			
 			
 		}
@@ -863,6 +863,22 @@ public  class Enumerable<T> implements Iterable<T> {
 			throw new UnsupportedOperationException();
 			
 		}
+		
+		
+		
+		
+		
+	}
+    
+	
+	public boolean any()
+	{
+		return this._source.iterator().hasNext();
+	}
+	
+	public boolean any(Predicate<T> predicate)
+	{
+		return new WhereIterable(this._source, predicate).iterator().hasNext();
 	}
 
 }

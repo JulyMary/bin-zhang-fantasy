@@ -1,11 +1,11 @@
 ﻿package fantasy.jobs.resources;
 
-import Fantasy.Configuration.*;
+import fantasy.xserialization.*;
 
-public class TaskRuntimeScheduleSetting extends RunningTimeSetting
+@XSerializable(name="TaskRuntimeScheduleSetting", namespaceUri=fantasy.jobs.Consts.XNamespaceURI)
+public class TaskRunningTimeSetting extends RunningTimeSetting
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlAttribute("name")]
+	@XAttribute(name="name")
 	private String privateName;
 	public final String getName()
 	{
@@ -16,8 +16,7 @@ public class TaskRuntimeScheduleSetting extends RunningTimeSetting
 		privateName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XmlAttribute("namespace")]
+	@XAttribute(name="namespace")
 	private String privateNamespace;
 	public final String getNamespace()
 	{

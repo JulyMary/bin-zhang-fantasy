@@ -1,32 +1,40 @@
 ﻿package fantasy.jobs.resources;
 
-public class MutexResourceProvider extends ObjectWithSite implements IResourceProvider
+import org.apache.commons.lang3.StringUtils;
+
+import fantasy.collections.*;
+import fantasy.*;
+
+public class MutexResourceProvider extends ResourceProvider implements IResourceProvider
 {
 
 	private java.util.ArrayList<Resource> _allocated = new java.util.ArrayList<Resource>();
 	private Object _syncRoot = new Object();
 	private IGlobalMutexService _globalSvc;
 
-	public final boolean CanHandle(String name)
+	@Override
+	public final boolean canHandle(String name)
 	{
-		return String.equals(name, "mutex", StringComparison.OrdinalIgnoreCase);
+		return StringUtils.equalsIgnoreCase("mutex", name);
+		
 	}
 
-	public final void Initialize()
+	@Override
+	public void initialize() throws Exception
 	{
-		_globalSvc = this.Site.<IGlobalMutexService>GetService();
+		_globalSvc = this.getSite().getService(IGlobalMutexService.class);
 	}
 
-	public final boolean IsAvailable(ResourceParameter parameter)
+	public final boolean isAvailable(ResourceParameter parameter) throws Exception
 	{
 		String key = parameter.getValues().get("key");
-		boolean isGlobal = Boolean.parseBoolean(parameter.getValues().GetValueOrDefault("global", "true"));
+		boolean isGlobal = Boolean.parseBoolean(MapUtils.getValueOrDefault(parameter.getValues(), "global", "true"));
 
 		boolean globalAvaile;
 
 		if(isGlobal && _globalSvc != null)
 		{
-			globalAvaile = _globalSvc.IsAvaiable(key);
+			globalAvaile = _globalSvc.isAvaiable(key);
 		}
 		else
 		{
@@ -37,8 +45,12 @@ public class MutexResourceProvider extends ObjectWithSite implements IResourcePr
 		{
 			synchronized (_syncRoot)
 			{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				return _allocated.BinarySearchBy(key, r => r.getKey(), StringComparer.OrdinalIgnoreCase) < 0;
+				return CollectionUtils.binarySearchBy(this._allocated, key, new Selector<Resource, String>(){
+
+					@Override
+					public String select(Resource item) {
+						return item.getKey();
+					}}, String.CASE_INSENSITIVE_ORDER) < 0;
 			}
 		}
 		else
@@ -47,7 +59,13 @@ public class MutexResourceProvider extends ObjectWithSite implements IResourcePr
 		}
 	}
 
-	public final boolean Request(ResourceParameter parameter, RefObject<Object> resource)
+	
+	private long parseTimeout(String s)
+	{
+		return Long.parseLong(s);
+	}
+	
+	public final boolean request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
 	{
 		resource.argvalue = null;
 		String key = parameter.getValues().get("key");
@@ -55,20 +73,25 @@ public class MutexResourceProvider extends ObjectWithSite implements IResourcePr
 
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			int n = _allocated.BinarySearchBy(key, r => r.getKey(), StringComparer.OrdinalIgnoreCase);
+
+			int n = CollectionUtils.binarySearchBy(this._allocated, key, new Selector<Resource, String>(){
+
+				@Override
+				public String select(Resource item) {
+					return item.getKey();
+				}}, String.CASE_INSENSITIVE_ORDER);
 			if (n < 0)
 			{
 
-				boolean isGlobal = Boolean.parseBoolean(parameter.getValues().GetValueOrDefault("global", "true"));
+				boolean isGlobal = Boolean.parseBoolean(MapUtils.getValueOrDefault(parameter.getValues(), "global", "true"));
 
 				boolean globalAvaile;
 
-				TimeSpan timeout = TimeSpan.Parse(parameter.getValues().GetValueOrDefault("timeout", "00:15:00"));
+				long timeout = this.parseTimeout(MapUtils.getValueOrDefault(parameter.getValues(),"timeout", "900000"));
 
 				if (isGlobal && _globalSvc != null)
 				{
-					globalAvaile = _globalSvc.Request(key, timeout);
+					globalAvaile = _globalSvc.request(key, timeout);
 				}
 				else
 				{
@@ -99,21 +122,25 @@ public class MutexResourceProvider extends ObjectWithSite implements IResourcePr
 		}
 	}
 
-	public final void Release(Object resource)
+	public final void release(Object resource) throws Exception
 	{
 		Resource res = (Resource)resource;
 		boolean available = false;
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			int n = _allocated.BinarySearchBy(res.getKey(), r => r.getKey(), StringComparer.OrdinalIgnoreCase);
+			int n = CollectionUtils.binarySearchBy(this._allocated, res.getKey(), new Selector<Resource, String>(){
+
+				@Override
+				public String select(Resource item) {
+					return item.getKey();
+				}}, String.CASE_INSENSITIVE_ORDER);
 			if (n >= 0)
 			{
 				_allocated.remove(n);
 
 				if (res.getIsGlobal() && _globalSvc != null)
 				{
-					_globalSvc.Release(res.getKey());
+					_globalSvc.release(res.getKey());
 				}
 				available = true;
 			}
@@ -122,33 +149,12 @@ public class MutexResourceProvider extends ObjectWithSite implements IResourcePr
 
 		if (available)
 		{
-			this.OnAvailable(EventArgs.Empty);
+			this.onAvailable();
 		}
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler Available;
 
-	protected void OnAvailable(EventArgs e)
-	{
-		if (this.Available != null)
-		{
-			this.Available(this, e);
-		}
-	}
-
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<ProviderRevokeArgs> Revoke;
-
-	protected void OnRevoke(ProviderRevokeArgs e)
-	{
-		if (this.Revoke != null)
-		{
-			this.Revoke(this, e);
-		}
-	}
 
 	private static class Resource
 	{

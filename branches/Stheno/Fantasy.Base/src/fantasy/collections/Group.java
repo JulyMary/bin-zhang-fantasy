@@ -3,18 +3,19 @@ package fantasy.collections;
 import java.util.*;
 
 
-class Group<TKey, TElement> implements IGrouping<TKey, TElement>{
+class Group<TKey, TElement> extends ArrayList<TElement> implements IGrouping<TKey, TElement>{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3504824948822878657L;
 	public Group(TKey key)
 	{
 		this._key = key;
 	}
 	
-	@Override
-	public Iterator<TElement> iterator() {
-		return this.elements.iterator();
-	}
+	
 
 	private TKey _key;
 	@Override
@@ -24,15 +25,11 @@ class Group<TKey, TElement> implements IGrouping<TKey, TElement>{
 	}
 	
 	
-	ArrayList<TElement> elements = new ArrayList<TElement>();
-	@Override
-	public int count() {
-		return elements.size();
-	}
+
 
 	@Override
 	public Enumerable<TElement> toEnumerable() {
-		return new Enumerable<TElement>(this.elements);
+		return new Enumerable<TElement>(this);
 	}
 
     

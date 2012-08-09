@@ -1,21 +1,12 @@
 ﻿package fantasy.jobs.resources;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[ServiceContract(Namespace=Consts.JobServiceNamespaceURI)]
-public interface IGlobalMutexService
+import java.rmi.*;
+
+public interface IGlobalMutexService extends Remote
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	boolean IsAvaiable(String key);
+	boolean isAvaiable(String key) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	boolean Request(String key, TimeSpan timeout);
+	boolean request(String key, long timeout) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	void Release(String key);
+	void release(String key) throws Exception;
  }

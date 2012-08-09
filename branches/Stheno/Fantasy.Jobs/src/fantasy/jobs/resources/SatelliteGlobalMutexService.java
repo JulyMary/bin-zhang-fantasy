@@ -1,24 +1,36 @@
 ﻿package fantasy.jobs.resources;
 
+import java.rmi.*;
+
+import fantasy.ThreadFactory;
 import fantasy.servicemodel.*;
 
 public class SatelliteGlobalMutexService extends AbstractService implements IGlobalMutexService
 {
-	public final boolean IsAvaiable(String key)
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8898188263129690878L;
+
+	public SatelliteGlobalMutexService() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public final boolean isAvaiable(String key) throws Exception
 	{
 		boolean rs = false;
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<IGlobalMutexService> svc = ClientFactory.Create<IGlobalMutexService>())
-		ClientRef<IGlobalMutexService> svc = ClientFactory.<IGlobalMutexService>Create();
+
+		IGlobalMutexService svc = ClientFactory.create(IGlobalMutexService.class);
 		try
 		{
 			try
 			{
-				rs = svc.Client.IsAvaiable(key);
+				rs = svc.isAvaiable(key);
 			}
-			catch (RuntimeException error)
+			catch (Exception error)
 			{
-				if (!WCFExceptionHandler.CanCatch(error))
+				if (!WCFExceptionHandler.canCatch(error))
 				{
 					throw error;
 				}
@@ -30,21 +42,20 @@ public class SatelliteGlobalMutexService extends AbstractService implements IGlo
 		return rs;
 	}
 
-	public final boolean Request(String key, TimeSpan timeout)
+	public final boolean request(String key, long timeout) throws Exception
 	{
 		boolean rs = false;
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<IGlobalMutexService> svc = ClientFactory.Create<IGlobalMutexService>())
-		ClientRef<IGlobalMutexService> svc = ClientFactory.<IGlobalMutexService>Create();
+
+		IGlobalMutexService svc = ClientFactory.create(IGlobalMutexService.class);
 		try
 		{
 			try
 			{
-				rs = svc.Client.Request(key, timeout);
+				rs = svc.request(key, timeout);
 			}
 			catch (RuntimeException error)
 			{
-				if (!WCFExceptionHandler.CanCatch(error))
+				if (!WCFExceptionHandler.canCatch(error))
 				{
 					throw error;
 				}
@@ -56,38 +67,40 @@ public class SatelliteGlobalMutexService extends AbstractService implements IGlo
 		return rs;
 	}
 
-	public final void Release(String key)
+	public final void release(final String key)
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task.Factory.StartNew(() =>
-		{
-			for (int i = 0; i < 10; i++)
-			{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//				using (ClientRef<IGlobalMutexService> svc = ClientFactory.Create<IGlobalMutexService>())
-				ClientRef<IGlobalMutexService> svc = ClientFactory.<IGlobalMutexService>Create();
-				try
+
+		ThreadFactory.queueUserWorkItem(new Runnable(){
+
+			@Override
+			public void run() {
+				for (int i = 0; i < 10; i++)
 				{
 					try
 					{
-						svc.Client.Release(key);
-						break;
+						IGlobalMutexService svc = ClientFactory.create(IGlobalMutexService.class);
+						svc.release(key);
+						return;
 					}
-					catch (RuntimeException error)
+					catch (Exception error)
 					{
-						if (!WCFExceptionHandler.CanCatch(error))
+						if (!WCFExceptionHandler.canCatch(error))
 						{
-							throw error;
+							return;
+						}
+						else
+						{
+							try {
+								Thread.sleep(10 * 1000);
+							} catch (InterruptedException e) {
+								return;
+							}
 						}
 					}
+
 				}
-				finally
-				{
-				}
-				Thread.sleep(60 * 1000);
-			}
-		}
-	   );
+			}});
+
 	}
 
 }
