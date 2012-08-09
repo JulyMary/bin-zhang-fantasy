@@ -27,7 +27,7 @@ public abstract class CapacityResourceProviderBase extends ResourceProvider impl
 		for (IGrouping<String,Resource> group : query)
 		{
 			int max = getMaxCount(group.getKey());
-			int count = group.count();
+			int count = group.toEnumerable().count();
 			if (count > max)
 			{
 				for (Resource res : group.toEnumerable().reverse().take(count - max))

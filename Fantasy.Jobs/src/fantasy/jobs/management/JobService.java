@@ -1,5 +1,6 @@
 ﻿package fantasy.jobs.management;
 
+import fantasy.rmi.RmiUtils;
 import fantasy.servicemodel.AbstractService;
 import fantasy.io.*;
 import fantasy.jobs.*;
@@ -10,7 +11,6 @@ import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import fantasy.*;
-import fantasy.ThreadFactory;
 import fantasy.collections.*;
 
 import org.apache.commons.io.FileUtils;
@@ -489,6 +489,8 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 		
 		this.getQueue().addListener(this);
 		
+		RmiUtils.bind(this);
+		
 		
 		super.initializeService();
 	}
@@ -497,6 +499,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 	public void uninitializeService() throws Exception
 	{
 		super.uninitializeService();
+		RmiUtils.unbind(this);
 		this.getQueue().removeListener(this);
 	}
 
