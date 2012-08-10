@@ -1,13 +1,24 @@
 ﻿package fantasy.jobs.scheduling;
 
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+
+import org.apache.commons.lang3.time.FastDateFormat;
+
+
+import fantasy.*;
+import fantasy.collections.*;
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract, XSerializable("weeklyTrigger", NamespaceUri = Consts.ScheduleNamespaceURI)]
+@XSerializable(name = "weeklyTrigger", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
 public class WeeklyTrigger extends Trigger
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("daysOfWeek")]
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5003088522985743724L;
+
+	@XAttribute(name = "daysOfWeek")
 	private DayOfWeek[] privateDaysOfWeek;
 	public final DayOfWeek[] getDaysOfWeek()
 	{
@@ -18,8 +29,7 @@ public class WeeklyTrigger extends Trigger
 		privateDaysOfWeek = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("weeksInterval")]
+	@XAttribute(name = "weeksInterval")
 	private int privateWeeksInterval;
 	public final int getWeeksInterval()
 	{
@@ -41,15 +51,21 @@ public class WeeklyTrigger extends Trigger
 	{
 		return TriggerType.Weekly;
 	}
+	
+	private static String[] _dayNames = new DateFormatSymbols().getWeekdays();
 
 	@Override
 	protected String getTriggerTimeDescription()
 	{
-		 DateTimeFormatInfo info = DateTimeFormatInfo.GetInstance(null);
-		 java.util.Date time = new java.util.Date(this.getStartTime().Ticks);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-//C# TO JAVA CONVERTER TODO TASK: The 't' format specifier is not converted to Java:
-//ORIGINAL LINE: return string.Format("At {0:t} every {1} of every {2} {3}, starting {4:g}.",time, string.Join(",", DaysOfWeek.Select(d=>info.GetDayName(d))), WeeksInterval, WeeksInterval > 1 ? "weeks" : "week", this.StartBoundary);
-		return String.format("At %0s every %2$s of every %3$s %4$s, starting %4s.",time, DotNetToJavaStringHelper.join(",", getDaysOfWeek().Select(d=>info.GetDayName(d))), getWeeksInterval(), getWeeksInterval() > 1 ? "weeks" : "week", this.getStartBoundary());
+
+		java.util.Date time = new java.util.Date(this.getStartTime().getMilliseconds());
+		FastDateFormat tf = FastDateFormat.getTimeInstance(FastDateFormat.SHORT);
+		SimpleDateFormat sf = new SimpleDateFormat();
+		return String.format("At %1$s every %2$s of every %3$s %4$s, starting %$5s.",tf.format(time), StringUtils2.join(",", new Enumerable<DayOfWeek>(this.getDaysOfWeek()).select(new Selector<DayOfWeek, String>(){
+
+			@Override
+			public String select(DayOfWeek item) {
+				return _dayNames[item.getValue()];
+			}})), getWeeksInterval(), getWeeksInterval() > 1 ? "weeks" : "week", sf.format(this.getStartBoundary()));
 	}
 }

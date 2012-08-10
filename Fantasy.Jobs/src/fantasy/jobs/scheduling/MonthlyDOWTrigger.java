@@ -1,14 +1,26 @@
 ﻿package fantasy.jobs.scheduling;
 
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import fantasy.*;
+import fantasy.collections.*;
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract, XSerializable("monthlyDOWTrigger", NamespaceUri=Consts.ScheduleNamespaceURI)]
+@XSerializable(name = "monthlyDOWTrigger", namespaceUri=fantasy.jobs.Consts.ScheduleNamespaceURI)
 public class MonthlyDOWTrigger extends Trigger
 {
 
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6799711610222635965L;
 	@Override
 	public TriggerType getType()
 	{
@@ -22,8 +34,7 @@ public class MonthlyDOWTrigger extends Trigger
 		this.setDaysOfWeek(new DayOfWeek[0]);
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("daysOfWeek")]
+	@XAttribute(name = "daysOfWeek")
 	private DayOfWeek[] privateDaysOfWeek;
 	public final DayOfWeek[] getDaysOfWeek()
 	{
@@ -34,8 +45,7 @@ public class MonthlyDOWTrigger extends Trigger
 		privateDaysOfWeek = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("monthsOfYear")]
+	@XAttribute(name = "monthsOfYear")
 	private int[] privateMonthsOfYear;
 	public final int[] getMonthsOfYear()
 	{
@@ -46,8 +56,8 @@ public class MonthlyDOWTrigger extends Trigger
 		privateMonthsOfYear = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("runOnLastWeekOfMonth")]
+
+	@XAttribute(name = "runOnLastWeekOfMonth")
 	private boolean privateRunOnLastWeekOfMonth;
 	public final boolean getRunOnLastWeekOfMonth()
 	{
@@ -58,8 +68,8 @@ public class MonthlyDOWTrigger extends Trigger
 		privateRunOnLastWeekOfMonth = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("weeksOfMonth")]
+
+	@XAttribute(name = "weeksOfMonth")
 	private WeekOfMonth[] privateWeeksOfMonth;
 	public final WeekOfMonth[] getWeeksOfMonth()
 	{
@@ -68,17 +78,40 @@ public class MonthlyDOWTrigger extends Trigger
 	public final void setWeeksOfMonth(WeekOfMonth[] value)
 	{
 		privateWeeksOfMonth = value;
+		
+		
 	}
 
-
+	private static String[] _monthNames = new DateFormatSymbols().getMonths();
+	private static String[] _dayNames = new DateFormatSymbols().getWeekdays();
 	@Override
 	protected String getTriggerTimeDescription()
 	{
-		DateTimeFormatInfo info = DateTimeFormatInfo.GetInstance(null);
-		java.util.Date time = new java.util.Date(this.getStartTime().Ticks);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-//C# TO JAVA CONVERTER TODO TASK: The 't' format specifier is not converted to Java:
-//ORIGINAL LINE: return string.Format("At {0:t} on the {1} {2} each {3}, starting {4:g}.",time, string.Join(",", WeeksOfMonth.Select(w=>w.ToString())), string.Join(",", DaysOfWeek.Select(d=>info.GetDayName(d))), string.Join(",", MonthsOfYear.Select(m=>info.GetMonthName(m))), this.StartBoundary);
-		return String.format("At %0s on the %2$s %3$s each %4$s, starting %4s.",time, DotNetToJavaStringHelper.join(",", getWeeksOfMonth().Select(w=>w.toString())), DotNetToJavaStringHelper.join(",", getDaysOfWeek().Select(d=>info.GetDayName(d))), DotNetToJavaStringHelper.join(",", getMonthsOfYear().Select(m=>info.GetMonthName(m))), this.getStartBoundary());
+		
+		java.util.Date time = new java.util.Date(this.getStartTime().getMilliseconds());
+		FastDateFormat tf = FastDateFormat.getTimeInstance(FastDateFormat.SHORT);
+		SimpleDateFormat sf = new SimpleDateFormat();
+		
+		
+		Arrays.asList(getMonthsOfYear());
+		return String.format("At %1$s on the %2$s %3$s each %4$s, starting %5$s.",tf.format(time), 
+			StringUtils2.join(",", new Enumerable<WeekOfMonth>(getWeeksOfMonth()).select(new Selector<WeekOfMonth, String>(){
+
+			@Override
+			public String select(WeekOfMonth item) {
+				return item.name();
+			}})),
+			StringUtils2.join(",", new Enumerable<DayOfWeek>(getDaysOfWeek()).select(new Selector<DayOfWeek, String>(){
+
+			@Override
+			public String select(DayOfWeek item) {
+				return _dayNames[item.getValue()];
+			}})), 
+			StringUtils2.join(",", new Enumerable<Integer>(ArrayUtils.toObject(this.getMonthsOfYear())).select(new Selector<Integer, String>(){
+
+			@Override
+			public String select(Integer month) {
+				return _monthNames[month- 1];
+			}})), sf.format(this.getStartBoundary()));
 	}
 }

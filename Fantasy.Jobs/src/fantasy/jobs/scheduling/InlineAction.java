@@ -6,9 +6,13 @@ import fantasy.xserialization.*;
 import org.jdom2.*;
 
 @XSerializable(name = "inlineAction", namespaceUri=fantasy.jobs.Consts.ScheduleNamespaceURI)
-public class InlineAction extends Action implements IXSerializable
+public class InlineAction extends ScheduleAction implements IXSerializable
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8523615810849076491L;
 	@Override
 	public ActionType getType()
 	{

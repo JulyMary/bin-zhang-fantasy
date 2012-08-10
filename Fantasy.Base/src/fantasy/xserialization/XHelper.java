@@ -3,10 +3,10 @@ import java.util.*;
 
 
 import org.jdom2.*;
-import org.joda.time.*;
 
 import fantasy.IServiceProvider;
 import fantasy.ITypeConverter;
+import fantasy.TimeSpan;
 @SuppressWarnings("rawtypes")
 public class XHelper
 {
@@ -26,7 +26,7 @@ public class XHelper
 		this._converters.add(new Type2Converter(Date.class, new XDateTimeConverter()));
 		this._converters.add(new Type2Converter(UUID.class, new XUUIDConverter()));
 		
-		this._converters.add(new Type2Converter(Interval.class, new DurationConverter()));
+		this._converters.add(new Type2Converter(TimeSpan.class, new TimeSpanConverter()));
 		
 
 	}

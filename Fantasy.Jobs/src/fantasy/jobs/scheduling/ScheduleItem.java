@@ -1,18 +1,28 @@
 ﻿package fantasy.jobs.scheduling;
 
+import java.io.Serializable;
+
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract, KnownType(typeof(TimeTrigger)), KnownType(typeof(DailyTrigger)), KnownType(typeof(WeeklyTrigger)), KnownType(typeof(MonthlyTrigger)), KnownType(typeof(MonthlyDOWTrigger)), KnownType(typeof(TemplateAction)), KnownType(typeof(InlineAction)), KnownType(typeof(CustomAction)), XSerializable("schedule", NamespaceUri = Consts.ScheduleNamespaceURI)]
-public class ScheduleItem extends IXSerializable
+import fantasy.*;
+
+import org.jdom2.*;
+
+
+@XSerializable(name = "schedule", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
+public class ScheduleItem implements IXSerializable, Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9064456907115551404L;
 	public ScheduleItem()
 	{
 
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("name")]
+
+	@XAttribute(name = "name")
 	private String privateName;
 	public final String getName()
 	{
@@ -23,8 +33,7 @@ public class ScheduleItem extends IXSerializable
 		privateName = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("author")]
+	@XAttribute(name = "author")
 	private String privateAuthor;
 	public final String getAuthor()
 	{
@@ -35,8 +44,7 @@ public class ScheduleItem extends IXSerializable
 		privateAuthor = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("description")]
+    @XAttribute(name = "description")
 	private String privateDescription;
 	public final String getDescription()
 	{
@@ -47,8 +55,7 @@ public class ScheduleItem extends IXSerializable
 		privateDescription = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("enabled")]
+    @XAttribute(name = "enabled")
 	private boolean privateEnabled;
 	public final boolean getEnabled()
 	{
@@ -59,8 +66,6 @@ public class ScheduleItem extends IXSerializable
 		privateEnabled = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
 	private Trigger privateTrigger;
 	public final Trigger getTrigger()
 	{
@@ -71,20 +76,17 @@ public class ScheduleItem extends IXSerializable
 		privateTrigger = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
-	private Action privateAction;
-	public final Action getAction()
+	private ScheduleAction privateAction;
+	public final ScheduleAction getAction()
 	{
 		return privateAction;
 	}
-	public final void setAction(Action value)
+	public final void setAction(ScheduleAction value)
 	{
 		privateAction = value;
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("priority")]
+    
+	@XAttribute(name = "priority")
 	private int privatePriority;
 	public final int getPriority()
 	{
@@ -95,8 +97,7 @@ public class ScheduleItem extends IXSerializable
 		privatePriority = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("restartOnFailure")]
+    @XAttribute(name = "restartOnFailure")
 	private Restart privateRestartOnFailure;
 	public final Restart getRestartOnFailure()
 	{
@@ -107,20 +108,9 @@ public class ScheduleItem extends IXSerializable
 		privateRestartOnFailure = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XArray(Name = "requiredUncPath"), XArrayItem(Name = "unc", java.lang.Class = typeof(UncPath))]
-	private UncPath[] privateRequiredUncPths;
-	public final UncPath[] getRequiredUncPths()
-	{
-		return privateRequiredUncPths;
-	}
-	public final void setRequiredUncPths(UncPath[] value)
-	{
-		privateRequiredUncPths = value;
-	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("runOnlyIfIdle")]
+
+	@XAttribute(name = "runOnlyIfIdle")
 	private boolean privateRunOnlyIfIdle;
 	public final boolean getRunOnlyIfIdle()
 	{
@@ -131,8 +121,7 @@ public class ScheduleItem extends IXSerializable
 		privateRunOnlyIfIdle = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("startWhenAvailable")]
+	@XAttribute(name = "startWhenAvailable")
 	private boolean privateStartWhenAvailable;
 	public final boolean getStartWhenAvailable()
 	{
@@ -143,21 +132,19 @@ public class ScheduleItem extends IXSerializable
 		privateStartWhenAvailable = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember]
-	private String privateCustomParams;
-	public final String getCustomParams()
+	@XElement(name = "custom")
+	private Element privateCustomParams;
+	public final Element getCustomParams()
 	{
 		return privateCustomParams;
 	}
-	public final void setCustomParams(String value)
+	public final void setCustomParams(Element value)
 	{
 		privateCustomParams = value;
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("multipleInstances")]
+    @XAttribute(name = "multipleInstances")
 	private InstancesPolicy privateMultipleInstance = InstancesPolicy.forValue(0);
 	public final InstancesPolicy getMultipleInstance()
 	{
@@ -168,9 +155,7 @@ public class ScheduleItem extends IXSerializable
 		privateMultipleInstance = value;
 	}
 
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("expired")]
+    @XAttribute(name = "expired")
 	private boolean privateExpired;
 	public final boolean getExpired()
 	{
@@ -181,8 +166,7 @@ public class ScheduleItem extends IXSerializable
 		privateExpired = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("deleteAfterExpired")]
+	@XAttribute(name = "deleteAfterExpired")
 	private boolean privateDeleteAfterExpired;
 	public final boolean getDeleteAfterExpired()
 	{
@@ -193,28 +177,24 @@ public class ScheduleItem extends IXSerializable
 		privateDeleteAfterExpired = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IXSerializable Members
 
-	private void Load(IServiceProvider context, XElement element)
+	@SuppressWarnings("rawtypes")
+	@Override
+	public void Load(IServiceProvider context, Element element) throws Exception
 	{
-		XHelper.Default.LoadByXAttributes(context, element, this);
+		XHelper.getDefault().LoadByXAttributes(context, element, this);
+		
+		
+		Namespace ns = Namespace.getNamespace(fantasy.jobs.Consts.ScheduleNamespaceURI);
 
-		XmlNamespaceManager nm = new XmlNamespaceManager(new NameTable());
-		nm.AddNamespace("s", Consts.ScheduleNamespaceURI);
-
-		XElement customParams = element.XPathSelectElement("s:custom", nm);
-		if (customParams != null)
-		{
-			this.setCustomParams(customParams.toString());
-		}
+	
 
 
-		XElement triggerElement = element.XPathSelectElement("s:trigger", nm);
+		Element triggerElement = element.getChild("trigger", ns);
 		if (triggerElement != null)
 		{
 			java.lang.Class type;
-			TriggerType triggerType = TriggerType.valueOf((String)triggerElement.Attribute("type"));
+			TriggerType triggerType = TriggerType.valueOf((String)triggerElement.getAttributeValue("type"));
 			switch (triggerType)
 			{
 				case Time:
@@ -236,16 +216,16 @@ public class ScheduleItem extends IXSerializable
 					throw new RuntimeException("Absurd!");
 			}
 			XSerializer ser = new XSerializer(type);
-			ser.Context = context;
-			this.setTrigger((Trigger)ser.Deserialize(triggerElement));
+			ser.setContext(context);
+			this.setTrigger((Trigger)ser.deserialize(triggerElement));
 
 		}
 
-		XElement actionElement = element.XPathSelectElement("s:action", nm);
+		Element actionElement = element.getChild("action", ns);
 		if (actionElement != null)
 		{
 			java.lang.Class type;
-			ActionType actionType = ActionType.valueOf((String)actionElement.Attribute("type"));
+			ActionType actionType = ActionType.valueOf((String)actionElement.getAttributeValue("type"));
 			switch (actionType)
 			{
 				case Template:
@@ -260,47 +240,39 @@ public class ScheduleItem extends IXSerializable
 				default:
 					throw new RuntimeException("absurd!");
 			}
-			XSerializer tempVar = new XSerializer(type);
-			tempVar.Context = context;
-			XSerializer ser = tempVar;
-			this.setAction((Action)ser.Deserialize(actionElement));
+			XSerializer ser = new XSerializer(type);
+			ser.setContext(context);
+		
+			this.setAction((ScheduleAction)ser.deserialize(actionElement));
 		}
 	}
 
-	private void Save(IServiceProvider context, XElement element)
+	@Override
+	public void Save(IServiceProvider context, Element element) throws Exception
 	{
-		XHelper.Default.SaveByXAttributes(context, element, this);
-		XNamespace ns = Consts.ScheduleNamespaceURI;
+		XHelper.getDefault().SaveByXAttributes(context, element, this);
+		Namespace ns = Namespace.getNamespace(fantasy.jobs.Consts.ScheduleNamespaceURI);
 
 		if (this.getTrigger() != null)
 		{
-			XElement triggerElement = new XElement(ns + "trigger");
-			element.Add(triggerElement);
-			XSerializer tempVar = new XSerializer(this.getTrigger().getClass());
-			tempVar.Context = context;
-			XSerializer ser = tempVar;
-			triggerElement.SetAttributeValue("type", this.getTrigger().getType().toString());
-			ser.Serialize(triggerElement, this.getTrigger());
+			Element triggerElement = new Element("trigger", ns);
+			element.addContent(triggerElement);
+			XSerializer ser = new XSerializer(this.getTrigger().getClass());
+			ser.setContext(context);
+			
+			triggerElement.setAttribute("type", this.getTrigger().getType().name());
+			ser.serialize(triggerElement, this.getTrigger());
 		}
 
 		if (this.getAction() != null)
 		{
-			XElement actionElement = new XElement(ns + "action");
-			element.Add(actionElement);
-			XSerializer tempVar2 = new XSerializer(this.getAction().getClass());
-			tempVar2.Context = context;
-			XSerializer ser = tempVar2;
-			actionElement.SetAttributeValue("type", this.getAction().getType().toString());
-			ser.Serialize(actionElement, this.getAction());
+			Element actionElement = new Element(ns + "action");
+			element.addContent(actionElement);
+			XSerializer ser = new XSerializer(this.getAction().getClass());
+			ser.setContext(context);
+			actionElement.setAttribute("type", this.getAction().getType().name());
+			ser.serialize(actionElement, this.getAction());
 		}
-
-		if (this.getCustomParams() != null)
-		{
-			element.Add(XElement.Parse(this.getCustomParams()));
-		}
-
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

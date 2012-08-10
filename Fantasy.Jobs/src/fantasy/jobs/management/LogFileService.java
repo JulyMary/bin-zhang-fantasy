@@ -6,7 +6,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.rmi.RemoteException;
-import org.joda.time.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import org.apache.commons.lang3.time.DateUtils;
+
 
 import fantasy.io.*;
 
@@ -19,10 +24,12 @@ public class LogFileService extends fantasy.servicemodel.LogFileService {
 	public LogFileService() throws RemoteException {
 		super();
 		
+		this._loggingDate = DateUtils.truncate(new Date(), Calendar.DATE);
+		
 	}
 
 	private OutputStreamWriter _writer = null;
-	private LocalDate _loggingDate = new LocalDate(0l);
+	private Date _loggingDate;
 	private String _directory;
 
 	@Override
@@ -53,15 +60,23 @@ public class LogFileService extends fantasy.servicemodel.LogFileService {
 	@Override
 	protected OutputStreamWriter getWriter() throws Exception {
 
-		if (!_loggingDate.equals(new LocalDate()) && _writer != null) {
+		Date today = DateUtils.truncate(new Date(), Calendar.DATE);
+		
+		if (!_loggingDate.equals(today) && _writer != null) {
 			_writer.close();
 			_writer = null;
 		}
 
+		
+		
+		
 		if (_writer == null) {
-			this._loggingDate = new LocalDate();
+			this._loggingDate = today;
+			
+			SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+			
 			String filename = String.format("%1$s\\%2$s.xlog", _directory,
-					this._loggingDate.toString("yyyy-MM-dd"));
+					fmt.format(this._loggingDate));
 			OutputStream os = Files.newOutputStream(Paths.get(filename), StandardOpenOption.APPEND, StandardOpenOption.CREATE);
 			this._writer = new OutputStreamWriter(os, this.getCharset());
 		}

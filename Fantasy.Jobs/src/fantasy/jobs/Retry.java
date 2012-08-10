@@ -1,7 +1,7 @@
 ﻿package fantasy.jobs;
 
-import org.joda.time.Duration;
 
+import fantasy.*;
 import fantasy.xserialization.*;
 import fantasy.jobs.properties.Resources;
 import fantasy.servicemodel.*;
@@ -26,7 +26,7 @@ public class Retry extends Sequence
 		IStringParser parser = this.getSite().getRequiredService(IStringParser.class);
 		int count = Integer.parseInt(parser.Parse(this.Count));
 		int times = job.getRuntimeStatus().getLocal().GetValue("retry.times", 0);
-		Duration sleep = Duration.parse(parser.Parse(this.Sleep));
+		TimeSpan sleep = TimeSpan.parse(parser.Parse(this.Sleep));
 		while (times < count && !success)
 		{
 
@@ -53,7 +53,7 @@ public class Retry extends Sequence
 						job.getRuntimeStatus().getLocal().setItem("sequence.current", 0);
 						Log.SafeLogError(logger, LogCategories.getInstruction(), error, Resources.getRetryLaterMessage());
 						
-						if (sleep.isLongerThan(Duration.ZERO))
+						if (sleep.isGreaterThan(TimeSpan.Zero))
 						{
 						   engine.Sleep(sleep);
 						}

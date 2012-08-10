@@ -2,10 +2,10 @@
 
 import java.util.*;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
+import org.apache.commons.lang3.time.DateUtils;
 
+
+import fantasy.TimeSpan;
 import fantasy.xserialization.*;
 
 @XSerializable(name="runningTimeSchedule", namespaceUri=fantasy.jobs.Consts.XNamespaceURI)
@@ -113,7 +113,7 @@ public class RunningTimeSetting
 	}
 
 
-    private long MILLIS_PER_DAY = 24 * 60 * 60 * 1000; 
+   
 
 
 	public final boolean IsDisabledOrInPeriod(java.util.Date datetime)
@@ -128,10 +128,10 @@ public class RunningTimeSetting
 			DayRunningTimeSetting settings = this.getDaySettings()[cal.get(Calendar.DAY_OF_WEEK)];
 			if (settings != null)
 			{
-				long time = datetime.getTime() % MILLIS_PER_DAY;
+				TimeSpan time = TimeSpan.timeOfDay(datetime);
 				for (TimeOfDayPeriod period : settings.getPeriods())
 				{
-					if (time >= period.getStart().toStandardDuration().getMillis() && time <= period.getEnd().toStandardDuration().getMillis())
+					if (time.isGreaterThanOrEqual(period.getStart()) && time.isLessThanOrEqual(period.getEnd()))
 					{
 						return true;
 					}
@@ -186,25 +186,30 @@ public class RunningTimeSetting
 
 	private Iterable<Period> GetPeriods(java.util.Date baseTime)
 	{
-		DateTime dt = new DateTime(baseTime.getTime());
-		LocalDate baseDay = dt.toLocalDate();
+		
+		Date baseDay = DateUtils.truncate(baseTime, Calendar.DATE);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(baseDay);
 
+		int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+		
 	    ArrayList<Period> rs = new ArrayList<Period>();
 		
 		for (int i = 0; i < 7; i++)
 		{
-			DayRunningTimeSetting settings = this.getDaySettings()[(dt.getDayOfWeek() + i) % 7];
+			DayRunningTimeSetting settings = this.getDaySettings()[(dayOfWeek + i) % 7];
 			if (settings != null)
 			{
-				LocalDate day = baseDay.plusDays(1);
+				Date day = DateUtils.addDays(baseDay, 1);
 				for (TimeOfDayPeriod tp : settings.getPeriods())
 				{
-					DateTime end = day.toDateTime(LocalTime.fromMillisOfDay(tp.getEnd().toStandardDuration().getMillis()));
-					if (end.compareTo(dt) > 0)
+					Date end = TimeSpan.add(day, tp.getEnd());
+					if (end.compareTo(baseTime) > 0)
 					{
 						Period tempVar = new Period();
-						tempVar.setStart(day.toDateTime(LocalTime.fromMillisOfDay(tp.getStart().toStandardDuration().getMillis())).toDate());
-						tempVar.setEnd(end.toDate());
+						tempVar.setStart(TimeSpan.add(day, tp.getStart()));
+						tempVar.setEnd(end);
 						rs.add(tempVar);
 					}
 				}
