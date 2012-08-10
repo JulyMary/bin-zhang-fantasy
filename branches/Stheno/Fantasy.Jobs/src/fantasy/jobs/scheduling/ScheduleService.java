@@ -1,39 +1,66 @@
 ﻿package fantasy.jobs.scheduling;
 
-import Fantasy.ServiceModel.*;
+import java.rmi.RemoteException;
+import java.util.*;
+
+import fantasy.Action;
+import fantasy.ThreadFactory;
+import fantasy.collections.*;
+
+import fantasy.servicemodel.*;
 
 public class ScheduleService extends AbstractService implements IScheduleService
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4069536653163338614L;
+
+	public ScheduleService() throws RemoteException {
+		super();
+		
+	}
+
+
+
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
 
-		this._logger = this.Site.<ILogger>GetService();
-		_workTread = ThreadFactory.CreateThread(this.Scheduling).WithStart();
+		this._logger = this.getSite().getService(ILogger.class);
+		_workTread = ThreadFactory.createAndStart(new Runnable(){
 
-
-
-		super.InitializeService();
+			@Override
+			public void run() {
+				try {
+					Scheduling();
+				} catch (Exception e) {
+					
+				}
+				
+			}});
+		
+		super.initializeService();
 	}
 
 	private ILogger _logger;
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
-		super.UninitializeService();
+		super.uninitializeService();
+		_workTread.interrupt();
 	}
 
 
 
-	private void Scheduling()
+	private void Scheduling() throws Exception
 	{
 
-		ThreadTaskScheduler taskScheduler = new ThreadTaskScheduler(20);
-		TaskFactory taskfactory = new TaskFactory(taskScheduler);
-		try
-		{
+	
+		
+		  
 			do
 			{
 
@@ -52,41 +79,44 @@ public class ScheduleService extends AbstractService implements IScheduleService
 					}
 					if (action != null)
 					{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-						taskfactory.StartNew((a) =>
-						{
-							try
-							{
-								((ScheduledAction)a).Action();
-							}
-							catch (ThreadAbortException e)
-							{
-							}
-							catch (RuntimeException err)
-							{
-								if (_logger != null)
+						final ScheduledAction act2 = action;
+						
+						ThreadFactory.queueUserWorkItem(new Runnable(){
+
+							@Override
+							public void run() {
+								try
 								{
-									_logger.LogError("Schedule", err, "An exception was thrown when executed a scheduled action.");
+								act2.Action.act();
 								}
-							}
-						}
-					   , action);
+								catch(InterruptedException e)
+								{
+									
+								}
+								catch(Exception error)
+								{
+									if (_logger != null)
+									{
+										_logger.LogError("Schedule", error, "An exception was thrown when executed a scheduled action.");
+									}
+								}
+								
+							}});
+						
+						
 					}
 
-				} while (action != null);
+				}while (action != null);
 
 
 				Thread.sleep(1000);
 
-			} while (true);
-		}
-		finally
-		{
-			taskScheduler.AbortAll(false, TimeSpan.Zero);
-		}
+			}while (true);
+		
+		
 	}
 
-	public final long Register(java.util.Date timeToExecute, System.Action action)
+	public final long register(java.util.Date timeToExecute, Action action)
 	{
 
 		synchronized (_syncRoot)
@@ -97,8 +127,12 @@ public class ScheduleService extends AbstractService implements IScheduleService
 			tempVar.Action = action;
 			ScheduledAction item = tempVar;
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			int pos = _queue.BinarySearchBy(timeToExecute, i => i.TimeToExecute);
+			int pos =  CollectionUtils.binarySearchBy(_queue, timeToExecute,  new Selector<ScheduledAction, Date>(){
+
+				@Override
+				public Date select(ScheduledAction item) {
+					return item.TimeToExecute;
+				}});
 			if (pos < 0)
 			{
 				pos = ~pos;
@@ -110,12 +144,16 @@ public class ScheduleService extends AbstractService implements IScheduleService
 		}
 	}
 
-	public final void Unregister(long cookie)
+	public final void unregister(final long cookie) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			ScheduledAction item = _queue.Find(i => i.Cookie == cookie);
+			ScheduledAction item = new Enumerable<ScheduledAction>(_queue).firstOrDefault(new Predicate<ScheduledAction>(){
+
+				@Override
+				public boolean evaluate(ScheduledAction obj) throws Exception {
+					return obj.Cookie == cookie;
+				}});  
 			if (item != null)
 			{
 				_queue.remove(item);
@@ -125,7 +163,6 @@ public class ScheduleService extends AbstractService implements IScheduleService
 	}
 
 	private Thread _workTread;
-   // private AutoResetEvent _waitHandle = new AutoResetEvent(false);
 	private long _seed = 0;
 
 	private java.util.ArrayList<ScheduledAction> _queue = new java.util.ArrayList<ScheduledAction>();
@@ -137,7 +174,7 @@ public class ScheduleService extends AbstractService implements IScheduleService
 	{
 		public long Cookie;
 		public java.util.Date TimeToExecute = new java.util.Date(0);
-		public System.Action Action;
+		public fantasy.Action Action;
 	}
 
 

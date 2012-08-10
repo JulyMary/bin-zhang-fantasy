@@ -1,8 +1,6 @@
 ﻿package fantasy.jobs.resources;
 
 import java.text.ParseException;
-import java.util.regex.*;
-
 import org.jdom2.Element;
 import fantasy.IServiceProvider;
 import fantasy.xserialization.*;
@@ -48,41 +46,29 @@ public class DayRunningTimeSetting implements IXSerializable
 
 
 
-	private static final Pattern _timeSpanRegex = Pattern.compile("^\\s*(?<h>\\d{1,2}):(?<m>\\d{1,2}):(?<s>\\d{1,2})\\s*$");
-	private static final org.joda.time.Period _oneDay = org.joda.time.Period.days(1);
-	private org.joda.time.Period paseDuration(String text) throws Exception
+	private static final TimeSpan _oneDay = TimeSpan.fromDays(1);
+	private TimeSpan paseDuration(String text) throws Exception
 	{
-		Matcher match = _timeSpanRegex.matcher(text);
-		if (match.lookingAt())
+
+		TimeSpan rs = TimeSpan.parse(text);
+
+		if (rs.isGreaterThan(_oneDay))
 		{
-			int h = Integer.parseInt(match.group("h"));
-			int m = Integer.parseInt(match.group("m"));
-			int s = Integer.parseInt(match.group("s"));
-
-			org.joda.time.Period rs = org.joda.time.Period.hours(h).withMinutes(m).withSeconds(s);
-
-			if (rs.toStandardDuration().isLongerThan(_oneDay.toStandardDuration()))
-			{
-				throw new ParseException("Period time must between 00:00:00 to 24:00:00", 0);
-			}
-
-			return rs;
-
+			throw new ParseException("Period time must between 00:00:00 to 24:00:00", 0);
 		}
-		else
-		{
-			throw new  ParseException("Invalid period time format.", 0);
-		}
+
+		return rs;
+
 	}
 
-	
+
 	@Override
 	public void Load(IServiceProvider context, Element element)
 			throws Exception {
 
-       String value = element.getTextTrim();
-       
-       if (!StringUtils2.isNullOrWhiteSpace(value))
+		String value = element.getTextTrim();
+
+		if (!StringUtils2.isNullOrWhiteSpace(value))
 		{
 			for (String periodText : StringUtils2.split(value, ";",true))
 			{
@@ -101,7 +87,7 @@ public class DayRunningTimeSetting implements IXSerializable
 
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -114,9 +100,11 @@ public class DayRunningTimeSetting implements IXSerializable
 			{
 				text.append(';');
 			}
-			text.append(String.format("%02d:%1.2d:%2.2d-%3.2d:%4.2d:%5.2d", period.getStart().getDays() * 24 + period.getStart().getHours(), period.getStart().getMinutes(), period.getStart().getSeconds(), period.getEnd().getDays() * 24 + period.getEnd().getHours(), period.getEnd().getMinutes(), period.getEnd().getSeconds()));
+			text.append(period.getStart());
+			text.append("-");
+			text.append(period.getEnd());
 		}
 		element.setText(text.toString());
-		
+
 	}
 }

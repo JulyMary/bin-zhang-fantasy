@@ -1,20 +1,28 @@
 ﻿package fantasy.jobs.scheduling;
 
+import java.util.Calendar;
+
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import fantasy.TimeSpan;
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract(Name="Time"), XSerializable("timeTrigger", NamespaceUri = Consts.ScheduleNamespaceURI)]
+@XSerializable(name = "timeTrigger", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
 public class TimeTrigger extends Trigger
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6686895968828707760L;
 	public TimeTrigger()
 	{
-		this.setDate(new java.util.Date().Date);
+		this.setDate(DateUtils.truncate(new java.util.Date(), Calendar.DATE));
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("date")]
-	private java.util.Date privateDate = new java.util.Date(0);
+    @XAttribute(name = "date")
+	private java.util.Date privateDate;
 	public final java.util.Date getDate()
 	{
 		return privateDate;
@@ -35,9 +43,10 @@ public class TimeTrigger extends Trigger
 	@Override
 	protected String getTriggerTimeDescription()
 	{
-		java.util.Date t = this.getDate() + this.getStartTime();
-//C# TO JAVA CONVERTER TODO TASK: The 't' format specifier is not converted to Java:
-//ORIGINAL LINE: return string.Format("At {0:t} on {0:d}.", t);
-		return String.format("At %0s on %d.", t);
+		java.util.Date t = TimeSpan.add(this.getDate(), this.getStartTime());
+		
+		FastDateFormat tf = FastDateFormat.getTimeInstance(FastDateFormat.SHORT);
+		FastDateFormat df = FastDateFormat.getDateInstance(FastDateFormat.SHORT);
+		return String.format("At %1$s on %2$s.", tf.format(t), df.format(t));
 	}
 }

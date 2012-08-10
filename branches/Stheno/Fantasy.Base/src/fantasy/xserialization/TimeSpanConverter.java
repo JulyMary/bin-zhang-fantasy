@@ -1,11 +1,11 @@
 package fantasy.xserialization;
 
-import org.joda.time.Duration;
+
 
 import fantasy.*;
 
 @SuppressWarnings("rawtypes") 
-public class DurationConverter implements ITypeConverter {
+public class TimeSpanConverter implements ITypeConverter {
 
 	@Override
 	public Object convertFrom(Object value) throws Exception {
@@ -15,7 +15,7 @@ public class DurationConverter implements ITypeConverter {
 	@Override
 	public Object convertTo(Object value, Class destinationType)
 			throws Exception {
-		return Duration.parse((String)value);
+		return TimeSpan.parse((String)value);
 	}
 
 }

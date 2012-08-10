@@ -1,13 +1,22 @@
 ﻿package fantasy.jobs.scheduling;
 
-import fantasy.xserialization.*;
+import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract, XSerializable("monthlyTrigger", NamespaceUri=Consts.ScheduleNamespaceURI)]
+import org.apache.commons.lang3.time.FastDateFormat;
+
+import fantasy.xserialization.*;
+import fantasy.*;
+
+@XSerializable(name = "monthlyTrigger", namespaceUri=fantasy.jobs.Consts.ScheduleNamespaceURI)
 public class MonthlyTrigger extends Trigger
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("daysOfMonth")]
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6883477019001524142L;
+	@XAttribute(name = "daysOfMonth")
 	private int[] privateDaysOfMonth;
 	public final int[] getDaysOfMonth()
 	{
@@ -18,8 +27,7 @@ public class MonthlyTrigger extends Trigger
 		privateDaysOfMonth = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("monthsOfYear")]
+    @XAttribute(name = "monthsOfYear")
 	private int[] privateMonthsOfYear;
 	public final int[] getMonthsOfYear()
 	{
@@ -30,8 +38,7 @@ public class MonthlyTrigger extends Trigger
 		privateMonthsOfYear = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("runOnLastDayOfMonth")]
+    @XAttribute(name = "runOnLastDayOfMonth")
 	private boolean privateRunOnLastDayOfMonth;
 	public final boolean getRunOnLastDayOfMonth()
 	{
@@ -57,37 +64,42 @@ public class MonthlyTrigger extends Trigger
 	}
 
 
-	private Iterable<String> DayNames()
+	private Iterable<String> getDayNames()
 	{
+		
+		ArrayList<String> rs = new ArrayList<String>();
 		for (int d : getDaysOfMonth())
 		{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-			yield return (new Integer(d)).toString();
+
+			rs.add(new Integer(d).toString());
 		}
 
 		if (this.getRunOnLastDayOfMonth())
 		{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-			yield return "last";
+			rs.add("last");
 		}
+		
+		return rs;
 	}
+	
+	private static String[] _monthNames = new DateFormatSymbols().getMonths();
 
-	private Iterable<String> MonthNames()
+	private Iterable<String> getMonthNames()
 	{
-		DateTimeFormatInfo info = DateTimeFormatInfo.GetInstance(null);
+		ArrayList<String> rs = new ArrayList<String>();
 		for (int m : getMonthsOfYear())
 		{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-			yield return info.GetMonthName(m);
+			rs.add(_monthNames[m - 1]);
 		}
+		return rs;
 	}
 
 	@Override
 	protected String getTriggerTimeDescription()
 	{
-		java.util.Date time = new java.util.Date(this.getStartTime().Ticks);
-//C# TO JAVA CONVERTER TODO TASK: The 't' format specifier is not converted to Java:
-//ORIGINAL LINE: return string.Format("At {0:t} on day {1} of {2}, starting {3:g}.",time, string.Join(",", DayNames()),string.Join(",", MonthNames()), this.StartBoundary);
-		return String.format("At %0s on day %2$s of %3$s, starting %3s.",time, DotNetToJavaStringHelper.join(",", DayNames()),DotNetToJavaStringHelper.join(",", MonthNames()), this.getStartBoundary());
+		java.util.Date time = new java.util.Date((long)this.getStartTime().getTotalMilliseconds());
+		FastDateFormat tf = FastDateFormat.getTimeInstance(FastDateFormat.SHORT);
+		SimpleDateFormat sf = new SimpleDateFormat();
+		return String.format("At %1$s on day %2$s of %3$s, starting %4$s.",tf.format(time), StringUtils2.join(",", getDayNames()),StringUtils2.join(",", getMonthNames()), sf.format(this.getStartBoundary()));
 	}
 }

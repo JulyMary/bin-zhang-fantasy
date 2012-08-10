@@ -1,12 +1,18 @@
 ﻿package fantasy.jobs.scheduling;
 
-import fantasy.xserialization.*;
-import Fantasy.Jobs.Management.*;
-import Fantasy.ServiceModel.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[XSerializable("schedule.data", NamespaceUri = Consts.ScheduleNamespaceURI)]
-public class ScheduleData extends ObjectWithSite
+import org.apache.commons.lang3.time.DateUtils;
+
+import fantasy.*;
+import fantasy.xserialization.*;
+import fantasy.jobs.management.*;
+import fantasy.servicemodel.*;
+
+@XSerializable(name = "schedule.data", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
+class ScheduleData extends ObjectWithSite
 {
 	public ScheduleData()
 	{
@@ -15,17 +21,15 @@ public class ScheduleData extends ObjectWithSite
 		this.NextRunTime = null;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("executedCount")]
+	@XAttribute(name = "executedCount")
 	public int ExecutedCount;
 
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("name")]
+	@XAttribute(name = "name")
 	public String Name = null;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XArray(Name = "history"), XArrayItem(java.lang.Class = typeof(ScheduleEvent), Name = "event")]
+
+	@XArray(name = "history", items= @XArrayItem(type = ScheduleEvent.class, name = "event"))
 	private java.util.ArrayList<ScheduleEvent> privateHistory;
 	public final java.util.ArrayList<ScheduleEvent> getHistory()
 	{
@@ -36,15 +40,13 @@ public class ScheduleData extends ObjectWithSite
 		privateHistory = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("nextRunTime")]
+    @XAttribute(name = "nextRunTime")
 	public java.util.Date NextRunTime = null;
 
 
 	private java.util.Date _lastRunTime;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[XAttribute("expired")]
+	@XAttribute(name = "expired")
 	public boolean Expired = false;
 
 	private ScheduleItem privateScheduleItem;
@@ -67,8 +69,6 @@ public class ScheduleData extends ObjectWithSite
 		privateScheduleCookie = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region Trig time evaluation
 	public final boolean OnLoad()
 	{
 		boolean rs = false;
@@ -93,10 +93,10 @@ public class ScheduleData extends ObjectWithSite
 
 		_lastRunTime = this.NextRunTime;
 		java.util.Date rs = null;
+		Date now = new Date();
 
 		if (this.getScheduleItem().getTrigger() != null)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Comparisons involving nullable type instances are not converted to null-value logic:
 			if (getScheduleItem().getTrigger().getExecutionTimeLimit() != null && ExecutedCount >= getScheduleItem().getTrigger().getExecutionTimeLimit())
 			{
 				rs = null;
@@ -108,17 +108,17 @@ public class ScheduleData extends ObjectWithSite
 
 				if (getScheduleItem().getStartWhenAvailable())
 				{
-					baseTime = _lastRunTime != null ? _lastRunTime.getValue().AddTicks(1) : getScheduleItem().getTrigger().getStartBoundary();
+					baseTime = _lastRunTime != null ? DateUtils.addMilliseconds(_lastRunTime, 1) : getScheduleItem().getTrigger().getStartBoundary();
 				}
 				else
 				{
-					if (_lastRunTime == null || new java.util.Date() > _lastRunTime)
+					if (_lastRunTime == null || now.compareTo(_lastRunTime) > 0)
 					{
-						baseTime = new java.util.Date();
+						baseTime = now;
 					}
 					else
 					{
-						baseTime = _lastRunTime.getValue().AddTicks(1);
+						baseTime = DateUtils.addMilliseconds(_lastRunTime, 1);
 					}
 				}
 
@@ -166,18 +166,18 @@ public class ScheduleData extends ObjectWithSite
 		Trigger trigger = getScheduleItem().getTrigger();
 		Repetition repetition = trigger.getRepetition();
 		TimeSpan startTime = getScheduleItem().getTrigger().getStartTime();
-		if (baseTime.argvalue.TimeOfDay <= startTime)
+		if (TimeSpan.timeOfDay(baseTime.argvalue).isLessThanOrEqual(startTime))
 		{
-			baseTime.argvalue = baseTime.argvalue.Date + startTime;
+			baseTime.argvalue = startTime.add(DateUtils2.getDate(baseTime.argvalue));
 			rs = true;
 		}
-		else if (repetition != null && repetition.getInterval() > TimeSpan.Zero)
+		else if (repetition != null && repetition.getInterval().isGreaterThan(TimeSpan.Zero))
 		{
 			TimeSpan boundary = new TimeSpan();
 			if (repetition.getDuration() != null)
 			{
-				boundary = startTime + (TimeSpan)repetition.getDuration();
-				if (boundary > MaxTimeOfDay)
+				boundary = startTime.Add(repetition.getDuration());
+				if (boundary.isGreaterThanOrEqual(MaxTimeOfDay))
 				{
 					boundary = MaxTimeOfDay;
 				}
@@ -187,18 +187,18 @@ public class ScheduleData extends ObjectWithSite
 				boundary = MaxTimeOfDay;
 			}
 
-			double currentTicks = baseTime.argvalue.TimeOfDay.Ticks;
-			int count = (int)Math.floor((currentTicks - (double)startTime.Ticks) / (double)repetition.getInterval().Ticks) + 1;
-			TimeSpan nextTime = new TimeSpan(repetition.getInterval().Ticks * count + startTime.Ticks);
-			if (nextTime < boundary)
+			double currentTicks = TimeSpan.timeOfDay(baseTime.argvalue).getTicks();
+			int count = (int)Math.floor((currentTicks - (double)startTime.getTicks()) / (double)repetition.getInterval().getTicks()) + 1;
+			TimeSpan nextTime = new TimeSpan(repetition.getInterval().getTicks() * count + startTime.getTicks());
+			if (nextTime.isLessThan(boundary))
 			{
-				baseTime.argvalue = baseTime.argvalue.Date + nextTime;
+				baseTime.argvalue = nextTime.add(DateUtils2.getDate(baseTime.argvalue));
 				rs = true;
 			}
 		}
 		if (!rs)
 		{
-			baseTime.argvalue = baseTime.argvalue.Date.AddDays(1);
+			baseTime.argvalue = DateUtils.addDays(DateUtils2.getDate(baseTime.argvalue), 1);
 		}
 		return rs;
 	}
@@ -229,9 +229,9 @@ public class ScheduleData extends ObjectWithSite
 
 	private java.util.Date EvalMonthlyDOW(java.util.Date baseTime)
 	{
-		MonthlyDOWTrigger trigger = (MonthlyDOWTrigger)this.ScheduleItem.getTrigger();
+		MonthlyDOWTrigger trigger = (MonthlyDOWTrigger)this.getScheduleItem().getTrigger();
 
-		if (trigger.getMonthsOfYear().length == 0 || (trigger.WeeksOfMonth.getLength() == 0 && trigger.getRunOnLastWeekOfMonth() == false))
+		if (trigger.getMonthsOfYear().length == 0 || (trigger.getWeeksOfMonth().length == 0 && trigger.getRunOnLastWeekOfMonth() == false))
 		{
 			return null;
 		}
@@ -251,7 +251,8 @@ public class ScheduleData extends ObjectWithSite
 			rs = EvalDayOfWeekOfMonth(baseTime, trigger);
 			if (rs == null)
 			{
-				baseTime = new java.util.Date(baseTime.Year, baseTime.Month, 1).AddMonths(1);
+				
+				baseTime = DateUtils2.nextMonth(baseTime);
 			}
 		} while (rs == null);
 
@@ -265,21 +266,28 @@ public class ScheduleData extends ObjectWithSite
 	private java.util.Date EvalDayOfWeekOfMonth(java.util.Date baseTime, MonthlyDOWTrigger trigger)
 	{
 		java.util.Date rs = null;
-		int lastDOM = GetLastDayOfMonth(baseTime.Year, baseTime.Month);
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(DateUtils2.getDate(baseTime));
+		int lastDOM = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		int day = -1;
-		for (int i = baseTime.Day; i <= lastDOM; i++)
+		for (int i = cal.get(Calendar.DATE); i <= lastDOM; i++)
 		{
 			boolean inWeeks = false;
-			WeekOfMonth wom = (WeekOfMonth)(i / 7);
-			inWeeks = Array.indexOf(trigger.getWeeksOfMonth(), wom) >= 0;
+			WeekOfMonth wom = WeekOfMonth.forValue(i / 7);
+			inWeeks = Arrays.asList(trigger.getWeeksOfMonth()).indexOf(wom) >= 0;
 			if (!inWeeks && trigger.getRunOnLastWeekOfMonth() && i > lastDOM - 7)
 			{
 				inWeeks = true;
 			}
 			if (inWeeks)
 			{
-				java.util.Date dt = new java.util.Date(baseTime.Year, baseTime.Month, i);
-				if (Array.indexOf(trigger.getDaysOfWeek(), dt.DayOfWeek) >= 0)
+				Calendar cal2 = Calendar.getInstance();
+				cal2.setTime(DateUtils2.getDate(baseTime));
+				cal2.set(Calendar.DATE, i);
+				
+				
+				if (Arrays.asList(trigger.getDaysOfWeek()).indexOf(cal2.get(Calendar.DAY_OF_WEEK)) >= 0)
 				{
 					day = i;
 					break;
@@ -289,9 +297,9 @@ public class ScheduleData extends ObjectWithSite
 		}
 		if (day != -1)
 		{
-			if (baseTime.Day < day)
+			if (DateUtils2.getDay(baseTime) < day)
 			{
-				rs = baseTime.Date.AddDays(day - baseTime.Day);
+				rs = DateUtils.addDays(DateUtils2.getDate(baseTime), day -  DateUtils2.getDay(baseTime));
 			}
 			else
 			{
@@ -303,7 +311,7 @@ public class ScheduleData extends ObjectWithSite
 
 	private java.util.Date EvalMonthly(java.util.Date baseTime)
 	{
-		MonthlyTrigger trigger = (MonthlyTrigger)this.ScheduleItem.getTrigger();
+		MonthlyTrigger trigger = (MonthlyTrigger)this.getScheduleItem().getTrigger();
 		if (trigger.getMonthsOfYear().length == 0 || (trigger.getDaysOfMonth().length == 0 && trigger.getRunOnLastDayOfMonth() == false))
 		{
 			return null;
@@ -325,7 +333,9 @@ public class ScheduleData extends ObjectWithSite
 			rs = EvalDayOfMonth(baseTime, trigger);
 			if (rs == null)
 			{
-				baseTime = new java.util.Date(baseTime.Year, baseTime.Month, 1).AddMonths(1);
+				
+				baseTime = DateUtils2.nextMonth(baseTime);
+				
 			}
 		} while (rs == null);
 
@@ -338,12 +348,14 @@ public class ScheduleData extends ObjectWithSite
 	{
 		java.util.Date rs = null;
 
-
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(DateUtils2.getDate(baseTime));
+		int lastDOM = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		int day = -1;
-		int lastDOM = this.GetLastDayOfMonth(baseTime.Year, baseTime.Month);
-		for (int i = baseTime.Day; i <= lastDOM; i++)
+		
+		for (int i = DateUtils2.getDay(baseTime); i <= lastDOM; i++)
 		{
-			if (Array.indexOf(trigger.getDaysOfMonth(), i) >= 0)
+			if (Arrays.asList(trigger.getDaysOfMonth()).indexOf(i) >= 0)
 			{
 				day = i;
 				break;
@@ -356,9 +368,9 @@ public class ScheduleData extends ObjectWithSite
 		}
 		if (day != -1)
 		{
-			if (day != baseTime.Day)
+			if (day != DateUtils2.getDay(baseTime))
 			{
-				rs = baseTime.Date.AddDays(day - baseTime.Day);
+				rs = DateUtils.addDays(DateUtils2.getDate(baseTime), day - DateUtils2.getDay(baseTime));
 			}
 			else
 			{
@@ -368,12 +380,7 @@ public class ScheduleData extends ObjectWithSite
 		return rs;
 	}
 
-	private int GetLastDayOfMonth(int year, int month)
-	{
-		java.util.Date dt = new java.util.Date(year, month, 1);
-		return dt.AddMonths(1).AddDays(-1).Day;
-
-	}
+	
 
 	private java.util.Date EvalMonthOfYear(java.util.Date baseTime, int[] monthsOfYear)
 	{
@@ -382,17 +389,13 @@ public class ScheduleData extends ObjectWithSite
 
 		for (int i = 0; i < 12; i++)
 		{
-			int m = (baseTime.Month + i) % 12;
-			if (m == 0)
-			{
-				m = 12;
-			}
-			if (Array.indexOf(monthsOfYear, m) >= 0)
+			int m = (DateUtils2.getMonth(baseTime) + i) % 12;
+			
+			if (Arrays.asList(monthsOfYear).indexOf(m) >= 0)
 			{
 				if (i > 0)
 				{
-					rs = new java.util.Date(baseTime.Year, baseTime.Month, 1).AddMonths(i);
-
+					rs = DateUtils.addMonths(DateUtils2.thisMonth(baseTime), i);
 				}
 				else
 				{
@@ -406,7 +409,7 @@ public class ScheduleData extends ObjectWithSite
 
 	private java.util.Date EvalWeekly(java.util.Date baseTime)
 	{
-		WeeklyTrigger trigger = (WeeklyTrigger)this.ScheduleItem.getTrigger();
+		WeeklyTrigger trigger = (WeeklyTrigger)this.getScheduleItem().getTrigger();
 		if (trigger.getDaysOfWeek().length == 0)
 		{
 			return null;
@@ -414,14 +417,14 @@ public class ScheduleData extends ObjectWithSite
 
 		java.util.Date l = (this._lastRunTime != null) ? this._lastRunTime : trigger.getStartBoundary();
 
-		java.util.Date lastSunday = GetSunday(l);
-		java.util.Date baseSunday = GetSunday(baseTime);
+		java.util.Date lastSunday = DateUtils2.thisSunday(l);
+		java.util.Date baseSunday = DateUtils2.thisSunday(baseTime);
 
-		int mod = ((int)(baseSunday.Date - lastSunday.Date).TotalDays / 7) % trigger.getWeeksInterval();
+		int mod = ((int)(TimeSpan.substract(DateUtils2.getDate(baseSunday),  DateUtils2.getDate(lastSunday)).getTotalDays()) / 7) % trigger.getWeeksInterval();
 
 		if (mod > 0)
 		{
-			baseTime = baseSunday.AddDays((trigger.getWeeksInterval() - mod) * 7);
+			baseTime = DateUtils.addDays(baseSunday, (trigger.getWeeksInterval() - mod) * 7);
 		}
 
 		java.util.Date rs;
@@ -430,7 +433,7 @@ public class ScheduleData extends ObjectWithSite
 			rs = EvalDayOfWeek(baseTime, trigger.getDaysOfWeek());
 			if (rs == null)
 			{
-				baseSunday = baseSunday.AddDays(7 * trigger.getWeeksInterval());
+				baseSunday = DateUtils.addDays(baseSunday, 7 * trigger.getWeeksInterval());
 				baseTime = baseSunday;
 			}
 		} while (rs == null);
@@ -440,13 +443,14 @@ public class ScheduleData extends ObjectWithSite
 
 	private java.util.Date EvalDayOfWeek(java.util.Date baseTime, DayOfWeek[] daysOfWeek)
 	{
-		for (DayOfWeek day = baseTime.DayOfWeek; day <= DayOfWeek.Saturday; day++)
+		for (int i = DateUtils2.getDayOfWeek(baseTime).getValue(); i <= DayOfWeek.Saturday.getValue(); i++)
 		{
-			if (Array.indexOf(daysOfWeek, day) >= 0)
+			DayOfWeek day = DayOfWeek.forValue(i);
+			if (Arrays.asList(daysOfWeek).indexOf(day) >= 0)
 			{
-				if (baseTime.DayOfWeek != day)
+				if (! DateUtils2.getDayOfWeek(baseTime).equals(day))
 				{
-					return baseTime.AddDays(day - baseTime.DayOfWeek).Date;
+					return DateUtils.addDays(DateUtils2.getDate(baseTime) , i - DateUtils2.getDayOfWeek(baseTime).getValue());
 				}
 				else
 				{
@@ -459,22 +463,18 @@ public class ScheduleData extends ObjectWithSite
 	}
 
 
-	private java.util.Date GetSunday(java.util.Date baseTime)
-	{
-		return baseTime.Date.AddDays(-(int)baseTime.DayOfWeek);
-	}
 
 	private java.util.Date EvalDaily(java.util.Date baseTime)
 	{
-		DailyTrigger trigger = (DailyTrigger)this.ScheduleItem.getTrigger();
-		java.util.Date rs = new java.util.Date(0);
+		DailyTrigger trigger = (DailyTrigger)this.getScheduleItem().getTrigger();
+		java.util.Date rs = null;
 		java.util.Date l = (this._lastRunTime != null) ? this._lastRunTime : trigger.getStartBoundary();
-		l = l.Date;
-		double lapsedDays = (baseTime.Date - l).TotalDays;
-		double mod = lapsedDays % trigger.getDaysInterval();
+		l = DateUtils2.getDate(l);
+		int lapsedDays = (int) TimeSpan.substract(DateUtils2.getDate(baseTime), l).getTotalDays();
+		int mod = lapsedDays % trigger.getDaysInterval();
 		if (mod > 0)
 		{
-			rs = baseTime.Date.AddDays(trigger.getDaysInterval() - mod);
+			rs = DateUtils.addDays(DateUtils2.getDate(baseTime), trigger.getDaysInterval() - mod);
 		}
 		else
 		{
@@ -485,12 +485,12 @@ public class ScheduleData extends ObjectWithSite
 
 	private java.util.Date EvalOneTime(java.util.Date baseTime)
 	{
-		TimeTrigger trigger = (TimeTrigger)this.ScheduleItem.getTrigger();
-		if (baseTime.Date < trigger.getDate())
+		TimeTrigger trigger = (TimeTrigger)this.getScheduleItem().getTrigger();
+		if (DateUtils2.getDate(baseTime).compareTo(trigger.getDate()) < 0)
 		{
 			return trigger.getDate();
 		}
-		else if (trigger.getDate().equals(baseTime.Date))
+		else if (trigger.getDate().equals(DateUtils2.getDate(baseTime)))
 		{
 			return baseTime;
 		}
@@ -500,11 +500,6 @@ public class ScheduleData extends ObjectWithSite
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region Action Evaluation
 
 	public final void RunAction()
 	{

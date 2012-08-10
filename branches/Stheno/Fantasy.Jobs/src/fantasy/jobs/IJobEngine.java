@@ -2,7 +2,7 @@
 
 import java.util.UUID;
 
-import org.joda.time.Duration;
+
 
 import fantasy.*;
 
@@ -16,7 +16,7 @@ public interface IJobEngine extends IServiceProvider
 	void Suspend() throws Exception;
 	void UserPause() throws Exception;
 	void Fail() throws Exception;
-	void Sleep(Duration timeToSleep) throws Exception;
+	void Sleep(TimeSpan timeToSleep) throws Exception;
 	void AddHandler(IJobEngineEventHandler handler) throws Exception;
 	void RemoveHandler(IJobEngineEventHandler handler) throws Exception;
 

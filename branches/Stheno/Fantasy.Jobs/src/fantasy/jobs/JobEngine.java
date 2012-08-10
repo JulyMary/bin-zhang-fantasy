@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 import org.jdom2.Element;
-import org.joda.time.*;
+
 
 import fantasy.*;
 import fantasy.ThreadFactory;
@@ -407,9 +407,9 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 	}
 
 	
-	public final void Sleep(Duration timeout) throws Exception
+	public final void Sleep(TimeSpan timeout) throws Exception
 	{
-		final java.util.Date timeToWait =   Instant.now().plus(timeout).toDate();
+		final java.util.Date timeToWait =   TimeSpan.add(new Date(), timeout);
 		
 		HashMap<String, String> args = new HashMap<String, String>();
 		args.put("time", new SimpleDateFormat().format(timeToWait));

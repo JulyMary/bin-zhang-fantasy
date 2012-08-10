@@ -1,13 +1,15 @@
 ﻿package fantasy.jobs.scheduling;
 
+
+
+import fantasy.TimeSpan;
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract, XSerializable("restart", NamespaceUri = Consts.ScheduleNamespaceURI)]
+@XSerializable(name = "restart", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
 public class Restart
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("count")]
+
+	@XAttribute(name = "count")
 	private int privateCount;
 	public final int getCount()
 	{
@@ -18,9 +20,8 @@ public class Restart
 		privateCount = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("duration")]
-	private TimeSpan privateDuration = new TimeSpan();
+	@XAttribute(name = "duration")
+	private TimeSpan privateDuration = TimeSpan.Zero;
 	public final TimeSpan getDuration()
 	{
 		return privateDuration;

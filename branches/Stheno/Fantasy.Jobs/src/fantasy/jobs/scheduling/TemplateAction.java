@@ -3,9 +3,13 @@
 import fantasy.xserialization.*;
 
 @XSerializable(name = "templateAction", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
-public class TemplateAction extends Action
+public class TemplateAction extends ScheduleAction
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6896901538498684231L;
 	@Override
 	public ActionType getType()
 	{

@@ -1,7 +1,6 @@
 ﻿package fantasy.jobs.scheduling;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[Flags]
+
 public enum WeekOfMonth
 {
 	First,

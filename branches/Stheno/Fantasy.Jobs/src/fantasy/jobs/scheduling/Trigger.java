@@ -1,20 +1,32 @@
 ﻿package fantasy.jobs.scheduling;
 
+import java.io.Serializable;
+import java.util.*;
+
+import org.apache.commons.lang3.time.DateUtils;
+
+
+import fantasy.*;
 import fantasy.xserialization.*;
 
 @XSerializable(name = "trigger", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
-public class Trigger
+public class Trigger implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8438411265484228219L;
 	public Trigger()
 	{
-		this.setStartBoundary(new java.util.Date());
-		this.setStartTime(new java.util.Date().AddHours(1).TimeOfDay);
+	    Date now = new Date();
+		
+		this.setStartBoundary(now);
+		this.setStartTime(TimeSpan.timeOfDay(DateUtils.addHours(now, 1)));
 
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("startBoundary")]
-	private java.util.Date privateStartBoundary = new java.util.Date(0);
+	@XAttribute(name = "startBoundary")
+	private java.util.Date privateStartBoundary = new java.util.Date(Long.MIN_VALUE);
 	public final java.util.Date getStartBoundary()
 	{
 		return privateStartBoundary;
@@ -24,8 +36,7 @@ public class Trigger
 		privateStartBoundary = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("endBoundary")]
+    @XAttribute(name = "endBoundary")
 	private java.util.Date privateEndBoundary;
 	public final java.util.Date getEndBoundary()
 	{
@@ -36,8 +47,7 @@ public class Trigger
 		privateEndBoundary = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("executionTimeLimit")]
+    @XAttribute(name="executionTimeLimit")
 	private Integer privateExecutionTimeLimit;
 	public final Integer getExecutionTimeLimit()
 	{
@@ -48,8 +58,7 @@ public class Trigger
 		privateExecutionTimeLimit = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XElement("repetition")]
+    @XElement(name = "repetition")
 	private Repetition privateRepetition;
 	public final Repetition getRepetition()
 	{
@@ -60,19 +69,15 @@ public class Trigger
 		privateRepetition = value;
 	}
 
-	private TriggerType privateType = TriggerType.forValue(0);
+	private TriggerType privateType = TriggerType.Time;
 	public TriggerType getType()
 	{
 		return privateType;
 	}
-	private void setType(TriggerType value)
-	{
-		privateType = value;
-	}
+	
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("startTime")]
-	private TimeSpan privateStartTime = new TimeSpan();
+    @XAttribute(name="startTime")
+	private TimeSpan privateStartTime;
 	public final TimeSpan getStartTime()
 	{
 		return privateStartTime;
@@ -82,8 +87,6 @@ public class Trigger
 		privateStartTime = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember(Name="NextRunTime")]
 	private java.util.Date _nextRunTime;
 
 	public final java.util.Date getNextRunTime()
@@ -96,9 +99,7 @@ public class Trigger
 	}
 
 
-
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember(Name="LastRunTime"), XAttribute("lastRunTime")]
+    @XAttribute(name = "lastRunTime")
 	private java.util.Date _lastRunTime;
 
 	public final java.util.Date getLastRunTime()
@@ -112,15 +113,12 @@ public class Trigger
 
 
 
-	private String privateTriggerTimeDescription;
+	private String privateTriggerTimeDescription = "";
 	protected String getTriggerTimeDescription()
 	{
 		return privateTriggerTimeDescription;
 	}
-	private void setTriggerTimeDescription(String value)
-	{
-		privateTriggerTimeDescription = value;
-	}
+
 
 
 	public String getDescription()
@@ -168,7 +166,7 @@ public class Trigger
 	{
 
 		String day;
-		switch (timespan.Days)
+		switch (timespan.getDays())
 		{
 			case 1:
 				day = " 1 day";
@@ -177,12 +175,12 @@ public class Trigger
 				day = "";
 				break;
 			default:
-				day = timespan.Days.toString() + " days";
+				day = Integer.toString(timespan.getDays()) + " days";
 				break;
 		}
 
 		String hour;
-		switch (timespan.Hours)
+		switch (timespan.getHours())
 		{
 			case 1:
 				hour = "1 hour";
@@ -192,13 +190,13 @@ public class Trigger
 				break;
 
 			default:
-				hour = timespan.Hours.toString() + " hours";
+				hour = Integer.toString(timespan.getHours()) + " hours";
 				break;
 		}
 
 
 		String minutes;
-		switch (timespan.Minutes)
+		switch (timespan.getMinutes())
 		{
 			case 1:
 				minutes = "1 minute";
@@ -207,13 +205,13 @@ public class Trigger
 				minutes = "";
 				break;
 			default:
-				minutes = timespan.Minutes.toString() + " minutes";
+				minutes = Integer.toString(timespan.getMinutes()) + " minutes";
 				break;
 		}
 
 
 		String seconds;
-		switch (timespan.Seconds)
+		switch (timespan.getSeconds())
 		{
 			case 1:
 				seconds = "1 second";
@@ -222,7 +220,7 @@ public class Trigger
 				seconds = "";
 				break;
 			default:
-				seconds = timespan.Seconds.toString() + " seconds";
+				seconds = Integer.toString(timespan.getSeconds()) + " seconds";
 				break;
 		}
 

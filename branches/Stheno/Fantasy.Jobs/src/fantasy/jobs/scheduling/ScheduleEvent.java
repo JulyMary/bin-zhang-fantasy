@@ -1,14 +1,14 @@
 ﻿package fantasy.jobs.scheduling;
 
+import java.util.*;
+
 import fantasy.xserialization.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[DataContract, XSerializable("event", NamespaceUri=Consts.ScheduleNamespaceURI)]
+@XSerializable(name = "event", namespaceUri=fantasy.jobs.Consts.ScheduleNamespaceURI)
 public class ScheduleEvent
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("exectionTime")]
-	private java.util.Date privateExecutionTime = new java.util.Date(0);
+	@XAttribute(name = "exectionTime")
+	private java.util.Date privateExecutionTime;
 	public final java.util.Date getExecutionTime()
 	{
 		return privateExecutionTime;
@@ -18,9 +18,8 @@ public class ScheduleEvent
 		privateExecutionTime = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XAttribute("scheduleTime")]
-	private java.util.Date privateScheduleTime = new java.util.Date(0);
+	@XAttribute(name = "scheduleTime")
+	private java.util.Date privateScheduleTime = new java.util.Date(Long.MIN_VALUE);
 	public final java.util.Date getScheduleTime()
 	{
 		return privateScheduleTime;
@@ -30,14 +29,14 @@ public class ScheduleEvent
 		privateScheduleTime = value;
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[DataMember, XArray, XArrayItem(Name="job", java.lang.Class = typeof(Guid))]
-	private Guid[] privateCreatedJobs;
-	public final Guid[] getCreatedJobs()
+
+	@XArray(items=@XArrayItem(name="job",type=UUID.class))
+	private UUID[] privateCreatedJobs;
+	public final UUID[] getCreatedJobs()
 	{
 		return privateCreatedJobs;
 	}
-	public final void setCreatedJobs(Guid[] value)
+	public final void setCreatedJobs(UUID[] value)
 	{
 		privateCreatedJobs = value;
 	}
