@@ -302,6 +302,38 @@ public  class Enumerable<T> implements Iterable<T> {
 		return this.first(new TruePredicate<T>());
 	}
 
+	
+	public T last() throws Exception {
+		return this.last(new TruePredicate<T>());
+	}
+	
+	public T last(Predicate<T> predicate) throws Exception
+	{
+		T rs = lastOrDefault(predicate);
+		if(rs == null)
+		{
+			throw new IllegalStateException("No element in collection");
+		}
+		return null;
+	}
+	
+	public T lastOrDefault() throws Exception
+	{
+		return this.lastOrDefault(new TruePredicate<T>());
+	}
+	
+	public T lastOrDefault(Predicate<T> predicate) throws Exception {
+		for(T item : this.reverse())
+		{
+			if(predicate.evaluate(item))
+			{
+			     return item;
+			}
+		}
+		
+		return null;
+	}
+
 	public T first(Predicate<T> predicate) throws Exception
 	{
 		T rs = firstOrDefault(predicate);
@@ -880,6 +912,8 @@ public  class Enumerable<T> implements Iterable<T> {
 	{
 		return new WhereIterable(this._source, predicate).iterator().hasNext();
 	}
+
+	
 
 }
 
