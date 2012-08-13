@@ -1,57 +1,29 @@
 ﻿package fantasy.jobs.scheduling;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[ServiceContract(Namespace=Consts.ScheduleNamespaceURI)]
-public interface IScheduleLibraryService
+import java.rmi.Remote;
+
+public interface IScheduleLibraryService extends Remote
 {
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	String[] GetGroups(String path);
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	void CreateGroup(String path);
+	String[] getGroups(String path) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	void DeleteGroup(String path);
+	void createGroup(String path) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	void CreateSchedule(String path, ScheduleItem schedule, boolean overwrite);
+	void deleteGroup(String path) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	void DeleteSchedule(String path);
+	void createSchedule(String path, ScheduleItem schedule, boolean overwrite) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	String[] GetScheduleNames(String path);
+	void deleteSchedule(String path) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	ScheduleItem GetSchedule(String path);
+	String[] getScheduleNames(String path) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	ScheduleEvent[] GetScheduleHistory(String path);
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	String[] GetTemplateNames();
+	ScheduleItem getSchedule(String path) throws Exception;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	//[OperationContract]
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-	String GetTemplate(String name);
+	ScheduleEvent[] getScheduleHistory(String path) throws Exception;
+
+	String[] getTemplateNames() throws Exception;
+
+	String getTemplate(String name) throws Exception;
 
 }

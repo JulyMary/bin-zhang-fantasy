@@ -1,68 +1,80 @@
 ﻿package fantasy.jobs.scheduling;
 
-import Fantasy.IO.*;
-import Fantasy.Jobs.Management.*;
-import fantasy.xserialization.*;
-import Fantasy.ServiceModel.*;
+import java.rmi.RemoteException;
+import java.text.SimpleDateFormat;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, IncludeExceptionDetailInFaults=true, ConcurrencyMode=ConcurrencyMode.Multiple, Namespace=Consts.JobServiceNamespaceURI)]
-public class ScheduleLibraryService extends WCFSingletonService implements IScheduleLibraryService
+import fantasy.*;
+
+import fantasy.io.*;
+import fantasy.jobs.management.*;
+import fantasy.xserialization.*;
+import fantasy.servicemodel.*;
+import org.jdom2.*;
+
+
+public class ScheduleLibraryService extends AbstractService implements IScheduleLibraryService
 {
+	public ScheduleLibraryService() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	private IScheduleService _scheduleService;
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		_scheduleService = this.Site.<IScheduleService>GetService();
-		LoadSchedules();
+		_scheduleService = this.getSite().getService(IScheduleService.class);
+		loadSchedules();
 
-		super.InitializeService();
+		super.initializeService();
 	}
 
 
 	private java.util.ArrayList<ScheduleData> _schedules = new java.util.ArrayList<ScheduleData>();
 
-	private void LoadSchedules()
+	private void loadSchedules() throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 
 
 		String root = JobManagerSettings.getDefault().getScheduleDirectoryFullPath();
 		String searchPattern = "*" + ScheduleExt;
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Iterable<String> dirs = root.Flatten(s => LongPathDirectory.EnumerateDirectories(s));
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		Iterable<String> files = from dir in dirs from file in LongPathDirectory.EnumerateFiles(dir, searchPattern) select file;
+		
+		
+		
+
 		XSerializer schedSer = new XSerializer(ScheduleItem.class);
 		XSerializer dataSer = new XSerializer(ScheduleData.class);
-		for (String file : files)
+		for (String file : Directory.enumerateFiles(root, searchPattern, true))
 		{
 			String name = this.ToScheduleRelativePath(file);
 			name = name.substring(0, name.length() - ScheduleExt.length());
 
 			try
 			{
-				XElement doc = XElement.Load(file);
+				Element doc = JDomUtils.loadElement(file);
 
-				ScheduleItem sched = (ScheduleItem)schedSer.Deserialize(doc);
+				ScheduleItem sched = (ScheduleItem)schedSer.deserialize(doc);
 
 				String dataFile = file + ScheduleDataExt;
 
 				ScheduleData data;
-				if (LongPathFile.Exists(dataFile))
+				if (File.exists(dataFile))
 				{
-					XElement dataDoc = XElement.Load(dataFile);
+					Element dataDoc = JDomUtils.loadElement(dataFile);
 
-					data = (ScheduleData)dataSer.Deserialize(dataDoc);
+					data = (ScheduleData)dataSer.deserialize(dataDoc);
 				}
 				else
 				{
 					data = new ScheduleData();
 				}
 
-				data.Site = this.Site;
-				data.setName(name);
+				data.setSite(this.getSite());
+			
+				data.Name = name;
 				sched.setName(name);
 				data.setScheduleItem(sched);
 
@@ -77,17 +89,17 @@ public class ScheduleLibraryService extends WCFSingletonService implements ISche
 				this.RegisterToScheduleService(data);
 
 			}
-			catch(RuntimeException error)
+			catch(Exception error)
 			{
 				if (logger != null)
 				{
-					logger.LogError("Schedule", error, "Failed to load schedule {0}.", name);
+					logger.LogError("Schedule", error, "Failed to load schedule %1$s.", name);
 				}
 			}
 		}
 	}
 
-	private void RegisterToScheduleService(ScheduleData data)
+	private void RegisterToScheduleService(final ScheduleData data)
 	{
 		String message;
 		if (data.getScheduleItem().getEnabled())
@@ -97,47 +109,52 @@ public class ScheduleLibraryService extends WCFSingletonService implements ISche
 				if(this._scheduleService != null)
 				{
 //C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					data.setScheduleCookie(this._scheduleService.Register(data.NextRunTime.getValue(), ()=>)
-					{
-						data.RunAction();
-						data.EvalNext();
-						if (!data.Expired)
-						{
-							RegisterToScheduleService(data);
-						}
-						if (data.Expired && data.getScheduleItem().getDeleteAfterExpired())
-						{
-							this._schedules.remove(data);
-							String path = LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), data.getScheduleItem().getName() + ScheduleExt);
-							if (LongPathFile.Exists(path))
+					data.setScheduleCookie(this._scheduleService.register(data.NextRunTime, new Action(){
+
+						@Override
+						public void act() throws Exception {
+							data.RunAction();
+							data.EvalNext();
+							if (!data.Expired)
 							{
-								LongPathFile.Delete(path);
+								RegisterToScheduleService(data);
 							}
-							path += ScheduleDataExt;
-							if (LongPathFile.Exists(path))
+							if (data.Expired && data.getScheduleItem().getDeleteAfterExpired())
 							{
-								LongPathFile.Delete(path);
+								ScheduleLibraryService.this._schedules.remove(data);
+								String path = Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), data.getScheduleItem().getName() + ScheduleExt);
+								if (File.exists(path))
+								{
+									File.delete(path);
+								}
+								path += ScheduleDataExt;
+								if (File.exists(path))
+								{
+									File.delete(path);
+								}
 							}
-						}
-						else
-						{
-							SaveData(data);
-						}
-					}
-				   );
+							else
+							{
+								SaveData(data);
+							}
+							
+						}}));
+					
 				}
-				message = String.format("Schedule %1$s will be execute at %2$s.", data.getName(), data.NextRunTime);
+				
+				SimpleDateFormat fmt = new SimpleDateFormat();
+				message = String.format("Schedule %1$s will be execute at %2$s.", data.Name, fmt.format(data.NextRunTime));
 			}
 			else
 			{
-				message = String.format("Schedule %1$s is enabled.", data.getName());
+				message = String.format("Schedule %1$s is enabled.", data.Name);
 			}
 		}
 		else
 		{
-			message = String.format("Schedule %1$s is disabled.", data.getName());
+			message = String.format("Schedule %1$s is disabled.", data.Name);
 		}
-		ILogger logger = this.Site.<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		if (logger != null)
 		{
 			logger.LogMessage("Schedule", message);
@@ -146,19 +163,15 @@ public class ScheduleLibraryService extends WCFSingletonService implements ISche
 
 	private void SaveData(ScheduleData data)
 	{
-		SaveXml(LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), data.getName() + ScheduleExt + ScheduleDataExt), data, true);
+		SaveXml(Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), data.Name + ScheduleExt + ScheduleDataExt), data, true);
 	}
 
-	@Override
-	public void UninitializeService()
-	{
-		super.UninitializeService();
-	}
+	
 
 
 	private String ToScheduleRelativePath(String path)
 	{
-		String rs = LongPath.GetRelativePath(JobManagerSettings.getDefault().getScheduleDirectoryFullPath() + "\\", path);
+		String rs = Path.getRelativePath(JobManagerSettings.getDefault().getScheduleDirectoryFullPath() + "\\", path);
 		if (rs.startsWith(".\\"))
 		{
 			rs = rs.substring(2);
@@ -192,14 +205,7 @@ public class ScheduleLibraryService extends WCFSingletonService implements ISche
 		}
 	}
 
-	XmlWriterSettings tempVar = new XmlWriterSettings();
-	tempVar.Encoding = Encoding.UTF8;
-	tempVar.Indent = true;
-	tempVar.IndentChars = "    ";
-	tempVar.OmitXmlDeclaration = false;
-	tempVar.CloseOutput = true;
-	private XmlWriterSettings _xmlWriterSettings = tempVar;
-
+	
 	private Object _syncRoot = new Object();
 
 	private ScheduleData GetDataByPath(String path)
@@ -365,6 +371,5 @@ public class ScheduleLibraryService extends WCFSingletonService implements ISche
 		return query.toArray();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
 }

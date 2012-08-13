@@ -1,15 +1,19 @@
 ﻿package fantasy.jobs.scheduling;
 
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
+
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.jdom2.Namespace;
 
 import fantasy.*;
 import fantasy.xserialization.*;
+import fantasy.collections.*;
 import fantasy.jobs.management.*;
 import fantasy.servicemodel.*;
+import org.jdom2.*;
+import org.jdom2.output.Format;
+import org.jdom2.transform.*;
 
 @XSerializable(name = "schedule.data", namespaceUri = fantasy.jobs.Consts.ScheduleNamespaceURI)
 class ScheduleData extends ObjectWithSite
@@ -391,7 +395,7 @@ class ScheduleData extends ObjectWithSite
 		{
 			int m = (DateUtils2.getMonth(baseTime) + i) % 12;
 			
-			if (Arrays.asList(monthsOfYear).indexOf(m) >= 0)
+			if (Arrays.asList(monthsOfYear).indexOf(m + 1) >= 0)
 			{
 				if (i > 0)
 				{
@@ -501,42 +505,40 @@ class ScheduleData extends ObjectWithSite
 	}
 
 
-	public final void RunAction()
+	@SuppressWarnings("incomplete-switch")
+	public final void RunAction() throws Exception
 	{
-		IJobQueue queue = this.Site.<IJobQueue>GetRequiredService();
-		ILogger logger = this.Site.<ILogger>GetService();
+		final IJobQueue queue = this.getSite().getRequiredService(IJobQueue.class);
+		ILogger logger = this.getSite().getService(ILogger.class);
 		String waitAll = "";
 		if (this.getScheduleItem().getMultipleInstance() != InstancesPolicy.Parallel && this.getHistory().size() > 0)
 		{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-			var query = from id in this.getHistory().Last().CreatedJobs select new { Id = id, IsTerminated = queue.IsTerminated(id) };
+		Enumerable<UUID> query = new Enumerable<UUID>(this.getHistory().get(this.getHistory().size() - 1).getCreatedJobs()).where(new Predicate<UUID>(){
+
+				@Override
+				public boolean evaluate(UUID id) throws Exception {
+					return ! queue.IsTerminated(id);
+				}});     
 			switch (this.getScheduleItem().getMultipleInstance())
 			{
 
 				case Queue:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					waitAll = DotNetToJavaStringHelper.join(";", query.Where(j => !j.IsTerminated).Select(j => j.Id));
+					waitAll = StringUtils2.join(";", query);
 					break;
 				case IgnoreNew:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					if (query.Any(j => !j.IsTerminated))
+					if (query.any())
 					{
 						return;
 					}
 					break;
 				case StopExisting:
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					for (var job : query.Where(j => !j.IsTerminated))
+
+					for (UUID id : query)
 					{
-						queue.Cancel(job.Id);
+						queue.Cancel(id);
 						if (logger != null)
 						{
-							logger.LogMessage("Schedule", "Cancel job {0} because a new scheduled task will start", job.Id);
+							logger.LogMessage("Schedule", "Cancel job %1$s because a new scheduled task will start", id);
 						}
 					}
 					break;
@@ -547,113 +549,119 @@ class ScheduleData extends ObjectWithSite
 		tempVar.setScheduleTime((java.util.Date)this.NextRunTime);
 		tempVar.setExecutionTime(new java.util.Date());
 		ScheduleEvent evt = tempVar;
-		java.util.ArrayList<Guid> ids = new java.util.ArrayList<Guid>();
+		java.util.ArrayList<UUID> ids = new java.util.ArrayList<UUID>();
 		for (String xml : this.CreateStartInfo(waitAll))
 		{
 
 			JobMetaData meta = queue.CreateJobMetaData();
 			meta.LoadXml(xml);
-			queue.ApplyChange(meta);
+			queue.Add(meta);
 			ids.add(meta.getId());
 
 		}
-		evt.setCreatedJobs(ids.toArray(new Guid[]{}));
+		evt.setCreatedJobs(ids.toArray(new UUID[]{}));
 
 		this.getHistory().add(evt);
 	}
 
 
-	private Iterable<String> CreateStartInfo(String waitAll)
+	private Iterable<String> CreateStartInfo(String waitAll) throws Exception
 	{
 
 		if (this.getScheduleItem().getAction() != null)
 		{
-			XNamespace ns = Consts.ScheduleNamespaceURI;
-			String name = this.getScheduleItem().getName().split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries).Last();
-			XElement params = new XElement(ns + "params", new XElement(ns + "scheduleTime", this.NextRunTime.toString()), new XElement(ns + "author", this.getScheduleItem().getAuthor()), new XElement(ns + "runTime", new java.util.Date().toString()), new XElement(ns + "name", name), new XElement(ns + "fullname", this.getScheduleItem().getName()), new XElement(ns + "priority", this.getScheduleItem().getPriority()), new XElement(ns + "waitAll", waitAll));
+			Namespace ns =  Namespace.getNamespace(fantasy.jobs.Consts.ScheduleNamespaceURI);
+			String name = new Enumerable<String>(StringUtils2.split(this.getScheduleItem().getName(), "\\", true)).last();
+			Element params = new Element("params" , ns)
+			    .addContent(new Element("scheduleTime", ns).setText(this.NextRunTime.toString()))
+			    .addContent(new Element("author", ns).setText(this.getScheduleItem().getAuthor()))
+			    .addContent(new Element("runTime", ns).setText(new java.util.Date().toString()))
+			    .addContent(new Element("name", ns).setText(name))
+			    .addContent(new Element("fullname", ns).setText(this.getScheduleItem().getName()))
+			    .addContent(new Element("priority", ns).setText(Integer.toString(this.getScheduleItem().getPriority())))
+			    .addContent(new Element("waitAll", ns).setText(waitAll));
+			    
 			if (this.getScheduleItem().getCustomParams() != null)
 			{
-				XElement customParams = XElement.Parse(this.getScheduleItem().getCustomParams());
-				params.Add(customParams);
+				Element customParams = this.getScheduleItem().getCustomParams().clone();
+				params.addContent(customParams);
 			}
 
+			Document doc = new Document().addContent(params);
 
 			switch (this.getScheduleItem().getAction().getType())
 			{
 				case Template:
-					return this.TemplateCreateStartInfo(params);
+					return this.TemplateCreateStartInfo(doc);
 				case Inline:
-					return this.InlineCreateStartInfo(params);
+					return this.InlineCreateStartInfo(doc);
 				case Custom:
-					return this.CustomCreateStartInfo(params);
+					return this.CustomCreateStartInfo(doc);
 				default:
 					throw new RuntimeException("Absurd!");
 			}
 		}
 		else
 		{
-			return new String[0];
+			return new ArrayList<String>();
 		}
 	}
 
-	private Iterable<String> CustomCreateStartInfo(XElement params)
+	@SuppressWarnings("rawtypes")
+	private Iterable<String> CustomCreateStartInfo(Document params) throws Exception
 	{
-		CustomAction action = (CustomAction)this.ScheduleItem.getAction();
-		java.lang.Class t = java.lang.Class.forName(action.getCustomType(), true);
-		ICustomJobBuilder builder = (ICustomJobBuilder)Activator.CreateInstance(t);
+		CustomAction action = (CustomAction)this.getScheduleItem().getAction();
+		java.lang.Class t = java.lang.Class.forName(action.getCustomType());
+		ICustomJobBuilder builder = (ICustomJobBuilder)t.newInstance();
 		if (builder instanceof IObjectWithSite)
 		{
-			((IObjectWithSite)builder).Site = this.Site;
+			((IObjectWithSite)builder).setSite(this.getSite());
 		}
 		return builder.Execute(params);
 	}
 
 
-	private Iterable<String> Trasform(String xsltString, XElement params)
+	private Iterable<String> Trasform(String xsltString, Document params) throws Exception
 	{
-		XsltSettings tempVar = new XsltSettings();
-		tempVar.EnableDocumentFunction = true;
-		tempVar.EnableScript = true;
-		XsltSettings xsltSettings = tempVar;
-		XslCompiledTransform xslt = new XslCompiledTransform();
-		XElement root = XElement.Parse(xsltString);
-		xslt.Load(root.CreateReader(), xsltSettings, null);
-		Stream stream = new MemoryStream();
-		xslt.Transform(params.CreateReader(), null, stream);
-		stream.Seek(0, SeekOrigin.Begin);
-		XElement rs = XElement.Load(stream);
-		XNamespace ns = Consts.XNamespaceURI;
-		if (rs.getName() == ns + "jobStartList")
+		
+		ArrayList<String> rs = new ArrayList<String>();
+		
+		XSLTransformer xslt = new XSLTransformer(JDomUtils.parseDocument(xsltString));
+		
+		Element root = xslt.transform(params).getRootElement();
+		
+		Namespace ns = Namespace.getNamespace(fantasy.jobs.Consts.XNamespaceURI);
+		
+		if(root.getName() == "jobStartList" && root.getNamespaceURI() == fantasy.jobs.Consts.XNamespaceURI)
 		{
-			for (XElement si : rs.Elements(ns + "jobStart"))
+			for(Element si : root.getChildren("jobStart", ns))
 			{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-				yield return si.ToString(SaveOptions.OmitDuplicateNamespaces);
+				rs.add(JDomUtils.toString(si, Format.getCompactFormat()));
 			}
 		}
-		else if (rs.getName() == ns + "jobStart")
+		else if (root.getName() == "jobStart" && root.getNamespaceURI() == fantasy.jobs.Consts.XNamespaceURI)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-			yield return rs.ToString(SaveOptions.OmitDuplicateNamespaces);
+			rs.add(JDomUtils.toString(root, Format.getCompactFormat()));
 		}
+
+		return rs;
 
 	}
 
-	private Iterable<String> InlineCreateStartInfo(XElement params)
+	private Iterable<String> InlineCreateStartInfo(Document params) throws Exception
 	{
-		InlineAction action = (InlineAction)this.ScheduleItem.getAction();
+		InlineAction action = (InlineAction)this.getScheduleItem().getAction();
 		return this.Trasform(action.getXslt(), params);
 
 	}
 
-	private Iterable<String> TemplateCreateStartInfo(XElement params)
+	private Iterable<String> TemplateCreateStartInfo(Document params) throws Exception
 	{
-		IScheduleLibraryService svc = this.Site.<IScheduleLibraryService>GetRequiredService();
-		TemplateAction action = (TemplateAction)this.ScheduleItem.getAction();
-		String xslt = svc.GetTemplate(action.getTemplate());
+		IScheduleLibraryService svc = this.getSite().getRequiredService(IScheduleLibraryService.class);
+		TemplateAction action = (TemplateAction)this.getScheduleItem().getAction();
+		String xslt = svc.getTemplate(action.getTemplate());
 		return this.Trasform(xslt, params);
 	}
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
 
 }

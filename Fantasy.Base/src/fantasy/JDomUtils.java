@@ -47,6 +47,15 @@ public final class JDomUtils {
 
 		return rs;
 	}
+	
+	public static Document parseDocument(String xml) throws Exception
+	{
+		SAXBuilder builder = new SAXBuilder();
+		Reader in = new StringReader(xml);
+		Document document = (Document) builder.build(in);
+		
+		return document;
+	}
 
 
 	public static Element parseElement(String xml) throws Exception
