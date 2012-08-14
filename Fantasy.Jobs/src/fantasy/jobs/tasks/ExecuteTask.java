@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 
 import java.util.concurrent.TimeoutException;
 
-import org.joda.time.Duration;
 
 import fantasy.servicemodel.*;
 import fantasy.*;
@@ -111,7 +110,7 @@ public class ExecuteTask extends ObjectWithSite implements ITask
 		
 		
 		
-		this._waitHandler.wait(ExecuteTask.this.Timeout.getMillis());
+		this._waitHandler.wait((long)ExecuteTask.this.Timeout.getTotalMilliseconds());
 		
 		if(!_exited)
 		{
@@ -151,7 +150,7 @@ public class ExecuteTask extends ObjectWithSite implements ITask
 	public String WorkingDirectory = "";
 	
 	@TaskMember(name = "timeout", description="The amount of time to wai for application to exit.")
-	public Duration Timeout = new Duration(Long.MAX_VALUE);
+	public TimeSpan Timeout = TimeSpan.MaxValue;
 	
 
 

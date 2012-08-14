@@ -3,9 +3,9 @@ package fantasy.io;
 import java.util.*;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
-
 
 
 public final class Directory {
@@ -73,6 +73,17 @@ public final class Directory {
 		{
 			new java.io.File(path).delete();
 		}
+	}
+
+
+	public static Iterable<String> enumerateDirectories(String path, boolean recursive) {
+         ArrayList<String> rs = new ArrayList<String>();
+	    
+		for(java.io.File f : FileUtils.listFiles(new java.io.File(path), DirectoryFileFilter.INSTANCE, recursive ? TrueFileFilter.INSTANCE : null))
+		{
+			rs.add(f.getAbsolutePath());
+		}
+		return rs;
 	}
 	
 	

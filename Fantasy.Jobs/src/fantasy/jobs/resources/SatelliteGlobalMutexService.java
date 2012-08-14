@@ -3,6 +3,7 @@
 import java.rmi.*;
 
 import fantasy.ThreadFactory;
+import fantasy.TimeSpan;
 import fantasy.servicemodel.*;
 
 public class SatelliteGlobalMutexService extends AbstractService implements IGlobalMutexService
@@ -14,7 +15,7 @@ public class SatelliteGlobalMutexService extends AbstractService implements IGlo
 
 	public SatelliteGlobalMutexService() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public final boolean isAvaiable(String key) throws Exception
@@ -42,7 +43,7 @@ public class SatelliteGlobalMutexService extends AbstractService implements IGlo
 		return rs;
 	}
 
-	public final boolean request(String key, long timeout) throws Exception
+	public final boolean request(String key, TimeSpan timeout) throws Exception
 	{
 		boolean rs = false;
 

@@ -3,7 +3,7 @@
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.joda.time.*;
+
 
 import fantasy.servicemodel.*;
 import fantasy.*;
@@ -18,7 +18,7 @@ public class SleepTask extends ObjectWithSite implements ITask
 	public java.util.Date Time = new java.util.Date(Long.MIN_VALUE);
 	
 	@TaskMember(name = "duration", description= "Duration to sleep.")
-	private Duration Duration = new Duration(0);
+	private TimeSpan Duration = TimeSpan.Zero;
 	
 	SimpleDateFormat _format = new SimpleDateFormat();
 	public void Execute() throws Exception
@@ -43,7 +43,7 @@ public class SleepTask extends ObjectWithSite implements ITask
 				}
 				else
 				{
-					timeToWait = new DateTime().plus(this.Duration).toDate();
+					timeToWait =   this.Duration.add(new Date());
 				}
 				job.getRuntimeStatus().getLocal().setItem("sleep.waittime", timeToWait.toString());
 			}

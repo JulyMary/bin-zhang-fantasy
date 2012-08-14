@@ -6,7 +6,7 @@ import java.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import fantasy.Action;
+import fantasy.*;
 import fantasy.collections.*;
 import fantasy.jobs.management.*;
 import fantasy.jobs.scheduling.*;
@@ -85,7 +85,7 @@ public class GlobalMutexService extends AbstractService implements IGlobalMutexS
 	
 	
 
-	public final boolean request(final String key, long timeout) throws Exception
+	public final boolean request(final String key, TimeSpan timeout) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -100,7 +100,7 @@ public class GlobalMutexService extends AbstractService implements IGlobalMutexS
 				final Mutex newMutex = new Mutex();
 				newMutex.setName(key);
 				
-				newMutex.setCookie(_scheduleService.register(DateUtils.addMilliseconds(new Date(), (int) timeout), new Action (){
+				newMutex.setCookie(_scheduleService.register(timeout.add(new Date()), new Action (){
 
 					@Override
 					public void act() throws Exception {

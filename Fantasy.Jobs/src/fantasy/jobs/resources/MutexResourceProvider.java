@@ -60,9 +60,9 @@ public class MutexResourceProvider extends ResourceProvider implements IResource
 	}
 
 	
-	private long parseTimeout(String s)
+	private TimeSpan parseTimeout(String s)
 	{
-		return Long.parseLong(s);
+		return TimeSpan.parse(s);
 	}
 	
 	public final boolean request(ResourceParameter parameter, RefObject<Object> resource) throws Exception
@@ -87,7 +87,7 @@ public class MutexResourceProvider extends ResourceProvider implements IResource
 
 				boolean globalAvaile;
 
-				long timeout = this.parseTimeout(MapUtils.getValueOrDefault(parameter.getValues(),"timeout", "900000"));
+				TimeSpan timeout = this.parseTimeout(MapUtils.getValueOrDefault(parameter.getValues(),"timeout", "00:15:00"));
 
 				if (isGlobal && _globalSvc != null)
 				{
