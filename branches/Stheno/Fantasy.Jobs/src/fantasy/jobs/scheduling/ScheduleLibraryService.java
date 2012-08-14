@@ -2,21 +2,31 @@
 
 import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
+import java.util.*;
 
 import fantasy.*;
 
+import fantasy.collections.*;
 import fantasy.io.*;
 import fantasy.jobs.management.*;
+import fantasy.jobs.properties.Resources;
 import fantasy.xserialization.*;
 import fantasy.servicemodel.*;
+
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.*;
 
 
 public class ScheduleLibraryService extends AbstractService implements IScheduleLibraryService
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7891440656826934324L;
+
 	public ScheduleLibraryService() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
+	
 	}
 
 
@@ -49,7 +59,7 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 		XSerializer dataSer = new XSerializer(ScheduleData.class);
 		for (String file : Directory.enumerateFiles(root, searchPattern, true))
 		{
-			String name = this.ToScheduleRelativePath(file);
+			String name = this.toScheduleRelativePath(file);
 			name = name.substring(0, name.length() - ScheduleExt.length());
 
 			try
@@ -83,10 +93,10 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 				this._schedules.add(data);
 				if (data.OnLoad())
 				{
-					SaveData(data);
+					saveData(data);
 				}
 
-				this.RegisterToScheduleService(data);
+				this.registerToScheduleService(data);
 
 			}
 			catch(Exception error)
@@ -99,7 +109,7 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 		}
 	}
 
-	private void RegisterToScheduleService(final ScheduleData data)
+	private void registerToScheduleService(final ScheduleData data) throws Exception
 	{
 		String message;
 		if (data.getScheduleItem().getEnabled())
@@ -108,8 +118,7 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 			{
 				if(this._scheduleService != null)
 				{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					data.setScheduleCookie(this._scheduleService.register(data.NextRunTime, new Action(){
+    					data.setScheduleCookie(this._scheduleService.register(data.NextRunTime, new Action(){
 
 						@Override
 						public void act() throws Exception {
@@ -117,7 +126,7 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 							data.EvalNext();
 							if (!data.Expired)
 							{
-								RegisterToScheduleService(data);
+								registerToScheduleService(data);
 							}
 							if (data.Expired && data.getScheduleItem().getDeleteAfterExpired())
 							{
@@ -135,7 +144,7 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 							}
 							else
 							{
-								SaveData(data);
+								saveData(data);
 							}
 							
 						}}));
@@ -161,15 +170,15 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 		}
 	}
 
-	private void SaveData(ScheduleData data)
+	private void saveData(ScheduleData data) throws Exception
 	{
-		SaveXml(Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), data.Name + ScheduleExt + ScheduleDataExt), data, true);
+		saveXml(Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), data.Name + ScheduleExt + ScheduleDataExt), data, true);
 	}
 
 	
 
 
-	private String ToScheduleRelativePath(String path)
+	private String toScheduleRelativePath(String path) throws Exception
 	{
 		String rs = Path.getRelativePath(JobManagerSettings.getDefault().getScheduleDirectoryFullPath() + "\\", path);
 		if (rs.startsWith(".\\"))
@@ -187,65 +196,63 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 	private static final String ScheduleExt = ".xsched";
 	private static final String ScheduleDataExt = ".xdat";
 
-	public final void DeleteGroup(String path)
+	public final void deleteGroup(String path) throws Exception
 	{
 
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		String query = from data in this._schedules where data.getName().startsWith(path + "\\", StringComparison.OrdinalIgnoreCase) select data.getName();
-		String[] schedules = query.toArray();
-		for (String schedule : schedules)
+
+		
+		
+		for (ScheduleData data : this._schedules.toArray(new ScheduleData[0]))
 		{
-			this.DeleteSchedule(schedule);
+			if(StringUtils.startsWithIgnoreCase(data.Name, path))
+			{
+			    this.deleteSchedule(data.Name);
+			}
 		}
 
-		path = LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path);
-		if (LongPathDirectory.Exists(path))
+		path = Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path);
+		if (Directory.exists(path))
 		{
-			LongPathDirectory.Delete(path);
+			Directory.delete(path, true);
 		}
 	}
 
 	
 	private Object _syncRoot = new Object();
 
-	private ScheduleData GetDataByPath(String path)
+	private ScheduleData getDataByPath(final String path) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from d in this._schedules where StringComparer.OrdinalIgnoreCase.Compare(path, d.getName()) == 0 select d;
-		return query.SingleOrDefault();
+		
+		ScheduleData rs = new Enumerable<ScheduleData>(this._schedules).singleOrDefault(new Predicate<ScheduleData>(){
+
+			@Override
+			public boolean evaluate(ScheduleData obj) throws Exception {
+				return StringUtils.equalsIgnoreCase(obj.Name, path);
+			}});
+		
+		return rs;
+		
+		
 	}
 
-	private void SaveXml(String path, Object instance, boolean overwrite)
+	private void saveXml(String path, Object instance, boolean overwrite) throws Exception
 	{
 
 
 		XSerializer ser = new XSerializer(instance.getClass());
-		XElement ele = ser.Serialize(instance);
+		Element ele = ser.serialize(instance);
+		
+		JDomUtils.saveElement(ele, path);
 
-
-		FileStream fs = LongPathFile.Open(path, overwrite ? FileMode.Create : FileMode.CreateNew, FileAccess.Write);
-		XmlWriter writer = XmlWriter.Create(fs, _xmlWriterSettings);
-		try
-		{
-
-			ele.Save(writer);
-		}
-		finally
-		{
-			writer.Close();
-		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IScheduleLibraryService Members
 
-	public final void CreateSchedule(String path, ScheduleItem schedule, boolean overwrite)
+	public final void createSchedule(String path, ScheduleItem schedule, boolean overwrite) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-			IScheduleService svc = this.Site.<IScheduleService>GetService();
-			ScheduleData old = this.GetDataByPath(path);
+			IScheduleService svc = this.getSite().getService(IScheduleService.class);
+			ScheduleData old = this.getDataByPath(path);
 
 			if (old == null || overwrite)
 			{
@@ -254,29 +261,29 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 				{
 					if (old.getScheduleItem().getEnabled() || !old.Expired && svc != null)
 					{
-						svc.Unregister(old.getScheduleCookie());
+						svc.unregister(old.getScheduleCookie());
 					}
 					events.addAll(old.getHistory());
 					this._schedules.remove(old);
 				}
 				schedule.setName(path);
 				ScheduleData data = new ScheduleData();
-				data.Site = this.Site;
-				data.setName(path);
+				data.setSite(this.getSite());
+				data.Name = path;
 				data.setScheduleItem(schedule);
 				data.getHistory().addAll(events);
 
-				SaveXml(LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(),path + ScheduleExt), schedule, true);
+				saveXml(Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(),path + ScheduleExt), schedule, true);
 				this._schedules.add(data);
 
 				data.OnLoad();
-				this.SaveData(data);
-				this.RegisterToScheduleService(data);
+				this.saveData(data);
+				this.registerToScheduleService(data);
 
 			}
 			else
 			{
-				throw new ScheduleException(String.format(Properties.Resources.getScheduleExistsText(), path));
+				throw new ScheduleException(String.format(Resources.getScheduleExistsText(), path));
 			}
 
 
@@ -284,91 +291,106 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
 
 	}
 
-	public final void DeleteSchedule(String path)
+	public final void deleteSchedule(String path) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-			IScheduleService svc = this.Site.<IScheduleService>GetService();
-			ScheduleData data = this.GetDataByPath(path);
+			IScheduleService svc = this.getSite().getService(IScheduleService.class);
+			ScheduleData data = this.getDataByPath(path);
 			if (data != null)
 			{
 				if (data.getScheduleItem().getEnabled() || !data.Expired && svc != null)
 				{
-					svc.Unregister(data.getScheduleCookie());
+					svc.unregister(data.getScheduleCookie());
 				}
 				this._schedules.remove(data);
 			}
 
-			path = LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path + ScheduleExt);
-			if (LongPathFile.Exists(path))
+			path = Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path + ScheduleExt);
+			if (File.exists(path))
 			{
-				LongPathFile.Delete(path);
+				File.delete(path);
 			}
 			path += ScheduleDataExt;
-			if (LongPathFile.Exists(path))
+			if (File.exists(path))
 			{
-				LongPathFile.Delete(path);
+				File.delete(path);
 			}
 
 		}
 	}
 
 
-	public final String[] GetScheduleNames(String path)
+	public final String[] getScheduleNames(String path)
 	{
 
 		path = !path.equals("") ? path + "\\" : path;
-
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		String query = from data in this._schedules where data.getName().startsWith(path, StringComparison.OrdinalIgnoreCase) && data.getName().substring(path.length()).indexOf('\\') < 0 select data.getName();
-		return query.toArray();
+		
+		ArrayList<String> rs = new ArrayList<String>();
+		
+		for (ScheduleData data : this._schedules.toArray(new ScheduleData[0]))
+		{
+			if(StringUtils.startsWithIgnoreCase(data.Name, path))
+			{
+			   rs.add(data.Name);
+			}
+		}
+		
+		return rs.toArray(new String[0]);
+		
 	}
 
-	public final ScheduleItem GetSchedule(String path)
+	public final ScheduleItem getSchedule(String path) throws Exception
 	{
-		ScheduleData data = this.GetDataByPath(path);
+		ScheduleData data = this.getDataByPath(path);
 		return data != null ? data.getScheduleItem() : null;
 	}
 
-	public final ScheduleEvent[] GetScheduleHistory(String path)
+	public final ScheduleEvent[] getScheduleHistory(String path) throws Exception
 	{
-		ScheduleData data = this.GetDataByPath(path);
+		ScheduleData data = this.getDataByPath(path);
 		return data != null ? data.getHistory().toArray(new ScheduleEvent[]{}) : null;
 	}
 
-	public final String[] GetTemplateNames()
+	public final String[] getTemplateNames() throws Exception
 	{
 		java.util.ArrayList<String> rs = new java.util.ArrayList<String>();
-		for (String file : LongPathDirectory.EnumerateFiles(JobManagerSettings.getDefault().getScheduleTemplateDirectoryFullPath(), "*.xslt"))
+		for (String file : Directory.enumerateFiles(JobManagerSettings.getDefault().getScheduleTemplateDirectoryFullPath(), "*.xslt"))
 		{
-			rs.add(Path.GetFileNameWithoutExtension(file));
+			rs.add(Path.getFileNameWithoutExtension(file));
 		}
 		return rs.toArray(new String[]{});
 	}
 
-	public final String GetTemplate(String name)
+	public final String getTemplate(String name) throws Exception
 	{
-		String file = LongPath.Combine(JobManagerSettings.getDefault().getScheduleTemplateDirectoryFullPath(), name + ".xslt");
-		return LongPathFile.ReadAllText(file);
+		String file = Path.combine(JobManagerSettings.getDefault().getScheduleTemplateDirectoryFullPath(), name + ".xslt");
+		return File.readAllText(file, "UTF-8");
 	}
 
-	public final void CreateGroup(String path)
+	public final void createGroup(String path) throws Exception
 	{
-		path = LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path);
-		if (!LongPathDirectory.Exists(path))
+		path = Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path);
+		if (!Directory.exists(path))
 		{
-			LongPathDirectory.Create(path);
+			Directory.create(path);
 		}
 	}
 
-	public final String[] GetGroups(String path)
+	public final String[] getGroups(String path) throws Exception
 	{
-		path = LongPath.Combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path);
-		String[] dirs = LongPathDirectory.EnumerateDirectories(path).toArray();
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		var query = from p in dirs select ToScheduleRelativePath(p);
-		return query.toArray();
+		
+		ArrayList<String> rs = new ArrayList<String>();
+		
+		path = Path.combine(JobManagerSettings.getDefault().getScheduleDirectoryFullPath(), path);
+		Iterable<String> dirs = Directory.enumerateDirectories(path, false);
+		
+		for(String dir : dirs)
+		{
+			rs.add(toScheduleRelativePath(dir));
+		}
+		
+		return rs.toArray(new String[0]);
 	}
 
 

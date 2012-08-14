@@ -248,5 +248,10 @@ public final class Resources {
 	public static String getSkipTryMessage() {
 		return "Skip try No.%1$d.";
 	}
+
+	public static String getScheduleExistsText() {
+		
+		return "Schedule %1$s is already existed.";
+	}
 	
 }
