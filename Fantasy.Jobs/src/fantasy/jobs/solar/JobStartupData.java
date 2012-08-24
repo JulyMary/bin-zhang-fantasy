@@ -1,6 +1,6 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Management.*;
+import fantasy.jobs.management.*;
 
 public class JobStartupData
 {

@@ -44,8 +44,6 @@ public interface ISatellite extends Remote
 	
 	void removeListener(ISatelliteListener listener);
 
-	UUID getId();
-	
 	String getName();
 
 }

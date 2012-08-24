@@ -11,23 +11,23 @@ import fantasy.jobs.resources.*;
 
 public interface ISolar extends Remote
 {
-    Iterable<JobMetaData> getUnterminates();
-    
-	JobMetaData FindJobMetaDataById(UUID id) throws Exception;
+	JobMetaData[] getUnterminates() throws Exception;
 
-	boolean IsTerminated(UUID id) throws Exception;
+	JobMetaData findJobMetaDataById(UUID id) throws Exception;
 
-	List<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
-	List<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	boolean isTerminated(UUID id) throws Exception;
 
-	void Add(JobMetaData job) throws Exception;
-	void UpdateState(JobMetaData job, boolean isStart) throws Exception;
-	void Archive(JobMetaData job) throws Exception;
-	void Resume(UUID id) throws Exception;
-	void Cancel(UUID id) throws Exception;
-	void Suspend(UUID id) throws Exception;
-	void UserPause(UUID id) throws Exception;
-	
+	JobMetaData[] findTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	JobMetaData[] findUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+
+
+	void add(JobMetaData job) throws Exception;
+	void updateState(JobMetaData job, boolean isStart) throws Exception;
+	void archive(JobMetaData job) throws Exception;
+	void resume(UUID id) throws Exception;
+	void cancel(UUID id) throws Exception;
+	void suspend(UUID id) throws Exception;
+	void userPause(UUID id) throws Exception;
 	
 	int getTerminatedCount() throws Exception;
 	
@@ -36,22 +36,22 @@ public interface ISolar extends Remote
 
 
 
-	String[] GetAllApplications();
+	String[] getAllApplications() throws Exception;
 
-	String[] GetAllUsers();
+	String[] getAllUsers() throws Exception;
 
-	void RegisterResourceRequest(UUID jobId, ResourceParameter[] parameters);
+	void registerResourceRequest(UUID jobId, ResourceParameter[] parameters) throws Exception;
 
-	void UnregisterResourceRequest(UUID jobId);
+	void unregisterResourceRequest(UUID jobId) throws Exception;
 
-	void ResourceAvaiable();
+	void resourceAvaiable() throws Exception;
 
-	ResourceParameter[] GetRequiredResources(UUID jobId);
+	ResourceParameter[] getRequiredResources(UUID jobId) throws Exception;
 	
-	void connect(ISatellite satellite);
+	void connect(ISatellite satellite) throws Exception;
 	
-	void disconnect(UUID cookie);
+	void disconnect(UUID cookie) throws Exception;
 	
-	void echo();
+	void echo() throws Exception;
 
 }

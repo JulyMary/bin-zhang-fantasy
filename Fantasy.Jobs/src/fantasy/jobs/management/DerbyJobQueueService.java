@@ -65,7 +65,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 	
 
-	public final JobMetaData FindJobMetaDataById(UUID id) throws Exception
+	public final JobMetaData findJobMetaDataById(UUID id) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -99,7 +99,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 
 
-	public final JobMetaData CreateJobMetaData()
+	public final JobMetaData createJobMetaData()
 	{
 		return new JobMetaData();
 	}
@@ -108,7 +108,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 	private Object _syncRoot = new Object();
 	
 	
-	public void Add(JobMetaData job) throws Exception
+	public void add(JobMetaData job) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -127,11 +127,11 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		this.onAdded(job);
 	}
 	
-	public void UpdateState(JobMetaData job, boolean isStart) throws Exception
+	public void updateState(JobMetaData job, boolean isStart) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-			JobMetaData old = this.FindJobMetaDataById(job.getId());
+			JobMetaData old = this.findJobMetaDataById(job.getId());
 			if (old != null && old != job)
 			{
 				old.setState(job.getState());
@@ -158,7 +158,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		this.onChanged(job);
 	}
 	
-	public void Archive(JobMetaData job) throws Exception
+	public void archive(JobMetaData job) throws Exception
 	{
 		
 		synchronized (_syncRoot)
@@ -186,7 +186,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 	
 	
 	
-	public final List<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter,  String order, int skip, int take) throws Exception
+	public final List<JobMetaData> findTerminated(RefObject<Integer> totalCount, String filter,  String order, int skip, int take) throws Exception
 	{
 		List<JobMetaData> rs;
 		synchronized (_syncRoot)
@@ -198,7 +198,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 		return rs;
 	}
-	public final List<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception
+	public final List<JobMetaData> findUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception
 	{
 		List<JobMetaData> rs;
 		synchronized (_syncRoot)
@@ -242,9 +242,9 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void Resume(UUID id) throws Exception
+	public final void resume(UUID id) throws Exception
 	{
-		JobMetaData meta = this.FindJobMetaDataById(id);
+		JobMetaData meta = this.findJobMetaDataById(id);
 		if (meta != null)
 		{
 			switch (meta.getState())
@@ -252,7 +252,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 				case JobState.UserPaused:
 					meta.setState(meta.getStartTime() != null ? JobState.Suspended : JobState.Unstarted);
-					this.UpdateState(meta, false);
+					this.updateState(meta, false);
 					break;
 				default:
 					throw new IllegalStateException(String.format(Resources.getInvalidJobTransitionText(), id, JobState.ToString(meta.getState()), JobState.ToString(JobState.Suspended)));
@@ -271,9 +271,9 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void Cancel(UUID id) throws Exception
+	public final void cancel(UUID id) throws Exception
 	{
-		JobMetaData meta = this.FindJobMetaDataById(id);
+		JobMetaData meta = this.findJobMetaDataById(id);
 		if (meta != null)
 		{
 			if(!meta.getIsTerminated())
@@ -286,7 +286,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 				{
 					meta.setState(JobState.Cancelled);
 					meta.setEndTime(new java.util.Date());
-					this.Archive(meta);
+					this.archive(meta);
 				}
 			}
 			else
@@ -297,9 +297,9 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		}
 	}
 
-	public final void Suspend(UUID id) throws Exception
+	public final void suspend(UUID id) throws Exception
 	{
-		JobMetaData meta = this.FindJobMetaDataById(id);
+		JobMetaData meta = this.findJobMetaDataById(id);
 		if (meta != null)
 		{
 			if (!meta.getIsTerminated())
@@ -312,7 +312,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 				else
 				{
 					meta.setState(JobState.Suspended);
-					this.UpdateState(meta, false);
+					this.updateState(meta, false);
 				}
 			}
 			else
@@ -333,9 +333,9 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		
 	}
 
-	public final void UserPause(UUID id) throws Exception
+	public final void userPause(UUID id) throws Exception
 	{
-		JobMetaData meta = this.FindJobMetaDataById(id);
+		JobMetaData meta = this.findJobMetaDataById(id);
 		if (meta != null)
 		{
 			if (!meta.getIsTerminated())
@@ -347,7 +347,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 				else
 				{
 					meta.setState(JobState.UserPaused);
-					this.UpdateState(meta, false);
+					this.updateState(meta, false);
 				}
 			}
 			else
@@ -370,12 +370,12 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 		
 	}
 
-	public final String[] GetAllApplications()
+	public final String[] getAllApplications()
 	{
 		return new String[0];
 	}
 
-	public final String[] GetAllUsers()
+	public final String[] getAllUsers()
 	{
 		return new String[0];
 	}
@@ -384,7 +384,7 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 
 
 
-	public final boolean IsTerminated(UUID id)
+	public final boolean isTerminated(UUID id)
 	{
 		synchronized (_syncRoot)
 		{

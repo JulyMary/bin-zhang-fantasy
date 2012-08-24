@@ -40,7 +40,7 @@ public class ResourceService extends AbstractService implements IResourceService
 		{
 			IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
 			IResourceRequestQueue queue = this.getSite().getRequiredService(IResourceRequestQueue.class);
-			queue.RegisterResourceRequest(engine.getJobId(), parameters);
+			queue.registerResourceRequest(engine.getJobId(), parameters);
 			ILogger logger = this.getSite().getService(ILogger.class);
 			String newLine = System.getProperty("line.separator");
 			Log.SafeLogMessage(logger, "Resource", "Suspend job engine because it failed to request resource:" + newLine + StringUtils2.join(newLine, new Enumerable<ResourceParameter>(parameters)));
@@ -144,7 +144,7 @@ public class ResourceService extends AbstractService implements IResourceService
 
 					IJobEngine engine = this.getSite().getRequiredService(IJobEngine.class);
 					IResourceRequestQueue queue = this.getSite().getRequiredService(IResourceRequestQueue.class);
-					queue.RegisterResourceRequest(engine.getJobId(), resource.getParameters());
+					queue.registerResourceRequest(engine.getJobId(), resource.getParameters());
 					Suspend();
 				}
 			}

@@ -76,7 +76,7 @@ public class WaitForResourceProvider extends ResourceProvider implements IResour
 						for (UUID id : temp)
 						{
 							
-							if (!queue.IsTerminated(id))
+							if (!queue.isTerminated(id))
 							{
 								return false;
 							}
@@ -91,7 +91,7 @@ public class WaitForResourceProvider extends ResourceProvider implements IResour
 					{
 						for (UUID id : temp)
 						{
-							if (queue.IsTerminated(id))
+							if (queue.isTerminated(id))
 							{
 								waitList.clear();
 								return true;

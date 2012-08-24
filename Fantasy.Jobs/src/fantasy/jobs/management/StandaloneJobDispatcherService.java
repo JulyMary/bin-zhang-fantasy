@@ -205,7 +205,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 				{
 					if (this._resourceQueue != null)
 					{
-						this._resourceQueue.UnregisterResourceRequest(job.getId());
+						this._resourceQueue.unregisterResourceRequest(job.getId());
 					}
 					ILogger logger = this.getSite().getService(ILogger.class);
 					if (job.getState() == JobState.Unstarted)

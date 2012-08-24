@@ -517,7 +517,7 @@ class ScheduleData extends ObjectWithSite
 
 				@Override
 				public boolean evaluate(UUID id) throws Exception {
-					return ! queue.IsTerminated(id);
+					return ! queue.isTerminated(id);
 				}});     
 			switch (this.getScheduleItem().getMultipleInstance())
 			{
@@ -535,7 +535,7 @@ class ScheduleData extends ObjectWithSite
 
 					for (UUID id : query)
 					{
-						queue.Cancel(id);
+						queue.cancel(id);
 						if (logger != null)
 						{
 							logger.LogMessage("Schedule", "Cancel job %1$s because a new scheduled task will start", id);
@@ -553,9 +553,9 @@ class ScheduleData extends ObjectWithSite
 		for (String xml : this.CreateStartInfo(waitAll))
 		{
 
-			JobMetaData meta = queue.CreateJobMetaData();
+			JobMetaData meta = queue.createJobMetaData();
 			meta.LoadXml(xml);
-			queue.Add(meta);
+			queue.add(meta);
 			ids.add(meta.getId());
 
 		}

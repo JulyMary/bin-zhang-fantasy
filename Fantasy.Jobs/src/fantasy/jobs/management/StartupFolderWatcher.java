@@ -152,10 +152,10 @@ public class StartupFolderWatcher extends AbstractService
 			if (xml != null)
 			{
 
-				JobMetaData job = _jobQueue.CreateJobMetaData();
+				JobMetaData job = _jobQueue.createJobMetaData();
 				job.LoadXml(xml);
 
-				_jobQueue.Add(job);
+				_jobQueue.add(job);
 
 				fantasy.io.File.delete(path);
 

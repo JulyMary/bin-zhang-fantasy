@@ -76,10 +76,10 @@ public class StartNewJobTask extends ObjectWithSite implements ITask
 		String si = JDomUtils.toString(xt);
 
 		IJobQueue queue = this.getSite().getRequiredService(IJobQueue.class);
-		JobMetaData child = queue.CreateJobMetaData();
+		JobMetaData child = queue.createJobMetaData();
 		child.LoadXml(si);
 
-		queue.Add(child);
+		queue.add(child);
 
 		ILogger logger = this.getSite().getService(ILogger.class);
 		if (logger != null)

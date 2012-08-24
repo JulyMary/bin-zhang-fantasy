@@ -119,7 +119,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 					}
 					this._threads.remove(jp);
 					
-					this.getSite().getRequiredService(IJobQueue.class).Archive(jp.getJob());
+					this.getSite().getRequiredService(IJobQueue.class).archive(jp.getJob());
 					
 				}
 				finally
@@ -144,7 +144,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 			this._threads.add(jp);
 			thread.start();
 			job.setState(JobState.Running);
-			this.getSite().getRequiredService(IJobQueue.class).UpdateState(job, false);
+			this.getSite().getRequiredService(IJobQueue.class).updateState(job, false);
 		}
 	}
 
@@ -182,7 +182,7 @@ public class InProcessJobController extends AbstractService implements IJobContr
 			thread.start();
 			job.setStartTime(new java.util.Date());
 			job.setState(JobState.Running);
-			this.getSite().getRequiredService(IJobQueue.class).UpdateState(job, true);
+			this.getSite().getRequiredService(IJobQueue.class).updateState(job, true);
 		}
 
 	}
