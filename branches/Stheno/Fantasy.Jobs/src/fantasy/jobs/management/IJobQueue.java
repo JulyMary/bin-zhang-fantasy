@@ -11,24 +11,24 @@ public interface IJobQueue
 
 	
 
-	JobMetaData FindJobMetaDataById(UUID id) throws Exception;
+	JobMetaData findJobMetaDataById(UUID id) throws Exception;
 
-	boolean IsTerminated(UUID id) throws Exception;
+	boolean isTerminated(UUID id) throws Exception;
 
-	List<JobMetaData> FindTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
-	List<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	List<JobMetaData> findTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	List<JobMetaData> findUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
 
 
 
-	JobMetaData CreateJobMetaData();
+	JobMetaData createJobMetaData();
 
-	void Add(JobMetaData job) throws Exception;
-	void UpdateState(JobMetaData job, boolean isStart) throws Exception;
-	void Archive(JobMetaData job) throws Exception;
-	void Resume(UUID id) throws Exception;
-	void Cancel(UUID id) throws Exception;
-	void Suspend(UUID id) throws Exception;
-	void UserPause(UUID id) throws Exception;
+	void add(JobMetaData job) throws Exception;
+	void updateState(JobMetaData job, boolean isStart) throws Exception;
+	void archive(JobMetaData job) throws Exception;
+	void resume(UUID id) throws Exception;
+	void cancel(UUID id) throws Exception;
+	void suspend(UUID id) throws Exception;
+	void userPause(UUID id) throws Exception;
 	
 	
 	void addListener(IJobQueueListener listener);
@@ -41,7 +41,7 @@ public interface IJobQueue
 
 
 
-	String[] GetAllApplications();
+	String[] getAllApplications();
 
-	String[] GetAllUsers();
+	String[] getAllUsers();
 }

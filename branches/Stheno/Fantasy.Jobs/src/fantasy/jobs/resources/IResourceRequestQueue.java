@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public interface IResourceRequestQueue
 {
-	void RegisterResourceRequest(UUID jobId, ResourceParameter[] parameters);
-	void UnregisterResourceRequest(UUID jobId);
+	void registerResourceRequest(UUID jobId, ResourceParameter[] parameters);
+	void unregisterResourceRequest(UUID jobId);
 
-	ResourceParameter[] GetRequiredResources(UUID jobId);
+	ResourceParameter[] getRequiredResources(UUID jobId);
 }

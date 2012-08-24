@@ -1,120 +1,69 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Management.*;
-import Fantasy.Jobs.Resources.*;
+import java.rmi.RemoteException;
+import java.util.*;
+
+
+import fantasy.RefObject;
+import fantasy.collections.*;
+import fantasy.jobs.management.*;
+import fantasy.jobs.resources.*;
+import fantasy.servicemodel.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 //[ServiceBehavior(InstanceContextMode=InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Multiple, Namespace=Consts.JobServiceNamespaceURI)]
-public class SolarService extends WCFSingletonService implements ISolar
+public class SolarService extends AbstractService implements ISolar
 {
+	public SolarService() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	private IJobQueue _queue;
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		this._queue = this.Site.<IJobQueue>GetRequiredService();
+		this._queue = this.getSite().getRequiredService(IJobQueue.class);
 
-		super.InitializeService();
+		super.initializeService();
 	}
 
-	@Override
-	public void UninitializeService()
+	
+
+
+
+	
+
+
+	public final void registerResourceRequest(UUID jobId, ResourceParameter[] parameters) throws Exception
 	{
-
-		super.UninitializeService();
-
-	}
-
-
-
-	public final JobMetaData[] Unterminates(int skip, int take)
-	{
-		return this._queue.getUnterminates().Skip(skip).Take(take).toArray();
-	}
-
-	public final JobMetaData[] Terminates(int skip, int take)
-	{
-		return this._queue.getTerminates().Skip(skip).Take(take).toArray();
-	}
-
-	public final JobMetaData FindJobMetaDataById(UUID id)
-	{
-		return this._queue.FindJobMetaDataById(id);
-	}
-
-	public final JobMetaData[] FindTerminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take)
-	{
-		return this._queue.FindTerminated(totalCount, filter, args, order, skip, take).toArray();
-	}
-
-	public final JobMetaData[] FindUnterminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take)
-	{
-		return this._queue.FindUnterminated(totalCount, filter, args, order, skip, take).toArray();
-	}
-
-	public final void ApplyChange(JobMetaData job)
-	{
-		this._queue.ApplyChange(job);
-	}
-
-	public final void Resume(UUID id)
-	{
-		this._queue.Resume(id);
-	}
-
-	public final void Cancel(UUID id)
-	{
-		this._queue.Cancel(id);
-	}
-
-	public final void Suspend(UUID id)
-	{
-		this._queue.Suspend(id);
-	}
-
-	public final void UserPause(UUID id)
-	{
-		this._queue.UserPause(id);
-	}
-
-	public final String[] GetAllApplications()
-	{
-		return this._queue.GetAllApplications();
-	}
-
-	public final String[] GetAllUsers()
-	{
-		return this._queue.GetAllUsers();
-	}
-
-
-	public final void RegisterResourceRequest(UUID jobId, Resources.ResourceParameter[] parameters)
-	{
-		IResourceRequestQueue resQueue = this.Site.<IResourceRequestQueue>GetService();
+		IResourceRequestQueue resQueue = this.getSite().getService(IResourceRequestQueue.class);
 		if (resQueue != null)
 		{
-			resQueue.RegisterResourceRequest(jobId, parameters);
+			resQueue.registerResourceRequest(jobId, parameters);
 		}
 	}
 
 
 
 
-	public final void UnregisterResourceRequest(UUID jobId)
+	public final void unregisterResourceRequest(UUID jobId) throws Exception
 	{
-		IResourceRequestQueue resQueue = this.Site.<IResourceRequestQueue>GetService();
+		IResourceRequestQueue resQueue = this.getSite().getService(IResourceRequestQueue.class);
 		if (resQueue != null)
 		{
-			resQueue.UnregisterResourceRequest(jobId);
+			resQueue.unregisterResourceRequest(jobId);
 		}
 	}
 
-	public final ResourceParameter[] GetRequiredResources(UUID jobId)
+	public final ResourceParameter[] getRequiredResources(UUID jobId) throws Exception
 	{
-		IResourceRequestQueue resQueue = this.Site.<IResourceRequestQueue>GetService();
+		IResourceRequestQueue resQueue = this.getSite().getService(IResourceRequestQueue.class);
 		if (resQueue != null)
 		{
-			return resQueue.GetRequiredResources(jobId);
+			return resQueue.getRequiredResources(jobId);
 		}
 		else
 		{
@@ -124,16 +73,250 @@ public class SolarService extends WCFSingletonService implements ISolar
 
 
 
-	public final void ResourceAvaiable()
+	public final void resourceAvaiable() throws Exception
 	{
-		IJobDispatcher dispatcher = this.Site.<IJobDispatcher>GetRequiredService();
+		IJobDispatcher dispatcher = this.getSite().getRequiredService(IJobDispatcher.class);
 		dispatcher.TryDispatch();
 	}
 
 
-	public final boolean IsTermianted(UUID id)
-	{
-		return _queue.IsTerminated(id);
+	
+
+
+
+
+
+
+
+	@Override
+	public JobMetaData[] getUnterminates() throws Exception {
+		return new Enumerable<JobMetaData>(this._queue.getUnterminates()).toArrayList().toArray(new JobMetaData[0]);
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public JobMetaData findJobMetaDataById(UUID id) throws Exception {
+		return this._queue.findJobMetaDataById(id);
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public boolean isTerminated(UUID id) throws Exception {
+		return _queue.isTerminated(id);
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public JobMetaData[] findTerminated(RefObject<Integer> totalCount,
+			String filter, String order, int skip, int take) throws Exception {
+		
+		return new Enumerable<JobMetaData>(_queue.findTerminated(totalCount, filter, order, skip, take)).toArrayList().toArray(new JobMetaData[0]);
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public JobMetaData[] findUnterminated(RefObject<Integer> totalCount,
+			String filter, String order, int skip, int take) throws Exception {
+		return new Enumerable<JobMetaData>(_queue.findUnterminated(totalCount, filter, order, skip, take)).toArrayList().toArray(new JobMetaData[0]);
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void add(JobMetaData job) throws Exception {
+		this._queue.add(job);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void updateState(JobMetaData job, boolean isStart) throws Exception {
+		this._queue.updateState(job, isStart);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void archive(JobMetaData job) throws Exception {
+		this._queue.archive(job);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void resume(UUID id) throws Exception {
+		this._queue.resume(id);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void cancel(UUID id) throws Exception {
+		this._queue.cancel(id);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void suspend(UUID id) throws Exception {
+		this._queue.suspend(id);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void userPause(UUID id) throws Exception {
+		this._queue.userPause(id);
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public int getTerminatedCount() throws Exception {
+		return this._queue.getTerminatedCount();
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public int getUnterminatedCount() throws Exception {
+		
+		return this._queue.getUnterminatedCount();
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public String[] getAllApplications() {
+		return this._queue.getAllApplications();
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public String[] getAllUsers() {
+	    return this._queue.getAllUsers();
+	}
+
+
+
+
+	@Override
+	public void connect(ISatellite satellite) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void disconnect(UUID cookie) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void echo() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -16,7 +16,7 @@ public class ResourceStartupFilter extends ObjectWithSite implements IJobStartup
 
 			@Override
 			public boolean evaluate(JobMetaData job) throws Exception {
-				ResourceParameter[] res = queue.GetRequiredResources(job.getId());
+				ResourceParameter[] res = queue.getRequiredResources(job.getId());
 				return res.length == 0 || mngr.IsAvailable(res);
 				
 			}});

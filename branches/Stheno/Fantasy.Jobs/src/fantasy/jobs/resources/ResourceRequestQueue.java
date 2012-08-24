@@ -25,7 +25,7 @@ public class ResourceRequestQueue extends AbstractService implements IResourceRe
 	private Object _syncRoot = new Object();
 
 
-	public final void RegisterResourceRequest(UUID jobId, ResourceParameter[] parameters)
+	public final void registerResourceRequest(UUID jobId, ResourceParameter[] parameters)
 	{
 		synchronized (_syncRoot)
 		{
@@ -36,7 +36,7 @@ public class ResourceRequestQueue extends AbstractService implements IResourceRe
 		}
 	}
 
-	public final void UnregisterResourceRequest(UUID jobId)
+	public final void unregisterResourceRequest(UUID jobId)
 	{
 		synchronized (_syncRoot)
 		{
@@ -44,7 +44,7 @@ public class ResourceRequestQueue extends AbstractService implements IResourceRe
 		}
 	}
 
-	public final ResourceParameter[] GetRequiredResources(UUID jobId)
+	public final ResourceParameter[] getRequiredResources(UUID jobId)
 	{
 		ResourceParameter[] rs;
 		synchronized (_syncRoot)

@@ -43,25 +43,25 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 	public final JobMetaData StartJob(String startInfo) throws Exception
 	{
 
-		JobMetaData job = getQueue().CreateJobMetaData();
+		JobMetaData job = getQueue().createJobMetaData();
 		job.LoadXml(startInfo);
-		getQueue().Add(job);
+		getQueue().add(job);
 		return job;
 	}
 
 	public final void Resume(UUID id) throws Exception
 	{
-		getQueue().Resume(id);
+		getQueue().resume(id);
 	}
 
 	public final void Cancel(UUID id) throws Exception
 	{
-		getQueue().Cancel(id);
+		getQueue().cancel(id);
 	}
 
 	public final void Pause(UUID id) throws Exception
 	{
-		getQueue().UserPause(id);
+		getQueue().userPause(id);
 	}
 
 	private JobMetaData[] GetJobMetaDataByIds(UUID[] ids) throws Exception
@@ -71,7 +71,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 			java.util.ArrayList<JobMetaData> rs = new java.util.ArrayList<JobMetaData>();
 			for (UUID id : ids)
 			{
-				JobMetaData job = getQueue().FindJobMetaDataById(id);
+				JobMetaData job = getQueue().findJobMetaDataById(id);
 				if (job != null)
 				{
 					rs.add(job);
@@ -93,7 +93,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 			{
 				if (job.getState() == JobState.UserPaused)
 				{
-					getQueue().Resume(job.getId());
+					getQueue().resume(job.getId());
 				}
 			}
 			catch (java.lang.Exception e)
@@ -114,7 +114,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 	{
 		int total = 0;
 		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
+		JobMetaData[] jobs = getQueue().findUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
 		total = tempRef_total.argvalue;
 		this.Resume(jobs);
 	}
@@ -140,7 +140,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 		{
 			try
 			{
-				getQueue().Cancel(job.getId());
+				getQueue().cancel(job.getId());
 			}
 			catch (Exception e)
 			{
@@ -158,7 +158,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 	{
 		int total = 0;
 		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
+		JobMetaData[] jobs = getQueue().findUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
 		total = tempRef_total.argvalue;
 		Cancel(jobs);
 
@@ -185,7 +185,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 		{
 			try
 			{
-				getQueue().UserPause(job.getId());
+				getQueue().userPause(job.getId());
 			}
 			catch (java.lang.Exception e)
 			{
@@ -206,7 +206,7 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 	{
 		int total = 0;
 		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().FindUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
+		JobMetaData[] jobs = getQueue().findUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
 		total = tempRef_total.argvalue;
 		Pause(jobs);
 	}
@@ -214,20 +214,20 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 
 	public final JobMetaData FindJobById(UUID id) throws Exception
 	{
-		return getQueue().FindJobMetaDataById(id);
+		return getQueue().findJobMetaDataById(id);
 	}
 
 	
 
 	public final JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter,  String order, int skip, int take) throws Exception
 	{
-		return getQueue().FindUnterminated(totalCount, filter,  order, skip, take).toArray(new JobMetaData[0]);
+		return getQueue().findUnterminated(totalCount, filter,  order, skip, take).toArray(new JobMetaData[0]);
 	}
 
 	public final JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception
 	{
 
-		return getQueue().FindTerminated(totalCount, filter, order, skip, take).toArray(new JobMetaData[0]);
+		return getQueue().findTerminated(totalCount, filter, order, skip, take).toArray(new JobMetaData[0]);
 
 	}
 
@@ -330,12 +330,12 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 
 	public final String[] GetAllApplications() throws Exception
 	{
-		return getQueue().GetAllApplications();
+		return getQueue().getAllApplications();
 	}
 
 	public final String[] GetAllUsers() throws Exception
 	{
-		return getQueue().GetAllUsers();
+		return getQueue().getAllUsers();
 	}
 
 
