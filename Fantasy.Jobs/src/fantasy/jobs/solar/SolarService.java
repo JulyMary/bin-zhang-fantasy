@@ -10,13 +10,16 @@ import fantasy.jobs.management.*;
 import fantasy.jobs.resources.*;
 import fantasy.servicemodel.*;
 
-//C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
-//[ServiceBehavior(InstanceContextMode=InstanceContextMode.Single, ConcurrencyMode=ConcurrencyMode.Multiple, Namespace=Consts.JobServiceNamespaceURI)]
 public class SolarService extends AbstractService implements ISolar
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8461040238981801650L;
+
 	public SolarService() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
@@ -288,9 +291,10 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	@Override
-	public void connect(ISatellite satellite) {
-		// TODO Auto-generated method stub
+	public void connect(String name, ISatellite satellite) throws Exception {
 		
+		SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
+		manager.RegisterSatellite(name, satellite);
 	}
 
 
@@ -301,8 +305,9 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	@Override
-	public void disconnect(UUID cookie) {
-		// TODO Auto-generated method stub
+	public void disconnect(String name) throws Exception {
+		SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
+		manager.UnregisterSatellite(name);
 		
 	}
 
@@ -315,7 +320,7 @@ public class SolarService extends AbstractService implements ISolar
 
 	@Override
 	public void echo() {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

@@ -1,62 +1,97 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Management.*;
-import Fantasy.ServiceModel.*;
+import java.rmi.RemoteException;
+import java.util.concurrent.*;
+
+import fantasy.collections.*;
+import fantasy.jobs.management.*;
+import fantasy.servicemodel.*;
+import fantasy.*;
 
 public class SatelliteManager extends AbstractService
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2649936598311903847L;
+	ScheduledExecutorService _executor;
+
+
+	public SatelliteManager() throws RemoteException {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
 	private IJobDispatcher _dispatcher;
 
 	private Object _syncRoot = new Object();
 
 	private java.util.ArrayList<ActionData> _actionQueue = new java.util.ArrayList<ActionData>();
 
-	private Thread _refreshThread;
-	private Thread _actionThread;
+	
 
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		this._dispatcher = this.Site.<IJobDispatcher>GetRequiredService();
+		this._dispatcher = this.getSite().getRequiredService(IJobDispatcher.class);
+		
+		_executor =  Executors.newScheduledThreadPool(2);
+		_executor.scheduleAtFixedRate(new Runnable(){
 
-		_refreshThread = ThreadFactory.CreateThread(this.Refresh).WithStart();
+			@Override
+			public void run() {
+				SatelliteManager.this.Refresh();
+			}}, 15, 15, TimeUnit.SECONDS);
+		
+		_executor.scheduleAtFixedRate(new Runnable(){
 
-		_actionThread = ThreadFactory.CreateThread(this.RetryActions).WithStart();
+			@Override
+			public void run() {
+				RetryActions();
+				
+			}}, 60, 60, TimeUnit.SECONDS);
 
 
-		super.InitializeService();
+
+		super.initializeService();
 	}
 
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
-		this._actionThread.stop();
-		this._refreshThread.stop();
-		_actionThread.join();
-		_refreshThread.join();
-
-
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Parallel.ForEach(this._satellites, site =>
+		
+		_executor.shutdown();
+		_executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		
+		ExecutorService exec =  Executors.newCachedThreadPool();
+		for(final SatelliteSite site : this._satellites)
 		{
-			try
-			{
-				site.Satellite.RequestSuspendAll();
-			}
-			catch (java.lang.Exception e)
-			{
-			}
+			exec.execute(new Runnable(){
+
+				@Override
+				public void run() {
+					try {
+						site.getSatellite().requestSuspendAll();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}});
+			
 		}
-	   );
+		
+		exec.shutdown();
+		exec.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
 
-
-		super.UninitializeService();
+		super.uninitializeService();
 	}
 
 
-	public final <T> boolean SafeCallSatellite(String name, Func<ISatellite, T> function, RefObject<T> value)
+	public final <T> boolean SafeCallSatellite(String name, Func1<ISatellite, T> function, RefObject<T> value)
 	{
 		boolean rs = false;
 		SatelliteSite site = null;
@@ -68,7 +103,7 @@ public class SatelliteManager extends AbstractService
 			site = this._satellites.Find(s => name == s.getName());
 			if (site != null)
 			{
-				value.argvalue = function(site.getSatellite());
+				value.argvalue = function.call(site.getSatellite());
 			}
 
 			rs = true;
@@ -82,7 +117,7 @@ public class SatelliteManager extends AbstractService
 		return rs;
 	}
 
-	public final void Enqueue(String name, Object state, Action<ISatellite, Object> action, Action<Object> failAction)
+	public final void Enqueue(String name, Object state, Action2<ISatellite, Object> action, Action1<Object> failAction)
 	{
 
 		ActionData tempVar = new ActionData();
@@ -152,7 +187,7 @@ public class SatelliteManager extends AbstractService
 		synchronized (_syncRoot)
 		{
 //C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			SatelliteSite site = this._satellites.Find(s => name == s.getName());
+			SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).find();
 			if (site != null)
 			{
 				this._satellites.remove(site);
@@ -176,7 +211,7 @@ public class SatelliteManager extends AbstractService
 
 	}
 
-	public final void UnregisterSatellite(ISatellite satellite)
+	public final void UnregisterSatellite(String name)
 	{
 		synchronized (_syncRoot)
 		{
@@ -210,10 +245,14 @@ public class SatelliteManager extends AbstractService
 	private void Refresh()
 	{
 		TimeSpan timeout = new TimeSpan(0, 0, 15);
-		ILogger logger = this.Site.<ILogger>GetService();
-		while (true)
-		{
-			Thread.sleep(15 * 1000);
+		ILogger logger = null;
+		try {
+			logger = this.getSite().getService(ILogger.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 			java.util.ArrayList<SatelliteSite> list;
 			synchronized (_syncRoot)
 			{
@@ -224,16 +263,15 @@ public class SatelliteManager extends AbstractService
 			{
 				try
 				{
-					if (new java.util.Date() - site.getLastEchoTime() > timeout)
+					if (new java.util.Date().getTime() - site.getLastEchoTime().getTime() > timeout.getTotalMilliseconds())
 					{
-						site.getSatellite().Echo();
+						site.getSatellite().echo();
 						site.setLastEchoTime(new java.util.Date());
 					}
 				}
-				catch(RuntimeException error)
+				catch(Exception error)
 				{
-					if (WCFExceptionHandler.CanCatch(error))
-					{
+					
 						synchronized (_syncRoot)
 						{
 							_satellites.remove(site);
@@ -241,29 +279,19 @@ public class SatelliteManager extends AbstractService
 
 						if (logger != null)
 						{
-							logger.LogError("Solar", error, "WCF error");
-
 							logger.LogWarning("SatelliteManager", "Satellite {0} is stop working, remove it from satellite manager.", site.getName());
 						}
-					}
-					else
-					{
-						throw error;
-					}
+					
 				}
 			}
 
 
-		}
 	}
 
 
-	private void RetryActions()
+	private void RetryActions() 
 	{
-		while (true)
-		{
-
-			Thread.sleep(60 * 1000);
+		
 			java.util.ArrayList<ActionData> list;
 			synchronized (_actionQueue)
 			{
@@ -280,7 +308,7 @@ public class SatelliteManager extends AbstractService
 					{
 						try
 						{
-							data.FailAction(data.State);
+							data.FailAction.act(data.State);
 						}
 						catch (java.lang.Exception e)
 						{
@@ -298,16 +326,16 @@ public class SatelliteManager extends AbstractService
 
 			}
 
-		}
+		
 	}
 
 	private static class ActionData
 	{
 		public String Satellite;
 
-		public Action<ISatellite, Object> Action;
+		public Action2<ISatellite, Object> Action;
 
-		public Action<Object> FailAction;
+		public Action1<Object> FailAction;
 
 		public Object State;
 

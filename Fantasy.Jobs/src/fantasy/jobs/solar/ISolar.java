@@ -48,9 +48,9 @@ public interface ISolar extends Remote
 
 	ResourceParameter[] getRequiredResources(UUID jobId) throws Exception;
 	
-	void connect(ISatellite satellite) throws Exception;
+	void connect(String name, ISatellite satellite) throws Exception;
 	
-	void disconnect(UUID cookie) throws Exception;
+	void disconnect(String name) throws Exception;
 	
 	void echo() throws Exception;
 
