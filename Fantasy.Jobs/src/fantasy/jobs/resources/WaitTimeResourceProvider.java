@@ -66,7 +66,7 @@ public class WaitTimeResourceProvider extends ResourceProvider implements IResou
 				this._scheduleCookie = _scheduleService.register(_queue.get(0), new Action(){
 
 					@Override
-					public void act() throws Exception {
+					public void call() throws Exception {
 						 onTime();
 						
 					}});
@@ -120,7 +120,7 @@ public class WaitTimeResourceProvider extends ResourceProvider implements IResou
 					this._scheduleCookie = _scheduleService.register(time, new Action(){
 
 						@Override
-						public void act() throws Exception {
+						public void call() throws Exception {
 							onTime();
 							
 						}});

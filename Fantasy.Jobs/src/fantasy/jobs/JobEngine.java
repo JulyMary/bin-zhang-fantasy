@@ -105,7 +105,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 					public void run() {
 						try
 						{
-							method.act(handler);
+							method.call(handler);
 						}
 						catch (java.lang.Exception e)
 						{
@@ -148,7 +148,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 			FireEvent(new Action1<IJobEngineEventHandler>(){
 
 				@Override
-				public void act(IJobEngineEventHandler obj) throws Exception {
+				public void call(IJobEngineEventHandler obj) throws Exception {
 					obj.HandleExit(JobEngine.this, e);
 					
 				}});
@@ -209,7 +209,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 				FireEvent(new Action1<IJobEngineEventHandler>(){
 					
 					@Override
-					public void act(IJobEngineEventHandler handler) throws Exception
+					public void call(IJobEngineEventHandler handler) throws Exception
 					{
 						handler.HandleStart(JobEngine.this);
 					}
@@ -227,7 +227,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
                FireEvent(new Action1<IJobEngineEventHandler>(){
 					
 					@Override
-					public void act(IJobEngineEventHandler handler) throws Exception
+					public void call(IJobEngineEventHandler handler) throws Exception
 					{
 						handler.HandleLoad(JobEngine.this);
 					}
@@ -302,7 +302,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		               FireEvent(new Action1<IJobEngineEventHandler>(){
 							
 							@Override
-							public void act(IJobEngineEventHandler handler) throws Exception
+							public void call(IJobEngineEventHandler handler) throws Exception
 							{
 								handler.HandleResume(JobEngine.this);
 							}
@@ -320,7 +320,7 @@ public class JobEngine extends UnicastRemoteObject implements IJobEngine
 		               FireEvent(new Action1<IJobEngineEventHandler>(){
 							
 							@Override
-							public void act(IJobEngineEventHandler handler) throws Exception
+							public void call(IJobEngineEventHandler handler) throws Exception
 							{
 								handler.HandleLoad(JobEngine.this);
 							}

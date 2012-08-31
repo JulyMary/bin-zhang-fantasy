@@ -3,6 +3,8 @@
 import java.rmi.RemoteException;
 import java.util.concurrent.*;
 
+import org.apache.commons.lang3.StringUtils;
+
 import fantasy.collections.*;
 import fantasy.jobs.management.*;
 import fantasy.servicemodel.*;
@@ -19,7 +21,7 @@ public class SatelliteManager extends AbstractService
 
 	public SatelliteManager() throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 
@@ -76,7 +78,7 @@ public class SatelliteManager extends AbstractService
 					try {
 						site.getSatellite().requestSuspendAll();
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+					
 						e.printStackTrace();
 					}
 					
@@ -91,7 +93,9 @@ public class SatelliteManager extends AbstractService
 	}
 
 
-	public final <T> boolean SafeCallSatellite(String name, Func1<ISatellite, T> function, RefObject<T> value)
+	
+	
+	public final <T> boolean SafeCallSatellite(final String name, Func1<ISatellite, T> function, RefObject<T> value)
 	{
 		boolean rs = false;
 		SatelliteSite site = null;
@@ -99,8 +103,12 @@ public class SatelliteManager extends AbstractService
 		try
 		{
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			site = this._satellites.Find(s => name == s.getName());
+			site = new Enumerable<SatelliteSite>(this._satellites).firstOrDefault(new Predicate<SatelliteSite>(){
+
+				@Override
+				public boolean evaluate(SatelliteSite site) throws Exception {
+					return StringUtils.equals(site.getName(), name);
+				}});
 			if (site != null)
 			{
 				value.argvalue = function.call(site.getSatellite());
@@ -138,16 +146,20 @@ public class SatelliteManager extends AbstractService
 
 	}
 
-	private boolean TryCallAction(ActionData data)
+	private boolean TryCallAction(final ActionData data)
 	{
 		boolean rs = false;
 		try
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			SatelliteSite site = this._satellites.Find(s => data.Satellite.equals(s.getName()));
+			SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).firstOrDefault(new Predicate<SatelliteSite>(){
+
+				@Override
+				public boolean evaluate(SatelliteSite site) throws Exception {
+					return StringUtils.equals(site.getName(), data.Satellite);
+				}});
 			if (site != null)
 			{
-				data.Action(site.getSatellite(), data.State);
+				data.Action.call(site.getSatellite(), data.State);
 				rs = true;
 			}
 
@@ -161,33 +173,46 @@ public class SatelliteManager extends AbstractService
 	}
 
 
-	public final boolean IsValid(ISatellite satellite)
+	public final boolean IsValid(final ISatellite satellite)
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			return this._satellites.Find(s => satellite == s.Satellite) != null;
+			return new Enumerable<SatelliteSite>(this._satellites).any(new Predicate<SatelliteSite>(){
+
+				@Override
+				public boolean evaluate(SatelliteSite site) throws Exception {
+					return site.getSatellite() == satellite;
+				}});
+
 		}
 	}
 
 
-	public final void UpdateEchoTime(String name)
+	public final void UpdateEchoTime(final String name) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		SatelliteSite site = this._satellites.Find(s => name == s.getName());
+		SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).firstOrDefault(new Predicate<SatelliteSite>(){
+
+			@Override
+			public boolean evaluate(SatelliteSite site) throws Exception {
+				return StringUtils.equals(site.getName(), name);
+			}});
 		if (site != null)
 		{
 			site.setLastEchoTime(new java.util.Date());
 		}
 	}
 
-	public final void RegisterSatellite(String name, ISatellite satellite)
+	public final void RegisterSatellite(final String name, ISatellite satellite) throws Exception
 	{
 
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).find();
+			SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).firstOrDefault(new Predicate<SatelliteSite>(){
+
+				@Override
+				public boolean evaluate(SatelliteSite site) throws Exception {
+					return StringUtils.equals(site.getName(), name);
+				}});
 			if (site != null)
 			{
 				this._satellites.remove(site);
@@ -202,30 +227,30 @@ public class SatelliteManager extends AbstractService
 
 		this._dispatcher.TryDispatch();
 
-		ILogger logger = this.Site.<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		if (logger != null)
 		{
-			logger.LogMessage("SatelliteManager", "Satellite {0} is connected", name);
+			logger.LogMessage("SatelliteManager", "Satellite %1$s is connected", name);
 		}
 
 
 	}
 
-	public final void UnregisterSatellite(String name)
+	public final void UnregisterSatellite(final String name) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			SatelliteSite site = this._satellites.Find(s => satellite == s.Satellite);
-			if (site != null)
-			{
-				this._satellites.remove(site);
-			}
+			SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).firstOrDefault(new Predicate<SatelliteSite>(){
+
+				@Override
+				public boolean evaluate(SatelliteSite site) throws Exception {
+					return StringUtils.equals(site.getName(), name);
+				}});
 			this._dispatcher.TryDispatch();
-			ILogger logger = this.Site.<ILogger>GetService();
+			ILogger logger = this.getSite().getService(ILogger.class);
 			if (logger != null)
 			{
-				logger.LogMessage("SatelliteManager", "Satellite {0} is disconnected", site.getName());
+				logger.LogMessage("SatelliteManager", "Satellite %1$s is disconnected", site.getName());
 			}
 		}
 	}
@@ -249,7 +274,7 @@ public class SatelliteManager extends AbstractService
 		try {
 			logger = this.getSite().getService(ILogger.class);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 		
@@ -308,7 +333,7 @@ public class SatelliteManager extends AbstractService
 					{
 						try
 						{
-							data.FailAction.act(data.State);
+							data.FailAction.call(data.State);
 						}
 						catch (java.lang.Exception e)
 						{

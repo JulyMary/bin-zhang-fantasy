@@ -101,7 +101,7 @@ public class GlobalMutexService extends AbstractService implements IGlobalMutexS
 				newMutex.setCookie(_scheduleService.register(timeout.add(new Date()), new Action (){
 
 					@Override
-					public void act() throws Exception {
+					public void call() throws Exception {
 						GlobalMutexService.this.release(newMutex);
 						
 					}})); 

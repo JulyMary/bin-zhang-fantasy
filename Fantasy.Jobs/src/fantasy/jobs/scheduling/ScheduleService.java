@@ -87,7 +87,7 @@ public class ScheduleService extends AbstractService implements IScheduleService
 							public void run() {
 								try
 								{
-								act2.Action.act();
+								act2.Action.call();
 								}
 								catch(InterruptedException e)
 								{

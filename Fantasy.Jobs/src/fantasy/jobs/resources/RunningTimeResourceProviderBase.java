@@ -135,7 +135,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 		long cookie = this._scheduleService.register(period.getStart(), new Action(){
 
 			@Override
-			public void act() throws Exception {
+			public void call() throws Exception {
 				RunningTimeResourceProviderBase.this.registerPeriodEnd(schedule, period.getEnd());
 				Thread.sleep(1);
 				RunningTimeResourceProviderBase.this.onAvailable();
@@ -156,7 +156,7 @@ public abstract class RunningTimeResourceProviderBase extends ResourceProvider
 		long cookie = this._scheduleService.register(endTime, new Action(){
 
 			@Override
-			public void act() throws Exception {
+			public void call() throws Exception {
 				Period period = setting.GetPeriod(DateUtils.addMilliseconds(endTime,1));
 				RunningTimeResourceProviderBase.this.registerPeriodStart(schedule, period);
 				Resource res = RunningTimeResourceProviderBase.this.findOrCreateResource(schedule.getId());

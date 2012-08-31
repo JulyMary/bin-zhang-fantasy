@@ -121,7 +121,7 @@ public class ScheduleLibraryService extends AbstractService implements ISchedule
     					data.setScheduleCookie(this._scheduleService.register(data.NextRunTime, new Action(){
 
 						@Override
-						public void act() throws Exception {
+						public void call() throws Exception {
 							data.RunAction();
 							data.EvalNext();
 							if (!data.Expired)
