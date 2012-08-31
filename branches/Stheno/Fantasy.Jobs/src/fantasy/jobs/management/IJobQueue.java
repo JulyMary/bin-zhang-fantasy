@@ -7,7 +7,7 @@ import fantasy.*;
 
 public interface IJobQueue
 {
-	Iterable<JobMetaData> getUnterminates();
+	Iterable<JobMetaData> getUnterminates() throws Exception;
 
 	
 
@@ -41,7 +41,7 @@ public interface IJobQueue
 
 
 
-	String[] getAllApplications();
+	String[] getAllApplications() throws Exception;
 
-	String[] getAllUsers();
+	String[] getAllUsers() throws Exception;
 }

@@ -2,6 +2,7 @@
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.concurrent.ScheduledExecutorService;
 
 
 import fantasy.RefObject;
@@ -24,6 +25,8 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	private IJobQueue _queue;
+	
+	
 
 	@Override
 	public void initializeService() throws Exception

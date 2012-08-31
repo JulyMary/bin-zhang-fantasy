@@ -2,5 +2,5 @@ package fantasy;
 
 public interface Action1<T>
 {
-	void act(T obj) throws Exception;
+	void call(T arg) throws Exception;
 }

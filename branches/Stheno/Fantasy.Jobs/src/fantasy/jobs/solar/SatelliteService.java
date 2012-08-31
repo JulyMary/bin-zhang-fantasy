@@ -1,124 +1,153 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Management.*;
-import Fantasy.Jobs.Resources.*;
-import Fantasy.ServiceModel.*;
+import java.net.InetAddress;
+import java.rmi.RemoteException;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.ObjectUtils;
+
+import fantasy.collections.*;
+import fantasy.jobs.management.*;
+import fantasy.jobs.resources.*;
+import fantasy.servicemodel.*;
+import fantasy.*;
 
 //C# TO JAVA CONVERTER TODO TASK: Java annotations will not correspond to .NET attributes:
 //[CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
 public class SatelliteService extends AbstractService implements ISatellite
 {
 
-	private ClientRef<ISatelliteHandler> _satelliteHandler;
+	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2808005366760470593L;
+
+	public SatelliteService() throws RemoteException {
+		super();
+		
+	}
+
 
 	private IJobController _controller;
 
 	private String _name;
 
-	private Thread _refreshThread;
+	private ScheduledExecutorService _executor;
 
 	private IComputerLoadFactorEvaluator _loadFactorEvaluator;
 	private IResourceManager _resourceManager;
+	private ISolar _solar;
+	
+	private HashSet<ISatelliteListener> _listeners = new HashSet<ISatelliteListener>();
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		this._controller = this.Site.<IJobController>GetRequiredService();
-		_name = Environment.MachineName + ":" + Process.GetCurrentProcess().Id;
+		this._controller = this.getSite().getRequiredService(IJobController.class);
+		_name = String.format("%1$s:%2$d", InetAddress.getLocalHost().getHostName(), new Random().nextInt());
 
-		this._loadFactorEvaluator = AddIn.<IComputerLoadFactorEvaluator>CreateObjects("jobService/computerLoadFactorEvaluator").SingleOrDefault();
+		this._loadFactorEvaluator = new Enumerable<IComputerLoadFactorEvaluator>(AddIn.CreateObjects(IComputerLoadFactorEvaluator.class, "jobService/computerLoadFactorEvaluator")).singleOrDefault();
 
 		if (this._loadFactorEvaluator != null && this._loadFactorEvaluator instanceof IObjectWithSite)
 		{
-			((IObjectWithSite)_loadFactorEvaluator).Site = this.Site;
+			((IObjectWithSite)_loadFactorEvaluator).setSite(this.getSite());
 		}
 
-		this._resourceManager = this.Site.<IResourceManager>GetService();
+		this._resourceManager = this.getSite().getService(IResourceManager.class);
 		if (_resourceManager != null)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-			this._resourceManager.Available += new EventHandler(ResourceManager_Available);
+			this._resourceManager.addListener(new IResourceManagerListener(){
+
+				@Override
+				public void available(EventObject e) throws Exception {
+					SatelliteService.this.getSite().getRequiredService(ISolarActionQueue.class).enqueue(new Action1<ISolar>(){
+
+						@Override
+						public void call(ISolar arg) throws Exception {
+							arg.resourceAvaiable();
+							
+						}});;
+					
+				
+					
+				}});
+		
 		}
 
-		_refreshThread = ThreadFactory.CreateThread(this.Refresh).WithStart();
+		_executor = Executors.newScheduledThreadPool(1);
+		_executor.scheduleAtFixedRate(new Runnable(){
+
+			@Override
+			public void run() {
+				tryCreateHandler();
+			}}, 15, 15, TimeUnit.SECONDS);
+		
 
 
-		super.InitializeService();
+		super.initializeService();
 	}
 
-	private void ResourceManager_Available(Object sender, EventArgs e)
-	{
-		ISolarActionQueue actionQueue = this.Site.<ISolarActionQueue>GetRequiredService();
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		actionQueue.Enqueue(solar => solar.ResourceAvaiable());
-	}
+	
 
-	private void Refresh()
+	
+
+	private void tryCreateHandler()
 	{
-		while (true)
-		{
-			TryCreateHandler();
-			Thread.sleep(15 * 1000);
+
+		ILogger logger = null;
+		try {
+			logger = this.getSite().getService(ILogger.class);
+		} catch (Exception e) {
+		
+			e.printStackTrace();
 		}
 
-	}
-
-	private void TryCreateHandler()
-	{
-
-		ILogger logger = this.Site.<ILogger>GetService();
-
-		if (this._satelliteHandler != null)
+		if (this._solar != null)
 		{
 			try
 			{
-				this._satelliteHandler.Client.Echo();
+				this._solar.echo();
 			}
-			catch (ThreadAbortException e)
+			
+			catch (Exception error)
 			{
-			}
-			catch (RuntimeException error)
-			{
-				_satelliteHandler.dispose();
-				_satelliteHandler = null;
-				if (!WCFExceptionHandler.CanCatch(error))
+				
+				_solar = null;
+				if (!WCFExceptionHandler.canCatch(error))
 				{
-					throw error;
+					Log.SafeLogError(logger, "Solar", error, "An error ocuurs when calling solar.");
+					
 				}
-				else
-				{
-					logger.SafeLogError("Solar", error, "WCF error");
-				}
+				
 
 			}
 		}
 
-		if (_satelliteHandler == null)
+		if (_solar == null)
 		{
 
 			try
 			{
-				_satelliteHandler = ClientFactory.<ISatelliteHandler>CreateDuplex(this);
-				_satelliteHandler.Client.Connect(this._name);
+				_solar = ClientFactory.create(ISolar.class);
+				_solar.connect(this._name, this);
 
-				logger.SafeLogMessage("Satellite", "Success connect to solar service.");
+				Log.SafeLogMessage(logger, "Satellite", "Success connect to solar service.");
 
 			}
-			catch (ThreadAbortException e2)
-			{
-			}
-			catch (RuntimeException error)
+			
+			catch (Exception error)
 			{
 
-				logger.SafeLogError("Solar", error, "WCF error");
-				logger.SafeLogWarning("Satellite", error, MessageImportance.Normal, "Failed to connect to solor service.");
-				_satelliteHandler.dispose();
-				_satelliteHandler = null;
+			
+				Log.SafeLogWarning(logger, "Satellite", error, MessageImportance.Normal, "Failed to connect to solor service.");
+				_solar = null;
 
-				if (!WCFExceptionHandler.CanCatch(error))
-				{
-					throw error;
-				}
+				
 
 			}
 		}
@@ -128,60 +157,57 @@ public class SatelliteService extends AbstractService implements ISatellite
 
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
-		this._refreshThread.stop();
-		this._refreshThread.join();
-		if (this._satelliteHandler != null)
+		this._executor.shutdown();
+		this._executor.awaitTermination(Long.MAX_VALUE, TimeUnit.MILLISECONDS);
+		if (this._solar != null)
 		{
 
 			try
 			{
-				this._satelliteHandler.Client.Disconnect();
+				this._solar.disconnect(this._name);
 			}
 			catch (java.lang.Exception e)
 			{
 
 			}
 
-			this._satelliteHandler.dispose();
+			
 		}
 
-		super.UninitializeService();
+		super.uninitializeService();
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region ISatellite Members
 
-	public final void Echo()
+
+	public final void echo()
 	{
 
 	}
 
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<JobQueueEventArgs> JobChanged;
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<JobQueueEventArgs> JobAdded;
-
-	public final void OnJobAdded(JobMetaData job)
+	public final void onJobAdded(JobMetaData job) throws Exception
 	{
-		if (this.JobAdded != null)
+		for(ISatelliteListener listener : this._listeners)
 		{
-			this.JobAdded(this, new JobQueueEventArgs(job));
+			listener.Added(job);
 		}
+		
+		
 	}
 
-	public final void OnJobChanged(JobMetaData job)
+	public final void onJobChanged(JobMetaData job) throws Exception
 	{
-		if (this.JobChanged != null)
+		for(ISatelliteListener listener : this._listeners)
 		{
-			this.JobChanged(this, new JobQueueEventArgs(job));
+			listener.Changed(job);
 		}
+		
 	}
 
-	public final boolean IsResourceAvailable(ResourceParameter[] parameters)
+	public final boolean isResourceAvailable(ResourceParameter[] parameters) throws Exception
 	{
 
 		if (_resourceManager != null)
@@ -194,62 +220,101 @@ public class SatelliteService extends AbstractService implements ISatellite
 		}
 	}
 
-	public final double GetLoadFactor()
+	@Override
+	public final double getLoadFactor() throws Exception
 	{
-		return this._loadFactorEvaluator != null this._loadFactorEvaluator.Evaluate() :this._controller.GetAvailableProcessCount();
+		return this._loadFactorEvaluator != null ? this._loadFactorEvaluator.Evaluate() :this._controller.GetAvailableProcessCount();
 	}
 
-	public final void RequestStartJob(JobMetaData job)
+	@Override
+	public final void requestStartJob(JobMetaData job) throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		logger.SafeLogMessage("Satellite", "Start job {0} ({1}).", job.getName(), job.getId());
+		ILogger logger = this.getSite().getService(ILogger.class);
+		
+		
+		Log.SafeLogMessage(logger, "Satellite", "Start job %$1s (%$2s).", job.getName(), job.getId());
 		this._controller.StartJob(job);
 	}
 
-	public final void RequestResume(JobMetaData job)
+	@Override
+	public final void requestResume(JobMetaData job) throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		logger.SafeLogMessage("Satellite", "Resume job {0} ({1}).", job.getName(), job.getId());
+		ILogger logger = this.getSite().getService(ILogger.class);
+		Log.SafeLogMessage(logger, "Satellite", "Resume job %$1s (%$2s).", job.getName(), job.getId());
 		this._controller.Resume(job);
 	}
 
-	public final void RequestCancel(UUID id)
+	@Override
+	public final void requestCancel(UUID id) throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		logger.SafeLogMessage("Satellite", "Cancel job {0}.", id);
+		ILogger logger = this.getSite().getService(ILogger.class);
+		Log.SafeLogMessage(logger, "Satellite", "Cancel job %$1s.", id);
 		this._controller.Cancel(id);
 	}
 
-	public final void RequestSuspend(UUID id)
+	@Override
+	public final void requestSuspend(UUID id) throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		logger.SafeLogMessage("Satellite", "Suspend job {0}.", id);
+		ILogger logger = this.getSite().getService(ILogger.class);
+		Log.SafeLogMessage(logger, "Satellite", "Suspend job %1$s.", id);
 		this._controller.Suspend(id);
 	}
 
-	public final void RequestUserPause(UUID id)
+	public final void requestUserPause(UUID id) throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		logger.SafeLogMessage("Satellite", "Pause job {0}.", id);
+		ILogger logger = this.getSite().getService(ILogger.class);
+		Log.SafeLogMessage(logger, "Satellite", "Pause job %1$s.", id);
 		this._controller.UserPause(id);
 	}
 
 
 
-	public final void RequestSuspendAll()
+	public final void requestSuspendAll() throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
-		logger.SafeLogMessage("Satellite", "Suspend all running jobs.");
+		ILogger logger = this.getSite().getService(ILogger.class);
+		Log.SafeLogMessage(logger, "Satellite", "Suspend all running jobs.");
 		_controller.SuspendAll(true);
 	}
 
 
-	public final boolean IsRunning(UUID id)
+	public final boolean isRunning(final UUID id) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		return _controller.GetRunningJobs().Any(job => id.equals(job.Id));
+		return new Enumerable<JobMetaData>(this._controller.GetRunningJobs()).any(new Predicate<JobMetaData>(){
+
+			@Override
+			public boolean evaluate(JobMetaData job) throws Exception {
+				return ObjectUtils.equals(job.getId(), id);
+			}});
+
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
+
+
+
+	@Override
+	public void addListener(ISatelliteListener listener) {
+		this._listeners.add(listener);
+		
+	}
+
+
+
+
+
+	@Override
+	public void removeListener(ISatelliteListener listener) {
+		this._listeners.remove(listener);
+		
+	}
+
+
+
+
+
+	@Override
+	public String getName() {
+		return _name;
+	}
+
 }

@@ -31,7 +31,7 @@ public class LogService extends AbstractService implements ILogger
 		{
 			try
 			{
-				method.act(listener);
+				method.call(listener);
 			}
 			catch (java.lang.Exception e)
 			{
@@ -63,7 +63,7 @@ public class LogService extends AbstractService implements ILogger
 
 		this.FireEvent(new Action1<ILogListener>()
 		{
-			public void act(ILogListener listener) throws Exception
+			public void call(ILogListener listener) throws Exception
 			{
 			    listener.onMessage(category, importance, message2);
 			}
@@ -87,7 +87,7 @@ public class LogService extends AbstractService implements ILogger
 		final String message2 = message;
 		this.FireEvent(new Action1<ILogListener>()
 				{
-					public void act(ILogListener listener) throws Exception
+					public void call(ILogListener listener) throws Exception
 					{
 						listener.onWaring(category, exception, importance, message2);
 					}
@@ -113,7 +113,7 @@ public class LogService extends AbstractService implements ILogger
 		final String message2 = message;
 		this.FireEvent(new Action1<ILogListener>()
 				{
-					public void act(ILogListener listener) throws Exception
+					public void call(ILogListener listener) throws Exception
 					{
 						listener.onError(category, exception, message2);
 					}

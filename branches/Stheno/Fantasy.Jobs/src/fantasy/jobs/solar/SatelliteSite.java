@@ -1,8 +1,5 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Management.*;
-import Fantasy.ServiceModel.*;
-
 public class SatelliteSite
 {
 	private String privateName;
