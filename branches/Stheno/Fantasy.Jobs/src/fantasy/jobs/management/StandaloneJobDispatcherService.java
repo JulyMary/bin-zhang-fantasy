@@ -101,7 +101,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 
 	private IJobController _controller;
 
-	public final void Start()
+	public final void start()
 	{
 		_startJobThread.start();
 	}
@@ -140,7 +140,7 @@ public class StandaloneJobDispatcherService extends AbstractService implements I
 		}
 	}
 
-	public final void TryDispatch()
+	public final void tryDispatch()
 	{
 		synchronized(this._waitHandle)
 		{

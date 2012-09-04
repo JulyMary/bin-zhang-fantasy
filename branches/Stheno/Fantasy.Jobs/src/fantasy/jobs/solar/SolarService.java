@@ -2,10 +2,6 @@
 
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.concurrent.ScheduledExecutorService;
-
-
-import fantasy.RefObject;
 import fantasy.collections.*;
 import fantasy.jobs.management.*;
 import fantasy.jobs.resources.*;
@@ -82,7 +78,7 @@ public class SolarService extends AbstractService implements ISolar
 	public final void resourceAvaiable() throws Exception
 	{
 		IJobDispatcher dispatcher = this.getSite().getRequiredService(IJobDispatcher.class);
-		dispatcher.TryDispatch();
+		dispatcher.tryDispatch();
 	}
 
 
@@ -131,10 +127,9 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	@Override
-	public JobMetaData[] findTerminated(RefObject<Integer> totalCount,
-			String filter, String order, int skip, int take) throws Exception {
+	public JobMetaData[] findTerminated(String filter, String order, int skip, int take) throws Exception {
 		
-		return new Enumerable<JobMetaData>(_queue.findTerminated(totalCount, filter, order, skip, take)).toArrayList().toArray(new JobMetaData[0]);
+		return new Enumerable<JobMetaData>(_queue.findTerminated(filter, order, skip, take)).toArrayList().toArray(new JobMetaData[0]);
 	}
 
 
@@ -145,9 +140,8 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	@Override
-	public JobMetaData[] findUnterminated(RefObject<Integer> totalCount,
-			String filter, String order, int skip, int take) throws Exception {
-		return new Enumerable<JobMetaData>(_queue.findUnterminated(totalCount, filter, order, skip, take)).toArrayList().toArray(new JobMetaData[0]);
+	public JobMetaData[] findUnterminated(String filter, String order, int skip, int take) throws Exception {
+		return new Enumerable<JobMetaData>(_queue.findUnterminated(filter, order, skip, take)).toArrayList().toArray(new JobMetaData[0]);
 	}
 
 
@@ -274,7 +268,7 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	@Override
-	public String[] getAllApplications() {
+	public String[] getAllApplications() throws Exception {
 		return this._queue.getAllApplications();
 	}
 
@@ -286,7 +280,7 @@ public class SolarService extends AbstractService implements ISolar
 
 
 	@Override
-	public String[] getAllUsers() {
+	public String[] getAllUsers() throws Exception {
 	    return this._queue.getAllUsers();
 	}
 
@@ -297,7 +291,7 @@ public class SolarService extends AbstractService implements ISolar
 	public void connect(String name, ISatellite satellite) throws Exception {
 		
 		SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
-		manager.RegisterSatellite(name, satellite);
+		manager.registerSatellite(name, satellite);
 	}
 
 
@@ -310,7 +304,7 @@ public class SolarService extends AbstractService implements ISolar
 	@Override
 	public void disconnect(String name) throws Exception {
 		SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
-		manager.UnregisterSatellite(name);
+		manager.unregisterSatellite(name);
 		
 	}
 

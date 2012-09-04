@@ -21,7 +21,7 @@ public abstract class ResourceProvider extends ObjectWithSite implements IResour
 		this._listeners.remove(listener);
 	}
 	
-	protected void onAvailable()
+	protected void onAvailable() throws Exception
 	{
 		EventObject e = new EventObject(this);
 		for(IResourceProviderListener listener : this._listeners)

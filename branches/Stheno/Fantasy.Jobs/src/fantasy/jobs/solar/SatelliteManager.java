@@ -44,14 +44,14 @@ public class SatelliteManager extends AbstractService
 
 			@Override
 			public void run() {
-				SatelliteManager.this.Refresh();
+				SatelliteManager.this.refresh();
 			}}, 15, 15, TimeUnit.SECONDS);
 		
 		_executor.scheduleAtFixedRate(new Runnable(){
 
 			@Override
 			public void run() {
-				RetryActions();
+				retryActions();
 				
 			}}, 60, 60, TimeUnit.SECONDS);
 
@@ -125,7 +125,7 @@ public class SatelliteManager extends AbstractService
 		return rs;
 	}
 
-	public final void Enqueue(String name, Object state, Action2<ISatellite, Object> action, Action1<Object> failAction)
+	public final void enqueue(String name, Object state, Action2<ISatellite, Object> action, Action1<Object> failAction)
 	{
 
 		ActionData tempVar = new ActionData();
@@ -173,7 +173,7 @@ public class SatelliteManager extends AbstractService
 	}
 
 
-	public final boolean IsValid(final ISatellite satellite)
+	public final boolean isValid(final ISatellite satellite)
 	{
 		synchronized (_syncRoot)
 		{
@@ -188,7 +188,7 @@ public class SatelliteManager extends AbstractService
 	}
 
 
-	public final void UpdateEchoTime(final String name) throws Exception
+	public final void updateEchoTime(final String name) throws Exception
 	{
 		SatelliteSite site = new Enumerable<SatelliteSite>(this._satellites).firstOrDefault(new Predicate<SatelliteSite>(){
 
@@ -202,7 +202,7 @@ public class SatelliteManager extends AbstractService
 		}
 	}
 
-	public final void RegisterSatellite(final String name, ISatellite satellite) throws Exception
+	public final void registerSatellite(final String name, ISatellite satellite) throws Exception
 	{
 
 		synchronized (_syncRoot)
@@ -225,7 +225,7 @@ public class SatelliteManager extends AbstractService
 			this._satellites.add(site);
 		}
 
-		this._dispatcher.TryDispatch();
+		this._dispatcher.tryDispatch();
 
 		ILogger logger = this.getSite().getService(ILogger.class);
 		if (logger != null)
@@ -236,7 +236,7 @@ public class SatelliteManager extends AbstractService
 
 	}
 
-	public final void UnregisterSatellite(final String name) throws Exception
+	public final void unregisterSatellite(final String name) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
@@ -246,7 +246,7 @@ public class SatelliteManager extends AbstractService
 				public boolean evaluate(SatelliteSite site) throws Exception {
 					return StringUtils.equals(site.getName(), name);
 				}});
-			this._dispatcher.TryDispatch();
+			this._dispatcher.tryDispatch();
 			ILogger logger = this.getSite().getService(ILogger.class);
 			if (logger != null)
 			{
@@ -267,7 +267,7 @@ public class SatelliteManager extends AbstractService
 	}
 
 
-	private void Refresh()
+	private void refresh()
 	{
 		TimeSpan timeout = new TimeSpan(0, 0, 15);
 		ILogger logger = null;
@@ -314,7 +314,7 @@ public class SatelliteManager extends AbstractService
 	}
 
 
-	private void RetryActions() 
+	private void retryActions() 
 	{
 		
 			java.util.ArrayList<ActionData> list;

@@ -112,10 +112,9 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 
 	public final void ResumeByFilter(String filter) throws Exception
 	{
-		int total = 0;
-		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().findUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
-		total = tempRef_total.argvalue;
+		
+		JobMetaData[] jobs = getQueue().findUnterminated(filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
+		
 		this.Resume(jobs);
 	}
 
@@ -156,10 +155,9 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 
 	public final void CancelByFilter(String filter) throws Exception
 	{
-		int total = 0;
-		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().findUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
-		total = tempRef_total.argvalue;
+		
+		JobMetaData[] jobs = getQueue().findUnterminated(filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
+		
 		Cancel(jobs);
 
 	}
@@ -204,10 +202,10 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 
 	public final void PauseByFilter(String filter) throws Exception
 	{
-		int total = 0;
-		RefObject<Integer> tempRef_total = new RefObject<Integer>(total);
-		JobMetaData[] jobs = getQueue().findUnterminated(tempRef_total, filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
-		total = tempRef_total.argvalue;
+	
+		
+		JobMetaData[] jobs = getQueue().findUnterminated(filter, null, 0, Integer.MAX_VALUE).toArray(new JobMetaData[0]);
+		
 		Pause(jobs);
 	}
 
@@ -219,15 +217,15 @@ public class JobService extends AbstractService implements IJobService, IJobQueu
 
 	
 
-	public final JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter,  String order, int skip, int take) throws Exception
+	public final JobMetaData[] FindUnterminatedJob(String filter,  String order, int skip, int take) throws Exception
 	{
-		return getQueue().findUnterminated(totalCount, filter,  order, skip, take).toArray(new JobMetaData[0]);
+		return getQueue().findUnterminated(filter,  order, skip, take).toArray(new JobMetaData[0]);
 	}
 
-	public final JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception
+	public final JobMetaData[] FindTerminatedJob(String filter, String order, int skip, int take) throws Exception
 	{
 
-		return getQueue().findTerminated(totalCount, filter, order, skip, take).toArray(new JobMetaData[0]);
+		return getQueue().findTerminated(filter, order, skip, take).toArray(new JobMetaData[0]);
 
 	}
 

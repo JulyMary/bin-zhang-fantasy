@@ -1,5 +1,6 @@
 ﻿package fantasy.jobs.solar;
 
+import java.rmi.RemoteException;
 import java.util.*;
 
 import fantasy.*;
@@ -9,6 +10,18 @@ import fantasy.servicemodel.*;
 
 public class SatelliteJobQueue extends AbstractService implements IJobQueue
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4629186411100175910L;
+
+
+	public SatelliteJobQueue() throws RemoteException {
+		super();
+		
+	}
+
 
 	@Override
 	public void initializeService() throws Exception
@@ -20,13 +33,14 @@ public class SatelliteJobQueue extends AbstractService implements IJobQueue
 
 			@Override
 			public void Changed(JobMetaData job) throws Exception {
-				SatelliteJobQueue.this.OnChange(job);
+				
+				SatelliteJobQueue.this.onChanged(job);
 				
 			}
 
 			@Override
 			public void Added(JobMetaData job) throws Exception {
-				SatelliteJobQueue.this.OnAdded(job);
+				SatelliteJobQueue.this.onAdded(job);
 				
 			}});
 		
@@ -39,6 +53,7 @@ public class SatelliteJobQueue extends AbstractService implements IJobQueue
 
 	private ISolarActionQueue _actionQueue;
 	private ISatellite _satellite;
+	private HashSet<IJobQueueListener> _listeners = new HashSet<IJobQueueListener>();
 
 
 	@Override
@@ -56,157 +71,183 @@ public class SatelliteJobQueue extends AbstractService implements IJobQueue
     @Override
 	public final JobMetaData findJobMetaDataById(UUID id) throws Exception
 	{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<ISolar> client = ClientFactory.Create<ISolar>())
+
 		ISolar client = ClientFactory.create(ISolar.class);
 		return client.findJobMetaDataById(id);
 		
 	}
 
-	public final Iterable<JobMetaData> findTerminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take)
+    @Override
+	public final List<JobMetaData> findTerminated(String filter, String order, int skip, int take) throws Exception
 	{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<ISolar> client = ClientFactory.Create<ISolar>())
-		ISolar client = ClientFactory.create(ISolar.class);
 		
-		return client.findTerminated(totalCount, filter, order, skip, take)
-		ClientRef<ISolar> client = ClientFactory.<ISolar>create();
-		try
-		{
-			return client.Client.FindTerminated(totalCount, filter, args, order, skip, take);
-		}
-		finally
-		{
-		}
+		ISolar client = ClientFactory.create(ISolar.class);
+		JobMetaData[] rs = client.findTerminated(filter, order, skip, take);
+		
+		return Arrays.asList(rs);
+
 	}
 
-	public final Iterable<JobMetaData> FindUnterminated(RefObject<Integer> totalCount, String filter, String[] args, String order, int skip, int take)
+    
+    @Override
+	public final List<JobMetaData> findUnterminated(String filter, String order, int skip, int take) throws Exception
 	{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<ISolar> client = ClientFactory.Create<ISolar>())
-		ClientRef<ISolar> client = ClientFactory.<ISolar>create();
-		try
-		{
-			return client.Client.FindUnterminated(totalCount, filter, args, order, skip, take);
-		}
-		finally
-		{
-		}
+		ISolar client = ClientFactory.create(ISolar.class);
+		JobMetaData[] rs = client.findUnterminated(filter, order, skip, take);
+		
+		return Arrays.asList(rs);
 	}
 
-	public final Iterable<JobMetaData> FindAll()
-	{
-		return this.getUnterminates().Union(this.getTerminates());
-	}
+	
 
-	public final JobMetaData CreateJobMetaData()
+	public final JobMetaData createJobMetaData()
 	{
 		return new JobMetaData();
 	}
 
-	public final void ApplyChange(JobMetaData job)
+
+
+	@Override
+	public final void resume(final UUID id) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		_actionQueue.Enqueue(solar => solar.ApplyChange(job));
+		_actionQueue.enqueue(new Action1<ISolar>(){
+
+			@Override
+			public void call(ISolar solar) throws Exception {
+				solar.resume(id);
+			}});
 	}
 
-	public final void Resume(UUID id)
+	
+	@Override
+	public final void cancel(final UUID id) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		_actionQueue.Enqueue(solar => solar.Resume(id));
+		_actionQueue.enqueue(new Action1<ISolar>(){
+
+			@Override
+			public void call(ISolar solar) throws Exception {
+				solar.cancel(id);
+			}});
 	}
 
-	public final void Cancel(UUID id)
+	@Override
+	public final void suspend(final UUID id) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		_actionQueue.Enqueue(solar => solar.Cancel(id));
+		_actionQueue.enqueue(new Action1<ISolar>(){
+
+			@Override
+			public void call(ISolar solar) throws Exception {
+				solar.suspend(id);
+			}});
 	}
 
-	public final void Suspend(UUID id)
+	
+	@Override
+	public final void userPause(final UUID id) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		_actionQueue.Enqueue(solar => solar.Suspend(id));
+		_actionQueue.enqueue(new Action1<ISolar>(){
+
+			@Override
+			public void call(ISolar solar) throws Exception {
+				solar.userPause(id);
+			}});
 	}
 
-	public final void UserPause(UUID id)
+	protected void onChanged(JobMetaData job) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		_actionQueue.Enqueue(solar => solar.UserPause(id));
-	}
-
-
-
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<JobQueueEventArgs> Changed;
-
-	protected void OnChanged(JobQueueEventArgs e)
-	{
-		if (this.Changed != null)
+		for(IJobQueueListener listener : this._listeners)
 		{
-			this.Changed(this, e);
+			listener.Changed(job);
+		}
+	}
+
+
+	
+	protected void onAdded(JobMetaData job) throws Exception
+	{
+		for(IJobQueueListener listener : this._listeners)
+		{
+			listener.Added(job);
 		}
 	}
 
 
 
 
-//C# TO JAVA CONVERTER TODO TASK: Events are not available in Java:
-//	public event EventHandler<JobQueueEventArgs> Added;
-
-	protected void OnAdded(JobQueueEventArgs e)
+	@Override
+	public final String[] getAllApplications() throws Exception
 	{
-		if (this.Added != null)
-		{
-			this.Added(this, e);
-		}
+		ISolar client = ClientFactory.create(ISolar.class);
+		return client.getAllApplications();
+	}
+
+	
+	@Override
+	public final String[] getAllUsers() throws Exception
+	{
+		ISolar client = ClientFactory.create(ISolar.class);
+		return client.getAllUsers();
+	}
+
+	
+	@Override
+	public final boolean isTerminated(UUID id) throws Exception
+	{
+		ISolar client = ClientFactory.create(ISolar.class);
+		return client.isTerminated(id);
+
 	}
 
 
-
-
-	public final String[] GetAllApplications()
-	{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<ISolar> client = ClientFactory.Create<ISolar>())
-		ClientRef<ISolar> client = ClientFactory.<ISolar>create();
-		try
-		{
-			return client.Client.GetAllApplications();
-		}
-		finally
-		{
-		}
+	@Override
+	public int getTerminatedCount() throws Exception {
+		ISolar client = ClientFactory.create(ISolar.class);
+		return client.getTerminatedCount();
 	}
 
-	public final String[] GetAllUsers()
-	{
-//C# TO JAVA CONVERTER NOTE: The following 'using' block is replaced by its Java equivalent:
-//		using (ClientRef<ISolar> client = ClientFactory.Create<ISolar>())
-		ClientRef<ISolar> client = ClientFactory.<ISolar>create();
-		try
-		{
-			return client.Client.GetAllUsers();
-		}
-		finally
-		{
-		}
+
+	@Override
+	public int getUnterminatedCount() throws Exception {
+		ISolar client = ClientFactory.create(ISolar.class);
+		return client.getUnterminatedCount();
 	}
 
-	public final boolean IsTerminated(UUID id)
-	{
+
+	@Override
+	public void add(JobMetaData job) throws Exception {
+		ISolar client = ClientFactory.create(ISolar.class);
+		client.add(job);
 		
-		
-
-		ClientRef<ISolar> client = ClientFactory.<ISolar>create();
-		try
-		{
-			return client.Client.IsTermianted(id);
-		}
-		finally
-		{
-		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+
+	@Override
+	public void updateState(JobMetaData job, boolean isStart) throws Exception {
+		ISolar client = ClientFactory.create(ISolar.class);
+		client.updateState(job, isStart);
+		
+	}
+
+
+	@Override
+	public void archive(JobMetaData job) throws Exception {
+		ISolar client = ClientFactory.create(ISolar.class);
+		client.archive(job);
+		
+	}
+
+
+	@Override
+	public void addListener(IJobQueueListener listener) {
+		this._listeners.add(listener);
+		
+	}
+
+
+	@Override
+	public void removeListener(IJobQueueListener listener) {
+		this._listeners.remove(listener);
+		
+	}
+
 }

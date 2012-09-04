@@ -1,11 +1,34 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Resources.*;
-import Fantasy.Jobs.Management.*;
-import Fantasy.ServiceModel.*;
+import java.rmi.RemoteException;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.ObjectUtils;
+
+
+import fantasy.*;
+import fantasy.collections.*;
+import fantasy.jobs.*;
+import fantasy.jobs.resources.*;
+import fantasy.jobs.management.*;
+import fantasy.servicemodel.*;
 
 public class SolarJobDispatcherService extends AbstractService implements IJobDispatcher
 {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 387956167668610227L;
+
+
+	public SolarJobDispatcherService() throws RemoteException {
+		super();
+		
+	}
 
 	private java.util.ArrayList<JobStartupData> _runningJobs = new java.util.ArrayList<JobStartupData>();
 	private Object _syncRoot = new Object();
@@ -13,65 +36,139 @@ public class SolarJobDispatcherService extends AbstractService implements IJobDi
 
 
 	@Override
-	public void InitializeService()
+	public void initializeService() throws Exception
 	{
-		this._satelliteManager = this.Site.<SatelliteManager>GetRequiredService();
-		this._queue = this.Site.<IJobQueue>GetRequiredService();
-		this._filters = AddIn.<IJobStartupFilter>CreateObjects("jobService/startupFilters/filter");
-		this._waitHandle = new AutoResetEvent(false);
+		this._satelliteManager = this.getSite().getRequiredService(SatelliteManager.class);
+		this._queue = this.getSite().getRequiredService(IJobQueue.class);
+		this._filters = AddIn.CreateObjects(IJobStartupFilter.class, "jobService/startupFilters/filter");
+		this._waitHandle = new Object();
 
-		_startJobThread = ThreadFactory.CreateThread(this.Run);
+		_startJobThread = ThreadFactory.create(new Runnable(){
 
-		_refreshThread = ThreadFactory.CreateThread(this.Refresh);
+			@Override
+			public void run() {
+				try {
+					SolarJobDispatcherService.this.run();
+				} catch (Exception e) {
+				
+					e.printStackTrace();
+				}
+				
+			}});
+
+		this._executor = Executors.newScheduledThreadPool(1);
+		//_refreshThread = ThreadFactory.CreateThread(this.Refresh);
 
 		for (IJobStartupFilter filter : this._filters)
 		{
 			if (filter instanceof IObjectWithSite)
 			{
-				((IObjectWithSite)filter).Site = this.Site;
+				((IObjectWithSite)filter).setSite(this.getSite());
 			}
 		}
 
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.Added += new EventHandler<JobQueueEventArgs>(QueueChanged);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.Changed += new EventHandler<JobQueueEventArgs>(QueueChanged);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.RequestCancel += new EventHandler<JobQueueEventArgs>(QueueRequestCancel);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.RequestSuspend += new EventHandler<JobQueueEventArgs>(QueueRequestSuspend);
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_queue.RequestUserPause += new EventHandler<JobQueueEventArgs>(QueueRequestUserPause);
+		
+		this._queue.addListener(new IJobQueueListener(){
 
-		_resourceQueue = this.Site.<IResourceRequestQueue>GetService();
-		_resourceManager = this.Site.<IResourceManager>GetRequiredService();
-//C# TO JAVA CONVERTER TODO TASK: Java has no equivalent to C#-style event wireups:
-		_resourceManager.Available += new EventHandler(ResourceManager_Available);
+			@Override
+			public void Changed(JobMetaData job) throws Exception {
+				
+				SolarJobDispatcherService.this.queueChanged(job);
+			}
 
-		super.InitializeService();
+			@Override
+			public void Added(JobMetaData job) throws Exception {
+				SolarJobDispatcherService.this.queueChanged(job);
+				
+			}
+
+			@Override
+			public void RequestCancel(final JobMetaData job) throws Exception {
+				
+				
+				ThreadFactory.queueUserWorkItem(new Runnable(){
+
+					@Override
+					public void run() {
+						try {
+							SolarJobDispatcherService.this.queueRequestCancel(job);
+						} catch (Exception e) {
+							
+							e.printStackTrace();
+						}
+						
+					}});
+				
+			}
+
+			@Override
+			public void RequestSuspend(final JobMetaData job) throws Exception {
+				
+				
+				ThreadFactory.queueUserWorkItem(new Runnable(){
+
+					@Override
+					public void run() {
+						try {
+							SolarJobDispatcherService.this.queueRequestSuspend(job);
+						} catch (Exception e) {
+						
+							e.printStackTrace();
+						}
+						
+					}});
+				
+			}
+
+			@Override
+			public void RequestUserPause(final JobMetaData job) throws Exception {
+				
+				ThreadFactory.queueUserWorkItem(new Runnable(){
+
+					@Override
+					public void run() {
+						try {
+							SolarJobDispatcherService.this.queueRequestUserPause(job);
+						} catch (Exception e) {
+							
+							e.printStackTrace();
+						}
+						
+					}});
+				
+				
+			}});
+		
+
+
+		_resourceQueue = this.getSite().getService(IResourceRequestQueue.class);
+		_resourceManager = this.getSite().getRequiredService(IResourceManager.class);
+		
+		_resourceManager.addListener(new IResourceManagerListener(){
+
+			@Override
+			public void available(EventObject e) throws Exception {
+				SolarJobDispatcherService.this.tryDispatch();
+				
+			}});
+		super.initializeService();
 	}
 
-	private void ResourceManager_Available(Object sender, EventArgs e)
-	{
-		this.TryDispatch();
-	}
+	
 
-	private void ResourceAvailable(Object sender, EventArgs e)
-	{
-		this._waitHandle.Set();
-	}
+	
 
 	@Override
-	public void UninitializeService()
+	public void uninitializeService() throws Exception
 	{
-		this._startJobThread.stop();
-		super.UninitializeService();
+		this._startJobThread.interrupt();
+		super.uninitializeService();
 	}
 
-	private AutoResetEvent _waitHandle;
+	private Object _waitHandle;
 
 	private Thread _startJobThread;
-	private Thread _refreshThread;
+	ScheduledExecutorService _executor;
 
 	private IJobQueue _queue;
 	private IResourceRequestQueue _resourceQueue;
@@ -80,117 +177,134 @@ public class SolarJobDispatcherService extends AbstractService implements IJobDi
 
 	private IJobStartupFilter[] _filters;
 
-	public final void Start()
+	@Override
+	public final void start()
 	{
 		_startJobThread.start();
-		_refreshThread.start();
+		this._executor.schedule(new Runnable(){
+
+			@Override
+			public void run() {
+				SolarJobDispatcherService.this.refresh();
+				
+			}}, 15, TimeUnit.SECONDS);
 	}
 
 
-	private JobStartupData GetStartupData(UUID id)
+	private JobStartupData getStartupData(final UUID id) throws Exception
 	{
 		synchronized (_syncRoot)
 		{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			return this._runningJobs.Find(data => id.equals(data.JobMetaData.Id));
+			return new Enumerable<JobStartupData>(this._runningJobs).firstOrDefault(new Predicate<JobStartupData>(){
+
+				@Override
+				public boolean evaluate(JobStartupData obj) throws Exception {
+					return ObjectUtils.equals(obj.getJobMetaData().getId(), id);
+				}});
+		
 		}
 	}
 
-	private void QueueRequestUserPause(Object sender, JobQueueEventArgs e)
+	private void queueRequestUserPause(final JobMetaData job) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task.Factory.StartNew(() =>
-		{
-			JobStartupData data = this.GetStartupData(e.getJob().getId());
-			if (data != null)
-			{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				this._satelliteManager.Enqueue(data.getSatellite(), null, (satellite, state) =>
+				final JobStartupData data = getStartupData(job.getId());
+				if (data != null)
 				{
-					satellite.RequestUserPause(e.getJob().getId());
+					_satelliteManager.enqueue(data.getSatellite(), null, new Action2<ISatellite, Object>(){
+
+						@Override
+						public void call(ISatellite satellite, Object arg2)
+								throws Exception {
+							satellite.requestUserPause(job.getId());
+							
+						}}, new Action1<Object>(){
+
+						@Override
+						public void call(Object arg) throws Exception {
+							synchronized (_syncRoot)
+							{
+								_runningJobs.remove(data);
+							}
+							job.setState(JobState.UserPaused);
+							_queue.updateState(job, false);
+							
+						}}
+				   );
 				}
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			   , state =>
-				{
+
+	}
+
+	private void queueRequestSuspend(final JobMetaData job) throws Exception
+	{
+		
+		
+		final JobStartupData data = getStartupData(job.getId());
+		if (data != null)
+		{
+			_satelliteManager.enqueue(data.getSatellite(), null, new Action2<ISatellite, Object>(){
+
+				@Override
+				public void call(ISatellite satellite, Object arg2)
+						throws Exception {
+					satellite.requestSuspend(job.getId());
+					
+				}}, new Action1<Object>(){
+
+				@Override
+				public void call(Object arg) throws Exception {
 					synchronized (_syncRoot)
 					{
-						this._runningJobs.remove(data);
+						_runningJobs.remove(data);
 					}
-					e.getJob().setState(JobState.UserPaused);
-					this._queue.ApplyChange(e.getJob());
-				}
-			   );
-			}
+					job.setState(JobState.Suspended);
+					_queue.updateState(job, false);
+					
+				}}
+		   );
 		}
-	   );
+		
+
 	}
 
-	private void QueueRequestSuspend(Object sender, JobQueueEventArgs e)
+	private void queueRequestCancel(final JobMetaData job) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task.Factory.StartNew(() =>
+		
+		final JobStartupData data = getStartupData(job.getId());
+		if (data != null)
 		{
-			JobStartupData data = this.GetStartupData(e.getJob().getId());
-			if (data != null)
-			{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				this._satelliteManager.Enqueue(data.getSatellite(),null, (satellite, state) =>
-				{
-					satellite.RequestSuspend(e.getJob().getId());
-				}
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			   , (state) =>
-				{
+			_satelliteManager.enqueue(data.getSatellite(), null, new Action2<ISatellite, Object>(){
+
+				@Override
+				public void call(ISatellite satellite, Object arg2)
+						throws Exception {
+					satellite.requestCancel(job.getId());
+					
+				}}, new Action1<Object>(){
+
+				@Override
+				public void call(Object arg) throws Exception {
 					synchronized (_syncRoot)
 					{
-						this._runningJobs.remove(data);
+						_runningJobs.remove(data);
 					}
-					e.getJob().setState(JobState.Suspended);
-					this._queue.ApplyChange(e.getJob());
-				}
-			   );
-			}
+					job.setState(JobState.Cancelled);
+					_queue.updateState(job, false);
+					
+				}}
+		   );
 		}
-	   );
+		
+		
+
 	}
 
-	private void QueueRequestCancel(Object sender, JobQueueEventArgs e)
+	private void queueChanged(JobMetaData job) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		Task.Factory.StartNew(() =>
-		{
-			JobStartupData data = this.GetStartupData(e.getJob().getId());
-			if (data != null)
-			{
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				this._satelliteManager.Enqueue(data.getSatellite(),null, (satellite, state) =>
-				{
-					satellite.RequestCancel(e.getJob().getId());
-				}
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			   , (state) =>
-				{
-					synchronized (_syncRoot)
-					{
-						this._runningJobs.remove(data);
-					}
-					e.getJob().setState(JobState.Cancelled);
-					e.getJob().setEndTime(new java.util.Date());
-					this._queue.ApplyChange(e.getJob());
-				}
-			   );
-			}
-		}
-	   );
-	}
-
-	private void QueueChanged(Object sender, JobQueueEventArgs e)
-	{
-		if (e.getJob().getState() != JobState.Running)
+		if (job.getState() != JobState.Running)
 		{
 			synchronized (_syncRoot)
 			{
-				JobStartupData data = this.GetStartupData(e.getJob().getId());
+				JobStartupData data = this.getStartupData(job.getId());
 				if (data != null)
 				{
 					this._runningJobs.remove(data);
@@ -198,117 +312,137 @@ public class SolarJobDispatcherService extends AbstractService implements IJobDi
 			}
 		}
 
-		this._waitHandle.Set();
+		synchronized(this._waitHandle)
+		{
+		    this._waitHandle.notifyAll();
+		}
 	}
 
-	public final void TryDispatch()
+	public final void tryDispatch()
 	{
-		_waitHandle.Set();
+		synchronized(this._waitHandle)
+		{
+		    this._waitHandle.notifyAll();
+		}
 	}
 
-	public final void Run()
+	private final void run() throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		while (true)
 		{
 
 			try
 			{
 
-				while (TryStartAJob());
+				while (tryStartAJob())
+					{
+					    if(Thread.interrupted())
+					    {
+					    	throw new InterruptedException();
+					    }
+					};
 			}
-			catch (ThreadAbortException e)
+			
+			catch(InterruptedException e)
 			{
+				throw e;
 			}
-			catch(RuntimeException error)
+			catch(Exception error)
 			{
 				if (logger != null)
 				{
 					logger.LogError(LogCategories.getManager(), error, "An error occurs when try start a new job.");
 				}
 			}
-			_waitHandle.WaitOne();
+			
+			synchronized(_waitHandle)
+			{
+			    _waitHandle.wait();
+			}
 		}
 	}
 
 
-	private void Refresh()
+	private void refresh()
 	{
-		while (true)
-		{
-
+		
 			java.util.ArrayList<JobStartupData> list;
 			synchronized (this._syncRoot)
 			{
 				list = new java.util.ArrayList<JobStartupData>(this._runningJobs);
 			}
-			for (JobStartupData data : list)
+			for (final JobStartupData data : list)
 			{
+				this._satelliteManager.enqueue(data.getSatellite(), data, new Action2<ISatellite, Object>(){
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				this._satelliteManager.Enqueue(data.getSatellite(), data, (satellite, state) =>
-				{
-					boolean running = false;
-					JobStartupData d = (JobStartupData)state;
-					synchronized (this._syncRoot)
-					{
-						if (this._runningJobs.contains(d))
+					@Override
+					public void call(ISatellite satellite, Object state)
+							throws Exception {
+						boolean running = false;
+						JobStartupData d = (JobStartupData)state;
+						synchronized (SolarJobDispatcherService.this._syncRoot)
 						{
-							running = satellite.IsRunning(d.getJobMetaData().getId());
-							if (!running)
+							if (SolarJobDispatcherService.this._runningJobs.contains(d))
 							{
-								this._runningJobs.remove(d);
+								running = satellite.isRunning(d.getJobMetaData().getId());
+								if (!running)
+								{
+									SolarJobDispatcherService.this._runningJobs.remove(d);
+								}
 							}
 						}
-					}
-					if (!running)
-					{
-						d.getJobMetaData().setState(JobState.Suspended);
-						this._queue.ApplyChange(d.getJobMetaData());
-					}
-				}
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			   , state =>
-				{
-					JobStartupData d = (JobStartupData)state;
-					boolean contains = false;
-					synchronized (this._syncRoot)
-					{
-						contains = this._runningJobs.contains(d);
-						if (contains)
+						if (!running)
 						{
-							this._runningJobs.remove(d);
+							d.getJobMetaData().setState(JobState.Suspended);
+							SolarJobDispatcherService.this._queue.updateState(d.getJobMetaData(), false);
 						}
-					}
-					if (contains)
-					{
-						d.getJobMetaData().setState(JobState.Suspended);
-						this._queue.ApplyChange(d.getJobMetaData());
-					}
-				}
-			   );
+						
+					}}, new Action1<Object>(){
 
-			}
-			Thread.sleep(15 * 1000);
+						@Override
+						public void call(Object state) throws Exception {
+							JobStartupData d = (JobStartupData)state;
+							boolean contains = false;
+							synchronized (SolarJobDispatcherService.this._syncRoot)
+							{
+								contains = SolarJobDispatcherService.this._runningJobs.contains(d);
+								if (contains)
+								{
+									SolarJobDispatcherService.this._runningJobs.remove(d);
+								}
+							}
+							if (contains)
+							{
+								d.getJobMetaData().setState(JobState.Suspended);
+								SolarJobDispatcherService.this._queue.updateState(d.getJobMetaData(), false);
+							}
+							
+						}});
+				
 		}
 	}
 
 	private boolean _starting = false;
 
-	private Iterable<JobStartupData> GetUnterminatesData()
+	private Iterable<JobStartupData> getUnterminatesData() throws Exception
 	{
-		for (JobMetaData job : this._queue.getUnterminates())
-		{
-			JobStartupData tempVar = new JobStartupData();
-			tempVar.setJobMetaData(job);
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-			yield return tempVar;
-		}
+		
+		return new Enumerable<JobMetaData>(this._queue.getUnterminates()).select(new Selector<JobMetaData, JobStartupData>(){
+
+			@Override
+			public JobStartupData select(JobMetaData job) {
+				JobStartupData rs = new JobStartupData();
+				rs.setJobMetaData(job);
+				return rs;
+			}});
+		
+		
 	}
 
-	private boolean TryStartAJob()
+	private boolean tryStartAJob() throws Exception
 	{
-		ILogger logger = this.Site.<ILogger>GetService();
+		ILogger logger = this.getSite().getService(ILogger.class);
 		boolean rs = false;
 		if (!_starting)
 		{
@@ -316,19 +450,25 @@ public class SolarJobDispatcherService extends AbstractService implements IJobDi
 			try
 			{
 
-				Iterable<JobStartupData> jobs = GetUnterminatesData();
+				Iterable<JobStartupData> jobs = getUnterminatesData();
 				for (IJobStartupFilter filter : this._filters)
 				{
-					jobs = filter.Filter(jobs);
+					jobs = filter.filter(jobs);
 				}
 
-				for(JobStartupData data : jobs)
+				for(final JobStartupData data : jobs)
 				{
 
 					JobMetaData job = data.getJobMetaData();
 
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-					SatelliteSite site = _satelliteManager.getSatellites().FirstOrDefault(s => data.getSatellite().equals(s.getName()));
+
+					SatelliteSite site = new Enumerable<SatelliteSite>(_satelliteManager.getSatellites()).firstOrDefault(new Predicate<SatelliteSite>(){
+
+						@Override
+						public boolean evaluate(SatelliteSite s)
+								throws Exception {
+							return data.getSatellite().equals(s.getName());
+						}});
 
 					if (site != null)
 					{
@@ -338,31 +478,32 @@ public class SolarJobDispatcherService extends AbstractService implements IJobDi
 							{
 								if (logger != null)
 								{
-									logger.LogMessage("Dispatch", "Start job {0} ({1}) on satellite {2}", job.getName(), job.getId(), data.getSatellite());
+									logger.LogMessage("Dispatch", "Start job %1$s (%2$s) on satellite %3$s", job.getName(), job.getId(), data.getSatellite());
 								}
 								job.setState(JobState.RequestStart);
-								site.getSatellite().RequestStartJob(data.getJobMetaData());
+								site.getSatellite().requestStartJob(data.getJobMetaData());
 							}
 							else
 							{
 								if (logger != null)
 								{
-									logger.LogMessage("Dispatch", "Resume job {0} ({1}) on satellite {2}", job.getName(), job.getId(), data.getSatellite());
+									logger.LogMessage("Dispatch", "Resume job %1$s (%2$s) on satellite %3$s", job.getName(), job.getId(), data.getSatellite());
 								}
 								job.setState(JobState.RequestStart);
-								site.getSatellite().RequestResume(job);
+								site.getSatellite().requestResume(job);
 							}
 
 							this._runningJobs.add(data);
 
 							rs = true;
 						}
-						catch (ThreadAbortException e)
+						catch (InterruptedException e)
 						{
+							throw e;
 						}
-						catch (RuntimeException error)
+						catch (Exception error)
 						{
-							if (!WCFExceptionHandler.CanCatch(error))
+							if (!WCFExceptionHandler.canCatch(error))
 							{
 
 								if (logger != null)
@@ -370,17 +511,14 @@ public class SolarJobDispatcherService extends AbstractService implements IJobDi
 									logger.LogError("Dispatch", error, "An error occurs while try start/resume job {0} ({1}) on satellite service {2}.", job.getName(), job.getId(), data.getSatellite());
 								}
 							}
-							else
-							{
-								logger.SafeLogError("Solar", error, "WCF error");
-							}
+							
 						}
 
 						if (rs)
 						{
 							if (this._resourceQueue != null)
 							{
-								this._resourceQueue.UnregisterResourceRequest(job.getId());
+								this._resourceQueue.unregisterResourceRequest(job.getId());
 							}
 
 							break;

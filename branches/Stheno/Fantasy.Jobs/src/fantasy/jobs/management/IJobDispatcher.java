@@ -2,9 +2,9 @@
 
 public interface IJobDispatcher
 {
-	void Start();
+	void start();
 
-	void TryDispatch();
+	void tryDispatch();
 
 
 }

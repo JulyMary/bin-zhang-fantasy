@@ -2,7 +2,7 @@
 
 import java.util.*;
 
-import fantasy.*;
+
 
 
 public interface IJobQueue
@@ -15,8 +15,12 @@ public interface IJobQueue
 
 	boolean isTerminated(UUID id) throws Exception;
 
-	List<JobMetaData> findTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
-	List<JobMetaData> findUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	List<JobMetaData> findTerminated(String filter, String order, int skip, int take) throws Exception;
+	List<JobMetaData> findUnterminated(String filter, String order, int skip, int take) throws Exception;
+	
+    int getTerminatedCount() throws Exception;
+	
+	int getUnterminatedCount() throws Exception;
 
 
 
@@ -34,9 +38,7 @@ public interface IJobQueue
 	void addListener(IJobQueueListener listener);
 	void removeListener(IJobQueueListener listener);
 	
-	int getTerminatedCount() throws Exception;
 	
-	int getUnterminatedCount() throws Exception;
 	
 
 

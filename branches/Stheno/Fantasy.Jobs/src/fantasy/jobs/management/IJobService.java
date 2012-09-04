@@ -3,7 +3,7 @@
 import java.rmi.*;
 import java.util.*;
 
-import fantasy.*;
+
 import fantasy.jobs.*;
 
 
@@ -36,9 +36,9 @@ public interface IJobService extends Remote
 
 	JobMetaData FindJobById(UUID id) throws Exception;
 
-	JobMetaData[] FindUnterminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	JobMetaData[] FindUnterminatedJob(String filter, String order, int skip, int take) throws Exception;
 
-	JobMetaData[] FindTerminatedJob(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	JobMetaData[] FindTerminatedJob(String filter, String order, int skip, int take) throws Exception;
 
 	int GetTerminatedCount() throws Exception;
 

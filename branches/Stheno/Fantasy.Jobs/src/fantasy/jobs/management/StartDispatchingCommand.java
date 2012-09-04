@@ -27,7 +27,7 @@ public class StartDispatchingCommand implements ICommand, IObjectWithSite
 
 				@Override
 				public void run() {
-					disp.Start();
+					disp.start();
 					
 				}});
 		}

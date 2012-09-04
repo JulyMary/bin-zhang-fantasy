@@ -123,7 +123,7 @@ public class GlobalMutexService extends AbstractService implements IGlobalMutexS
 		}
 		if (_jobDispatcher != null)
 		{
-			_jobDispatcher.TryDispatch();
+			_jobDispatcher.tryDispatch();
 		}
 
 	}

@@ -186,24 +186,24 @@ public class DerbyJobQueueService extends AbstractService implements IJobQueue
 	
 	
 	
-	public final List<JobMetaData> findTerminated(RefObject<Integer> totalCount, String filter,  String order, int skip, int take) throws Exception
+	public final List<JobMetaData> findTerminated(String filter,  String order, int skip, int take) throws Exception
 	{
 		List<JobMetaData> rs;
 		synchronized (_syncRoot)
 		{
 
-			totalCount.argvalue = this._entities.getTerminatedCount();
+			
 			
 			rs = this._entities.query("APP.FTS_JOB_ARCHIVEDJOBS", filter, order, take, skip);
 		}
 		return rs;
 	}
-	public final List<JobMetaData> findUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception
+	public final List<JobMetaData> findUnterminated(String filter, String order, int skip, int take) throws Exception
 	{
 		List<JobMetaData> rs;
 		synchronized (_syncRoot)
 		{
-			totalCount.argvalue = this._unterminates.size();
+			
 			rs = this._entities.query("APP.FTS_JOB_JOBS", filter, order, take, skip);
 		}
 

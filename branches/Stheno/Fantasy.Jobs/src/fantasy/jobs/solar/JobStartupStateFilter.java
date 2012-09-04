@@ -1,17 +1,26 @@
 ﻿package fantasy.jobs.solar;
 
+import fantasy.*;
+import fantasy.collections.*;
+import fantasy.jobs.*;
+
 public class JobStartupStateFilter extends ObjectWithSite implements IJobStartupFilter
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStartupFilter Members
-
-	public final Iterable<JobStartupData> Filter(Iterable<JobStartupData> source)
+	public final Iterable<JobStartupData> filter(Iterable<JobStartupData> source) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		return source.Where(j => (j.JobMetaData.State & (JobState.Unstarted | JobState.Suspended)) > 0).OrderBy(j => j.JobMetaData.State);
+
+		return new Enumerable<JobStartupData>(source).where(new Predicate<JobStartupData>(){
+
+			@Override
+			public boolean evaluate(JobStartupData j) throws Exception {
+				return (j.getJobMetaData().getState() & (JobState.Unstarted | JobState.Suspended)) > 0;
+			}}).orderBy(new Selector<JobStartupData, Integer>(){
+
+				@Override
+				public Integer select(JobStartupData j) {
+					return j.getJobMetaData().getState();
+				}});
+
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }
