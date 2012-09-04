@@ -914,6 +914,102 @@ public  class Enumerable<T> implements Iterable<T> {
 	{
 		return new WhereIterable(this._source, predicate).iterator().hasNext();
 	}
+	
+	
+	private class UnionIterable implements Iterable<T>
+	{
+		public UnionIterable(Iterable<T> s1, Iterable<T> s2)
+		{
+			this._s1 = s1;
+			this._s2 = s2;
+		}
+		
+		private Iterable<T> _s1;
+		private Iterable<T> _s2;
+		@Override
+		public Iterator<T> iterator() {
+			return new UnionIterator(this._s1.iterator(), this._s2.iterator());
+		}
+	}
+	
+	private class UnionIterator implements Iterator<T>
+	{
+		
+		public UnionIterator(Iterator<T> s1, Iterator<T> s2)
+		{
+			this._s1 = s1;
+			this._s2 = s2;
+		}
+
+		private Iterator<T> _s1;
+		private Iterator<T> _s2;
+		private int _state = 0;
+		
+		
+		
+		@Override
+		public boolean hasNext() {
+			
+			if(_state == 0)
+			{
+				boolean rs = _s1.hasNext();
+				if(rs == false)
+				{
+					_state = 1;
+					rs = _s2.hasNext();
+				}
+				return rs;
+			}
+			else
+			{
+				return _s2.hasNext();
+			}
+			
+			
+		}
+
+		@Override
+		public T next() {
+			
+			T rs = null;
+			
+			if(_state == 0)
+			{
+				if(_s1.hasNext())
+				{
+					rs = _s1.next();
+				}
+				else
+				{
+					_state =1;
+				}
+			}
+			if(_state == 1)
+			{
+				rs = _s2.next();
+			}
+			
+			return rs;
+				
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+		
+	}
+	
+	public Enumerable<T> union(Iterable<T> other)
+	{
+		return new Enumerable<T>(new UnionIterable(this._source, other) );
+	}
+	
+	public Enumerable<T> union(T[] other)
+	{
+		return this.union(new ArrayIterable(other));
+	}
 
 	
 

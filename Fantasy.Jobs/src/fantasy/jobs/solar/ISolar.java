@@ -3,7 +3,6 @@
 import java.rmi.Remote;
 import java.util.*;
 
-import fantasy.*;
 import fantasy.jobs.management.*;
 import fantasy.jobs.resources.*;
 
@@ -17,8 +16,8 @@ public interface ISolar extends Remote
 
 	boolean isTerminated(UUID id) throws Exception;
 
-	JobMetaData[] findTerminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
-	JobMetaData[] findUnterminated(RefObject<Integer> totalCount, String filter, String order, int skip, int take) throws Exception;
+	JobMetaData[] findTerminated(String filter, String order, int skip, int take) throws Exception;
+	JobMetaData[] findUnterminated(String filter, String order, int skip, int take) throws Exception;
 
 
 	void add(JobMetaData job) throws Exception;

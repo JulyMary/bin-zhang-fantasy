@@ -8,7 +8,7 @@ public class JobStartupPriorityFilter extends ObjectWithSite implements IJobStar
 {
 
 
-	public final Iterable<JobStartupData> Filter(Iterable<JobStartupData> source)
+	public final Iterable<JobStartupData> filter(Iterable<JobStartupData> source)
 	{
 		
 		return new Enumerable<JobStartupData>(source).orderByDescending(new Selector<JobStartupData, Integer>(){

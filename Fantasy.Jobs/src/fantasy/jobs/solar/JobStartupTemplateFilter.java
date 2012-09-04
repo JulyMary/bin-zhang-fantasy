@@ -1,35 +1,51 @@
 ﻿package fantasy.jobs.solar;
 
-import Fantasy.Jobs.Resources.*;
+import java.util.*;
+
+import fantasy.*;
+import fantasy.collections.*;
+import fantasy.jobs.resources.*;
 
 public class JobStartupTemplateFilter extends ObjectWithSite implements IJobStartupFilter
 {
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStartupFilter Members
 
-	public final Iterable<JobStartupData> Filter(Iterable<JobStartupData> source)
+
+	public final Iterable<JobStartupData> filter(Iterable<JobStartupData> source) throws Exception
 	{
-		SatelliteManager manager = this.Site.<SatelliteManager>GetRequiredService();
-		for (JobStartupData data : source)
-		{
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-			ResourceParameter[] res = new ResourceParameter[] {new ResourceParameter("RunJob", new {template=data.getJobMetaData().getTemplate() })};
-			boolean canRun = false;
-			RefObject<T> tempRef_canRun = new RefObject<T>(canRun);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-			boolean tempVar = manager.SafeCallSatellite(data.getSatellite(), satellite => satellite.IsResourceAvailable(res), tempRef_canRun);
-				canRun = tempRef_canRun.argvalue;
-			if (tempVar)
-			{
-				if (canRun)
+		final SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
+		
+		return new Enumerable<JobStartupData>(source).where(new Predicate<JobStartupData>(){
+
+			@Override
+			public boolean evaluate(JobStartupData data) throws Exception {
+				
+				TreeMap<String, String> params = new TreeMap<String, String>(); 
+				params.put("template", data.getJobMetaData().getTemplate());
+				final ResourceParameter res = new ResourceParameter("RunJob", params);
+				
+				
+				boolean canRun = false;
+				RefObject<Boolean> tempRef_canRun = new RefObject<Boolean>(canRun);
+	
+				boolean tempVar = manager.SafeCallSatellite(data.getSatellite(), new Func1<ISatellite, Boolean>(){
+
+					@Override
+					public Boolean call(ISatellite satellite) throws Exception {
+						return satellite.isResourceAvailable(new ResourceParameter[]{ res});
+					}}, tempRef_canRun);
+					canRun = tempRef_canRun.argvalue;
+				if (tempVar)
 				{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-					yield return data;
+					if (canRun)
+					{
+	
+						return true;
+					}
 				}
-			}
-		}
+				return false;
+			}});
+		
+	
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

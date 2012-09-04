@@ -76,7 +76,7 @@ public class ResourceManager extends AbstractService implements IResourceManager
 			provider.addListener(new IResourceProviderListener(){
 
 				@Override
-				public void Available(EventObject e) {
+				public void Available(EventObject e) throws Exception {
 					ResourceManager.this.ProviderResourceAvailable(e);
 					
 				}
@@ -122,7 +122,7 @@ public class ResourceManager extends AbstractService implements IResourceManager
 		}
 	}
 
-	private void UnlockAvaiable()
+	private void UnlockAvaiable() throws Exception
 	{
 		boolean fire = false;
 		synchronized (_availableSyncRoot)
@@ -204,7 +204,7 @@ public class ResourceManager extends AbstractService implements IResourceManager
 
 	}
 
-	private void ProviderResourceAvailable(EventObject e)
+	private void ProviderResourceAvailable(EventObject e) throws Exception
 	{
 		this.LockAvaialbe();
 		this.UnlockAvaiable();
@@ -214,7 +214,7 @@ public class ResourceManager extends AbstractService implements IResourceManager
 	
 	private HashSet<IResourceManagerListener> _listeners = new HashSet<IResourceManagerListener>();
 
-	protected void OnAvailable(EventObject e)
+	protected void OnAvailable(EventObject e) throws Exception
 	{
 		for(IResourceManagerListener listener : this._listeners)
 		{

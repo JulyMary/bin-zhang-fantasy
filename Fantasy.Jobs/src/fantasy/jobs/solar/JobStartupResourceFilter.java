@@ -1,6 +1,5 @@
 ﻿package fantasy.jobs.solar;
 
-import fantasy.jobs.*;
 import fantasy.jobs.resources.*;
 import fantasy.*;
 import fantasy.collections.*;
@@ -8,10 +7,7 @@ import fantasy.collections.*;
 public class JobStartupResourceFilter extends ObjectWithSite implements IJobStartupFilter
 {
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStartupFilter Members
-
-	public final Iterable<JobStartupData> Filter(Iterable<JobStartupData> source)
+	public final Iterable<JobStartupData> filter(Iterable<JobStartupData> source) throws Exception
 	{
 		final SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
 		final IResourceRequestQueue resQueue = this.getSite().getRequiredService(IResourceRequestQueue.class);
@@ -21,11 +17,29 @@ public class JobStartupResourceFilter extends ObjectWithSite implements IJobStar
 
 			@Override
 			public boolean evaluate(JobStartupData data) throws Exception {
-				ResourceParameter[] res = resQueue.GetRequiredResources(data.getJobMetaData().getId());
+				final ResourceParameter[] res = resQueue.getRequiredResources(data.getJobMetaData().getId());
 				if(res.length > 0)
 				{
 					
-					RefObject<Boolean> hasRes = new RefObject<Boolean>(false);
+					boolean hasRes = false;
+					RefObject<Boolean> tempRef_hasRes = new RefObject<Boolean>(hasRes);
+					boolean tempVar = manager.SafeCallSatellite(data.getSatellite(), new Func1<ISatellite, Boolean>(){
+
+						@Override
+						public Boolean call(ISatellite satellite) throws Exception {
+							 return satellite.isResourceAvailable(res);
+							
+						}}, tempRef_hasRes);
+						hasRes = tempRef_hasRes.argvalue;
+					if (tempVar)
+					{
+						if (hasRes)
+						{
+							return true;
+						}
+					}
+					
+					return false;
 				}
 				else
 				{
@@ -35,35 +49,6 @@ public class JobStartupResourceFilter extends ObjectWithSite implements IJobStar
 				
 			}});
 		
-		for (JobStartupData data : source)
-		{
-			ResourceParameter[] res = resQueue.GetRequiredResources(data.getJobMetaData().getId());
-			if (res.length > 0)
-			{
-				boolean hasRes = false;
-				RefObject<Boolean> tempRef_hasRes = new RefObject<Boolean>(hasRes);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-				boolean tempVar = manager.SafeCallSatellite(data.getSatellite(), satellite => satellite.IsResourceAvailable(res), tempRef_hasRes);
-					hasRes = tempRef_hasRes.argvalue;
-				if (tempVar)
-				{
-					if (hasRes)
-					{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-						return true;
-					}
-				}
-				
-				return false;
-			}
-			else
-			{
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-				yield return data;
-			}
-		}
+		
 	}
-
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
 }

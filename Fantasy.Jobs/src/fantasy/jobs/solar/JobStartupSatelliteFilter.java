@@ -1,15 +1,26 @@
 ﻿package fantasy.jobs.solar;
 
+import java.util.*;
+
+import fantasy.*;
+import fantasy.collections.*;
+import fantasy.jobs.management.*;
+
 public class JobStartupSatelliteFilter extends ObjectWithSite implements IJobStartupFilter
 {
 
 
-	private double GetLoadFactor(SatelliteManager manager, String name)
+	private double getLoadFactor(SatelliteManager manager, String name)
 	{
 		double rs = 0;
-		RefObject<T> tempRef_rs = new RefObject<T>(rs);
-//C# TO JAVA CONVERTER TODO TASK: Lambda expressions and anonymous methods are not converted by C# to Java Converter:
-		boolean tempVar = manager.SafeCallSatellite(name, satellite => satellite.GetLoadFactor(), tempRef_rs);
+		RefObject<Double> tempRef_rs = new RefObject<Double>(rs);
+
+		boolean tempVar = manager.SafeCallSatellite(name, new Func1<ISatellite, Double>(){
+
+			@Override
+			public Double call(ISatellite satellite) throws Exception {
+				return satellite.getLoadFactor();
+			}},  tempRef_rs);
 			rs = tempRef_rs.argvalue;
 		if (tempVar)
 		{
@@ -21,37 +32,120 @@ public class JobStartupSatelliteFilter extends ObjectWithSite implements IJobSta
 		}
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#region IJobStartupFilter Members
-
-	public final Iterable<JobStartupData> Filter(Iterable<JobStartupData> source)
+	public final Iterable<JobStartupData> filter(Iterable<JobStartupData> source) throws Exception
 	{
-		SatelliteManager manager = this.Site.<SatelliteManager>GetRequiredService();
+		SatelliteManager manager = this.getSite().getRequiredService(SatelliteManager.class);
+		
+		final Hashtable<String, Double> factors = new Hashtable<String, Double>();
 
-
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-//C# TO JAVA CONVERTER TODO TASK: This type of object initializer has no direct Java equivalent:
-		var query = from site in manager.getSatellites() select new { site = site, load = this.GetLoadFactor(manager, site.getName()) };
-
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to LINQ queries:
-		String[] names = (from o in query where o.load > 0 orderby o.load descending select o.site.getName()).toArray();
-
-
-		for (JobStartupData data : source)
+		for(SatelliteSite satellite : manager.getSatellites())
 		{
-			for (String name : names)
-			{
-				JobStartupData tempVar = new JobStartupData();
-				tempVar.setJobMetaData(data.getJobMetaData());
-				tempVar.setSatellite(name);
-//C# TO JAVA CONVERTER TODO TASK: Java does not have an equivalent to the C# 'yield' keyword:
-				yield return tempVar;
-			}
+			factors.put(satellite.getName(), this.getLoadFactor(manager, satellite.getName()));
 		}
+		
+		Enumerable<String> names = new Enumerable<SatelliteSite>(manager.getSatellites()).select(new Selector<SatelliteSite, String>(){
+
+			@Override
+			public String select(SatelliteSite item) {
+				return item.getName();
+			}}).orderByDescending(new Selector<String, Double>(){
+
+				@Override
+				public Double select(String item) {
+					Double rs = factors.get(item);
+					return rs != null ? rs : 0;
+				}});
+
+
+		return new CrossJoinIterable(source, names);
 
 	}
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
-		///#endregion
+	private class CrossJoinIterable implements Iterable<JobStartupData>
+	{
+		public CrossJoinIterable(Iterable<JobStartupData> source, Iterable<String> names)
+		{
+			this._source = source;
+			this._names = names;
+		}
+		
+		private Iterable<JobStartupData> _source;
+		private Iterable<String> _names;
+		@Override
+		public Iterator<JobStartupData> iterator() {
+			return new CrossJoinIterator(_source, _names);
+		}
+	}
+	
+	private class CrossJoinIterator implements Iterator<JobStartupData>
+	{
+        public CrossJoinIterator(Iterable<JobStartupData> source, Iterable<String> names)
+        {
+        	this._source = source.iterator();
+        	this._names = new ArrayList<String>();
+        	for(String name : names)
+        	{
+        		_names.add(name);
+        	}
+        }
+		
+		private Iterator<JobStartupData> _source;
+		private ArrayList<String> _names;
+		private int _index = -1;
+		private JobMetaData _job = null;
+		
+		@Override
+		public boolean hasNext() {
+			
+			if(this._index == -1)
+			{
+				return  _names.size() > 0 && _source.hasNext();
+			}
+			else
+			{
+				return _index < _names.size() || _source.hasNext();
+			}
+			
+			
+		}
+
+		@Override
+		public JobStartupData next() {
+			
+			if(this.hasNext())
+			{
+				if(_index == -1)
+				{
+					_index = 0;
+				}
+				
+				if(_index > _names.size() - 1 )
+				{
+					_job = _source.next().getJobMetaData();
+					this._index = 0;
+				}
+				
+				JobStartupData rs = new JobStartupData();
+				rs.setJobMetaData(_job);
+				rs.setSatellite(_names.get(this._index));
+				
+				this._index ++;
+				return rs;
+				
+			}
+			else
+			{
+				throw new NoSuchElementException();
+			}
+			
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+			
+		}
+		
+	}
+	
 }

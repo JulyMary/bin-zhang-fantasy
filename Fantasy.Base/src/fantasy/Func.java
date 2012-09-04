@@ -2,5 +2,5 @@ package fantasy;
 
 public interface Func<TResult> {
 
-	TResult call();
+	TResult call() throws Exception;
 }
